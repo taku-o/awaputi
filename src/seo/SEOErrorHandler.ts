@@ -3,7 +3,7 @@
  * 
  * SEO操作中のエラーを適切に処理し、フォールバック機能を提供
  */
-import { SEOConfig  } from './SEOConfig';''
+import { SEOConfig  } from './SEOConfig';
 import { seoLogger  } from './SEOLogger';
 
 // エラーハンドラー型
@@ -19,18 +19,18 @@ interface ErrorHandlerData { cached?: any;
 
 // リトライ設定インターフェース
 interface RetryConfig { maxRetries: number,
-    retryDelay: number;
-   , backoffMultiplier: number ,}
+    retryDelay: number,
+    backoffMultiplier: number ,}
 
 // エラー統計インターフェース
-interface ErrorStatistics { errorCount: number;
-   , errorTypes: Record<string, number>;
-    recoveryRate: number;
-   , commonErrors: Record<string, number>;
+interface ErrorStatistics { errorCount: number,
+    errorTypes: Record<string, number>;
+    recoveryRate: number,
+    commonErrors: Record<string, number>;
     lastError?: {
         timestam;p: string;
-        message: string;
-       , context: string ,}
+        message: string,
+    context: string ,}
 
 // ネットワークエラークラス
 class NetworkError extends Error { constructor(message: string) {
@@ -51,11 +51,11 @@ export class SEOErrorHandler {
         this.errorHandlers = new Map();
         this.fallbackStrategies = new Map();
         this.retryConfig = {
-            maxRetries: 3;
-           , retryDelay: 1000;
+            maxRetries: 3,
+    retryDelay: 1000;
     ,}
-            backoffMultiplier: 2 }
-        };
+            backoffMultiplier: 2 
+    };
         this._registerDefaultHandlers();
         this._registerDefaultFallbacks();
     }
@@ -163,7 +163,7 @@ export class SEOErrorHandler {
      */''
     private _registerDefaultHandlers()';
         this.registerHandler('NetworkError', async (error: Error, context: string, data: ErrorHandlerData) => {  ''
-            seoLogger.warn('Network error detected, using cached data if available); }'
+            seoLogger.warn('Network error detected, using cached data if available'; }'
 
             return data.cached || null;' }'
 
@@ -174,8 +174,8 @@ export class SEOErrorHandler {
             seoLogger.error('Type error in SEO operation', {)
                 context);
                 message: error.message, }
-                stack: error.stack); }
-            });
+                stack: error.stack); 
+    });
 
             return this._executeFallback(context, data);''
         }');
@@ -184,8 +184,8 @@ export class SEOErrorHandler {
         this.registerHandler('ReferenceError', (error: Error, context: string, data: ErrorHandlerData) => { ''
             seoLogger.error('Reference error in SEO operation', {)
                 context, }
-                message: error.message); }
-            });
+                message: error.message); 
+    });
 
             return this._executeFallback(context, data);''
         }');
@@ -195,8 +195,8 @@ export class SEOErrorHandler {
             seoLogger.error('Unhandled error in SEO operation', {)
                 context);
                 errorType: error.constructor.name, }
-                message: error.message); }
-            });
+                message: error.message); 
+    });
             return this._executeFallback(context, data);
         });
     }
@@ -207,18 +207,16 @@ export class SEOErrorHandler {
     private _registerDefaultFallbacks()';
         this.registerFallback('metaTags', () => {  return { title: SEOConfig.siteName, }
                 description: SEOConfig.metadata.defaultDescription[SEOConfig.defaultLanguage], };
-                image: SEOConfig.socialImages.fallback }
-
-            };''
+                image: SEOConfig.socialImages.fallback 
+    };''
         }');
         ';
         // 構造化データフォールバック
         this.registerFallback('structuredData', () => {  return { '', '@context': 'https://schema.org',
                 '@type': 'WebSite', }
                 name: SEOConfig.siteName, };
-                url: SEOConfig.baseUrl }
-
-            };''
+                url: SEOConfig.baseUrl 
+    };''
         }');
         ';
         // ソーシャル画像フォールバック
@@ -233,7 +231,7 @@ export class SEOErrorHandler {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> ,}
     <url> }"
         <loc>${SEOConfig.baseUrl}/</loc>""
-        <lastmod>${new, Date(}.toISOString("}.split('T'})[0]}</lastmod>
+        <lastmod>${new, Date(}.toISOString("}.split('T'}'[0]}</lastmod>
         <changefreq>weekly</changefreq>;
         <priority>1.0</priority>;
     </url>';
@@ -242,7 +240,7 @@ export class SEOErrorHandler {
         ';
         // デフォルトフォールバック
         this.registerFallback('default', () => {  ''
-            seoLogger.warn('Using, empty fallback); }'
+            seoLogger.warn('Using, empty fallback'; }'
             return null;);
     }
     
@@ -253,8 +251,8 @@ export class SEOErrorHandler {
         
         return { ...errorSummary,
             recoveryRate: this._calculateRecoveryRate(), };
-            commonErrors: this._getCommonErrors(); }
-        }
+            commonErrors: this._getCommonErrors(); 
+    }
     
     /**
      * リカバリー率の計算
@@ -289,4 +287,4 @@ export class SEOErrorHandler {
         return new Promise(resolve => setTimeout(resolve, ms);
 ';
 // シングルトンインスタンス
-export const seoErrorHandler = new SEOErrorHandler(');
+export const seoErrorHandler = new SEOErrorHandler();

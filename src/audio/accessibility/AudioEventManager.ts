@@ -7,22 +7,22 @@
 
 // Types for audio events
 interface AudioAccessibilityEvent { id: string,
-    type: string;
-   , data: Record<string, any>;
+    type: string,
+    data: Record<string, any>;
     timestamp: number ,}
 
 // Types for event statistics
-interface EventStatistics { totalEvents: number;
-   , eventsByType: Record<string, number>;
+interface EventStatistics { totalEvents: number,
+    eventsByType: Record<string, number>;
     uptime: number;
-    firstEventTime: number | null;
-   , lastEventTime: number | null ,}
+    firstEventTime: number | null,
+    lastEventTime: number | null ,}
 
 // Types for component status
 interface ComponentStatus { historySize: number;
     maxHistorySize: number;
-    uptime: number;
-   , eventTypes: string[] }
+    uptime: number,
+    eventTypes: string[] }
 
 // Main controller interface
 interface MainController { // Add properties as needed }
@@ -50,8 +50,8 @@ export class AudioEventManager {
     public recordEvent(eventType: string, eventData: Record<string, any>): void { const event: AudioAccessibilityEvent = {
             id: this.generateEventId();
             type: eventType;
-            data: eventData;
-           , timestamp: Date.now( };
+            data: eventData,
+    timestamp: Date.now( };
         
         this.eventHistory.push(event);
         
@@ -84,8 +84,8 @@ export class AudioEventManager {
         
         return { totalEvents: this.eventHistory.length,
             eventsByType: eventsByType;
-            uptime: Date.now() - this.initializationTime;
-           , firstEventTime: this.eventHistory.length > 0 ? this.eventHistory[0].timestamp : null, };
+            uptime: Date.now() - this.initializationTime,
+    firstEventTime: this.eventHistory.length > 0 ? this.eventHistory[0].timestamp : null, };
             lastEventTime: this.eventHistory.length > 0 ? this.eventHistory[this.eventHistory.length - 1].timestamp : null 
         }
 
@@ -110,7 +110,7 @@ export class AudioEventManager {
      * @returns ユニークなイベントID
      */
     private generateEventId(): string {
-        return `event_${Date.now(,})_${Math.random(}.toString(36}.substr(2, 9})`;
+        return `event_${Date.now(,})_${Math.random().toString(36).substr(2, 9})`;
     }
 
     /**
@@ -131,13 +131,13 @@ export class AudioEventManager {
      * @returns コンポーネントステータス
      */
     public getStatus(): ComponentStatus { return { historySize: this.eventHistory.length,
-            maxHistorySize: this.maxHistorySize;
-           , uptime: Date.now() - this.initializationTime, };
-            eventTypes: Object.keys(this.getStatistics().eventsByType); }
-        }
+            maxHistorySize: this.maxHistorySize,
+    uptime: Date.now() - this.initializationTime, };
+            eventTypes: Object.keys(this.getStatistics().eventsByType); 
+    }
 
     /**
      * クリーンアップ
      */
-    public destroy(): void { this.clearEventHistory(); }
-}
+    public destroy(): void { this.clearEventHistory(); 
+    }

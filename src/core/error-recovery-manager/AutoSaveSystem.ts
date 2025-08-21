@@ -18,23 +18,23 @@
 export interface AutoSaveConfig { enabled: boolean,
     interval: number;
     maxSavePoints: number;
-    gracePeriod: number;
-   , emergencyRestore: boolean;
+    gracePeriod: number,
+    emergencyRestore: boolean;
     compressionEnabled?: boolean;
     encryptionEnabled?: boolean; ,}
 
 export interface SavePoint { id: string,
     timestamp: number;
     type: SaveType;
-    state: GameStateSaveData;
-   , metadata: SavePointMetadata;
+    state: GameStateSaveData,
+    metadata: SavePointMetadata;
     checksum?: string;
     compressed?: boolean; ,}
 
 export interface SavePointMetadata { version: string,
     gameVersion: string;
-    saveIndex: number;
-   , size: number;
+    saveIndex: number,
+    size: number;
     playerLevel?: number;
     gameMode?: string;
     location?: string;
@@ -46,8 +46,8 @@ export interface GameStateSaveData { game?: any;
     settings?: Record<string, any>;
     bubbles?: BubbleSaveData;
     score?: ScoreSaveData;
-    timestamp: number;
-   , sessionId: string ,}
+    timestamp: number,
+    sessionId: string ,}
 
 export interface PlayerSaveData { id?: string;
     name?: string;
@@ -65,22 +65,22 @@ export interface PlayerSaveStatistics { totalPlayTime: number,
     totalScore: number;
     bestScore: number;
     averageScore: number;
-    bubblesPopped: number;
-   , combos: number ,}
+    bubblesPopped: number,
+    combos: number ,}
 
 export interface UserPreferences { soundEnabled: boolean;
     musicEnabled: boolean;
-    difficulty: string;
-   , controls: Record<string, any>,
+    difficulty: string,
+    controls: Record<string, any>,
     accessibility: Record<string, any>, }
 
 export interface InventoryData { items: InventoryItem[],
-    capacity: number;
-   , categories: string[] ,}
+    capacity: number,
+    categories: string[] ,}
 
 export interface InventoryItem { id: string;
-    type: string;
-   , quantity: number;
+    type: string,
+    quantity: number;
     metadata?: Record<string, any> }
 
 export interface SceneSaveData { current: string,
@@ -92,31 +92,31 @@ export interface SceneSaveData { current: string,
 export interface TransitionSaveData { from: string,
     to: string;
     progress: number;
-    startTime: number;
-   , type: string ,}
+    startTime: number,
+    type: string ,}
 
 export interface BubbleSaveData { bubbles: BubbleSaveEntry[];
     grid: GridSaveData;
     physics: PhysicsSaveData;
-    effects: EffectSaveEntry[];
-   , state: BubbleGameState
+    effects: EffectSaveEntry[],
+    state: BubbleGameState
     }
 
-export interface BubbleSaveEntry { id: string;
-   , type: BubbleType;
+export interface BubbleSaveEntry { id: string,
+    type: BubbleType;
     }
     position: { x: number;, y: number }
     velocity?: { x: number;, y: number },
     color: BubbleColor;
-    size: number;
-   , state: BubbleState;
+    size: number,
+    state: BubbleState;
     properties?: Record<string, any>;
 }
 
 export interface GridSaveData { width: number,
     height: number;
-    cellSize: number;
-   , occupied: boolean[][];
+    cellSize: number,
+    occupied: boolean[][];
     patterns?: GridPattern[]
     ,}
 
@@ -127,51 +127,51 @@ export interface GridPattern { name: string, }
 
 export interface PhysicsSaveData { gravity: number,
     friction: number;
-    bounce: number;
-   , timeStep: number, }
+    bounce: number,
+    timeStep: number, }
     wind?: { x: number;, y: number }
 
 export interface EffectSaveEntry { id: string,
     type: EffectType;
     ,}
     position: { x: number;, y: number },
-    duration: number;
-   , progress: number;
+    duration: number,
+    progress: number;
     properties?: Record<string, any>;
 }
 
 export interface BubbleGameState { paused: boolean,
     level: number;
     timeRemaining: number;
-    combo: number;
-   , powerUps: string[] ,}
+    combo: number,
+    powerUps: string[] ,}
 
 export interface ScoreSaveData { current: number;
     best: number;
     combo: number;
     multiplier: number;
     level: number;
-    progress: number;
-   , bonuses: ScoreBonus[]
+    progress: number,
+    bonuses: ScoreBonus[]
     }
 
 export interface ScoreBonus { type: string;
-    value: number;
-   , timestamp: number;
+    value: number,
+    timestamp: number;
     duration?: number }
 
 export interface AutoSaveSystemState { isRunning: boolean;
     lastSaveTime: number;
     saveCount: number;
     restoreCount: number;
-    emergencyRestores: number;
-   , saveErrors: number;
+    emergencyRestores: number,
+    saveErrors: number;
     consecutiveErrors?: number;
     lastErrorTime?: number; }
 
 export interface StorageKeys { saveStates: string,
-    metadata: string;
-   , emergency: string;
+    metadata: string,
+    emergency: string;
     checksum?: string;
     index?: string; ,}
 
@@ -184,8 +184,8 @@ export interface AutoSaveGameEngine { version?: string;
     bubbleManager?: BubbleManager;
     scoreManager?: ScoreManager;
     eventEmitter?: AutoSaveEventEmitter;
-    render?: () => void; }
-}
+    render?: () => void; 
+    }
 
 export interface PlayerDataManager { exportData(): PlayerSaveData;
     importData(data: PlayerSaveData): void, }
@@ -208,15 +208,15 @@ export interface AutoSaveEventEmitter { on(event: string, callback: Function): v
     removeListener?(event: string, callback: Function): void 
 export interface SavePointInfo { i;d: string,
     timestamp: number;
-    type: SaveType;
-   , metadata: SavePointMetadata;
+    type: SaveType,
+    metadata: SavePointMetadata;
     size?: number;
     valid?: boolean; ,}
 
 export interface StorageQuotaInfo { used: number,
     available: number;
-    total: number;
-   , percentage: number ,}
+    total: number,
+    percentage: number ,}
 
 export interface AutoSaveStatistics { enabled: boolean;
     isRunning: boolean;
@@ -228,8 +228,8 @@ export interface AutoSaveStatistics { enabled: boolean;
     emergencyRestores: number;
     saveErrors: number;
     lastSaveTime: number;
-    oldestSaveTime: number | null;
-   , newestSaveTime: number | null;
+    oldestSaveTime: number | null,
+    newestSaveTime: number | null;
     averageSaveSize?: number;
     storageUsage?: StorageQuotaInfo;
     consecutiveErrors?: number; }
@@ -246,27 +246,27 @@ export interface SaveOptions { force?: boolean;
     metadata?: Record<string, any>; }
 
 export interface ValidationResult { valid: boolean,
-    errors: string[];
-   , warnings: string[];
+    errors: string[],
+    warnings: string[];
     repaired?: boolean ,}
 
 // 列挙型
 export type SaveType = 'initial' | 'periodic' | 'manual' | 'final' | 'emergency' | 'beforeCritical' | '';
                        'beforeUnload' | 'windowBlur' | 'windowFocus' | 'gameStart' | 'gameEnd' | 'destroy';
 
-export type BubbleType = 'normal' | 'special' | 'power' | 'bonus' | 'obstacle' | 'multiplier';''
-export type BubbleColor = 'red' | 'blue' | 'green' | 'yellow' | 'purple' | 'orange' | 'pink' | 'white' | 'black';''
-export type BubbleState = 'idle' | 'moving' | 'popping' | 'falling' | 'locked' | 'charging' | 'exploding';''
+export type BubbleType = 'normal' | 'special' | 'power' | 'bonus' | 'obstacle' | 'multiplier';
+export type BubbleColor = 'red' | 'blue' | 'green' | 'yellow' | 'purple' | 'orange' | 'pink' | 'white' | 'black';
+export type BubbleState = 'idle' | 'moving' | 'popping' | 'falling' | 'locked' | 'charging' | 'exploding';
 export type EffectType = 'explosion' | 'sparkle' | 'trail' | 'glow' | 'shake' | 'fade' | 'grow' | 'shrink';
 
 // 定数
 export const DEFAULT_AUTO_SAVE_CONFIG: AutoSaveConfig = { enabled: true,
     interval: 30000, // 30秒;
-    maxSavePoints: 5;
-   , gracePeriod: 5000, // 5秒;
+    maxSavePoints: 5,
+    gracePeriod: 5000, // 5秒;
     emergencyRestore: true;
-    compressionEnabled: false;
-   , encryptionEnabled: false ,} as const;
+    compressionEnabled: false,
+    encryptionEnabled: false ,} as const;
 ';
 
 export const STORAGE_KEYS: StorageKeys = {;
@@ -285,20 +285,20 @@ export const SAVE_TYPE_PRIORITIES: Record<SaveType, number> = { emergency: 10,
     initial: 3;
     windowBlur: 2;
     windowFocus: 1;
-    periodic: 1;
-   , destroy: 0 ,} as const;
+    periodic: 1,
+    destroy: 0 ,} as const;
 export const SAVE_VALIDATION_RULES = { MIN_STATE_SIZE: 10, // bytes
     MAX_STATE_SIZE: 50 * 1024 * 1024, // 50MB;
     REQUIRED_FIELDS: ['timestamp', 'sessionId'],
-    MAX_SAVE_POINTS: 50;
-   , MIN_SAVE_INTERVAL: 1000 // 1秒 ,} as const;
+    MAX_SAVE_POINTS: 50,
+    MIN_SAVE_INTERVAL: 1000 // 1秒 ,} as const;
 export const ERROR_RECOVERY_THRESHOLDS = { MAX_CONSECUTIVE_ERRORS: 3,
     ERROR_COOLDOWN_PERIOD: 10000, // 10秒;
-    EMERGENCY_CLEANUP_THRESHOLD: 10;
-   , STORAGE_WARNING_THRESHOLD: 0.8 // 80% ,} as const;
+    EMERGENCY_CLEANUP_THRESHOLD: 10,
+    STORAGE_WARNING_THRESHOLD: 0.8 // 80% ,} as const;
 // ユーティリティ関数
 export function generateSaveId(): string {
-    return `save_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
+    return `save_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
 }
 
 export function calculateSavePointSize(savePoint: SavePoint): number { try {
@@ -307,8 +307,8 @@ export function calculateSavePointSize(savePoint: SavePoint): number { try {
 
 export function validateSaveData(data: GameStateSaveData): ValidationResult { const result: ValidationResult = {
         valid: true;
-        errors: [];
-       , warnings: [] };
+        errors: [],
+    warnings: [] };
     ';
     // 基本的な必須フィールドをチェック
     if(!data || typeof, data !== 'object'') {'
@@ -322,14 +322,14 @@ export function validateSaveData(data: GameStateSaveData): ValidationResult { co
 
     }
 
-        result.errors.push('Missing, timestamp); }'
+        result.errors.push('Missing, timestamp'; }'
     }
 
     if(!data.sessionId) {', ';
 
     }
 
-        result.warnings.push('Missing, session ID); }'
+        result.warnings.push('Missing, session ID'; }'
     }
     
     // データサイズチェック
@@ -340,7 +340,7 @@ export function validateSaveData(data: GameStateSaveData): ValidationResult { co
 
     }
 
-        result.warnings.push('Save data is very small, may be incomplete); }'
+        result.warnings.push('Save data is very small, may be incomplete'; }'
     }
 
     if(size > SAVE_VALIDATION_RULES.MAX_STATE_SIZE) {'
@@ -348,7 +348,7 @@ export function validateSaveData(data: GameStateSaveData): ValidationResult { co
 
     }
 
-        result.errors.push('Save, data exceeds, maximum size, limit); }'
+        result.errors.push('Save, data exceeds, maximum size, limit'; }'
     }
     
     return result;
@@ -395,7 +395,7 @@ export function calculateChecksum(data: any): string { // 簡単なチェック�
 export function isQuotaExceededError(error: Error): boolean {;
     return error.name === 'QuotaExceededError' || '';
            error.message.includes('quota'') ||'';
-           error.message.includes('storage); }'
+           error.message.includes('storage'; }'
 
 export function formatSaveType(saveType: SaveType): string { const typeNames: Record<SaveType, string> = {''
         initial: '初期保存',
@@ -456,8 +456,8 @@ export class AutoSaveSystem {
             restoreCount: 0;
             emergencyRestores: 0;
             saveErrors: 0;
-            consecutiveErrors: 0;
-           , lastErrorTime: 0 ,};
+            consecutiveErrors: 0,
+    lastErrorTime: 0 ,};
         // イベントハンドラーをバインド
         this.gameStartHandler = this.handleGameStart.bind(this);
         this.gameEndHandler = this.handleGameEnd.bind(this);
@@ -509,7 +509,7 @@ export class AutoSaveSystem {
             this.repairSaveIndex();
 
         } catch (error) {
-            console.warn('[AutoSaveSystem] Save points loading error:', error);
+            console.warn('[AutoSaveSystem] Save points loading error:', error';
             this.savePoints = []; }
     }
 
@@ -538,19 +538,19 @@ export class AutoSaveSystem {
     private setupEventListeners(): void { // ゲームエンジンイベント
         if(this.gameEngine.eventEmitter) {'
 
-            this.gameEngine.eventEmitter.on('gameStart', this.gameStartHandler);''
-            this.gameEngine.eventEmitter.on('gameEnd', this.gameEndHandler);''
-            this.gameEngine.eventEmitter.on('gameError', this.gameErrorHandler);
+            this.gameEngine.eventEmitter.on('gameStart', this.gameStartHandler';''
+            this.gameEngine.eventEmitter.on('gameEnd', this.gameEndHandler';''
+            this.gameEngine.eventEmitter.on('gameError', this.gameErrorHandler';
 
         }
 
-            this.gameEngine.eventEmitter.on('criticalAction', this.criticalActionHandler); }
+            this.gameEngine.eventEmitter.on('criticalAction', this.criticalActionHandler'; }
         }
         ';
         // ブラウザイベント
-        window.addEventListener('beforeunload', this.beforeUnloadHandler);''
-        window.addEventListener('blur', this.windowBlurHandler);''
-        window.addEventListener('focus', this.windowFocusHandler);
+        window.addEventListener('beforeunload', this.beforeUnloadHandler';''
+        window.addEventListener('blur', this.windowBlurHandler';''
+        window.addEventListener('focus', this.windowFocusHandler';
     }
 
     /**
@@ -562,12 +562,12 @@ export class AutoSaveSystem {
         this.state.isRunning = true;
         ';
         // 初回保存
-        this.performSave('initial);
+        this.performSave('initial';
         ';
         // 定期保存を開始
         this.timer = window.setInterval(() => { ' }'
 
-            this.performSave('periodic); }'
+            this.performSave('periodic'; }'
         }, this.config.interval);
         
         console.log(`[AutoSaveSystem] Auto-save, started (${this.config.interval}ms, interval)`);
@@ -615,11 +615,11 @@ export class AutoSaveSystem {
             ';
 
             const savePoint: SavePoint = { id: generateSaveId(),''
-                timestamp: Date.now(''';
-                   , version: '1.0',
+                timestamp: Date.now(''',
+    version: '1.0',
                     gameVersion: this.gameEngine.version || '1.0';
-                    saveIndex: this.currentSaveIndex++;
-                   , size: 0, // 後で計算);
+                    saveIndex: this.currentSaveIndex++,
+    size: 0, // 後で計算);
                     description: options.description);
                     ...options.metadata,)
                 checksum: calculateChecksum(gameState);
@@ -683,8 +683,8 @@ export class AutoSaveSystem {
      * ゲーム状態をキャプチャ
      */
     private captureGameState(): GameStateSaveData { const gameState: GameStateSaveData = {''
-            timestamp: Date.now(''';
-           , sessionId: this.gameEngine.sessionId || 'unknown' }))
+            timestamp: Date.now(''',
+    sessionId: this.gameEngine.sessionId || 'unknown' }))
         try { // ゲームエンジンから状態を取得)
             if(this.gameEngine.gameState) {
                 
@@ -698,14 +698,14 @@ export class AutoSaveSystem {
             // シーン状態
             if(this.gameEngine.sceneManager) { gameState.scene = {
                     current: this.gameEngine.sceneManager.getCurrentScene( }
-                    data: this.gameEngine.sceneManager.getSceneData(); }
-                }
+                    data: this.gameEngine.sceneManager.getSceneData(); 
+    }
             
             // 設定
             if (this.gameEngine.settingsManager) { gameState.settings = this.gameEngine.settingsManager.getAllSettings(); }
             
             // バブル状態（ゲーム中の場合）
-            if (this.gameEngine.bubbleManager && this.gameEngine.gameState? .playing) { gameState.bubbles = this.gameEngine.bubbleManager.exportState(); }
+            if (this.gameEngine.bubbleManager && this.gameEngine.gameState?.playing) { gameState.bubbles = this.gameEngine.bubbleManager.exportState(); }
             
             // スコア状態
             if (this.gameEngine.scoreManager) { gameState.score = this.gameEngine.scoreManager.getState();' }'
@@ -735,8 +735,8 @@ export class AutoSaveSystem {
                 restoreCount: this.state.restoreCount;
                 emergencyRestores: this.state.emergencyRestores;
                 saveErrors: this.state.saveErrors;
-                consecutiveErrors: this.state.consecutiveErrors;
-               , lastErrorTime: this.state.lastErrorTime ,};
+                consecutiveErrors: this.state.consecutiveErrors,
+    lastErrorTime: this.state.lastErrorTime ,};
             localStorage.setItem(STORAGE_KEYS.metadata, JSON.stringify(metadata);
 
         } catch (error) {
@@ -757,9 +757,9 @@ export class AutoSaveSystem {
         console.warn('[AutoSaveSystem] Storage quota exceeded, performing emergency cleanup);
         
         // 保存点の半分を削除
-        const keepCount = Math.max(1, Math.floor(this.config.maxSavePoints / 2);
+        const keepCount = Math.max(1 Math.floor(this.config.maxSavePoints / 2);
         const sortedSaves = sortSavePointsByPriority(this.savePoints);
-        this.savePoints = sortedSaves.slice(0, keepCount);
+        this.savePoints = sortedSaves.slice(0 keepCount);
         
         try { this.saveSavePoints(); }
             console.log(`[AutoSaveSystem] Emergency cleanup completed, kept ${keepCount} save points`}');''
@@ -806,7 +806,7 @@ export class AutoSaveSystem {
             return true;
 
         } catch (error) {
-            console.error('[AutoSaveSystem] Restore error:', error);
+            console.error('[AutoSaveSystem] Restore error:', error';
             return false;
 
     /**
@@ -815,11 +815,11 @@ export class AutoSaveSystem {
     restoreLatest(options: RestoreOptions = {,}): boolean { ''
         if(this.savePoints.length === 0) {'
 
-            console.warn('[AutoSaveSystem] No, save points, available for, restore);
+            console.warn('[AutoSaveSystem] No, save points available for restore';
         }
             return false;
         
-        const sortedSaves = sortSavePointsByPriority(this.savePoints);
+        const sortedSaves = sortSavePointsByPriority(this.savePoints');
         const latestSavePoint = sortedSaves[0];
         return this.restoreFromSavePoint(latestSavePoint.id, options');
     }
@@ -830,12 +830,12 @@ export class AutoSaveSystem {
     performEmergencyRestore(): boolean { ''
         if(!this.config.emergencyRestore) {'
 
-            console.warn('[AutoSaveSystem] Emergency, restore is, disabled);
+            console.warn('[AutoSaveSystem] Emergency restore is disabled';
         }
             return false;
         
         try { // 緊急保存データを確認
-            const emergencyData = localStorage.getItem(STORAGE_KEYS.emergency);
+            const emergencyData = localStorage.getItem(STORAGE_KEYS.emergency');
             
             if(emergencyData) {
             
@@ -853,13 +853,13 @@ export class AutoSaveSystem {
                     return true;
             ';
             // 緊急保存がない場合、最新の保存点から復元
-            console.log('[AutoSaveSystem] No valid emergency save found, trying latest save point);
+            console.log('[AutoSaveSystem] No valid emergency save found, trying latest save point';
             return this.restoreLatest({ validate: false, skipErrors: true '),
 
             ' }'
 
         } catch (error) {
-            console.error('[AutoSaveSystem] Emergency restore error:', error);
+            console.error('[AutoSaveSystem] Emergency restore error:', error';
             return false;
 
     /**
@@ -932,16 +932,16 @@ export class AutoSaveSystem {
         }
 
     private handleBeforeUnload(event: BeforeUnloadEvent): void { // ページ離脱前の最終保存
-        this.performSave('beforeUnload); }'
+        this.performSave('beforeUnload'; }'
 
     private handleWindowBlur()';
-        this.performSave('windowBlur);
+        this.performSave('windowBlur';
     }
 ';
     private handleWindowFocus(): void { // ウィンドウがフォーカスを得た時の保存（戻ってきた時）
         setTimeout(() => { ' }'
 
-            this.performSave('windowFocus); }'
+            this.performSave('windowFocus'; }'
         }, 1000);
     }
 
@@ -951,10 +951,10 @@ export class AutoSaveSystem {
     getSavePoints(): SavePointInfo[] { return this.savePoints.map(sp => ({
             id: sp.id;
             timestamp: sp.timestamp);
-            type: sp.type);
-           , metadata: sp.metadata,);
-            size: sp.metadata.size);
-           , valid: this.validateSavePoint(sp) ,}
+            type: sp.type),
+    metadata: sp.metadata,);
+            size: sp.metadata.size),
+    valid: this.validateSavePoint(sp) ,}
         });
     }
 
@@ -1011,7 +1011,7 @@ export class AutoSaveSystem {
         
         this.saveSavePoints();
         
-        return { valid: validCount, invalid: invalidCount, repaired: repairedCount ,}
+        return { valid: validCount, invalid: invalidCount repaired: repairedCount  }
 
     /**
      * ストレージ使用量を取得
@@ -1021,7 +1021,7 @@ export class AutoSaveSystem {
             
             // 保存点のサイズを計算
             this.savePoints.forEach(sp => { )
-                used += sp.metadata.size || 0);
+                used += sp.metadata.size || 0');
             
             // 推定利用可能容量（LocalStorageの一般的な制限）
             const estimatedTotal = 5 * 1024 * 1024; // 5MB
@@ -1041,7 +1041,7 @@ export class AutoSaveSystem {
      * 統計情報を取得
      */
     getStatistics(): AutoSaveStatistics { const storageUsage = this.getStorageUsage();
-        const averageSaveSize = this.savePoints.length > 0 ?   : undefined
+        const averageSaveSize = this.savePoints.length > 0 ? undefined : undefined
             this.savePoints.reduce((sum, sp) => sum + (sp.metadata.size || 0), 0) / this.savePoints.length: 0,
         
         return { enabled: this.config.enabled,
@@ -1058,8 +1058,8 @@ export class AutoSaveSystem {
             newestSaveTime: this.savePoints.length > 0 ? Math.max(...this.savePoints.map(sp => sp.timestamp) : null;
             averageSaveSize: Math.round(averageSaveSize);
             storageUsage, };
-            consecutiveErrors: this.state.consecutiveErrors }
-        }
+            consecutiveErrors: this.state.consecutiveErrors 
+    }
 
     /**
      * 設定を更新
@@ -1118,21 +1118,21 @@ export class AutoSaveSystem {
         // イベントリスナーを削除
         if(this.gameEngine.eventEmitter) {
             try {'
-                (this.gameEngine.eventEmitter, as any').removeListener? .('gameStart', this.gameStartHandler);''
-                (this.gameEngine.eventEmitter, as any').removeListener?.('gameEnd', this.gameEndHandler);''
-                (this.gameEngine.eventEmitter, as any').removeListener?.('gameError', this.gameErrorHandler);
+                (this.gameEngine.eventEmitter, as any').removeListener?.('gameStart', this.gameStartHandler';''
+                (this.gameEngine.eventEmitter, as any').removeListener?.('gameEnd', this.gameEndHandler';''
+                (this.gameEngine.eventEmitter, as any').removeListener?.('gameError', this.gameErrorHandler';
 
         }
 
-                (this.gameEngine.eventEmitter, as any').removeListener?.('criticalAction', this.criticalActionHandler);' }
+                (this.gameEngine.eventEmitter, as any').removeListener?.('criticalAction', this.criticalActionHandler';' }
 
             } catch (error) { : undefined''
                 console.warn('[AutoSaveSystem] Failed to remove event listeners:', error 
         }
 
-        window.removeEventListener('beforeunload', this.beforeUnloadHandler);''
-        window.removeEventListener('blur', this.windowBlurHandler);''
-        window.removeEventListener('focus', this.windowFocusHandler);
+        window.removeEventListener('beforeunload', this.beforeUnloadHandler';''
+        window.removeEventListener('blur', this.windowBlurHandler';''
+        window.removeEventListener('focus', this.windowFocusHandler';
         ';
         // 最終保存
         this.performSave('destroy'');

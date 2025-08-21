@@ -10,19 +10,19 @@ export class AnalyticsPerformanceOptimizer {
         // 設定
         this.config = {
             // バッチ処理設定
-            batchSize: options.batchSize || 50;
-           , batchTimeout: options.batchTimeout || 5000, // 5秒;
+            batchSize: options.batchSize || 50,
+    batchTimeout: options.batchTimeout || 5000, // 5秒;
             maxBatchDelay: options.maxBatchDelay || 30000, // 30秒;
             // キャッシュ設定
-            cacheSize: options.cacheSize || 1000;
-           , cacheTimeout: options.cacheTimeout || 300000, // 5分;
+            cacheSize: options.cacheSize || 1000,
+    cacheTimeout: options.cacheTimeout || 300000, // 5分;
             // メモリ管理設定
             memoryCleanupInterval: options.memoryCleanupInterval || 60000, // 1分;
             maxMemoryThreshold: options.maxMemoryThreshold || 100 * 1024 * 1024, // 100MB;
             // パフォーマンス監視設定
             performanceCheckInterval: options.performanceCheckInterval || 1000, // 1秒;
-            fpsThreshold: options.fpsThreshold || 30;
-           , memoryWarningThreshold: options.memoryWarningThreshold || 80 * 1024 * 1024, // 80MB
+            fpsThreshold: options.fpsThreshold || 30,
+    memoryWarningThreshold: options.memoryWarningThreshold || 80 * 1024 * 1024, // 80MB
     }
             ...options
         };
@@ -38,21 +38,21 @@ export class AnalyticsPerformanceOptimizer {
         
         // メモリ管理
         this.memoryUsage = { current: 0,
-            peak: 0;
-           , lastCleanup: Date.now( ,};
+            peak: 0,
+    lastCleanup: Date.now( ,}
         
         // パフォーマンス監視
         this.performanceMetrics = { fps: 60,
             frameTime: 16.67;
             memoryUsage: 0;
-            eventProcessingTime: 0;
-           , cacheHitRate: 0 ,};
+            eventProcessingTime: 0,
+    cacheHitRate: 0 ,};
         // 最適化統計
         this.optimizationStats = { batchesProcessed: 0,
             cacheHits: 0;
             cacheMisses: 0;
-            memoryCleanups: 0;
-           , performanceWarnings: 0 ,};
+            memoryCleanups: 0,
+    performanceWarnings: 0 ,};
         // 初期化
         this.initialize();
     }
@@ -107,15 +107,15 @@ export class AnalyticsPerformanceOptimizer {
         // FPS警告チェック
         if(this.performanceMetrics.fps < this.config.fpsThreshold) { this.handlePerformanceWarning('Low FPS detected', {)
                 fps: this.performanceMetrics.fps, }
-                threshold: this.config.fpsThreshold); }
-}
+                threshold: this.config.fpsThreshold); 
+    }
     
     /**
      * イベント処理最適化
      */
     optimizeEventProcessing() {
         // 元のイベント送信メソッドをオーバーライド
-        const originalTrackEvent = this.analyticsManager.trackEvent? .bind(this.analyticsManager);
+        const originalTrackEvent = this.analyticsManager.trackEvent?.bind(this.analyticsManager);
         
         if (originalTrackEvent) {
     }
@@ -143,11 +143,11 @@ export class AnalyticsPerformanceOptimizer {
     batchEvent(eventType, data, originalHandler) {
         const event = { : undefined
             type: eventType;
-            data: data;
-           , timestamp: Date.now();
+            data: data,
+    timestamp: Date.now();
     ,}
-            handler: originalHandler }
-        };
+            handler: originalHandler 
+    };
         this.eventQueue.push(event);
         
         // バッチサイズに達した場合、即座に処理
@@ -371,7 +371,7 @@ export class AnalyticsPerformanceOptimizer {
         this.cache.clear();
         this.cacheTimestamps.clear();
         // 即座にバッチ処理を実行
-        this.processBatch(')';
+        this.processBatch()';
             event.type === 'error' || event.type === 'critical');
         
         this.optimizationStats.performanceWarnings++;
@@ -401,8 +401,8 @@ export class AnalyticsPerformanceOptimizer {
             performanceMetrics: { ...this.performanceMetrics;
             memoryUsage: { ...this.memoryUsage;
             config: { ...this.config;
-            eventQueueSize: this.eventQueue.length;
-           , cacheSize: this.cache.size;
+            eventQueueSize: this.eventQueue.length,
+    cacheSize: this.cache.size;
         },
     }
     
@@ -431,10 +431,10 @@ export class AnalyticsPerformanceOptimizer {
 
                 memoryUsage: (stats.memoryUsage.current / 1024 / 1024).toFixed(2) + 'MB',' };
 
-                eventProcessingTime: stats.performanceMetrics.eventProcessingTime + 'ms' }
-            };
-            recommendations: this.generateOptimizationRecommendations(stats);
-           , detailedStats: stats;
+                eventProcessingTime: stats.performanceMetrics.eventProcessingTime + 'ms' 
+    };
+            recommendations: this.generateOptimizationRecommendations(stats),
+    detailedStats: stats;
         },
     }
     
@@ -447,28 +447,28 @@ export class AnalyticsPerformanceOptimizer {
         if(stats.performanceMetrics.cacheHitRate < 70) {'
     }
 
-            recommendations.push('キャッシュヒット率が低いです。キャッシュサイズを増やすことを検討してください。); }'
+            recommendations.push('キャッシュヒット率が低いです。キャッシュサイズを増やすことを検討してください。'; }'
         }
 
         if(stats.performanceMetrics.fps < 30) {', ';
 
         }
 
-            recommendations.push('FPSが低下しています。バッチサイズを小さくするか、処理間隔を長くしてください。); }'
+            recommendations.push('FPSが低下しています。バッチサイズを小さくするか、処理間隔を長くしてください。'; }'
         }
 
         if(stats.memoryUsage.current > this.config.memoryWarningThreshold) {', ';
 
         }
 
-            recommendations.push('メモリ使用量が多いです。より頻繁なクリーンアップを実行してください。); }'
+            recommendations.push('メモリ使用量が多いです。より頻繁なクリーンアップを実行してください。'; }'
         }
 
         if(stats.eventQueueSize > this.config.batchSize * 2) {', ';
 
         }
 
-            recommendations.push('イベントキューが大きくなっています。バッチ処理頻度を上げてください。); }'
+            recommendations.push('イベントキューが大きくなっています。バッチ処理頻度を上げてください。'; }'
         }
         
         return recommendations;
@@ -488,4 +488,4 @@ export class AnalyticsPerformanceOptimizer {
         
         // キャッシュクリア
         this.cache.clear();''
-        this.cacheTimestamps.clear(');
+        this.cacheTimestamps.clear();

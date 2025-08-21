@@ -4,7 +4,7 @@
  * MobilePerformanceOptimizerから分離されたレンダリング最適化機能
  */
 
-import { getErrorHandler  } from '../ErrorHandler.js';''
+import { getErrorHandler  } from '../ErrorHandler.js';
 import { getConfigurationManager  } from '../../core/ConfigurationManager.js';
 
 // Type definitions
@@ -16,21 +16,21 @@ interface ConfigurationManager { [key: string]: any, }
 interface QualitySettings { resolution: number,
     textureQuality: number;
     effectsQuality: number;
-    shadersSimplified: boolean;
-   , cullingAggressive: boolean ,}
+    shadersSimplified: boolean,
+    cullingAggressive: boolean ,}
 
 interface QualityLevels { low: QualitySettings;
     medium: QualitySettings;
-    high: QualitySettings;
-   , ultra: QualitySettings
+    high: QualitySettings,
+    ultra: QualitySettings
     }
 ';
 
 interface QualityConfig { ''
     currentLevel: 'low' | 'medium' | 'high' | 'ultra' | 'auto';
     autoAdjustment: boolean;
-    dynamicQuality: boolean;
-   , qualityLevels: QualityLevels
+    dynamicQuality: boolean,
+    qualityLevels: QualityLevels
     }
 
 interface OptimizationSettings { reducedResolution: boolean;
@@ -42,75 +42,75 @@ interface OptimizationSettings { reducedResolution: boolean;
     mipmapOptimization: boolean;
     frustumCulling: boolean;
     occlusionCulling: boolean;
-    batchingEnabled: boolean;
-   , instancingEnabled: boolean }
+    batchingEnabled: boolean,
+    instancingEnabled: boolean }
 
 interface FrameRateConfig { target: number;
     adaptive: boolean;
     vsyncEnabled: boolean;
     frameSkipping: boolean;
-    dynamicFrameRate: boolean;
-   , throttleOnBattery: boolean }
+    dynamicFrameRate: boolean,
+    throttleOnBattery: boolean }
 
 interface ViewportConfig { autoResize: boolean;
     pixelRatio: number;
     adaptivePixelRatio: boolean;
-    maxPixelRatio: number;
-   , minPixelRatio: number }
+    maxPixelRatio: number,
+    minPixelRatio: number }
 
 interface RenderConfig { enabled: boolean;
     quality: QualityConfig;
     optimizations: OptimizationSettings;
-    frameRate: FrameRateConfig;
-   , viewport: ViewportConfig
+    frameRate: FrameRateConfig,
+    viewport: ViewportConfig
     }
 
 interface FrameStats { fps: number;
     frameTime: number;
     averageFrameTime: number;
     frameVariance: number;
-    droppedFrames: number;
-   , totalFrames: number }
+    droppedFrames: number,
+    totalFrames: number }
 
 interface RenderStats { drawCalls: number;
     triangles: number;
     vertices: number;
     textureBinds: number;
-    shaderChanges: number;
-   , bufferUpdates: number }
+    shaderChanges: number,
+    bufferUpdates: number }
 
 interface PerformanceThresholds { targetFrameTime: number;
     maxFrameTime: number;
-    criticalFrameTime: number;
-   , maxDroppedFrames: number }
+    criticalFrameTime: number,
+    maxDroppedFrames: number }
 
 interface QualityAdjustment { timestamp: number;
-    level: string;
-   , reason: string }
+    level: string,
+    reason: string }
 
 interface QualityHistory { adjustments: QualityAdjustment[];
-    lastAdjustment: number;
-   , adjustmentCooldown: number }
+    lastAdjustment: number,
+    adjustmentCooldown: number }
 
 interface RenderMonitoring { enabled: boolean;
     frameStats: FrameStats;
     renderStats: RenderStats;
-    thresholds: PerformanceThresholds;
-   , qualityHistory: QualityHistory
+    thresholds: PerformanceThresholds,
+    qualityHistory: QualityHistory
     }
 
 interface RenderStatistics { frameStats: FrameStats;
     renderStats: RenderStats;
     qualityLevel: string;
     optimizations: OptimizationSettings;
-    viewport: ViewportConfig;
-   , qualityHistory: QualityAdjustment[]
+    viewport: ViewportConfig,
+    qualityHistory: QualityAdjustment[]
     }
 
 interface OptimizationConfig { quality: QualityConfig;
     optimizations: OptimizationSettings;
-    frameRate: FrameRateConfig;
-   , viewport: ViewportConfig
+    frameRate: FrameRateConfig,
+    viewport: ViewportConfig
     }
 
 export class MobileRenderOptimizer {
@@ -125,61 +125,61 @@ export class MobileRenderOptimizer {
 ';
 
         this.errorHandler = getErrorHandler();''
-        this.configManager = getConfigurationManager(''';
+        this.configManager = getConfigurationManager('''
                 currentLevel: 'auto';
                 autoAdjustment: true;
-                dynamicQuality: true;
-               , qualityLevels: {
+                dynamicQuality: true,
+    qualityLevels: {
                     low: {
                         resolution: 0.5;
                         textureQuality: 0.3;
-                        effectsQuality: 0.2;
-                       , shadersSimplified: true;
+                        effectsQuality: 0.2,
+    shadersSimplified: true;
     }
-                        cullingAggressive: true }
-                    };
+                        cullingAggressive: true 
+    };
                     medium: { resolution: 0.75;
                         textureQuality: 0.6;
                         effectsQuality: 0.5;
-                        shadersSimplified: false;
-                       , cullingAggressive: true };
+                        shadersSimplified: false,
+    cullingAggressive: true };
                     high: { resolution: 1.0;
                         textureQuality: 0.8;
                         effectsQuality: 0.8;
-                        shadersSimplified: false;
-                       , cullingAggressive: false };
+                        shadersSimplified: false,
+    cullingAggressive: false };
                     ultra: { resolution: 1.0;
                         textureQuality: 1.0;
                         effectsQuality: 1.0;
-                        shadersSimplified: false;
-                       , cullingAggressive: false }
-};
+                        shadersSimplified: false,
+    cullingAggressive: false 
+    };
             // Rendering optimizations
             optimizations: { reducedResolution: false;
                 simplifiedShaders: false;
-                cullAggressive: true;
-               , lodBias: 1.0, // Level of detail bias for mobile;
+                cullAggressive: true,
+    lodBias: 1.0, // Level of detail bias for mobile;
                 drawCallReduction: true;
                 textureCompression: true;
                 mipmapOptimization: true;
                 frustumCulling: true;
                 occlusionCulling: false;
-                batchingEnabled: true;
-               , instancingEnabled: true ,};
+                batchingEnabled: true,
+    instancingEnabled: true ,};
             // Frame rate control
             frameRate: { target: 60;
                 adaptive: true;
                 vsyncEnabled: true;
                 frameSkipping: false;
-                dynamicFrameRate: true;
-               , throttleOnBattery: true };
+                dynamicFrameRate: true,
+    throttleOnBattery: true };
             // Viewport and scaling
             viewport: { autoResize: true;
                 pixelRatio: 1.0;
                 adaptivePixelRatio: true;
-                maxPixelRatio: 2.0;
-               , minPixelRatio: 0.5 }
-        };
+                maxPixelRatio: 2.0,
+    minPixelRatio: 0.5 
+    };
         // Render performance monitoring
         this.renderMonitoring = { enabled: true,
             
@@ -189,15 +189,15 @@ export class MobileRenderOptimizer {
                 frameTime: 16.67;
                 averageFrameTime: 16.67;
                 frameVariance: 0;
-                droppedFrames: 0;
-               , totalFrames: 0 ,};
+                droppedFrames: 0,
+    totalFrames: 0 ,};
             // Render statistics
             renderStats: { drawCalls: 0;
                 triangles: 0;
                 vertices: 0;
                 textureBinds: 0;
-                shaderChanges: 0;
-               , bufferUpdates: 0 };
+                shaderChanges: 0,
+    bufferUpdates: 0 };
             // Performance thresholds
             thresholds: { targetFrameTime: 16.67, // 60 FPS
                 maxFrameTime: 33.33,    // 30 FPS minimum;
@@ -205,8 +205,8 @@ export class MobileRenderOptimizer {
                 maxDroppedFrames: 5      // Per second ,};
             // Quality adjustment history
             qualityHistory: { adjustments: [];
-                lastAdjustment: 0;
-               , adjustmentCooldown: 2000 // 2 seconds }))
+                lastAdjustment: 0,
+    adjustmentCooldown: 2000 // 2 seconds }))
         // Initialize render optimizer
         this.initializeRenderOptimizer();
     }
@@ -219,12 +219,12 @@ export class MobileRenderOptimizer {
         
         try { this.setupRenderMonitoring();
 
-            this.applyInitialOptimizations(');''
+            this.applyInitialOptimizations();''
             this.startFrameMonitoring()';
             console.log('[MobileRenderOptimizer] Render, optimization initialized, successfully');' }
 
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'MobileRenderOptimizer.initializeRenderOptimizer); }'
+            this.errorHandler.handleError(error as Error, 'MobileRenderOptimizer.initializeRenderOptimizer'; }'
     }
     
     /**
@@ -249,7 +249,7 @@ export class MobileRenderOptimizer {
     /**
      * Detect optimal quality level based on device capabilities
      */''
-    detectOptimalQuality('): 'low' | 'medium' | 'high' | 'ultra' { // This would typically use device detection results
+    detectOptimalQuality(): 'low' | 'medium' | 'high' | 'ultra' { // This would typically use device detection results
         // For now, we'll use a simple heuristic'
 
         const canvas = document.createElement('canvas'');''
@@ -266,10 +266,10 @@ export class MobileRenderOptimizer {
         const vendor = gl.getParameter(gl.VENDOR);
 
         // Simple device classification(would, be more, sophisticated in, practice);''
-        if (renderer.includes('Mali'') || renderer.includes('Adreno)) { // Mobile GPUs
+        if (renderer.includes('Mali'') || renderer.includes('Adreno)' { // Mobile GPUs
             return 'medium';' }
 
-        } else if(renderer.includes('Intel)) { ''
+        } else if(renderer.includes('Intel)' { ''
             return 'medium'; else {  ' }
 
             return 'high';
@@ -290,8 +290,8 @@ export class MobileRenderOptimizer {
         
         // Log quality change
         this.renderMonitoring.qualityHistory.adjustments.push({ );''
-            timestamp: Date.now()';
-           , reason: 'manual' });
+            timestamp: Date.now()',
+    reason: 'manual' });
         console.log(`[MobileRenderOptimizer] Quality, level set, to: ${level}`});
     }
     
@@ -334,7 +334,7 @@ export class MobileRenderOptimizer {
      */
     applyDeviceSpecificOptimizations(): void { ''
         const userAgent = navigator.userAgent.toLowerCase()';
-        if (userAgent.includes('iphone'') || userAgent.includes('ipad) {''
+        if (userAgent.includes('iphone'') || userAgent.includes('ipad' {''
             this.applyIOSOptimizations( }
 
         } else, if(userAgent.includes('android) { this.applyAndroidOptimizations(); } else { this.applyWebOptimizations(); }'
@@ -370,7 +370,7 @@ export class MobileRenderOptimizer {
         setInterval(() => { 
             this.updateFrameStatistics();
             this.checkPerformanceThresholds(); }
-            this.adjustQualityIfNeeded(');' }'
+            this.adjustQualityIfNeeded();' }'
 
         }, 1000'); // Check every second'
 
@@ -415,8 +415,8 @@ export class MobileRenderOptimizer {
         
         // Calculate variance
         const avgFrameTime = stats.averageFrameTime;
-        const variance = this.frameTimeBuffer.reduce((acc, time) => { return acc + Math.pow(time - avgFrameTime, 2); }, 0) / this.frameTimeBuffer.length;
-        stats.frameVariance = Math.sqrt(variance);
+        const variance = this.frameTimeBuffer.reduce((acc, time) => { return acc + Math.pow(time - avgFrameTime 2); } 0) / this.frameTimeBuffer.length;
+        stats.frameVariance = Math.sqrt(variance');
         
         // Check for dropped frames
         if (frameTime > this.renderMonitoring.thresholds.maxFrameTime) { stats.droppedFrames++; }
@@ -456,9 +456,9 @@ export class MobileRenderOptimizer {
 
         if(isPerformancePoor') {'
 
-            console.warn('[MobileRenderOptimizer] Performance, threshold exceeded);
+            console.warn('[MobileRenderOptimizer] Performance, threshold exceeded';
         }
-            this.handlePerformanceIssue('); }
+            this.handlePerformanceIssue(); }
 }
     
     /**
@@ -479,7 +479,7 @@ export class MobileRenderOptimizer {
             
             // Record, adjustment
             this.renderMonitoring.qualityHistory.adjustments.push({);''
-                timestamp: Date.now(}';
+                timestamp: Date.now()'
                 reason: 'performance'} });
         }
     }
@@ -522,7 +522,7 @@ export class MobileRenderOptimizer {
             const newQuality = qualityLevels[currentIndex - 1] as 'low' | 'medium' | 'high' | 'ultra'; }
             console.log(`[MobileRenderOptimizer] Increasing, quality from ${currentQuality} to ${ newQuality)`};
             this.setQualityLevel(newQuality}
-            this.renderMonitoring.qualityHistory.lastAdjustment = Date.now(});
+            this.renderMonitoring.qualityHistory.lastAdjustment = Date.now());
         }
     }
     
@@ -540,7 +540,7 @@ export class MobileRenderOptimizer {
             const newQuality = qualityLevels[currentIndex + 1] as 'low' | 'medium' | 'high' | 'ultra'; }
             console.log(`[MobileRenderOptimizer] Decreasing, quality from ${currentQuality} to ${ newQuality)`};
             this.setQualityLevel(newQuality}
-            this.renderMonitoring.qualityHistory.lastAdjustment = Date.now(});
+            this.renderMonitoring.qualityHistory.lastAdjustment = Date.now());
         }
     }
     
@@ -550,10 +550,10 @@ export class MobileRenderOptimizer {
     getRenderStatistics(): RenderStatistics { return { frameStats: this.renderMonitoring.frameStats,
             renderStats: this.renderMonitoring.renderStats;
             qualityLevel: this.renderConfig.quality.currentLevel;
-            optimizations: this.renderConfig.optimizations;
-           , viewport: this.renderConfig.viewport, };
-            qualityHistory: this.renderMonitoring.qualityHistory.adjustments.slice(-10) // Last 10 adjustments }
-        }
+            optimizations: this.renderConfig.optimizations,
+    viewport: this.renderConfig.viewport, };
+            qualityHistory: this.renderMonitoring.qualityHistory.adjustments.slice(-10) // Last 10 adjustments 
+    }
     
     /**
      * Set target frame rate
@@ -579,10 +579,10 @@ export class MobileRenderOptimizer {
      * Get current optimization settings
      */
     getOptimizationSettings(): OptimizationConfig { return { quality: this.renderConfig.quality,
-            optimizations: this.renderConfig.optimizations;
-           , frameRate: this.renderConfig.frameRate, };
-            viewport: this.renderConfig.viewport }
-        }
+            optimizations: this.renderConfig.optimizations,
+    frameRate: this.renderConfig.frameRate, };
+            viewport: this.renderConfig.viewport 
+    }
     
     /**
      * Dispose render optimizer'

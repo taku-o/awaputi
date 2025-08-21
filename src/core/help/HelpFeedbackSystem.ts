@@ -1,5 +1,5 @@
-import { LoggingSystem  } from '../LoggingSystem.js';''
-import { ErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { LoggingSystem  } from '../LoggingSystem.js';
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';
 import { ScenesBaseDialog  } from '../../scenes/components/ScenesBaseDialog.js';
 
 // 型定義
@@ -8,11 +8,11 @@ export interface FeedbackConfig { enableRatingPrompts: boolean,
     enableQuickFeedback: boolean;
     showAfterViewTime: number;
     maxFeedbacksPerSession: number;
-    enableOfflineStorage: boolean;
-   , submitRetryAttempts: number ,}
+    enableOfflineStorage: boolean,
+    submitRetryAttempts: number ,}
 
-export interface FeedbackState { feedbacksShownThisSession: number;
-   , contentViewTimes: Map<string, number>,
+export interface FeedbackState { feedbacksShownThisSession: number,
+    contentViewTimes: Map<string, number>,
     viewStartTimes: Map<string, number>,
     suppressedContent: Set<string>;
     lastFeedbackTime: number;
@@ -26,12 +26,12 @@ export interface FeedbackData { contentId: string,
     timestamp: number;
     sessionId: string;
     userAgent: string;
-    screenSize: string;
-   , language: string ,}
+    screenSize: string,
+    language: string ,}
 
 export interface FeedbackStatistics { ratings: number[];
-    comments: string[];
-   , totalFeedbacks: number }
+    comments: string[],
+    totalFeedbacks: number }
 
 export interface FeedbackSubmissionData { rating?: number;
     helpful?: boolean;
@@ -42,37 +42,37 @@ export interface FeedbackSubmissionResult { success: boolean,
     error?: string }
 
 export interface FeedbackAnalytics { totalFeedbacks: number;
-    averageRating: number;
-   , ratingDistribution: Record<number, number>,
-    helpfulPercentage: number;
-   , commonCategories: Map<string, number>,
+    averageRating: number,
+    ratingDistribution: Record<number, number>,
+    helpfulPercentage: number,
+    commonCategories: Map<string, number>,
     topRatedContent: [string, number][],
     lowRatedContent: [string, number][], }
 
 export interface SavedFeedbackData { feedbacks: [string, FeedbackData][],
     pendingFeedbacks: PendingFeedback[];
-    state: SavedFeedbackState;
-   , lastSaved: number ,}
+    state: SavedFeedbackState,
+    lastSaved: number ,}
 
 export interface SavedFeedbackState { feedbacksShownThisSession: number;
-    suppressedContent: string[];
-   , contentViewTimes: [string, number][],
+    suppressedContent: string[],
+    contentViewTimes: [string, number][],
     viewStartTimes: [string, number][],
-    lastFeedbackTime: number;
-   , feedbackData: [string, FeedbackStatistics][], }
+    lastFeedbackTime: number,
+    feedbackData: [string, FeedbackStatistics][], }
 
 export interface PendingFeedback { contentId: string,
     feedbackData: FeedbackSubmissionData
     ,}
 
-export interface DialogButton { text: string;
-   , action: () => void;
-    isPrimary?: boolean }
-}
+export interface DialogButton { text: string,
+    action: () => void;
+    isPrimary?: boolean 
+    }
 
 export interface DialogConfig { title: string;
-    content: string;
-   , buttons: DialogButton[]
+    content: string,
+    buttons: DialogButton[]
     }
 
 // GameEngine インターフェース
@@ -123,13 +123,13 @@ export class HelpFeedbackSystem {
         this.config = {
             enableRatingPrompts: true;
             enableTextFeedback: true;
-            enableQuickFeedback: true;
-           , showAfterViewTime: 30000, // 30秒後に表示;
-            maxFeedbacksPerSession: 3;
-           , enableOfflineStorage: true;
+            enableQuickFeedback: true,
+    showAfterViewTime: 30000, // 30秒後に表示;
+            maxFeedbacksPerSession: 3,
+    enableOfflineStorage: true;
     ,}
-            submitRetryAttempts: 3 }
-        };
+            submitRetryAttempts: 3 
+    };
         // フィードバック状態
         this.state = { feedbacksShownThisSession: 0,
             contentViewTimes: new Map<string, number>(),
@@ -149,11 +149,11 @@ export class HelpFeedbackSystem {
             this.loadFeedbackData();
             // イベントリスナーの設定
             this.setupEventListeners()';
-            this.loggingSystem.info('HelpFeedbackSystem', 'Help feedback system initialized);' }
+            this.loggingSystem.info('HelpFeedbackSystem', 'Help feedback system initialized';' }
 
         } catch (error) {
-            this.loggingSystem.error('HelpFeedbackSystem', 'Failed to initialize feedback system', error);''
-            ErrorHandler.handle(error as Error, 'HelpFeedbackSystem.initialize); }'
+            this.loggingSystem.error('HelpFeedbackSystem', 'Failed to initialize feedback system', error';''
+            ErrorHandler.handle(error as Error, 'HelpFeedbackSystem.initialize'; }'
     }
     
     /**
@@ -172,7 +172,7 @@ export class HelpFeedbackSystem {
 
             ' }'
 
-            this.loggingSystem.debug('HelpFeedbackSystem', `Content view started: ${contentId}`});''
+            this.loggingSystem.debug('HelpFeedbackSystem', `Content view started: ${contentId}`}';''
         } catch (error) {
             this.loggingSystem.error('HelpFeedbackSystem', 'Failed to start content view tracking', error); }
     }
@@ -197,7 +197,7 @@ export class HelpFeedbackSystem {
 
             ' }'
 
-            this.loggingSystem.debug('HelpFeedbackSystem', `Content view ended: ${contentId}, duration: ${viewDuration}ms`});''
+            this.loggingSystem.debug('HelpFeedbackSystem', `Content view ended: ${contentId}, duration: ${viewDuration}ms`}';''
         } catch (error) {
             this.loggingSystem.error('HelpFeedbackSystem', 'Failed to end content view tracking', error); }
     }
@@ -247,7 +247,7 @@ export class HelpFeedbackSystem {
 
             this.state.feedbacksShownThisSession++;''
             this.state.lastFeedbackTime = Date.now()';
-            this.loggingSystem.debug('HelpFeedbackSystem', `Feedback dialog shown for: ${contentId}`});''
+            this.loggingSystem.debug('HelpFeedbackSystem', `Feedback dialog shown for: ${contentId}`}';''
         } catch (error) {
             this.loggingSystem.error('HelpFeedbackSystem', 'Failed to show feedback dialog', error); }
     }
@@ -267,9 +267,9 @@ export class HelpFeedbackSystem {
 
             ' }'
 
-            this.loggingSystem.debug('HelpFeedbackSystem', `Quick feedback shown for: ${contentId}`});''
+            this.loggingSystem.debug('HelpFeedbackSystem', `Quick feedback shown for: ${contentId}`}';''
         } catch (error) {
-            this.loggingSystem.error('HelpFeedbackSystem', 'Failed to show quick feedback', error); }
+            this.loggingSystem.error('HelpFeedbackSystem', 'Failed to show quick feedback', error'; }
     }
     
     /**
@@ -285,11 +285,11 @@ export class HelpFeedbackSystem {
                 helpful: feedbackData.helpful;
                 categories: feedbackData.categories || [];
                 timestamp: Date.now();
-                sessionId: this.generateSessionId();
-               , userAgent: navigator.userAgent, }
+                sessionId: this.generateSessionId(),
+    userAgent: navigator.userAgent, }
 
                 screenSize: `${window.innerWidth}x${window.innerHeight}`,''
-                language: this.gameEngine.localizationManager? .getCurrentLanguage?.(') || 'ja';
+                language: this.gameEngine.localizationManager?.getCurrentLanguage?.() || 'ja';
             },
             
             // フィードバックを保存
@@ -311,7 +311,7 @@ export class HelpFeedbackSystem {
             ;
             // 成功メッセージの表示
             this.showFeedbackThankYou()';
-            this.loggingSystem.info('HelpFeedbackSystem', `Feedback submitted for: ${contentId}`});
+            this.loggingSystem.info('HelpFeedbackSystem', `Feedback submitted for: ${contentId}`}';
 
             return { success: true }''
         } catch (error) {
@@ -334,7 +334,7 @@ export class HelpFeedbackSystem {
                 thankYouDialog.hide(); }
             }, 3000);''
         } catch (error) {
-            this.loggingSystem.error('HelpFeedbackSystem', 'Failed to show thank you message', error); }
+            this.loggingSystem.error('HelpFeedbackSystem', 'Failed to show thank you message', error'; }
     }
     
     /**
@@ -359,7 +359,7 @@ export class HelpFeedbackSystem {
 
             // 終了ログ記録' }'
 
-            this.loggingSystem.debug('HelpFeedbackSystem', `Topic exit recorded: ${topicId}`});''
+            this.loggingSystem.debug('HelpFeedbackSystem', `Topic exit recorded: ${topicId}`}';''
         } catch (error) {
             this.loggingSystem.error('HelpFeedbackSystem', 'Failed to record topic exit', error); }
     }
@@ -376,7 +376,7 @@ export class HelpFeedbackSystem {
 
             // 表示ログ記録' }'
 
-            this.loggingSystem.debug('HelpFeedbackSystem', `Topic view recorded: ${topicId}`});''
+            this.loggingSystem.debug('HelpFeedbackSystem', `Topic view recorded: ${topicId}`}';''
         } catch (error) {
             this.loggingSystem.error('HelpFeedbackSystem', 'Failed to record topic view', error); }
     }
@@ -391,10 +391,10 @@ export class HelpFeedbackSystem {
             // フィードバック内容を統計に反映
             if(!this.state.feedbackData.has(topicId) {
                 this.state.feedbackData.set(topicId, {)
-                    ratings: []);
-                   , comments: [], }
-                    totalFeedbacks: 0); }
-            }
+                    ratings: []),
+    comments: [], }
+                    totalFeedbacks: 0); 
+    }
             
             const feedbackStats = this.state.feedbackData.get(topicId)!;
             
@@ -405,7 +405,7 @@ export class HelpFeedbackSystem {
             feedbackStats.totalFeedbacks++;
             // データ保存
             this.saveFeedbackData()';
-            this.loggingSystem.debug('HelpFeedbackSystem', `Feedback recorded: ${topicId}`});''
+            this.loggingSystem.debug('HelpFeedbackSystem', `Feedback recorded: ${topicId}`}';''
         } catch (error) {
             this.loggingSystem.error('HelpFeedbackSystem', 'Failed to record feedback', error); }
     }
@@ -416,13 +416,13 @@ export class HelpFeedbackSystem {
      */
     getFeedbackStatistics(): FeedbackAnalytics { try {
             const stats: FeedbackAnalytics = {
-                totalFeedbacks: this.feedbacks.size;
-               , averageRating: 0, }
+                totalFeedbacks: this.feedbacks.size,
+    averageRating: 0, }
                 ratingDistribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 ,},
-                helpfulPercentage: 0;
-               , commonCategories: new Map<string, number>(),
-                topRatedContent: [];
-               , lowRatedContent: [];
+                helpfulPercentage: 0,
+    commonCategories: new Map<string, number>(),
+                topRatedContent: [],
+    lowRatedContent: [];
             },
             
             let totalRating = 0;
@@ -475,8 +475,8 @@ export class HelpFeedbackSystem {
                 ratingDistribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 ,},
                 helpfulPercentage: 0;
                 commonCategories: new Map();
-                topRatedContent: [];
-               , lowRatedContent: [];
+                topRatedContent: [],
+    lowRatedContent: [];
             },
         }
     }
@@ -487,21 +487,20 @@ export class HelpFeedbackSystem {
     private saveFeedbackData(): void { try {
             const dataToSave: SavedFeedbackData = {
                 feedbacks: Array.from(this.feedbacks.entries();
-                pendingFeedbacks: this.pendingFeedbacks;
-               , state: {
+                pendingFeedbacks: this.pendingFeedbacks,
+    state: {
                     feedbacksShownThisSession: this.state.feedbacksShownThisSession;
                     suppressedContent: Array.from(this.state.suppressedContent);
                     contentViewTimes: Array.from(this.state.contentViewTimes.entries();
                     viewStartTimes: Array.from(this.state.viewStartTimes.entries();
-                    lastFeedbackTime: this.state.lastFeedbackTime;
-                   , feedbackData: Array.from(this.state.feedbackData.entries( }
-
-                },''
+                    lastFeedbackTime: this.state.lastFeedbackTime,
+    feedbackData: Array.from(this.state.feedbackData.entries( 
+    },''
                 lastSaved: Date.now()';
             localStorage.setItem('help_feedback_data', JSON.stringify(dataToSave));''
-            this.loggingSystem.debug('HelpFeedbackSystem', 'Feedback data saved);''
+            this.loggingSystem.debug('HelpFeedbackSystem', 'Feedback data saved';''
         } catch (error) {
-            this.loggingSystem.error('HelpFeedbackSystem', 'Failed to save feedback data', error); }
+            this.loggingSystem.error('HelpFeedbackSystem', 'Failed to save feedback data', error'; }
     }
     
     /**
@@ -524,16 +523,16 @@ export class HelpFeedbackSystem {
                     feedbacksShownThisSession: data.state.feedbacksShownThisSession || 0;
                     suppressedContent: new Set(data.state.suppressedContent || []);
                     contentViewTimes: new Map(data.state.contentViewTimes || []);
-                    viewStartTimes: new Map(data.state.viewStartTimes || []);
-                   , lastFeedbackTime: data.state.lastFeedbackTime || 0;
+                    viewStartTimes: new Map(data.state.viewStartTimes || []),
+    lastFeedbackTime: data.state.lastFeedbackTime || 0;
             }
 
-                    feedbackData: new Map(data.state.feedbackData || []); }
-                }
+                    feedbackData: new Map(data.state.feedbackData || []); 
+    }
 
-            this.loggingSystem.debug('HelpFeedbackSystem', 'Feedback data loaded);''
+            this.loggingSystem.debug('HelpFeedbackSystem', 'Feedback data loaded';''
         } catch (error) {
-            this.loggingSystem.error('HelpFeedbackSystem', 'Failed to load feedback data', error); }
+            this.loggingSystem.error('HelpFeedbackSystem', 'Failed to load feedback data', error'; }
     }
     
     /**
@@ -546,7 +545,7 @@ export class HelpFeedbackSystem {
      * セッションIDの生成'
      */''
     private generateSessionId()';
-        return 'feedback_' + Date.now(') + '_' + Math.random().toString(36).substr(2, 9);
+        return 'feedback_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
     
     /**
@@ -578,10 +577,10 @@ export class HelpFeedbackSystem {
      */
     getSessionStats(): Record<string, any> { return { feedbacksShownThisSession: this.state.feedbacksShownThisSession,
             suppressedContentCount: this.state.suppressedContent.size;
-            activeViewsCount: this.state.viewStartTimes.size;
-           , totalViewTime: Array.from(this.state.contentViewTimes.values().reduce((sum, time) => sum + time, 0), };
-            lastFeedbackTime: this.state.lastFeedbackTime }
-        }
+            activeViewsCount: this.state.viewStartTimes.size,
+    totalViewTime: Array.from(this.state.contentViewTimes.values().reduce((sum, time) => sum + time, 0), };
+            lastFeedbackTime: this.state.lastFeedbackTime 
+    }
     
     /**
      * コンテンツビュー時間を取得
@@ -624,7 +623,7 @@ export class HelpFeedbackSystem {
             }
 
             this.saveFeedbackData()';
-            this.loggingSystem.info('HelpFeedbackSystem', 'Help feedback system cleaned up);''
+            this.loggingSystem.info('HelpFeedbackSystem', 'Help feedback system cleaned up';''
         } catch (error) {
             this.loggingSystem.error('HelpFeedbackSystem', 'Failed to cleanup feedback system', error); }
 }
@@ -663,10 +662,10 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
 
         this.showDialog({);''
             title: t('help.feedback.title', 'このヘルプは役に立ちましたか？''),
-            content: this.buildFeedbackContent()';
-           , buttons: [{')'
-                    text: t('help.feedback.submit', '送信),
-                    action: (') => this.submitFeedback(;
+            content: this.buildFeedbackContent()',
+    buttons: [{')'
+                    text: t('help.feedback.submit', '送信',
+                    action: () => this.submitFeedback(;
                     isPrimary: true ,}))'
                 { ')'
                     text: t('help.feedback.skip', 'スキップ),
@@ -687,40 +686,40 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
         return `'';
             <div class="feedback-content">"";
                 <div class="rating-section">" ,}"
-                    <label>${t('help.feedback.rating', '評価:''})</label>''
+                    <label>${t('help.feedback.rating', '評価:''}'</label>''
                     <div class="star-rating">"";
                         ${ [1, 2, 3, 4, 5].map(star => "}""
                             `<span, class="star" data-rating="${star"}">★</span>`" }"
-                        ").join('''})
+                        ").join('''}'
                     </div>;
                 </div>';
 
                 <div class="helpful-section">"";
-                    <label>${t('help.feedback.helpful', 'このヘルプは問題解決に役立ちましたか？''})</label>''
+                    <label>${t('help.feedback.helpful', 'このヘルプは問題解決に役立ちましたか？''}'</label>''
                     <div class="helpful-buttons">"";
                         <button type="button" class="helpful-btn" data-helpful="true">"";
-                            ${t('help.feedback.yes', 'はい''})'
+                            ${t('help.feedback.yes', 'はい''}''
                         </button>'';
                         <button type="button" class="helpful-btn" data-helpful="false">"";
-                            ${t('help.feedback.no', 'いいえ''})
+                            ${t('help.feedback.no', 'いいえ''}'
                         </button>;
                     </div>;
                 </div>';
 
                 <div class="comment-section">"";
-                    <label>${t('help.feedback.comment', 'コメント（任意）:''})</label>''
+                    <label>${t('help.feedback.comment', 'コメント（任意）:''}'</label>''
                     <textarea class="feedback-comment" rows="3", "";
-                        placeholder="${t('help.feedback.commentPlaceholder', '改善点や要望があればお聞かせください''})"></textarea>
+                        placeholder="${t('help.feedback.commentPlaceholder', '改善点や要望があればお聞かせください''}'"></textarea>
                 </div>";
 
                 <div class="categories-section">"";
-                    <label>${t('help.feedback.categories', '該当する項目:''})</label>''
+                    <label>${t('help.feedback.categories', '該当する項目:''}'</label>''
                     <div class="category-checkboxes">"";
-                        <label><input type="checkbox" value="clear"> ${t('help.feedback.clear', '分かりやすい''})</label>''
-                        <label><input type="checkbox" value="complete"> ${t('help.feedback.complete', '情報が十分''})</label>''
-                        <label><input type="checkbox" value="accurate"> ${t('help.feedback.accurate', '正確''})</label>''
-                        <label><input type="checkbox" value="outdated"> ${t('help.feedback.outdated', '情報が古い''})</label>''
-                        <label><input type="checkbox" value="confusing"> ${t('help.feedback.confusing', '分かりにくい''})</label>''
+                        <label><input type="checkbox" value="clear"> ${t('help.feedback.clear', '分かりやすい''}'</label>''
+                        <label><input type="checkbox" value="complete"> ${t('help.feedback.complete', '情報が十分''}'</label>''
+                        <label><input type="checkbox" value="accurate"> ${t('help.feedback.accurate', '正確''}'</label>''
+                        <label><input type="checkbox" value="outdated"> ${t('help.feedback.outdated', '情報が古い''}'</label>''
+                        <label><input type="checkbox" value="confusing"> ${t('help.feedback.confusing', '分かりにくい''}'</label>''
                         <label><input type="checkbox" value="missing"> ${t('help.feedback.missing', '情報不足'})</label>
                     </div>;
                 </div>;
@@ -740,18 +739,18 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
         if(!dialog) return;
         ';
         // 星評価
-        dialog.querySelectorAll('.star).forEach(star => { ');''
+        dialog.querySelectorAll('.star'.forEach(star => { ');''
             star.addEventListener('click', (e) => {'
                 const target = e.target as HTMLElement;''
-                this.rating = parseInt(target.dataset.rating || '0);''
+                this.rating = parseInt(target.dataset.rating || '0';''
                 this.updateStarDisplay()';
             star.addEventListener('mouseover', (e) => {'
                 const target = e.target as HTMLElement;' }'
 
-                this.highlightStars(parseInt(target.dataset.rating || '0)); }'
+                this.highlightStars(parseInt(target.dataset.rating || '0)'; }'
             };
 
-        const starRating = dialog.querySelector('.star-rating);''
+        const starRating = dialog.querySelector('.star-rating';''
         if(starRating) {'
 
             starRating.addEventListener('mouseleave', () => { ''
@@ -759,9 +758,9 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
         dialog.querySelectorAll('.helpful-btn).forEach(btn => {);''
             btn.addEventListener('click', (e) => {'
                 const target = e.target as HTMLElement;''
-                this.helpful = target.dataset.helpful === 'true';''
+                this.helpful = target.dataset.helpful === 'true';
                 this.updateHelpfulDisplay()';
-        const commentTextarea = dialog.querySelector('.feedback-comment) as HTMLTextAreaElement;''
+        const commentTextarea = dialog.querySelector('.feedback-comment' as HTMLTextAreaElement;''
         if(commentTextarea) {''
             commentTextarea.addEventListener('input', (e) => {
         }
@@ -770,7 +769,7 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
             }
         ';
         // カテゴリチェックボックス
-        dialog.querySelectorAll('.category-checkboxes, input).forEach(checkbox => {  ');''
+        dialog.querySelectorAll('.category-checkboxes, input'.forEach(checkbox => {  ');''
             checkbox.addEventListener('change', (e) => {
                 const target = e.target as HTMLInputElement;
                 if (target.checked) { }
@@ -785,10 +784,10 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
     private updateStarDisplay(): void { ''
         if(!this.dialogElement) return;
 
-        const stars = this.dialogElement.querySelectorAll('.star);''
+        const stars = this.dialogElement.querySelectorAll('.star';''
         stars.forEach((star, index) => { ' }'
 
-            star.classList.toggle('selected', index < this.rating); }
+            star.classList.toggle('selected', index < this.rating'; }
         }
     
     /**
@@ -797,10 +796,10 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
     private highlightStars(rating: number): void { ''
         if(!this.dialogElement) return;
 
-        const stars = this.dialogElement.querySelectorAll('.star);''
+        const stars = this.dialogElement.querySelectorAll('.star';''
         stars.forEach((star, index) => { ' }'
 
-            star.classList.toggle('highlight', index < rating); }
+            star.classList.toggle('highlight', index < rating'; }
         }
     
     /**
@@ -811,8 +810,8 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
 
         const buttons = this.dialogElement.querySelectorAll('.helpful-btn);
         buttons.forEach(btn => { )'
-            const target = btn as HTMLElement);''
-            const isSelected = target.dataset.helpful === this.helpful? .toString() }
+            const target = btn as HTMLElement';''
+            const isSelected = target.dataset.helpful === this.helpful?.toString() }
 
             target.classList.toggle('selected', isSelected); }
         }
@@ -826,8 +825,8 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
             const feedbackData: FeedbackSubmissionData = {
                 rating: this.rating;
                 helpful: this.helpful || undefined;
-                comment: this.comment.trim(;
-               , categories: this.categories }))
+                comment: this.comment.trim(,
+    categories: this.categories }))
             );
             const result = await this.feedbackSystem.submitFeedback(this.contentId, feedbackData);
             
@@ -837,10 +836,10 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
                 this.hide();
             }
 
-                this.showError('フィードバックの送信に失敗しました。);' }
+                this.showError('フィードバックの送信に失敗しました。';' }
 
             } catch (error) {
-            this.showError('フィードバックの送信中にエラーが発生しました。); }'
+            this.showError('フィードバックの送信中にエラーが発生しました。'; }'
     }
     
     /**
@@ -883,8 +882,8 @@ class QuickFeedbackWidget { private gameEngine: GameEngine
             position: fixed ,}
             left: ${x}px;
             top: ${y}px;
-            background: white;
-           , border: 1px solid #ccc;
+            background: white,
+    border: 1px solid #ccc;
             border-radius: 8px,
             padding: 12px,
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -896,14 +895,14 @@ class QuickFeedbackWidget { private gameEngine: GameEngine
 
         this.element.innerHTML = `'';
             <div class="quick-feedback-header">"";
-                ${t('help.feedback.quick', 'このヘルプは役に立ちましたか？''})'
+                ${t('help.feedback.quick', 'このヘルプは役に立ちましたか？''}''
             </div>'';
             <div class="quick-feedback-buttons">"";
                 <button class="quick-btn helpful" data-helpful="true">"";
-                    👍 ${t('help.feedback.helpful', '役に立った''})'
+                    👍 ${t('help.feedback.helpful', '役に立った''}''
                 </button>'';
                 <button class="quick-btn not-helpful" data-helpful="false">"";
-                    👎 ${t('help.feedback.notHelpful', '役に立たなかった''})
+                    👎 ${t('help.feedback.notHelpful', '役に立たなかった''}'
                 </button>';
             </div>'';
             <button class="close-btn">×</button>;
@@ -912,7 +911,7 @@ class QuickFeedbackWidget { private gameEngine: GameEngine
         document.body.appendChild(this.element);
         ";
         // イベントリスナーの設定""
-        this.element.querySelectorAll('.quick-btn).forEach(btn => {  ');''
+        this.element.querySelectorAll('.quick-btn'.forEach(btn => {  ');''
             btn.addEventListener('click', (e) => {'
                 const target = e.target as HTMLElement;''
                 const helpful = target.dataset.helpful === 'true';' }
@@ -920,7 +919,7 @@ class QuickFeedbackWidget { private gameEngine: GameEngine
                 this.submitQuickFeedback(contentId, helpful); }
             };
 
-        const closeBtn = this.element.querySelector('.close-btn);''
+        const closeBtn = this.element.querySelector('.close-btn';''
         if(closeBtn) {', ';
 
         }
@@ -940,8 +939,8 @@ class QuickFeedbackWidget { private gameEngine: GameEngine
      */''
     private async submitQuickFeedback(contentId: string, helpful: boolean): Promise<void> { try {
             await this.feedbackSystem.submitFeedback(contentId, {)
-                helpful: helpful)';
-               , rating: helpful ? 4 : 2, // 簡易評価;
+                helpful: helpful)',
+    rating: helpful ? 4 : 2, // 簡易評価;
                 comment: '',);
                 categories: []);
             ;
@@ -977,8 +976,8 @@ class FeedbackThankYouDialog extends ScenesBaseDialog { constructor(gameEngine: 
             content: `'';
                 <div class="thank-you-content">"";
                     <div class="thank-you-icon">✨</div>" ,}"
-                    <p>${t('help.feedback.thankYouMessage', 'フィードバックをお送りいただき、ありがとうございます。''})</p>''
-                    <p>${t('help.feedback.improvement', 'いただいたご意見は、サービス改善に活用させていただきます。''})</p>
+                    <p>${t('help.feedback.thankYouMessage', 'フィードバックをお送りいただき、ありがとうございます。''}'</p>''
+                    <p>${t('help.feedback.improvement', 'いただいたご意見は、サービス改善に活用させていただきます。''}'</p>
                 </div>;
             `,
             buttons: [{ ''

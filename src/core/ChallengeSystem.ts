@@ -1,5 +1,5 @@
-import { getErrorHandler  } from '../utils/ErrorHandler';''
-import { GameEngine  } from './GameEngine';''
+import { getErrorHandler  } from '../utils/ErrorHandler';
+import { GameEngine  } from './GameEngine';
 import { WeeklyChallengeManager  } from './WeeklyChallengeManager';
 
 /**
@@ -60,11 +60,11 @@ export interface Challenge { id: string,
     targetValue: number;
     reward: Reward;
     startTime: number;
-    endTime?: number;
-   , isActive: boolean,
+    endTime?: number,
+    isActive: boolean,
     category: string,
-    difficulty: 'easy' | 'normal' | 'hard';
-   , metadata: Record<string, any>, }
+    difficulty: 'easy' | 'normal' | 'hard',
+    metadata: Record<string, any>, }
 
 /**
  * 進捗データインターフェース
@@ -72,8 +72,8 @@ export interface Challenge { id: string,
 export interface ChallengeProgress { currentValue: number,
     startTime: number;
     lastUpdate: number;
-    completed: boolean;
-   , rewardClaimed: boolean;
+    completed: boolean,
+    rewardClaimed: boolean;
     completionTime?: number;
     rewardClaimTime?: number; ,}
 
@@ -83,14 +83,14 @@ export interface ChallengeProgress { currentValue: number,
 interface ChallengeStats { activeChallenges: number,
     completedToday: number;
     totalProgress: number;
-    lastUpdateTime: number;
-   , processingTime: number ,}
+    lastUpdateTime: number,
+    processingTime: number ,}
 
 /**
  * ゲーム終了データインターフェース
  */
-interface GameEndData { score: number;
-   , duration: number;
+interface GameEndData { score: number,
+    duration: number;
     bubbleStats?: {
         tota;l: number };
     maxCombo?: number;
@@ -109,8 +109,8 @@ export class ChallengeSystem {
 
     private config = {''
         storageKey: 'awaputi_challenges',
-        progressStorageKey: 'awaputi_challenge_progress';
-       , maxActiveChallenges: 10,
+        progressStorageKey: 'awaputi_challenge_progress',
+    maxActiveChallenges: 10,
         autoSaveInterval: 30000, // 30秒;
         challengeResetTime: 5 * 60 * 60 * 1000, // 日本時間5:00(UTC, 20:00);''
        , dataVersion: '1.0.0' ,};
@@ -124,8 +124,8 @@ export class ChallengeSystem {
     private, stats: ChallengeStats = { activeChallenges: 0
         completedToday: 0;
         totalProgress: 0;
-        lastUpdateTime: 0;
-       , processingTime: 0 };
+        lastUpdateTime: 0,
+    processingTime: 0 };
     constructor(gameEngine: GameEngine) {
     
         this.gameEngine = gameEngine;
@@ -157,12 +157,12 @@ export class ChallengeSystem {
             // 自動保存タイマー開始
             this.startAutoSave();
             // 統計更新
-            this.updateStats(')';
+            this.updateStats()';
             console.log('[ChallengeSystem] 初期化完了');
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'CHALLENGE_SYSTEM_INIT_ERROR', {)'
-                component: 'ChallengeSystem' ,});
+        } catch (error) { getErrorHandler().handleError(error, 'CHALLENGE_SYSTEM_INIT_ERROR', {''
+                component: 'ChallengeSystem' ,}';
             throw error;
         }
     }
@@ -229,16 +229,16 @@ export class ChallengeSystem {
                 type: challengeData.type!;
                 title: challengeData.title!;
                 description: challengeData.description!;
-                progressType: challengeData.progressType!;
-               , targetValue: challengeData.targetValue!,
+                progressType: challengeData.progressType!,
+    targetValue: challengeData.targetValue!,
                 reward: challengeData.reward!,
-                startTime: challengeData.startTime || Date.now(''';
-               , category: challengeData.category || 'general',
+                startTime: challengeData.startTime || Date.now(''',
+    category: challengeData.category || 'general',
                 difficulty: challengeData.difficulty || 'normal', }
-                metadata: challengeData.metadata || {}))'
+                metadata: challengeData.metadata || {})''
             // データ検証')'
             if(!this.validateChallengeData(challenge)) { ''
-                throw new Error('Invalid, challenge data); }'
+                throw new Error('Invalid, challenge data'; }'
             
             // チャレンジ登録
             this.challenges.set(challenge.id, challenge);
@@ -248,11 +248,11 @@ export class ChallengeSystem {
                 this.playerProgress.set(challenge.id, {)
                     currentValue: 0);
                     startTime: Date.now();
-                    lastUpdate: Date.now();
-                   , completed: false;
+                    lastUpdate: Date.now(),
+    completed: false;
             ,}
-                    rewardClaimed: false }
-                });
+                    rewardClaimed: false 
+    });
             }
             
             console.log(`[ChallengeSystem] チャレンジ作成: ${challenge.id}`});
@@ -260,7 +260,7 @@ export class ChallengeSystem {
             ';
 
         } catch (error) {
-            getErrorHandler(').handleError(error, 'CHALLENGE_CREATE_ERROR', {)
+            getErrorHandler().handleError(error, 'CHALLENGE_CREATE_ERROR', {)
                 challengeData); });
             return null;
 
@@ -282,13 +282,13 @@ export class ChallengeSystem {
                 // 進捗値更新
                 const oldValue = progress.currentValue;
 
-                if(progressType.includes('CUMULATIVE)) {'
+                if(progressType.includes('CUMULATIVE)' {'
                     // 累積系：値を加算
             
             ,}
                     progress.currentValue += value;' }'
 
-                } else if(progressType.includes('BEST) || progressType === ProgressType.SCORE || progressType === ProgressType.COMBO) { // ベスト記録系：最大値を保持'
+                } else if(progressType.includes('BEST) || progressType === ProgressType.SCORE || progressType === ProgressType.COMBO' { // ベスト記録系：最大値を保持'
                     progress.currentValue = Math.max(progress.currentValue, value); } else {  // その他：加算 }
                     progress.currentValue = progress.currentValue + value; }
                 }
@@ -304,11 +304,11 @@ export class ChallengeSystem {
                         challengeId: challenge!.id;
                         progressType,
                         oldValue);
-                        newValue: progress.currentValue);
-                       , targetValue: challenge!.targetValue, }
-                        progress: progress.currentValue / challenge!.targetValue); }
-} catch (error) {
-            getErrorHandler(').handleError(error, 'CHALLENGE_PROGRESS_UPDATE_ERROR', {)
+                        newValue: progress.currentValue),
+    targetValue: challenge!.targetValue, }
+                        progress: progress.currentValue / challenge!.targetValue); 
+    } catch (error) {
+            getErrorHandler().handleError(error, 'CHALLENGE_PROGRESS_UPDATE_ERROR', {)
                 progressType, value, challengeId); });
         }
     }
@@ -345,7 +345,7 @@ export class ChallengeSystem {
             ';
 
         } catch (error) {
-            getErrorHandler(').handleError(error, 'CHALLENGE_COMPLETION_ERROR', {)
+            getErrorHandler().handleError(error, 'CHALLENGE_COMPLETION_ERROR', {)
                 challengeId); });
             return false;
 
@@ -381,7 +381,7 @@ export class ChallengeSystem {
             ';
 
         } catch (error) {
-            getErrorHandler(').handleError(error, 'CHALLENGE_REWARD_CLAIM_ERROR', {)
+            getErrorHandler().handleError(error, 'CHALLENGE_REWARD_CLAIM_ERROR', {)
                 challengeId); });
             return false;
 
@@ -390,11 +390,11 @@ export class ChallengeSystem {
      */
     private grantReward(reward: Reward): boolean { try {
             switch(reward.type) {
-                case RewardType.AP: (this.gameEngine, as any).playerData? .addAP(reward.amount || 0),
+                case RewardType.AP: (this.gameEngine, as any).playerData?.addAP(reward.amount || 0),
                     break;
                      : undefined
                 case RewardType.ITEM:;
-                    (this.gameEngine, as any).itemManager? .addItem(reward.itemId!, reward.amount || 1);
+                    (this.gameEngine, as any).itemManager?.addItem(reward.itemId!, reward.amount || 1);
                     break;
                      : undefined
                 case RewardType.TITLE:;
@@ -418,7 +418,7 @@ export class ChallengeSystem {
 
         } catch (error) { }
 
-            getErrorHandler(').handleError(error, 'REWARD_GRANT_ERROR', { reward });
+            getErrorHandler().handleError(error, 'REWARD_GRANT_ERROR', { reward });
             return false;
 
     /**
@@ -435,12 +435,12 @@ export class ChallengeSystem {
                     ...challenge);
                     progress: progress ? { : undefined
                         current: progress.currentValue,);
-                        target: challenge.targetValue);
-                       , percentage: Math.min(100, (progress.currentValue / challenge.targetValue) * 100),
+                        target: challenge.targetValue),
+    percentage: Math.min(100, (progress.currentValue / challenge.targetValue) * 100),
                         completed: progress.completed;
         ,}
-                        rewardClaimed: progress.rewardClaimed }
-                    } : null
+                        rewardClaimed: progress.rewardClaimed 
+    } : null
                 });
             }
         }
@@ -464,8 +464,8 @@ export class ChallengeSystem {
             const progress = this.playerProgress.get(challengeId);
             return { ...challenge!
                 progress, };
-                completionTime: progress? .completionTime }
-            });
+                completionTime: progress?.completionTime 
+    });
     }
 
     /**
@@ -474,15 +474,15 @@ export class ChallengeSystem {
     getChallengeStats(): { totalChallenges: number,
         activeChallenges: number;
         completedChallenges: number;
-        completedToday: number;
-       , totalRewards: number, }
+        completedToday: number,
+    totalRewards: number, }
         byType: Record<string, { total: number; completed: number;, active: number }>,
     } { const stats = {
             totalChallenges: this.challenges.size;
             activeChallenges: this.getActiveChallenges().length;
             completedChallenges: this.completedChallenges.size;
-            completedToday: this.stats.completedToday;
-           , totalRewards: 0, }
+            completedToday: this.stats.completedToday,
+    totalRewards: 0, }
             byType: {} as Record<string, { total: number; completed: number;, active: number }>
         };
         
@@ -490,11 +490,11 @@ export class ChallengeSystem {
         for(const, challenge of, this.challenges.values() {
             if (!stats.byType[challenge.type]) {
                 stats.byType[challenge.type] = {
-                    total: 0;
-                   , completed: 0;
+                    total: 0,
+    completed: 0;
         }
-                    active: 0 }
-                }
+                    active: 0 
+    }
             
             stats.byType[challenge.type].total++;
             
@@ -546,7 +546,7 @@ export class ChallengeSystem {
             ';
 
         } catch (error) {
-            getErrorHandler(').handleError(error, 'DAILY_RESET_ERROR); }
+            getErrorHandler().handleError(error, 'DAILY_RESET_ERROR); }
     }
 
     /**
@@ -568,7 +568,7 @@ export class ChallengeSystem {
      * チャレンジID生成
      */
     private generateChallengeId(): string {
-        return `challenge_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
+        return `challenge_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
     }
 
     /**
@@ -589,13 +589,13 @@ export class ChallengeSystem {
                 timestamp: Date.now();
                 challenges: Object.fromEntries(this.challenges);
                 progress: Object.fromEntries(this.playerProgress);
-                completed: Array.from(this.completedChallenges);
-               , stats: this.stats };
+                completed: Array.from(this.completedChallenges),
+    stats: this.stats };
             localStorage.setItem(this.config.storageKey, JSON.stringify(challengeData);
             
             const progressData = { version: this.config.dataVersion,
-                timestamp: Date.now();
-               , progress: Object.fromEntries(this.playerProgress ,};
+                timestamp: Date.now(),
+    progress: Object.fromEntries(this.playerProgress ,};
 
             localStorage.setItem(this.config.progressStorageKey, JSON.stringify(progressData));
 
@@ -603,7 +603,7 @@ export class ChallengeSystem {
             ';
 
         } catch (error) {
-            getErrorHandler(').handleError(error, 'CHALLENGE_SAVE_ERROR); }
+            getErrorHandler().handleError(error, 'CHALLENGE_SAVE_ERROR); }
     }
 
     /**
@@ -628,7 +628,7 @@ export class ChallengeSystem {
             ';
 
         } catch (error) {
-            getErrorHandler(').handleError(error, 'CHALLENGE_LOAD_ERROR);
+            getErrorHandler().handleError(error, 'CHALLENGE_LOAD_ERROR);
             // エラー時は空データで初期化
             this.challenges = new Map();
             this.playerProgress = new Map();
@@ -662,8 +662,8 @@ export class ChallengeSystem {
             activeChallenges: 0;
             completedToday: 0;
             totalProgress: 0;
-            lastUpdateTime: 0;
-           , processingTime: 0 };
+            lastUpdateTime: 0,
+    processingTime: 0 };
         await this.saveData();
 
         console.log('[ChallengeSystem] リセット完了');

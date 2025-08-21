@@ -9,8 +9,8 @@ export interface CacheEntry { value: string,
     timestamp: number;
     ttl: number | null;
     accessCount: number;
-    language: string;
-   , originalKey: string ,}
+    language: string,
+    originalKey: string ,}
 
 export interface CacheStats { size: number;
     maxSize: number;
@@ -18,32 +18,32 @@ export interface CacheStats { size: number;
     missCount: number;
     evictionCount: number;
     hitRate: number;
-    totalRequests: number;
-   , memoryUsage: MemoryUsage
+    totalRequests: number,
+    memoryUsage: MemoryUsage
     }
 
 export interface MemoryUsage { bytes: number;
-    kb: number;
-   , mb: number }
+    kb: number,
+    mb: number }
 
-export interface LanguageStats { count: number;
-   , totalAccess: number }
+export interface LanguageStats { count: number,
+    totalAccess: number }
 
-export interface KeyPatternStats { count: number;
-   , totalAccess: number }
+export interface KeyPatternStats { count: number,
+    totalAccess: number }
 
 export interface CacheEntryInfo { key: string;
     originalKey: string;
     language: string;
-    age: number;
-   , accessCount: number }
+    age: number,
+    accessCount: number }
 
-export interface DetailedCacheInfo { stats: CacheStats;
-   , languages: Record<string, LanguageStats>,
+export interface DetailedCacheInfo { stats: CacheStats,
+    languages: Record<string, LanguageStats>,
     keyPatterns: Record<string, KeyPatternStats>,
     accessOrder: string[];
-    oldestEntries: CacheEntryInfo[];
-   , mostAccessedEntries: CacheEntryInfo[]
+    oldestEntries: CacheEntryInfo[],
+    mostAccessedEntries: CacheEntryInfo[]
     ,}
 
 export interface CacheOptions { maxSize?: number;
@@ -74,7 +74,7 @@ export class TranslationCache {
         // キャッシュクリーンアップのタイマー
         this.cleanupInterval = null;''
         this.startPeriodicCleanup()';
-    get(key: string, language: string = 'ja): string | null {'
+    get(key: string, language: string = 'ja': string | null {'
         try {
             const cacheKey = this.generateCacheKey(key, language);
             
@@ -98,10 +98,10 @@ export class TranslationCache {
             this.missCount++;
             return null;
         } catch (error) {
-            getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {)'
-                operation: 'get');
-               , key: key,)';
-                language: language),' }'
+            getErrorHandler().handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {''
+                operation: 'get'),
+    key: key,'';
+                language: language',' }'
 
             }');
             this.missCount++;
@@ -124,15 +124,15 @@ export class TranslationCache {
                 timestamp: Date.now();
                 ttl: ttl;
                 accessCount: 1;
-                language: language;
-               , originalKey: key ,};
+                language: language,
+    originalKey: key ,};
             this.cache.set(cacheKey, cacheEntry);
             this.updateAccessOrder(cacheKey);
             
             return true;
-        } catch (error) { getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {)'
-                operation: 'set');
-               , key: key,);
+        } catch (error) { getErrorHandler().handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {''
+                operation: 'set'),
+    key: key,);
                 language: language ,});
             return false;
     
@@ -189,13 +189,13 @@ export class TranslationCache {
         this.cache.delete(lruKey);
         this.evictionCount++;
 
-        console.log(`Cache, eviction: ${lruKey}`'});
+        console.log(`Cache, eviction: ${lruKey}`'}';
     }
     
     /**
      * 特定のキーをキャッシュから削除'
      */''
-    delete(key: string, language: string = 'ja): boolean { try {'
+    delete(key: string, language: string = 'ja': boolean { try {'
             const cacheKey = this.generateCacheKey(key, language);
             const deleted = this.cache.delete(cacheKey);
             
@@ -209,9 +209,9 @@ export class TranslationCache {
             
             return deleted;
 
-        } catch (error) { getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {)'
-                operation: 'delete');
-               , key: key,);
+        } catch (error) { getErrorHandler().handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {''
+                operation: 'delete'),
+    key: key,);
                 language: language ,});
             return false;
     
@@ -240,7 +240,7 @@ export class TranslationCache {
             console.log(`Cleared ${keysToDelete.length} cache, entries for, language: ${language}`});
             return keysToDelete.length;
 
-        } catch (error) { getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {''
                 operation: 'clearLanguage',);
                 language: language ,});
             return 0;
@@ -257,8 +257,8 @@ export class TranslationCache {
             console.log(`Cache, cleared: ${size} entries, removed`});
             return size;
 
-        } catch (error) { getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {)'
-                operation: 'clear' ,});
+        } catch (error) { getErrorHandler().handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {''
+                operation: 'clear' ,}';
             return 0;
     
     /**
@@ -269,7 +269,7 @@ export class TranslationCache {
 
             }
 
-                throw new Error('Cache, size must, be at, least 1); }'
+                throw new Error('Cache, size must, be at, least 1'; }'
             }
             
             this.maxSize = newSize;
@@ -279,7 +279,7 @@ export class TranslationCache {
             
             console.log(`Cache, resized to: ${newSize}`});
             return true;
-        } catch (error) { getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {''
                 operation: 'resize',);
                 newSize: newSize ,});
             return false;
@@ -295,10 +295,10 @@ export class TranslationCache {
             hitCount: this.hitCount;
             missCount: this.missCount;
             evictionCount: this.evictionCount;
-            hitRate: Math.round(hitRate * 100) / 100;
-           , totalRequests: totalRequests, };
-            memoryUsage: this.estimateMemoryUsage(); }
-        }
+            hitRate: Math.round(hitRate * 100) / 100,
+    totalRequests: totalRequests, };
+            memoryUsage: this.estimateMemoryUsage(); 
+    }
     
     /**
      * メモリ使用量を推定
@@ -310,7 +310,7 @@ export class TranslationCache {
             totalSize += key.length * 2; // UTF-16文字として計算
             ;
             // 値のサイズ
-            if(typeof, entry.value === 'string) {'
+            if(typeof, entry.value === 'string' {'
                 
             }
                 totalSize += entry.value.length * 2; }
@@ -322,8 +322,8 @@ export class TranslationCache {
         
         return { bytes: totalSize,
             kb: Math.round(totalSize / 1024 * 100) / 100, };
-            mb: Math.round(totalSize / (1024 * 1024) * 100) / 100 }
-        }
+            mb: Math.round(totalSize / (1024 * 1024) * 100) / 100 
+    }
     
     /**
      * 統計をリセット
@@ -382,7 +382,7 @@ export class TranslationCache {
             }
             
             return expiredKeys.length;
-        } catch (error) { getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {''
                 operation: 'cleanupExpiredEntries' ,});
             return 0;
     
@@ -413,11 +413,11 @@ export class TranslationCache {
         
         return { stats: this.getStats(),
             languages: Object.fromEntries(languages);
-            keyPatterns: Object.fromEntries(keyPatterns);
-           , accessOrder: this.accessOrder.slice(-10), // 最新10件のアクセス;
+            keyPatterns: Object.fromEntries(keyPatterns),
+    accessOrder: this.accessOrder.slice(-10), // 最新10件のアクセス;
             oldestEntries: this.getOldestEntries(5), };
-            mostAccessedEntries: this.getMostAccessedEntries(5); }
-        }
+            mostAccessedEntries: this.getMostAccessedEntries(5); 
+    }
     
     /**
      * 最も古いエントリを取得
@@ -430,8 +430,8 @@ export class TranslationCache {
             key,
             originalKey: entry.originalKey;
             language: entry.language);
-            age: Date.now() - entry.timestamp;
-           , accessCount: entry.accessCount ,}
+            age: Date.now() - entry.timestamp,
+    accessCount: entry.accessCount ,}
         });
     }
     
@@ -446,8 +446,8 @@ export class TranslationCache {
             key,
             originalKey: entry.originalKey;
             language: entry.language;
-            accessCount: entry.accessCount);
-           , age: Date.now() - entry.timestamp' ,}'
+            accessCount: entry.accessCount),
+    age: Date.now() - entry.timestamp' ,}'
 
         }');
     }
@@ -489,4 +489,4 @@ export class TranslationCache {
      * クリーンアップ
      */'
     cleanup(): void { this.stopPeriodicCleanup();''
-        this.clear(' })'
+        this.clear(' }''

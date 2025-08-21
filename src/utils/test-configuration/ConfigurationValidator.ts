@@ -7,20 +7,20 @@ interface ValidationRule { required: string[],
 interface ValidationResult { valid: boolean,
     message?: string }
 interface CategoryStats { passed: number,
-    failed: number;
-   , issues: string[] ,}
+    failed: number,
+    issues: string[] ,}
 interface ValidationCategories { critical: CategoryStats,
-    important: CategoryStats;
-   , optional: CategoryStats
+    important: CategoryStats,
+    optional: CategoryStats
     ,}
 interface BaseValidation { valid: boolean,
     issues: string[];
-    warnings: string[];
-   , categories: ValidationCategories
+    warnings: string[],
+    categories: ValidationCategories
     ,}
 interface ConfigurationValidation extends BaseValidation { bubbleTypesCount: number,
-    sourceFiles: string[];
-   , validatedAt: number ,}
+    sourceFiles: string[],
+    validatedAt: number ,}
 interface BubbleType { health?: number;
     score?: number;
     size?: number;
@@ -41,8 +41,8 @@ interface ValidationHistoryEntry { timestamp: number,
 interface ValidationStatistics { totalValidations: number,
     successfulValidations: number;
     successRate: number;
-    recentValidations: number;
-   , averageIssuesPerValidation: number ,}
+    recentValidations: number,
+    averageIssuesPerValidation: number ,}
 interface MainController { [key: string]: any, }
 /**
  * ConfigurationValidator - 設定検証・整合性チェックコンポーネント
@@ -52,8 +52,8 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
     private, validationCache: Map<string, any>;
     private validationCategories: {
         critical: string[];
-        important: string[];
-       , optional: string[] ,};
+        important: string[],
+    optional: string[] ,};
 
     constructor(mainController: MainController) {'
 
@@ -67,14 +67,14 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
     /**
      * 検証ルールを設定'
      */''
-    private setupValidationRules(''';
+    private setupValidationRules('''
         this.validationRules.set('bubbleType', { ''
-            required: ['health', 'score', 'size', 'maxAge'],)';
-            optional: ['effects'],)';
-            validators: {),''
-                health: (value') => this.validatePositiveNumber(value, 'health),
-                score: (value') => this.validateNonNegativeNumber(value, 'score),
-                size: (value') => this.validatePositiveNumber(value, 'size),
+            required: ['health', 'score', 'size', 'maxAge'],'';
+            optional: ['effects'],'';
+            validators: {',''
+                health: (value') => this.validatePositiveNumber(value, 'health',
+                score: (value') => this.validateNonNegativeNumber(value, 'score',
+                size: (value') => this.validatePositiveNumber(value, 'size',
                 maxAge: (value') => this.validatePositiveNumber(value, 'maxAge),
                 effects: (value) => this.validateEffects(value) ,}
 
@@ -104,7 +104,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
     /**
      * 検証カテゴリを設定'
      */''
-    private setupValidationCategories(''';
+    private setupValidationCategories('''
             critical: ['health', 'size', 'baseScores'],
             important: ['score', 'maxAge', 'sourceFiles'],
             optional: ['effects', 'generatorVersion'];
@@ -119,8 +119,8 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
             const validation: ConfigurationValidation = {
                 valid: true;
                 issues: [];
-                warnings: [];
-               , bubbleTypesCount: 0,
+                warnings: [],
+    bubbleTypesCount: 0,
                 sourceFiles: [],
                 validatedAt: Date.now()';
             if(!expectations || typeof, expectations !== 'object'') {'
@@ -179,8 +179,8 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
                 warnings: [];
                 bubbleTypesCount: 0;
                 sourceFiles: [];
-                validatedAt: Date.now();
-               , categories: {
+                validatedAt: Date.now(),
+    categories: {
                     critical: { passed: 0, failed: 0, issues: [] ,},
                     important: { passed: 0, failed: 0, issues: [] ,},
                     optional: { passed: 0, failed: 0, issues: [] ,}
@@ -194,8 +194,8 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
     private validateBubbleTypes(bubbleTypes: Record<string, BubbleType>): BaseValidation { const validation: BaseValidation = {
             valid: true;
             issues: [];
-            warnings: [];
-           , categories: { 
+            warnings: [],
+    categories: { 
 }
                 critical: { passed: 0, failed: 0, issues: [] ,},
                 important: { passed: 0, failed: 0, issues: [] ,},
@@ -220,21 +220,21 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
     private validateSingleBubbleType(bubbleType: string, config: BubbleType): BaseValidation { const validation: BaseValidation = {
             valid: true;
             issues: [];
-            warnings: [];
-           , categories: { 
+            warnings: [],
+    categories: { 
 }
                 critical: { passed: 0, failed: 0, issues: [] ,},
                 important: { passed: 0, failed: 0, issues: [] ,},
                 optional: { passed: 0, failed: 0, issues: [] ,}
         };
 
-        if(!config || typeof, config !== 'object) {'
+        if(!config || typeof, config !== 'object' {'
             validation.valid = false;
             validation.issues.push(`${bubbleType}: Invalid, configuration object`}
 
             validation.categories.critical.failed++;' }'
 
-            validation.categories.critical.issues.push(`${bubbleType}: Invalid, configuration`'});
+            validation.categories.critical.issues.push(`${bubbleType}: Invalid, configuration`'}';
             return validation;
         }
 
@@ -250,7 +250,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
 
                 const message = `${bubbleType}: Missing required property '${prop}'`;
 
-                if(category === 'critical) {'
+                if(category === 'critical' {'
                     validation.valid = false;
                     validation.issues.push(message);
                     validation.categories.critical.failed++;
@@ -269,7 +269,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
                         const category = this.getCategoryForProperty(prop); }
                         const message = `${bubbleType}: ${propValidation.message}`;
 
-                        if(category === 'critical) {'
+                        if(category === 'critical' {'
                             validation.valid = false;
                             validation.issues.push(message);
                             validation.categories.critical.failed++;
@@ -309,8 +309,8 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
     private validateGameBalance(gameBalance: GameBalance): BaseValidation { const validation: BaseValidation = {
             valid: true;
             issues: [];
-            warnings: [];
-           , categories: { 
+            warnings: [],
+    categories: { 
 }
                 critical: { passed: 0, failed: 0, issues: [] ,},
                 important: { passed: 0, failed: 0, issues: [] ,},
@@ -354,8 +354,8 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
     private validateMetadata(metadata: Metadata): BaseValidation { const validation: BaseValidation = {
             valid: true;
             issues: [];
-            warnings: [];
-           , categories: { 
+            warnings: [],
+    categories: { 
 }
                 critical: { passed: 0, failed: 0, issues: [] ,},
                 important: { passed: 0, failed: 0, issues: [] ,},
@@ -399,8 +399,8 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
     private validateConsistency(expectations: Expectations): BaseValidation { const validation: BaseValidation = {
             valid: true;
             issues: [];
-            warnings: [];
-           , categories: { 
+            warnings: [],
+    categories: { 
 }
                 critical: { passed: 0, failed: 0, issues: [] ,},
                 important: { passed: 0, failed: 0, issues: [] ,},
@@ -448,7 +448,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
      * @returns 検証結果'
      */''
     private validatePositiveNumber(value: any, propName: string): ValidationResult { ''
-        if(typeof, value !== 'number) { }'
+        if(typeof, value !== 'number' { }'
             return { valid: false, message: `${propName,} must be a number, got ${typeof, value}` }
         if(value <= 0) {
             
@@ -462,7 +462,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
      * @returns 検証結果'
      */''
     private validateNonNegativeNumber(value: any, propName: string): ValidationResult { ''
-        if(typeof, value !== 'number) { }'
+        if(typeof, value !== 'number' { }'
             return { valid: false, message: `${propName,} must be a number, got ${typeof, value}` }
         if(value < 0) {
             
@@ -475,13 +475,13 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
      * @returns 検証結果'
      */''
     private validateEffects(value: any): ValidationResult { ''
-        if(typeof, value !== 'object' || value === null) {' }
+        if(typeof, value !== 'object' || value === null' {' }
 
             return { valid: false, message: 'effects must be an object' ,}
         ';
         // エフェクトの各プロパティを検証
         for(const [key, val] of Object.entries(value)) { ''
-            if(typeof, val !== 'number) { }'
+            if(typeof, val !== 'number' { }'
                 return { valid: false, message: `effects.${key,} must be a number` };
         
         return { valid: true }
@@ -491,7 +491,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
      * @returns 検証結果'
      */''
     private validateBaseScores(value: any): ValidationResult { ''
-        if(typeof, value !== 'object' || value === null) {' }
+        if(typeof, value !== 'object' || value === null' {' }
 
             return { valid: false, message: 'baseScores must be an object' ,}
         for(const [bubbleType, score] of Object.entries(value) { const scoreValidation = this.validateNonNegativeNumber(score, `baseScores.${bubbleType}`}
@@ -504,12 +504,12 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
      * @returns 検証結果'
      */''
     private validateBubblesConfig(value: any): ValidationResult { ''
-        if(typeof, value !== 'object' || value === null) {' }
+        if(typeof, value !== 'object' || value === null' {' }
 
             return { valid: false, message: 'bubbles must be an object' ,}
 
         for(const [bubbleType, config] of Object.entries(value)) { ''
-            if (typeof, config !== 'object' || config === null) { }
+            if (typeof, config !== 'object' || config === null' { }
                 return { valid: false, message: `bubbles.${bubbleType,} must be an object` };
         
         return { valid: true }
@@ -629,9 +629,9 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
             successfulValidations,
             successRate: totalValidations > 0 ? (successfulValidations / totalValidations) * 100 : 0;
             recentValidations: recent.length;
-            averageIssuesPerValidation: totalValidations > 0 ?   : undefined ,};
-                this.validationHistory.reduce((sum, v) => sum + v.validation.issues.length, 0) / totalValidations : 0 }
-        }
+            averageIssuesPerValidation: totalValidations > 0 ? undefined : undefined ,};
+                this.validationHistory.reduce((sum, v) => sum + v.validation.issues.length, 0) / totalValidations : 0 
+    }
 
     /**
      * クリーンアップ

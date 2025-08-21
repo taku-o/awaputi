@@ -4,19 +4,19 @@ import { getErrorHandler  } from '../utils/ErrorHandler.js';
 interface ParticleManager { setQualityLevel(quality: string): void,
     maxParticles: number;
     particles: Particle[];
-    backgroundEnabled: boolean;
-   , backgroundParticles: Particle[];
+    backgroundEnabled: boolean,
+    backgroundParticles: Particle[];
     returnParticleToPool(particle: Particle): void, }
 
 interface Particle { type: string,
     life: number;
-    maxLife: number;
-   , size: number ,}
+    maxLife: number,
+    size: number ,}
 ';
 
 interface PerformanceMonitor { ''
     getCurrentMetrics(''';
-type, QualityLevelName = 'potato' | 'low' | 'medium' | 'high' | 'ultra' | 'insane';
+type, QualityLevelName = 'potato' | 'low' | 'medium' | 'high' | 'ultra' | 'insane'
 
 /**
  * パーティクル品質スケーリングシステム
@@ -41,20 +41,19 @@ export, class QualityScalingSystem {
         // 品質レベル定義
         this.qualityLevels = {'', 'potato': {''
                 name: 'ポテト';
-                countMultiplier: 0.1;
-               , sizeMultiplier: 0.6,
+                countMultiplier: 0.1,
+    sizeMultiplier: 0.6,
                 complexityLevel: 0,
                 enabledEffects: ['circle'],
                 disabledFeatures: ['trail', 'glow', 'background', 'lighting'],
                 maxParticles: 50;
     ,}
 
-                description: '最低品質 - 古い端末向け' }
-
-            },'', 'low': { ''
+                description: '最低品質 - 古い端末向け' 
+    },'', 'low': { ''
                 name: '低';
-                countMultiplier: 0.25;
-               , sizeMultiplier: 0.8,
+                countMultiplier: 0.25,
+    sizeMultiplier: 0.8,
                 complexityLevel: 1,
                 enabledEffects: ['circle', 'star', 'diamond'],
                 disabledFeatures: ['trail', 'glow', 'background'],
@@ -63,8 +62,8 @@ export, class QualityScalingSystem {
 
             },'', 'medium': { ''
                 name: '中';
-                countMultiplier: 0.5;
-               , sizeMultiplier: 0.9,
+                countMultiplier: 0.5,
+    sizeMultiplier: 0.9,
                 complexityLevel: 2,
                 enabledEffects: ['circle', 'star', 'diamond', 'advanced_circle', 'hexagon'],
                 disabledFeatures: ['background'],
@@ -73,31 +72,31 @@ export, class QualityScalingSystem {
 
             },'', 'high': { ''
                 name: '高';
-                countMultiplier: 1.0;
-               , sizeMultiplier: 1.0,
+                countMultiplier: 1.0,
+    sizeMultiplier: 1.0,
                 complexityLevel: 3,
-                enabledEffects: ['*];
-               , disabledFeatures: [],
+                enabledEffects: ['*],
+    disabledFeatures: [],
                 maxParticles: 500,
                 description: '高品質 - 標準設定' ,}
 
             },'', 'ultra': { ''
                 name: '最高';
-                countMultiplier: 1.5;
-               , sizeMultiplier: 1.2,
+                countMultiplier: 1.5,
+    sizeMultiplier: 1.2,
                 complexityLevel: 4,
-                enabledEffects: ['*];
-               , disabledFeatures: [],
+                enabledEffects: ['*],
+    disabledFeatures: [],
                 maxParticles: 800,
                 description: '最高品質 - ハイエンド向け' ,}
 
             },'', 'insane': { ''
                 name: '狂気';
-                countMultiplier: 2.0;
-               , sizeMultiplier: 1.5,
+                countMultiplier: 2.0,
+    sizeMultiplier: 1.5,
                 complexityLevel: 5,
-                enabledEffects: ['*];
-               , disabledFeatures: [],
+                enabledEffects: ['*],
+    disabledFeatures: [],
                 maxParticles: 1200,
                 description: '狂気品質 - 実験的設定' ,}
         };
@@ -109,8 +108,8 @@ export, class QualityScalingSystem {
         this.autoAdjustEnabled = true;
         this.performanceThresholds = { targetFPS: 60,
             minFPS: 30;
-            criticalFPS: 15;
-           , memoryThreshold: 50 * 1024 * 1024, // 50MB;
+            criticalFPS: 15,
+    memoryThreshold: 50 * 1024 * 1024, // 50MB;
             particleCountThreshold: 300 ,};
         // 調整履歴
         this.adjustmentHistory = [];
@@ -177,7 +176,7 @@ export, class QualityScalingSystem {
         }
         ';
         // 背景パーティクルの調整
-        if(settings.disabledFeatures.includes('background) {'
+        if(settings.disabledFeatures.includes('background' {'
             this.particleManager.backgroundEnabled = false;
         }
             this.particleManager.backgroundParticles = []; }
@@ -296,7 +295,7 @@ export, class QualityScalingSystem {
             return false; }
         ';
         // 有効な効果をチェック
-        if(settings.enabledEffects.includes('*) { return true; }'
+        if(settings.enabledEffects.includes('*' { return true; }'
         
         return settings.enabledEffects.includes(effectType);
     }
@@ -343,8 +342,8 @@ export, class QualityScalingSystem {
      * @returns 品質設定
      */
     public getCurrentQualitySettings(): CurrentQualitySettings { return { ...this.qualityLevels[this.currentQuality], };
-            current: this.currentQuality }
-        }
+            current: this.currentQuality 
+    }
     
     /**
      * パフォーマンス統計を取得
@@ -359,10 +358,10 @@ export, class QualityScalingSystem {
             complexityLevel: currentSettings.complexityLevel;
             maxParticles: currentSettings.maxParticles;
             enabledEffects: currentSettings.enabledEffects.length;
-            disabledFeatures: currentSettings.disabledFeatures.length;
-           , adjustmentCount: this.adjustmentHistory.length, };
-            lastAdjustment: this.adjustmentHistory[this.adjustmentHistory.length - 1] || null }
-        }
+            disabledFeatures: currentSettings.disabledFeatures.length,
+    adjustmentCount: this.adjustmentHistory.length, };
+            lastAdjustment: this.adjustmentHistory[this.adjustmentHistory.length - 1] || null 
+    }
     
     /**
      * デバイス性能を評価して推奨品質を取得
@@ -370,7 +369,7 @@ export, class QualityScalingSystem {
      */''
     public getRecommendedQuality()';
         const canvas = document.createElement('canvas'');''
-        const gl = canvas.getContext('webgl'') || canvas.getContext('experimental-webgl);
+        const gl = canvas.getContext('webgl'') || canvas.getContext('experimental-webgl';
         
         let score = 0;
         ';
@@ -383,7 +382,7 @@ export, class QualityScalingSystem {
 
             if (debugInfo) {''
                 const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);''
-                if (renderer && (renderer.includes('NVIDIA'') || renderer.includes('AMD)) {
+                if (renderer && (renderer.includes('NVIDIA'') || renderer.includes('AMD)' {
         }
                     score += 2; }
 }
@@ -409,10 +408,10 @@ export, class QualityScalingSystem {
         if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera, Mini/i.test(navigator.userAgent) { score -= 2; }
         ;
         // 品質レベル決定
-        if(score >= 8) return 'ultra';''
-        if(score >= 6) return 'high';''
-        if(score >= 4) return 'medium';''
-        if(score >= 2) return 'low';''
+        if(score >= 8) return 'ultra';
+        if(score >= 6) return 'high';
+        if(score >= 4) return 'medium';
+        if(score >= 2) return 'low';
         return 'potato';
     }
     
@@ -422,7 +421,7 @@ export, class QualityScalingSystem {
      */''
     public setAutoAdjustEnabled(enabled: boolean): void { this.autoAdjustEnabled = enabled;' }'
 
-        console.log(`[QualityScalingSystem] 自動調整: ${enabled ? '有効' : '無効}`});
+        console.log(`[QualityScalingSystem] 自動調整: ${enabled ? '有効' : '無効}`}';
     }
     
     /**

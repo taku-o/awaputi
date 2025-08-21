@@ -19,13 +19,13 @@ interface ComponentInstance { destroy?(): void; }
 interface ComponentConfig { path: string,
     className: string;
     priority: 'high' | 'medium' | 'low';
-    preload: boolean;
-   , dependencies: string[] ,}
+    preload: boolean,
+    dependencies: string[] ,}
 
 interface LoadedComponent { name: string;
     class: any;
-    instance: ComponentInstance;
-   , config: ComponentConfig
+    instance: ComponentInstance,
+    config: ComponentConfig
     }
 
 interface LoadingStats { total: number;
@@ -33,25 +33,25 @@ interface LoadingStats { total: number;
     loading: number;
     unloaded: number;
     loadedComponents: string[];
-    loadingComponents: string[];
-   , loadPercentage: number }
+    loadingComponents: string[],
+    loadPercentage: number }
 ';
 
 interface PerformanceEvaluation { ''
     efficiency: 'good' | 'moderate' | 'poor',
-    memoryImpact: 'low' | 'medium' | 'high';
-   , recommendations: string[] ,}
+    memoryImpact: 'low' | 'medium' | 'high',
+    recommendations: string[] ,}
 
-interface DebugInfo { stats: LoadingStats;
-   , registry: Array<{
+interface DebugInfo { stats: LoadingStats,
+    registry: Array<{
         nam;e: string;
         path: string;
         className: string;
         priority: string;
         preload: boolean;
         dependencies: string[];
-        loaded: boolean;
-       , loading: boolean }>;
+        loaded: boolean,
+    loading: boolean }>;
     performance: PerformanceEvaluation;
     }
 
@@ -87,55 +87,55 @@ export class LazyLoadManager {
     /**
      * デフォルトコンポーネントを登録
      */''
-    private registerDefaultComponents(''';
+    private registerDefaultComponents('''
         this.componentRegistry.set('overview', { ''
             path: './panels/OverviewPanel.js',
-            className: 'OverviewPanel',)';
-            priority: 'high')';
-           , preload: true,')';
-            dependencies: [])'),
+            className: 'OverviewPanel','';
+            priority: 'high')',
+    preload: true,')';
+            dependencies: []''),
 
         this.componentRegistry.set('performance', {''
             path: './panels/PerformancePanel.js',
-            className: 'PerformancePanel',)';
-            priority: 'high')';
-           , preload: false,')';
-            dependencies: [])'),
+            className: 'PerformancePanel','';
+            priority: 'high')',
+    preload: false,')';
+            dependencies: []''),
 
         this.componentRegistry.set('console', {''
             path: './panels/ConsolePanel.js',
-            className: 'ConsolePanel',)';
-            priority: 'medium')';
-           , preload: false,')';
-            dependencies: [])'),
+            className: 'ConsolePanel','';
+            priority: 'medium')',
+    preload: false,')';
+            dependencies: []''),
 
         this.componentRegistry.set('error', {''
             path: './panels/ErrorPanel.js',
-            className: 'ErrorPanel',)';
-            priority: 'medium')';
-           , preload: false,')';
-            dependencies: [])'),
+            className: 'ErrorPanel','';
+            priority: 'medium')',
+    preload: false,')';
+            dependencies: []''),
 
         this.componentRegistry.set('test', {''
             path: './panels/TestPanel.js',
-            className: 'TestPanel',)';
-            priority: 'low')';
-           , preload: false,')';
-            dependencies: [])');
+            className: 'TestPanel','';
+            priority: 'low')',
+    preload: false,')';
+            dependencies: []'');
 ';
         // 管理系コンポーネント
         this.componentRegistry.set('theme-manager', {''
             path: './ThemeManager.js',
-            className: 'ThemeManager',)';
-            priority: 'high')';
-           , preload: true,')';
-            dependencies: [])'),
+            className: 'ThemeManager','';
+            priority: 'high')',
+    preload: true,')';
+            dependencies: []''),
 
         this.componentRegistry.set('accessibility-manager', {''
             path: './AccessibilityManager.js',
-            className: 'AccessibilityManager',)';
-            priority: 'high');
-           , preload: true,);
+            className: 'AccessibilityManager','';
+            priority: 'high'),
+    preload: true,);
             dependencies: [] ,}
 
     /**
@@ -154,7 +154,7 @@ export class LazyLoadManager {
             }');
 
         }, { ''
-            rootMargin: '50px' // 50px手前で読み込み開始 });
+            rootMargin: '50px' // 50px手前で読み込み開始 }';
     }
 
     /**
@@ -162,8 +162,8 @@ export class LazyLoadManager {
      */''
     public registerComponent(name: string, config: Partial<ComponentConfig>): void { this.componentRegistry.set(name, {''
             priority: 'medium);
-            preload: false)';
-           , dependencies: [],
+            preload: false'',
+    dependencies: [],
             path: '',
             className: '',);
             ...config);
@@ -245,12 +245,12 @@ export class LazyLoadManager {
      */
     private getLoadedComponent(name: string): LoadedComponent | null { // 読み込み済みの場合、インスタンスを返す
         // 実装は PanelManager と連携する必要がある
-        const panelInfo = this.debugInterface.panelManager? .getPanelInfo(name);
+        const panelInfo = this.debugInterface.panelManager?.getPanelInfo(name);
         return panelInfo?.instance ? {
             name, : undefined
             class: null;
-            instance: panelInfo.instance;
-           , config: this.componentRegistry.get(name)! ,} : null;
+            instance: panelInfo.instance,
+    config: this.componentRegistry.get(name)! ,} : null;
     }
 
     /**
@@ -313,7 +313,7 @@ export class LazyLoadManager {
      * 条件付き読み込み'
      */''
     public async loadComponentIf(name: string, condition: boolean | (() => Promise<boolean>)'): Promise<LoadedComponent | null> { ''
-        if(typeof, condition === 'function) {'
+        if(typeof, condition === 'function' {'
             
         }
             if(!await, condition() return null; else if (!condition) { return null; }
@@ -342,8 +342,8 @@ export class LazyLoadManager {
      */
     public unloadComponent(name: string): void { if(!this.loadedComponents.has(name) return;
 
-        const panelInfo = this.debugInterface.panelManager? .getPanelInfo(name);''
-        if(panelInfo && panelInfo.instance && typeof, panelInfo.instance.destroy === 'function) {'
+        const panelInfo = this.debugInterface.panelManager?.getPanelInfo(name);''
+        if(panelInfo && panelInfo.instance && typeof, panelInfo.instance.destroy === 'function' {'
             
         }
             panelInfo.instance.destroy(); }
@@ -364,10 +364,10 @@ export class LazyLoadManager {
             loaded: loadedCount;
             loading: loadingCount;
             unloaded: totalComponents - loadedCount - loadingCount;
-            loadedComponents: Array.from(this.loadedComponents);
-           , loadingComponents: Array.from(this.loadingComponents.keys(), };
-            loadPercentage: (loadedCount / totalComponents) * 100 }
-        }
+            loadedComponents: Array.from(this.loadedComponents),
+    loadingComponents: Array.from(this.loadingComponents.keys(), };
+            loadPercentage: (loadedCount / totalComponents) * 100 
+    }
 
     /**
      * メモリ使用量を最適化
@@ -383,23 +383,23 @@ export class LazyLoadManager {
      * 読み込み品質を評価
      */'
     public evaluateLoadingPerformance(): PerformanceEvaluation { ''
-        const stats = this.getLoadingStats(''';
+        const stats = this.getLoadingStats('''
             efficiency: stats.loadPercentage < 50 ? 'good' : stats.loadPercentage < 80 ? 'moderate' : 'poor',
             memoryImpact: stats.loaded < 3 ? 'low' : stats.loaded < 6 ? 'medium' : 'high';
-            recommendations: [] ,}))', ')';
+            recommendations: [] ,})'', ')';
         if(stats.loadPercentage > 70) {'
             ';
 
         }
 
-            evaluation.recommendations.push('Consider, unloading unused, components); }'
+            evaluation.recommendations.push('Consider, unloading unused, components'; }'
         }
 
         if(stats.loaded > 5) {', ';
 
         }
 
-            evaluation.recommendations.push('Enable, automatic memory, optimization); }'
+            evaluation.recommendations.push('Enable, automatic memory, optimization'; }'
         }
 
         return evaluation;
@@ -413,8 +413,8 @@ export class LazyLoadManager {
                 name,
                 ...config);
                 loaded: this.loadedComponents.has(name), };
-                loading: this.loadingComponents.has(name); }
-            }),
+                loading: this.loadingComponents.has(name); 
+    }),
             performance: this.evaluateLoadingPerformance();
         }
 
@@ -434,4 +434,4 @@ export class LazyLoadManager {
         // 読み込み中の処理をキャンセル
         this.loadingComponents.clear();
         this.componentRegistry.clear();''
-        this.loadedComponents.clear(');
+        this.loadedComponents.clear();

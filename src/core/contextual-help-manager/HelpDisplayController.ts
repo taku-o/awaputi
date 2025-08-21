@@ -20,8 +20,8 @@ export interface HelpDisplayConfig { position: HelpPosition,
     duration: number;
     dismissible: boolean;
     persistent: boolean;
-    maxWidth: number;
-   , fontSize: FontSize
+    maxWidth: number,
+    fontSize: FontSize
     ,}
 
 export interface HelpContent { title?: string;
@@ -37,8 +37,8 @@ export interface HelpContent { title?: string;
     }
 
 export interface HelpStep { step: number,
-    title: string;
-   , description: string;
+    title: string,
+    description: string;
     visual?: string;
     keyboardAlternative?: string;
     tips?: string[];
@@ -55,19 +55,19 @@ export interface BubbleTypeInfo { name: string,
     color: string;
     effect: string;
     points: number;
-    strategy: string;
-   , visual: string;
+    strategy: string,
+    visual: string;
     warning?: boolean ,}
 
 export interface StrategyInfo { name: string;
     description: string;
     techniques: string[];
-    difficulty: HelpDifficulty;
-   , effectiveness: EffectivenessLevel
+    difficulty: HelpDifficulty,
+    effectiveness: EffectivenessLevel
     }
 
-export interface AccessibilityFeature { name: string;
-   , description: string;
+export interface AccessibilityFeature { name: string,
+    description: string;
     shortcuts?: Record<string, string>;
     features?: string[];
     options?: string[]; }
@@ -81,87 +81,87 @@ export interface HelpDisplayOptions { targetElement?: HTMLElement;
     overlay?: boolean; }
 
 export interface ActiveHelp { content: HelpContent,
-    options: HelpDisplayOptions;
-   , timestamp: Date
+    options: HelpDisplayOptions,
+    timestamp: Date
     ,}
 
 export interface HelpQueue { content: HelpContent;
     options: HelpDisplayOptions;
-    priority: DisplayPriority;
-   , id: string }
+    priority: DisplayPriority,
+    id: string }
 
-export interface DisplayElementsConfig { container: HTMLElement;
-   , overlay: HTMLElement;
+export interface DisplayElementsConfig { container: HTMLElement,
+    overlay: HTMLElement;
     closeButton?: HTMLButtonElement
     }
 
 export interface ResponsiveBreakpoints { mobile: number;
-    tablet: number;
-   , desktop: number }
+    tablet: number,
+    desktop: number }
 
-export interface AnimationConfig { duration: number;
-   , easing: string;
+export interface AnimationConfig { duration: number,
+    easing: string;
     delay?: number }
 
 export interface PositionConstraints { minDistance: number;
     maxDistance: number;
-    preferredSide: PositionSide;
-   , fallbackSides: PositionSide[]
+    preferredSide: PositionSide,
+    fallbackSides: PositionSide[]
     }
 
 export interface FontSizeMap { small: string;
     medium: string;
-    large: string;
-   , xl: string }
+    large: string,
+    xl: string }
 
-export interface MediaQueryHandler { query: MediaQueryList;
-   , handler: () => void }
-}
+export interface MediaQueryHandler { query: MediaQueryList,
+    handler: () => void 
+    }
 
 export interface TabNavigationState { focusableElements: HTMLElement[];
-    currentIndex: number;
-   , trapped: boolean }
+    currentIndex: number,
+    trapped: boolean }
 
 export interface AutoHideTimer { id: number | null;
-    duration: number;
-   , paused: boolean }
+    duration: number,
+    paused: boolean }
 
 export interface HelpDimensions { width: number;
     height: number;
-    maxWidth: number;
-   , maxHeight: number }
+    maxWidth: number,
+    maxHeight: number }
 
 export interface ViewportConstraints { width: number;
     height: number;
-    scrollX: number;
-   , scrollY: number }
+    scrollX: number,
+    scrollY: number }
 
 export interface ElementBounds { top: number;
     left: number;
     bottom: number;
     right: number;
-    width: number;
-   , height: number }
+    width: number,
+    height: number }
 
 export interface CalculatedPosition { top: number;
     left: number;
-    transform?: string;
-   , side: PositionSide
+    transform?: string,
+    side: PositionSide
     }
 
-export interface AnimationState { inProgress: boolean;
-   , type: AnimationType | null;
+export interface AnimationState { inProgress: boolean,
+    type: AnimationType | null;
     startTime?: number;
     duration?: number; }
 
 // 列挙型
-export type HelpPosition = 'contextual' | 'fixed' | 'overlay' | 'center';''
-export type AnimationType = 'slide' | 'fade' | 'scale' | 'none';''
-export type FontSize = 'small' | 'medium' | 'large' | 'xl';''
-export type UrgencyLevel = 'low' | 'medium' | 'high' | 'critical';''
-export type HelpDifficulty = 'beginner' | 'intermediate' | 'advanced' | 'expert';''
-export type EffectivenessLevel = 'low' | 'medium' | 'high' | 'very high';''
-export type DisplayPriority = 'low' | 'normal' | 'high' | 'urgent';''
+export type HelpPosition = 'contextual' | 'fixed' | 'overlay' | 'center';
+export type AnimationType = 'slide' | 'fade' | 'scale' | 'none';
+export type FontSize = 'small' | 'medium' | 'large' | 'xl';
+export type UrgencyLevel = 'low' | 'medium' | 'high' | 'critical';
+export type HelpDifficulty = 'beginner' | 'intermediate' | 'advanced' | 'expert';
+export type EffectivenessLevel = 'low' | 'medium' | 'high' | 'very high';
+export type DisplayPriority = 'low' | 'normal' | 'high' | 'urgent';
 export type PositionSide = 'top' | 'right' | 'bottom' | 'left';
 
 // 定数
@@ -169,13 +169,13 @@ export const DEFAULT_DISPLAY_CONFIG: HelpDisplayConfig = {;
     position: 'contextual',
     animation: 'slide';
     duration: 3000;
-    dismissible: true;
-   , persistent: false,
+    dismissible: true,
+    persistent: false,
     maxWidth: 400,
     fontSize: 'medium' ,} as const;
 export const RESPONSIVE_BREAKPOINTS: ResponsiveBreakpoints = { mobile: 768,
-    tablet: 1024;
-   , desktop: 1200 ,} as const;
+    tablet: 1024,
+    desktop: 1200 ,} as const;
 ';
 
 export const FONT_SIZES: FontSizeMap = {;
@@ -198,7 +198,7 @@ export const POSITION_CONSTRAINTS: PositionConstraints = { minDistance: 10,
     preferredSide: 'bottom',
     fallbackSides: ['top', 'right', 'left] } as const;
 
-export const FOCUSABLE_SELECTOR = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])' as const;
+export const FOCUSABLE_SELECTOR = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]"' as const;
 
 export const HELP_CONTAINER_STYLES = `;
     position: fixed;
@@ -218,8 +218,8 @@ export const HELP_OVERLAY_STYLES = `;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-   , background: rgba(0, 0, 0, 0.5);
+    height: 100%,
+    background: rgba(0, 0, 0, 0.5);
     z-index: 9999,
     display: none;
     pointer-events: auto,
@@ -229,21 +229,21 @@ export const HELP_OVERLAY_STYLES = `;
 export function calculateOptimalPosition(;
     targetRect: DOMRect
     );
-    helpDimensions: HelpDimensions);
-   , viewport: ViewportConstraints'';
+    helpDimensions: HelpDimensions),
+    viewport: ViewportConstraints'';
 '): CalculatedPosition { const positions = {'
         bottom: {'
             top: targetRect.bottom + POSITION_CONSTRAINTS.minDistance,
             left: targetRect.left,
             side: 'bottom' as PositionSide ,};
-        top: { top: targetRect.top - helpDimensions.height - POSITION_CONSTRAINTS.minDistance;
-           , left: targetRect.left,
+        top: { top: targetRect.top - helpDimensions.height - POSITION_CONSTRAINTS.minDistance,
+    left: targetRect.left,
             side: 'top' as PositionSide ,};
-        right: { top: targetRect.top;
-           , left: targetRect.right + POSITION_CONSTRAINTS.minDistance,
+        right: { top: targetRect.top,
+    left: targetRect.right + POSITION_CONSTRAINTS.minDistance,
             side: 'right' as PositionSide ,};
-        left: { top: targetRect.top;
-           , left: targetRect.left - helpDimensions.width - POSITION_CONSTRAINTS.minDistance,
+        left: { top: targetRect.top,
+    left: targetRect.left - helpDimensions.width - POSITION_CONSTRAINTS.minDistance,
             side: 'left' as PositionSide ,}
     };
     // 優先順位に従ってチェック
@@ -262,14 +262,14 @@ export function calculateOptimalPosition(;
         left: viewport.width / 2,
         transform: 'translate(-50%, -50%)',' };
 
-        side: 'center' as PositionSide }
+        side: 'center' as PositionSide 
     }
 
 export function isPositionValid(;
     position: CalculatedPosition
     );
-    dimensions: HelpDimensions);
-   , viewport: ViewportConstraints;
+    dimensions: HelpDimensions),
+    viewport: ViewportConstraints;
     ): boolean { return position.top >= 0 &&
            position.left >= 0 &&;
            position.top + dimensions.height <= viewport.height &&;
@@ -278,8 +278,8 @@ export function isPositionValid(;
 export function adjustPositionForViewport(;
     position: CalculatedPosition
     );
-    dimensions: HelpDimensions);
-   , viewport: ViewportConstraints;
+    dimensions: HelpDimensions),
+    viewport: ViewportConstraints;
     ): CalculatedPosition {
     const adjusted = { ...position,
 
@@ -299,7 +299,7 @@ export function adjustPositionForViewport(;
 }
 
 export function generateUniqueId(): string {
-    return `help_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
+    return `help_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
 }
 
 export function debounce<T extends any[]>(;
@@ -341,12 +341,12 @@ export class HelpDisplayController {
         this.animationState = { inProgress: false,
             type: null ,};
         this.autoHideTimer = { id: null,
-            duration: 0;
-           , paused: false ,};
+            duration: 0,
+    paused: false ,};
         this.mediaQueryHandlers = [];
         this.tabNavigationState = { focusableElements: [],
-            currentIndex: 0;
-           , trapped: false ,};
+            currentIndex: 0,
+    trapped: false ,};
         // デバウンスされたメソッド
         this.debouncedUpdatePosition = debounce(this.updatePosition.bind(this), 100);
         this.debouncedHandleResize = debounce(this.handleResponsiveChange.bind(this), 150);
@@ -362,14 +362,14 @@ export class HelpDisplayController {
      */
     private initializeDisplayElements(): void { this.createHelpContainer();
         this.createHelpOverlay();
-        this.setupResponsiveHandling('); }
+        this.setupResponsiveHandling(); }
 
     /**
      * ヘルプコンテナを作成'
      */''
     private createHelpContainer()';
         this.helpContainer = document.createElement('div'');''
-        this.helpContainer.className = 'contextual-help-container';''
+        this.helpContainer.className = 'contextual-help-container';
         this.helpContainer.setAttribute('role', 'dialog'');''
         this.helpContainer.setAttribute('aria-label', 'コンテキストヘルプ'');''
         this.helpContainer.setAttribute('aria-live', 'polite);
@@ -404,22 +404,22 @@ export class HelpDisplayController {
         document.addEventListener('keydown', (e: KeyboardEvent) => {  ''
             if(this.isDisplaying) {'
 
-                if (e.key === 'Escape' && this.displayConfig.dismissible) {''
+                if (e.key === 'Escape' && this.displayConfig.dismissible' {''
                     this.hideHelp();
             }
 
-                if(e.key === 'Tab) {' }
+                if(e.key === 'Tab' {' }
 
                     this.handleTabNavigation(e); }
 }
         };
 ';
         // リサイズイベント
-        window.addEventListener('resize', this.debouncedHandleResize);
+        window.addEventListener('resize', this.debouncedHandleResize';
 ';
         // スクロールイベント
         window.addEventListener('scroll', () => {  ''
-            if(this.isDisplaying && this.displayConfig.position === 'contextual) { }'
+            if(this.isDisplaying && this.displayConfig.position === 'contextual' { }'
                 this.debouncedUpdatePosition(); }
 }
 
@@ -525,8 +525,8 @@ export class HelpDisplayController {
     private addToQueue(content: HelpContent, options: HelpDisplayOptions): void { const queueItem: HelpQueue = {
             content,
             options,
-            priority: options.priority || 'normal';
-           , id: generateUniqueId( ,};
+            priority: options.priority || 'normal',
+    id: generateUniqueId( ,};
 
         // 優先度順でソート
         this.helpQueue.push(queueItem);
@@ -559,8 +559,8 @@ export class HelpDisplayController {
 
             content.steps.forEach(step => { ' }'
 
-                html += `<li, style="margin-bottom: 8px;">)" }"
-                    <strong>${this.escapeHtml(step.title"})</strong><br>""
+                html += `<li, style="margin-bottom: 8px;">"" }"
+                    <strong>${this.escapeHtml(step.title"}"</strong><br>""
                     <span style="color: #ccc;">${this.escapeHtml(step.description})</span>"
                 `;""
                 if (step.keyboardAlternative) { " }"
@@ -574,7 +574,7 @@ export class HelpDisplayController {
 
                     step.tips.forEach(tip => {);' }'
 
-                        html += `<li style="color: #aaa; font-size: 0.9em;">${this.escapeHtml(tip"})</li>`;"
+                        html += `<li style="color: #aaa; font-size: 0.9em;">${this.escapeHtml(tip"}"</li>`;"
                     };""
                     html += '</ul>';
 
@@ -589,7 +589,7 @@ export class HelpDisplayController {
         if(content.sections && content.sections.length > 0) { content.sections.forEach(section => { ') }'
 
                 html += `<div style="margin-bottom: 12px;">")" }"
-                    <h4 style="margin: 0 0 4px 0;, color: #fff;">${this.escapeHtml(section.title"})</h4>""
+                    <h4 style="margin: 0 0 4px 0;, color: #fff;">${this.escapeHtml(section.title"}"</h4>""
                     <p style="margin: 0;, color: #ccc;">${this.escapeHtml(section.content})</p>"
                 `;""
                 if(section.details) {"
@@ -600,8 +600,8 @@ export class HelpDisplayController {
 
                     Object.entries(section.details).forEach(([key, value]) => {' }'
 
-                        html += `<dt style="display: inline;, color: #fff;">${this.escapeHtml(key"}):</dt> `;""
-                        html += `<dd style="display: inline;, color: #ccc; margin-right: 12px;">${this.escapeHtml(value"})</dd>`;"
+                        html += `<dt style="display: inline;, color: #fff;">${this.escapeHtml(key"}":</dt> `;""
+                        html += `<dd style="display: inline;, color: #ccc; margin-right: 12px;">${this.escapeHtml(value"}"</dd>`;"
                     };""
                     html += '</dl>';
 
@@ -614,7 +614,7 @@ export class HelpDisplayController {
 
                     section.tips.forEach(tip => {);' }'
 
-                        html += `<li style="color: #aaa; font-size: 0.9em;">${this.escapeHtml(tip"})</li>`;"
+                        html += `<li style="color: #aaa; font-size: 0.9em;">${this.escapeHtml(tip"}"</li>`;"
                     };""
                     html += '</ul>';
 
@@ -628,13 +628,13 @@ export class HelpDisplayController {
             html += '<div style="margin-bottom: 12px;">';
         }
 
-            content.bubbleTypes.forEach(bubble => { ' })'
+            content.bubbleTypes.forEach(bubble => { ' }''
                 const warningClass = bubble.warning ? ' style="color: #ffcc00;"' : '';') }
 
-                html += `<div style="margin-bottom: 8px;, padding: 8px; border-left: 3px solid ${bubble.color};">)""
+                html += `<div style="margin-bottom: 8px;, padding: 8px; border-left: 3px solid ${bubble.color};">"""
                     <strong${warningClass}>${this.escapeHtml(bubble.name})</strong> (${bubble.points}pt")<br>""
-                    <span style="color: #ccc;">${this.escapeHtml(bubble.effect"})</span><br>""
-                    <small style="color: #aaa;">${this.escapeHtml(bubble.strategy"})</small>
+                    <span style="color: #ccc;">${this.escapeHtml(bubble.effect"}"</span><br>""
+                    <small style="color: #aaa;">${this.escapeHtml(bubble.strategy"}"</small>
                 </div>`;"
             };""
             html += '</div>';
@@ -648,16 +648,16 @@ export class HelpDisplayController {
 
             content.strategies.forEach(strategy => { ' }'
 
-                html += `<div, style="margin-bottom: 12px;">)" }"
-                    <h5 style="margin: 0 0 4px 0;, color: #fff;">${this.escapeHtml(strategy.name"})</h5>""
-                    <p style="margin: 0 0 8px 0;, color: #ccc;">${this.escapeHtml(strategy.description"})</p>""
+                html += `<div, style="margin-bottom: 12px;">"" }"
+                    <h5 style="margin: 0 0 4px 0;, color: #fff;">${this.escapeHtml(strategy.name"}"</h5>""
+                    <p style="margin: 0 0 8px 0;, color: #ccc;">${this.escapeHtml(strategy.description"}"</p>""
                     <ul style="margin: 0; padding-left: 16px;">"
                 `;""
                 strategy.techniques.forEach(technique => { ");" }"
-                    html += `<li style="color: #aaa; font-size: 0.9em;">${this.escapeHtml(technique"})</li>`;
+                    html += `<li style="color: #aaa; font-size: 0.9em;">${this.escapeHtml(technique"}"</li>`;
                 };"
                 html += `</ul>"";
-                    <small style="color: #888;">難易度: ${this.escapeHtml(strategy.difficulty}) | 効果: ${this.escapeHtml(strategy.effectiveness"})</small>
+                    <small style="color: #888;">難易度: ${this.escapeHtml(strategy.difficulty}) | 効果: ${this.escapeHtml(strategy.effectiveness"}"</small>
                 </div>`;"
             };""
             html += '</div>';
@@ -671,8 +671,8 @@ export class HelpDisplayController {
 
             content.features.forEach(feature => { ' }'
 
-                html += `<div, style="margin-bottom: 8px;">)" }"
-                    <h5 style="margin: 0 0 4px 0;, color: #fff;">${this.escapeHtml(feature.name"})</h5>""
+                html += `<div, style="margin-bottom: 8px;">"" }"
+                    <h5 style="margin: 0 0 4px 0;, color: #fff;">${this.escapeHtml(feature.name"}"</h5>""
                     <p style="margin: 0;, color: #ccc;">${this.escapeHtml(feature.description})</p>"
                 `;""
                 if(feature.shortcuts) {"
@@ -683,8 +683,8 @@ export class HelpDisplayController {
 
                     Object.entries(feature.shortcuts).forEach(([key, desc]) => {' }'
 
-                        html += `<dt style="display: inline;, color: #fff; font-family: monospace;">${this.escapeHtml(key"}):</dt> `;""
-                        html += `<dd style="display: inline;, color: #ccc; margin-right: 12px;">${this.escapeHtml(desc"})</dd>`;"
+                        html += `<dt style="display: inline;, color: #fff; font-family: monospace;">${this.escapeHtml(key"}":</dt> `;""
+                        html += `<dd style="display: inline;, color: #ccc; margin-right: 12px;">${this.escapeHtml(desc"}"</dd>`;"
                     };""
                     html += '</dl>';
 
@@ -697,7 +697,7 @@ export class HelpDisplayController {
 
                     feature.features.forEach(item => {);' }'
 
-                        html += `<li style="color: #aaa; font-size: 0.9em;">${this.escapeHtml(item"})</li>`;"
+                        html += `<li style="color: #aaa; font-size: 0.9em;">${this.escapeHtml(item"}"</li>`;"
                     };""
                     html += '</ul>';
 
@@ -710,7 +710,7 @@ export class HelpDisplayController {
 
                     feature.options.forEach(option => {);' }'
 
-                        html += `<li style="color: #aaa; font-size: 0.9em;">${this.escapeHtml(option"})</li>`;"
+                        html += `<li style="color: #aaa; font-size: 0.9em;">${this.escapeHtml(option"}"</li>`;"
                     };""
                     html += '</ul>';
 
@@ -735,7 +735,7 @@ export class HelpDisplayController {
         this.helpContainer.innerHTML = html;
         ";
         // 閉じるボタンのイベントリスナーを設定""
-        const closeButton = this.helpContainer.querySelector('.help-close-button) as HTMLButtonElement;''
+        const closeButton = this.helpContainer.querySelector('.help-close-button' as HTMLButtonElement;''
         if(closeButton) {', ';
 
         }
@@ -747,7 +747,7 @@ export class HelpDisplayController {
      * HTMLエスケープ'
      */''
     private escapeHtml(text: string): string { ''
-        const div = document.createElement('div);
+        const div = document.createElement('div';
         div.textContent = text;
         return div.innerHTML; }
 
@@ -755,13 +755,13 @@ export class HelpDisplayController {
      * 位置を計算'
      */''
     private calculatePosition(targetElement?: HTMLElement): void { ''
-        if(this.displayConfig.position === 'fixed) {', ';
+        if(this.displayConfig.position === 'fixed' {', ';
 
         }
 
             this.setFixedPosition() }
 
-        } else if (this.displayConfig.position === 'contextual' && targetElement) { ''
+        } else if (this.displayConfig.position === 'contextual' && targetElement' { ''
             this.setContextualPosition(targetElement);' }'
 
         } else if(this.displayConfig.position === 'overlay) { this.setOverlayPosition(); } else { this.setCenterPosition(); }'
@@ -770,11 +770,11 @@ export class HelpDisplayController {
     /**
      * 固定位置を設定'
      */''
-    private setFixedPosition(''';
+    private setFixedPosition('''
             top: '20px',
             right: '20px',
             left: 'auto',
-            bottom: 'auto',)';
+            bottom: 'auto','';
             transform: 'none');
     }
 
@@ -787,12 +787,12 @@ export class HelpDisplayController {
         const helpDimensions: HelpDimensions = {
             width: containerRect.width || this.displayConfig.maxWidth;
             height: containerRect.height || 200;
-            maxWidth: this.displayConfig.maxWidth;
-           , maxHeight: window.innerHeight * 0.8 };
+            maxWidth: this.displayConfig.maxWidth,
+    maxHeight: window.innerHeight * 0.8 };
         const viewport: ViewportConstraints = { width: window.innerWidth,
             height: window.innerHeight;
-            scrollX: window.scrollX;
-           , scrollY: window.scrollY ,};
+            scrollX: window.scrollX,
+    scrollY: window.scrollY ,};
         ';
 
         let position = calculateOptimalPosition(targetRect, helpDimensions, viewport);''
@@ -814,10 +814,10 @@ export class HelpDisplayController {
     /**
      * 中央位置を設定'
      */''
-    private setCenterPosition(''';
+    private setCenterPosition('''
             top: '50%',
             left: '50%',
-            right: 'auto',)';
+            right: 'auto','';
             bottom: 'auto''),
             transform: 'translate(-50%, -50%)';
         }
@@ -841,22 +841,22 @@ export class HelpDisplayController {
         switch(animationType) {'
 
             case 'slide':'';
-                await this.slideInAnimation(''';
-            case 'fade':'';
+                await this.slideInAnimation('''
+            case 'fade': '';
                 await, this.fadeInAnimation(''';
             case 'scale':'';
                 await, this.scaleInAnimation('';
         }
 
-            default: this.helpContainer.style.opacity = '1'; }
-}
+            default: this.helpContainer.style.opacity = '1'; 
+    }
 
     /**
      * スライドイン アニメーション'
-     */)'
+     */''
     private async slideInAnimation();
 
-        this.helpContainer.style.transform += ' translateY(-20px)';''
+        this.helpContainer.style.transform += ' translateY(-20px)';
         this.helpContainer.style.opacity = '0';
         ';
 
@@ -878,7 +878,7 @@ export class HelpDisplayController {
         this.helpContainer.style.opacity = '0';
         ';
 
-        return, new Promise<void>(resolve => {  ' })'
+        return, new Promise<void>(resolve => {  ' }''
             requestAnimationFrame(() => { }
 
                 this.helpContainer.style.transition = `opacity ${config.duration}ms ${config.easing}`;''
@@ -891,7 +891,7 @@ export class HelpDisplayController {
      * スケールイン アニメーション'
      */''
     private async scaleInAnimation()';
-        this.helpContainer.style.transform += ' scale(0.8)';''
+        this.helpContainer.style.transform += ' scale(0.8)';
         this.helpContainer.style.opacity = '0';
         ';
 
@@ -920,7 +920,7 @@ export class HelpDisplayController {
 
             await this.hideAnimation('';
 
-            this.helpContainer.style.display = 'none';''
+            this.helpContainer.style.display = 'none';
             this.helpOverlay.style.display = 'none';
             
             this.isDisplaying = false;
@@ -940,8 +940,8 @@ export class HelpDisplayController {
      * 非表示アニメーション'
      */''
     private async hideAnimation(''';
-            this.helpContainer.style.transition = 'all 0.2s ease-in';''
-            this.helpContainer.style.opacity = '0';)'
+            this.helpContainer.style.transition = 'all 0.2s ease-in';
+            this.helpContainer.style.opacity = '0';''
             this.helpContainer.style.transform += ' translateY(-10px)';
             setTimeout(resolve, 200);
         }
@@ -955,8 +955,8 @@ export class HelpDisplayController {
             id: window.setTimeout(() => {  }
                 this.hideHelp(), }
             }, this.displayConfig.duration),
-            duration: this.displayConfig.duration;
-           , paused: false;
+            duration: this.displayConfig.duration,
+    paused: false;
         },
     }
 
@@ -997,14 +997,14 @@ export class HelpDisplayController {
 
         this.tabNavigationState.focusableElements = elements.filter(element => { ')'
             return element.offsetParent !== null && ')'';
-                   !element.hasAttribute('disabled) && }'
+                   !element.hasAttribute('disabled' && }'
                    element.tabIndex >= 0; }
         }
 
     /**
      * 位置を更新
      */
-    private updatePosition(): void { if (this.activeHelp? .options.targetElement) {
+    private updatePosition(): void { if (this.activeHelp?.options.targetElement) {
             this.calculatePosition(this.activeHelp.options.targetElement); }
     }
 
@@ -1033,10 +1033,10 @@ export class HelpDisplayController {
             // Shift+Tab: 前の要素
         
         }
-            nextIndex = currentIndex === 0 ? elements.length - 1 : currentIndex - 1; }
-        } else {  // Tab: 次の要素 }
-            nextIndex = currentIndex === elements.length - 1 ? 0 : currentIndex + 1; }
-        }
+            nextIndex = currentIndex === 0 ? elements.length - 1 : currentIndex - 1; 
+    } else {  // Tab: 次の要素 }
+            nextIndex = currentIndex === elements.length - 1 ? 0 : currentIndex + 1; 
+    }
         
         elements[nextIndex].focus();
         this.tabNavigationState.currentIndex = nextIndex;

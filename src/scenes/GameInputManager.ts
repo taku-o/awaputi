@@ -1,17 +1,17 @@
 /**
  * ゲーム専用入力管理クラス
  */
-import { InputManager  } from '../core/InputManager';''
-import { EnhancedTouchManager  } from '../core/EnhancedTouchManager';''
-import { getBrowserCompatibility  } from '../utils/BrowserCompatibility';''
+import { InputManager  } from '../core/InputManager';
+import { EnhancedTouchManager  } from '../core/EnhancedTouchManager';
+import { getBrowserCompatibility  } from '../utils/BrowserCompatibility';
 import { InputCoordinateConverter  } from '../utils/InputCoordinateConverter';
 
 interface Position { x: number,
     y: number;
     originalEvent?: MouseEvent | TouchEvent ,}
 
-interface DragVector { x: number;
-   , y: number }
+interface DragVector { x: number,
+    y: number }
 
 interface TouchData {
     position: Position;
@@ -50,7 +50,7 @@ export class GameInputManager extends InputManager { private gameScene: any
      */
     private initializeCoordinateConverter(): void { try {
             // GameEngineからResponsiveCanvasManagerとScaledCoordinateManagerを取得
-            const responsiveCanvasManager = this.gameEngine? .responsiveCanvasManager;
+            const responsiveCanvasManager = this.gameEngine?.responsiveCanvasManager;
             if(responsiveCanvasManager && responsiveCanvasManager.scaledCoordinateManager) {
                 this.inputCoordinateConverter = new InputCoordinateConverter(;
                     responsiveCanvasManager.scaledCoordinateManager)';
@@ -79,8 +79,8 @@ export class GameInputManager extends InputManager { private gameScene: any
         try { if (this.inputCoordinateConverter && position.originalEvent) {
                 const converted = this.inputCoordinateConverter.convertMouseEvent(position.originalEvent, as MouseEvent);
                 convertedPosition = {
-                    x: converted.x;
-                   , y: converted.y };''
+                    x: converted.x,
+    y: converted.y };''
             } catch (error) { console.warn('GameInputManager: Coordinate conversion failed for click, using original position', error }
         
         // 泡のクリック処理（変換された座標を使用）
@@ -101,8 +101,8 @@ export class GameInputManager extends InputManager { private gameScene: any
         try { if (this.inputCoordinateConverter && position.originalEvent) {
                 const converted = this.inputCoordinateConverter.convertMouseEvent(position.originalEvent, as MouseEvent);
                 convertedPosition = {
-                    x: converted.x;
-                   , y: converted.y };''
+                    x: converted.x,
+    y: converted.y };''
             } catch (error) { console.warn('GameInputManager: Coordinate conversion failed for pointer move, using original position', error }
         
         // マウス位置の更新（変換された座標を使用）
@@ -120,15 +120,15 @@ export class GameInputManager extends InputManager { private gameScene: any
         try { if (this.inputCoordinateConverter && startPosition.originalEvent) {
                 const converted = this.inputCoordinateConverter.convertMouseEvent(startPosition.originalEvent, as MouseEvent);
                 convertedPosition = {
-                    x: converted.x;
-                   , y: converted.y };''
+                    x: converted.x,
+    y: converted.y };''
             } catch (error) { console.warn('GameInputManager: Coordinate conversion failed for drag start, using original position', error }
         ';
         // ドラッグ対象の泡を検索（変換された座標を使用）
         const targetBubble = this.gameEngine.bubbleManager.handleDragStart(convertedPosition.x, convertedPosition.y);
         ';
         // ビジュアルフィードバックを開始（変換された座標を使用）
-        if(this.gameScene && typeof, this.gameScene.startDragVisualization === 'function) {', ';
+        if(this.gameScene && typeof, this.gameScene.startDragVisualization === 'function' {', ';
 
         }
 
@@ -150,8 +150,8 @@ export class GameInputManager extends InputManager { private gameScene: any
         try { if (this.inputCoordinateConverter && currentPosition.originalEvent) {
                 const converted = this.inputCoordinateConverter.convertMouseEvent(currentPosition.originalEvent, as MouseEvent);
                 convertedPosition = {
-                    x: converted.x;
-                   , y: converted.y };''
+                    x: converted.x,
+    y: converted.y };''
             } catch (error) { console.warn('GameInputManager: Coordinate conversion failed for drag move, using original position', error }
         ';
         // ビジュアルフィードバックを更新（変換された座標を使用）
@@ -175,14 +175,14 @@ export class GameInputManager extends InputManager { private gameScene: any
                     const convertedStart = this.inputCoordinateConverter.convertMouseEvent(startPosition.originalEvent, as MouseEvent);
                     convertedStartPosition = {
                         x: convertedStart.x }
-                        y: convertedStart.y }
-                    }
+                        y: convertedStart.y 
+    }
                 if(endPosition.originalEvent) {
                     const convertedEnd = this.inputCoordinateConverter.convertMouseEvent(endPosition.originalEvent, as MouseEvent);
                     convertedEndPosition = {
                         x: convertedEnd.x }
-                        y: convertedEnd.y }
-                    }''
+                        y: convertedEnd.y 
+    }''
             } catch (error) { console.warn('GameInputManager: Coordinate conversion failed for drag end, using original positions', error }
         
         // 泡を吹き飛ばす処理（変換された座標を使用）
@@ -227,26 +227,21 @@ export class GameInputManager extends InputManager { private gameScene: any
 
         }');
 
-        this.enhancedTouchManager.registerCallback('onTouchMove', (touchData: TouchData) => { this.notifyPointerMove(touchData.position);' }
+        this.enhancedTouchManager.registerCallback('onTouchMove', (touchData: TouchData) => { this.notifyPointerMove(touchData.position);' 
+    }');
 
-        }');
-
-        this.enhancedTouchManager.registerCallback('onTouchEnd', (touchData: TouchData) => { this.notifyClick(touchData.position);' }
-
-        }');
+        this.enhancedTouchManager.registerCallback('onTouchEnd', (touchData: TouchData) => { this.notifyClick(touchData.position);' 
+    }');
         ';
         // ジェスチャーコールバックの登録
-        this.enhancedTouchManager.registerCallback('onSwipe', (gestureData: GestureData) => { this.handleSwipeGesture(gestureData);' }
+        this.enhancedTouchManager.registerCallback('onSwipe', (gestureData: GestureData) => { this.handleSwipeGesture(gestureData);' 
+    }');
 
-        }');
+        this.enhancedTouchManager.registerCallback('onPinch', (gestureData: GestureData) => { this.handlePinchGesture(gestureData);' 
+    }');
 
-        this.enhancedTouchManager.registerCallback('onPinch', (gestureData: GestureData) => { this.handlePinchGesture(gestureData);' }
-
-        }');
-
-        this.enhancedTouchManager.registerCallback('onDoubleTap', (gestureData: GestureData) => { this.handleDoubleTapGesture(gestureData);' }
-
-        }');
+        this.enhancedTouchManager.registerCallback('onDoubleTap', (gestureData: GestureData) => { this.handleDoubleTapGesture(gestureData);' 
+    }');
 
         this.enhancedTouchManager.registerCallback('onLongPress', (gestureData: GestureData) => { this.handleLongPressGesture(gestureData); });
     }
@@ -260,7 +255,7 @@ export class GameInputManager extends InputManager { private gameScene: any
         const swipeForce = (gestureData.velocity || 0') * 500;
 
         const swipeVector = {''
-            x: Math.cos(this.getAngleFromDirection(gestureData.direction || 'right)) * swipeForce,
+            x: Math.cos(this.getAngleFromDirection(gestureData.direction || 'right)' * swipeForce,
             y: Math.sin(this.getAngleFromDirection(gestureData.direction || 'right) * swipeForce ,};
         // スワイプパス上のバブルを検出
         if(gestureData.startPosition && gestureData.endPosition) {
@@ -367,4 +362,4 @@ export class GameInputManager extends InputManager { private gameScene: any
 
         }
 
-            this.enhancedTouchManager.cleanup(') }'
+            this.enhancedTouchManager.cleanup() }'

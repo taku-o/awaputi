@@ -12,8 +12,8 @@ export interface SeasonalParticle { x: number,
     size: number;
     color: string;
     life: number;
-    decay: number;
-   , type: string;
+    decay: number,
+    type: string;
     rotation?: number;
     rotationSpeed?: number;
     gravity?: number;
@@ -41,12 +41,12 @@ export interface SeasonalEffect { id: string,
     x: number;
     y: number;
     config: EffectConfig;
-    createdTime: number;
-   , particles: SeasonalParticle[]
+    createdTime: number,
+    particles: SeasonalParticle[]
     ,}
 
-export interface EffectConfig { colors: string[];
-   , particleTypes: string[];
+export interface EffectConfig { colors: string[],
+    particleTypes: string[];
     size?: number;
     intensity?: number;
     particleCount?: number; }
@@ -67,8 +67,8 @@ export interface QualityController { canExecuteEffect(type: 'particle', priority
 export interface ErrorHandler { handleError(error: Error, context: string): void ,}
 
 export interface EffectStatistics { activeEffects: number,
-    totalParticles: number;
-   , memoryUsage: number ,}
+    totalParticles: number,
+    memoryUsage: number ,}
 
 export class SeasonalParticleRenderer {
     private qualityController: QualityController | null;
@@ -110,8 +110,8 @@ export class SeasonalParticleRenderer {
             this._createThemeSpecificEffect(x, y, effect, {)
                 colors);
                 particleTypes,);
-                size: bubbleSize);
-               , intensity: this._getEffectIntensity( ,});
+                size: bubbleSize),
+    intensity: this._getEffectIntensity( ,});
             ';
 
         } catch (error) {
@@ -119,7 +119,7 @@ export class SeasonalParticleRenderer {
 
             }
 
-                this.errorHandler.handleError(error as Error, 'SeasonalParticleRenderer.createSeasonalBubbleEffect); }'
+                this.errorHandler.handleError(error as Error, 'SeasonalParticleRenderer.createSeasonalBubbleEffect'; }'
 }
     }
     
@@ -134,7 +134,7 @@ export class SeasonalParticleRenderer {
         if(!theme) return;
         ';
         // コンボエフェクトは重要度が高い
-        const priority = comboCount >= 10 ? 'critical' : 'important';''
+        const priority = comboCount >= 10 ? 'critical' : 'important';
         if(this.qualityController && !this.qualityController.canExecuteEffect('particle', priority) {
             
         }
@@ -157,7 +157,7 @@ export class SeasonalParticleRenderer {
 
             }
 
-                this.errorHandler.handleError(error as Error, 'SeasonalParticleRenderer.createSeasonalComboEffect); }'
+                this.errorHandler.handleError(error as Error, 'SeasonalParticleRenderer.createSeasonalComboEffect'; }'
 }
     }
     
@@ -170,15 +170,15 @@ export class SeasonalParticleRenderer {
      * @private
      */
     private _createThemeSpecificEffect(x: number, y: number, effectType: string, config: EffectConfig): void {
-        const effectId = `seasonal_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
+        const effectId = `seasonal_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
         
         const effect: SeasonalEffect = { id: effectId,
             type: effectType;
             x: x;
             y: y;
             config: config;
-            createdTime: performance.now();
-           , particles: [] ,};
+            createdTime: performance.now(),
+    particles: [] ,};
         ';
         // エフェクトタイプに応じたパーティクル生成
         switch(effectType) {'
@@ -215,8 +215,8 @@ export class SeasonalParticleRenderer {
                 this._createChristmasBurstEffect(effect);
                 break;
         }
-            default: this._createDefaultSeasonalEffect(effect); }
-        }
+            default: this._createDefaultSeasonalEffect(effect); 
+    }
         
         this.activeSeasonalEffects.set(effectId, effect);
     }
@@ -236,15 +236,15 @@ export class SeasonalParticleRenderer {
             
             effect.particles.push({)
                 x: effect.x,);
-                y: effect.y);
-               , vx: Math.cos(angle) * velocity,
+                y: effect.y),
+    vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity,
-                size: 3 + Math.random()';
-               , type: 'cherry_blossom',);
+                size: 3 + Math.random()',
+    type: 'cherry_blossom',);
                 rotation: Math.random() * Math.PI * 2;
         ,}
-                rotationSpeed: (Math.random() - 0.5) * 0.1 }
-            });
+                rotationSpeed: (Math.random() - 0.5) * 0.1 
+    });
         }
     }
     
@@ -263,14 +263,14 @@ export class SeasonalParticleRenderer {
             
             effect.particles.push({)
                 x: effect.x,);
-                y: effect.y);
-               , vx: Math.cos(angle) * velocity,
+                y: effect.y),
+    vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity - 1, // 上向きの初速;
-                size: 2 + Math.random(''';
-                type: 'water_drop);
-               , gravity: 0.15 ,}
-                bounce: 0.3) }
-            });
+                size: 2 + Math.random('''
+                type: 'water_drop),
+    gravity: 0.15 ,}
+                bounce: 0.3) 
+    });
         }
     }
     
@@ -289,16 +289,16 @@ export class SeasonalParticleRenderer {
             
             effect.particles.push({)
                 x: effect.x,);
-                y: effect.y);
-               , vx: Math.cos(angle) * velocity,
+                y: effect.y),
+    vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity,
-                size: 4 + Math.random()';
-               , type: 'maple_leaf',);
-                rotation: Math.random() * Math.PI * 2;
-               , rotationSpeed: (Math.random() - 0.5) * 0.15;
+                size: 4 + Math.random()',
+    type: 'maple_leaf',);
+                rotation: Math.random() * Math.PI * 2,
+    rotationSpeed: (Math.random() - 0.5) * 0.15;
         ,}
-                flutter: Math.random() * 0.1 }
-            });
+                flutter: Math.random() * 0.1 
+    });
         }
     }
     
@@ -317,14 +317,14 @@ export class SeasonalParticleRenderer {
             
             effect.particles.push({)
                 x: effect.x,);
-                y: effect.y);
-               , vx: Math.cos(angle) * velocity,
+                y: effect.y),
+    vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity,
                 size: 2 + Math.random()';
-                type: 'ice_crystal');
-               , sparkle: true, }
-                sparkleIntensity: 0.5 + Math.random() * 0.5 }
-            });
+                type: 'ice_crystal'),
+    sparkle: true, }
+                sparkleIntensity: 0.5 + Math.random() * 0.5 
+    });
         }
     }
     
@@ -343,15 +343,15 @@ export class SeasonalParticleRenderer {
             
             effect.particles.push({)
                 x: effect.x,);
-                y: effect.y);
-               , vx: Math.cos(angle) * velocity,
+                y: effect.y),
+    vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity,
-                size: 3 + Math.random(''';
+                size: 3 + Math.random('''
                 type: 'firework';
-                brightness: 1.0);
-               , trail: true ,}
-                trailLength: 5) }
-            });
+                brightness: 1.0),
+    trail: true ,}
+                trailLength: 5) 
+    });
         }
     }
     
@@ -370,14 +370,14 @@ export class SeasonalParticleRenderer {
             
             effect.particles.push({)
                 x: effect.x,);
-                y: effect.y);
-               , vx: Math.cos(angle) * velocity,
+                y: effect.y),
+    vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity - 0.5,
-                size: 4 + Math.random(''';
-                type: 'heart);
-               , pulse: true ,}
-                pulseSpeed: 0.1) }
-            });
+                size: 4 + Math.random('''
+                type: 'heart),
+    pulse: true ,}
+                pulseSpeed: 0.1) 
+    });
         }
     }
     
@@ -396,15 +396,15 @@ export class SeasonalParticleRenderer {
             
             effect.particles.push({)
                 x: effect.x,);
-                y: effect.y);
-               , vx: Math.cos(angle) * velocity,
+                y: effect.y),
+    vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity,
-                size: 5 + Math.random(''';
+                size: 5 + Math.random('''
                 type: 'ghost';
-                opacity: 0.7);
-               , wobble: true ,}
-                wobbleAmplitude: 1) }
-            });
+                opacity: 0.7),
+    wobble: true ,}
+                wobbleAmplitude: 1) 
+    });
         }
     }
     
@@ -423,14 +423,14 @@ export class SeasonalParticleRenderer {
             
             effect.particles.push({)
                 x: effect.x,);
-                y: effect.y);
-               , vx: Math.cos(angle) * velocity,
+                y: effect.y),
+    vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity,
-                size: 3 + Math.random(''';
-                type: 'christmas_star);
-               , twinkle: true ,}
-                twinkleSpeed: 0.15) }
-            });
+                size: 3 + Math.random('''
+                type: 'christmas_star),
+    twinkle: true ,}
+                twinkleSpeed: 0.15) 
+    });
         }
     }
     
@@ -449,13 +449,13 @@ export class SeasonalParticleRenderer {
             
             effect.particles.push({)
                 x: effect.x,);
-                y: effect.y);
-               , vx: Math.cos(angle) * velocity,
+                y: effect.y),
+    vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity,
                 size: 3 + Math.random(''
-        ,})'
-                type: 'default') }
-            });
+        ,}''
+                type: 'default') 
+    });
         }
     }
     
@@ -656,8 +656,8 @@ export class SeasonalParticleRenderer {
         
         return { activeEffects: this.activeSeasonalEffects.size }
             totalParticles: totalParticles, };
-            memoryUsage: this._estimateMemoryUsage(); }
-        }
+            memoryUsage: this._estimateMemoryUsage(); 
+    }
     
     /**
      * メモリ使用量の推定
@@ -667,6 +667,6 @@ export class SeasonalParticleRenderer {
     private _estimateMemoryUsage(): number { let usage = 0;
 
         this.activeSeasonalEffects.forEach(effect => { ')'
-            usage += effect.particles.length * 200; // パーティクル当たり約200バイト)); }
+            usage += effect.particles.length * 200; // パーティクル当たり約200バイト)'; }
         return usage;''
 }

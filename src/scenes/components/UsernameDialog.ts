@@ -5,19 +5,19 @@ import { ScenesBaseDialog, DialogButton, GameEngine, EventBus, GameState  } from
 
 // Type definitions for username dialog
 export interface UsernameValidation { allowedChars: RegExp,
-    prohibitedWords: string[];
-   , minLength: number ,}
+    prohibitedWords: string[],
+    minLength: number ,}
 
-export interface TextSettings { contentFont: string;
-   , contentColor: string }
+export interface TextSettings { contentFont: string,
+    contentColor: string }
 
 export interface UsernameDialogData { currentUsername: string;
-    newUsername: string;
-   , error: string | null }
+    newUsername: string,
+    error: string | null }
 
 export interface PlayerDataManager { getUsername: () => string;
-    setUsername: (usernam;e: string) => void }
-}
+    setUsername: (username: string) => void 
+    }
 
 export interface GameEngineWithPlayerData extends GameEngine { playerData: PlayerDataManager
     }
@@ -50,8 +50,8 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
             allowedChars: /^[a-zA-Z0-9ぁ-んァ-ヶー一-龯\s]*$/,
             prohibitedWords: ['admin', 'test', 'guest', 'null', 'undefined'],
     }
-            minLength: 1 }
-        };
+            minLength: 1 
+    };
         // テキスト設定のデフォルト値
         this.textSettings = {;
             contentFont: '14px Arial, sans-serif',
@@ -59,8 +59,8 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         // ダイアログデータの初期化
         this.dialogData = {;
             currentUsername: '',
-            newUsername: '';
-           , error: null ,}
+            newUsername: '',
+    error: null ,}
     
     /**
      * ダイアログの初期化
@@ -72,7 +72,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         // 現在のユーザー名を取得
         const gameEngine = this.gameEngine as GameEngineWithPlayerData;
         const playerData = gameEngine.playerData;''
-        this.dialogData.currentUsername = playerData.getUsername(') || '';
+        this.dialogData.currentUsername = playerData.getUsername() || '';
         this.dialogData.newUsername = this.dialogData.currentUsername;
         this.dialogData.error = null;
         
@@ -82,13 +82,13 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
     /**
      * ボタンの設定'
      */''
-    setupButtons(''';
-                text: '変更',)';
-                color: '#28A745');
-               , callback: () => this.handleUsernameChange(),
+    setupButtons('''
+                text: '変更','';
+                color: '#28A745'),
+    callback: () => this.handleUsernameChange(),
                 get disabled() { ''
-                    return !this.isValidUsername(''';
-                text: 'キャンセル',)';
+                    return !this.isValidUsername('''
+                text: 'キャンセル','';
                 color: '#6C757D',);
                 callback: () => this.handleCancel() ,}
             }
@@ -101,18 +101,18 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      * @param layout - レイアウト情報
      */'
     protected renderContent(context: CanvasRenderingContext2D, layout?: Record<string, number>): void { ''
-        const contentY = (layout? .contentY || this.layout.y) + 50;
+        const contentY = (layout?.contentY || this.layout.y) + 50;
         const contentX = layout?.contentX || this.layout.x;
         const contentWidth = layout?.contentWidth || this.layout.width;
         
         // 現在のユーザー名を表示
         context.font = this.textSettings.contentFont;
         context.fillStyle = this.textSettings.contentColor;''
-        context.textAlign = 'left';''
+        context.textAlign = 'left';
         context.textBaseline = 'top';
 
          : undefined'';
-        context.fillText('現在のユーザー名:', contentX, contentY);''
+        context.fillText('現在のユーザー名:', contentX, contentY';''
         context.fillText(this.dialogData.currentUsername || '(未設定)', contentX + 120, contentY);
         
         // 新しいユーザー名入力欄を描画
@@ -128,8 +128,8 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      * @param y - Y座標
      */
     private renderUsernameInput(;
-        context: CanvasRenderingContext2D);
-       , layout: { contentX: number;, contentWidth: number ), 
+        context: CanvasRenderingContext2D),
+    layout: { contentX: number;, contentWidth: number ), 
         y: number'';
     '): void {'
         const inputWidth = layout.contentWidth - 120,
@@ -140,12 +140,12 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         context.font = this.textSettings.contentFont;
 
         context.fillStyle = this.textSettings.contentColor;''
-        context.textAlign = 'left';''
-        context.textBaseline = 'middle';''
-        context.fillText('新しいユーザー名:', layout.contentX, y + inputHeight / 2);
+        context.textAlign = 'left';
+        context.textBaseline = 'middle';
+        context.fillText('新しいユーザー名:', layout.contentX, y + inputHeight / 2';
         ';
         // 入力ボックスの背景
-        context.fillStyle = this.inputActive ? '#FFFFFF' : '#F8F9FA';''
+        context.fillStyle = this.inputActive ? '#FFFFFF' : '#F8F9FA';
         context.fillRect(inputX, y, inputWidth, inputHeight);
         ';
         // 入力ボックスの枠線
@@ -155,10 +155,10 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         context.strokeRect(inputX, y, inputWidth, inputHeight);
         ';
         // 入力テキストを描画
-        const displayText = this.dialogData.newUsername || '';''
+        const displayText = this.dialogData.newUsername || '';
         context.fillStyle = displayText ? this.textSettings.contentColor: '#999999',
         context.font = this.textSettings.contentFont;''
-        context.textAlign = 'left';''
+        context.textAlign = 'left';
         context.textBaseline = 'middle';
         
         const textX = inputX + 10;
@@ -211,9 +211,9 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
     private renderCharacterCounter(context: CanvasRenderingContext2D, x: number, y: number): void { const currentLength = this.dialogData.newUsername ? this.dialogData.newUsername.length: 0 
         const counterText = `${currentLength}/${this.maxUsernameLength}`;
 
-        context.font = '12px sans-serif';''
-        context.fillStyle = currentLength > this.maxUsernameLength ? '#DC3545' : '#6C757D';''
-        context.textAlign = 'right';''
+        context.font = '12px sans-serif';
+        context.fillStyle = currentLength > this.maxUsernameLength ? '#DC3545' : '#6C757D';
+        context.textAlign = 'right';
         context.textBaseline = 'top';
         context.fillText(counterText, x, y);
     }
@@ -231,9 +231,9 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
             '• 管理者用語やシステム予約語は使用不可'];
         ];
 
-        context.font = '12px sans-serif';''
-        context.fillStyle = '#6C757D';''
-        context.textAlign = 'left';''
+        context.font = '12px sans-serif';
+        context.fillStyle = '#6C757D';
+        context.textAlign = 'left';
         context.textBaseline = 'top';
         
         for (let, i = 0; i < validationRules.length; i++) { context.fillText(validationRules[i], layout.contentX, y + i * 18); }
@@ -246,7 +246,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      * @param layout - レイアウト情報
      * @returns イベントが処理された場合true
      */
-    protected handleContentClick(x: number, y: number, layout?: Record<string, number>): boolean { const contentY = (layout? .contentY || this.layout.y) + 50;
+    protected handleContentClick(x: number, y: number, layout?: Record<string, number>): boolean { const contentY = (layout?.contentY || this.layout.y) + 50;
         const inputY = contentY + 40;
         const inputX = (layout?.contentX || this.layout.x) + 120;
         const inputWidth = (layout?.contentWidth || this.layout.width) - 120;
@@ -279,10 +279,10 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
             case 'Backspace':';
                 event.preventDefault();''
                 this.handleBackspace()';
-            case 'Delete':)';
+            case 'Delete':'';
                 event.preventDefault();''
                 this.handleDelete()';
-            case 'ArrowLeft':)';
+            case 'ArrowLeft':'';
                 event.preventDefault();''
                 this.cursorPosition = Math.max(0, this.cursorPosition - 1);
                 return true;
@@ -378,7 +378,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         // 文字数制限チェック
         if(currentText.length >= this.maxUsernameLength) {'
 
-            this.setError('ユーザー名は10文字以下で入力してください);
+            this.setError('ユーザー名は10文字以下で入力してください';
         }
             return; }
         }
@@ -401,7 +401,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      * ユーザー名変更処理
      * @returns 処理成功の場合true
      */
-    private handleUsernameChange(): boolean { const newUsername = this.dialogData.newUsername? .trim();
+    private handleUsernameChange(): boolean { const newUsername = this.dialogData.newUsername?.trim();
         
         if(!this.validateUsername(newUsername) {
         
@@ -417,18 +417,18 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
             // 成功結果を返す
             if(this.onResult) {'
                 this.onResult({ : undefined''
-                    action: 'change';
-                   , data: {)
+                    action: 'change',
+    data: {)
                         oldUsername: this.dialogData.currentUsername ,}
-                        newUsername: newUsername) }
-                    });
+                        newUsername: newUsername) 
+    }';
             }
             ';
 
             return true;''
         } catch (error) {
             this.setError('ユーザー名の変更に失敗しました'');''
-            console.error('Username change error:', error);
+            console.error('Username change error:', error';
             return false;
     
     /**
@@ -478,7 +478,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      * ユーザー名が有効かチェック
      * @returns 有効な場合true
      */
-    private isValidUsername(): boolean { const username = this.dialogData.newUsername? .trim();
+    private isValidUsername(): boolean { const username = this.dialogData.newUsername?.trim();
         return this.validateUsername(username); }
     
     /**

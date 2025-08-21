@@ -11,8 +11,8 @@ interface ProgressTrackerConfig { enableProgressTracking: boolean,
     enablePrivacyMode: boolean;
     dataRetentionDays: number;
     enableAnalytics: boolean;
-    autoSaveProgress: boolean;
-   , enableUserInsights: boolean ,}
+    autoSaveProgress: boolean,
+    enableUserInsights: boolean ,}
 
 interface ProgressState { sessionId: string | null;
     userId: string | null;
@@ -23,8 +23,8 @@ interface ProgressState { sessionId: string | null;
     skippedSteps: Set<number>;
     timeSpentPerStep: Map<number, number>;
     stepStartTimes: Map<number, number>;
-    completionPercentage: number;
-   , estimatedTimeRemaining: number ,}
+    completionPercentage: number,
+    estimatedTimeRemaining: number ,}
 
 interface EngagementData { totalInteractions: number;
     keyboardInteractions: number;
@@ -36,16 +36,16 @@ interface EngagementData { totalInteractions: number;
     activeTime: number;
     lastActivityTime: number | null;
     sessionPauseCount: number;
-    avgInteractionInterval: number;
-   , engagementScore: number }
+    avgInteractionInterval: number,
+    engagementScore: number }
 
 interface PersonalizationData { userPreferences: Map<string, any>;
     accessibilityNeeds: Map<string, any>;
     deviceCapabilities: Map<string, any>;
     usagePatterns: Map<string, any>;
     learningStyle: 'visual' | 'auditory' | 'kinesthetic' | 'reading' | null,
-    preferredPace: 'slow' | 'normal' | 'fast';
-   , completionBehavior: Map<string, any>;
+    preferredPace: 'slow' | 'normal' | 'fast',
+    completionBehavior: Map<string, any>;
     helpSeeking: Map<string, any>;
     errorPatterns: Map<string, any>;
     successFactors: Map<string, any> }
@@ -63,40 +63,40 @@ interface CompletionStatus { overallProgress: number,
 
 interface StepStatus { ''
     status: 'not_started' | 'in_progress' | 'completed' | 'skipped' | 'failed';
-    updatedAt: number;
-   , stepIndex: number }
+    updatedAt: number,
+    stepIndex: number }
 
 interface MilestoneData { id: string;
     name: string;
     description?: string;
-    completedAt: number;
-   , stepIndex: number }
+    completedAt: number,
+    stepIndex: number }
 
-interface AchievementData { id: string;
-   , name: string;
+interface AchievementData { id: string,
+    name: string;
     description?: string;
     earnedAt?: number; }
 
 interface CertificationData { id: string,
     name: string;
-    earnedAt: number;
-   , stepIndex: number;
+    earnedAt: number,
+    stepIndex: number;
     certificateUrl?: string ,}
 
 interface PrivacySettings { anonymizeData: boolean;
     trackingConsent: boolean;
     dataEncryption: boolean;
-    shareAnalytics: boolean;
-   , retainPersonalData: boolean }
+    shareAnalytics: boolean,
+    retainPersonalData: boolean }
 
 interface PerformanceMetrics { trackingOverhead: number[];
-    dataProcessingTime: number[];
-   , storageOperationTime: number[] }
+    dataProcessingTime: number[],
+    storageOperationTime: number[] }
 
 interface Analytics { sessionMetrics: Map<string, any>;
     performanceMetrics: PerformanceMetrics;
-    userJourney: UserJourneyEvent[];
-   , heatmapData: Map<string, any>;
+    userJourney: UserJourneyEvent[],
+    heatmapData: Map<string, any>;
     conversionFunnels: Map<string, any>;
     dropoffPoints: Map<string, any> }
 
@@ -144,43 +144,43 @@ interface PersonalizationInsights { message?: string;
 
 interface ProgressReport { sessionId: string | null,
     userId: string | null;
-    sessionDuration: number;
-   , progress: {
+    sessionDuration: number,
+    progress: {
         currentSte;p: number;
         totalSteps: number;
         completedSteps: number[];
         skippedSteps: number[];
         completionPercentage: number;
-        estimatedTimeRemaining: number;
-       , averageStepTime: number ,};
+        estimatedTimeRemaining: number,
+    averageStepTime: number ,};
     engagement: { totalInteractions: number;
         engagementScore: number;
         activeTime: number;
-        idleTime: number;
-       , interactionBreakdown: {
+        idleTime: number,
+    interactionBreakdown: {
             keyboard: number;
             mouse: number;
-            touch: number;
-           , focus: number };
+            touch: number,
+    focus: number };
     completion: { overallProgress: number;
         milestonesCompleted: number;
         achievementsUnlocked: number;
         certificationsEarned: number;
-        isCompleted: boolean;
-       , completionDate: number | null };
-    personalization: PersonalizationInsights;
-   , performance: { averageTrackingOverhead: number;
-        dataProcessingTime: number;
-       , userJourneyLength: number };
+        isCompleted: boolean,
+    completionDate: number | null };
+    personalization: PersonalizationInsights,
+    performance: { averageTrackingOverhead: number;
+        dataProcessingTime: number,
+    userJourneyLength: number };
     generatedAt: number;
 }
 
 interface UserAnalytics { session: {
         sessionI;d: string | null;
-        duration: number;
-       , completionRate: number };
-    behavior: { learningStyle: string | null;
-       , preferredPace: string }
+        duration: number,
+    completionRate: number };
+    behavior: { learningStyle: string | null,
+    preferredPace: string }
 
 interface TrackProgressResult { success: boolean,
     error?: string;
@@ -232,13 +232,13 @@ export class OnboardingProgressTracker {
         this.config = {
             enableProgressTracking: true;
             enableEngagementMonitoring: true;
-            enablePersonalizationCollection: true;
-           , trackingInterval: 30000, // 30 seconds;
+            enablePersonalizationCollection: true,
+    trackingInterval: 30000, // 30 seconds;
             enablePrivacyMode: true;
             dataRetentionDays: 90;
             enableAnalytics: true;
-            autoSaveProgress: true;
-           , enableUserInsights: true;
+            autoSaveProgress: true,
+    enableUserInsights: true;
     ,}
             ...config
         };
@@ -253,8 +253,8 @@ export class OnboardingProgressTracker {
             skippedSteps: new Set();
             timeSpentPerStep: new Map();
             stepStartTimes: new Map();
-            completionPercentage: 0;
-           , estimatedTimeRemaining: 0 ,};
+            completionPercentage: 0,
+    estimatedTimeRemaining: 0 ,};
         // Engagement monitoring data
         this.engagementData = { totalInteractions: 0,
             keyboardInteractions: 0;
@@ -266,18 +266,18 @@ export class OnboardingProgressTracker {
             activeTime: 0;
             lastActivityTime: null;
             sessionPauseCount: 0;
-            avgInteractionInterval: 0;
-           , engagementScore: 0 ,};
+            avgInteractionInterval: 0,
+    engagementScore: 0 ,};
         // Personalization data collection
         this.personalizationData = { userPreferences: new Map(),
-            accessibilityNeeds: new Map();
-           , deviceCapabilities: new Map(),
+            accessibilityNeeds: new Map(),
+    deviceCapabilities: new Map(),
             usagePatterns: new Map()';
             preferredPace: 'normal');
             completionBehavior: new Map();
             helpSeeking: new Map();
-            errorPatterns: new Map();
-           , successFactors: new Map( ,};
+            errorPatterns: new Map(),
+    successFactors: new Map( ,}
 
         // Completion status tracking
         this.completionStatus = { overallProgress: 0,
@@ -287,25 +287,25 @@ export class OnboardingProgressTracker {
             certifications: new Set();
             timeToCompletion: null;
             completionDate: null;
-            isCompleted: false;
-           , partialCompletions: new Map( ,};
+            isCompleted: false,
+    partialCompletions: new Map( ,}
 
         // Privacy and data protection
         this.privacySettings = { anonymizeData: true,
             trackingConsent: false;
             dataEncryption: true;
-            shareAnalytics: false;
-           , retainPersonalData: false ,};
+            shareAnalytics: false,
+    retainPersonalData: false ,};
         // Performance and analytics
         this.analytics = { sessionMetrics: new Map(),
             performanceMetrics: {
                 trackingOverhead: [];
-                dataProcessingTime: [];
-               , storageOperationTime: [] ,};
+                dataProcessingTime: [],
+    storageOperationTime: [] ,};
             userJourney: [];
             heatmapData: new Map();
-            conversionFunnels: new Map();
-           , dropoffPoints: new Map();
+            conversionFunnels: new Map(),
+    dropoffPoints: new Map();
         };
 
         // Monitoring intervals and timers
@@ -327,7 +327,7 @@ export class OnboardingProgressTracker {
 
         try {
             // Setup session
-            this.progressState.sessionId = this.generateSessionId(');
+            this.progressState.sessionId = this.generateSessionId();
             this.progressState.userId = userId;
             this.progressState.onboardingStartTime = Date.now();
 
@@ -355,11 +355,11 @@ export class OnboardingProgressTracker {
             this.setupEventListeners();
             // Load existing progress if available
             this.loadExistingProgress()';
-            console.log('OnboardingProgressTracker: Initialized, successfully),
+            console.log('OnboardingProgressTracker: Initialized, successfully',
             return true;
 
         } catch (error') {
-            console.error('OnboardingProgressTracker: Initialization, error:', error);
+            console.error('OnboardingProgressTracker: Initialization, error:', error';
             return false;
 
     /**
@@ -396,19 +396,19 @@ export class OnboardingProgressTracker {
 
             }
 
-                this.updateStepStatus(previousStep, 'completed); }'
+                this.updateStepStatus(previousStep, 'completed'; }'
             }
 
             // Calculate progress percentage
             this.updateProgressPercentage();
             // Calculate estimated time remaining
-            this.updateEstimatedTimeRemaining(''';
+            this.updateEstimatedTimeRemaining('''
                 type: 'step_progress);
                 stepIndex);
                 stepId,);
                 stepType);
-                timestamp: Date.now();
-               , timeFromStart: Date.now() - (this.progressState.onboardingStartTime || 0);
+                timestamp: Date.now(),
+    timeFromStart: Date.now() - (this.progressState.onboardingStartTime || 0);
             });
 
             // Auto-save progress if enabled
@@ -421,10 +421,10 @@ export class OnboardingProgressTracker {
             console.log(`Progress, tracked: Step ${stepIndex} (${stepId}`});
 
             return { success: true,
-                currentStep: stepIndex;
-               , progress: this.progressState.completionPercentage, };
-                estimatedTimeRemaining: this.progressState.estimatedTimeRemaining }
-            } catch (error) {
+                currentStep: stepIndex,
+    progress: this.progressState.completionPercentage, };
+                estimatedTimeRemaining: this.progressState.estimatedTimeRemaining 
+    } catch (error) {
             console.error('OnboardingProgressTracker: Track progress, error:', error);
             return { success: false, };
                 error: (error, as Error).message }
@@ -462,8 +462,8 @@ export class OnboardingProgressTracker {
 
             return { success: true,
                 engagementScore: this.engagementData.engagementScore;
-                totalInteractions: this.engagementData.totalInteractions;
-               , activeTime: this.engagementData.activeTime, };
+                totalInteractions: this.engagementData.totalInteractions,
+    activeTime: this.engagementData.activeTime, };
                 patterns }
             } catch (error) {
             console.error('OnboardingProgressTracker: Monitor engagement, error:', error);
@@ -510,8 +510,8 @@ export class OnboardingProgressTracker {
                     achievement,);
                     stepIndex);
             }
-                    timestamp: Date.now(); }
-                });
+                    timestamp: Date.now(); 
+    });
             }
 
             // Handle certification
@@ -541,10 +541,10 @@ export class OnboardingProgressTracker {
 
             return { success: true,
                 stepStatus: status;
-                overallProgress: this.completionStatus.overallProgress;
-               , milestonesCompleted: this.completionStatus.milestones.size, };
-                achievementsUnlocked: this.completionStatus.achievements.size }
-            } catch (error) {
+                overallProgress: this.completionStatus.overallProgress,
+    milestonesCompleted: this.completionStatus.milestones.size, };
+                achievementsUnlocked: this.completionStatus.achievements.size 
+    } catch (error) {
             console.error('OnboardingProgressTracker: Update completion status, error:', error);
             return { success: false, };
                 error: (error, as Error).message }
@@ -655,8 +655,8 @@ export class OnboardingProgressTracker {
             return { success: true,
                 dataType,
                 dataCollected: true, };
-                privacyCompliant: this.privacySettings.anonymizeData }
-            } catch (error) {
+                privacyCompliant: this.privacySettings.anonymizeData 
+    } catch (error) {
             console.error('OnboardingProgressTracker: Collect personalization data, error:', error);
             return { success: false,
                 error: (error, as Error).message, };
@@ -673,8 +673,8 @@ export class OnboardingProgressTracker {
         const sessionDuration = Date.now() - (this.progressState.onboardingStartTime || 0);
 
         return { // Basic progress information
-            sessionId: this.progressState.sessionId;
-           , userId: this.progressState.userId;
+            sessionId: this.progressState.sessionId,
+    userId: this.progressState.userId;
             sessionDuration,
             
             // Progress metrics
@@ -683,35 +683,35 @@ export class OnboardingProgressTracker {
                 totalSteps: this.progressState.totalSteps;
                 completedSteps: Array.from(this.progressState.completedSteps);
                 skippedSteps: Array.from(this.progressState.skippedSteps);
-                completionPercentage: this.progressState.completionPercentage;
-               , estimatedTimeRemaining: this.progressState.estimatedTimeRemaining, };
-                averageStepTime: this.calculateAverageStepTime(); }
-            },
+                completionPercentage: this.progressState.completionPercentage,
+    estimatedTimeRemaining: this.progressState.estimatedTimeRemaining, };
+                averageStepTime: this.calculateAverageStepTime(); 
+    },
 
             // Engagement metrics
             engagement: { totalInteractions: this.engagementData.totalInteractions;
                 engagementScore: this.engagementData.engagementScore;
                 activeTime: this.engagementData.activeTime;
-                idleTime: this.engagementData.idleTime;
-               , interactionBreakdown: {
+                idleTime: this.engagementData.idleTime,
+    interactionBreakdown: {
                     keyboard: this.engagementData.keyboardInteractions;
                     mouse: this.engagementData.mouseInteractions;
-                    touch: this.engagementData.touchInteractions;
-                   , focus: this.engagementData.focusEvents }
-            };
+                    touch: this.engagementData.touchInteractions,
+    focus: this.engagementData.focusEvents 
+    };
             // Completion status
             completion: { overallProgress: this.completionStatus.overallProgress;
                 milestonesCompleted: this.completionStatus.milestones.size;
                 achievementsUnlocked: this.completionStatus.achievements.size;
                 certificationsEarned: this.completionStatus.certifications.size;
-                isCompleted: this.completionStatus.isCompleted;
-               , completionDate: this.completionStatus.completionDate };
+                isCompleted: this.completionStatus.isCompleted,
+    completionDate: this.completionStatus.completionDate };
             // Personalization insights (privacy-compliant);
             personalization: this.getPersonalizationInsights();
             // Performance metrics
            , performance: { averageTrackingOverhead: this.calculateAverageTrackingOverhead();
-                dataProcessingTime: this.calculateAverageDataProcessingTime();
-               , userJourneyLength: this.analytics.userJourney.length };
+                dataProcessingTime: this.calculateAverageDataProcessingTime(),
+    userJourneyLength: this.analytics.userJourney.length };
             // Generated at
             generatedAt: Date.now();
         }
@@ -722,13 +722,13 @@ export class OnboardingProgressTracker {
     getUserAnalytics(): UserAnalytics | null { if (!this.config.enableAnalytics || !this.initialized) return null;
 
         return { session: {
-                sessionId: this.progressState.sessionId;
-               , duration: Date.now() - (this.progressState.onboardingStartTime || 0), };
-                completionRate: this.progressState.completionPercentage }
-            };
-            behavior: { learningStyle: this.personalizationData.learningStyle;
-               , preferredPace: this.personalizationData.preferredPace }
-        }
+                sessionId: this.progressState.sessionId,
+    duration: Date.now() - (this.progressState.onboardingStartTime || 0), };
+                completionRate: this.progressState.completionPercentage 
+    };
+            behavior: { learningStyle: this.personalizationData.learningStyle,
+    preferredPace: this.personalizationData.preferredPace 
+    }
 
     /**
      * Reset all tracking data
@@ -747,8 +747,8 @@ export class OnboardingProgressTracker {
             skippedSteps: new Set();
             timeSpentPerStep: new Map();
             stepStartTimes: new Map();
-            completionPercentage: 0;
-           , estimatedTimeRemaining: 0 };
+            completionPercentage: 0,
+    estimatedTimeRemaining: 0 };
         // Reset engagement data
         this.engagementData = { totalInteractions: 0,
             keyboardInteractions: 0;
@@ -760,8 +760,8 @@ export class OnboardingProgressTracker {
             activeTime: 0;
             lastActivityTime: null;
             sessionPauseCount: 0;
-            avgInteractionInterval: 0;
-           , engagementScore: 0 ,};
+            avgInteractionInterval: 0,
+    engagementScore: 0 ,};
         // Reset completion status
         this.completionStatus = { overallProgress: 0,
             stepStatuses: new Map();
@@ -770,33 +770,32 @@ export class OnboardingProgressTracker {
             certifications: new Set();
             timeToCompletion: null;
             completionDate: null;
-            isCompleted: false;
-           , partialCompletions: new Map( ,};
+            isCompleted: false partialCompletions: new Map(  };
 
         // Optionally reset personalization data
         if(!keepPersonalizationData) {
             this.personalizationData = {
                 userPreferences: new Map();
-                accessibilityNeeds: new Map();
-               , deviceCapabilities: new Map(),
-                usagePatterns: new Map(')';
+                accessibilityNeeds: new Map(),
+    deviceCapabilities: new Map(),
+                usagePatterns: new Map()';
                 preferredPace: 'normal');
                 completionBehavior: new Map();
-                helpSeeking: new Map();
-               , errorPatterns: new Map();
+                helpSeeking: new Map(),
+    errorPatterns: new Map();
         ,}
-                successFactors: new Map(); }
-            }
+                successFactors: new Map(); 
+    }
 
         // Reset analytics
         this.analytics = { sessionMetrics: new Map(),
             performanceMetrics: {
                 trackingOverhead: [];
-                dataProcessingTime: [];
-               , storageOperationTime: [] ,};
+                dataProcessingTime: [],
+    storageOperationTime: [] ,};
             userJourney: [];
-            heatmapData: new Map();
-           , conversionFunnels: new Map(),
+            heatmapData: new Map(),
+    conversionFunnels: new Map(),
             dropoffPoints: new Map()';
         console.log('Progress, tracking data, reset complete),
     }
@@ -807,7 +806,7 @@ export class OnboardingProgressTracker {
      * Generate unique session ID
      */
     private generateSessionId(): string {
-        return `progress_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
+        return `progress_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
     }
 
     /**
@@ -838,7 +837,7 @@ export class OnboardingProgressTracker {
         this.completionStatus.stepStatuses = new Map();
         
         // Initialize milestone tracking
-        this.completionStatus.milestones = new Map(');
+        this.completionStatus.milestones = new Map();
     }
 
     /**
@@ -851,14 +850,14 @@ export class OnboardingProgressTracker {
         this.engagementData.lastActivityTime = Date.now();
         
         // Start activity monitoring
-        this.startActivityMonitoring(');
+        this.startActivityMonitoring();
     }
 
     /**
      * Initialize personalization data collection
      */''
     private initializePersonalizationCollection()';
-        console.log('Initializing, personalization data, collection...);
+        console.log('Initializing, personalization data collection...);
         
         // Detect device capabilities
         this.detectDeviceCapabilities();
@@ -876,7 +875,7 @@ export class OnboardingProgressTracker {
         }
             this.trackingTimer = setInterval(() => {  }
                 this.monitorEngagement(); }
-            }, this.config.trackingInterval);
+            } this.config.trackingInterval);
         }
 
         // Auto-save interval
@@ -895,31 +894,31 @@ export class OnboardingProgressTracker {
         // Interaction tracking
         document.addEventListener('keydown', (event) => {  ' }
 
-            this.recordInteraction('keyboard', event);' }
+            this.recordInteraction('keyboard', event';' }
 
         }');
 
         document.addEventListener('click', (event) => {  ' }
 
-            this.recordInteraction('mouse', event);' }
+            this.recordInteraction('mouse', event';' }
 
         }');
 
         document.addEventListener('touchstart', (event) => {  ' }
 
-            this.recordInteraction('touch', event);' }
+            this.recordInteraction('touch', event';' }
 
         }');
 
         document.addEventListener('focus', (event) => {  ' }
 
-            this.recordInteraction('focus', event);' }
+            this.recordInteraction('focus', event';' }
 
         }, true');
 
         document.addEventListener('scroll', (event) => {  ' }
 
-            this.recordInteraction('scroll', event);' }
+            this.recordInteraction('scroll', event';' }
 
         }');
 ';
@@ -965,11 +964,11 @@ export class OnboardingProgressTracker {
         // Update activity tracking
         this.engagementData.lastActivityTime = now;''
         this.resetIdleTimer()';
-            type: 'interaction');
-           , interactionType: type,);
-            timestamp: now);
-           , elementTag: (event.target, as HTMLElement)? .tagName, : undefined
-            elementId: (event.target, as HTMLElement)? .id;
+            type: 'interaction'),
+    interactionType: type,);
+            timestamp: now),
+    elementTag: (event.target, as HTMLElement)?.tagName, : undefined
+            elementId: (event.target, as HTMLElement)?.id;
         }),
     }
 
@@ -1037,7 +1036,7 @@ export class OnboardingProgressTracker {
     private calculateAverageStepTime(): number { const stepTimes = Array.from(this.progressState.timeSpentPerStep.values();
         return stepTimes.length > 0 '';
             ? stepTimes.reduce((a, b) => a + b, 0') / stepTimes.length ;
-            : 60000; // Default 1 minute per step }
+            : 60000; // Default 1 minute per step 
     }
 
     /**
@@ -1115,11 +1114,11 @@ export class OnboardingProgressTracker {
             const progressData = {
                 progressState: this.progressState;
                 completionStatus: this.completionStatus;
-                engagementData: this.engagementData;
-               , savedAt: Date.now( };
+                engagementData: this.engagementData,
+    savedAt: Date.now( };
 
             // Save to localStorage(in a real app, this would be a backend call);''
-            if(typeof, localStorage !== 'undefined) {'
+            if(typeof, localStorage !== 'undefined' {'
                 
             }
                 const key = `onboarding_progress_${this.progressState.sessionId}`;
@@ -1155,17 +1154,17 @@ export class OnboardingProgressTracker {
                     this.progressState = {
                         ...savedProgressState,
                         completedSteps: new Set(savedProgressState.completedSteps);
-                        skippedSteps: new Set(savedProgressState.skippedSteps);
-                       , timeSpentPerStep: new Map(savedProgressState.timeSpentPerStep);
+                        skippedSteps: new Set(savedProgressState.skippedSteps),
+    timeSpentPerStep: new Map(savedProgressState.timeSpentPerStep);
                 ,}
-                        stepStartTimes: new Map(savedProgressState.stepStartTimes); }
-                    };
+                        stepStartTimes: new Map(savedProgressState.stepStartTimes); 
+    };
                     
                     this.completionStatus = { ...savedCompletionStatus,
                         stepStatuses: new Map(savedCompletionStatus.stepStatuses);
                         milestones: new Map(savedCompletionStatus.milestones);
-                        achievements: new Set(savedCompletionStatus.achievements);
-                       , certifications: new Set(savedCompletionStatus.certifications),
+                        achievements: new Set(savedCompletionStatus.achievements),
+    certifications: new Set(savedCompletionStatus.certifications),
                         partialCompletions: new Map(savedCompletionStatus.partialCompletions ,};
                     
                     this.engagementData = savedEngagementData;
@@ -1178,7 +1177,7 @@ export class OnboardingProgressTracker {
 
     // Analytics helper methods (simplified for MCP compatibility)
     ;''
-    private detectEngagementPatterns(''';
+    private detectEngagementPatterns('''
             sessionRhythm: 'normal);
         })
 
@@ -1191,8 +1190,8 @@ export class OnboardingProgressTracker {
 
             return { message: 'Privacy mode active' }
         return { learningStyle: this.personalizationData.learningStyle, };
-            preferredPace: this.personalizationData.preferredPace }
-        }
+            preferredPace: this.personalizationData.preferredPace 
+    }
 
     private calculateAverageTrackingOverhead(): number { const overheads = this.analytics.performanceMetrics.trackingOverhead;
         return overheads.length > 0 ? overheads.reduce((a, b) => a + b, 0) / overheads.length: 0, 
@@ -1206,7 +1205,7 @@ export class OnboardingProgressTracker {
     private startActivityMonitoring(): void { this.engagementData.lastActivityTime = Date.now();  }
 
     private detectDeviceCapabilities()';
-        this.personalizationData.deviceCapabilities.set('basic', true); 
+        this.personalizationData.deviceCapabilities.set('basic', true'; 
     }
 
     private initializePreferenceDetection(''';

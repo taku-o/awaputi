@@ -4,31 +4,31 @@
  * グレースフルデグラデーション、入力値検証、異常状態からの復旧処理を提供
  */
 
-import { ErrorLogger  } from './error/ErrorLogger.js';''
-import { UtilsErrorReporter  } from './error/UtilsErrorReporter.js';''
-import { ErrorRecovery  } from './error/ErrorRecovery.js';''
+import { ErrorLogger  } from './error/ErrorLogger.js';
+import { UtilsErrorReporter  } from './error/UtilsErrorReporter.js';
+import { ErrorRecovery  } from './error/ErrorRecovery.js';
 import { UtilsErrorAnalyzer  } from './error/UtilsErrorAnalyzer.js';
 
 // Type definitions
 interface ErrorInfo { id: string,
     message: string;
     stack?: string;
-    context: string;
-   , metadata: Record<string, any>;
+    context: string,
+    metadata: Record<string, any>;
     timestamp: number;
     severity?: string ,}
 
-interface ErrorStats { total: number;
-   , byType: Map<string, number>;
+interface ErrorStats { total: number,
+    byType: Map<string, number>;
     byContext: Map<string, number>;
-    critical: number;
-   , recovered: number ,}
+    critical: number,
+    recovered: number ,}
 
 interface FallbackState { audioDisabled: boolean;
     canvasDisabled: boolean;
     storageDisabled: boolean;
-    reducedEffects: boolean;
-   , safeMode: boolean }
+    reducedEffects: boolean,
+    safeMode: boolean }
 
 type ErrorSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
 
@@ -42,8 +42,7 @@ declare global { interface Performance {
     
     interface Window {
     performance: Performance;
-}
-}
+    }
 
 export class ErrorHandler {
     private isBrowser: boolean;
@@ -68,7 +67,7 @@ export class ErrorHandler {
     public fallbackState: FallbackState,
 
     constructor(''';
-        this.isBrowser = typeof, window !== 'undefined' && typeof, document !== 'undefined';''
+        this.isBrowser = typeof, window !== 'undefined' && typeof, document !== 'undefined';
         this.isNode = typeof, process !== 'undefined' && !!process.versions && !!process.versions.node;
         
         // Main, controller state, this.isInitialized = false;
@@ -87,18 +86,18 @@ export class ErrorHandler {
         this.maxRecoveryAttempts = 3;
         this.fallbackModes = new Map<string, boolean>();
         this.errorStats = {
-            total: 0;
-           , byType: new Map<string, number>(),
+            total: 0,
+    byType: new Map<string, number>(),
             byContext: new Map<string, number>(),
-            critical: 0;
-           , recovered: 0 ,};
+            critical: 0,
+    recovered: 0 ,};
         // Delegated properties from sub-components
         this.recoveryStrategies = new Map<string, Function>();
         this.fallbackState = { audioDisabled: false,
             canvasDisabled: false;
             storageDisabled: false;
-            reducedEffects: false;
-           , safeMode: false ,};
+            reducedEffects: false,
+    safeMode: false ,};
         this.initialize();
     }
     
@@ -133,18 +132,17 @@ export class ErrorHandler {
         window.addEventListener('error', (event: ErrorEvent) => { ''
             this.handleError(event.error, 'GLOBAL_ERROR', {
                 filename: event.filename);
-                lineno: event.lineno);
-               , colno: event.colno, }
-                message: event.message); }
-
-            });''
+                lineno: event.lineno),
+    colno: event.colno, }
+                message: event.message); 
+    }';''
         }');
         ';
         // Unhandled Promise rejections
         window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => { ''
             this.handleError(event.reason, 'PROMISE_REJECTION', { }
-                promise: event.promise); }
-            });
+                promise: event.promise); 
+    });
 
             event.preventDefault(); // Prevent default console output
         });
@@ -160,7 +158,7 @@ export class ErrorHandler {
                         source: target.src || target.href ,}
                 );
             }
-        }, true);
+        }, true';
     }
     
     /**
@@ -169,7 +167,7 @@ export class ErrorHandler {
     private setupPerformanceMonitoring(): void { // Browser environment only
         if(!this.isBrowser) {'
 
-            console.log('[ErrorHandler] Skipping, performance monitoring, in non-browser, environment);
+            console.log('[ErrorHandler] Skipping, performance monitoring in non-browser environment');
         }
             return; }
         }
@@ -184,12 +182,12 @@ export class ErrorHandler {
                 // Memory usage over 80%
         }
                 if (usedMB / limitMB > 0.8) { }
-                    this.handleError(');' }'
+                    this.handleError();' }'
 
                         new Error(`High, memory usage: ${Math.round(usedMB})MB / ${Math.round(limitMB})MB`'), '', 'MEMORY_WARNING', ;
                         { usedMB: Math.round(usedMB),
-                            limitMB: Math.round(limitMB);
-                           , percentage: Math.round((usedMB / limitMB) * 100 ,}
+                            limitMB: Math.round(limitMB),
+    percentage: Math.round((usedMB / limitMB) * 100 ,}
                     );
                 }
             }, 10000); // Every 10 seconds
@@ -214,7 +212,7 @@ export class ErrorHandler {
                 if (fps < 30) { }
                     this.handleError();' }'
 
-                        new Error(`Low, FPS detected: ${fps}`'}), '', 'PERFORMANCE_WARNING', ;
+                        new Error(`Low, FPS detected: ${fps}`'}', '', 'PERFORMANCE_WARNING', ;
                         { fps: fps,
                             timestamp: currentTime ,}
                     );
@@ -235,12 +233,12 @@ export class ErrorHandler {
             // Normalize error using analyzer
             const normalizedError = this.analyzer.normalizeError(error);
             const errorInfo: ErrorInfo = {''
-                id: normalizedError.id || crypto.randomUUID()';
-               , message: normalizedError.message || 'Unknown error',')';
+                id: normalizedError.id || crypto.randomUUID()',
+    message: normalizedError.message || 'Unknown error',')';
                 timestamp: typeof normalizedError.timestamp === 'number' ? normalizedError.timestamp : Date.now();
                 ...normalizedError,
-                context: context;
-               , metadata: metadata ,};
+                context: context,
+    metadata: metadata ,};
             // Add to error log using logger
             this.logger.addToErrorLog(errorInfo);
             
@@ -320,16 +318,16 @@ export class ErrorHandler {
      * Test error handling (for, development)'
      */''
     testErrorHandling()';
-        if(process.env.NODE_ENV === 'development' || this.isNode) {'
+        if(process.env.NODE_ENV === 'development' || this.isNode' {'
 
             console.log('[ErrorHandler] Testing, error handling...'');
 
             ' }'
 
             this.handleError(new, Error('Test, error''), 'TEST', { testMode: true }');''
-            this.handleError('String error test', 'TEST', { testMode: true )),' }
+            this.handleError('String error test', 'TEST', { testMode: true )',' }
 
-            this.handleError({ message: 'Object error test' }, 'TEST', { testMode: true )),
+            this.handleError({ message: 'Object error test' }, 'TEST', { testMode: true )',
 
             console.log('[ErrorHandler] Error, handling test, completed''); }
     }
@@ -352,4 +350,4 @@ let errorHandlerInstance: ErrorHandler | null = null,
  * @returns ErrorHandler instance
  */
 export function getErrorHandler(): ErrorHandler { if (!errorHandlerInstance) {''
-        errorHandlerInstance = new ErrorHandler(' })'
+        errorHandlerInstance = new ErrorHandler(' }''

@@ -3,8 +3,8 @@
  * 
  * プラットフォーム別の最適化画像生成と共有コンテンツ管理
  */
-import { SEOConfig, getSocialImageUrl  } from './SEOConfig';''
-import { seoLogger  } from './SEOLogger';''
+import { SEOConfig, getSocialImageUrl  } from './SEOConfig';
+import { seoLogger  } from './SEOLogger';
 import { seoErrorHandler  } from './SEOErrorHandler';
 import { optimizeImageUrl, 
     truncateText, ;
@@ -18,8 +18,8 @@ interface PlatformSpec {
     imageSize: { widt;h: number;, height: number },
     titleLimit: number;
     descriptionLimit: number;
-    imageFormats: string[];
-   , cacheBustParam: string;
+    imageFormats: string[],
+    cacheBustParam: string;
     defaultImage?: string;
 }
 
@@ -56,8 +56,8 @@ interface OptimizedContent { platform: string,
     description: string;
     image: string;
     url: string;
-    hashtags: string[];
-   , metadata: PlatformMetadata;
+    hashtags: string[],
+    metadata: PlatformMetadata;
     twitterCard?: TwitterCardData;
     facebookSpecific?: FacebookData;
     discordEmbed?: DiscordEmbed;
@@ -66,8 +66,8 @@ interface OptimizedContent { platform: string,
 // プラットフォームメタデータインターフェース
 interface PlatformMetadata { imageWidth: number,
     imageHeight: number;
-    platform: string;
-   , generatedAt: string;
+    platform: string,
+    generatedAt: string;
     cardType?: string;
     site?: string;
     type?: string;
@@ -77,43 +77,43 @@ interface PlatformMetadata { imageWidth: number,
 // Twitter固有データインターフェース
 interface TwitterCardData { ''
     card: 'summary' | 'summary_large_image' | 'app' | 'player';
-    site: string;
-   , creator: string }
+    site: string,
+    creator: string }
 
 // Facebook固有データインターフェース
 interface FacebookData { appId?: string;
-    type: string;
-   , locale: string ,}
+    type: string,
+    locale: string ,}
 
 // Discord Embedインターフェース
 interface DiscordEmbed { title: string;
-    description: string;
-   , color: number, }
+    description: string,
+    color: number, }
     thumbnail?: { url: string }
     fields?: DiscordField[];
     }
 
 // Discord Fieldインターフェース
 interface DiscordField { name: string,
-    value: string;
-   , inline: boolean ,}
+    value: string,
+    inline: boolean ,}
 
 // 共有コンテンツインターフェース（Twitter用）
 interface TwitterShareContent { text: string;
     url: string;
-    hashtags: string[];
-   , imageUrl: string }
+    hashtags: string[],
+    imageUrl: string }
 
 // 共有コンテンツインターフェース（Facebook用）
 interface FacebookShareContent { title: string;
     description: string;
-    url: string;
-   , imageUrl: string;
+    url: string,
+    imageUrl: string;
     quote?: string }
 
 // 共有コンテンツインターフェース（LINE用）
-interface LineShareContent { message: string;
-   , url: string }
+interface LineShareContent { message: string,
+    url: string }
 
 // 共有コンテンツインターフェース（Discord用）
 interface DiscordShareContent { embeds: DiscordEmbed[]
@@ -123,8 +123,8 @@ interface DiscordShareContent { embeds: DiscordEmbed[]
 interface FallbackShareContent { title: string;
     description: string;
     url: string;
-    text: string;
-   , imageUrl: string }
+    text: string,
+    imageUrl: string }
 
 // LocalizationManagerインターフェース
 interface LocalizationManager { getCurrentLanguage(): string;''
@@ -134,8 +134,8 @@ interface LocalizationManager { getCurrentLanguage(): string;''
 interface GameConfig { [key: string]: any, }
 ;
 // プラットフォーム名タイプ
-type PlatformName = 'facebook' | 'twitter' | 'linkedin' | 'pinterest' | 'discord';''
-type SharePlatform = 'twitter' | 'facebook' | 'line' | 'discord';''
+type PlatformName = 'facebook' | 'twitter' | 'linkedin' | 'pinterest' | 'discord';
+type SharePlatform = 'twitter' | 'facebook' | 'line' | 'discord';
 type SupportedLanguage = 'ja' | 'en' | 'zh-CN' | 'zh-TW' | 'ko';
 
 export class SocialMediaOptimizer {
@@ -170,52 +170,52 @@ export class SocialMediaOptimizer {
             this._setupPlatformSpecs();
             // Canvas要素の作成（画像生成用）
             this._setupCanvas()';
-            seoLogger.info('SocialMediaOptimizer, initialized successfully);' }
+            seoLogger.info('SocialMediaOptimizer, initialized successfully';' }
 
         } catch (error) {
-            seoErrorHandler.handle(error as Error, 'socialMediaOptimizerInit); }'
+            seoErrorHandler.handle(error as Error, 'socialMediaOptimizerInit'; }'
     }
     
     /**
      * プラットフォーム仕様の設定'
      */''
-    private _setupPlatformSpecs(''';
+    private _setupPlatformSpecs('''
         this.platformSpecs.set('facebook', {
             imageSize: { width: 1200, height: 630 ,})
-            titleLimit: 60)';
-           , descriptionLimit: 155,
+            titleLimit: 60'',
+    descriptionLimit: 155,
             imageFormats: ['jpg', 'png'],')';
             cacheBustParam: 'fb_cache')');
         ';
         // Twitter
         this.platformSpecs.set('twitter', {
             imageSize: { width: 1200, height: 600 ,})
-            titleLimit: 70)';
-           , descriptionLimit: 200,
+            titleLimit: 70'',
+    descriptionLimit: 200,
             imageFormats: ['jpg', 'png'],')';
             cacheBustParam: 'twitter_cache')');
         ';
         // LinkedIn
         this.platformSpecs.set('linkedin', {
             imageSize: { width: 1200, height: 627 ,})
-            titleLimit: 150)';
-           , descriptionLimit: 300,
+            titleLimit: 150'',
+    descriptionLimit: 300,
             imageFormats: ['jpg', 'png'],')';
             cacheBustParam: 'li_cache')');
         ';
         // Pinterest
         this.platformSpecs.set('pinterest', {
             imageSize: { width: 1000, height: 1500 ,})
-            titleLimit: 500)';
-           , descriptionLimit: 500,
+            titleLimit: 500'',
+    descriptionLimit: 500,
             imageFormats: ['jpg', 'png'],')';
             cacheBustParam: 'pin_cache')');
         ';
         // Discord
         this.platformSpecs.set('discord', {
             imageSize: { width: 1280, height: 720 ,})
-            titleLimit: 256)';
-           , descriptionLimit: 2048,
+            titleLimit: 256'',
+    descriptionLimit: 2048,
             imageFormats: ['jpg', 'png', 'gif'],')';
             cacheBustParam: 'discord_cache');
     }
@@ -230,7 +230,7 @@ export class SocialMediaOptimizer {
 
         }
 
-            this.ctx = this.canvas.getContext('2d); }'
+            this.ctx = this.canvas.getContext('2d'; }'
 }
     
     /**
@@ -273,7 +273,7 @@ export class SocialMediaOptimizer {
 
     /**
      * ゲーム状態に基づいた動的共有コンテンツを生成)
-     */)'
+     */''
     generateShareContent(platform: SharePlatform, gameState: GameState = {}): TwitterShareContent | FacebookShareContent | LineShareContent | DiscordShareContent | FallbackShareContent { try {'
             if(!this.initialized) {'
 
@@ -347,7 +347,7 @@ export class SocialMediaOptimizer {
             url: this._generateGameUrl(gameState,)';
             hashtags: this._generateHashtags({ gameState '), 'twitter''),' };
 
-            imageUrl: this._selectDynamicImage(gameState, 'twitter); }'
+            imageUrl: this._selectDynamicImage(gameState, 'twitter'; }'
         }
 
     /**
@@ -356,7 +356,7 @@ export class SocialMediaOptimizer {
     private _generateFacebookShareContent(gameState: GameState): FacebookShareContent {
         const { score, level, bubblesPopped } = gameState;
 
-        let title = 'BubblePop - 泡割りゲーム';''
+        let title = 'BubblePop - 泡割りゲーム';
         let description = 'HTML5 Canvas を使用したバブルポップゲーム。泡を割って高スコアを目指そう！';
         
         if(score && score > 0) {
@@ -378,10 +378,10 @@ export class SocialMediaOptimizer {
         }
         
         return { title)
-            description)';
-            url: this._generateGameUrl(gameState, };
+            description'';
+            url: this._generateGameUrl(gameState, }
 
-            imageUrl: this._selectDynamicImage(gameState, 'facebook), }'
+            imageUrl: this._selectDynamicImage(gameState, 'facebook', }'
             quote: score && score > 0 ? `${score.toLocaleString(}) 点獲得！` : undefined
         }
 
@@ -402,8 +402,8 @@ export class SocialMediaOptimizer {
         }
         
         return { message, };
-            url: this._generateGameUrl(gameState); }
-        }
+            url: this._generateGameUrl(gameState); 
+    }
 
     /**
      * Discord用動的共有コンテンツ生成'
@@ -414,26 +414,26 @@ export class SocialMediaOptimizer {
 
         const embed: DiscordEmbed = { ''
             title: 'BubblePop - 泡割りゲーム',
-            description: 'HTML5 Canvas バブルポップゲーム';
-           , color: 0x4CAF50 ,};
+            description: 'HTML5 Canvas バブルポップゲーム',
+    color: 0x4CAF50 ,};
         if(score && score > 0) {
         ';
 
             embed.title = `BubblePop スコア: ${score.toLocaleString('''
-                    name: 'スコア';
-                   , value: score.toLocaleString(;
+                    name: 'スコア',
+    value: score.toLocaleString(;
         ,}
                     inline: true }))'
                 { ''
                     name: 'レベル',);
-                    value: (level || 1).toString(;
-                   , inline: true ,})
+                    value: (level || 1).toString(,
+    inline: true ,})
             ])';
             ')';
             if(bubblesPopped && bubblesPopped > 0) { '
                 embed.fields.push({ }
 
-                    name: '破った泡), }'
+                    name: '破った泡', }'
                     value: `${bubblesPopped.toLocaleString(}) 個`;
                     inline: true;
                 },
@@ -452,8 +452,7 @@ export class SocialMediaOptimizer {
                     name: 'プレイ時間', })
                     value: `${minutes}分${seconds}秒`;)
                     inline: true);
-            }
-        }
+    }
         
         return { embeds: [embed] }
 
@@ -468,7 +467,7 @@ export class SocialMediaOptimizer {
 
         }
 
-            return specs? .defaultImage || '/assets/social/og-image.png';
+            return specs?.defaultImage || '/assets/social/og-image.png';
         ';
         // スコアに基づいた画像選択
         if(score >= 100000) {', ';
@@ -502,11 +501,11 @@ export class SocialMediaOptimizer {
         if(score && score > 0) { '
             const params = new URLSearchParams({''
                 utm_source: 'social_share',
-                utm_medium: 'share',)';
-                utm_campaign: 'gameplay_share');
-               , score: score.toString( ,}
-                level: (level || 1).toString(); }
-            };
+                utm_medium: 'share','';
+                utm_campaign: 'gameplay_share'),
+    score: score.toString( ,}
+                level: (level || 1).toString(); 
+    };
             return `${baseUrl}? ${params.toString(})`;
         }
         
@@ -522,13 +521,13 @@ export class SocialMediaOptimizer {
             url: typeof window !== 'undefined' ? window.location.href : 'https://example.com',
             text: 'BubblePop で遊んでいます！ 🎮',' };
 
-            imageUrl: '/assets/social/og-image.png' }
-        }
+            imageUrl: '/assets/social/og-image.png' 
+    }
     
     /**
      * 動的ソーシャル画像の生成'
      */''
-    async generateDynamicSocialImage(gameState: GameState, platform: PlatformName = 'facebook): Promise<string> { ''
+    async generateDynamicSocialImage(gameState: GameState, platform: PlatformName = 'facebook': Promise<string> { ''
         if(!this.canvas || !this.ctx) {'
 
             seoLogger.warn('Canvas, not available, for dynamic, image generation'');
@@ -566,15 +565,15 @@ export class SocialMediaOptimizer {
 
             return dataUrl;''
         } catch (error) {
-            seoLogger.error('Dynamic social image generation failed', error as Error);''
-            return getSocialImageUrl(platform, 'default);
+            seoLogger.error('Dynamic social image generation failed', error as Error';''
+            return getSocialImageUrl(platform, 'default';
     
     /**
      * タイトルの最適化
      */'
     private _optimizeTitle(title: string | undefined, specs: PlatformSpec): string { ''
         if(!title) {'
-            title = this.localizationManager ?   : undefined'';
+            title = this.localizationManager ? undefined : undefined'';
                 this.localizationManager.t('seo.defaultTitle'') : ';
 
         ,}
@@ -590,7 +589,7 @@ export class SocialMediaOptimizer {
      */'
     private _optimizeDescription(description: string | undefined, specs: PlatformSpec): string { ''
         if(!description) {'
-            description = this.localizationManager ?   : undefined'';
+            description = this.localizationManager ? undefined : undefined'';
                 this.localizationManager.t('seo.defaultDescription'') : ';
 
         }
@@ -608,8 +607,8 @@ export class SocialMediaOptimizer {
         if(content.image) {
             return optimizeImageUrl(content.image, {
                 width: specs.imageSize.width);
-                height: specs.imageSize.height);
-               , format: specs.imageFormats[0]
+                height: specs.imageSize.height),
+    format: specs.imageFormats[0]
         ,}
             ), }
         }
@@ -623,7 +622,7 @@ export class SocialMediaOptimizer {
             return await this.generateDynamicSocialImage(content.gameState, platform as PlatformName);
         ';
         // デフォルト画像
-        return getSocialImageUrl(platform, content.imageVariant || 'default);
+        return getSocialImageUrl(platform, content.imageVariant || 'default';
     }
     
     /**
@@ -637,8 +636,8 @@ export class SocialMediaOptimizer {
             ko: ['#버블팝', '#HTML5게임', '#브라우저게임', '#무료게임] };
         ';
 
-        const lang = (this.localizationManager ?   : undefined'';
-            this.localizationManager.getCurrentLanguage(') : 'ja') as SupportedLanguage;
+        const lang = (this.localizationManager ? undefined : undefined'';
+            this.localizationManager.getCurrentLanguage() : 'ja') as SupportedLanguage;
         
         let hashtags = baseHashtags[lang] || baseHashtags.ja;
         
@@ -651,22 +650,21 @@ export class SocialMediaOptimizer {
             if(content.gameState.highScore) {'
         }
 
-                hashtags.push(lang === 'ja' ? '#ハイスコア' : '#HighScore); }
-
-            }''
+                hashtags.push(lang === 'ja' ? '#ハイスコア' : '#HighScore'; 
+    }''
             if(content.gameState.achievement) {', ';
 
             }
 
-                hashtags.push(lang === 'ja' ? '#実績解除' : '#Achievement); }
-}
+                hashtags.push(lang === 'ja' ? '#実績解除' : '#Achievement); 
+    }
         
         // プラットフォーム別の制限
         const limits: Record<string, number> = { twitter: 2, // Twitterは少なめに
             instagram: 10;
             facebook: 5;
-            linkedin: 3;
-           , pinterest: 10 ,};
+            linkedin: 3,
+    pinterest: 10 ,};
         const limit = limits[platform] || 5;
         return hashtags.slice(0, limit);
     }
@@ -675,21 +673,21 @@ export class SocialMediaOptimizer {
      * プラットフォームメタデータの生成
      */
     private _generatePlatformMetadata(content: BaseContent, specs: PlatformSpec, platform: string): PlatformMetadata { const metadata: PlatformMetadata = {
-            imageWidth: specs.imageSize.width;
-           , imageHeight: specs.imageSize.height;
+            imageWidth: specs.imageSize.width,
+    imageHeight: specs.imageSize.height;
             platform,
             generatedAt: new Date().toISOString( ,};
         // プラットフォーム固有のメタデータ
         switch(platform) {'
 
             case 'twitter':'';
-                metadata.cardType = 'summary_large_image';''
+                metadata.cardType = 'summary_large_image';
                 metadata.site = '@BubblePopGame'; // 実際のアカウントに変更
                 break;''
             case 'facebook':'';
-                metadata.type = 'website';''
-                metadata.locale = this._getOGLocale(''';
-            case 'linkedin':'';
+                metadata.type = 'website';
+                metadata.locale = this._getOGLocale('''
+            case 'linkedin': '';
                 metadata.type = 'article';
 
                 break;''
@@ -704,7 +702,7 @@ export class SocialMediaOptimizer {
     
     /**
      * プラットフォーム固有の最適化の適用)
-     */)'
+     */''
     private async _applyPlatformSpecificOptimizations(optimized: OptimizedContent, platform: string, content: BaseContent): Promise<void>,
         switch(platform) {'
 
@@ -715,10 +713,10 @@ export class SocialMediaOptimizer {
                     site: '@BubblePopGame';
         ,}
 
-                    creator: '@BubblePopGame' }
-                };
+                    creator: '@BubblePopGame' 
+    };
                 // Twitter用の短縮文の作成
-                if(content.gameState? .score) {
+                if(content.gameState?.score) {
 
                     optimized.tweetText = `BubblePopで${content.gameState.score.toLocaleString('''
             case 'facebook':;
@@ -727,16 +725,16 @@ export class SocialMediaOptimizer {
                     appId: content.facebookAppId,
                     type: 'game',
                     locale: this._getOGLocale(''';
-            case 'pinterest':)';
+            case 'pinterest':'';
                 // Pinterest用の豊富な説明',}'
                 optimized.description = this._expandDescriptionForPinterest(optimized.description, content};
-                break;
+                break
 
-            case 'discord':;
+            case 'discord': ;
                 // Discord Embed用の情報
                 optimized.discordEmbed = {
-                    title: optimized.title;
-                   , description: optimized.description;
+                    title: optimized.title,
+    description: optimized.description;
                 }
                     color: 0x4CAF50, // ゲームのテーマカラー }
                     thumbnail: { url: optimized.image }
@@ -795,8 +793,8 @@ export class SocialMediaOptimizer {
     private async _drawGameContent(gameState: GameState): Promise<void>,
         if(!this.ctx || !this.canvas || !gameState) return;
 
-        this.ctx.fillStyle = '#FFFFFF';''
-        this.ctx.font = 'bold 48px Arial, sans-serif';''
+        this.ctx.fillStyle = '#FFFFFF';
+        this.ctx.font = 'bold 48px Arial, sans-serif';
         this.ctx.textAlign = 'center';
         
         // スコアの表示
@@ -832,9 +830,9 @@ export class SocialMediaOptimizer {
         if(!this.ctx || !this.canvas) return;
         ';
         // タイトルの描画
-        this.ctx.fillStyle = '#FFFFFF';''
-        this.ctx.font = 'bold 64px Arial, sans-serif';''
-        this.ctx.textAlign = 'center';''
+        this.ctx.fillStyle = '#FFFFFF';
+        this.ctx.font = 'bold 64px Arial, sans-serif';
+        this.ctx.textAlign = 'center';
         this.ctx.strokeStyle = '#2E7D32';
         this.ctx.lineWidth = 4;
 
@@ -850,7 +848,7 @@ export class SocialMediaOptimizer {
 
         }
 
-            this.ctx.fillText('無料で遊べるブラウザゲーム', this.canvas.width / 2, this.canvas.height - 30); }
+            this.ctx.fillText('無料で遊べるブラウザゲーム', this.canvas.width / 2, this.canvas.height - 30'; }
 }
     
     /**
@@ -878,35 +876,35 @@ export class SocialMediaOptimizer {
      */
     private _generateDiscordFields(content: BaseContent): DiscordField[] { const fields: DiscordField[] = [],
 
-        if(content.gameState? .score) {'
+        if(content.gameState?.score) {'
             fields.push({ : undefined)'
-                name: 'スコア');
-               , value: content.gameState.score.toLocaleString(;
+                name: 'スコア'),
+    value: content.gameState.score.toLocaleString(;
         ,}
                 inline: true }))
         }
 
         ')';
-        if(content.gameState? .combo) {'
+        if(content.gameState?.combo) {'
             fields.push({ : undefined'
         
-                name: 'コンボ', })'
+                name: 'コンボ', }''
                 value: `${content.gameState.combo}連続`;')'
-                inline: true)');
+                inline: true'');
         }
         ';
 
         fields.push({ ''
-            name: 'プラットフォーム',)';
+            name: 'プラットフォーム','';
             value: 'ブラウザ（無料）',);
-            inline: true);
+            inline: true';
         return fields ,}
     
     /**
      * Open Graphロケールの取得
      */'
-    private _getOGLocale(): string { const lang = this.localizationManager ?   : undefined''
-            this.localizationManager.getCurrentLanguage(') : 'ja';
+    private _getOGLocale(): string { const lang = this.localizationManager ? undefined : undefined''
+            this.localizationManager.getCurrentLanguage() : 'ja';
         ';
 
         const localeMap: Record<string, string> = {'', 'ja': 'ja_JP',
@@ -969,31 +967,31 @@ export class SocialMediaOptimizer {
         switch(platform) {'
 
             case 'facebook':'';
-                if(content.url) params.set('u', content.url);
+                if(content.url) params.set('u', content.url';
 
                 break;''
             case 'twitter':'';
-                if(content.title) params.set('text', content.title);''
-                if(content.url) params.set('url', content.url);''
+                if(content.title) params.set('text', content.title';''
+                if(content.url) params.set('url', content.url';''
                 if(content.hashtags) {'
         }
 
-                    params.set('hashtags', content.hashtags.map(h => h.replace('#', '')).join(',)); }
+                    params.set('hashtags', content.hashtags.map(h => h.replace('#', '')'.join(',)'; }
                 }
 
                 break;''
             case 'linkedin':'';
-                if(content.url) params.set('url', content.url);
+                if(content.url) params.set('url', content.url';
 
                 break;''
             case 'pinterest':'';
-                if(content.url) params.set('url', content.url);''
-                if(content.image) params.set('media', content.image);''
-                if(content.description) params.set('description', content.description);
+                if(content.url) params.set('url', content.url';''
+                if(content.image) params.set('media', content.image';''
+                if(content.description) params.set('description', content.description';
 
                 break;''
             case 'reddit':'';
-                if(content.url) params.set('url', content.url);''
+                if(content.url) params.set('url', content.url';''
                 if(content.title) params.set('title', content.title);
                 break;
         }
@@ -1006,7 +1004,7 @@ export class SocialMediaOptimizer {
      */ : undefined'
     clearCache(): void { this.imageCache.clear();''
         this.shareCache.clear()';
-        seoLogger.info('Social, media cache, cleared); }'
+        seoLogger.info('Social, media cache, cleared'; }'
     
     /**
      * リソースのクリーンアップ

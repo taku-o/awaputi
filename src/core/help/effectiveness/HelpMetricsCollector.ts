@@ -53,65 +53,65 @@ export interface FeedbackStatistics { averageRating?: number;
 export interface CollectorConfig { minDataThreshold: number,
     dataCollectionInterval: number ,}
 export interface CollectionState { isActive: boolean,
-    lastCollectionTime: number;
-   , collectionQueue: any[] ,}
+    lastCollectionTime: number,
+    collectionQueue: any[] ,}
 export interface RawData { analytics: AnalyticsReport | null,
     feedback: FeedbackStatistics | null;
-    sessions: AnalyticsSession[];
-   , interactions: [string, FeedbackData][],
+    sessions: AnalyticsSession[],
+    interactions: [string, FeedbackData][],
     timestamp: number ,}
 export interface UsageAnalysis { summary: UsageSummary,
-    details: UsageDetails;
-   , insights: Insight[]
+    details: UsageDetails,
+    insights: Insight[]
     ,}
 export interface UsageSummary { totalSessions: number,
     uniqueUsers: number;
     averageSessionDuration: number;
     pageViewsPerSession: number;
-    searchUsageRate: number;
-   , returnUserRate: number ,}
+    searchUsageRate: number,
+    returnUserRate: number ,}
 export interface UsageDetails { topCategories: any[],
     topTopics: any[];
     searchQueries: any[];
-    sessionDistribution: SessionDistribution;
-   , usagePatterns: UsagePatterns
+    sessionDistribution: SessionDistribution,
+    usagePatterns: UsagePatterns
     ,}
 export interface EngagementAnalysis { summary: EngagementSummary,
-    details: EngagementDetails;
-   , insights: Insight[]
+    details: EngagementDetails,
+    insights: Insight[]
     ,}
 export interface EngagementSummary { averageTimePerTopic: number,
     interactionRate: number;
     searchSuccessRate: number;
-    navigationEfficiency: number;
-   , contentCompletionRate: number ,}
+    navigationEfficiency: number,
+    contentCompletionRate: number ,}
 export interface EngagementDetails { topicEngagement: Record<string, any>,
     searchBehavior: Record<string, any>,
     navigationPatterns: Record<string, any>,
-    dropoffPoints: any[];
-   , peakUsageTimes: Record<string, any>, }
+    dropoffPoints: any[],
+    peakUsageTimes: Record<string, any>, }
 export interface SatisfactionAnalysis { summary: SatisfactionSummary,
-    details: SatisfactionDetails;
-   , insights: Insight[]
+    details: SatisfactionDetails,
+    insights: Insight[]
     ,}
 export interface SatisfactionSummary { averageRating: number,
     helpfulnessRate: number;
-    totalFeedbacks: number;
-   , ratingDistribution: Record<string, number>,
+    totalFeedbacks: number,
+    ratingDistribution: Record<string, number>,
     sentimentScore: number ,}
 export interface SatisfactionDetails { topRatedContent: any[],
-    lowRatedContent: any[];
-   , feedbackCategories: Map<string, number>,
-    improvementAreas: any[];
-   , userSentiments: Record<string, any>, }
+    lowRatedContent: any[],
+    feedbackCategories: Map<string, number>,
+    improvementAreas: any[],
+    userSentiments: Record<string, any>, }
 export interface SessionDistribution { byDuration: {
         shor;t: number;
-        medium: number;
-       , long: number 
+        medium: number,
+    long: number 
 };
     byPageViews: { few: number;
-        moderate: number;
-       , many: number 
+        moderate: number,
+    many: number 
 };
     byTime: Map<number, number>,
 }
@@ -120,15 +120,15 @@ export interface UsagePatterns { peakHours: Map<number, number>,
     commonJourneys: Map<string, number>,
     entryPoints: Map<string, number>, }
 export interface Insight { type: string,
-    message: string;
-   , severity: 'low' | 'medium' | 'high' ,}
+    message: string,
+    severity: 'low' | 'medium' | 'high' ,}
 export interface DataVolume { sessions: number,
-    feedback: number;
-   , analytics_events: number ,}
+    feedback: number,
+    analytics_events: number ,}
 export interface CollectionStats { isActive: boolean,
     lastCollectionTime: number;
-    queueSize: number;
-   , config: CollectorConfig
+    queueSize: number,
+    config: CollectorConfig
     ,}
 export class HelpMetricsCollector {
     private helpEffectivenessAnalyzer: HelpEffectivenessAnalyzer;
@@ -147,15 +147,14 @@ export class HelpMetricsCollector {
             minDataThreshold: 5
 }
             dataCollectionInterval: 60000 // 1分間隔 ;
-}
-        },
+    },
         
         // メトリクス収集状態
         this.collectionState = { isActive: false,
-            lastCollectionTime: 0;
-           , collectionQueue: [] 
+            lastCollectionTime: 0,
+    collectionQueue: [] 
 ,};
-        console.log('[HelpMetricsCollector] Component, initialized);
+        console.log('[HelpMetricsCollector] Component, initialized';
     }
     
     /**
@@ -167,8 +166,8 @@ export class HelpMetricsCollector {
             analytics: null;
             feedback: null;
             sessions: [];
-            interactions: [];
-           , timestamp: Date.now( };
+            interactions: [],
+    timestamp: Date.now( };
         ';
         try { // アナリティクスデータの収集
             if(this.helpEffectivenessAnalyzer.helpAnalytics) {'
@@ -209,20 +208,20 @@ export class HelpMetricsCollector {
                 
                 // 基本使用統計
                 analysis.summary = {
-                    totalSessions: analyticsData.overview? .totalHelpSessions || 0, : undefined
-                    uniqueUsers: analyticsData.overview? .uniqueUsers || 0, : undefined
-                    averageSessionDuration: analyticsData.overview? .averageSessionDuration || 0, : undefined
-                    pageViewsPerSession: this.calculatePageViewsPerSession(rawData.sessions);
-                   , searchUsageRate: this.calculateSearchUsageRate(rawData.sessions ,}
-                    returnUserRate: this.calculateReturnUserRate(rawData.sessions); }
-                };
+                    totalSessions: analyticsData.overview?.totalHelpSessions || 0, : undefined
+                    uniqueUsers: analyticsData.overview?.uniqueUsers || 0, : undefined
+                    averageSessionDuration: analyticsData.overview?.averageSessionDuration || 0, : undefined
+                    pageViewsPerSession: this.calculatePageViewsPerSession(rawData.sessions),
+    searchUsageRate: this.calculateSearchUsageRate(rawData.sessions ,}
+                    returnUserRate: this.calculateReturnUserRate(rawData.sessions); 
+    };
                 
                 // 詳細分析
-                analysis.details = { topCategories: analyticsData.topContent? .categories || [], : undefined
-                    topTopics: analyticsData.topContent? .topics || [], : undefined
-                    searchQueries: analyticsData.topContent? .searchQueries || [], : undefined
-                    sessionDistribution: this.analyzeSessionDistribution(rawData.sessions);
-                   , usagePatterns: this.analyzeUsagePatterns(rawData.sessions ,};
+                analysis.details = { topCategories: analyticsData.topContent?.categories || [], : undefined
+                    topTopics: analyticsData.topContent?.topics || [], : undefined
+                    searchQueries: analyticsData.topContent?.searchQueries || [], : undefined
+                    sessionDistribution: this.analyzeSessionDistribution(rawData.sessions),
+    usagePatterns: this.analyzeUsagePatterns(rawData.sessions ,};
                 
                 // インサイト生成
                 analysis.insights = this.generateUsageInsights(analysis.summary, analysis.details);
@@ -250,15 +249,15 @@ export class HelpMetricsCollector {
             analysis.summary = { averageTimePerTopic: this.calculateAverageTimePerTopic(rawData.sessions),
                 interactionRate: this.calculateInteractionRate(rawData.sessions, rawData.interactions),
                 searchSuccessRate: this.calculateSearchSuccessRate(rawData.sessions);
-                navigationEfficiency: this.calculateNavigationEfficiency(rawData.sessions);
-               , contentCompletionRate: this.calculateContentCompletionRate(rawData.sessions ,};
+                navigationEfficiency: this.calculateNavigationEfficiency(rawData.sessions),
+    contentCompletionRate: this.calculateContentCompletionRate(rawData.sessions ,}
             
             // 詳細エンゲージメント分析
             analysis.details = { topicEngagement: this.analyzeTopicEngagement(rawData.sessions),
                 searchBehavior: this.analyzeSearchBehavior(rawData.sessions);
                 navigationPatterns: this.analyzeNavigationPatterns(rawData.sessions);
-                dropoffPoints: this.identifyDropoffPoints(rawData.sessions);
-               , peakUsageTimes: this.analyzePeakUsageTimes(rawData.sessions ,};
+                dropoffPoints: this.identifyDropoffPoints(rawData.sessions),
+    peakUsageTimes: this.analyzePeakUsageTimes(rawData.sessions ,};
             
             // エンゲージメントインサイト
             analysis.insights = this.generateEngagementInsights(analysis.summary, analysis.details);
@@ -285,8 +284,8 @@ export class HelpMetricsCollector {
             
                 // 基本満足度指標
                 analysis.summary = {
-                    averageRating: rawData.feedback.averageRating || 0;
-                   , helpfulnessRate: rawData.feedback.helpfulPercentage || 0
+                    averageRating: rawData.feedback.averageRating || 0,
+    helpfulnessRate: rawData.feedback.helpfulPercentage || 0
 }
                     totalFeedbacks: rawData.feedback.totalFeedbacks || 0;
 }
@@ -298,8 +297,8 @@ export class HelpMetricsCollector {
                 analysis.details = { topRatedContent: rawData.feedback.topRatedContent || [],
                     lowRatedContent: rawData.feedback.lowRatedContent || [];
                     feedbackCategories: rawData.feedback.commonCategories || new Map();
-                    improvementAreas: this.identifyImprovementAreas(rawData.interactions);
-                   , userSentiments: this.analyzeUserSentiments(rawData.interactions ,};
+                    improvementAreas: this.identifyImprovementAreas(rawData.interactions),
+    userSentiments: this.analyzeUserSentiments(rawData.interactions ,};
                 
                 // 満足度インサイト
                 analysis.insights = this.generateSatisfactionInsights(analysis.summary, analysis.details);
@@ -325,8 +324,8 @@ export class HelpMetricsCollector {
 
             }
 
-                this.loggingSystem.warn('HelpMetricsCollector) }'
-                    `Insufficient data: sessions=${sessionCount}, feedback=${feedbackCount}`});
+                this.loggingSystem.warn('HelpMetricsCollector' }'
+                    `Insufficient data: sessions=${sessionCount}, feedback=${feedbackCount}`}';
                 return false;
             }
             ';
@@ -368,8 +367,8 @@ export class HelpMetricsCollector {
      * @returns データボリューム情報
      */
     calculateDataVolume(rawData: RawData): DataVolume { return { sessions: rawData.sessions ? rawData.sessions.length : 0,
-            feedback: rawData.interactions ? rawData.interactions.length : 0;
-           , analytics_events: rawData.analytics ?   : undefined ,};
+            feedback: rawData.interactions ? rawData.interactions.length : 0,
+    analytics_events: rawData.analytics ? undefined : undefined ,};
                 (rawData.analytics.data?.overview?.totalPageViews || 0) : 0 
         },
     }
@@ -413,7 +412,7 @@ export class HelpMetricsCollector {
         return sessionsWithSearch / sessions.length;
     private calculateReturnUserRate(sessions: AnalyticsSession[]): number { if (!sessions || sessions.length === 0) return 0;
         // 簡単な実装: 同じentryPointを持つセッションの比率で推定
-        const entryPoints = new Map<string, number>(');
+        const entryPoints = new Map<string, number>();
 
         sessions.forEach(session => { ')'
             const entryPoint = session.entryPoint || 'unknown');
@@ -560,15 +559,15 @@ export class HelpMetricsCollector {
 
         if(summary.averageSessionDuration < 60) {'
             insights.push({''
-                type: 'usage_concern',)';
+                type: 'usage_concern','';
                 message: 'セッション時間が短く、ユーザーが求める情報を見つけにくい可能性があります',' }
 
-                severity: 'medium'); }
-        }
+                severity: 'medium'); 
+    }
 
         if(summary.searchUsageRate > 0.6) { '
             insights.push({''
-                type: 'usage_positive',)';
+                type: 'usage_positive','';
                 message: '検索機能がよく利用されており、ユーザーの能動的な情報探索が見られます',' }
 
                 severity: 'low'); }

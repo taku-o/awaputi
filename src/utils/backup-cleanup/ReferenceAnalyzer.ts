@@ -1,67 +1,67 @@
-import fs from 'fs/promises';''
+import fs from 'fs/promises';
 import path from 'path';
 
 // Type definitions
 interface ReferenceContext { before: string[],
     target: string;
-    after: string[];
-   , lineNumber: number ,}
+    after: string[],
+    lineNumber: number ,}
 
 interface ImportReference { file: string;
-    line: number;
-   , content: string,
-    type: 'import';
-   , context: ReferenceContext
+    line: number,
+    content: string,
+    type: 'import',
+    context: ReferenceContext
     ,}
 
-interface StringReference { file: string;
-   , line: number,
+interface StringReference { file: string,
+    line: number,
     content: string,
     type: 'string';
-    isReportFile: boolean;
-   , context: ReferenceContext
+    isReportFile: boolean,
+    context: ReferenceContext
     ,}
 
 interface ImportSearchResult { filePath: string;
     importReferences: ImportReference[];
-    searchedFiles: number;
-   , hasImportReferences: boolean }
+    searchedFiles: number,
+    hasImportReferences: boolean }
 
 interface StringSearchResult { filePath: string;
     stringReferences: StringReference[];
     activeReferences: StringReference[];
-    reportFileReferences: StringReference[];
-   , hasActiveStringReferences: boolean }
+    reportFileReferences: StringReference[],
+    hasActiveStringReferences: boolean }
 
-interface ReferencesByType { import: ImportReference[];
-   , string: StringReference[]
+interface ReferencesByType { import: ImportReference[],
+    string: StringReference[]
     }
 
 interface ReferencesByLocation { [directory: string]: (ImportReference | StringReference)[], }
 
 interface ContextAnalysis { byType: ReferencesByType,
     byLocation: ReferencesByLocation;
-    activeReferences: (ImportReference | StringReference)[];
-   , reportReferences: (ImportReference | StringReference)[] ,}
+    activeReferences: (ImportReference | StringReference)[],
+    reportReferences: (ImportReference | StringReference)[] ,}
 
 interface SafetyWarning { level: string;
-    message: string;
-   , references: number }
+    message: string,
+    references: number }
 
-interface SafetyRecommendation { type: string;
-   , message: string }
+interface SafetyRecommendation { type: string,
+    message: string }
 
 interface SafetyAssessment { safeToDelete: boolean;
-    warnings: SafetyWarning[];
-   , recommendations: SafetyRecommendation[]
+    warnings: SafetyWarning[],
+    recommendations: SafetyRecommendation[]
     }
 
 interface ReferenceSummary { totalReferences: number;
     importReferences: number;
     stringReferences: number;
     activeReferences: number;
-    reportFileReferences: number;
-   , hasSafetyBlockingReferences: boolean }
+    reportFileReferences: number,
+    hasSafetyBlockingReferences: boolean }
 
 interface AnalysisInput { importAnalysis?: ImportSearchResult;
     stringAnalysis?: StringSearchResult;
@@ -72,8 +72,8 @@ interface ReferenceReport { filePath: string,
     importAnalysis: ImportSearchResult;
     stringAnalysis: StringSearchResult;
     contextAnalysis: ContextAnalysis;
-    safetyAssessment: SafetyAssessment;
-   , generatedAt: string ,}
+    safetyAssessment: SafetyAssessment,
+    generatedAt: string ,}
 
 /**
  * ReferenceAnalyzer - バックアップファイルへの参照を分析するクラス
@@ -88,7 +88,7 @@ export class ReferenceAnalyzer {
 
     /**
      * 指定されたファイルへの参照を検索
-     */)'
+     */''
     async searchImportReferences(filePath: string): Promise<ImportSearchResult> { const fileName = path.basename(filePath);''
         const fileNameWithoutExt = path.basename(filePath, path.extname(filePath));''
         const relativePath = filePath.replace(/^\.\// );
@@ -111,8 +111,8 @@ export class ReferenceAnalyzer {
                         importReferences.push({)
                             file: searchFile,);
                             line: i + 1),
-                            content: line.trim()';
-                           , type: 'import', }
+                            content: line.trim()',
+    type: 'import', }
                             context: this.getContext(lines, i); }
                         });
                     }
@@ -123,8 +123,8 @@ export class ReferenceAnalyzer {
         return { filePath,
             importReferences,
             searchedFiles: allFiles.length, };
-            hasImportReferences: importReferences.length > 0 }
-        }
+            hasImportReferences: importReferences.length > 0 
+    }
 
     /**
      * 文字列参照の検索
@@ -152,8 +152,8 @@ export class ReferenceAnalyzer {
                         stringReferences.push({)
                             file: searchFile,);
                             line: i + 1),
-                            content: line.trim()';
-                           , type: 'string');
+                            content: line.trim()',
+    type: 'string');
                             isReportFile,);
         }
                             context: this.getContext(lines, i); }
@@ -166,8 +166,8 @@ export class ReferenceAnalyzer {
             stringReferences,
             activeReferences: stringReferences.filter(ref => !ref.isReportFile);
             reportFileReferences: stringReferences.filter(ref = > ref.isReportFile) ,};
-            hasActiveStringReferences: stringReferences.some(ref => !ref.isReportFile); }
-        }
+            hasActiveStringReferences: stringReferences.some(ref => !ref.isReportFile); 
+    }
 
     /**
      * レポートファイルを除外した参照の検索
@@ -180,11 +180,11 @@ export class ReferenceAnalyzer {
     async analyzeReferenceContext(references: (ImportReference | StringReference)[]'): Promise<ContextAnalysis> { const contextAnalysis: ContextAnalysis = {'
             byType: {''
                 import: references.filter(ref => ref.type === 'import'') as ImportReference[],
-                string: references.filter(ref => ref.type === 'string) as StringReference[] ,}'
+                string: references.filter(ref => ref.type === 'string' as StringReference[] ,}'
             };
             byLocation: {},''
             activeReferences: references.filter(ref => ')'';
-                !('isReportFile' in, ref) || !ref.isReportFile'';
+                !('isReportFile' in, ref' || !ref.isReportFile'';
             '),
             reportReferences: references.filter(ref = > ')';
                 'isReportFile' in ref && ref.isReportFile) };
@@ -219,16 +219,16 @@ export class ReferenceAnalyzer {
                 totalReferences: allReferences.length;
                 importReferences: importAnalysis.importReferences.length;
                 stringReferences: stringAnalysis.stringReferences.length;
-                activeReferences: contextAnalysis.activeReferences.length;
-               , reportFileReferences: contextAnalysis.reportReferences.length, };
-                hasSafetyBlockingReferences: contextAnalysis.activeReferences.length > 0 }
-            };
+                activeReferences: contextAnalysis.activeReferences.length,
+    reportFileReferences: contextAnalysis.reportReferences.length, };
+                hasSafetyBlockingReferences: contextAnalysis.activeReferences.length > 0 
+    };
             importAnalysis,
             stringAnalysis,
             contextAnalysis,
             safetyAssessment: { safeToDelete: contextAnalysis.activeReferences.length === 0;
-                warnings: this.generateSafetyWarnings(contextAnalysis);
-               , recommendations: this.generateSafetyRecommendations(contextAnalysis };
+                warnings: this.generateSafetyWarnings(contextAnalysis),
+    recommendations: this.generateSafetyRecommendations(contextAnalysis }
             generatedAt: new, Date().toISOString();
         }
 
@@ -308,10 +308,10 @@ export class ReferenceAnalyzer {
         const end = Math.min(lines.length - 1, lineIndex + contextLines);
         
         return { before: lines.slice(start, lineIndex),
-            target: lines[lineIndex];
-           , after: lines.slice(lineIndex + 1, end + 1), };
-            lineNumber: lineIndex + 1 }
-        }
+            target: lines[lineIndex],
+    after: lines.slice(lineIndex + 1, end + 1), };
+            lineNumber: lineIndex + 1 
+    }
 
     /**
      * 安全性に関する警告を生成
@@ -348,20 +348,19 @@ export class ReferenceAnalyzer {
             recommendations.push({)'
                 type: 'safe_deletion',' }
 
-                message: 'アクティブな参照が見つからないため、安全に削除できます')'); }
-
-        } else { recommendations.push({)'
+                message: 'アクティブな参照が見つからないため、安全に削除できます')'); 
+    } else { recommendations.push({)'
                 type: 'manual_review',' }
 
-                message: 'アクティブな参照があるため、手動で確認してから削除してください'); }
-        }
+                message: 'アクティブな参照があるため、手動で確認してから削除してください'); 
+    }
 
         if(contextAnalysis.reportReferences.length > 0) {'
             recommendations.push({'
-        })'
+        }''
                 type: 'info',') }
 
-                message: `${contextAnalysis.reportReferences.length}個のレポートファイルでの参照は削除後に更新されます`)');
+                message: `${contextAnalysis.reportReferences.length}個のレポートファイルでの参照は削除後に更新されます`'');
         }
         
         return recommendations;
@@ -372,66 +371,66 @@ import path from 'path';
 
 // Type definitions
 interface Reference { file: string,
-    line: number;
-   , content: string,
+    line: number,
+    content: string,
     type: 'import' | 'string';
-    isReportFile?: boolean;
-   , context: ContextInfo
+    isReportFile?: boolean,
+    context: ContextInfo
     ,}
 
 interface ContextInfo { before: string[];
     target: string;
-    after: string[];
-   , lineNumber: number }
+    after: string[],
+    lineNumber: number }
 
 interface ImportAnalysisResult { filePath: string;
     importReferences: Reference[];
-    searchedFiles: number;
-   , hasImportReferences: boolean }
+    searchedFiles: number,
+    hasImportReferences: boolean }
 
 interface StringAnalysisResult { filePath: string;
     stringReferences: Reference[];
     activeReferences: Reference[];
-    reportFileReferences: Reference[];
-   , hasActiveStringReferences: boolean }
+    reportFileReferences: Reference[],
+    hasActiveStringReferences: boolean }
 
 interface ContextAnalysis { byType: {
-        impor;t: Reference[];
-       , string: Reference[] };
+        impor;t: Reference[],
+    string: Reference[] };
     byLocation: Record<string, Reference[]>;
-    activeReferences: Reference[];
-   , reportReferences: Reference[];
+    activeReferences: Reference[],
+    reportReferences: Reference[];
     }
 ';
 
 interface SafetyWarning { ''
     level: 'low' | 'medium' | 'high' | 'critical';
-    message: string;
-   , references: number }
+    message: string,
+    references: number }
 ';
 
 interface SafetyRecommendation { ''
-    type: 'safe_deletion' | 'manual_review' | 'info';
-   , message: string }
+    type: 'safe_deletion' | 'manual_review' | 'info',
+    message: string }
 
 interface SafetyAssessment { safeToDelete: boolean;
-    warnings: SafetyWarning[];
-   , recommendations: SafetyRecommendation[]
+    warnings: SafetyWarning[],
+    recommendations: SafetyRecommendation[]
     }
 
-interface ReferenceReport { filePath: string;
-   , summary: {
+interface ReferenceReport { filePath: string,
+    summary: {
         totalReference;s: number;
         importReferences: number;
         stringReferences: number;
         activeReferences: number;
-        reportFileReferences: number;
-       , hasSafetyBlockingReferences: boolean };
+        reportFileReferences: number,
+    hasSafetyBlockingReferences: boolean };
     importAnalysis: ImportAnalysisResult;
     stringAnalysis: StringAnalysisResult;
     contextAnalysis: ContextAnalysis;
-    safetyAssessment: SafetyAssessment;
-   , generatedAt: string;
+    safetyAssessment: SafetyAssessment,
+    generatedAt: string;
 }
 
 interface AnalysisInput { importAnalysis?: ImportAnalysisResult;
@@ -451,7 +450,7 @@ export class ReferenceAnalyzer {
 
     /**
      * 指定されたファイルへの参照を検索
-     */)'
+     */''
     async searchImportReferences(filePath: string): Promise<ImportAnalysisResult> { const fileName = path.basename(filePath);''
         const fileNameWithoutExt = path.basename(filePath, path.extname(filePath));''
         const relativePath = filePath.replace(/^\.\// );
@@ -486,8 +485,8 @@ export class ReferenceAnalyzer {
         return { filePath,
             importReferences,
             searchedFiles: allFiles.length, };
-            hasImportReferences: importReferences.length > 0 }
-        }
+            hasImportReferences: importReferences.length > 0 
+    }
 
     /**
      * 文字列参照の検索
@@ -529,8 +528,8 @@ export class ReferenceAnalyzer {
             stringReferences,
             activeReferences: stringReferences.filter(ref => !ref.isReportFile);
             reportFileReferences: stringReferences.filter(ref => ref.isReportFile) ,};
-            hasActiveStringReferences: stringReferences.some(ref => !ref.isReportFile); }
-        }
+            hasActiveStringReferences: stringReferences.some(ref => !ref.isReportFile); 
+    }
 
     /**
      * レポートファイルを除外した参照の検索
@@ -542,8 +541,8 @@ export class ReferenceAnalyzer {
      */''
     async analyzeReferenceContext(references: Reference[]): Promise<ContextAnalysis> { const contextAnalysis: ContextAnalysis = {'
             byType: {''
-                import: references.filter(ref => ref.type === 'import',)';
-                string: references.filter(ref => ref.type === 'string) ,}'
+                import: references.filter(ref => ref.type === 'import','';
+                string: references.filter(ref => ref.type === 'string' ,}'
             };
             byLocation: {}
             activeReferences: references.filter(ref => !ref.isReportFile);
@@ -564,7 +563,7 @@ export class ReferenceAnalyzer {
     /**
      * 参照分析レポートの生成
      */
-    async generateReferenceReport(filePath: string, analysis?: AnalysisInput): Promise<ReferenceReport> { const importAnalysis = analysis? .importAnalysis || await this.searchImportReferences(filePath);
+    async generateReferenceReport(filePath: string, analysis?: AnalysisInput): Promise<ReferenceReport> { const importAnalysis = analysis?.importAnalysis || await this.searchImportReferences(filePath);
         const stringAnalysis = analysis?.stringAnalysis || await this.searchStringReferences(filePath);
         
         const allReferences = [...importAnalysis.importReferences];
@@ -578,16 +577,16 @@ export class ReferenceAnalyzer {
                 totalReferences: allReferences.length;
                 importReferences: importAnalysis.importReferences.length;
                 stringReferences: stringAnalysis.stringReferences.length;
-                activeReferences: contextAnalysis.activeReferences.length;
-               , reportFileReferences: contextAnalysis.reportReferences.length, };
-                hasSafetyBlockingReferences: contextAnalysis.activeReferences.length > 0 }
-            };
+                activeReferences: contextAnalysis.activeReferences.length,
+    reportFileReferences: contextAnalysis.reportReferences.length, };
+                hasSafetyBlockingReferences: contextAnalysis.activeReferences.length > 0 
+    };
             importAnalysis,
             stringAnalysis,
             contextAnalysis,
             safetyAssessment: { safeToDelete: contextAnalysis.activeReferences.length === 0;
-                warnings: this.generateSafetyWarnings(contextAnalysis);
-               , recommendations: this.generateSafetyRecommendations(contextAnalysis };
+                warnings: this.generateSafetyWarnings(contextAnalysis),
+    recommendations: this.generateSafetyRecommendations(contextAnalysis }
             generatedAt: new, Date().toISOString();
         }
 
@@ -667,10 +666,10 @@ export class ReferenceAnalyzer {
         const end = Math.min(lines.length - 1, lineIndex + contextLines);
         
         return { before: lines.slice(start, lineIndex),
-            target: lines[lineIndex];
-           , after: lines.slice(lineIndex + 1, end + 1), };
-            lineNumber: lineIndex + 1 }
-        }
+            target: lines[lineIndex],
+    after: lines.slice(lineIndex + 1, end + 1), };
+            lineNumber: lineIndex + 1 
+    }
 
     /**
      * 安全性に関する警告を生成
@@ -707,20 +706,19 @@ export class ReferenceAnalyzer {
             recommendations.push({)'
                 type: 'safe_deletion',' }
 
-                message: 'アクティブな参照が見つからないため、安全に削除できます')'); }
-
-        } else { recommendations.push({)'
+                message: 'アクティブな参照が見つからないため、安全に削除できます')'); 
+    } else { recommendations.push({)'
                 type: 'manual_review',' }
 
-                message: 'アクティブな参照があるため、手動で確認してから削除してください'); }
-        }
+                message: 'アクティブな参照があるため、手動で確認してから削除してください'); 
+    }
 
         if(contextAnalysis.reportReferences.length > 0) {'
             recommendations.push({'
-        })'
+        }''
                 type: 'info',') }
 
-                message: `${contextAnalysis.reportReferences.length}個のレポートファイルでの参照は削除後に更新されます`)');
+                message: `${contextAnalysis.reportReferences.length}個のレポートファイルでの参照は削除後に更新されます`'');
         }
         
         return recommendations;

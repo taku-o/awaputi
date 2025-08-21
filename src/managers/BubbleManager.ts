@@ -5,10 +5,10 @@
  * 泡生成、物理計算、ドラッグ操作、特殊効果を統合管理
  */
 
-import { getPerformanceOptimizer  } from '../utils/PerformanceOptimizer';''
-import { BubbleSpawner  } from './bubble-manager/BubbleSpawner';''
-import { BubblePhysicsEngine  } from './bubble-manager/BubblePhysicsEngine';''
-import { BubbleDragSystem  } from './bubble-manager/BubbleDragSystem';''
+import { getPerformanceOptimizer  } from '../utils/PerformanceOptimizer';
+import { BubbleSpawner  } from './bubble-manager/BubbleSpawner';
+import { BubblePhysicsEngine  } from './bubble-manager/BubblePhysicsEngine';
+import { BubbleDragSystem  } from './bubble-manager/BubbleDragSystem';
 import { BubbleEffectProcessor  } from './bubble-manager/BubbleEffectProcessor';
 import type { BubbleManager as IBubbleManager, 
     Bubble, ;
@@ -55,7 +55,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
      */''
     spawnBubble(type: string | null = null, position: Position | null = null): Bubble | null { ''
         console.log('[DEBUG] BubbleManager.spawnBubble 呼び出し開始'');''
-        console.log('[DEBUG] this.spawner:', !!this.spawner);''
+        console.log('[DEBUG] this.spawner:', !!this.spawner';''
         console.log('[DEBUG] typeof this.spawner.spawnBubble:', typeof (this.spawner && this.spawner.spawnBubble));''
         console.log('[DEBUG] type:', type, 'position:', position);
 
@@ -67,7 +67,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
 
         if(typeof, this.spawner.spawnBubble !== 'function'') {'
 
-            console.error('[DEBUG] spawner.spawnBubbleメソッドが存在しません);
+            console.error('[DEBUG] spawner.spawnBubbleメソッドが存在しません';
         }
             return null;
 
@@ -157,7 +157,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
      * パフォーマンス向上のためのカリング処理
      */
     performCulling(): void { const performanceOptimizer = getPerformanceOptimizer();
-        if (this.bubbles.length <= ((performanceOptimizer, as any).getMaxBubbles? .() || 100)) {
+        if (this.bubbles.length <= ((performanceOptimizer, as any).getMaxBubbles?.() || 100)) {
             return; // 制限内なのでカリング不要 }
         
         // 優先度の低い泡を削除
@@ -169,7 +169,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
         bubblesWithPriority.sort((a, b) => a.priority - b.priority);
         
         // 下位の泡を削除
-        const targetCount = (performanceOptimizer, as any).getMaxBubbles? .() || 100;
+        const targetCount = (performanceOptimizer, as any).getMaxBubbles?.() || 100;
         const toRemove = this.bubbles.length - targetCount;
         
         for(let, i = 0; i < toRemove; i++) {
@@ -224,7 +224,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
      * 泡を描画
      */
     render(context: CanvasRenderingContext2D): void { const performanceOptimizer = getPerformanceOptimizer();''
-        const renderQuality = (performanceOptimizer, as any).getRenderQuality? .(') || 'medium';
+        const renderQuality = (performanceOptimizer, as any).getRenderQuality?.() || 'medium';
         
         // デバッグ情報を出力（5秒間隔）
         if (!this.lastDebugTime || performance.now() - this.lastDebugTime > 5000) { : undefined 
@@ -232,7 +232,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
             if(this.bubbles.length > 0} {
                 
             }
-                const bubble = this.bubbles[0]; }
+                const bubble = this.bubbles[0] }
                 console.log(`[DEBUG] 最初の泡: type=${bubble.type}, position=(${(bubble, as any}).x}, ${(bubble, as, any}).y}), visible=${this.physicsEngine.isBubbleVisible(bubble})`);
             }
             this.lastDebugTime = performance.now();
@@ -371,7 +371,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
     /**
      * 特殊な泡の生成率を設定
      */
-    setSpecialSpawnRate(bubbleType: string, rate: number): void { this.spawner.setSpecialSpawnRate(bubbleType, rate); }
+    setSpecialSpawnRate(bubbleType: string rate: number): void { this.spawner.setSpecialSpawnRate(bubbleType rate); }
     
     /**
      * テスト用バブルの追加（デバッグツール用）
@@ -387,7 +387,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
     /**
      * 複数のテストバブルを一度に追加
      */
-    addTestBubbles(bubblesData: any[]): number { const bubbles = this.spawner.addTestBubbles(bubblesData);
+    addTestBubbles(bubblesData: any[]): number { const bubbles = this.spawner.addTestBubbles(bubblesData');
         this.bubbles.push(...bubbles');
         return bubbles.length; }
     
@@ -396,7 +396,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
      */''
     removeTestBubbles(condition: string | ((bubble: Bubble) => boolean') | 'all''): number { let removedCount = 0;
 
-        if(typeof, condition === 'string) {'
+        if(typeof, condition === 'string' {'
             // IDによる削除
             this.bubbles = this.bubbles.filter(bubble => { );
                 if ((bubble, as any).id === condition) {
@@ -405,7 +405,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
                     return false;
                 return true;''
             }');''
-        } else if(typeof, condition === 'function) { // 条件関数による削除'
+        } else if(typeof, condition === 'function' { // 条件関数による削除'
             this.bubbles = this.bubbles.filter(bubble => { );
                 if(condition(bubble) {
                     
@@ -414,7 +414,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
                     return false;
                 return true;''
             }');''
-        } else if(condition === 'all) { // 全削除'
+        } else if(condition === 'all' { // 全削除'
             removedCount = this.bubbles.length;
             this.bubbles = []; }
 
@@ -432,8 +432,8 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
                 id: (bubble, as any).id;
                 type: bubble.type;
                 x: bubble.position.x;
-                y: bubble.position.y;
-               , health: bubble.health });
+                y: bubble.position.y,
+    health: bubble.health });
         }
 
     // =======================
@@ -492,7 +492,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
 
         } else { }'
 
-            console.warn('[BubbleManager] setChainBonus: effectProcessorまたはメソッドが存在しません''); }
-}
+            console.warn('[BubbleManager] setChainBonus: effectProcessorまたはメソッドが存在しません''); 
+    }
 
 }

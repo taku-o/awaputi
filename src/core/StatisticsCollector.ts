@@ -27,8 +27,8 @@ export class StatisticsCollector {
             USER_ACTION: 'user_action';
     ,}
 
-            PERFORMANCE: 'performance' }
-        };
+            PERFORMANCE: 'performance' 
+    };
         this.setupEventListeners();
         this.startBatchProcessing();
     }
@@ -40,11 +40,11 @@ export class StatisticsCollector {
         const event = {
             type: eventType;
             category: category;
-            data: data;
-           , timestamp: Date.now();
+            data: data,
+    timestamp: Date.now();
     }
-            sessionId: this.generateSessionId(); }
-        };
+            sessionId: this.generateSessionId(); 
+    };
         
         // イベントバッファに追加
         this.addToBuffer(event);
@@ -62,8 +62,8 @@ export class StatisticsCollector {
     collectBubbleEvent(eventType, bubbleData) { this.collectEvent(eventType, {
             bubbleType: bubbleData.type;
             position: bubbleData.position);
-            reactionTime: bubbleData.reactionTime);
-           , comboMultiplier: bubbleData.comboMultiplier, }
+            reactionTime: bubbleData.reactionTime),
+    comboMultiplier: bubbleData.comboMultiplier, }
             scoreEarned: bubbleData.scoreEarned), this.eventCategories.BUBBLE); }
     }
     
@@ -72,8 +72,8 @@ export class StatisticsCollector {
      */
     collectComboEvent(eventType, comboData) { this.collectEvent(eventType, {
             comboCount: comboData.count);
-            comboMultiplier: comboData.multiplier);
-           , comboBroken: comboData.broken, }
+            comboMultiplier: comboData.multiplier),
+    comboBroken: comboData.broken, }
             totalScore: comboData.totalScore), this.eventCategories.COMBO); }
     }
     
@@ -82,8 +82,8 @@ export class StatisticsCollector {
      */
     collectDamageEvent(eventType, damageData) { this.collectEvent(eventType, {
             damageAmount: damageData.amount);
-            damageSource: damageData.source);
-           , currentHP: damageData.currentHP, }
+            damageSource: damageData.source),
+    currentHP: damageData.currentHP, }
             maxHP: damageData.maxHP), this.eventCategories.DAMAGE); }
     }
     
@@ -92,8 +92,8 @@ export class StatisticsCollector {
      */
     collectHealEvent(eventType, healData) { this.collectEvent(eventType, {
             healAmount: healData.amount);
-            healSource: healData.source);
-           , currentHP: healData.currentHP, }
+            healSource: healData.source),
+    currentHP: healData.currentHP, }
             maxHP: healData.maxHP), this.eventCategories.HEAL); }
     }
     
@@ -102,8 +102,8 @@ export class StatisticsCollector {
      */
     collectSpecialEffectEvent(eventType, effectData) { this.collectEvent(eventType, {
             effectType: effectData.type);
-            duration: effectData.duration);
-           , intensity: effectData.intensity, }
+            duration: effectData.duration),
+    intensity: effectData.intensity, }
             triggeredBy: effectData.triggeredBy), this.eventCategories.SPECIAL_EFFECT); }
     }
     
@@ -112,8 +112,8 @@ export class StatisticsCollector {
      */
     collectUserActionEvent(eventType, actionData) { this.collectEvent(eventType, {
             actionType: actionData.type);
-            position: actionData.position);
-           , timestamp: actionData.timestamp, }
+            position: actionData.position),
+    timestamp: actionData.timestamp, }
             inputDevice: actionData.inputDevice), this.eventCategories.USER_ACTION); }
     }
     
@@ -122,8 +122,8 @@ export class StatisticsCollector {
      */
     collectPerformanceEvent(eventType, performanceData) { this.collectEvent(eventType, {
             frameRate: performanceData.frameRate);
-            memoryUsage: performanceData.memoryUsage);
-           , processingTime: performanceData.processingTime, }
+            memoryUsage: performanceData.memoryUsage),
+    processingTime: performanceData.processingTime, }
             renderTime: performanceData.renderTime), this.eventCategories.PERFORMANCE); }
     }
     
@@ -155,7 +155,7 @@ export class StatisticsCollector {
             if (now - this.lastFlushTime >= this.flushInterval) { }
                 this.flushEvents(); }
             }''
-        }, this.flushInterval);
+        }, this.flushInterval';
         ';
         // フォーカス喪失時のフラッシュ
         window.addEventListener('blur', () => { this.flushEvents(); });
@@ -257,7 +257,7 @@ export class StatisticsCollector {
                 case 'bubble_popped':;
                     this.statisticsManager.onBubblePopped(;
                         event.data.bubbleType)';
-                        event.data.reactionTime)'';
+                        event.data.reactionTime''';
                     ');
 
                     break;''
@@ -281,7 +281,7 @@ export class StatisticsCollector {
                 case 'combo_updated':;
                     this.statisticsManager.onComboUpdate(;
                         event.data.comboCount)';
-                        event.data.comboBroken)'';
+                        event.data.comboBroken''';
                     ');
 
                     break;''
@@ -355,8 +355,8 @@ export class StatisticsCollector {
             switch(event.type) {'
 
                 case 'drag_operation':'';
-                    this.statisticsManager.onDragOperation(''';
-                case 'click_action':;
+                    this.statisticsManager.onDragOperation('''
+                case 'click_action': ;
                     // クリック統計の更新
             }
                     break; }
@@ -377,11 +377,11 @@ export class StatisticsCollector {
         if (!this.processingMetrics) {
             this.processingMetrics = {
                 totalProcessingTime: 0;
-                totalEventsProcessed: 0;
-               , averageProcessingTime: 0;
+                totalEventsProcessed: 0,
+    averageProcessingTime: 0;
     }
-                maxProcessingTime: 0 }
-            }
+                maxProcessingTime: 0 
+    }
         
         this.processingMetrics.totalProcessingTime += processingTime;
         this.processingMetrics.totalEventsProcessed += eventCount;
@@ -415,7 +415,7 @@ export class StatisticsCollector {
      * セッションIDの生成
      */
     generateSessionId() { if (!this.sessionId) { }
-            this.sessionId = `session_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
+            this.sessionId = `session_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
         }
         return this.sessionId;
     }
@@ -426,12 +426,12 @@ export class StatisticsCollector {
     getCollectorStatistics() {
         return { queueSize: this.eventQueue.length,
             bufferSize: Array.from(this.eventBuffer.values().reduce((sum, buffer) => sum + buffer.length, 0),
-            processingMetrics: this.processingMetrics;
-           , errorMetrics: this.errorMetrics;
+            processingMetrics: this.processingMetrics,
+    errorMetrics: this.errorMetrics;
     ,}
             sessionId: this.sessionId, };
-            isProcessing: this.isProcessing }
-        }
+            isProcessing: this.isProcessing 
+    }
     
     /**
      * バッファのクリア
@@ -463,8 +463,8 @@ export class StatisticsCollector {
         this.flushEvents(true);
         // バッファのクリア
         this.clearBuffer()';
-        window.removeEventListener('beforeunload', this.flushEvents);''
-        window.removeEventListener('blur', this.flushEvents);
+        window.removeEventListener('beforeunload', this.flushEvents';''
+        window.removeEventListener('blur', this.flushEvents';
 
     }''
 }

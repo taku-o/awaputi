@@ -5,19 +5,19 @@
  * 不整合の検出・報告・自動修正機能を提供します。
  */
 
-import { getConfigurationManager  } from '../core/ConfigurationManager.js';''
+import { getConfigurationManager  } from '../core/ConfigurationManager.js';
 import { getErrorHandler  } from './ErrorHandler.js';
 
 // Type definitions
 interface ConfigurationSource { name: string,
     priority: number;
     loader: () => Promise<any>;''
-    validator: (confi;g: any') => boolean ,}'
+    validator: (config: any') => boolean ,}'
 }
 
 interface SourceConfigData { config: any;
-    source: ConfigurationSource;
-   , loadTime: number;
+    source: ConfigurationSource,
+    loadTime: number;
     error?: string }
 
 interface BubbleConfig { score?: number;
@@ -48,48 +48,48 @@ interface Discrepancy { type: string,
     key: string,
     values: Array<[string, SourceValue]>;''
     severity: 'LOW' | 'MEDIUM' | 'HIGH';
-    impact: string;
-   , detectedAt: number ,}
+    impact: string,
+    detectedAt: number ,}
 
 interface SourceValue { value: any;
-    source: string;
-   , priority: number }
+    source: string,
+    priority: number }
 
 interface Recommendation { action: string;
     description: string;
     targetValue?: any;
     affectedFiles?: string[];
-    priority: string;
-   , estimatedEffort: string;
+    priority: string,
+    estimatedEffort: string;
     discrepancyId?: string }
 
 interface ValidationResult { timestamp: number;
     sourceCount?: number;
     discrepancyCount: number;
-    discrepancies: Discrepancy[];
-   , sourceConfigs: Record<string, SerializedSourceConfig>;
+    discrepancies: Discrepancy[],
+    sourceConfigs: Record<string, SerializedSourceConfig>;
     recommendations: Recommendation[];
     error?: string ,}
 
 interface SerializedSourceConfig { name: string;
     priority: number;
     loadTime: number;
-    hasConfig: boolean;
-   , error: string | null }
+    hasConfig: boolean,
+    error: string | null }
 
 interface SyncHistory { timestamp: number;
-    action: string;
-   , result: string }
+    action: string,
+    result: string }
 
 interface SyncReport { timestamp: number;
     discrepancyCount: number;
-    discrepancies: Discrepancy[];
-   , syncHistory: SyncHistory[],
+    discrepancies: Discrepancy[],
+    syncHistory: SyncHistory[],
     sources: string[],
     status: 'SYNCHRONIZED' | 'INCONSISTENT' ,}
 
-interface SyncFixes { applied: number;
-   , failed: number }
+interface SyncFixes { applied: number,
+    failed: number }
 
 export class ConfigurationSynchronizer {
     public configManager: any;
@@ -126,8 +126,8 @@ export class ConfigurationSynchronizer {
      */''
     private _registerConfigurationSources()';
         this.configurationSources.set('gameBalance', { ');''
-            name: 'GameBalance.js(ORIGINAL_BALANCE_CONFIG)';
-           , priority: 2, // 中優先度;
+            name: 'GameBalance.js(ORIGINAL_BALANCE_CONFIG)',
+    priority: 2, // 中優先度;
             loader: () => this._loadGameBalanceConfig();
             validator: (config) => this._validateGameBalanceConfig(config);' ,}'
 
@@ -135,8 +135,8 @@ export class ConfigurationSynchronizer {
         ';
         // Bubble.jsからの設定ソース
         this.configurationSources.set('bubbleImplementation', { ');''
-            name: 'Bubble.js(getTypeConfig)';
-           , priority: 3, // 最高優先度（実装値）;
+            name: 'Bubble.js(getTypeConfig)',
+    priority: 3, // 最高優先度（実装値）;
             loader: () => this._loadBubbleImplementationConfig();
             validator: (config) => this._validateBubbleImplementationConfig(config);' ,}'
 
@@ -144,8 +144,8 @@ export class ConfigurationSynchronizer {
         ';
         // テストからの設定ソース
         this.configurationSources.set('testExpectations', { ');''
-            name: 'Test expectations(*.test.js)';
-           , priority: 1, // 低優先度;
+            name: 'Test expectations(*.test.js)',
+    priority: 1, // 低優先度;
             loader: () => this._loadTestExpectationConfig();
             validator: (config) => this._validateTestExpectationConfig(config);' ,}'
 
@@ -153,8 +153,8 @@ export class ConfigurationSynchronizer {
         ';
         // ConfigurationManagerからの設定ソース
         this.configurationSources.set('configurationManager', { ');''
-            name: 'ConfigurationManager(unified)';
-           , priority: 4, // 最高優先度（統一システム）;
+            name: 'ConfigurationManager(unified)',
+    priority: 4, // 最高優先度（統一システム）;
             loader: () => this._loadConfigurationManagerConfig();
             validator: (config) => this._validateConfigurationManagerConfig(config) ,}
         });
@@ -174,22 +174,22 @@ export class ConfigurationSynchronizer {
             
                 try {
                     const config = await source.loader();
-                    sourceConfigs.set(sourceId, {)
-                        config,);
+                    sourceConfigs.set(sourceId {)
+                        config );
                         source);
             
             }
-                        loadTime: Date.now(); }
-                    }');''
-                } catch (error) { this.errorHandler.handleError(error, 'CONFIGURATION_ERROR', {)'
+                        loadTime: Date.now(); 
+    }');''
+                } catch (error) { this.errorHandler.handleError(error, 'CONFIGURATION_ERROR', {''
                         context: 'ConfigurationSynchronizer.validateConsistency);
                         sourceId,);
                         sourceName: source.name ,});
                     
                     sourceConfigs.set(sourceId, { config: null)
                         source);
-                        loadTime: Date.now();
-                       , error: error.message });
+                        loadTime: Date.now(),
+    error: error.message });
                 }
             }
             
@@ -198,20 +198,20 @@ export class ConfigurationSynchronizer {
             
             // 結果を整理
             const result = { timestamp: Date.now(),
-                sourceCount: sourceConfigs.size;
-               , discrepancyCount: discrepancies.length;
+                sourceCount: sourceConfigs.size,
+    discrepancyCount: discrepancies.length;
                 discrepancies,
-                sourceConfigs: this._serializeSourceConfigs(sourceConfigs);
-               , recommendations: this._generateRecommendations(discrepancies ,};
+                sourceConfigs: this._serializeSourceConfigs(sourceConfigs),
+    recommendations: this._generateRecommendations(discrepancies ,};
             
             // 不整合リストを更新
-            this.discrepancies = discrepancies;
+            this.discrepancies = discrepancies
             
             console.log(`[ConfigurationSynchronizer] 検証完了: ${discrepancies.length}個の不整合を検出`});
             
             return result;
 
-        } catch (error) { this.errorHandler.handleError(error, 'CONFIGURATION_ERROR', {)'
+        } catch (error) { this.errorHandler.handleError(error, 'CONFIGURATION_ERROR', {''
                 context: 'ConfigurationSynchronizer.validateConsistency' ,});
             
             return { timestamp: Date.now(),
@@ -263,12 +263,12 @@ export class ConfigurationSynchronizer {
                 discrepancies.push({)'
                     type: 'BUBBLE_SCORE_INCONSISTENCY',);
                     bubbleType);
-                    key: `bubbles.${bubbleType).score`;
+                    key: `bubbles.${bubbleType'.score`;
                     values: Array.from(scoreValues.entries(,},
                     severity: this._calculateSeverity(scoreValues}
 
                     impact: 'Score calculation and game balance tests will not match implementation', }
-                    detectedAt: Date.now(});
+                    detectedAt: Date.now());
                 });
             }
             
@@ -278,12 +278,12 @@ export class ConfigurationSynchronizer {
                 discrepancies.push({)'
                     type: 'BUBBLE_HEALTH_INCONSISTENCY',);
                     bubbleType);
-                    key: `bubbles.${bubbleType).health`;
+                    key: `bubbles.${bubbleType'.health`;
                     values: Array.from(healthValues.entries(,},
                     severity: this._calculateSeverity(healthValues}
 
                     impact: 'Bubble durability tests will not match implementation', }
-                    detectedAt: Date.now(});
+                    detectedAt: Date.now());
                 });
             }
             
@@ -293,12 +293,12 @@ export class ConfigurationSynchronizer {
                 discrepancies.push({)'
                     type: 'BUBBLE_SIZE_INCONSISTENCY',);
                     bubbleType);
-                    key: `bubbles.${bubbleType).size`;
+                    key: `bubbles.${bubbleType'.size`;
                     values: Array.from(sizeValues.entries(,},
                     severity: this._calculateSeverity(sizeValues}
 
                     impact: 'Visual appearance and collision detection tests may not match implementation', }
-                    detectedAt: Date.now(});
+                    detectedAt: Date.now());
                 });
             }
         }
@@ -318,45 +318,45 @@ export class ConfigurationSynchronizer {
         const electricIntensityValues = this._extractElectricIntensityValues(sourceConfigs);''
         if(electricIntensityValues.size > 1) {'
             discrepancies.push({''
-                type: 'ELECTRIC_INTENSITY_INCONSISTENCY',)';
+                type: 'ELECTRIC_INTENSITY_INCONSISTENCY','';
                 bubbleType: 'electric',')';
                 key: 'bubbles.electric.shakeIntensity),
                 values: Array.from(electricIntensityValues.entries(),
                 severity: this._calculateSeverity(electricIntensityValues),
                 impact: 'Screen shake effect tests will not match implementation';
         ,}
-                detectedAt: Date.now(); }
-            });
+                detectedAt: Date.now(); 
+    });
         }
         ';
 
         const electricDurationValues = this._extractElectricDurationValues(sourceConfigs);''
         if(electricDurationValues.size > 1) {'
             discrepancies.push({''
-                type: 'ELECTRIC_DURATION_INCONSISTENCY',)';
+                type: 'ELECTRIC_DURATION_INCONSISTENCY','';
                 bubbleType: 'electric',')';
                 key: 'bubbles.electric.disableDuration),
                 values: Array.from(electricDurationValues.entries(),
                 severity: this._calculateSeverity(electricDurationValues),
                 impact: 'Input disable effect tests will not match implementation';
         ,}
-                detectedAt: Date.now(); }
-            });
+                detectedAt: Date.now(); 
+    });
         }
         
         // Rainbow泡の効果チェック
         const rainbowDurationValues = this._extractRainbowDurationValues(sourceConfigs);''
         if(rainbowDurationValues.size > 1) {'
             discrepancies.push({''
-                type: 'RAINBOW_DURATION_INCONSISTENCY',)';
+                type: 'RAINBOW_DURATION_INCONSISTENCY','';
                 bubbleType: 'rainbow',')';
                 key: 'bubbles.rainbow.bonusTimeMs),
                 values: Array.from(rainbowDurationValues.entries(),
                 severity: this._calculateSeverity(rainbowDurationValues),
                 impact: 'Bonus time effect tests will not match implementation';
         ,}
-                detectedAt: Date.now(); }
-            });
+                detectedAt: Date.now(); 
+    });
         }
         
         return discrepancies;
@@ -475,8 +475,8 @@ export class ConfigurationSynchronizer {
                     normal: { score: 15 };
                     boss: { health: 5 }, // ORIGINAL_BALANCE_CONFIGの値
                     pink: { healAmount: 25 };
-                    poison: { damageAmount: 10 }
-            };''
+                    poison: { damageAmount: 10 
+    };''
         } catch (error) {
             console.warn('[ConfigurationSynchronizer] GameBalance.js読み込みエラー:', error); }
             return {};
@@ -498,8 +498,8 @@ export class ConfigurationSynchronizer {
                     pink: { healAmount: 25 };
                     poison: { damageAmount: 8 };
                     electric: { shakeIntensity: 15, disableDuration: 1500 ,},
-                    rainbow: { bonusTimeMs: 8000 }
-            };''
+                    rainbow: { bonusTimeMs: 8000 
+    };''
         } catch (error) {
             console.warn('[ConfigurationSynchronizer] Bubble.js読み込みエラー:', error); }
             return {};
@@ -516,11 +516,10 @@ export class ConfigurationSynchronizer {
                     normal: { score: 10 }, // Bubble.test.js:266の期待値
                    , boss: { health: 5, size: 100 ,}, // Bubble.test.js:33-34の期待値
                    , electric: { shakeIntensity: 20, disableDuration: 2000 ,}, // Bubble.test.js:241-242
-                   , rainbow: { bonusTimeMs: 5000 } // Bubble.test.js:230
-                }
-            };''
+                   , rainbow: { bonusTimeMs: 5000 } // Bubble.test.js: 230
+    };''
         } catch (error) {
-            console.warn('[ConfigurationSynchronizer] テスト期待値読み込みエラー:', error); }
+            console.warn('[ConfigurationSynchronizer] テスト期待値読み込みエラー:', error'; }
             return {};
     
     /**
@@ -529,12 +528,12 @@ export class ConfigurationSynchronizer {
      * @private'
      */''
     private async _loadConfigurationManagerConfig()';
-                        score: this.configManager.get('game', 'bubbles.normal.score', 15),
-                        health: this.configManager.get('game', 'bubbles.normal.health', 1);
+                        score: this.configManager.get('game', 'bubbles.normal.score', 15',
+                        health: this.configManager.get('game', 'bubbles.normal.health', 1';
                     },
 
                     boss: { ''
-                        health: this.configManager.get('game', 'bubbles.boss.health', 8),
+                        health: this.configManager.get('game', 'bubbles.boss.health', 8',
                         size: this.configManager.get('game', 'bubbles.boss.size', 90 }
 };''
         } catch (error) {
@@ -555,11 +554,11 @@ export class ConfigurationSynchronizer {
             result[sourceId] = {
                 name: data.source.name;
                 priority: data.source.priority;
-                loadTime: data.loadTime;
-               , hasConfig: !!data.config;
+                loadTime: data.loadTime,
+    hasConfig: !!data.config;
         }
-                error: data.error || null }
-            }
+                error: data.error || null 
+    }
         
         return result;
     }
@@ -574,10 +573,10 @@ export class ConfigurationSynchronizer {
         
             if (data.config && data.config.bubbles && data.config.bubbles[bubbleType] && data.config.bubbles[bubbleType].score !== undefined) {
                 values.set(sourceId, {)
-                    value: data.config.bubbles[bubbleType].score);
-                   , source: data.source.name, }
-                    priority: data.source.priority); }
-}
+                    value: data.config.bubbles[bubbleType].score),
+    source: data.source.name, }
+                    priority: data.source.priority); 
+    }
         
         return values;
     }
@@ -592,10 +591,10 @@ export class ConfigurationSynchronizer {
         
             if (data.config && data.config.bubbles && data.config.bubbles[bubbleType] && data.config.bubbles[bubbleType].health !== undefined) {
                 values.set(sourceId, {)
-                    value: data.config.bubbles[bubbleType].health);
-                   , source: data.source.name, }
-                    priority: data.source.priority); }
-}
+                    value: data.config.bubbles[bubbleType].health),
+    source: data.source.name, }
+                    priority: data.source.priority); 
+    }
         
         return values;
     }
@@ -610,10 +609,10 @@ export class ConfigurationSynchronizer {
         
             if (data.config && data.config.bubbles && data.config.bubbles[bubbleType] && data.config.bubbles[bubbleType].size !== undefined) {
                 values.set(sourceId, {)
-                    value: data.config.bubbles[bubbleType].size);
-                   , source: data.source.name, }
-                    priority: data.source.priority); }
-}
+                    value: data.config.bubbles[bubbleType].size),
+    source: data.source.name, }
+                    priority: data.source.priority); 
+    }
         
         return values;
     }
@@ -628,10 +627,10 @@ export class ConfigurationSynchronizer {
         
             if (data.config && data.config.bubbles && data.config.bubbles.electric && data.config.bubbles.electric.shakeIntensity !== undefined) {
                 values.set(sourceId, {)
-                    value: data.config.bubbles.electric.shakeIntensity);
-                   , source: data.source.name, }
-                    priority: data.source.priority); }
-}
+                    value: data.config.bubbles.electric.shakeIntensity),
+    source: data.source.name, }
+                    priority: data.source.priority); 
+    }
         
         return values;
     }
@@ -646,10 +645,10 @@ export class ConfigurationSynchronizer {
         
             if (data.config && data.config.bubbles && data.config.bubbles.electric && data.config.bubbles.electric.disableDuration !== undefined) {
                 values.set(sourceId, {)
-                    value: data.config.bubbles.electric.disableDuration);
-                   , source: data.source.name, }
-                    priority: data.source.priority); }
-}
+                    value: data.config.bubbles.electric.disableDuration),
+    source: data.source.name, }
+                    priority: data.source.priority); 
+    }
         
         return values;
     }
@@ -664,10 +663,10 @@ export class ConfigurationSynchronizer {
         
             if (data.config && data.config.bubbles && data.config.bubbles.rainbow && data.config.bubbles.rainbow.bonusTimeMs !== undefined) {
                 values.set(sourceId, {)
-                    value: data.config.bubbles.rainbow.bonusTimeMs);
-                   , source: data.source.name, }
-                    priority: data.source.priority); }
-}
+                    value: data.config.bubbles.rainbow.bonusTimeMs),
+    source: data.source.name, }
+                    priority: data.source.priority); 
+    }
         
         return values;
     }
@@ -685,8 +684,8 @@ export class ConfigurationSynchronizer {
      */
     generateSyncReport(): SyncReport { return { timestamp: Date.now(),
             discrepancyCount: this.discrepancies.length;
-            discrepancies: this.discrepancies;
-           , syncHistory: this.syncHistory,
+            discrepancies: this.discrepancies,
+    syncHistory: this.syncHistory,
             sources: Array.from(this.configurationSources.keys()),' };
 
             status: this.discrepancies.length === 0 ? 'SYNCHRONIZED' : 'INCONSISTENT' 
@@ -716,4 +715,4 @@ let instance: ConfigurationSynchronizer | null = null,
  * @returns インスタンス
  */
 export function getConfigurationSynchronizer(): ConfigurationSynchronizer { if (!instance) {''
-        instance = new ConfigurationSynchronizer(' })'
+        instance = new ConfigurationSynchronizer(' }''

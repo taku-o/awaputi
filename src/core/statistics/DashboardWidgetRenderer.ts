@@ -58,8 +58,8 @@ export interface RenderOptions { width?: number;
 export interface WidgetTheme { backgroundColor: string,
     borderColor: string;
     textColor: string;
-    accentColor: string;
-   , secondaryColor: string ,}
+    accentColor: string,
+    secondaryColor: string ,}
 
 export interface WidgetRenderResult { type: WidgetType;
     data?: any;
@@ -69,19 +69,19 @@ export interface WidgetRenderResult { type: WidgetType;
     [key: string]: any, }
 
 export interface MetricData { key: string,
-    label: string;
-   , format: MetricFormat;
+    label: string,
+    format: MetricFormat;
     value?: number ,}
 
-export interface StatisticItem { label: string;
-   , value: string | number }
+export interface StatisticItem { label: string,
+    value: string | number }
 
 export interface ChartData { x?: number;
-    value: number;
-   , label: string ,}
+    value: number,
+    label: string ,}
 
-export interface ChartOptions { width: number;
-   , height: number;
+export interface ChartOptions { width: number,
+    height: number;
     showAxes?: boolean;
     showGrid?: boolean;
     padding?: number;
@@ -92,18 +92,18 @@ export interface ChartOptions { width: number;
 
 export interface ChartArea { x: number,
     y: number;
-    width: number;
-   , height: number ,}
+    width: number,
+    height: number ,}
 
-export interface PlayStyleData { label: string;
-   , value: number }
+export interface PlayStyleData { label: string,
+    value: number }
 
-export interface PerformanceData { label: string;
-   , value: number }
+export interface PerformanceData { label: string,
+    value: number }
 
 export interface TrendDataPoint { x: number;
-    value: number;
-   , label: string }
+    value: number,
+    label: string }
 
 // 列挙型
 export type WidgetType = ;
@@ -114,7 +114,7 @@ export type WidgetType = ;
     | 'performanceChart', '';
     | 'statisticsBreakdown';
 
-export type MetricFormat = 'number' | 'percentage' | 'decimal' | 'time';''
+export type MetricFormat = 'number' | 'percentage' | 'decimal' | 'time';
 export type ChartType = 'line' | 'bar' | 'pie' | 'area';
 
 export class DashboardWidgetRenderer {
@@ -126,11 +126,11 @@ export class DashboardWidgetRenderer {
             keyMetrics: KeyMetricsWidget;
             recentAchievements: RecentAchievementsWidget;
             growthTrends: GrowthTrendsWidget;
-            playStyle: PlayStyleWidget;
-           , performanceChart: PerformanceChartWidget;
+            playStyle: PlayStyleWidget,
+    performanceChart: PerformanceChartWidget;
     ,}
-            statisticsBreakdown: StatisticsBreakdownWidget }
-        }
+            statisticsBreakdown: StatisticsBreakdownWidget 
+    }
 
     /**
      * ウィジェットを作成
@@ -143,7 +143,7 @@ export class DashboardWidgetRenderer {
 
         if (!WidgetClass) {' }'
 
-            throw new Error(`Unknown, widget type: ${type}`'});
+            throw new Error(`Unknown, widget type: ${type}`'}';
         }
 ';
         // チャートレンダラーが必要なウィジェット
@@ -182,7 +182,7 @@ class KeyMetricsWidget implements Widget { private statisticsManager: Statistics
     ';
 
     async render(context: CanvasRenderingContext2D, options: RenderOptions = { ): Promise<WidgetRenderResult> {''
-        const stats = await this.statisticsManager.getDetailedStatistics('';)'
+        const stats = await this.statisticsManager.getDetailedStatistics('';''
         context.fillStyle = '#FFFFFF';')'
         context.fillRect(0, 0, canvas.width, canvas.height);
         ';
@@ -193,9 +193,9 @@ class KeyMetricsWidget implements Widget { private statisticsManager: Statistics
         context.strokeRect(0, 0, canvas.width, canvas.height);
         ';
         // タイトル
-        context.fillStyle = '#1F2937';''
-        context.font = 'bold 16px system-ui, -apple-system, sans-serif';''
-        context.textAlign = 'left';''
+        context.fillStyle = '#1F2937';
+        context.font = 'bold 16px system-ui, -apple-system, sans-serif';
+        context.textAlign = 'left';
         context.fillText('主要指標', 15, 25);
         
         // メトリクスの描画
@@ -214,12 +214,12 @@ class KeyMetricsWidget implements Widget { private statisticsManager: Statistics
             const formattedValue = this.formatValue(value, metric.format);
             ';
             // ラベル
-            context.fillStyle = '#6B7280';''
-            context.font = '12px system-ui, -apple-system, sans-serif';''
+            context.fillStyle = '#6B7280';
+            context.font = '12px system-ui, -apple-system, sans-serif';
             context.fillText(metric.label, x, y);
             ';
             // 値
-            context.fillStyle = '#1F2937';''
+            context.fillStyle = '#1F2937';
             context.font = 'bold 18px system-ui, -apple-system, sans-serif'; }
 
             context.fillText(formattedValue, x, y + 20);' }'
@@ -228,8 +228,8 @@ class KeyMetricsWidget implements Widget { private statisticsManager: Statistics
         ';
 
         return { ''
-            type: 'keyMetrics';
-           , metrics: this.metrics.map(m = > ({)
+            type: 'keyMetrics',
+    metrics: this.metrics.map(m = > ({)
                 ...m);
                 value: this.getMetricValue(stats, m.key); }
             });
@@ -239,10 +239,10 @@ class KeyMetricsWidget implements Widget { private statisticsManager: Statistics
     private getMetricValue(stats: DetailedStatistics, key: string): number { ''
         switch(key) {'
 
-            case 'totalScore': return stats.scoreStats? .totalScore || 0; : undefined''
-            case 'accuracy': return stats.bubbleStats? .accuracy || 0; : undefined''
-            case 'averageCombo': return stats.comboStats? .averageCombo || 0; : undefined''
-            case 'playTime': return stats.gamePlayStats? .totalPlayTime || 0; : undefined
+            case 'totalScore': return stats.scoreStats?.totalScore || 0; : undefined''
+            case 'accuracy': return stats.bubbleStats?.accuracy || 0; : undefined''
+            case 'averageCombo': return stats.comboStats?.averageCombo || 0; : undefined''
+            case 'playTime': return stats.gamePlayStats?.totalPlayTime || 0; : undefined
         
             default: return 0;
     ';
@@ -254,7 +254,7 @@ class KeyMetricsWidget implements Widget { private statisticsManager: Statistics
 
             case 'number': return value.toLocaleString() }
 
-            case 'percentage': return `${(value * 100}.toFixed(1'})%`;''
+            case 'percentage': return `${(value * 100}.toFixed(1'}'%`;''
             case 'decimal': return value.toFixed(1);''
             case 'time': return this.formatTime(value);
             default: return value.toString();
@@ -276,7 +276,7 @@ class RecentAchievementsWidget implements Widget { private statisticsManager: St
     ';
 
     async render(context: CanvasRenderingContext2D, options: RenderOptions = { ): Promise<WidgetRenderResult> {''
-        const stats = await this.statisticsManager.getDetailedStatistics('';)'
+        const stats = await this.statisticsManager.getDetailedStatistics('';''
         context.fillStyle = '#FFFFFF';')'
         context.fillRect(0, 0, canvas.width, canvas.height);
         ';
@@ -287,10 +287,10 @@ class RecentAchievementsWidget implements Widget { private statisticsManager: St
         context.strokeRect(0, 0, canvas.width, canvas.height);
         ';
         // タイトル
-        context.fillStyle = '#1F2937';''
-        context.font = 'bold 16px system-ui, -apple-system, sans-serif';''
-        context.textAlign = 'left';''
-        context.fillText('最近の実績', 15, 25);
+        context.fillStyle = '#1F2937';
+        context.font = 'bold 16px system-ui, -apple-system, sans-serif';
+        context.textAlign = 'left';
+        context.fillText('最近の実績', 15, 25';
         
         // 実績データの取得（模擬データ）
         const achievements: Achievement[] = [' ,}'
@@ -305,18 +305,18 @@ class RecentAchievementsWidget implements Widget { private statisticsManager: St
             const y = 50 + (index * 25');
             ';
             // 実績アイコン
-            context.fillStyle = '#10B981';''
+            context.fillStyle = '#10B981';
             context.fillRect(15, y - 8, 12, 12);
             ';
             // 実績名
-            context.fillStyle = '#1F2937';''
-            context.font = '14px system-ui, -apple-system, sans-serif';''
+            context.fillStyle = '#1F2937';
+            context.font = '14px system-ui, -apple-system, sans-serif';
             context.fillText(achievement.name, 35, y);
             ';
             // 日付
-            context.fillStyle = '#6B7280';''
-            context.font = '12px system-ui, -apple-system, sans-serif';''
-            context.textAlign = 'right';''
+            context.fillStyle = '#6B7280';
+            context.font = '12px system-ui, -apple-system, sans-serif';
+            context.textAlign = 'right';
             context.fillText(achievement.date, canvas.width - 15, y);' }'
 
             context.textAlign = 'left';' }
@@ -326,8 +326,8 @@ class RecentAchievementsWidget implements Widget { private statisticsManager: St
 
         return { ''
             type: 'recentAchievements', };
-            achievements: achievements }
-        }
+            achievements: achievements 
+    }
 }
 
 /**
@@ -345,7 +345,7 @@ class GrowthTrendsWidget implements Widget { private statisticsManager: Statisti
     ';
 
     async render(context: CanvasRenderingContext2D, options: RenderOptions = { ): Promise<WidgetRenderResult> {''
-        const stats = await this.statisticsManager.getDetailedStatistics('';)'
+        const stats = await this.statisticsManager.getDetailedStatistics('';''
         context.fillStyle = '#FFFFFF';')'
         context.fillRect(0, 0, canvas.width, canvas.height);
         ';
@@ -356,17 +356,17 @@ class GrowthTrendsWidget implements Widget { private statisticsManager: Statisti
         context.strokeRect(0, 0, canvas.width, canvas.height);
         ';
         // タイトル
-        context.fillStyle = '#1F2937';''
-        context.font = 'bold 16px system-ui, -apple-system, sans-serif';''
-        context.textAlign = 'left';''
+        context.fillStyle = '#1F2937';
+        context.font = 'bold 16px system-ui, -apple-system, sans-serif';
+        context.textAlign = 'left';
         context.fillText('成長トレンド', 15, 25);
         
         // グラフエリア
         const chartArea: ChartArea = {
             x: 15;
             y: 35;
-            width: canvas.width - 30;
-           , height: canvas.height - 50 ,};
+            width: canvas.width - 30,
+    height: canvas.height - 50 ,};
         ;
         // トレンドデータの生成（模擬データ）
         const trendData = this.generateTrendData()';
@@ -382,12 +382,12 @@ class GrowthTrendsWidget implements Widget { private statisticsManager: Statisti
                 width: chartArea.width;
                 height: chartArea.height;
                 showAxes: false);
-                showGrid: false)';
-               , padding: 5,
+                showGrid: false'',
+    padding: 5,
                 lineColor: '#3B82F6',' }
 
-                pointColor: '#3B82F6'); }
-        }
+                pointColor: '#3B82F6'); 
+    }
         ';
 
         // メインキャンバスに描画';
@@ -397,8 +397,8 @@ class GrowthTrendsWidget implements Widget { private statisticsManager: Statisti
 
         return { ''
             type: 'growthTrends', };
-            data: trendData }
-        }
+            data: trendData 
+    }
     
     private generateTrendData(): TrendDataPoint[] { const data: TrendDataPoint[] = [],
         for(let, i = 0; i < 7; i++) {
@@ -425,7 +425,7 @@ class PlayStyleWidget implements Widget { private statisticsManager: StatisticsM
     ';
 
     async render(context: CanvasRenderingContext2D, options: RenderOptions = { ): Promise<WidgetRenderResult> {''
-        const stats = await this.statisticsManager.getDetailedStatistics('';)'
+        const stats = await this.statisticsManager.getDetailedStatistics('';''
         context.fillStyle = '#FFFFFF';')'
         context.fillRect(0, 0, canvas.width, canvas.height);
         ';
@@ -436,10 +436,10 @@ class PlayStyleWidget implements Widget { private statisticsManager: StatisticsM
         context.strokeRect(0, 0, canvas.width, canvas.height);
         ';
         // タイトル
-        context.fillStyle = '#1F2937';''
-        context.font = 'bold 16px system-ui, -apple-system, sans-serif';''
-        context.textAlign = 'left';''
-        context.fillText('プレイスタイル', 15, 25);
+        context.fillStyle = '#1F2937';
+        context.font = 'bold 16px system-ui, -apple-system, sans-serif';
+        context.textAlign = 'left';
+        context.fillText('プレイスタイル', 15, 25';
         
         // プレイスタイル分析データ
         const playStyleData: PlayStyleData[] = [' ,}'
@@ -454,15 +454,15 @@ class PlayStyleWidget implements Widget { private statisticsManager: StatisticsM
             const barWidth = (item.value / 100) * (canvas.width - 80');
             ';
             // ラベル
-            context.fillStyle = '#6B7280';''
-            context.font = '12px system-ui, -apple-system, sans-serif';''
+            context.fillStyle = '#6B7280';
+            context.font = '12px system-ui, -apple-system, sans-serif';
             context.fillText(item.label, 15, y);
             ';
             // プログレスバー
-            context.fillStyle = '#E5E7EB';''
+            context.fillStyle = '#E5E7EB';
             context.fillRect(60, y - 8, canvas.width - 80, 12);
 
-            context.fillStyle = '#3B82F6';''
+            context.fillStyle = '#3B82F6';
             context.fillRect(60, y - 8, barWidth, 12);
             ';
             // 値
@@ -470,15 +470,15 @@ class PlayStyleWidget implements Widget { private statisticsManager: StatisticsM
 
             context.textAlign = 'right';' }
 
-            context.fillText(`${item.value}%`, canvas.width - 15, y'});''
-            context.textAlign = 'left';''
+            context.fillText(`${item.value}%`, canvas.width - 15, y'}';''
+            context.textAlign = 'left';
         }');
         ';
 
         return { ''
             type: 'playStyle', };
-            data: playStyleData }
-        }
+            data: playStyleData 
+    }
 }
 
 /**
@@ -496,7 +496,7 @@ class PerformanceChartWidget implements Widget { private statisticsManager: Stat
     ';
 
     async render(context: CanvasRenderingContext2D, options: RenderOptions = { ): Promise<WidgetRenderResult> {''
-        const stats = await this.statisticsManager.getDetailedStatistics('';)'
+        const stats = await this.statisticsManager.getDetailedStatistics('';''
         context.fillStyle = '#FFFFFF';')'
         context.fillRect(0, 0, canvas.width, canvas.height);
         ';
@@ -507,17 +507,17 @@ class PerformanceChartWidget implements Widget { private statisticsManager: Stat
         context.strokeRect(0, 0, canvas.width, canvas.height);
         ';
         // タイトル
-        context.fillStyle = '#1F2937';''
-        context.font = 'bold 16px system-ui, -apple-system, sans-serif';''
-        context.textAlign = 'left';''
-        context.fillText('パフォーマンス', 15, 25);
+        context.fillStyle = '#1F2937';
+        context.font = 'bold 16px system-ui, -apple-system, sans-serif';
+        context.textAlign = 'left';
+        context.fillText('パフォーマンス', 15, 25';
         
         // チャートエリア
         const chartArea: ChartArea = {
             x: 15;
             y: 35;
-            width: canvas.width - 30;
-           , height: canvas.height - 50 ,};
+            width: canvas.width - 30,
+    height: canvas.height - 50 ,};
         // パフォーマンスデータ
         const performanceData: PerformanceData[] = ['';
             { label: 'スコア', value: 1250 ,},''
@@ -538,10 +538,10 @@ class PerformanceChartWidget implements Widget { private statisticsManager: Stat
             await this.chartRenderer.render(chartContext, 'bar', performanceData, {
                 width: chartArea.width;
                 height: chartArea.height);
-                showAxes: true);
-               , showGrid: true, }
-                padding: 5); }
-        }
+                showAxes: true),
+    showGrid: true, }
+                padding: 5'; 
+    }
         ';
 
         // メインキャンバスに描画';
@@ -551,8 +551,8 @@ class PerformanceChartWidget implements Widget { private statisticsManager: Stat
 
         return { ''
             type: 'performanceChart', };
-            data: performanceData }
-        }
+            data: performanceData 
+    }
 }
 
 /**
@@ -570,7 +570,7 @@ class StatisticsBreakdownWidget implements Widget { private statisticsManager: S
     ';
 
     async render(context: CanvasRenderingContext2D, options: RenderOptions = { ): Promise<WidgetRenderResult> {''
-        const stats = await this.statisticsManager.getDetailedStatistics('';)'
+        const stats = await this.statisticsManager.getDetailedStatistics('';''
         context.fillStyle = '#FFFFFF';')'
         context.fillRect(0, 0, canvas.width, canvas.height);
         ';
@@ -581,18 +581,18 @@ class StatisticsBreakdownWidget implements Widget { private statisticsManager: S
         context.strokeRect(0, 0, canvas.width, canvas.height);
         ';
         // タイトル
-        context.fillStyle = '#1F2937';''
-        context.font = 'bold 16px system-ui, -apple-system, sans-serif';''
-        context.textAlign = 'left';''
-        context.fillText('統計詳細', 15, 25);
+        context.fillStyle = '#1F2937';
+        context.font = 'bold 16px system-ui, -apple-system, sans-serif';
+        context.textAlign = 'left';
+        context.fillText('統計詳細', 15, 25';
         
         // 統計項目の表示
         const statisticsItems: StatisticItem[] = [' ,}'
 
-            { label: 'ゲーム数', value: stats.gamePlayStats? .totalGames || 0 ,}, : undefined''
-            { label: '最高スコア', value: stats.scoreStats? .highestScore || 0 ,}, : undefined''
-            { label: '最高コンボ', value: stats.comboStats? .maxCombo || 0 ,}, : undefined]'
-            { label: '平均精度', value: `${((stats.bubbleStats? .accuracy || 0,} * 100}.toFixed(1})%` }]
+            { label: 'ゲーム数', value: stats.gamePlayStats?.totalGames || 0 ,}, : undefined''
+            { label: '最高スコア', value: stats.scoreStats?.highestScore || 0 ,}, : undefined''
+            { label: '最高コンボ', value: stats.comboStats?.maxCombo || 0 ,}, : undefined]'
+            { label: '平均精度', value: `${((stats.bubbleStats?.accuracy || 0,} * 100}.toFixed(1})%` }]
         ];
         ';
 
@@ -600,14 +600,14 @@ class StatisticsBreakdownWidget implements Widget { private statisticsManager: S
             const y = 50 + (index * 20');
             ';
             // ラベル
-            context.fillStyle = '#6B7280';''
-            context.font = '12px system-ui, -apple-system, sans-serif';''
+            context.fillStyle = '#6B7280';
+            context.font = '12px system-ui, -apple-system, sans-serif';
             context.fillText(item.label, 15, y);
             ';
             // 値
-            context.fillStyle = '#1F2937';''
-            context.font = 'bold 14px system-ui, -apple-system, sans-serif';''
-            context.textAlign = 'right';''
+            context.fillStyle = '#1F2937';
+            context.font = 'bold 14px system-ui, -apple-system, sans-serif';
+            context.textAlign = 'right';
             context.fillText(item.value.toString(), canvas.width - 15, y');' }
 
             context.textAlign = 'left';' }
@@ -617,6 +617,6 @@ class StatisticsBreakdownWidget implements Widget { private statisticsManager: S
 
         return { : undefined''
             type: 'statisticsBreakdown', };
-            items: statisticsItems }
-        }''
+            items: statisticsItems 
+    }''
 }

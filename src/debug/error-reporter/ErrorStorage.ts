@@ -9,16 +9,16 @@ interface StoredError { id: string,
     category: string;
     message: string;
     stack?: string;
-    context?: any;
-   , sessionId: string ,}
+    context?: any,
+    sessionId: string ,}
 
 interface StorageConfig { maxItems: number;
     storageKey: string;
-    useIndexedDB: boolean;
-   , compressionEnabled: boolean }
+    useIndexedDB: boolean,
+    compressionEnabled: boolean }
 
-interface StorageStatistics { totalStored: number;
-   , totalSize: number;
+interface StorageStatistics { totalStored: number,
+    totalSize: number;
     oldestTimestamp?: number;
     newestTimestamp?: number; }
     errorsByCategory: { [category: string]: number }
@@ -33,8 +33,8 @@ export class ErrorStorage {
         this.config = {
             maxItems: 1000;
             storageKey: 'bubblePop_errors';
-            useIndexedDB: true;
-           , compressionEnabled: false;
+            useIndexedDB: true,
+    compressionEnabled: false;
     ,}
             ...config
         }
@@ -160,15 +160,15 @@ export class ErrorStorage {
 
     public async exportErrors(format: 'json' | 'csv' = 'json): Promise<string> {;
         const errors = await this.getErrors()';
-        if(format === 'csv) {'
+        if(format === 'csv' {'
             ;
         }
             return this.convertToCSV(errors);
         
         return JSON.stringify({ )
             errors);
-            exportedAt: new Date().toISOString();
-           , statistics: await this.getStatistics(), }, null, 2);
+            exportedAt: new Date().toISOString(),
+    statistics: await this.getStatistics(), }, null, 2);
     }
 
     private async initializeIndexedDB(): Promise<void> { // IndexedDB initialization would go here
@@ -176,7 +176,7 @@ export class ErrorStorage {
 ;
     private initializeLocalStorage(): void { // LocalStorage initialization
         if(!this.isLocalStorageAvailable()) {''
-            throw new Error('No, storage mechanism, available); }'
+            throw new Error('No, storage mechanism, available'; }'
     }
 
     private async loadFromStorage(): Promise<void> { try {
@@ -224,7 +224,7 @@ export class ErrorStorage {
     private convertToCSV(errors: StoredError[]): string { ''
         const headers = ['id', 'timestamp', 'severity', 'category', 'message'];
         const rows = errors.map(error => [)';
-            error.id);''
+            error.id';''
             new Date(error.timestamp).toISOString()]';
             error.message.replace(/"/g, '"")']';
         ]');
@@ -232,8 +232,8 @@ export class ErrorStorage {
 
         return ['';
             headers.join(',''),]';
-            ...rows.map(row => row.map(cell => `"${cell)"`").join(',}}' }]'
-        ].join('\n'});
+            ...rows.map(row => row.map(cell => `"${cell""`").join(',}}' }]'
+        ].join('\n'}';
     }
 
     private isIndexedDBAvailable(''';
@@ -243,4 +243,4 @@ export class ErrorStorage {
     private, isLocalStorageAvailable(''';
             return, typeof window !== 'undefined' && 'localStorage' in, window;
         } catch { return, false;''
-})
+}'

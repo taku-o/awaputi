@@ -1,5 +1,5 @@
-import { BaseComponent  } from '../../debug/BaseComponent.js';''
-import fs from 'fs';''
+import { BaseComponent  } from '../../debug/BaseComponent.js';
+import fs from 'fs';
 import path from 'path';
 
 // Type definitions
@@ -18,28 +18,28 @@ interface GameBalanceExpectations { baseScores?: Record<string, number>;
     bubbles?: Record<string, BubbleConfig>; }
 
 interface ConfigurationMetadata { extractedAt: number,
-    sourceFiles: string[];
-   , generatorVersion: string ,}
+    sourceFiles: string[],
+    generatorVersion: string ,}
 
 interface AllConfigurations { bubbleTypes: Record<string, BubbleConfig>;
-    gameBalance: GameBalanceExpectations;
-   , metadata: ConfigurationMetadata
+    gameBalance: GameBalanceExpectations,
+    metadata: ConfigurationMetadata
     ,}
 
 interface ValidationResult { valid: boolean;
     issues: string[];
     warnings: string[];
-    format: string;
-   , exists: boolean }
+    format: string,
+    exists: boolean }
 
 interface ParsingStrategy { file?: string;
-    parser: (filePat;h?: string) => any ,}
+    parser: (filePath?: string) => any ,}
 }
 
-interface MainController { configSourceDir: string;
-   , projectRoot: string;
+interface MainController { configSourceDir: string,
+    projectRoot: string;
     configurationManager?: {
-        get: (namespac;e: string, path: string) => any ,}
+        get: (namespace: string, path: string) => any ,}
     };
     [key: string]: any,
 }
@@ -66,16 +66,16 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
     /**
      * 解析戦略を設定'
      */''
-    setupParsingStrategies(''';
-                file: 'GameBalance.js',)';
+    setupParsingStrategies('''
+                file: 'GameBalance.js','';
                 parser: this.parseGameBalanceFile.bind(this);
             },
 
             bubble: { ''
-                file: 'Bubble.js';
-               , parser: this.parseBubbleFile.bind(this };
-            configurationManager: { parser: this.parseConfigurationManager.bind(this }
-        }
+                file: 'Bubble.js',
+    parser: this.parseBubbleFile.bind(this }
+            configurationManager: { parser: this.parseConfigurationManager.bind(this 
+    }
 
     /**
      * GameBalance.jsファイルを解析
@@ -113,8 +113,8 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
                     
                     // 各プロパティを抽出
                     const properties: Record<string, RegExp> = { health: /health:\s*(\d+)/,
-                        size: /size:\s*(\d+)/;
-                       , maxAge: /maxAge:\s*(\d+)/ ,};
+                        size: /size:\s*(\d+)/,
+    maxAge: /maxAge:\s*(\d+)/ ,};
                     for(const [propName, regex] of Object.entries(properties) {
                     
                         const propMatch = configContent.match(regex);
@@ -143,11 +143,11 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
                     }
 }
 
-            console.log('[ConfigurationParser] GameBalance.jsから期待値を抽出しました);
+            console.log('[ConfigurationParser] GameBalance.jsから期待値を抽出しました';
             return expectations;
 
         } catch (error') {
-            this._handleError('GameBalance file parsing', error);
+            this._handleError('GameBalance file parsing', error';
             return null;
 
     /**
@@ -177,8 +177,8 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
                     // 各プロパティを抽出
                     const properties: Record<string, RegExp> = { health: /health:\s*(\d+)/,
                         score: /score:\s*(\d+)/;
-                        size: /size:\s*(\d+)/;
-                       , maxAge: /maxAge:\s*(\d+)/ ,};
+                        size: /size:\s*(\d+)/,
+    maxAge: /maxAge:\s*(\d+)/ ,};
                     for(const [propName, regex] of Object.entries(properties) {
                     
                         const propMatch = configStr.match(regex);
@@ -191,11 +191,11 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
                 }
             }
 
-            console.log('[ConfigurationParser] Bubble.jsから期待値を抽出しました);
+            console.log('[ConfigurationParser] Bubble.jsから期待値を抽出しました';
             return expectations;
 
         } catch (error') {
-            this._handleError('Bubble file parsing', error);
+            this._handleError('Bubble file parsing', error';
             return null;
 
     /**
@@ -216,14 +216,14 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
 
                     for (const, property of, properties) { try { }
 
-                            const value = (this.mainController, as any').configurationManager? .get('game', `bubbles.${bubbleType}.${ property}`}
+                            const value = (this.mainController, as any').configurationManager?.get('game', `bubbles.${bubbleType}.${ property}`}
 
                             if (value !== undefined && value !== null}) { expectations[bubbleType][property] = value;' }'
 
                             } catch (configError) { // 設定が見つからない場合は無視 }
                         ;
                         // スコアの場合はbaseScoresからも取得を試行
-                        if(property === 'score) {'
+                        if(property === 'score' {'
                             try {
                         }
 
@@ -243,11 +243,11 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
                     } catch (bubbleError) { // 個別のバブルタイプでエラーが発生した場合は無視 }
             }
 
-            console.log('[ConfigurationParser] ConfigurationManagerから期待値を抽出しました);
+            console.log('[ConfigurationParser] ConfigurationManagerから期待値を抽出しました';
             return expectations;
 
         } catch (error') {
-            this._handleError('ConfigurationManager parsing', error);
+            this._handleError('ConfigurationManager parsing', error';
             return null;
 
     /**
@@ -256,9 +256,9 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
     detectFileFormat(filePath: string): string { const ext = path.extname(filePath).toLowerCase();''
         const basename = path.basename(filePath, ext);
 
-        if (basename === 'GameBalance'') return 'gameBalance';''
-        if (basename === 'Bubble'') return 'bubble';''
-        if (ext === '.json'') return 'json';''
+        if (basename === 'GameBalance'') return 'gameBalance';
+        if (basename === 'Bubble'') return 'bubble';
+        if (ext === '.json'') return 'json';
         if (ext === '.js'') return 'javascript';
 
         return 'unknown'; }
@@ -270,13 +270,13 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
             valid: true;
             issues: [];
             warnings: [];
-            format: this.detectFileFormat(filePath);
-           , exists: fs.existsSync(filePath };
+            format: this.detectFileFormat(filePath),
+    exists: fs.existsSync(filePath };
 ';
 
         if (!validation.exists) { validation.valid = false;' }'
 
-            validation.issues.push(`File, not found: ${filePath}`'});
+            validation.issues.push(`File, not found: ${filePath}`'}';
             return validation;
         }
 ';
@@ -287,10 +287,10 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
             // 基本的な構文チェック
             if(validation.format === 'javascript'') {'
                 // JavaScript構文の基本チェック
-                if(!content.includes('export)) {'
+                if(!content.includes('export)' {'
             }
 
-                    validation.warnings.push('No, export statement, found); }'
+                    validation.warnings.push('No, export statement, found'; }'
 }
 
             if (content.trim().length === 0') { validation.valid = false;''
@@ -309,8 +309,8 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
                 bubbleTypes: {};
                 gameBalance: {};
                 metadata: { ''
-                    extractedAt: Date.now(''';
-                   , generatorVersion: '1.0.0' }))'
+                    extractedAt: Date.now(''',
+    generatorVersion: '1.0.0' })''
             // GameBalance.jsから解析')'
             const gameBalancePath = path.join(this.configSourceDir, 'GameBalance.js);
 
@@ -332,7 +332,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
 
             }
 
-                allConfigurations.metadata.sourceFiles.push('src/bubbles/Bubble.js); }'
+                allConfigurations.metadata.sourceFiles.push('src/bubbles/Bubble.js'; }'
             }
 
             // ConfigurationManagerから解析

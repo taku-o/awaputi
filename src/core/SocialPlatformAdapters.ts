@@ -10,18 +10,18 @@ export class SocialPlatformAdapters {
         this.platformConfig = {
             twitter: {
                 maxTextLength: 280;
-                hashtagLimit: 3;
-               , urlLength: 23, // Twitter t.co短縮URL長
+                hashtagLimit: 3,
+    urlLength: 23, // Twitter t.co短縮URL長
     }
-                imageSupported: true }
-            };
+                imageSupported: true 
+    };
             facebook: { maxTextLength: 63206;
                 hashtagSupported: false;
-                urlRequired: true;
-               , imageSupported: true };
-            webShare: { supported: this.isWebShareSupported();
-               , filesSupported: navigator.canShare && navigator.canShare({ files: [] }
-        }
+                urlRequired: true,
+    imageSupported: true };
+            webShare: { supported: this.isWebShareSupported(),
+    filesSupported: navigator.canShare && navigator.canShare({ files: [] 
+    }
 
     /**
      * プラットフォーム検出
@@ -30,21 +30,21 @@ export class SocialPlatformAdapters {
     detectPlatform() {
         const userAgent = navigator.userAgent.toLowerCase();
         
-        if(userAgent.includes('twitter)) {'
+        if(userAgent.includes('twitter)' {'
     }
 
             return 'twitter';' }
 
-        } else if (userAgent.includes('facebook'') || userAgent.includes('fb)) { ''
+        } else if (userAgent.includes('facebook'') || userAgent.includes('fb)' { ''
             return 'facebook';' }
 
-        } else if(userAgent.includes('line)) { ''
+        } else if(userAgent.includes('line)' { ''
             return 'line';' }
 
-        } else if(userAgent.includes('android)) { ''
+        } else if(userAgent.includes('android)' { ''
             return 'android';' }
 
-        } else if (userAgent.includes('iphone'') || userAgent.includes('ipad)) { ''
+        } else if (userAgent.includes('iphone'') || userAgent.includes('ipad)' { ''
             return 'ios'; else {  ' }
 
             return 'web';
@@ -61,7 +61,7 @@ export class SocialPlatformAdapters {
      * TwitterシェアURL生成
      * @param {Object} shareData - 共有データ
      * @returns {string} TwitterシェアURL'
-     */)'
+     */''
     generateTwitterShareUrl(shareData) {'
         const config = this.platformConfig.twitter;''
         let text = shareData.text || '';
@@ -79,8 +79,8 @@ export class SocialPlatformAdapters {
 ';
 
         const params = new URLSearchParams();''
-        if(text) params.append('text', text);''
-        if(shareData.url) params.append('url', shareData.url);''
+        if(text) params.append('text', text';''
+        if(shareData.url) params.append('url', shareData.url';''
         if(hashtags.length > 0) {', ';
 
         }
@@ -139,15 +139,15 @@ export class SocialPlatformAdapters {
 
         if(useDialog) {'
 
-            params.append('redirect_uri', redirect_uri);
+            params.append('redirect_uri', redirect_uri';
 
         }
 
-            params.append('display', display); }
+            params.append('display', display'; }
         }
 ';
 
-        const baseUrl = useDialog ?   : undefined'';
+        const baseUrl = useDialog ? undefined : undefined'';
             'https://www.facebook.com/dialog/share' : '';
             'https: //www.facebook.com/sharer/sharer.php,
 
@@ -161,13 +161,13 @@ export class SocialPlatformAdapters {
      */'
     async shareViaFacebookWebAPI(shareData) { ''
         if(!this.isWebShareSupported()) {''
-            throw new Error('Web, Share API, not supported); }'
+            throw new Error('Web, Share API, not supported'; }'
 
         // Facebook向けに最適化
         const data = { : undefined
             title: shareData.title;
-            text: shareData.description || shareData.text;
-           , url: shareData.url ,};
+            text: shareData.description || shareData.text,
+    url: shareData.url ,};
 ';
 
         try {'
@@ -197,24 +197,24 @@ export class SocialPlatformAdapters {
             if(shareData.score >= 100000) {'
     }
 
-                hashtags.push('HighScore); }'
+                hashtags.push('HighScore'; }'
 
             }''
             if(shareData.isPersonalBest) {', ';
 
             }
 
-                hashtags.push('PersonalBest); }'
+                hashtags.push('PersonalBest'; }'
 }
         ';
         // 実績関連
         if(shareData.achievement) {'
 
-            hashtags.push('Achievement);''
+            hashtags.push('Achievement';''
             if(shareData.achievement.isRare) {'
         }
 
-                hashtags.push('RareAchievement); }'
+                hashtags.push('RareAchievement'; }'
 }
         
         return hashtags.slice(0, config.hashtagLimit);
@@ -271,7 +271,7 @@ export class SocialPlatformAdapters {
 
                 if (message.length > availableLength) {' }'
 
-                    message = this.truncateForTwitter(message, availableLength'});
+                    message = this.truncateForTwitter(message, availableLength'}';
                 }
                 
                 return `${message} ${hashtagText}`;
@@ -289,11 +289,11 @@ export class SocialPlatformAdapters {
      */
     async shareViaWebAPI(shareData) { ''
         if(!this.isWebShareSupported()) {''
-            throw new Error('Web, Share API, not supported); }'
+            throw new Error('Web, Share API, not supported'; }'
 
         const data = { title: shareData.title,
-            text: shareData.text;
-           , url: shareData.url ,};
+            text: shareData.text,
+    url: shareData.url ,};
         // ファイル共有対応
         if (shareData.files && this.platformConfig.webShare.filesSupported) { data.files = shareData.files; }
 ';
@@ -303,9 +303,8 @@ export class SocialPlatformAdapters {
 
             return { success: true, ''
                 platform: 'web-share', };
-                timestamp: Date.now(); }
-
-            };''
+                timestamp: Date.now(); 
+    };''
         } catch (error) {
             if(error.name === 'AbortError'') {'
                 return { success: false,
@@ -314,8 +313,8 @@ export class SocialPlatformAdapters {
 
                     reason: 'user_cancelled',' };
 
-                    platform: 'web-share' }
-                }
+                    platform: 'web-share' 
+    }
             throw error;
         }
     }
@@ -333,8 +332,8 @@ export class SocialPlatformAdapters {
 
         return { supported: true,
             ...config, };
-            currentPlatform: this.detectPlatform(); }
-        }
+            currentPlatform: this.detectPlatform(); 
+    }
 
     /**
      * 全プラットフォームの対応状況取得
@@ -343,8 +342,8 @@ export class SocialPlatformAdapters {
     getAllPlatformCapabilities()';
             twitter: this.getPlatformCapabilities('twitter''),
             facebook: this.getPlatformCapabilities('facebook''),
-            webShare: this.getPlatformCapabilities('webShare);
-           , currentPlatform: this.detectPlatform();
+            webShare: this.getPlatformCapabilities('webShare),
+    currentPlatform: this.detectPlatform();
         }
 
     /**
@@ -382,7 +381,7 @@ export class SocialPlatformAdapters {
         if(!shareData) {'
     }
 
-            errors.push('共有データが指定されていません); }'
+            errors.push('共有データが指定されていません'; }'
             return { valid: false, errors, warnings }
 ';
         // 必須フィールドの確認
@@ -390,12 +389,12 @@ export class SocialPlatformAdapters {
 
         }
 
-            errors.push('テキストまたはタイトルが必要です); }'
+            errors.push('テキストまたはタイトルが必要です'; }'
         }
 ';
         // URL検証
         if(shareData.url && !this.sanitizeUrl(shareData.url)) { ''
-            errors.push('無効なURLです); }'
+            errors.push('無効なURLです'; }'
 
         // プラットフォーム固有の検証
         if(shareData.platform) {
@@ -406,7 +405,7 @@ export class SocialPlatformAdapters {
             } else {  // テキスト長チェック }
                 if (shareData.text && shareData.text.length > config.maxTextLength) {' }'
 
-                    warnings.push(`テキストが長すぎます (${shareData.text.length}/${config.maxTextLength}`'});
+                    warnings.push(`テキストが長すぎます (${shareData.text.length}/${config.maxTextLength}`'}';
                 }
 }
 

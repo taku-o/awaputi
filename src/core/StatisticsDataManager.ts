@@ -20,7 +20,7 @@ export class StatisticsDataManager {'
      * 統計データを初期化
      * @returns {Object} 初期化された統計データ'
      */''
-    initializeStatistics(''';
+    initializeStatistics('''
                 '0-1000': 0,
                 '1001-5000': 0,
                 '5001-10000': 0,
@@ -32,8 +32,8 @@ export class StatisticsDataManager {'
             // 泡統計
             totalBubblesPopped: 0;
             totalBubblesMissed: 0;
-            bubbleAccuracy: 0;
-           , bubbleTypeStats: { normal: 0;
+            bubbleAccuracy: 0,
+    bubbleTypeStats: { normal: 0;
                 stone: 0;
                 iron: 0;
                 diamond: 0;
@@ -52,20 +52,20 @@ export class StatisticsDataManager {'
                 frozen: 0;
                 magnetic: 0;
                 explosive: 0;
-                phantom: 0;
-               , multiplier: 0 };
+                phantom: 0,
+    multiplier: 0 };
             // 効率統計
             efficiencyStats: { bubblesPerMinute: 0;
                 bubblesPerSecond: 0;
                 peakEfficiency: 0;
                 efficiencyTrend: [];
-                bestEfficiencySession: 0;
-               , worstEfficiencySession: Infinity };
+                bestEfficiencySession: 0,
+    worstEfficiencySession: Infinity };
             // 反応時間統計
             reactionTimeStats: { average: 0;
                 fastest: Infinity;
-                slowest: 0;
-               , distribution: {'', 'under_200ms': 0,
+                slowest: 0,
+    distribution: {'', 'under_200ms': 0,
                     '200_500ms': 0,
                     '500_1000ms': 0,
                     'over_1000ms': 0 },
@@ -85,29 +85,29 @@ export class StatisticsDataManager {'
                     '51+': 0 },
                 comboSuccessRate: 0;
                 averageComboLength: 0;
-                longestComboStreak: 0;
-               , comboRecoveryTime: 0 // コンボが切れてから次のコンボまでの時間;
+                longestComboStreak: 0,
+    comboRecoveryTime: 0 // コンボが切れてから次のコンボまでの時間;
             },
             
             // HP統計
             totalDamageTaken: 0;
             totalHpHealed: 0;
-            timesRevived: 0;
-           , lowHpTime: 0, // HP10以下の時間;
+            timesRevived: 0,
+    lowHpTime: 0, // HP10以下の時間;
             // HP詳細統計
             hpDetailStats: { criticalHpEvents: 0, // HP5以下になった回数
                 nearDeathRecoveries: 0, // HP1から回復した回数;
                 perfectHealthGames: 0, // ダメージを受けなかったゲーム数;
                 averageDamagePerGame: 0;
-                maxDamageInSingleGame: 0;
-               , healingEfficiency: 0 // 回復量/ダメージ量 ,};
+                maxDamageInSingleGame: 0,
+    healingEfficiency: 0 // 回復量/ダメージ量 ,};
             // ステージ統計
             stageStats: {};
             stagesCompleted: 0;
             stagesFailed: 0;
             // ステージ詳細統計
-           , stageDetailStats: { favoriteStage: null;
-               , mostDifficultStage: null, }
+           , stageDetailStats: { favoriteStage: null,
+    mostDifficultStage: null, }
                 fastestClearTime: {};
                 averageClearTime: {};
                 stageRetryCount: {};
@@ -131,48 +131,48 @@ export class StatisticsDataManager {'
                 averageDragDistance: 0;
                 longestDrag: 0;
                 shortestDrag: Infinity;
-                dragAccuracy: 0;
-               , rapidClickCount: 0, // 短時間での連続クリック;
-                pauseCount: 0;
-               , settingsChanges: 0 ,};
+                dragAccuracy: 0,
+    rapidClickCount: 0, // 短時間での連続クリック;
+                pauseCount: 0,
+    settingsChanges: 0 ,};
             // 進捗統計
             progressStats: { achievementsUnlocked: 0;
                 totalAP: 0;
                 levelUps: 0;
                 itemsPurchased: 0;
-                tutorialsCompleted: 0;
-               , hintsUsed: 0 }))
+                tutorialsCompleted: 0,
+    hintsUsed: 0 }))
             // 時間統計
-            timeStats: { playTimeByHour: new Array(24).fill(0);
-               , playTimeByDay: new Array(7).fill(0),
+            timeStats: { playTimeByHour: new Array(24).fill(0),
+    playTimeByDay: new Array(7).fill(0),
                 playTimeByMonth: new Array(12).fill(0);
                 peakPlayingHour: 0;
                 peakPlayingDay: 0;
                 firstPlayDate: null;
-                lastPlayDate: null;
-               , longestBreak: 0, // 最長プレイ間隔;
+                lastPlayDate: null,
+    longestBreak: 0, // 最長プレイ間隔;
                 regularPlayStreak: 0 // 連続プレイ日数 ,};
             // デバイス・環境統計
             deviceStats: { isMobile: false,''
                 screenResolution: '',
-                browserInfo: '';
-               , performanceMetrics: {
+                browserInfo: '',
+    performanceMetrics: {
                     averageFPS: 0;
-                    memoryUsage: 0;
-                   , loadTime: 0 ,}
+                    memoryUsage: 0,
+    loadTime: 0 ,}
             };
             // エラー・クラッシュ統計
             errorStats: { crashCount: 0;
                 errorCount: 0;
-                recoveryCount: 0;
-               , lastErrorTime: null, }
+                recoveryCount: 0,
+    lastErrorTime: null, }
                 commonErrors: {};
             // ソーシャル統計（新規追加、将来の機能用）
             socialStats: { shareCount: 0;
                 challengesCompleted: 0;
-                communityRank: 0;
-               , friendsConnected: 0 }
-        }
+                communityRank: 0,
+    friendsConnected: 0 
+    }
 
     /**
      * セッション統計を初期化
@@ -180,12 +180,12 @@ export class StatisticsDataManager {'
      */
     initializeSessionStats() {
         return { gamesThisSession: 0,
-            scoreThisSession: 0;
-           , bubblesThisSession: 0;
+            scoreThisSession: 0,
+    bubblesThisSession: 0;
     ,}
             playTimeThisSession: 0, };
-            sessionStartTime: Date.now(); }
-        }
+            sessionStartTime: Date.now(); 
+    }
 
     /**
      * 統計データの検証
@@ -207,7 +207,7 @@ export class StatisticsDataManager {'
 
             if(!(field, in statistics) {' }'
 
-                issues.push(`Missing, required field: ${field}`'});
+                issues.push(`Missing, required field: ${field}`'}';
             }
         }
         ';
@@ -223,7 +223,7 @@ export class StatisticsDataManager {'
 
         }
 
-            issues.push('bubbleTypeStats, must be, an object); }'
+            issues.push('bubbleTypeStats, must be, an object'; }'
         }
         ';
         // 値の範囲検証
@@ -231,14 +231,14 @@ export class StatisticsDataManager {'
 
         }
 
-            issues.push('totalGamesPlayed, cannot be, negative); }'
+            issues.push('totalGamesPlayed, cannot be, negative'; }'
         }
 
         if(statistics.totalPlayTime < 0) {', ';
 
         }
 
-            issues.push('totalPlayTime, cannot be, negative); }'
+            issues.push('totalPlayTime, cannot be, negative'; }'
         }
         
         // データ整合性チェック
@@ -298,7 +298,7 @@ export class StatisticsDataManager {'
      * @param {Object} statistics - 修復対象の統計データ
      */
     repairArrayFields(statistics) {
-        if(!Array.isArray(statistics.timeStats? .playTimeByHour) {
+        if(!Array.isArray(statistics.timeStats?.playTimeByHour) {
     }
             statistics.timeStats.playTimeByHour = new Array(24).fill(0); }
         }
@@ -328,13 +328,13 @@ export class StatisticsDataManager {'
             statistics.deviceStats = { : undefined'
                 isMobile: false,
                 screenResolution: '',
-                browserInfo: '';
-               , performanceMetrics: {
-                    averageFPS: 0;
-                   , memoryUsage: 0;
+                browserInfo: '',
+    performanceMetrics: {
+                    averageFPS: 0,
+    memoryUsage: 0;
         ,}
-                    loadTime: 0 }
-}
+                    loadTime: 0 
+    }
     }
 
     /**
@@ -366,11 +366,11 @@ export class StatisticsDataManager {'
     calculateDataIntegrity(statistics) {
         const checks = {
             bubbleAccuracy: this.checkBubbleAccuracy(statistics);
-            averageCalculations: this.checkAverageCalculations(statistics);
-           , timeConsistency: this.checkTimeConsistency(statistics);
+            averageCalculations: this.checkAverageCalculations(statistics),
+    timeConsistency: this.checkTimeConsistency(statistics);
     }
-            stageConsistency: this.checkStageConsistency(statistics); }
-        };
+            stageConsistency: this.checkStageConsistency(statistics); 
+    };
         
         const passedChecks = Object.values(checks).filter(check => check.passed).length;
         const totalChecks = Object.keys(checks).length;
@@ -378,8 +378,8 @@ export class StatisticsDataManager {'
         
         return { score: integrityScore,
             checks, };
-            isHealthy: integrityScore >= 80 }
-        }
+            isHealthy: integrityScore >= 80 
+    }
 
     /**
      * 泡の精度チェック
@@ -418,13 +418,13 @@ export class StatisticsDataManager {'
                 passed: Math.abs(calculatedAvgScore - recordedAvgScore) < 1;
                 calculated: calculatedAvgScore;
     }
-                recorded: recordedAvgScore }
-            });
+                recorded: recordedAvgScore 
+    });
         }
         
-        return { passed: checks.every(check = > check.passed };
-            details: checks }
-        }
+        return { passed: checks.every(check = > check.passed }
+            details: checks 
+    }
 
     /**
      * 時間の一貫性チェック
@@ -437,12 +437,12 @@ export class StatisticsDataManager {'
         if(statistics.longestSession < statistics.shortestSession && statistics.shortestSession !== Infinity) {'
             checks.push({)'
                 issue: 'Longest session is shorter than shortest session', }
-                passed: false); }
-        }
+                passed: false); 
+    }
         
         return { passed: checks.length = == 0 };
-            issues: checks }
-        }
+            issues: checks 
+    }
 
     /**
      * ステージデータの一貫性チェック
@@ -485,12 +485,12 @@ export class StatisticsDataManager {'
     getEnvironmentInfo() {
         return { userAgent: navigator.userAgent,
             platform: navigator.platform;
-            language: navigator.language;
-           , cookieEnabled: navigator.cookieEnabled;
+            language: navigator.language,
+    cookieEnabled: navigator.cookieEnabled;
     ,}
             onLine: navigator.onLine, };
-            timestamp: Date.now(); }
-        }
+            timestamp: Date.now(); 
+    }
 }
 
 // シングルトンインスタンス管理
@@ -510,4 +510,4 @@ export function getStatisticsDataManager() { if (!statisticsDataManagerInstance)
  * @returns {StatisticsDataManager} 新しいシングルトンインスタンス
  */
 export function reinitializeStatisticsDataManager() {;
-    statisticsDataManagerInstance = new StatisticsDataManager(' })'
+    statisticsDataManagerInstance = new StatisticsDataManager(' }''

@@ -4,31 +4,31 @@
  * 多言語対応とバージョン管理機能を提供
  */
 
-import { ErrorHandler  } from '../../utils/ErrorHandler.js';''
-import { getLocalizationManager  } from '../LocalizationManager.js';''
-import { CacheSystem  } from '../CacheSystem.js';''
-import { LoggingSystem  } from '../LoggingSystem.js';''
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';
+import { getLocalizationManager  } from '../LocalizationManager.js';
+import { CacheSystem  } from '../CacheSystem.js';
+import { LoggingSystem  } from '../LoggingSystem.js';
 import { HelpContentModel, TutorialModel, FAQModel, UserProgressModel  } from './DataModels.js';
 
 // 型定義
 export interface LocalizationManager {;
-    getCurrentLanguage(''';
+    getCurrentLanguage('''
     priority?: 'high' | 'normal' | 'low';
     [key: string]: any, }
 
 export interface CachedContentItem { data: any,
     timestamp: number;
-    version?: string;
-   , expires: number ,}
+    version?: string,
+    expires: number ,}
 
 export interface ContentManifest { version: string;
-    lastUpdated: number;
-   , contents: {
+    lastUpdated: number,
+    contents: {
         [contentType: string]: {
             [language: string]: {
                 versio;n: string;
-                url: string;
-               , size: number;
+                url: string,
+    size: number;
                 checksum?: string };
     }
 
@@ -67,7 +67,7 @@ export class ContentLoader {
 
         this.localizationManager = localizationManager || getLocalizationManager();
         this.cacheSystem = CacheSystem.getInstance ? CacheSystem.getInstance() : new CacheSystem();''
-        this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem(''';
+        this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem('''
             baseUrl: '/help',
             defaultLanguage: 'ja',
             supportedLanguages: ['ja', 'en', 'zh-CN', 'zh-TW', 'ko'],
@@ -100,9 +100,9 @@ export class ContentLoader {
             const currentLanguage = this.localizationManager.getCurrentLanguage();''
             await this.preloadEssentialContent(currentLanguage);
 
-            this.loggingSystem.info('ContentLoader', 'Content loader initialized successfully);''
+            this.loggingSystem.info('ContentLoader', 'Content loader initialized successfully';''
         } catch (error) {
-            this.loggingSystem.error('ContentLoader', 'Failed to initialize content loader', error);''
+            this.loggingSystem.error('ContentLoader', 'Failed to initialize content loader', error';''
             ErrorHandler.handle(error, 'ContentLoader.initialize''); }
     }
 
@@ -127,7 +127,7 @@ export class ContentLoader {
 
                 if(cached && this.isContentValid(cached)) {' }'
 
-                    this.loggingSystem.debug('ContentLoader', `Help content loaded from cache: ${language}`'});
+                    this.loggingSystem.debug('ContentLoader', `Help content loaded from cache: ${language}`'}';
                     return cached;
             ';
             // 読み込みPromiseを作成
@@ -145,7 +145,7 @@ export class ContentLoader {
                 // キャッシュに保存
                 this.setCachedContent(cacheKey, model);
 
-                this.loggingSystem.info('ContentLoader', `Help content loaded: ${language}`});
+                this.loggingSystem.info('ContentLoader', `Help content loaded: ${language}`}';
                 return model;
                 ';
 
@@ -153,7 +153,7 @@ export class ContentLoader {
 
             } catch (error) { }
 
-            this.loggingSystem.error('ContentLoader', `Failed to load help content: ${language}`, error);
+            this.loggingSystem.error('ContentLoader', `Failed to load help content: ${language}`, error';
             ';
             // フォールバック処理
             if(language !== this.config.defaultLanguage) {', ';
@@ -162,7 +162,7 @@ export class ContentLoader {
 
                 this.loggingSystem.info('ContentLoader', `Falling back to default language: ${this.config.defaultLanguage}`},' }
 
-                return await this.loadHelpContent(this.config.defaultLanguage, options'});
+                return await this.loadHelpContent(this.config.defaultLanguage, options'}';
             }
             
             throw error;
@@ -187,7 +187,7 @@ export class ContentLoader {
 
                 if(cached && this.isContentValid(cached)) {' }'
 
-                    this.loggingSystem.debug('ContentLoader', `Tutorial data loaded from cache: ${language}`'});
+                    this.loggingSystem.debug('ContentLoader', `Tutorial data loaded from cache: ${language}`'}';
                     return cached;
 
             const rawData: TutorialData = await this.performContentLoad('tutorials', language, options);
@@ -204,7 +204,7 @@ export class ContentLoader {
 
                     } else { }'
 
-                        this.loggingSystem.warn('ContentLoader', `Invalid tutorial data: ${tutorialData.id}`});
+                        this.loggingSystem.warn('ContentLoader', `Invalid tutorial data: ${tutorialData.id}`}';
                     }
 }
             ';
@@ -246,7 +246,7 @@ export class ContentLoader {
 
                 if(cached && this.isContentValid(cached)) {' }'
 
-                    this.loggingSystem.debug('ContentLoader', `FAQ data loaded from cache: ${language}`'});
+                    this.loggingSystem.debug('ContentLoader', `FAQ data loaded from cache: ${language}`'}';
                     return cached;
 
             const rawData: FAQData = await this.performContentLoad('faq', language, options);
@@ -263,7 +263,7 @@ export class ContentLoader {
 
                     } else { }'
 
-                        this.loggingSystem.warn('ContentLoader', `Invalid FAQ data: ${faqData.id}`});
+                        this.loggingSystem.warn('ContentLoader', `Invalid FAQ data: ${faqData.id}`}';
                     }
 }
             ';
@@ -293,13 +293,13 @@ export class ContentLoader {
      * @param language - 言語コード
      * @returns チュートリアルモデル'
      */''
-    async loadTutorial(tutorialId: string, language: string = 'ja): Promise<TutorialModel | null> { try {'
+    async loadTutorial(tutorialId: string, language: string = 'ja': Promise<TutorialModel | null> { try {'
             const tutorials = await this.loadTutorialData(language);
             const tutorial = tutorials.find(t => t.id === tutorialId);
 
             if(!tutorial) {' }'
 
-                this.loggingSystem.warn('ContentLoader', `Tutorial not found: ${tutorialId}`});
+                this.loggingSystem.warn('ContentLoader', `Tutorial not found: ${tutorialId}`}';
                 return null;
             }
             ';
@@ -307,7 +307,7 @@ export class ContentLoader {
             return tutorial;''
         } catch (error) { }
 
-            this.loggingSystem.error('ContentLoader', `Failed to load tutorial: ${tutorialId}`, error);
+            this.loggingSystem.error('ContentLoader', `Failed to load tutorial: ${tutorialId}`, error';
             return null;
 
     /**
@@ -315,7 +315,7 @@ export class ContentLoader {
      * @param language - 言語コード
      * @returns ガイドツアーデータ'
      */''
-    async loadGuidedTours(language: string = 'ja): Promise<any> { try { }'
+    async loadGuidedTours(language: string = 'ja': Promise<any> { try { }'
             const cacheKey = `guided_tours_${language}`;
             
             // キャッシュ確認
@@ -424,7 +424,7 @@ export class ContentLoader {
 
                     if (!response.ok) {' }'
 
-                        throw new Error(`HTTP ${response.status}: ${response.statusText}`'});
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`'}';
                     }
 
                     const contentType = response.headers.get('content-type'');''
@@ -466,10 +466,10 @@ export class ContentLoader {
         
         try {
             const response = await fetch(url, {)
-                signal: controller.signal)';
-               , headers: {'', 'Accept': 'application/json',
-                    'Cache-Control': 'no-cache' }
-                };
+                signal: controller.signal)',
+    headers: {'', 'Accept': 'application/json',
+                    'Cache-Control': 'no-cache' 
+    };
             );
             return response;
         } finally { clearTimeout(timeoutId); }
@@ -493,14 +493,14 @@ export class ContentLoader {
 
                 const manifest: ContentManifest = await response.json();
 
-                this.manifestCache.set('default', manifest);
+                this.manifestCache.set('default', manifest';
 
             }
 
-                this.loggingSystem.info('ContentLoader', 'Content manifest loaded successfully);' }
+                this.loggingSystem.info('ContentLoader', 'Content manifest loaded successfully';' }
 
             } catch (error) {
-            this.loggingSystem.warn('ContentLoader', 'Failed to load content manifest', error); }
+            this.loggingSystem.warn('ContentLoader', 'Failed to load content manifest', error'; }
     }
 
     /**
@@ -510,13 +510,13 @@ export class ContentLoader {
     private async preloadEssentialContent(language: string): Promise<void> { try {
             // 並行してプリロード
             const preloadPromises = ['';
-                this.loadHelpContent(language, { priority: 'high' )),]'
-                this.loadTutorialData(language, { priority: 'high )]'
+                this.loadHelpContent(language, { priority: 'high' )',]'
+                this.loadTutorialData(language, { priority: 'high ']'
             ];
 
             await Promise.allSettled(preloadPromises);' ,}'
 
-            this.loggingSystem.info('ContentLoader', `Essential content preloaded: ${language}`});''
+            this.loggingSystem.info('ContentLoader', `Essential content preloaded: ${language}`}';''
         } catch (error) { }
 
             this.loggingSystem.warn('ContentLoader', `Failed to preload essential content: ${language}`, error);
@@ -541,7 +541,7 @@ export class ContentLoader {
 
                 this.cacheSystem.clear() }
 
-            this.loggingSystem.info('ContentLoader', `Cache cleared: ${pattern || 'all}`});''
+            this.loggingSystem.info('ContentLoader', `Cache cleared: ${pattern || 'all}`}';''
         } catch (error) {
             this.loggingSystem.error('ContentLoader', 'Failed to clear cache', error); }
     }
@@ -554,7 +554,7 @@ export class ContentLoader {
             this.loadingPromises.clear();
             // キャッシュをクリア
             this.clearCache()';
-            this.loggingSystem.info('ContentLoader', 'Content loader destroyed);' }
+            this.loggingSystem.info('ContentLoader', 'Content loader destroyed';' }
 
         } catch (error) {
             this.loggingSystem.error('ContentLoader', 'Failed to destroy content loader', error); }

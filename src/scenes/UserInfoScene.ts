@@ -5,25 +5,25 @@
 import { Scene  } from '../core/Scene';
 ';
 // コンポーネントシステム
-import { ScenesDialogManager  } from './components/ScenesDialogManager';''
-import { ComponentEventBus  } from './components/ComponentEventBus';''
-import { SceneState  } from './components/SceneState';''
-import { UsernameDialog  } from './components/UsernameDialog';''
-import { ScenesExportDialog  } from './components/ScenesExportDialog';''
+import { ScenesDialogManager  } from './components/ScenesDialogManager';
+import { ComponentEventBus  } from './components/ComponentEventBus';
+import { SceneState  } from './components/SceneState';
+import { UsernameDialog  } from './components/UsernameDialog';
+import { ScenesExportDialog  } from './components/ScenesExportDialog';
 import { ScenesImportDialog  } from './components/ScenesImportDialog';
 ';
 // 既存の分離コンポーネント
-import { UserProfileManager  } from './components/user-info/UserProfileManager';''
-import { UserStatisticsRenderer  } from './components/user-info/UserStatisticsRenderer';''
-import { UserAchievementDisplay  } from './components/user-info/UserAchievementDisplay';''
-import { UserDataExporter  } from './components/user-info/UserDataExporter';''
-import { UserHelpIntegration  } from './components/user-info/UserHelpIntegration';''
-import { UserInfoTabManager  } from './components/user-info/UserInfoTabManager';''
-import { UserInfoRenderer  } from './components/user-info/UserInfoRenderer';''
+import { UserProfileManager  } from './components/user-info/UserProfileManager';
+import { UserStatisticsRenderer  } from './components/user-info/UserStatisticsRenderer';
+import { UserAchievementDisplay  } from './components/user-info/UserAchievementDisplay';
+import { UserDataExporter  } from './components/user-info/UserDataExporter';
+import { UserHelpIntegration  } from './components/user-info/UserHelpIntegration';
+import { UserInfoTabManager  } from './components/user-info/UserInfoTabManager';
+import { UserInfoRenderer  } from './components/user-info/UserInfoRenderer';
 import { UserInfoEventHandler  } from './components/user-info/UserInfoEventHandler';
 ';
 // 新しいサブコンポーネント
-import { UserInterfaceController  } from './user-info-scene/UserInterfaceController';''
+import { UserInterfaceController  } from './user-info-scene/UserInterfaceController';
 import { UserDataManager  } from './user-info-scene/UserDataManager';
 
 export class UserInfoScene extends Scene { // コンポーネントシステム
@@ -45,7 +45,7 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
     private userDataExporter!: UserDataExporter;
     private userHelpIntegration!: UserHelpIntegration;
     // レガシー互換性プロパティ
-    private lastCleanupTime: number = Date.now(''';
+    private lastCleanupTime: number = Date.now('''
     public, currentTab: string = 'profile',
     public isDialogOpen: boolean = false);
     public, activeDialog: string | null = null);
@@ -86,8 +86,8 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
         this.dialogManager = new ScenesDialogManager(this.gameEngine, this.eventBus, this.sceneState);
         ';
         // ダイアログコンポーネントを登録
-        this.dialogManager.registerDialog('username', UsernameDialog);''
-        this.dialogManager.registerDialog('export', ScenesExportDialog);''
+        this.dialogManager.registerDialog('username', UsernameDialog';''
+        this.dialogManager.registerDialog('export', ScenesExportDialog';''
         this.dialogManager.registerDialog('import', ScenesImportDialog);
         
         // 専用コンポーネントの初期化
@@ -117,10 +117,9 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
         this.activeDialog = null;
         ';
 
-        // UIコントローラーとの同期)'
-        this.eventBus.on('tabSwitched', (tabId: string) => { this.currentTab = tabId;' }
-
-        }');
+        // UIコントローラーとの同期''
+        this.eventBus.on('tabSwitched', (tabId: string) => { this.currentTab = tabId;' 
+    }');
 
         this.eventBus.on('dialogOpened', (dialogType: string) => {  this.isDialogOpen = true; }
 
@@ -292,7 +291,7 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
             ' }'
 
         } catch (error) {
-            console.error('[UserInfoScene] シーン破棄エラー:', error); }
+            console.error('[UserInfoScene] シーン破棄エラー:', error'; }
 
     }''
 }

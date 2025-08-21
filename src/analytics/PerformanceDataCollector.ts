@@ -9,8 +9,8 @@ export class PerformanceDataCollector {
             fpsInterval: 1000, // FPS測定間隔（1秒）;
             memoryInterval: 30000, // メモリ測定間隔（30秒）;
             enableDetailedTiming: true;
-            enableResourceTiming: true;
-           , maxDataPoints: 1000, // 保持するデータポイント数
+            enableResourceTiming: true,
+    maxDataPoints: 1000, // 保持するデータポイント数
     }
             ...options
         };
@@ -23,8 +23,8 @@ export class PerformanceDataCollector {
             memory: [];
             loadTimes: [];
             networkRequests: [];
-            renderTimes: [];
-           , errorEvents: [] ,};
+            renderTimes: [],
+    errorEvents: [] ,};
         // 測定用変数
         this.frameCount = 0;
         this.lastFrameTime = performance.now();
@@ -73,15 +73,15 @@ export class PerformanceDataCollector {
                 this.recordFPSData({
                     timestamp: currentTime;
                     fps: fps);
-                    frameTime: frameTime);
-                   , frameCount: frameCount,);
+                    frameTime: frameTime),
+    frameCount: frameCount );
                     sessionId: this.sessionId);
-    ,}
+     }
                 frameCount = 0; }
                 lastTime = currentTime; }
             }
             
-            if (this.isRunning) { requestAnimationFrame(trackFrame); }
+            if (this.isRunning) { requestAnimationFrame(trackFrame'); }
         };
 
         this.frameTracker = trackFrame;
@@ -90,7 +90,7 @@ export class PerformanceDataCollector {
     /**
      * メモリ追跡の設定
      */
-    setupMemoryTracking(') {'
+    setupMemoryTracking() {'
 
         if(!performance.memory) {''
             console.warn('Memory, API not, available);
@@ -101,17 +101,17 @@ export class PerformanceDataCollector {
         const trackMemory = () => {  const memoryInfo = {
                 timestamp: performance.now();
                 used: performance.memory.usedJSHeapSize;
-                total: performance.memory.totalJSHeapSize;
-               , limit: performance.memory.jsHeapSizeLimit, }
-                sessionId: this.sessionId }
-            };
+                total: performance.memory.totalJSHeapSize,
+    limit: performance.memory.jsHeapSizeLimit }
+                sessionId: this.sessionId 
+    };
             // 使用率計算
             memoryInfo.usagePercent = (memoryInfo.used / memoryInfo.limit) * 100;
             memoryInfo.allocatedPercent = (memoryInfo.total / memoryInfo.limit) * 100;
 
             this.recordMemoryData(memoryInfo);
 
-            if (this.isRunning) { this.memoryTimer = setTimeout(trackMemory, this.options.memoryInterval); }
+            if (this.isRunning) { this.memoryTimer = setTimeout(trackMemory this.options.memoryInterval); }
         };
 
         this.memoryTracker = trackMemory;
@@ -137,11 +137,11 @@ export class PerformanceDataCollector {
                 dnsLookup: timing.domainLookupEnd - timing.domainLookupStart;
                 tcpConnect: timing.connectEnd - timing.connectStart;
                 serverResponse: timing.responseEnd - timing.responseStart;
-                domProcessing: timing.loadEventStart - timing.domLoading;
-               , navigationType: navigation.type;
+                domProcessing: timing.loadEventStart - timing.domLoading,
+    navigationType: navigation.type;
     }
-                sessionId: this.sessionId }
-            };
+                sessionId: this.sessionId 
+    };
             this.recordLoadTimeData(loadTimeData');
         }
 ';
@@ -161,7 +161,7 @@ export class PerformanceDataCollector {
                     this.recordNavigationTiming(entry); }
                 }''
             }');''
-            navObserver.observe({ entryTypes: ['navigation] });
+            navObserver.observe({ entryTypes: ['navigation]});
             this.eventListeners.push(() => navObserver.disconnect();
 
             // Resource timing
@@ -169,7 +169,7 @@ export class PerformanceDataCollector {
                     this.recordResourceTiming(entry); }
                 }''
             }');''
-            resourceObserver.observe({ entryTypes: ['resource] });
+            resourceObserver.observe({ entryTypes: ['resource]});
             this.eventListeners.push(() => resourceObserver.disconnect();
 
             // Measure timing
@@ -177,7 +177,7 @@ export class PerformanceDataCollector {
                     this.recordMeasureTiming(entry); }
                 }''
             }');''
-            measureObserver.observe({ entryTypes: ['measure] });
+            measureObserver.observe({ entryTypes: ['measure]});
             this.eventListeners.push(() => measureObserver.disconnect();
 
         } catch (error) { console.warn('Performance Observer setup failed:', error }
@@ -197,23 +197,23 @@ export class PerformanceDataCollector {
 
                     timestamp: performance.now(),
                     resourceType: target.tagName.toLowerCase(''
-    ,})'
+    ,}''
                     success: event.type === 'load') }
-                    sessionId: this.sessionId) }
-                });
+                    sessionId: this.sessionId) 
+    });
             }
         };
 
         // リソースの読み込み開始時間を記録
         const recordLoadStart = (event) => {  if (event.target) {''
                 event.target.loadStartTime = performance.now()';
-        document.addEventListener('loadstart', recordLoadStart, true);''
-        document.addEventListener('load', trackResourceLoad, true);''
+        document.addEventListener('loadstart', recordLoadStart, true';''
+        document.addEventListener('load', trackResourceLoad, true';''
         document.addEventListener('error', trackResourceLoad, true);
 
         this.eventListeners.push(() => {''
-            document.removeEventListener('loadstart', recordLoadStart, true);''
-            document.removeEventListener('load', trackResourceLoad, true);' }
+            document.removeEventListener('loadstart', recordLoadStart, true';''
+            document.removeEventListener('load', trackResourceLoad, true';' }
 
             document.removeEventListener('error', trackResourceLoad, true); }
         });
@@ -225,13 +225,13 @@ export class PerformanceDataCollector {
     setupErrorTracking() {
         const trackError = (event) => { '
             const errorData = {''
-                timestamp: performance.now(''';
-               , message: event.message || 'Unknown error',
+                timestamp: performance.now(''',
+    message: event.message || 'Unknown error',
                 filename: event.filename || 'Unknown file';
                 lineno: event.lineno || 0;
                 colno: event.colno || 0;
-                stack: event.error ? event.error.stack : null;
-               , userAgent: navigator.userAgent;
+                stack: event.error ? event.error.stack : null,
+    userAgent: navigator.userAgent;
     ,}
                 url: window.location.href, }
                 sessionId: this.sessionId }))
@@ -241,22 +241,22 @@ export class PerformanceDataCollector {
 ';
 
         const trackUnhandledRejection = (event) => {  const errorData = {''
-                timestamp: performance.now()';
-               , type: 'unhandledrejection',')';
-                message: event.reason ? event.reason.toString(') : 'Unhandled promise rejection';
+                timestamp: performance.now()',
+    type: 'unhandledrejection',')';
+                message: event.reason ? event.reason.toString() : 'Unhandled promise rejection';
                 stack: event.reason && event.reason.stack ? event.reason.stack : null;
-                userAgent: navigator.userAgent;
-               , url: window.location.href, }
-                sessionId: this.sessionId }
-            };
+                userAgent: navigator.userAgent,
+    url: window.location.href, }
+                sessionId: this.sessionId 
+    };
             this.recordErrorData(errorData);
         };
 
-        window.addEventListener('error', trackError);''
+        window.addEventListener('error', trackError';''
         window.addEventListener('unhandledrejection', trackUnhandledRejection);
 
         this.eventListeners.push(() => {  ''
-            window.removeEventListener('error', trackError);' }
+            window.removeEventListener('error', trackError';' }
 
             window.removeEventListener('unhandledrejection', trackUnhandledRejection); }
         });
@@ -271,7 +271,7 @@ export class PerformanceDataCollector {
         ';
 
         this.isRunning = true;''
-        console.log('Performance, data collection, started);
+        console.log('Performance data collection started);
 
         // FPSトラッキング開始
         if (this.frameTracker) {
@@ -292,7 +292,7 @@ export class PerformanceDataCollector {
         ';
 
         this.isRunning = false;''
-        console.log('Performance, data collection, stopped);
+        console.log('Performance data collection stopped);
 
         // タイマーをクリア
         if (this.memoryTimer) {
@@ -310,15 +310,15 @@ export class PerformanceDataCollector {
      * FPSデータの記録
      */
     recordFPSData(data) { this.performanceData.fps.push(data');''
-        this.trimDataArray('fps);
+        this.trimDataArray('fps';
 ';
         // 低FPS警告
         if(data.fps < 30) {''
             this.triggerPerformanceWarning('low_fps', {)
-                currentFPS: data.fps);
-               , frameTime: data.frameTime, }
-                threshold: 30); }
-}
+                currentFPS: data.fps),
+    frameTime: data.frameTime, }
+                threshold: 30); 
+    }
 
     /**
      * メモリデータの記録
@@ -326,16 +326,16 @@ export class PerformanceDataCollector {
     recordMemoryData(data) { '
 
         this.performanceData.memory.push(data);''
-        this.trimDataArray('memory);
+        this.trimDataArray('memory';
 ';
         // 高メモリ使用量警告
         if(data.usagePercent > 80) {''
             this.triggerPerformanceWarning('high_memory_usage', {
                 usagePercent: data.usagePercent);
-                used: data.used);
-               , limit: data.limit, }
-                threshold: 80); }
-}
+                used: data.used),
+    limit: data.limit, }
+                threshold: 80); 
+    }
 
     /**
      * ロード時間データの記録
@@ -343,14 +343,14 @@ export class PerformanceDataCollector {
     recordLoadTimeData(data) { '
 
         this.performanceData.loadTimes.push(data);''
-        this.trimDataArray('loadTimes);
+        this.trimDataArray('loadTimes';
 ';
         // 遅いロード時間警告
         if(data.loadComplete > 5000) { // 5秒以上
             this.triggerPerformanceWarning('slow_load_time', {)
                 loadTime: data.loadComplete, }
-                threshold: 5000); }
-}
+                threshold: 5000); 
+    }
 
     /**
      * ナビゲーションタイミングの記録
@@ -360,11 +360,11 @@ export class PerformanceDataCollector {
             timestamp: Date.now();
             name: entry.name;
             duration: entry.duration;
-            domContentLoaded: entry.domContentLoadedEventEnd - entry.domContentLoadedEventStart;
-           , loadEvent: entry.loadEventEnd - entry.loadEventStart;
+            domContentLoaded: entry.domContentLoadedEventEnd - entry.domContentLoadedEventStart,
+    loadEvent: entry.loadEventEnd - entry.loadEventStart;
     }
-            sessionId: this.sessionId }
-        };
+            sessionId: this.sessionId 
+    };
         this.performanceData.loadTimes.push(data);''
         this.trimDataArray('loadTimes);
     }
@@ -377,11 +377,11 @@ export class PerformanceDataCollector {
             timestamp: Date.now();
             name: entry.name;
             duration: entry.duration;
-            size: entry.transferSize || 0;
-           , type: this.getResourceType(entry.name);
+            size: entry.transferSize || 0,
+    type: this.getResourceType(entry.name);
     }
-            sessionId: this.sessionId }
-        };
+            sessionId: this.sessionId 
+    };
         this.performanceData.networkRequests.push(data);''
         this.trimDataArray('networkRequests);
     }
@@ -393,11 +393,11 @@ export class PerformanceDataCollector {
         const data = {
             timestamp: Date.now();
             name: entry.name;
-            duration: entry.duration;
-           , startTime: entry.startTime;
+            duration: entry.duration,
+    startTime: entry.startTime;
     }
-            sessionId: this.sessionId }
-        };
+            sessionId: this.sessionId 
+    };
         this.performanceData.renderTimes.push(data);''
         this.trimDataArray('renderTimes);
     }
@@ -408,16 +408,16 @@ export class PerformanceDataCollector {
     recordResourceLoadTime(data) { '
 
         this.performanceData.networkRequests.push(data);''
-        this.trimDataArray('networkRequests);
+        this.trimDataArray('networkRequests';
 ';
         // 遅いリソース読み込み警告
         if(data.loadTime > 3000) { // 3秒以上
             this.triggerPerformanceWarning('slow_resource_load', {
                 resourceType: data.resourceType);
-                src: data.src);
-               , loadTime: data.loadTime, }
-                threshold: 3000); }
-}
+                src: data.src),
+    loadTime: data.loadTime, }
+                threshold: 3000); 
+    }
 
     /**
      * エラーデータの記録
@@ -431,7 +431,7 @@ export class PerformanceDataCollector {
         // エラー発生の通知
     }
 
-        this.triggerPerformanceWarning('error_occurred', data); }
+        this.triggerPerformanceWarning('error_occurred', data'; }
     }
 
     /**
@@ -442,11 +442,11 @@ export class PerformanceDataCollector {
         const warningEvent = new CustomEvent('performance-warning', {
             detail: {)
                 type: type);
-                timestamp: performance.now();
-               , details: details;
+                timestamp: performance.now(),
+    details: details;
     ,}
-                sessionId: this.sessionId }
-});
+                sessionId: this.sessionId 
+    });
         window.dispatchEvent(warningEvent);
         console.warn(`Performance warning: ${type}`, details});
     }
@@ -456,7 +456,7 @@ export class PerformanceDataCollector {
      */''
     getResourceType(url) {'
 
-        const extension = url.split('.).pop().toLowerCase(''';
+        const extension = url.split('.).pop().toLowerCase('''
             'js': 'script',
             'css': 'stylesheet',
             'png': 'image',
@@ -469,9 +469,8 @@ export class PerformanceDataCollector {
             'ttf': 'font',
     }
 
-            'otf': 'font' }
-
-        };''
+            'otf': 'font' 
+    };''
         return typeMap[extension] || 'other';
     }
 
@@ -492,7 +491,7 @@ export class PerformanceDataCollector {
 
     }
 
-        if(typeof, performance.mark === 'function) { }'
+        if(typeof, performance.mark === 'function' { }'
             const markName = startMark || `${name}-start`;
             performance.mark(markName);
             return markName;
@@ -507,7 +506,7 @@ export class PerformanceDataCollector {
 
     }
 
-        if(typeof, performance.mark === 'function' && typeof, performance.measure === 'function) { }
+        if(typeof, performance.mark === 'function' && typeof, performance.measure === 'function' { }
             const endMarkName = `${name}-end`;
             const startMarkName = startMark || `${name}-start`;
             ';
@@ -521,8 +520,8 @@ export class PerformanceDataCollector {
                 const measure = measures[measures.length - 1];
                 return { name: name }
                     duration: measure.duration, };
-                    startTime: measure.startTime }
-                }
+                    startTime: measure.startTime 
+    }
         }
         return null;
     }
@@ -551,11 +550,11 @@ export class PerformanceDataCollector {
         if(this.performanceData.memory.length > 0) {
             const latestMemory = this.performanceData.memory[this.performanceData.memory.length - 1];
             stats.currentMemoryUsage = {
-                used: latestMemory.used;
-               , usagePercent: latestMemory.usagePercent;
+                used: latestMemory.used,
+    usagePercent: latestMemory.usagePercent;
         }
-                total: latestMemory.total }
-            }
+                total: latestMemory.total 
+    }
 
         // エラー統計
         stats.errorCount = this.performanceData.errorEvents.length;
@@ -593,11 +592,11 @@ export class PerformanceDataCollector {
         const stats = {
             fps: this.calculateFPSStatistics();
             memory: this.calculateMemoryStatistics();
-            loadTimes: this.calculateLoadTimeStatistics();
-           , errors: this.calculateErrorStatistics();
+            loadTimes: this.calculateLoadTimeStatistics(),
+    errors: this.calculateErrorStatistics();
     }
-            network: this.calculateNetworkStatistics(); }
-        };
+            network: this.calculateNetworkStatistics(); 
+    };
 
         return stats;
     }
@@ -612,12 +611,12 @@ export class PerformanceDataCollector {
         const values = fpsData.map(item => item.fps);
         return { current: values[values.length - 1],
             average: Math.round(values.reduce((sum, val) => sum + val, 0) / values.length),
-            min: Math.min(...values);
-           , max: Math.max(...values);
+            min: Math.min(...values),
+    max: Math.max(...values);
     ,}
             belowThreshold: values.filter(fps = > fps < 30).length };
-            dataPoints: values.length }
-        }
+            dataPoints: values.length 
+    }
 
     /**
      * メモリ統計の計算
@@ -632,12 +631,12 @@ export class PerformanceDataCollector {
         return { current: {
                 used: current.used }
                 usagePercent: Math.round(current.usagePercent * 100) / 100, };
-                total: current.total }
-            };
+                total: current.total 
+    };
             averageUsage: Math.round(usageValues.reduce((sum, val) => sum + val, 0) / usageValues.length * 100) / 100,
             peakUsage: Math.max(...usageValues);
-            lowUsage: Math.min(...usageValues);
-           , dataPoints: usageValues.length;
+            lowUsage: Math.min(...usageValues),
+    dataPoints: usageValues.length;
         },
     }
 
@@ -653,8 +652,8 @@ export class PerformanceDataCollector {
             fastestLoad: Math.min(...durations);
     ,}
             slowestLoad: Math.max(...durations), };
-            dataPoints: durations.length }
-        }
+            dataPoints: durations.length 
+    }
 
     /**
      * エラー統計の計算
@@ -669,8 +668,8 @@ export class PerformanceDataCollector {
 
         return { totalErrors: errorData.length,
             errorTypes: errorTypes, };
-            recentErrors: errorData.slice(-10) // 最新10件 }
-        }
+            recentErrors: errorData.slice(-10) // 最新10件 
+    }
 
     /**
      * ネットワーク統計の計算
@@ -693,14 +692,14 @@ export class PerformanceDataCollector {
     /**
      * データのエクスポート'
      */''
-    exportData(format = 'json) {'
+    exportData(format = 'json' {'
         const exportData = {
             sessionId: this.sessionId;
-            timestamp: Date.now();
-           , statistics: this.getPerformanceStatistics();
+            timestamp: Date.now(),
+    statistics: this.getPerformanceStatistics();
     }
-            rawData: this.performanceData }
-        };
+            rawData: this.performanceData 
+    };
         switch(format.toLowerCase()) { ''
             case 'json':'';
                 return JSON.stringify(exportData, null, 2);''
@@ -734,7 +733,7 @@ export class PerformanceDataCollector {
         Object.keys(this.performanceData).forEach(key => { ')'
     }
 
-            this.performanceData[key] = [])');' }
+            this.performanceData[key] = []'');' }
 
         console.log('Performance, data cleared'); }'
     }
@@ -745,7 +744,7 @@ export class PerformanceDataCollector {
     generateSessionId() {
         
     }
-        return `perf_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
+        return `perf_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
     }
 
     /**

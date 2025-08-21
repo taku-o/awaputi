@@ -11,7 +11,7 @@ export class BaseComponent {
     protected initialized: boolean,
     protected errorHandler: ErrorHandler | null,
 
-    constructor(mainController: any, name: string = 'BaseComponent) {'
+    constructor(mainController: any, name: string = 'BaseComponent' {'
 
         this.mainController = mainController;
         this.name = name;
@@ -69,4 +69,4 @@ export class BaseComponent {
      * 初期化状態の確認
      * @returns {boolean}
      */''
-    isInitialized(');
+    isInitialized();

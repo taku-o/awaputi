@@ -11,8 +11,8 @@ export class DataComparator {
             week: 7 * 24 * 60 * 60 * 1000,      // 1週間;
             month: 30 * 24 * 60 * 60 * 1000,    // 1ヶ月
     }
-            quarter: 90 * 24 * 60 * 60 * 1000   // 3ヶ月 }
-        };
+            quarter: 90 * 24 * 60 * 60 * 1000   // 3ヶ月 
+    };
         // 比較指標設定
         this.metrics = { score: {
                 key: 'averageScore',
@@ -41,8 +41,8 @@ export class DataComparator {
             maxCombo: { ''
                 key: 'maxCombo',
                 displayName: '最大コンボ',
-                unit: '';
-               , format: (value) => Math.round(value) ,}
+                unit: '',
+    format: (value) => Math.round(value) ,}
 }
     
     /**
@@ -55,8 +55,8 @@ export class DataComparator {
     calculateComparison(current, past, metrics) {
         const comparison = {
             available: true;
-            improvements: 0;
-           , declines: 0;
+            improvements: 0,
+    declines: 0;
     }
             unchanged: 0, }
             metrics: {};
@@ -71,13 +71,13 @@ export class DataComparator {
             const change = currentValue - pastValue;''
             const changePercent = pastValue !== 0 ? (change / pastValue') * 100 : 0;
 
-            let trend = 'unchanged';''
+            let trend = 'unchanged';
             if (Math.abs(changePercent) > 5') { // 5%以上の変化で傾向判定'
 
         }
 
-                trend = change > 0 ? 'improved' : 'declined'; }
-            }
+                trend = change > 0 ? 'improved' : 'declined'; 
+    }
 
             comparison.metrics[metricName] = { current: metric.format(currentValue),
 
@@ -85,8 +85,8 @@ export class DataComparator {
                 change: this.formatChange(change, changePercent, metric),
                 changePercent: changePercent;
                 trend: trend;
-                displayName: metric.displayName;
-               , unit: metric.unit ,};
+                displayName: metric.displayName,
+    unit: metric.unit ,};
             if (trend === 'improved'') comparison.improvements++;''
             else if(trend === 'declined) comparison.declines++;
             else comparison.unchanged++;
@@ -107,8 +107,8 @@ export class DataComparator {
     calculateStageComparison(current, past, metrics) {
         const comparison = {
             available: true;
-            improvements: 0;
-           , declines: 0;
+            improvements: 0,
+    declines: 0;
     }
             unchanged: 0, }
             metrics: {};
@@ -119,7 +119,7 @@ export class DataComparator {
 
         }
 
-            relevantMetrics.push('completionRate); }'
+            relevantMetrics.push('completionRate'; }'
         }
 
         for(const, metricName of, relevantMetrics) {
@@ -133,13 +133,13 @@ export class DataComparator {
             const change = currentValue - pastValue;''
             const changePercent = pastValue !== 0 ? (change / pastValue') * 100 : 0;
 
-            let trend = 'unchanged';''
+            let trend = 'unchanged';
             if (Math.abs(changePercent) > 5') {'
 
         }
 
-                trend = change > 0 ? 'improved' : 'declined'; }
-            }
+                trend = change > 0 ? 'improved' : 'declined'; 
+    }
 
             comparison.metrics[metricName] = { current: metric.format(currentValue),
 
@@ -147,8 +147,8 @@ export class DataComparator {
                 change: this.formatChange(change, changePercent, metric),
                 changePercent: changePercent;
                 trend: trend;
-                displayName: metric.displayName;
-               , unit: metric.unit ,};
+                displayName: metric.displayName,
+    unit: metric.unit ,};
             if (trend === 'improved'') comparison.improvements++;''
             else if(trend === 'declined) comparison.declines++;
             else comparison.unchanged++;
@@ -170,8 +170,8 @@ export class DataComparator {
     calculateBenchmarkComparison(current, benchmark, metrics) {
         const comparison = {
             available: true;
-            above_average: 0;
-           , average: 0;
+            above_average: 0,
+    average: 0;
     }
             below_average: 0, }
             metrics: {};
@@ -185,30 +185,30 @@ export class DataComparator {
             const benchmarkStats = benchmark[metric.key];''
             const percentileRank = this.calculatePercentileRank(currentValue, benchmarkStats);
 
-            let performance = 'average';''
-            if(percentileRank >= 75) performance = 'above_average';''
+            let performance = 'average';
+            if(percentileRank >= 75) performance = 'above_average';
             else if(percentileRank <= 25) performance = 'below_average';
 
             const difference = currentValue - benchmarkStats.median;
-            const differencePercent = benchmarkStats.median !== 0 ?   : undefined
+            const differencePercent = benchmarkStats.median !== 0 ? undefined : undefined
                 (difference / benchmarkStats.median) * 100 : 0;
 
             comparison.metrics[metricName] = {
-                current: metric.format(currentValue);
-               , benchmark: {
+                current: metric.format(currentValue),
+    benchmark: {
                     median: metric.format(benchmarkStats.median);
                     percentile25: metric.format(benchmarkStats.percentile25);
-                    percentile75: metric.format(benchmarkStats.percentile75);
-                   , min: metric.format(benchmarkStats.min);
+                    percentile75: metric.format(benchmarkStats.percentile75),
+    min: metric.format(benchmarkStats.min);
         ,}
-                    max: metric.format(benchmarkStats.max); }
-                },
+                    max: metric.format(benchmarkStats.max); 
+    },
                 percentileRank: percentileRank,
                 performance: performance,
                 difference: this.formatBenchmarkDifference(difference, differencePercent, metric),
                 differencePercent: differencePercent;
-                displayName: metric.displayName;
-               , unit: metric.unit;
+                displayName: metric.displayName,
+    unit: metric.unit;
             },
 
             if (performance === 'above_average'') comparison.above_average++;''
@@ -347,12 +347,12 @@ export class DataComparator {
         if (sessionData.length === 0) {
             return { sessionCount: 0,
                 averageScore: 0;
-                averageAccuracy: 0;
-               , averagePlayTime: 0;
+                averageAccuracy: 0,
+    averagePlayTime: 0;
     ,}
                 completionRate: 0, };
-                maxCombo: 0 }
-            }
+                maxCombo: 0 
+    }
 
         let totalScore = 0;
         let totalAccuracy = 0;
@@ -379,8 +379,8 @@ export class DataComparator {
         return { sessionCount: sessionData.length,
             averageScore: totalScore / sessionData.length;
             averageAccuracy: totalAccuracy / sessionData.length;
-            averagePlayTime: totalPlayTime / sessionData.length;
-           , completionRate: completedSessions / sessionData.length, };
-            maxCombo: maxCombo }
-        }''
+            averagePlayTime: totalPlayTime / sessionData.length,
+    completionRate: completedSessions / sessionData.length, };
+            maxCombo: maxCombo 
+    }''
 }

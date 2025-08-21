@@ -4,7 +4,7 @@
  * 統計収集、データ分析、進捗詳細、パフォーマンス測定を担当
  */
 
-import { ErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';
 import { LoggingSystem  } from '../LoggingSystem.js';
 
 // 型定義
@@ -25,33 +25,33 @@ export interface TutorialStatsData { totalTime: number,
     skipCount: Map<string, number>,
     failureCount: Map<string, number>,
     attemptCount: Map<string, number>,
-    completionRate: number;
-   , lastUpdated: number ,}
+    completionRate: number,
+    lastUpdated: number ,}
 
-export interface SerializedTutorialStatsData { totalTime: number;
-   , averageStepTime: Array<[string, number]>,
+export interface SerializedTutorialStatsData { totalTime: number,
+    averageStepTime: Array<[string, number]>,
     skipCount: Array<[string, number]>,
     failureCount: Array<[string, number]>,
     attemptCount: Array<[string, number]>,
-    completionRate: number;
-   , lastUpdated: number ,}
+    completionRate: number,
+    lastUpdated: number ,}
 
 export interface TutorialStatistics { totalTutorials: number;
     completedTutorials: number;
     completionRate: number;
-    totalTime: number;
-   , averageStepTimes: Record<string, number>,
+    totalTime: number,
+    averageStepTimes: Record<string, number>,
     skipCounts: Record<string, number>,
     lastUpdated: number;
-    currentTutorial: string | null;
-   , isRunning: boolean ,}
+    currentTutorial: string | null,
+    isRunning: boolean ,}
 
 export interface StepStatistics { index: number;
     title: string;
     averageTime: number;
     skipCount: number;
-    failureCount: number;
-   , successRate: number }
+    failureCount: number,
+    successRate: number }
 
 export interface TutorialProgressDetails { tutorialId: string;
     title: string;
@@ -61,16 +61,16 @@ export interface TutorialProgressDetails { tutorialId: string;
     isRunning: boolean;
     isPaused: boolean;
     completionRate: number;
-    estimatedTimeRemaining: number;
-   , stepStatistics: Record<string, StepStatistics>,
+    estimatedTimeRemaining: number,
+    stepStatistics: Record<string, StepStatistics>,
     lastAttempt: LastAttemptInfo;
-    prerequisites?: string[];
-   , difficulty: DifficultyLevel
+    prerequisites?: string[],
+    difficulty: DifficultyLevel
     ,}
 
 export interface LastAttemptInfo { timestamp: number;
-    tutorialId: string;
-   , totalAttempts: number }
+    tutorialId: string,
+    totalAttempts: number }
 
 export type TutorialAction = 'start' | 'complete' | 'skip' | 'fail';
 
@@ -86,15 +86,15 @@ export class TutorialStatsManager {
         
         // チュートリアル統計
         this.stats = {
-            totalTime: 0;
-           , averageStepTime: new Map<string, number>(),
+            totalTime: 0,
+    averageStepTime: new Map<string, number>(),
             skipCount: new Map<string, number>(),
             failureCount: new Map<string, number>(),
             attemptCount: new Map<string, number>(),
             completionRate: 0;
     ,}
-            lastUpdated: Date.now(); }
-        };
+            lastUpdated: Date.now(); 
+    };
         
         this.initialize();
     }
@@ -108,7 +108,7 @@ export class TutorialStatsManager {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`統計管理初期化エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialStatsManager');
+            this.loggingSystem.log(`統計管理初期化エラー: ${(error, as, Error'}'.message}`, 'error', 'TutorialStatsManager');
         }
     }
     
@@ -120,17 +120,17 @@ export class TutorialStatsManager {
             if(saved) {
                 const stats: SerializedTutorialStatsData = JSON.parse(saved),
                 this.stats = {
-                    totalTime: stats.totalTime || 0;
-                   , averageStepTime: new Map<string, number>(stats.averageStepTime || []),
+                    totalTime: stats.totalTime || 0,
+    averageStepTime: new Map<string, number>(stats.averageStepTime || []),
                     skipCount: new Map<string, number>(stats.skipCount || []),
                     failureCount: new Map<string, number>(stats.failureCount || []),
                     attemptCount: new Map<string, number>(stats.attemptCount || []),
                     completionRate: stats.completionRate || 0;
             ,}
-                    lastUpdated: stats.lastUpdated || Date.now(); }
-                } catch (error) { }
+                    lastUpdated: stats.lastUpdated || Date.now(); 
+    } catch (error) { }
 
-            this.loggingSystem.log(`統計読み込みエラー: ${(error, as, Error'}).message}`, 'error', 'TutorialStatsManager');
+            this.loggingSystem.log(`統計読み込みエラー: ${(error, as, Error'}'.message}`, 'error', 'TutorialStatsManager');
         }
     }
     
@@ -142,8 +142,8 @@ export class TutorialStatsManager {
                 totalTime: this.stats.totalTime;
                 averageStepTime: Array.from(this.stats.averageStepTime.entries();
                 skipCount: Array.from(this.stats.skipCount.entries();
-                failureCount: Array.from(this.stats.failureCount.entries();
-               , attemptCount: Array.from(this.stats.attemptCount.entries(),
+                failureCount: Array.from(this.stats.failureCount.entries(),
+    attemptCount: Array.from(this.stats.attemptCount.entries(),
                 completionRate: this.stats.completionRate,
                 lastUpdated: Date.now()';
             localStorage.setItem('awaputi_tutorial_stats', JSON.stringify(stats);
@@ -151,7 +151,7 @@ export class TutorialStatsManager {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`統計保存エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialStatsManager');
+            this.loggingSystem.log(`統計保存エラー: ${(error, as, Error'}'.message}`, 'error', 'TutorialStatsManager');
         }
     }
     
@@ -201,7 +201,7 @@ export class TutorialStatsManager {
                 this.saveStats(); }
             } catch (error) { }
 
-            this.loggingSystem.log(`ステップ統計更新エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialStatsManager');
+            this.loggingSystem.log(`ステップ統計更新エラー: ${(error, as, Error'}'.message}`, 'error', 'TutorialStatsManager');
         }
     }
     
@@ -230,21 +230,21 @@ export class TutorialStatsManager {
                 totalTime: this.stats.totalTime;
                 averageStepTimes: Object.fromEntries(this.stats.averageStepTime);
                 skipCounts: Object.fromEntries(this.stats.skipCount);
-                lastUpdated: this.stats.lastUpdated;
-               , currentTutorial: currentTutorialId, };
-                isRunning: !!currentTutorial }
-            } catch (error) { }
+                lastUpdated: this.stats.lastUpdated,
+    currentTutorial: currentTutorialId, };
+                isRunning: !!currentTutorial 
+    } catch (error) { }
 
-            this.loggingSystem.log(`統計取得エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialStatsManager');
+            this.loggingSystem.log(`統計取得エラー: ${(error, as, Error'}'.message}`, 'error', 'TutorialStatsManager');
             return { totalTutorials: 0,
-                completedTutorials: 0;
-               , completionRate: 0, };
+                completedTutorials: 0,
+    completionRate: 0, };
                 totalTime: 0, }
                 averageStepTimes: {};
                 skipCounts: {};
                 lastUpdated: Date.now();
-                currentTutorial: null;
-               , isRunning: false;
+                currentTutorial: null,
+    isRunning: false;
             },
         }
     }
@@ -268,14 +268,14 @@ export class TutorialStatsManager {
                     title: step.title || '';
                     averageTime: this.stats.averageStepTime.get(stepKey) || 0;
                     skipCount: this.stats.skipCount.get(stepKey) || 0;
-                    failureCount: this.stats.failureCount.get(stepKey) || 0;
-                   , successRate: this.calculateStepSuccessRate(stepKey ,};
+                    failureCount: this.stats.failureCount.get(stepKey) || 0,
+    successRate: this.calculateStepSuccessRate(stepKey ,};
             
             return stats;
 
         } catch (error) { }
 
-            this.loggingSystem.log(`ステップ統計取得エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialStatsManager');
+            this.loggingSystem.log(`ステップ統計取得エラー: ${(error, as, Error'}'.message}`, 'error', 'TutorialStatsManager');
             return {};
     
     /**
@@ -309,21 +309,21 @@ export class TutorialStatsManager {
             
             return { tutorialId: tutorialId,
                 title: tutorial.title;
-                totalSteps: tutorial.steps.length;
-               , currentStep: tutorialId === currentTutorialId ? currentStep : 0;
+                totalSteps: tutorial.steps.length,
+    currentStep: tutorialId === currentTutorialId ? currentStep : 0;
                 isCompleted,
                 isRunning: tutorialId === currentTutorialId && !!currentTutorial;
-                isPaused: !!pausedTime;
-               , completionRate: this.calculateCompletionRate(tutorialId, tutorial, completedTutorials),
+                isPaused: !!pausedTime,
+    completionRate: this.calculateCompletionRate(tutorialId, tutorial, completedTutorials),
                 estimatedTimeRemaining: this.calculateEstimatedTimeRemaining(tutorialId, tutorial, currentStep),
                 stepStatistics: stepStats,
                 lastAttempt: this.getLastAttemptInfo(tutorialId),
                 prerequisites: tutorial.prerequisites,' };
 
-                difficulty: tutorial.difficulty || 'beginner' }
-            } catch (error) { }
+                difficulty: tutorial.difficulty || 'beginner' 
+    } catch (error) { }
 
-            this.loggingSystem.log(`進捗詳細取得エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialStatsManager');
+            this.loggingSystem.log(`進捗詳細取得エラー: ${(error, as, Error'}'.message}`, 'error', 'TutorialStatsManager');
             return null;
     
     /**
@@ -354,7 +354,7 @@ export class TutorialStatsManager {
             return (completedSteps / tutorial.steps.length) * 100;
         } catch (error) { }
 
-            this.loggingSystem.log(`完了率計算エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialStatsManager');
+            this.loggingSystem.log(`完了率計算エラー: ${(error, as, Error'}'.message}`, 'error', 'TutorialStatsManager');
             return 0;
     
     /**
@@ -384,7 +384,7 @@ export class TutorialStatsManager {
             return Math.max(0, totalEstimate);
         } catch (error) { }
 
-            this.loggingSystem.log(`残り時間計算エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialStatsManager');
+            this.loggingSystem.log(`残り時間計算エラー: ${(error, as, Error'}'.message}`, 'error', 'TutorialStatsManager');
             return 0;
     
     /**
@@ -408,7 +408,7 @@ export class TutorialStatsManager {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`成功率計算エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialStatsManager');
+            this.loggingSystem.log(`成功率計算エラー: ${(error, as, Error'}'.message}`, 'error', 'TutorialStatsManager');
             return 0;
     
     /**
@@ -424,11 +424,11 @@ export class TutorialStatsManager {
                     .reduce((sum, [, count]) => sum + count, 0); }
             } catch (error) { }
 
-            this.loggingSystem.log(`最後の試行情報取得エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialStatsManager');
+            this.loggingSystem.log(`最後の試行情報取得エラー: ${(error, as, Error'}'.message}`, 'error', 'TutorialStatsManager');
             return { timestamp: Date.now(),
                 tutorialId: tutorialId, };
-                totalAttempts: 0 }
-            }
+                totalAttempts: 0 
+    }
     }
     
     /**
@@ -445,14 +445,14 @@ export class TutorialStatsManager {
             this.stats.attemptCount.set(attemptKey, currentAttempts + 1);
             ';
             // アクション別の統計更新
-            if(action === 'skip) {'
+            if(action === 'skip' {'
                 
             }
                 const skipKey = `${tutorialId}_skip`;
 
                 const currentSkips = this.stats.skipCount.get(skipKey) || 0;''
                 this.stats.skipCount.set(skipKey, currentSkips + 1);''
-            } else if(action === 'fail) {'
+            } else if(action === 'fail' {'
                 const failKey = `${tutorialId}_fail`;
                 const currentFails = this.stats.failureCount.get(failKey) || 0;
                 this.stats.failureCount.set(failKey, currentFails + 1);
@@ -462,7 +462,7 @@ export class TutorialStatsManager {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`試行記録エラー: ${(error, as, Error'}).message}`, 'error', 'TutorialStatsManager');
+            this.loggingSystem.log(`試行記録エラー: ${(error, as, Error'}'.message}`, 'error', 'TutorialStatsManager');
         }
     }
     
@@ -471,8 +471,8 @@ export class TutorialStatsManager {
      */
     resetStats(): void { try {
             this.stats = {
-                totalTime: 0;
-               , averageStepTime: new Map<string, number>(),
+                totalTime: 0,
+    averageStepTime: new Map<string, number>(),
                 skipCount: new Map<string, number>(),
                 failureCount: new Map<string, number>(),
                 attemptCount: new Map<string, number>(),
@@ -483,7 +483,7 @@ export class TutorialStatsManager {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`統計リセットエラー: ${(error, as, Error'}).message}`, 'error', 'TutorialStatsManager');
+            this.loggingSystem.log(`統計リセットエラー: ${(error, as, Error'}'.message}`, 'error', 'TutorialStatsManager');
         }
     }
     
@@ -496,7 +496,7 @@ export class TutorialStatsManager {
 
         } catch (error) { }
 
-            this.loggingSystem.log(`クリーンアップエラー: ${(error, as, Error'}).message}`, 'error', 'TutorialStatsManager');
+            this.loggingSystem.log(`クリーンアップエラー: ${(error, as, Error'}'.message}`, 'error', 'TutorialStatsManager');
         }
 }
 

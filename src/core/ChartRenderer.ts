@@ -5,8 +5,8 @@
  * Canvas 2D APIを使用してさまざまなタイプのグラフを描画する統合エンジンです。
  */
 
-import { BarChartRenderer  } from './chart-renderer/BarChartRenderer';''
-import { LineChartRenderer  } from './chart-renderer/LineChartRenderer';''
+import { BarChartRenderer  } from './chart-renderer/BarChartRenderer';
+import { LineChartRenderer  } from './chart-renderer/LineChartRenderer';
 import { PieChartRenderer  } from './chart-renderer/PieChartRenderer';
 import { ChartAnimationEngine, 
     ChartInteractionManager, ;
@@ -27,33 +27,33 @@ export interface ChartTheme { colors: {
         warning: string;
         danger: string;
         info: string;
-        light: string;
-       , dark: string 
+        light: string,
+    dark: string 
 };
-    palette: string[];
-   , fonts: { family: string;
-       , size: {
+    palette: string[],
+    fonts: { family: string,
+    size: {
             small: number;
             normal: number;
-            large: number;
-           , title: number 
+            large: number,
+    title: number 
 };
-        weight: { normal: string;
-           , bold: string };
+        weight: { normal: string,
+    bold: string };
     spacing: { padding: number;
-        margin: number;
-       , gap: number 
+        margin: number,
+    gap: number 
 };
     borders: { width: number;
-        radius: number;
-       , style: string 
+        radius: number,
+    style: string 
 };
     shadows: { light: string;
-        medium: string;
-       , heavy: string 
+        medium: string,
+    heavy: string 
 };
-    animation: { duration: number;
-       , easing: string }
+    animation: { duration: number,
+    easing: string }
 
 /**
  * チャートオプションインターフェース
@@ -81,8 +81,8 @@ export interface ChartOptions { width?: number;
  */
 interface ChartArea { x: number,
     y: number;
-    width: number;
-   , height: number ,}
+    width: number,
+    height: number ,}
 /**
  * レンダリング結果インターフェース
  */
@@ -113,8 +113,8 @@ export interface MultiChartConfig { type: string,
  * キャッシュエントリインターフェース
  */
 interface CacheEntry { result: RenderResult,
-    canvas: HTMLCanvasElement;
-   , timestamp: number ,}
+    canvas: HTMLCanvasElement,
+    timestamp: number ,}
 /**
  * チャートレンダラーインターフェース
  */
@@ -129,12 +129,12 @@ export class CoreChartRenderer {
     private, currentTheme: ChartTheme;
     private responsiveBreakpoints = {
         small: 480;
-        medium: 768;
-       , large: 1024 
+        medium: 768,
+    large: 1024 
 ,};
     private performanceConfig = { maxDataPoints: 1000,
-        animationFrameLimit: 60;
-       , cacheEnabled: true 
+        animationFrameLimit: 60,
+    cacheEnabled: true 
 ,};
     private renderCache: Map<string, CacheEntry>;
 
@@ -143,8 +143,8 @@ export class CoreChartRenderer {
             bar: new BarChartRenderer();
             line: new LineChartRenderer();
             pie: new PieChartRenderer();
-            area: new AreaChartRenderer();
-           , scatter: new ScatterChartRenderer( }
+            area: new AreaChartRenderer(),
+    scatter: new ScatterChartRenderer( }
             progress: new, ProgressBarRenderer(); }
         };
         
@@ -167,8 +167,8 @@ export class CoreChartRenderer {
     render(;
         context: CanvasRenderingContext2D;
         type: string );
-        data: ChartData[] | ChartData);
-       , options: ChartOptions = { ): RenderResult {
+        data: ChartData[] | ChartData),
+    options: ChartOptions = { ): RenderResult {
         try {
             // 入力検証
             if(!this.validateInput(context, type, data)) {''
@@ -222,15 +222,15 @@ export class CoreChartRenderer {
             return renderResult;
 
         } catch (error) {
-            console.error('Chart rendering failed:', error);''
+            console.error('Chart rendering failed:', error';''
             return this.renderErrorChart(context, (error as Error).message, options');
     
     /**
      * 複数グラフの同時描画
      */
     renderMultiple(;
-        context: CanvasRenderingContext2D)';
-       , charts: MultiChartConfig[],
+        context: CanvasRenderingContext2D)',
+    charts: MultiChartConfig[],
         layout: string = 'grid';
     ): RenderResult { // レイアウト計算を専門コンポーネントに委譲
         const layoutConfig = this.layoutManager.calculateLayout();
@@ -259,18 +259,17 @@ export class CoreChartRenderer {
 
         return { ''
             type: 'multiple';
-            layout: layout;
-           , charts: results, };
+            layout: layout,
+    charts: results, };
             totalArea: layoutConfig.totalArea ;
-}
-        },
+    },
     }
     
     /**
      * テーマの設定'
      */''
     setTheme(theme: string | Partial<ChartTheme>): void { ''
-        if(typeof, theme === 'string) {'
+        if(typeof, theme === 'string' {'
             
         }
             this.currentTheme = this.getPresetTheme(theme); }
@@ -345,7 +344,7 @@ export class CoreChartRenderer {
     /**
      * デフォルトテーマの作成
      */''
-    private createDefaultTheme(''';
+    private createDefaultTheme('''
                 primary: '#3B82F6',
                 secondary: '#8B5CF6',
                 success: '#10B981',
@@ -365,8 +364,8 @@ export class CoreChartRenderer {
                 size: {
                     small: 10;
                     normal: 12;
-                    large: 14;
-                   , title: 16 
+                    large: 14,
+    title: 16 
 ,};
                 weight: { ''
                     normal: 'normal',
@@ -374,12 +373,12 @@ export class CoreChartRenderer {
 ,}
             },
             spacing: { padding: 20;
-                margin: 10;
-               , gap: 5 
+                margin: 10,
+    gap: 5 
 };
-            borders: { width: 1;
-               , radius: 4,
-                style: 'solid' ,}))'
+            borders: { width: 1,
+    radius: 4,
+                style: 'solid' ,})''
             shadows: { ''
                 light: '0 1px 3px rgba(0, 0, 0, 0.1)',
                 medium: '0 4px 6px rgba(0, 0, 0, 0.1)',
@@ -397,8 +396,8 @@ export class CoreChartRenderer {
     private mergeOptions(options: ChartOptions): ChartOptions { const defaultOptions: ChartOptions = {
             width: 400;
             height: 300;
-            padding: this.currentTheme.spacing.padding;
-           , fontSize: this.currentTheme.fonts.size.normal,
+            padding: this.currentTheme.spacing.padding,
+    fontSize: this.currentTheme.fonts.size.normal,
             fontFamily: this.currentTheme.fonts.family,
             backgroundColor: '#FFFFFF';
             showLegend: true;
@@ -407,8 +406,8 @@ export class CoreChartRenderer {
             showTooltip: true;
             animated: false;
             interactive: true;
-            responsive: true;
-           , accessibility: true 
+            responsive: true,
+    accessibility: true 
 ,};
         return { ...defaultOptions, ...options, theme: this.currentTheme ,}
     /**
@@ -440,7 +439,7 @@ export class CoreChartRenderer {
             context.fillRect(0, 0, canvas.width, canvas.height); }
         // フォント設定
         context.font = `${options.fontSize}px ${options.fontFamily}`;''
-        context.textAlign = 'left';''
+        context.textAlign = 'left';
         context.textBaseline = 'top';
     }
     
@@ -463,16 +462,16 @@ export class CoreChartRenderer {
         // エラーメッセージ
         context.fillStyle = this.currentTheme.colors.dark; }
         context.font = `${mergedOptions.fontSize}px ${mergedOptions.fontFamily}`;''
-        context.textAlign = 'center';''
-        context.fillText('グラフの描画に失敗しました', centerX, centerY + 30);''
+        context.textAlign = 'center';
+        context.fillText('グラフの描画に失敗しました', centerX, centerY + 30';''
         context.fillText(errorMessage, centerX, centerY + 50);
         ';
 
         return { ''
-            type: 'error';
-           , message: errorMessage, };
-            timestamp: Date.now(); }
-        }
+            type: 'error',
+    message: errorMessage, };
+            timestamp: Date.now(); 
+    }
     
     /**
      * アクセシビリティ設定
@@ -491,13 +490,13 @@ export class CoreChartRenderer {
         canvas.setAttribute('aria-describedby', 'chart-description'');
         ';
         // 説明要素の作成（既存の要素がない場合）
-        let descElement = document.getElementById('chart-description);''
+        let descElement = document.getElementById('chart-description';''
         if(!descElement) {'
 
             descElement = document.createElement('div'');''
-            descElement.id = 'chart-description';''
-            descElement.className = 'sr-only';''
-            descElement.style.position = 'absolute';''
+            descElement.id = 'chart-description';
+            descElement.className = 'sr-only';
+            descElement.style.position = 'absolute';
             descElement.style.left = '-10000px';
         }
             document.body.appendChild(descElement); }
@@ -536,8 +535,8 @@ export class CoreChartRenderer {
         
         this.renderCache.set(key, {)
             result: result,);
-            canvas: cacheCanvas);
-           , timestamp: Date.now( ,});
+            canvas: cacheCanvas),
+    timestamp: Date.now( ,});
         
         // キャッシュサイズ制限
         if(this.renderCache.size > 50) {
@@ -557,7 +556,7 @@ export class CoreChartRenderer {
     private normalizeData(data: ChartData[], type: string): ChartData[] { // データの正規化（型に応じて）
         return data.map(item => { ');' ,}
 
-            if(typeof, item === 'number) { }'
+            if(typeof, item === 'number' { }'
                 return { value: item, label: item.toString( ,}
             return item;
         });

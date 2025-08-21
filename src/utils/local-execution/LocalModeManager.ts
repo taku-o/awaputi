@@ -9,8 +9,8 @@
  * @version 1.0.0
  */
 
-import LocalModeInitializer from './local-mode/LocalModeInitializer.js';''
-import LocalModeErrorHandler from './local-mode/LocalModeErrorHandler.js';''
+import LocalModeInitializer from './local-mode/LocalModeInitializer.js';
+import LocalModeErrorHandler from './local-mode/LocalModeErrorHandler.js';
 import LocalModeStatusManager from './local-mode/LocalModeStatusManager.js';
 
 // Type definitions
@@ -21,8 +21,8 @@ interface PerformanceConfig { enableLazyInitialization: boolean,
     enableMemoryOptimization: boolean;
     initializationTimeout: number;
     componentInitDelay: number;
-    retryAttempts: number;
-   , maxConcurrentTasks: number ,}
+    retryAttempts: number,
+    maxConcurrentTasks: number ,}
 
 interface LocalModeConfig { enableMetaTagOptimization?: boolean;
     enableFaviconGeneration?: boolean;
@@ -39,20 +39,20 @@ interface DefaultConfig { enableMetaTagOptimization: boolean,
     enableErrorHandling: boolean;
     enableFallbackResources: boolean;
     autoInitialize: boolean;
-    debugMode: boolean;
-   , enablePerformanceOptimizations: boolean ,}
+    debugMode: boolean,
+    enablePerformanceOptimizations: boolean ,}
 
 interface InitializationMetrics { startTime: number | null;
-    endTime: number | null;
-   , componentTimes: Record<string, number>;
-    totalExecutionTime: number;
-   , optimizationsApplied: string[] ,}
+    endTime: number | null,
+    componentTimes: Record<string, number>;
+    totalExecutionTime: number,
+    optimizationsApplied: string[] ,}
 
 interface ExecutionContext { isLocal: boolean;
     protocol: string;
     url: string;
-    domain: string;
-   , path: string }
+    domain: string,
+    path: string }
 
 interface InitializationResult { success: boolean;
     executionContext?: ExecutionContext;
@@ -74,8 +74,8 @@ class LocalModeManager { /**
         enableMemoryOptimization: true;
         initializationTimeout: 30000;
         componentInitDelay: 50;
-        retryAttempts: 3;
-       , maxConcurrentTasks: 3 };
+        retryAttempts: 3,
+    maxConcurrentTasks: 3 };
     /**
      * デフォルト設定
      */
@@ -85,8 +85,8 @@ class LocalModeManager { /**
         enableErrorHandling: true;
         enableFallbackResources: true;
         autoInitialize: true;
-        debugMode: false;
-       , enablePerformanceOptimizations: true ,};
+        debugMode: false,
+    enablePerformanceOptimizations: true ,};
     public config: DefaultConfig,
     public isInitialized: boolean,
     public executionContext: ExecutionContext | null,
@@ -112,8 +112,8 @@ class LocalModeManager { /**
         this._initializationMetrics = { startTime: null,
             endTime: null, }
             componentTimes: {}
-            totalExecutionTime: 0;
-           , optimizationsApplied: [];
+            totalExecutionTime: 0,
+    optimizationsApplied: [];
         };''
         this._resourcePreloadPromises = new Map()';
         this.log('LocalModeManager, instance created);
@@ -153,7 +153,7 @@ class LocalModeManager { /**
                 this.log(`LocalModeManager, initialized successfully (${this.config.enablePerformanceOptimizations ? 'optimized' : 'legacy} mode}`});
                 return true;
             } else {  }
-                this.log(`LocalModeManager, initialization failed: ${result.reason || result.error? .message}`});
+                this.log(`LocalModeManager, initialization failed: ${result.reason || result.error?.message}`});
                 return false;
 
             } catch (error) { : undefined', '
@@ -225,7 +225,7 @@ class LocalModeManager { /**
             const timestamp = new Date().toISOString(); }
 
             const prefix = `[LocalModeManager:${level}] ${timestamp}`;''
-            console.log(`${prefix} - ${message}`'});
+            console.log(`${prefix} - ${message}`'}';
         }
 }
 

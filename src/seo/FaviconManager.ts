@@ -3,8 +3,8 @@
  * 
  * 包括的なファビコン生成・管理機能を提供
  */
-import { SEOConfig, getBaseUrl  } from './SEOConfig';''
-import { seoLogger  } from './SEOLogger';''
+import { SEOConfig, getBaseUrl  } from './SEOConfig';
+import { seoLogger  } from './SEOLogger';
 import { seoErrorHandler  } from './SEOErrorHandler';
 import { optimizeImageUrl, 
     measurePerformance,
@@ -16,8 +16,8 @@ import { optimizeImageUrl,
 interface FaviconSpec { size?: number;
     width?: number;
     height?: number;''
-    type: 'png' | 'svg' | 'ico';
-   , filename: string;
+    type: 'png' | 'svg' | 'ico',
+    filename: string;
     multiSize?: number[];
     vector?: boolean;
     monochrome?: boolean;
@@ -28,16 +28,16 @@ interface GeneratedFavicon { category: string,
     filename: string;
     size: number | string;
     type: string;
-    dataUrl: string;
-   , spec: FaviconSpec
+    dataUrl: string,
+    spec: FaviconSpec
     ,}
 
 // ファビコン生成結果インターフェース
-interface FaviconGenerationResult { generated: GeneratedFavicon[];
-   , errors: Array<{
+interface FaviconGenerationResult { generated: GeneratedFavicon[],
+    errors: Array<{
         categor;y: string;
-        filename?: string;
-       , error: string }>;
+        filename?: string,
+    error: string }>;
     summary: FaviconSummary;
     }
 
@@ -45,34 +45,34 @@ interface FaviconGenerationResult { generated: GeneratedFavicon[];
 interface CategoryGenerationResult { generated: GeneratedFavicon[],
     errors: Array<{
         categor;y: string;
-        filename: string;
-       , error: string ,}>;
+        filename: string,
+    error: string ,}>;
 }
 
 // ファビコンサマリーインターフェース
 interface FaviconSummary { totalGenerated: number,
-    totalErrors: number;
-   , byCategory: Record<string, number>;
+    totalErrors: number,
+    byCategory: Record<string, number>;
     byType: Record<string, number>;
     generatedAt: string ,}
 
 // PNGデータインターフェース
-interface PngData { size: number;
-   , data: string }
+interface PngData { size: number,
+    data: string }
 
 // ファビコン検証結果インターフェース
 interface FaviconValidationResult { isValid: boolean;
     issues: string[];
-    warnings: string[];
-   , generatedCount: number }
+    warnings: string[],
+    generatedCount: number }
 
 // LocalizationManager インターフェース
 interface LocalizationManager { getCurrentLanguage(): string;
     t(key: string, defaultValue?: string): string }
 
 // File System Access API拡張インターフェース
-interface ExtendedWindow extends Window { showDirectoryPicker?: () => Promise<FileSystemDirectoryHandle>; }
-}
+interface ExtendedWindow extends Window { showDirectoryPicker?: () => Promise<FileSystemDirectoryHandle>; 
+    }
 
 // FileSystemDirectoryHandle インターフェース
 interface FileSystemDirectoryHandle { getFileHandle(name: string, options?: { creat;e?: boolean ): Promise<FileSystemFileHandle>
@@ -117,22 +117,22 @@ export class FaviconManager {
             this._setupFaviconSpecs();
             // Canvas要素の作成（ファビコン生成用）
             this._setupCanvas()';
-            seoLogger.info('FaviconManager, initialized successfully);' }
+            seoLogger.info('FaviconManager, initialized successfully';' }
 
         } catch (error) {
-            seoErrorHandler.handle(error as Error, 'faviconManagerInit); }'
+            seoErrorHandler.handle(error as Error, 'faviconManagerInit'; }'
     }
     
     /**
      * ファビコン仕様の設定'
      */''
     private _setupFaviconSpecs(''';
-        this.faviconSpecs.set('standard', ['';
+        this.faviconSpecs.set('standard', [''
             { size: 16, type: 'png', filename: 'favicon-16x16.png' ,},''
-            { size: 32, type: 'png', filename: 'favicon-32x32.png' ,},])'
+            { size: 32, type: 'png', filename: 'favicon-32x32.png' ,},]''
             { size: 48, type: 'png', filename: 'favicon-48x48.png' ,},')]'
             { size: 0, type: 'ico', filename: 'favicon.ico', multiSize: [16, 32, 48] }')''
-            { size: 0, type: 'svg', filename: 'favicon.svg', vector: true )''
+            { size: 0, type: 'svg', filename: 'favicon.svg', vector: true '''
         ]');
         ';
         // Apple Touch Icons
@@ -144,10 +144,10 @@ export class FaviconManager {
             { size: 76, type: 'png', filename: 'apple-touch-icon-76x76.png' ,},''
             { size: 114, type: 'png', filename: 'apple-touch-icon-114x114.png' ,},''
             { size: 120, type: 'png', filename: 'apple-touch-icon-120x120.png' ,},''
-            { size: 144, type: 'png', filename: 'apple-touch-icon-144x144.png' ,},)'
+            { size: 144, type: 'png', filename: 'apple-touch-icon-144x144.png' ,},''
             { size: 152, type: 'png', filename: 'apple-touch-icon-152x152.png' ,},')'
             { size: 180, type: 'png', filename: 'apple-touch-icon-180x180.png' ,}')]'
-            { size: 0, type: 'png', filename: 'apple-touch-icon.png', defaultSize: 180 )']'
+            { size: 0, type: 'png', filename: 'apple-touch-icon.png', defaultSize: 180 '']'
         ]');
         ';
         // Android Chrome Icons
@@ -158,34 +158,34 @@ export class FaviconManager {
             { size: 72, type: 'png', filename: 'android-chrome-72x72.png' ,},''
             { size: 96, type: 'png', filename: 'android-chrome-96x96.png' ,},''
             { size: 144, type: 'png', filename: 'android-chrome-144x144.png' ,},''
-            { size: 192, type: 'png', filename: 'android-chrome-192x192.png' ,},)'
+            { size: 192, type: 'png', filename: 'android-chrome-192x192.png' ,},''
             { size: 256, type: 'png', filename: 'android-chrome-256x256.png' ,},')'
             { size: 384, type: 'png', filename: 'android-chrome-384x384.png' ,}')]'
-            { size: 512, type: 'png', filename: 'android-chrome-512x512.png' )']'
+            { size: 512, type: 'png', filename: 'android-chrome-512x512.png' '']'
         ]');
         ';
         // Microsoft Windows Tiles
         this.faviconSpecs.set('microsoft', [' }
 
             { size: 70, type: 'png', filename: 'mstile-70x70.png' ,},''
-            { width: 150, height: 150, type: 'png', filename: 'mstile-150x150.png' ,},)'
+            { width: 150, height: 150, type: 'png', filename: 'mstile-150x150.png' ,},''
             { width: 310, height: 150, type: 'png', filename: 'mstile-310x150.png' ,},')'
             { width: 310, height: 310, type: 'png', filename: 'mstile-310x310.png' ,}')]'
-            { size: 144, type: 'png', filename: 'mstile-144x144.png' )']'
+            { size: 144, type: 'png', filename: 'mstile-144x144.png' '']'
         ]');
         ';
         // Safari特化
-        this.faviconSpecs.set('safari', [)]';
-            { size: 0, type: 'svg', filename: 'safari-pinned-tab.svg', monochrome: true )']'
+        this.faviconSpecs.set('safari', [']';
+            { size: 0, type: 'svg', filename: 'safari-pinned-tab.svg', monochrome: true '']'
         ]');
         ';
         // 古いiOS向け（precomposed）
         this.faviconSpecs.set('iosLegacy', [' }
 
-            { size: 57, type: 'png', filename: 'apple-touch-icon-57x57-precomposed.png' ,},)'
+            { size: 57, type: 'png', filename: 'apple-touch-icon-57x57-precomposed.png' ,},''
             { size: 72, type: 'png', filename: 'apple-touch-icon-72x72-precomposed.png' ,},')'
             { size: 114, type: 'png', filename: 'apple-touch-icon-114x114-precomposed.png' ,}')]'
-            { size: 144, type: 'png', filename: 'apple-touch-icon-144x144-precomposed.png' )]
+            { size: 144, type: 'png', filename: 'apple-touch-icon-144x144-precomposed.png' ']
         ] ,}
     
     /**
@@ -198,7 +198,7 @@ export class FaviconManager {
 
         }
 
-            this.ctx = this.canvas.getContext('2d); }'
+            this.ctx = this.canvas.getContext('2d'; }'
 }
     
     /**
@@ -208,16 +208,15 @@ export class FaviconManager {
         try {
             const results: FaviconGenerationResult = {
                 generated: [];
-                errors: [];
-               , summary: {
-                    totalGenerated: 0;
-                   , totalErrors: 0, }
+                errors: [],
+    summary: {
+                    totalGenerated: 0,
+    totalErrors: 0, }
                     byCategory: {}
 
                     byType: {}''
                     generatedAt: '';
-                }
-            },
+    },
             
             // 各カテゴリのファビコンを生成
             for(const [category, specs] of this.faviconSpecs) {
@@ -246,8 +245,8 @@ export class FaviconManager {
      */
     private async _generateFaviconCategory(;
         category: string );
-        specs: FaviconSpec[]);
-       , options: { forceRegenerate?: boolean ,}
+        specs: FaviconSpec[]),
+    options: { forceRegenerate?: boolean ,}
     ): Promise<CategoryGenerationResult>;
         const results: CategoryGenerationResult = { generated: [],
             errors: [] ,};
@@ -262,13 +261,13 @@ export class FaviconManager {
         }
                         filename: spec.filename, }
                         size: spec.size || `${spec.width}x${spec.height}`)
-                        type: spec.type);
-                       , dataUrl: faviconData,);
+                        type: spec.type),
+    dataUrl: faviconData,);
                         spec);
                 } catch (error) { results.errors.push({)
                     category,);
-                    filename: spec.filename);
-                   , error: (error, as Error).message ,});
+                    filename: spec.filename),
+    error: (error, as Error).message ,});
             }
         }
         
@@ -293,7 +292,7 @@ export class FaviconManager {
         
         try { let faviconData: string,
 
-            if(spec.type === 'svg) {', ';
+            if(spec.type === 'svg' {', ';
 
             }
 
@@ -328,7 +327,7 @@ export class FaviconManager {
         await this._drawFaviconDesign(width, height, spec);
         ';
         // PNG形式で出力
-        return this.canvas!.toDataURL('image/png); }'
+        return this.canvas!.toDataURL('image/png'; }'
     
     /**
      * SVGファビコンの生成'
@@ -351,7 +350,7 @@ export class FaviconManager {
                 <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1" />""
                 <stop offset="100%" style="stop-color:#2E7D32;stop-opacity:1" /> }"
             </linearGradient></defs>`;" }"
-            svg = svg.replace('>', `>${gradient}`'});''
+            svg = svg.replace('>', `>${gradient}`'}';''
             svg += `<circle cx="${size/2}" cy="${size/2}" r="${size/3}" fill="url(#grad)"/>`;""
             svg += `<circle cx="${size/2-size/8}" cy="${size/2-size/8}" r="${size/8}" fill="white" opacity="0.9"/>`;""
             svg += `<circle cx="${size/2+size/8}" cy="${size/2-size/8}" r="${size/8}" fill="white" opacity="0.9"/>`;
@@ -416,7 +415,7 @@ export class FaviconManager {
         this.ctx!.beginPath();
         this.ctx!.arc(centerX + radius/4, centerY - radius/4, highlightRadius/2, 0, Math.PI * 2);''
         this.ctx!.fill()';
-        if(spec.filename && spec.filename.includes('mstile) {', ';
+        if(spec.filename && spec.filename.includes('mstile' {', ';
 
         }
 
@@ -459,11 +458,11 @@ export class FaviconManager {
         this.ctx!.globalCompositeOperation = 'source-over'; }
     
     /**
-     * ファビコンファイルの書き込み)'
+     * ファビコンファイルの書き込み''
      */')'
     async writeFaviconFiles(faviconList: GeneratedFavicon[]): Promise<void> { try {
             const extWindow = window as ExtendedWindow;''
-            if(typeof, window === 'undefined' || !extWindow.showDirectoryPicker) {'
+            if(typeof, window === 'undefined' || !extWindow.showDirectoryPicker' {'
 
                 seoLogger.warn('File, System Access, API not, available);
             }
@@ -491,7 +490,7 @@ export class FaviconManager {
                 }''
             } catch (error) { }
 
-            seoErrorHandler.handle(error as Error, 'writeFaviconFiles', { count: faviconList.length });
+            seoErrorHandler.handle(error as Error, 'writeFaviconFiles', { count: faviconList.length }';
         }
     }
     
@@ -523,34 +522,34 @@ export class FaviconManager {
         let html = '    <!-- Favicons and Icons -->\n';
         ';
         // 標準ファビコン
-        html += '    <link rel="icon" type="image/svg+xml" href="/favicon.svg">\n';''
-        html += '    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">\n';''
-        html += '    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">\n';''
+        html += '    <link rel="icon" type="image/svg+xml" href="/favicon.svg">\n';
+        html += '    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">\n';
+        html += '    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">\n';
         html += '    <link rel="shortcut icon" href="/favicon.ico">\n';
         ';
         // Apple Touch Icons
         html += '\n    <!-- Apple Touch Icons -->\n';
-        const appleSizes = [57, 60, 72, 76, 114, 120, 144, 152, 180];)'
+        const appleSizes = [57, 60, 72, 76, 114, 120, 144, 152, 180];''
         appleSizes.forEach(size => { ' }'
 
-            html += `    <link, rel="apple-touch-icon" sizes="${size}x${size}" href="/apple-touch-icon-${size}x${size}.png">\n`));""
+            html += `    <link, rel="apple-touch-icon" sizes="${size}x${size}" href="/apple-touch-icon-${size}x${size}.png">\n`)";""
         html += '    <link rel="apple-touch-icon" href="/apple-touch-icon.png">\n';
         ';
         // Safari
-        html += '\n    <!-- Safari -->\n';''
+        html += '\n    <!-- Safari -->\n';
         html += '    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#4CAF50">\n';
         ';
         // Microsoft
-        html += '\n    <!-- Microsoft -->\n';''
-        html += '    <meta name="msapplication-TileColor" content="#4CAF50">\n';''
-        html += '    <meta name="msapplication-square70x70logo" content="/mstile-70x70.png">\n';''
-        html += '    <meta name="msapplication-square150x150logo" content="/mstile-150x150.png">\n';''
-        html += '    <meta name="msapplication-wide310x150logo" content="/mstile-310x150.png">\n';''
+        html += '\n    <!-- Microsoft -->\n';
+        html += '    <meta name="msapplication-TileColor" content="#4CAF50">\n';
+        html += '    <meta name="msapplication-square70x70logo" content="/mstile-70x70.png">\n';
+        html += '    <meta name="msapplication-square150x150logo" content="/mstile-150x150.png">\n';
+        html += '    <meta name="msapplication-wide310x150logo" content="/mstile-310x150.png">\n';
         html += '    <meta name="msapplication-square310x310logo" content="/mstile-310x310.png">\n';
         ';
         // Android
-        html += '\n    <!-- Android -->\n';''
-        html += '    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">\n';''
+        html += '\n    <!-- Android -->\n';
+        html += '    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">\n';
         html += '    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">\n';
         
         return html;
@@ -560,8 +559,8 @@ export class FaviconManager {
      * ファビコンサマリーの生成
      */
     private _generateFaviconSummary(results: FaviconGenerationResult): FaviconSummary { const summary: FaviconSummary = {
-            totalGenerated: results.generated.length;
-           , totalErrors: results.errors.length, }
+            totalGenerated: results.generated.length,
+    totalErrors: results.errors.length, }
             byCategory: {}
             byType: {}
             generatedAt: new Date().toISOString();
@@ -615,8 +614,8 @@ export class FaviconManager {
         return { isValid,
             issues,
             warnings, };
-            generatedCount: this.generatedFavicons.size }
-        }
+            generatedCount: this.generatedFavicons.size 
+    }
     
     /**
      * リソースのクリーンアップ

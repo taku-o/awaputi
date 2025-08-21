@@ -5,25 +5,25 @@
  * Updated: 2024 with load() method for GameEngineInitializer compatibility
  */
 // import { EventRankingManager  } from './EventRankingManager.js'; // 未使用インポート
-import { SeasonalEventManager, type, SeasonalEventData, type, SeasonInfo  } from './events/SeasonalEventManager.js';''
-import { EventNotificationSystem, type, NotificationData  } from './events/EventNotificationSystem.js';''
-import { EventHistoryManager, type, HistoryEntry, type, DetailedStatistics  } from './events/EventHistoryManager.js';''
-import { EventRankingSystem  } from './events/EventRankingSystem.js';''
+import { SeasonalEventManager, type, SeasonalEventData, type, SeasonInfo  } from './events/SeasonalEventManager.js';
+import { EventNotificationSystem, type, NotificationData  } from './events/EventNotificationSystem.js';
+import { EventHistoryManager, type, HistoryEntry, type, DetailedStatistics  } from './events/EventHistoryManager.js';
+import { EventRankingSystem  } from './events/EventRankingSystem.js';
 import { GameEngine  } from './GameEngine';
 
 interface EventStage { id: string,
     name: string;
     description: string;
-    icon: string;
-   , type: string;
+    icon: string,
+    type: string;
     duration?: number;
     targetScore?: number;
     rewards?: {
         a;p?: number;
         completion?: {
             a;p: number ,};
-        highScore?: { threshold: number;
-           , ap: number };
+        highScore?: { threshold: number,
+    ap: number };
         items?: string[];
         badges?: string[];
     };
@@ -93,7 +93,7 @@ export class EventStageManager {
     /**
      * イベントステージを初期化'
      */''
-    initializeEventStages(''';
+    initializeEventStages('''
                 id: 'goldenRush',
                 name: '黄金ラッシュ',
                 description: '黄金の泡が大量出現！スコア倍率2倍のチャンス',
@@ -102,14 +102,14 @@ export class EventStageManager {
                 duration: 300000, // 5分;
                 bubbleTypes: ['normal', 'stone', 'golden', 'golden', 'golden', 'rainbow', 'pink'],
                 spawnRate: 2.0;
-                maxBubbles: 25;
-               , specialRules: { goldenSpawnRate: 0.4;
-                   , globalScoreMultiplier: 2.0 };
+                maxBubbles: 25,
+    specialRules: { goldenSpawnRate: 0.4,
+    globalScoreMultiplier: 2.0 };
                 rewards: {
                     completion: { ap: 200 };
                     highScore: { threshold: 15000, ap: 300 ,},
-                availability: { startDate: null;
-                   , endDate: null,
+                availability: { startDate: null,
+    endDate: null,
                     recurring: 'weekly' ,}
             };
             ';
@@ -123,16 +123,16 @@ export class EventStageManager {
                 duration: 300000,
                 bubbleTypes: ['normal', 'phantom', 'phantom', 'phantom', 'electric', 'poison'],
                 spawnRate: 2.2;
-                maxBubbles: 30;
-               , specialRules: {
+                maxBubbles: 30,
+    specialRules: {
                     phantomSpawnRate: 0.5;
-                    reducedVisibility: true;
-                   , nightMode: true ,};
+                    reducedVisibility: true,
+    nightMode: true ,};
                 rewards: {
                     completion: { ap: 250 };
                     survivalBonus: { ap: 100 };
-                availability: { startDate: null;
-                   , endDate: null,
+                availability: { startDate: null,
+    endDate: null,
                     recurring: 'monthly' ,}
             };
             ';
@@ -146,15 +146,15 @@ export class EventStageManager {
                 duration: 240000,
                 bubbleTypes: ['rainbow', 'rainbow', 'rainbow', 'normal', 'golden'],
                 spawnRate: 1.8;
-                maxBubbles: 20;
-               , specialRules: {
-                    rainbowChainBonus: 3.0;
-                   , cascadeMultiplier: 1.5 ,};
+                maxBubbles: 20,
+    specialRules: {
+                    rainbowChainBonus: 3.0,
+    cascadeMultiplier: 1.5 ,};
                 rewards: {
                     completion: { ap: 180 };
                     chainBonus: { threshold: 10, ap: 200 ,},
-                availability: { startDate: null;
-                   , endDate: null,
+                availability: { startDate: null,
+    endDate: null,
                     recurring: 'weekly' ,}
             }))
     }
@@ -207,8 +207,8 @@ export class EventStageManager {
 
             case 'weekly':';
                 // 週末（金曜日〜日曜日）にアクティブ
-                const dayOfWeek = now.getDay(''';
-            case 'monthly':';
+                const dayOfWeek = now.getDay('''
+            case 'monthly': ';
                 // 月の最初の週にアクティブ
                 const, dayOfMonth = now.getDate(''';
             case 'daily':);
@@ -240,8 +240,8 @@ export class EventStageManager {
             // アクティブイベントに追加
             this.activeEvents.set(eventId, {)
                 ...event);
-                startTime: Date.now();
-               , endTime: Date.now() + (event.duration || 300000) // デフォルト5分 ,});
+                startTime: Date.now(),
+    endTime: Date.now() + (event.duration || 300000) // デフォルト5分 ,});
             console.log(`Event, started: ${event.name}`});
             return true;
 
@@ -466,24 +466,24 @@ export class EventStageManager {
      * データを読み込み（GameEngineInitializer互換性用）'
      */''
     load()';
-            console.log('[DEBUG] EventStageManager.load(') 開始'');
+            console.log('[DEBUG] EventStageManager.load() 開始'');
             ';
             // 各サブコンポーネントのloadメソッドを呼び出し（存在する場合）
-            if(this.seasonalEventManager && typeof, this.seasonalEventManager.load === 'function) {'
+            if(this.seasonalEventManager && typeof, this.seasonalEventManager.load === 'function' {'
 
                 this.seasonalEventManager.load()';
-            if(this.historyManager && typeof, this.historyManager.load === 'function) {''
+            if(this.historyManager && typeof, this.historyManager.load === 'function' {''
                 this.historyManager.load()';
-            if(this.rankingSystem && typeof, this.rankingSystem.load === 'function) {''
+            if(this.rankingSystem && typeof, this.rankingSystem.load === 'function' {''
                 this.rankingSystem.load()';
-            console.log('[DEBUG] EventStageManager.load(') 完了');
+            console.log('[DEBUG] EventStageManager.load() 完了');
             return true;
             }
 
             ' }'
 
         } catch (error) {
-            console.error('[DEBUG] EventStageManager.load(') エラー:', error);
+            console.error('[DEBUG] EventStageManager.load() エラー:', error';
             return false;
     
     /**
@@ -491,7 +491,7 @@ export class EventStageManager {
      * 互換性のためのメソッド（EventStageDataManager用）'
      */''
     checkEventNotifications()';
-            console.log('[DEBUG] EventStageManager.checkEventNotifications(') 実行'');
+            console.log('[DEBUG] EventStageManager.checkEventNotifications() 実行'');
             ';
             // 通知システムから通知をチェック
             if(this.notificationSystem && typeof, this.notificationSystem.checkNotifications === 'function) { return this.notificationSystem.checkNotifications(); }'
@@ -500,7 +500,7 @@ export class EventStageManager {
             return [];
 
         } catch (error) {
-            console.error('[DEBUG] EventStageManager.checkEventNotifications(') エラー:', error);
+            console.error('[DEBUG] EventStageManager.checkEventNotifications() エラー:', error);
             return [];
     
     /**
@@ -509,7 +509,7 @@ export class EventStageManager {
     dispose() {
         try {
             // 各コンポーネントをクリーンアップ
-            this.seasonalEventManager? .dispose();
+            this.seasonalEventManager?.dispose();
             this.notificationSystem?.dispose();
             this.historyManager?.dispose();
             this.rankingSystem?.dispose();

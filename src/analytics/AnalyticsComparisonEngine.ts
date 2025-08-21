@@ -3,8 +3,8 @@
  * プレイヤーのパフォーマンスを過去データやベンチマークと比較する分析機能を提供します
  * 分割されたコンポーネントを統合管理するメインクラス
  */
-import { DataComparator } from './comparison/DataComparator.ts';''
-import { ComparisonAlgorithms } from './comparison/ComparisonAlgorithms.ts';''
+import { DataComparator } from './comparison/DataComparator.ts';
+import { ComparisonAlgorithms } from './comparison/ComparisonAlgorithms.ts';
 import { ComparisonResultRenderer } from './comparison/ComparisonResultRenderer.ts';
 
 export class AnalyticsComparisonEngine {
@@ -38,8 +38,8 @@ export class AnalyticsComparisonEngine {
         } catch (error) {
             console.error('AnalyticsComparisonEngine.compareWithPastData error:', error);
             return { success: false, };
-                error: error.message }
-            }
+                error: error.message 
+    }
     }
 
     /**
@@ -54,8 +54,8 @@ export class AnalyticsComparisonEngine {
         } catch (error) {
             console.error('AnalyticsComparisonEngine.benchmarkComparison error:', error);
             return { success: false, };
-                error: error.message }
-            }
+                error: error.message 
+    }
     }
 
     /**
@@ -70,8 +70,8 @@ export class AnalyticsComparisonEngine {
         } catch (error) {
             console.error('AnalyticsComparisonEngine.stageComparison error:', error);
             return { success: false, };
-                error: error.message }
-            }
+                error: error.message 
+    }
     }
 
     /**
@@ -87,10 +87,10 @@ export class AnalyticsComparisonEngine {
             return this.algorithms.generateImprovementSuggestions(comparisonResult, options);' }'
 
         } catch (error) {
-            console.error('AnalyticsComparisonEngine.generateImprovementSuggestions error:', error);
+            console.error('AnalyticsComparisonEngine.generateImprovementSuggestions error:', error';
             return { success: false, };
-                error: error.message }
-            }
+                error: error.message 
+    }
     }
 
     /**
@@ -105,8 +105,8 @@ export class AnalyticsComparisonEngine {
         } catch (error) {
             console.error('AnalyticsComparisonEngine.trendAnalysis error:', error);
             return { success: false, };
-                error: error.message }
-            }
+                error: error.message 
+    }
     }
 
     /**
@@ -124,8 +124,8 @@ export class AnalyticsComparisonEngine {
         } catch (error) {
             console.error('AnalyticsComparisonEngine.renderResults error:', error);
             return { success: false, };
-                error: error.message }
-            }
+                error: error.message 
+    }
     }
 
     /**
@@ -143,8 +143,8 @@ export class AnalyticsComparisonEngine {
         } catch (error) {
             console.error('AnalyticsComparisonEngine.generateSummaryReport error:', error);
             return { success: false, };
-                error: error.message }
-            }
+                error: error.message 
+    }
     }
 
     /**
@@ -162,8 +162,8 @@ export class AnalyticsComparisonEngine {
         } catch (error) {
             console.error('AnalyticsComparisonEngine.generateDetailedReport error:', error);
             return { success: false, };
-                error: error.message }
-            }
+                error: error.message 
+    }
     }
 
     /**
@@ -188,8 +188,8 @@ export class AnalyticsComparisonEngine {
         this.cache.set(key, {)
             data: data);
     ,}
-            timestamp: Date.now(); }
-        });
+            timestamp: Date.now(); 
+    });
     }
 
     /**
@@ -197,7 +197,7 @@ export class AnalyticsComparisonEngine {
      */
     clearCache() {
         this.cache.clear();
-        this.dataComparator.clearCache? .();
+        this.dataComparator.clearCache?.();
         this.algorithms.clearCache?.();
     }
         this.renderer.clearCache?.(); }
@@ -210,4 +210,4 @@ export class AnalyticsComparisonEngine {
 
     getAlgorithms() { return this.algorithms; }
 
-    getRenderer(');
+    getRenderer();

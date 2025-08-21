@@ -4,11 +4,11 @@
  * 分離されたコンポーネントを統合してリーダーボード機能を提供
  */
 
-import { getErrorHandler  } from '../../utils/ErrorHandler.js';''
-import type { ErrorHandler } from '../../utils/ErrorHandler.js';''
-import { LeaderboardRenderer  } from './leaderboard/LeaderboardRenderer.js';''
-import { LeaderboardDataManager  } from './leaderboard/LeaderboardDataManager.js';''
-import { LeaderboardAnimationController  } from './leaderboard/LeaderboardAnimationController.js';''
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
+import type { ErrorHandler } from '../../utils/ErrorHandler.js';
+import { LeaderboardRenderer  } from './leaderboard/LeaderboardRenderer.js';
+import { LeaderboardDataManager  } from './leaderboard/LeaderboardDataManager.js';
+import { LeaderboardAnimationController  } from './leaderboard/LeaderboardAnimationController.js';
 import { LeaderboardEventHandler  } from './leaderboard/LeaderboardEventHandler.js';
 
 /**
@@ -27,8 +27,8 @@ interface CachedData { rankings: RankingEntry[],
  */
 interface RankingEntry { playerId: string;
     playerName: string;
-    score: number;
-   , timestamp: string | Date;
+    score: number,
+    timestamp: string | Date;
     maxCombo?: number;
     accuracy?: number;
     [key: string]: any, }
@@ -45,8 +45,8 @@ interface UIState { currentView: string,
     hoveredButton: any | null;
     showDetails: boolean;
     cachedData: CachedData | null;
-    lastUpdateTime: number;
-   , isLoading: boolean ,}
+    lastUpdateTime: number,
+    isLoading: boolean ,}
 
 /**
  * Layout configuration interface
@@ -55,15 +55,15 @@ interface LayoutConfig { headerHeight: number;
     tabHeight: number;
     entryHeight: number;
     padding: number;
-    scrollOffset: number;
-   , maxVisibleEntries: number }
+    scrollOffset: number,
+    maxVisibleEntries: number }
 
 /**
  * Touch interface
  */
 interface Touch { identifier: number;
-    clientX: number;
-   , clientY: number }
+    clientX: number,
+    clientY: number }
 
 /**
  * Event data interfaces
@@ -76,8 +76,8 @@ interface SortChangeData {
     sortBy: string;
 }
 
-interface EntrySelectData { entry: RankingEntry;
-   , index: number }
+interface EntrySelectData { entry: RankingEntry,
+    index: number }
 
 interface DetailsToggleData { show: boolean;
     entry?: RankingEntry
@@ -102,8 +102,8 @@ interface RefreshOptions { sortBy: string,
  * Statistics interface
  */
 interface Statistics { dataManager: any;
-    animation: any;
-   , eventHandler: any }
+    animation: any,
+    eventHandler: any }
 
 /**
  * Config update interface
@@ -116,8 +116,8 @@ interface ConfigUpdate { layout?: Partial<LayoutConfig>;
  */
 interface Bounds { x: number,
     y: number;
-    width: number;
-   , height: number ,}
+    width: number,
+    height: number ,}
 
 /**
  * UI element interface
@@ -134,8 +134,8 @@ interface UIElement { bounds: Bounds;
 interface UIElements { tabs: UIElement[],
     sortOptions: UIElement[];
     entries: UIElement[];
-    buttons: UIElement[];
-   , scrollbar: UIElement | null ,}
+    buttons: UIElement[],
+    scrollbar: UIElement | null ,}
 
 export class LeaderboardUI {
     private gameEngine: GameEngine;
@@ -147,8 +147,8 @@ export class LeaderboardUI {
     private eventHandler: LeaderboardEventHandler;
     // UI状態
     private, uiState: UIState = {''
-        currentView: 'overall';
-       , currentStage: null,
+        currentView: 'overall',
+    currentStage: null,
         currentPage: 0,
         sortBy: 'score';
         selectedEntry: null;
@@ -156,15 +156,15 @@ export class LeaderboardUI {
         hoveredButton: null;
         showDetails: false;
         cachedData: null;
-        lastUpdateTime: 0;
-       , isLoading: false ,};
+        lastUpdateTime: 0,
+    isLoading: false ,};
     // レイアウト設定
     private layout: LayoutConfig = { headerHeight: 60
         tabHeight: 40;
         entryHeight: 50;
         padding: 20;
-        scrollOffset: 0;
-       , maxVisibleEntries: 8 };
+        scrollOffset: 0,
+    maxVisibleEntries: 8 };
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -198,21 +198,19 @@ export class LeaderboardUI {
             console.log('[LeaderboardUI] All, components initialized');' }
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'LeaderboardUI.initialize); }'
+            this.errorHandler.handleError(error, 'LeaderboardUI.initialize'; }'
     }
     
     /**
      * イベントハンドラー設定'
      */''
     setupEventHandlers()';
-        this.eventHandler.addCallback('onViewChange', (data: ViewChangeData) => { this.changeView(data.view);' }
-
-        }');
+        this.eventHandler.addCallback('onViewChange', (data: ViewChangeData) => { this.changeView(data.view);' 
+    }');
         ';
         // ソート変更
-        this.eventHandler.addCallback('onSortChange', (data: SortChangeData) => { this.changeSortBy(data.sortBy);' }
-
-        }');
+        this.eventHandler.addCallback('onSortChange', (data: SortChangeData) => { this.changeSortBy(data.sortBy);' 
+    }');
         ';
         // エントリー選択
         this.eventHandler.addCallback('onEntrySelect', (data: EntrySelectData) => { this.selectEntry(data.entry, data.index);' }
@@ -242,9 +240,8 @@ export class LeaderboardUI {
         }');
         ';
         // ホバー処理
-        this.eventHandler.addCallback('onHover', (data: HoverData) => { this.handleHover(data.target);' }
-
-        }');
+        this.eventHandler.addCallback('onHover', (data: HoverData) => { this.handleHover(data.target);' 
+    }');
 
         this.eventHandler.addCallback('onHoverEnd', (data: HoverData) => { this.handleHoverEnd(data.target); });
     }
@@ -281,10 +278,10 @@ export class LeaderboardUI {
      * エラー状態のレンダリング'
      */''
     renderErrorState(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
-        context.fillStyle = '#ff6b6b';''
-        context.font = '16px Arial';''
-        context.textAlign = 'center';''
-        context.fillText('リーダーボードの読み込みに失敗しました', x + width / 2, y + height / 2); }
+        context.fillStyle = '#ff6b6b';
+        context.font = '16px Arial';
+        context.textAlign = 'center';
+        context.fillText('リーダーボードの読み込みに失敗しました', x + width / 2, y + height / 2'; }
     
     /**
      * UI要素の境界を更新'
@@ -297,12 +294,12 @@ export class LeaderboardUI {
         const tabs = ['overall', 'daily', 'weekly', 'monthly', 'stage'];
         const tabWidth = (width - padding * 2) / tabs.length;
         const tabElements: UIElement[] = tabs.map((tab, index) => ({
-            view: tab);
-           , bounds: {
+            view: tab),
+    bounds: {
                 x: x + padding + (index * tabWidth);
                 y: y + headerHeight;
-                width: tabWidth;
-               , height: tabHeight ,}
+                width: tabWidth,
+    height: tabHeight ,}
 
             }''
         }');
@@ -315,9 +312,9 @@ export class LeaderboardUI {
            , bounds: {
                 x: x + padding + (index * sortWidth);
                 y: sortY;
-                width: sortWidth;
-               , height: 35 }
-        });
+                width: sortWidth,
+    height: 35 
+    });
         // エントリー境界
         const entryStartY = sortY + 35 + 30; // ソート + リストヘッダー
         const data = this.uiState.cachedData;
@@ -332,28 +329,28 @@ export class LeaderboardUI {
             for (let, i = startIndex; i < endIndex; i++) {
                 entryElements.push({
                     data: data.rankings[i]);
-                    index: i);
-                   , bounds: {)
+                    index: i),
+    bounds: {)
                         x: x + 5);
-                        y: entryStartY + ((i - startIndex) * this.layout.entryHeight);
-                       , width: width - 10;
+                        y: entryStartY + ((i - startIndex) * this.layout.entryHeight),
+    width: width - 10;
         ,}
-                        height: this.layout.entryHeight }
-});
+                        height: this.layout.entryHeight 
+    });
             }
         }
         
         // イベントハンドラーに境界情報を更新
         this.eventHandler.updateUIElements({ tabs: tabElements,
             sortOptions: sortElements;
-            entries: entryElements;
-           , buttons: [], // 必要に応じて追加;
+            entries: entryElements,
+    buttons: [], // 必要に応じて追加;
             scrollbar: data && data.rankings && data.rankings.length > this.layout.maxVisibleEntries ? { : undefined
                 bounds: {
                     x: x + width - 15;
                     y: y);
-                    width: 15);
-                   , height: height ,}) : null);
+                    width: 15),
+    height: height ,}) : null);
     }
     
     /**
@@ -369,7 +366,7 @@ export class LeaderboardUI {
         this.eventHandler.handleHover(x, y, options);
         // アニメーション連携
         const target = this.eventHandler.getTargetAt(x, y);''
-        if(target && target.type === 'entry) {'
+        if(target && target.type === 'entry' {'
             
         }
             this.animationController.startHover(target.data); }
@@ -379,7 +376,7 @@ export class LeaderboardUI {
      * ホバー処理'
      */''
     handleHover(target: any): void { ''
-        if(target && target.type === 'entry) {'
+        if(target && target.type === 'entry' {'
             this.uiState.hoveredEntry = target.data;
         }
             this.animationController.startHover(target.data); }
@@ -452,8 +449,8 @@ export class LeaderboardUI {
             this.uiState.isLoading = true;
             
             const options: RefreshOptions = {
-                sortBy: this.uiState.sortBy;
-               , stageId: this.uiState.currentStage };
+                sortBy: this.uiState.sortBy,
+    stageId: this.uiState.currentStage };
             const data = await this.dataManager.refreshData(this.uiState.currentView, options);
             
             if(data && !data.error) {
@@ -466,7 +463,7 @@ export class LeaderboardUI {
                 this.updateScrollBounds();' }'
 
             } catch (error) {
-            this.errorHandler.handleError(error, 'LeaderboardUI.refreshData); } finally { this.uiState.isLoading = false; }'
+            this.errorHandler.handleError(error, 'LeaderboardUI.refreshData'; } finally { this.uiState.isLoading = false; }'
     }
     
     /**
@@ -522,8 +519,8 @@ export class LeaderboardUI {
      */
     getStatistics(): Statistics { return { dataManager: this.dataManager.getStatistics(),
             animation: this.animationController.getPerformanceInfo(), };
-            eventHandler: this.eventHandler.getSelectionState(); }
-        }
+            eventHandler: this.eventHandler.getSelectionState(); 
+    }
     
     /**
      * 設定更新

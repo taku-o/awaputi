@@ -23,76 +23,76 @@ export interface MainController { focusManager: FocusManager,
     focusStateManager: FocusStateManager;
     focusAccessibilitySupport: FocusAccessibilitySupport;
     focusEffectRenderer: FocusEffectRenderer;
-    accessibilityManager?: AccessibilityManager;
-   , handleFocusChange: (elemen;t: HTMLElement, index: number, keyboardMode: boolean) => void,
-    handleFocusLost: (elemen;t: HTMLElement) => void;
-    applyConfig: (confi;g: any) => void ,}
+    accessibilityManager?: AccessibilityManager,
+    handleFocusChange: (element: HTMLElement, index: number, keyboardMode: boolean) => void,
+    handleFocusLost: (element: HTMLElement) => void;
+    applyConfig: (config: any) => void ,}
 }
 
-export interface FocusManager { addEventListener: (even;t: string, handler: (dat;a: any) => void) => void,
-    removeEventListener: (even;t: string, handler: (dat;a: any) => void) => void ,}
+export interface FocusManager { addEventListener: (event: string, handler: (dat;a: any) => void) => void,
+    removeEventListener: (event: string, handler: (dat;a: any) => void) => void ,}
 }
 
 export interface FocusConfig { focusRing: FocusRingConfig,
-    keyboard: KeyboardConfig;
-   , mouse: MouseConfig
+    keyboard: KeyboardConfig,
+    mouse: MouseConfig
     ,}
 
 export interface FocusRingConfig { enabled: boolean;
     color: string;
-    width: string;
-   , offset: string }
+    width: string,
+    offset: string }
 
-export interface KeyboardConfig { shortcuts: KeyboardShortcuts;
-   , navigation: NavigationSettings
+export interface KeyboardConfig { shortcuts: KeyboardShortcuts,
+    navigation: NavigationSettings
     }
 
-export interface MouseConfig { disableKeyboardHints: boolean;
-   , clearEffectsOnClick: boolean }
+export interface MouseConfig { disableKeyboardHints: boolean,
+    clearEffectsOnClick: boolean }
 
 export interface KeyboardShortcuts { help: string;
     contrast: string;
-    focus: string;
-   , escape: string }
+    focus: string,
+    escape: string }
 
-export interface NavigationSettings { feedback: boolean;
-   , directions: boolean }
+export interface NavigationSettings { feedback: boolean,
+    directions: boolean }
 
 export interface FocusState { keyboardHintVisible: boolean;
     isHighContrastMode: boolean;
-    currentElement: HTMLElement | null;
-   , keyboardMode: boolean }
+    currentElement: HTMLElement | null,
+    keyboardMode: boolean }
 
 export interface CSSClasses { focusRing: string;
     keyboardMode: string;
-    mouseMode: string;
-   , highContrast: string }
+    mouseMode: string,
+    highContrast: string }
 
 export interface FocusElements { navigationIndicator: HTMLElement;
-    keyboardHint: HTMLElement;
-   , announcement: HTMLElement
+    keyboardHint: HTMLElement,
+    announcement: HTMLElement
     }
 
-export interface FocusStateManager { setKeyboardMode: (enable;d: boolean) => void;
-    setHighContrastMode: (enable;d: boolean) => void }
-}
+export interface FocusStateManager { setKeyboardMode: (enabled: boolean) => void;
+    setHighContrastMode: (enabled: boolean) => void 
+    }
 
 export interface FocusAccessibilitySupport { toggleKeyboardHints: () => void;
-    hideKeyboardHints: () => void }
-}
+    hideKeyboardHints: () => void 
+    }
 
 export interface FocusEffectRenderer { clearAllEffects: () => void;
     handleWindowResize: () => void;
-    adjustForAccessibility: () => void }
-}
+    adjustForAccessibility: () => void 
+    }
 
-export interface AccessibilityManager { addEventListener: (even;t: string, handler: (dat;a: any) => void) => void,
+export interface AccessibilityManager { addEventListener: (event: string, handler: (dat;a: any) => void) => void,
     isScreenReaderActive: () => boolean ,}
 }
 
 export interface FocusChangeEventData { element: HTMLElement;
-    index: number;
-   , keyboardMode: boolean }
+    index: number,
+    keyboardMode: boolean }
 
 export interface FocusLostEventData {
     element: HTMLElement;
@@ -104,14 +104,14 @@ export interface ConfigurationAppliedEventData {
 
 export interface DirectionInfo { key: string;
     direction: string;
-    icon: string;
-   , text: string }
+    icon: string,
+    text: string }
 
 export interface ElementAccessibilityInfo { tagName: string;
     role: string | null;
     label: string | null;
-    expanded: boolean | null;
-   , selected: boolean | null }
+    expanded: boolean | null,
+    selected: boolean | null }
 
 export interface KeyboardEventHandlerOptions { preventDefault?: boolean;
     stopPropagation?: boolean; }
@@ -120,9 +120,9 @@ export interface ValidationResult { isValid: boolean,
     reason?: string }
 
 // 列挙型
-export type NavigationKey = 'Tab' | 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight';''
-export type ShortcutKey = 'F1' | 'Escape' | 'h' | 'c' | 'f';''
-export type EventType = 'keydown' | 'keyup' | 'mousedown' | 'mousemove' | 'resize' | 'focusin' | 'focusout';''
+export type NavigationKey = 'Tab' | 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight';
+export type ShortcutKey = 'F1' | 'Escape' | 'h' | 'c' | 'f';
+export type EventType = 'keydown' | 'keyup' | 'mousedown' | 'mousemove' | 'resize' | 'focusin' | 'focusout';
 export type AccessibilityFeature = 'help' | 'contrast' | 'focus' | 'screen-reader' | 'keyboard-hints';
 
 // 定数
@@ -191,7 +191,7 @@ export function createKeyboardShortcutMatcher(key: string, modifiers: string[] =
             alt: modifiers.includes('Alt''),
             shift: modifiers.includes('Shift''),' }
 
-            meta: modifiers.includes('Meta); }'
+            meta: modifiers.includes('Meta'; }'
         };
         
         return event.ctrlKey === requiredModifiers.ctrl &&;
@@ -206,7 +206,7 @@ export function getElementAccessibilityDescription(element: HTMLElement): string
     const role = element.getAttribute('role'');''
     const label = element.getAttribute('aria-label'') || '';
                  element.getAttribute('title) || ;
-                 element.textContent? .trim();
+                 element.textContent?.trim();
      }
 
     let description = `${role || tagName}`;''
@@ -217,22 +217,22 @@ export function getElementAccessibilityDescription(element: HTMLElement): string
     // 状態情報の追加
     const states: string[] = [],
 
-    if(element.hasAttribute('aria-expanded)) { ''
-        const expanded = element.getAttribute('aria-expanded'') === 'true';''
+    if(element.hasAttribute('aria-expanded)' { ''
+        const expanded = element.getAttribute('aria-expanded'') === 'true';
         states.push(expanded ? '展開済み' : '折りたたみ済み''); }
 
-    if(element.hasAttribute('aria-selected)) { ''
-        const selected = element.getAttribute('aria-selected'') === 'true';''
+    if(element.hasAttribute('aria-selected)' { ''
+        const selected = element.getAttribute('aria-selected'') === 'true';
         states.push(selected ? '選択済み' : '未選択''); }
 
-    if(element.hasAttribute('aria-checked)) { ''
+    if(element.hasAttribute('aria-checked)' { ''
         const checked = element.getAttribute('aria-checked'');''
         if (checked === 'true'') states.push('チェック済み'');''
         else if (checked === 'false'') states.push('未チェック'');''
         else if (checked === 'mixed'') states.push('部分的にチェック''); }
 
     if (element.hasAttribute('disabled'') || element.getAttribute('aria-disabled'') === 'true'') { ''
-        states.push('無効); }'
+        states.push('無効'; }'
 
     if(states.length > 0) { ' }'
 
@@ -287,12 +287,12 @@ export class FocusEventHandler {
         }
         ';
         // キーボードイベント
-        document.addEventListener('keydown', this.boundHandlers.get('keydown)!, true');''
-        document.addEventListener('keyup', this.boundHandlers.get('keyup)!, true');
+        document.addEventListener('keydown', this.boundHandlers.get('keydown'!, true');''
+        document.addEventListener('keyup', this.boundHandlers.get('keyup'!, true');
         ';
         // マウスイベント
-        document.addEventListener('mousedown', this.boundHandlers.get('mousedown)!, true');''
-        document.addEventListener('mousemove', this.boundHandlers.get('mousemove)!, true');
+        document.addEventListener('mousedown', this.boundHandlers.get('mousedown'!, true');''
+        document.addEventListener('mousemove', this.boundHandlers.get('mousemove'!, true');
         ';
         // ウィンドウリサイズ
         window.addEventListener('resize', this.boundHandlers.get('resize)!);
@@ -324,7 +324,7 @@ export class FocusEventHandler {
         }
         
         // ナビゲーション方向の表示
-        if(this.isNavigationKey(keyEvent.key, as NavigationKey) { this.prepareNavigationFeedback(keyEvent.key, keyEvent.shiftKey); }
+        if(this.isNavigationKey(keyEvent.key as NavigationKey) { this.prepareNavigationFeedback(keyEvent.key keyEvent.shiftKey); }
         
         // ショートカットキーの処理
         this.handleShortcutKeys(keyEvent);
@@ -375,19 +375,19 @@ export class FocusEventHandler {
      * ウィンドウリサイズ処理
      */
     private handleWindowResize(event: Event): void { // フォーカスエフェクトの位置再調整
-        this.mainController.focusEffectRenderer.handleWindowResize('); }
+        this.mainController.focusEffectRenderer.handleWindowResize(); }
 
     /**
      * ショートカットキーの処理
      */''
     private handleShortcutKeys(event: KeyboardEvent): void { // Escape キー - すべての視覚フィードバックをクリア
-        if(event.key === 'Escape) {'
+        if(event.key === 'Escape' {'
             this.mainController.focusEffectRenderer.clearAllEffects();''
             this.mainController.focusAccessibilitySupport.hideKeyboardHints()';
-        if(event.ctrlKey && event.key === 'h) {'
+        if(event.ctrlKey && event.key === 'h' {'
             event.preventDefault();''
             this.mainController.focusAccessibilitySupport.toggleKeyboardHints()';
-        if(event.altKey && event.key === 'c) {'
+        if(event.altKey && event.key === 'c' {'
             event.preventDefault();
 
             const isEnabled = !this.state.isHighContrastMode;''
@@ -397,7 +397,7 @@ export class FocusEventHandler {
         }
         ';
         // Alt+F - フォーカス表示の切り替え
-        if(event.altKey && event.key === 'f) {', ';
+        if(event.altKey && event.key === 'f' {', ';
 
         }
 
@@ -426,19 +426,19 @@ export class FocusEventHandler {
      */''
     private showTemporaryDirectionIndicator(direction: string): void { const indicator = this.mainController.elements.navigationIndicator;''
         const directionElement = indicator.querySelector('.direction'');''
-        const statusElement = indicator.querySelector('.status);
+        const statusElement = indicator.querySelector('.status';
         ';
 
         if (directionElement) directionElement.textContent = direction;''
         if(statusElement) statusElement.textContent = 'ナビゲーション中...';
 
-        indicator.classList.add('visible);
+        indicator.classList.add('visible';
         ';
         // 短時間で非表示
         setTimeout(() => { ' }'
 
-            indicator.classList.remove('visible); }'
-        }, TEMPORARY_FEEDBACK_DURATION);
+            indicator.classList.remove('visible'; }'
+        }, TEMPORARY_FEEDBACK_DURATION';
     }
 
     /**
@@ -450,8 +450,8 @@ export class FocusEventHandler {
 
             return { isValid: false,' };
 
-                reason: 'Element is not valid or not in DOM' }
-            }
+                reason: 'Element is not valid or not in DOM' 
+    }
         ';
         // 要素が表示されているかチェック
         if(!isElementVisible(element)) { ''
@@ -459,8 +459,8 @@ export class FocusEventHandler {
 
             return { isValid: false,' };
 
-                reason: 'Element is not visible' }
-            }
+                reason: 'Element is not visible' 
+    }
         
         return { isValid: true }
 
@@ -468,7 +468,7 @@ export class FocusEventHandler {
      * アクセシビリティ対応のイベント処理
      */'
     private handleAccessibilityEvents(event: KeyboardEvent): void { // スクリーンリーダー使用時の特別な処理
-        if(this.mainController.accessibilityManager? .isScreenReaderActive()) {'
+        if(this.mainController.accessibilityManager?.isScreenReaderActive()) {'
             // フォーカス変更時により詳細な情報を提供
             if(event.type === 'keydown' && this.isNavigationKey(event.key, as NavigationKey) {
                 // 次のフォーカス要素の詳細を事前に準備
@@ -478,7 +478,7 @@ export class FocusEventHandler {
         // 高コントラストモード時の処理
         if(this.state.isHighContrastMode) {'
             // より目立つフィードバックを提供
-            if(event.type === 'keydown) {'
+            if(event.type === 'keydown' {'
         }
                 this.mainController.focusEffectRenderer.adjustForAccessibility(); }
 }
@@ -501,17 +501,17 @@ export class FocusEventHandler {
      * 要素のアクセシビリティ情報取得
      */
     getElementAccessibilityInfo(element: HTMLElement): ElementAccessibilityInfo { return { ''
-            tagName: element.tagName.toLowerCase()';
-           , role: element.getAttribute('role''),
+            tagName: element.tagName.toLowerCase()',
+    role: element.getAttribute('role''),
             label: element.getAttribute('aria-label'') || '';
-                   element.getAttribute('title) || '';
-                   element.textContent? .trim()';
-           , expanded: element.hasAttribute('aria-expanded'') ?   : undefined'';
+                   element.getAttribute('title' || '';
+                   element.textContent?.trim()';
+           , expanded: element.hasAttribute('aria-expanded'') ? undefined : undefined'';
                      element.getAttribute('aria-expanded'') === 'true' : null,
-            selected: element.hasAttribute('aria-selected'') ?   : undefined' ,};
+            selected: element.hasAttribute('aria-selected'') ? undefined : undefined' ,};
 
-                     element.getAttribute('aria-selected'') === 'true' : null }
-        },
+                     element.getAttribute('aria-selected'') === 'true' : null 
+    },
     }
 
     /**
@@ -549,10 +549,10 @@ export class FocusEventHandler {
         const mousemoveHandler = this.boundHandlers.get('mousemove'');''
         const resizeHandler = this.boundHandlers.get('resize);
 
-        if(keydownHandler) document.removeEventListener('keydown', keydownHandler, true);''
-        if(keyupHandler) document.removeEventListener('keyup', keyupHandler, true);''
-        if(mousedownHandler) document.removeEventListener('mousedown', mousedownHandler, true);''
-        if(mousemoveHandler) document.removeEventListener('mousemove', mousemoveHandler, true);''
+        if(keydownHandler) document.removeEventListener('keydown', keydownHandler, true';''
+        if(keyupHandler) document.removeEventListener('keyup', keyupHandler, true';''
+        if(mousedownHandler) document.removeEventListener('mousedown', mousedownHandler, true';''
+        if(mousemoveHandler) document.removeEventListener('mousemove', mousemoveHandler, true';''
         if(resizeHandler) window.removeEventListener('resize', resizeHandler);
         
         // FocusManagerとAccessibilityManagerからのイベントリスナーも削除

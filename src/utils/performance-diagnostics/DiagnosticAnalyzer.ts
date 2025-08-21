@@ -21,8 +21,8 @@ interface Bottleneck { type: string,
     description: string;
     timestamp: number;
     value: number;
-    threshold: number;
-   , impact: string;
+    threshold: number,
+    impact: string;
     occurrences?: number;
     firstSeen?: number;
     lastSeen?: number;
@@ -33,35 +33,35 @@ interface Bottleneck { type: string,
 interface Anomaly { ''
     severity: 'low' | 'medium' | 'high' | 'critical';
     description: string;
-    metric: string;
-   , deviation: number }
+    metric: string,
+    deviation: number }
 
 interface RootCause { issue: string;
     potentialCauses: string[];
-    confidence: number;
-   , recommendedActions: string[] }
+    confidence: number,
+    recommendedActions: string[] }
 ';
 
 interface OverallAssessment { healthScore: number,''
     performanceLevel: 'excellent' | 'good' | 'fair' | 'poor' | 'critical';
     criticalIssues: CriticalIssue[];
     majorConcerns: any[];
-    improvements: any[];
-   , summary: string ,}
+    improvements: any[],
+    summary: string ,}
 
-interface CriticalIssue { type: string;
-   , description: string;
+interface CriticalIssue { type: string,
+    description: string;
     component?: string;
     impact?: string;
     metric?: string;
     deviation?: number; }
 
 interface CollectedData { rawData: {
-        sample;s: DataSample[];
-       , metrics: Record<string, any>;
+        sample;s: DataSample[],
+    metrics: Record<string, any>;
         startTime: number;
-        endTime: number;
-       , collectionDuration: number ,};
+        endTime: number,
+    collectionDuration: number ,};
     summary?: any;
 }
 
@@ -69,24 +69,24 @@ interface DataSample { timestamp: number,
     frameRate: number;
     memoryUsage: number;
     renderTime: number;
-    networkLatency: number;
-   , inputLag: number ,}
+    networkLatency: number,
+    inputLag: number ,}
 
 interface AnalysisCapabilities { bottleneckAnalysis: boolean;
     anomalyDetection: boolean;
     rootCauseAnalysis: boolean;
-    performanceAssessment: boolean;
-   , supportedMetrics: string[] }
+    performanceAssessment: boolean,
+    supportedMetrics: string[] }
 
 interface AnalyzerConfig { bottleneckThresholds?: Record<string, any>;
     anomalyBaselines?: Record<string, any>; }
 
 interface Threshold { critical: number,
-    high: number;
-   , medium: number ,}
+    high: number,
+    medium: number ,}
 
-interface Baseline { mean: number;
-   , stdDev: number }
+interface Baseline { mean: number,
+    stdDev: number }
 
 export class DiagnosticAnalyzer {
     private mainController: MainController;
@@ -105,7 +105,7 @@ export class DiagnosticAnalyzer {
         this.issueAnalyzer = new IssueAnalyzer();
         this.anomalyDetector = new AnomalyDetector();''
         this.rootCauseAnalyzer = new RootCauseAnalyzer('';
-    })'
+    }''
         console.log('[DiagnosticAnalyzer] Analyzer, component initialized'); }'
     }
     
@@ -136,21 +136,21 @@ export class DiagnosticAnalyzer {
         // ボトルネック分析
         if(options.includeBottleneckAnalysis) {'
 
-            console.log('[DiagnosticAnalyzer] Running, bottleneck analysis...);
+            console.log('[DiagnosticAnalyzer] Running, bottleneck analysis...';
             results.bottlenecks = await this.bottleneckIdentifier.analyze(collectedData'); }
         }
         ';
         // 異常検出
         if(options.includeAnomalyDetection) {'
 
-            console.log('[DiagnosticAnalyzer] Running, anomaly detection...);
+            console.log('[DiagnosticAnalyzer] Running, anomaly detection...';
             results.anomalies = await this.anomalyDetector.detect(collectedData'); }
         }
         ';
         // 根本原因分析
         if(options.includeRootCauseAnalysis) {'
 
-            console.log('[DiagnosticAnalyzer] Running, root cause, analysis...);
+            console.log('[DiagnosticAnalyzer] Running root cause analysis...');
             results.rootCauses = await this.rootCauseAnalyzer.analyze(collectedData, results'); }
         }
         
@@ -163,8 +163,8 @@ export class DiagnosticAnalyzer {
     async generateOverallAssessment(analysisResults: AnalysisResults): Promise<OverallAssessment> { const assessment: OverallAssessment = {'
             healthScore: 100,
             performanceLevel: 'excellent';
-            criticalIssues: [];
-           , majorConcerns: [],
+            criticalIssues: [],
+    majorConcerns: [],
             improvements: [],
             summary: '' ,};
 ';
@@ -180,11 +180,11 @@ export class DiagnosticAnalyzer {
 
             assessment.criticalIssues.push(...criticalBottlenecks.map(b => ({''
                 type: 'bottleneck);
-                description: b.description);
-               , component: b.component,)
+                description: b.description),
+    component: b.component,)
         }
-                impact: b.impact))); }
-        }
+                impact: b.impact))'; 
+    }
 ';
         // 異常評価
         if(analysisResults.anomalies) {'
@@ -198,18 +198,18 @@ export class DiagnosticAnalyzer {
 
             assessment.criticalIssues.push(...criticalAnomalies.map(a => ({''
                 type: 'anomaly);
-                description: a.description);
-               , metric: a.metric,)
+                description: a.description),
+    metric: a.metric,)
         }
-                deviation: a.deviation))); }
-        }
+                deviation: a.deviation))); 
+    }
 
         // パフォーマンスレベル決定
         assessment.healthScore = Math.max(0, assessment.healthScore);''
-        if(assessment.healthScore >= 90) assessment.performanceLevel = 'excellent';''
-        else if(assessment.healthScore >= 75) assessment.performanceLevel = 'good';''
-        else if(assessment.healthScore >= 60) assessment.performanceLevel = 'fair';''
-        else if(assessment.healthScore >= 40) assessment.performanceLevel = 'poor';''
+        if(assessment.healthScore >= 90) assessment.performanceLevel = 'excellent';
+        else if(assessment.healthScore >= 75) assessment.performanceLevel = 'good';
+        else if(assessment.healthScore >= 60) assessment.performanceLevel = 'fair';
+        else if(assessment.healthScore >= 40) assessment.performanceLevel = 'poor';
         else assessment.performanceLevel = 'critical';
 
         // サマリー生成
@@ -232,7 +232,7 @@ export class DiagnosticAnalyzer {
             return `システムは良好な状態です（スコア: ${score}）。軽微な改善の余地があります。`;''
         } else if (level === 'fair'') {'
             return `システムは普通の状態です（スコア: ${score}）。${issues}件の問題が検出されました。`;''
-        } else if(level === 'poor) {'
+        } else if(level === 'poor' {'
             return `システムに性能問題があります（スコア: ${score}）。${issues}件の重要な問題への対処が必要です。`;
         } else {  }
             return `システムは深刻な状態です（スコア: ${score}）。${issues}件の致命的な問題への緊急対処が必要です。`;
@@ -242,8 +242,8 @@ export class DiagnosticAnalyzer {
      */
     async performQuickDiagnosis(collectedData: CollectedData): Promise<AnalysisResults> { const options: AnalysisOptions = {
             includeBottleneckAnalysis: true;
-            includeAnomalyDetection: true;
-           , includeRootCauseAnalysis: false };
+            includeAnomalyDetection: true,
+    includeRootCauseAnalysis: false };
         return await this.runAnalyses(collectedData, options);
     }
 
@@ -285,13 +285,13 @@ export class DiagnosticAnalyzer {
             this.anomalyDetector.updateBaselines(config.anomalyBaselines); }
         }
 
-        console.log('[DiagnosticAnalyzer] Configuration, updated);
+        console.log('[DiagnosticAnalyzer] Configuration, updated';
     }
 
     /**
      * Cleanup analyzer resources
      */
-    destroy('): void { // Cleanup analysis components if they have destroy methods
+    destroy(): void { // Cleanup analysis components if they have destroy methods
         const components = [this.diagnosticEngine,
             this.bottleneckIdentifier,
             this.issueAnalyzer,
@@ -300,7 +300,7 @@ export class DiagnosticAnalyzer {
         ];
 
         components.forEach(component => { ');''
-            if(component.destroy && typeof, component.destroy === 'function) { }'
+            if(component.destroy && typeof, component.destroy === 'function' { }'
                 component.destroy(); }
 
             }''
@@ -311,20 +311,20 @@ export class DiagnosticAnalyzer {
 }
 
 // 診断エンジン
-class DiagnosticEngine { private processors: Map<string, any>;
+class DiagnosticEngine { private processors: Map<string any>;
     private ruleEngine: DiagnosticRuleEngine;
     constructor() {
 
         this.processors = new Map();
 
-    ,}
+     }
         this.ruleEngine = new DiagnosticRuleEngine(); }
     }
 
     async initialize(): Promise<void> { await this.setupProcessors();
         await this.ruleEngine.initialize(); }
 
-    private async setupProcessors(')';
+    private async setupProcessors()';
         this.processors.set('frame_analysis', new FrameAnalysisProcessor());''
         this.processors.set('memory_analysis', new MemoryAnalysisProcessor());''
         this.processors.set('render_analysis', new RenderAnalysisProcessor());''
@@ -367,15 +367,15 @@ class BottleneckIdentifier { private detectors: Map<string, any>;
         this.detectors.set('computation', new ComputationBottleneckDetector();
     }
 
-    private setupThresholds(''';
-        this.thresholds.set('frame_rate', { critical: 20, // 20fps以下は致命的)
+    private setupThresholds('''
+        this.thresholds.set('frame_rate', { critical: 20, // 20fps以下は致命的'
             high: 40,     // 40fps以下は高優先度')';
-            medium: 55    // 55fps以下は中優先度)'),
+            medium: 55    // 55fps以下は中優先度''),
 
         this.thresholds.set('memory_growth', {
-            critical: 5 * 1024 * 1024, // 5MB/s以上の成長は致命的);
+            critical: 5 * 1024 * 1024, // 5MB/s以上の成長は致命的';
             high: 2 * 1024 * 1024,     // 2MB/s以上は高優先度')';
-            medium: 1 * 1024 * 1024    // 1MB/s以上は中優先度)'),
+            medium: 1 * 1024 * 1024    // 1MB/s以上は中優先度''),
 
         this.thresholds.set('render_time', {
             critical: 50, // 50ms以上は致命的);
@@ -462,10 +462,10 @@ class AnomalyDetector { private detectors: Map<string, any>;
     }
 
     private loadBaselines()';
-        this.baselines.set('frameRate', { mean: 60, stdDev: 5 )),''
-        this.baselines.set('memoryUsage', { mean: 50 * 1024 * 1024, stdDev: 10 * 1024 * 1024 )),''
-        this.baselines.set('renderTime', { mean: 12, stdDev: 3 )),''
-        this.baselines.set('networkLatency', { mean: 50, stdDev: 20 )),''
+        this.baselines.set('frameRate', { mean: 60, stdDev: 5 )',''
+        this.baselines.set('memoryUsage', { mean: 50 * 1024 * 1024, stdDev: 10 * 1024 * 1024 )',''
+        this.baselines.set('renderTime', { mean: 12, stdDev: 3 )',''
+        this.baselines.set('networkLatency', { mean: 50, stdDev: 20 )',''
         this.baselines.set('inputLag', { mean: 15, stdDev: 5 ,}
 
     updateBaselines(newBaselines: Record<string, any>): void { for(const [key, value] of Object.entries(newBaselines) {
@@ -558,25 +558,25 @@ class FrameRateBottleneckDetector { ''
 
             if(sample.frameRate < frameRateThreshold.critical) {'
                 bottlenecks.push({''
-                    type: 'frame_rate',)';
+                    type: 'frame_rate','';
                     severity: 'critical',' }
 
                     component: 'rendering_pipeline'),' }
 
-                    description: `Critical frame rate, drop: ${sample.frameRate.toFixed(1'})fps`;
-                    timestamp: sample.timestamp;
-                   , value: sample.frameRate,
+                    description: `Critical frame rate, drop: ${sample.frameRate.toFixed(1'}'fps`;
+                    timestamp: sample.timestamp,
+    value: sample.frameRate,
                     threshold: frameRateThreshold.critical,
                     impact: 'severe_user_experience_degradation'';
-                });''
+                }';''
             } else if(sample.frameRate < frameRateThreshold.high) { bottlenecks.push({''
-                    type: 'frame_rate',)';
+                    type: 'frame_rate','';
                     severity: 'high',')';
                     component: 'rendering_pipeline'),' }
 
-                    description: `Frame rate below, target: ${sample.frameRate.toFixed(1'})fps`;
-                    timestamp: sample.timestamp;
-                   , value: sample.frameRate,
+                    description: `Frame rate below, target: ${sample.frameRate.toFixed(1'}'fps`;
+                    timestamp: sample.timestamp,
+    value: sample.frameRate,
                     threshold: frameRateThreshold.high,
                     impact: 'noticeable_performance_impact';
                 }),
@@ -595,10 +595,10 @@ class FrameRateBottleneckDetector { ''
                     ...bottleneck,
                     occurrences: 1;
                     firstSeen: bottleneck.timestamp);
-                    lastSeen: bottleneck.timestamp);
-                   , minValue: bottleneck.value, }
-                    maxValue: bottleneck.value); }
-            } else {  const existing = grouped.get(key)!;
+                    lastSeen: bottleneck.timestamp),
+    minValue: bottleneck.value, }
+                    maxValue: bottleneck.value); 
+    } else {  const existing = grouped.get(key)!;
                 existing.occurrences = (existing.occurrences || 0) + 1;
                 existing.lastSeen = bottleneck.timestamp;
                 existing.minValue = Math.min(existing.minValue || bottleneck.value, bottleneck.value); }

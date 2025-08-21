@@ -24,13 +24,13 @@ export interface SearchResult extends SearchDocument { relevanceScore: number,
 
 export interface FieldWeights { title: number,
     content: number;
-    searchKeywords: number;
-   , category: number ,}
+    searchKeywords: number,
+    category: number ,}
 
 export interface SearchStats { totalSearches: number;
     cacheHits: number;
-    averageSearchTime: number;
-   , popularQueries: Map<string, number>, }
+    averageSearchTime: number,
+    popularQueries: Map<string, number>, }
 
 export interface CachedSearchResult { result: SearchResult[],
     timestamp: number ,}
@@ -40,8 +40,8 @@ export interface PerformanceStats { totalSearches: number;
     averageSearchTime: number;
     indexSize: number;
     documentCount: number;
-    cacheSize: number;
-   , popularQueries: [string, number][], }
+    cacheSize: number,
+    popularQueries: [string, number][], }
 
 export interface SearchHistoryData { popularQueries: [string, number][], }
 
@@ -65,11 +65,11 @@ export class SearchEngine {
         this.documentStore = new Map<string, SearchDocument>(); // documentId -> document
         this.fieldWeights = {
             title: 3.0;
-            content: 1.0;
-           , searchKeywords: 2.0;
+            content: 1.0,
+    searchKeywords: 2.0;
     ,}
-            category: 1.5 }
-        };
+            category: 1.5 
+    };
         // パフォーマンス最適化
         this.searchCache = new Map<string, CachedSearchResult>();
         this.cacheTimeout = 5 * 60 * 1000; // 5分
@@ -78,8 +78,8 @@ export class SearchEngine {
         // 検索統計
         this.searchStats = { totalSearches: 0,
             cacheHits: 0;
-            averageSearchTime: 0;
-           , popularQueries: new Map<string, number>( };
+            averageSearchTime: 0,
+    popularQueries: new Map<string, number>( };
         
         // ストップワード（検索対象外の単語）
         this.stopWords = new Set<string>(['の', 'に', 'は', 'を', 'が', 'で', 'と', 'て', 'も', 'から',
@@ -139,13 +139,13 @@ export class SearchEngine {
     indexDocument(document: SearchDocument): void { ''
         if(!document.id) {'
 
-            console.warn('Document, without ID, cannot be, indexed);
+            console.warn('Document, without ID, cannot be indexed';
         }
             return; }
         }
         
         // ドキュメントを保存
-        this.documentStore.set(document.id, document);
+        this.documentStore.set(document.id document');
         
         // 各フィールドを解析してインデックス作成
         for(const [field, weight] of Object.entries(this.fieldWeights') {
@@ -389,7 +389,7 @@ export class SearchEngine {
         const highlights: Record<string, string> = {};
 
         for(const [field, weight] of Object.entries(this.fieldWeights)) { const text = document[field];''
-            if(text && typeof, text === 'string) {'
+            if(text && typeof, text === 'string' {'
                 let highlightedText = text;
 
                 for (const, token of, tokens) {'
@@ -552,8 +552,8 @@ export class SearchEngine {
             this.searchCache.delete(oldestKey); }
         
         this.searchCache.set(key, { )
-            result: result);
-           , timestamp: Date.now( });
+            result: result),
+    timestamp: Date.now( });
     }
     
     /**
@@ -605,9 +605,8 @@ export class SearchEngine {
      */
     private saveSearchHistory(): void { try {
             const data: SearchHistoryData = {''
-                popularQueries: Array.from(this.searchStats.popularQueries.entries() }
-
-            };''
+                popularQueries: Array.from(this.searchStats.popularQueries.entries() 
+    };''
             localStorage.setItem('search_history', JSON.stringify(data);''
         } catch (error) { console.warn('Failed to save search history:', error }
     }
@@ -638,10 +637,10 @@ export class SearchEngine {
             averageSearchTime: Math.round(this.searchStats.averageSearchTime * 100) / 100;
             indexSize: this.textIndex.size;
             documentCount: this.documentStore.size;
-            cacheSize: this.searchCache.size;
-           , popularQueries: Array.from(this.searchStats.popularQueries.entries();
-                .sort((a, b) => b[1] - a[1]) };
-                .slice(0, 10); }
+            cacheSize: this.searchCache.size,
+    popularQueries: Array.from(this.searchStats.popularQueries.entries();
+                .sort((a b) => b[1] - a[1]) };
+                .slice(0 10); }
         }
     
     /**
@@ -649,10 +648,10 @@ export class SearchEngine {
      */
     cleanup(): void { this.textIndex.clear();
         this.documentStore.clear();
-        this.searchCache.clear(');
+        this.searchCache.clear();
         this.searchStats = {
-            totalSearches: 0;
-           , cacheHits: 0,
+            totalSearches: 0,
+    cacheHits: 0,
             averageSearchTime: 0,
             popularQueries: new Map<string, number>(' }''
 }

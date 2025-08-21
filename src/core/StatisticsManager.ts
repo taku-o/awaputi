@@ -52,14 +52,14 @@ interface ApData { amount: number;
     source?: string }
 
 interface ItemData { id: string;
-    name: string;
-   , cost: number }
+    name: string,
+    cost: number }
 
 interface GameEndData { finalScore: number;
     playTime: number;
     completed: boolean;
-    stageId: string;
-   , bubblesPopped: number }
+    stageId: string,
+    bubblesPopped: number }
 
 interface Statistics { totalGamesPlayed: number;
     totalScore: number;
@@ -68,18 +68,18 @@ interface Statistics { totalGamesPlayed: number;
     stagesCompleted: number;
     stagesFailed: number;
     totalBubblesPopped: number;
-    totalBubblesMissed: number;
-   , bubbleTypeStats: Record<string, number>;
-    averageScore: number;
-   , bubbleAccuracy: number ,}
+    totalBubblesMissed: number,
+    bubbleTypeStats: Record<string, number>;
+    averageScore: number,
+    bubbleAccuracy: number ,}
 
 interface SessionStats { bubblesThisSession: number;
     missedThisSession: number;
-    scoreThisSession: number;
-   , startTime: number }
+    scoreThisSession: number,
+    startTime: number }
 
-interface ValidationResult { isValid: boolean;
-   , repaired: Statistics
+interface ValidationResult { isValid: boolean,
+    repaired: Statistics
     }
 
 interface GenerateTestStatisticsOptions { gamesCount?: number;
@@ -174,24 +174,24 @@ export class StatisticsManager {
                 totalPlayTime: 0;
                 highestScore: 0;
                 stagesCompleted: 0;
-                stagesFailed: 0;
-               , totalBubblesPopped: 0, };
+                stagesFailed: 0,
+    totalBubblesPopped: 0, };
                 totalBubblesMissed: 0, }
                 bubbleTypeStats: { normal: 0, fast: 0, large: 0, bonus: 0 ,},
-                averageScore: 0);
-               , bubbleAccuracy: 0;
+                averageScore: 0),
+    bubbleAccuracy: 0;
             }),
             initializeSessionStats: () => ({ bubblesThisSession: 0;
                 missedThisSession: 0;
-                scoreThisSession: 0);
-               , startTime: Date.now( });
+                scoreThisSession: 0),
+    startTime: Date.now( });
             validateStatistics: (stats: Statistics) => ({ isValid: true, repaired: stats ,});
         }
     
     private createStubCalculator(): StatisticsCalculator { return { }
             getDetailedStatistics: () => ({});
             calculateRankings: () => ({}),''
-            getFavoriteStage: (') => 'None';
+            getFavoriteStage: () => 'None';
         },
     }
     
@@ -208,9 +208,8 @@ export class StatisticsManager {
 
     private createStubExporter(): StatisticsExporter { return {' }'
 
-            exportData: (') => '{}
-
-        }
+            exportData: () => '{
+    }
     
     private createStubEventHandler(): StatisticsEventHandler { return { }
             onGameStart: () => {};
@@ -242,7 +241,7 @@ export class StatisticsManager {
 
                 this.analyzer = new StatisticsAnalyzer(this);''
             } catch (error) {
-                console.warn('StatisticsAnalyzer not available, using fallback mode:', error);' }
+                console.warn('StatisticsAnalyzer not available, using fallback mode:', error';' }
 
             } catch (error) { console.error('Error initializing external systems:', error }
     }
@@ -260,7 +259,7 @@ export class StatisticsManager {
 
             }
 
-                this.collector.collectEvent('game_started', { stageId );' }
+                this.collector.collectEvent('game_started', { stageId ';' }
 
             } catch (error) { console.error('Error in onGameStart:', error }
     }
@@ -284,7 +283,7 @@ export class StatisticsManager {
 
             ,}
 
-                this.collector.collectEvent('game_ended', data); }
+                this.collector.collectEvent('game_ended', data'; }
             }
             ';
 
@@ -487,7 +486,7 @@ export class StatisticsManager {
             return this.calculator.getFavoriteStage(this.statistics);' }'
 
         } catch (error) {
-            console.error('Error in getFavoriteStage:', error);''
+            console.error('Error in getFavoriteStage:', error';''
             return 'None';
 
     /**
@@ -507,7 +506,7 @@ export class StatisticsManager {
 
             return favoriteType;''
         } catch (error) {
-            console.error('Error in getFavoriteBubbleType:', error);''
+            console.error('Error in getFavoriteBubbleType:', error';''
             return 'normal';
 
     // ========== データ永続化・インポート・エクスポート ==========
@@ -516,7 +515,7 @@ export class StatisticsManager {
      * 統計データを保存
      */''
     save()';
-            if (typeof, window !== 'undefined' && window.localStorage) { const dataToSave = {
+            if (typeof, window !== 'undefined' && window.localStorage' { const dataToSave = {
                     statistics: this.statistics,
                     sessionStats: this.sessionStats,
                     timestamp: Date.now( ,}
@@ -530,7 +529,7 @@ export class StatisticsManager {
      * 統計データを読み込み'
      */''
     load()';
-            if(typeof, window !== 'undefined' && window.localStorage) {'
+            if(typeof, window !== 'undefined' && window.localStorage' {'
 
                 const savedData = localStorage.getItem('awaputi_statistics);
                 if (savedData) {
@@ -542,10 +541,10 @@ export class StatisticsManager {
                             this.integrateLoadedData(loadedData);' }'
 
                         } catch (parseError) {
-                        console.warn('[StatisticsManager] Failed to parse saved data:', parseError);
+                        console.warn('[StatisticsManager] Failed to parse saved data:', parseError';
 
                         // 破損したデータを削除
-                        localStorage.removeItem('awaputi_statistics); }'
+                        localStorage.removeItem('awaputi_statistics'; }'
 
                 }''
             } catch (error) { console.error('Error loading statistics:', error }
@@ -586,7 +585,7 @@ export class StatisticsManager {
             return this.exporter.exportData(this.statistics, format, options);' }'
 
         } catch (error) {
-            console.error('Error exporting data:', error);''
+            console.error('Error exporting data:', error';''
             return '';
 
     /**

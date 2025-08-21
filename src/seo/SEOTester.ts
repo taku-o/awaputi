@@ -45,15 +45,15 @@
  * Refactored: Phase F.4 - Main Controller Pattern
  */'
 
-import { SEOConfig, getBaseUrl  } from './SEOConfig';''
-import { seoLogger  } from './SEOLogger';''
-import { seoErrorHandler  } from './SEOErrorHandler';''
+import { SEOConfig, getBaseUrl  } from './SEOConfig';
+import { seoLogger  } from './SEOLogger';
+import { seoErrorHandler  } from './SEOErrorHandler';
 import { measurePerformance  } from './SEOUtils';
 ';
 // Import sub-components
-import { MetaTagValidator  } from './testing/MetaTagValidator';''
-import { StructuredDataValidator  } from './testing/StructuredDataValidator';''
-import { PerformanceValidator  } from './testing/PerformanceValidator';''
+import { MetaTagValidator  } from './testing/MetaTagValidator';
+import { StructuredDataValidator  } from './testing/StructuredDataValidator';
+import { PerformanceValidator  } from './testing/PerformanceValidator';
 import { SEOReportGenerator  } from './testing/SEOReportGenerator';
 
 // テストオプションインターフェース
@@ -78,65 +78,65 @@ interface OpenGraphValidationRule extends ValidationRule { required: string[], }
     titleLength: { max: number }
     descriptionLength: { max: number }
 
-interface TwitterCardValidationRule extends ValidationRule { required: string[];
-   , cardTypes: string[], }
+interface TwitterCardValidationRule extends ValidationRule { required: string[],
+    cardTypes: string[], }
     titleLength: { max: number }
     descriptionLength: { max: number }
 
 interface StructuredDataValidationRule extends ValidationRule { required: string[];
-    allowedContexts: string[];
-   , videoGameProperties: string[] }
+    allowedContexts: string[],
+    videoGameProperties: string[] }
 
 interface HreflangValidationRule extends ValidationRule { requiredLanguages: string[];
-    requiresXDefault: boolean;
-   , validLanguageCodes: RegExp
+    requiresXDefault: boolean,
+    validLanguageCodes: RegExp
     }
 
 // パフォーマンスメトリクスインターフェース
 interface PerformanceMetrics { testExecutionTime: number;
     validationErrors: number;
     validationWarnings: number;
-    totalTests: number;
-   , passedTests: number }
+    totalTests: number,
+    passedTests: number }
 
 // テスト結果インターフェース
 interface TestResult { category: string;
     tests?: TestCase[];
     passed: number;
-    failed: number;
-   , warnings: number;
+    failed: number,
+    warnings: number;
     score?: number;
     details?: any; }
 ';
 
 interface TestCase { name: string,''
-    status: 'passed' | 'failed' | 'warning';
-   , message: string;
+    status: 'passed' | 'failed' | 'warning',
+    message: string;
     details?: any ,}
 
 // 集約結果インターフェース
 interface AggregatedTestResults { summary: {
         totalTest;s: number;
         passedTests: number;
-        failedTests: number;
-       , warnings: number };
+        failedTests: number,
+    warnings: number };
     categories: Record<string, TestResult>;
-    overallScore: number;
-   , timestamp: string;
+    overallScore: number,
+    timestamp: string;
     executionTime?: number;
 }
 
 // システム状態インターフェース
 interface SystemStatus { initialized: boolean,
-    baseUrl: string;
-   , components: {''
+    baseUrl: string,
+    components: {''
         metaValidato;r: 'active' | 'inactive',
         structuredDataValidator: 'active' | 'inactive',
         performanceValidator: 'active' | 'inactive',
         reportGenerator: 'active' | 'inactive' ,};
     validationRulesCount: number;
-    performanceMetrics: PerformanceMetrics;
-   , testResultsCount: number;
+    performanceMetrics: PerformanceMetrics,
+    testResultsCount: number;
 }
 
 // システム統計インターフェース
@@ -144,8 +144,8 @@ interface SystemStatistics { totalTestsRun: number,
     totalPassedTests: number;
     averageExecutionTime: number;
     validationRulesConfigured: number;
-    lastTestTimestamp: number | null;
-   , componentsActive: number ,}
+    lastTestTimestamp: number | null,
+    componentsActive: number ,}
 ;
 // レポート形式タイプ
 type ReportFormat = 'json' | 'html' | 'csv';
@@ -168,11 +168,11 @@ export class SEOTester {
         this.performanceMetrics = {
             testExecutionTime: 0;
             validationErrors: 0;
-            validationWarnings: 0;
-           , totalTests: 0;
+            validationWarnings: 0,
+    totalTests: 0;
     ,}
-            passedTests: 0 }
-        };
+            passedTests: 0 
+    };
         // Initialize sub-components (dependency, injection);
         this.metaValidator = new MetaTagValidator(this);
         this.structuredDataValidator = new StructuredDataValidator(this);
@@ -186,32 +186,32 @@ export class SEOTester {
     /**
      * 検証ルールの初期化'
      */''
-    private _initializeValidationRules(''';
+    private _initializeValidationRules('''
         this.validationRules.set('metaTags', { ''
             required: ['title', 'description', 'charset'], })
-            titleLength: { min: 10, max: 60 ,})'
+            titleLength: { min: 10, max: 60 ,}''
             descriptionLength: { min: 50, max: 160 ,},')'
-            keywordsCount: { max: 10 }) as MetaTagValidationRule');
+            keywordsCount: { max: 10 }' as MetaTagValidationRule');
         ';
         // Open Graph検証ルール
         this.validationRules.set('openGraph', { ''
             required: ['og:title', 'og:description', 'og:image', 'og:url', 'og:type], })
-            imageMinSize: { width: 1200, height: 630 ,})'
+            imageMinSize: { width: 1200, height: 630 ,}''
             titleLength: { max: 95 }')'
-            descriptionLength: { max: 297 }) as OpenGraphValidationRule');
+            descriptionLength: { max: 297 }' as OpenGraphValidationRule');
         ';
         // Twitter Card検証ルール
         this.validationRules.set('twitterCard', { ''
             required: ['twitter:card', 'twitter:title', 'twitter:description', 'twitter:image],
-            cardTypes: ['summary', 'summary_large_image', 'app', 'player'], })'
+            cardTypes: ['summary', 'summary_large_image', 'app', 'player'], }''
             titleLength: { max: 70 }')'
-            descriptionLength: { max: 200 }) as TwitterCardValidationRule');
+            descriptionLength: { max: 200 }' as TwitterCardValidationRule');
         ';
         // 構造化データ検証ルール
         this.validationRules.set('structuredData', { ''
-            required: ['@context', '@type', 'name', 'description'],)';
+            required: ['@context', '@type', 'name', 'description'],'';
             allowedContexts: ['https://schema.org', 'http://schema.org],')';
-            videoGameProperties: ['genre', 'gamePlatform', 'operatingSystem', 'applicationCategory]) as StructuredDataValidationRule');
+            videoGameProperties: ['genre', 'gamePlatform', 'operatingSystem', 'applicationCategory]' as StructuredDataValidationRule');
         ';
         // hreflang検証ルール
         this.validationRules.set('hreflang', {)
@@ -393,14 +393,14 @@ export class SEOTester {
     /**
      * システム状態の取得
      */''
-    getStatus(''';
+    getStatus('''
                 metaValidator: this.metaValidator ? 'active' : 'inactive',
                 structuredDataValidator: this.structuredDataValidator ? 'active' : 'inactive',
                 performanceValidator: this.performanceValidator ? 'active' : 'inactive',
                 reportGenerator: this.reportGenerator ? 'active' : 'inactive';
             },
-            validationRulesCount: this.validationRules.size;
-           , performanceMetrics: { ...this.performanceMetrics;
+            validationRulesCount: this.validationRules.size,
+    performanceMetrics: { ...this.performanceMetrics;
             testResultsCount: this.testResults.size);
         })
     
@@ -410,8 +410,8 @@ export class SEOTester {
     getStatistics(): SystemStatistics { return { totalTestsRun: this.performanceMetrics.totalTests,
             totalPassedTests: this.performanceMetrics.passedTests;
             averageExecutionTime: this.performanceMetrics.testExecutionTime;
-            validationRulesConfigured: this.validationRules.size;
-           , lastTestTimestamp: this.testResults.size > 0 ? Date.now() : null, };
+            validationRulesConfigured: this.validationRules.size,
+    lastTestTimestamp: this.testResults.size > 0 ? Date.now() : null, };
             componentsActive: 4 // metaValidator, structuredDataValidator, performanceValidator, reportGenerator }
         }
     
@@ -426,11 +426,11 @@ export class SEOTester {
             summary: {
                 totalTests: 0;
                 passedTests: 0;
-                failedTests: 0;
-               , warnings: 0 };
+                failedTests: 0,
+    warnings: 0 };
             categories: {};
-            overallScore: 0;
-           , timestamp: new Date().toISOString();
+            overallScore: 0,
+    timestamp: new Date().toISOString();
         };
 
         results.forEach((result, index) => {  ''
@@ -438,7 +438,7 @@ export class SEOTester {
                 const categoryResult = result.value;
                 aggregated.categories[categoryResult.category] = categoryResult;
                 
-                aggregated.summary.totalTests += categoryResult.tests? .length || 0;
+                aggregated.summary.totalTests += categoryResult.tests?.length || 0;
                 aggregated.summary.passedTests += categoryResult.passed || 0;
             }
                 aggregated.summary.failedTests += categoryResult.failed || 0; }
@@ -465,7 +465,7 @@ export class SEOTester {
      */ : undefined
     cleanup(): void { ''
         this.testResults.clear()';
-        seoLogger.info('SEOTester, cleaned up); }'
+        seoLogger.info('SEOTester, cleaned up'; }'
     
     /**
      * システムの再初期化

@@ -12,14 +12,14 @@
 // Type definitions
 interface DirtyRegionBounds { x: number,
     y: number;
-    width: number;
-   , height: number ,}
+    width: number,
+    height: number ,}
 
 interface DirtyRegionStats { totalRegions: number;
     mergedRegions: number;
     skippedRedraws: number;
-    pixelsSaved: number;
-   , performanceGain: number }
+    pixelsSaved: number,
+    performanceGain: number }
 
 interface DirtyRegionConfig { enabled: boolean;
     regions: Set<DirtyRegionBounds>;
@@ -30,8 +30,8 @@ interface DirtyRegionConfig { enabled: boolean;
     mergeThreshold: number;
     expansionFactor: number;
     regionHistory: DirtyRegionBounds[][];
-    historySize: number;
-   , hotspots: Map<string, number>;
+    historySize: number,
+    hotspots: Map<string, number>;
     stats: DirtyRegionStats
     ,}
 
@@ -53,8 +53,8 @@ interface ObjectTracking { x: number,
     rotation: number;
     scale: number;
     alpha: number;
-    visible: boolean;
-   , dirty: boolean ,}
+    visible: boolean,
+    dirty: boolean ,}
 
 interface DirtyRegionResult extends DirtyRegionBounds { full?: boolean; }
 
@@ -82,18 +82,18 @@ export class BasicDirtyRegionManager {
             mergeThreshold: 0.3, // Merge regions if overlap > 30%;
             expansionFactor: 1.1, // Expand regions by 10% to reduce edge effects;
             // Region tracking
-            regionHistory: [];
-           , historySize: 30, // 30 frames of history;
+            regionHistory: [],
+    historySize: 30, // 30 frames of history;
             hotspots: new Map(), // Frequently dirty areas;
             // Optimization statistics
             stats: {
                 totalRegions: 0;
                 mergedRegions: 0;
-                skippedRedraws: 0;
-               , pixelsSaved: 0;
+                skippedRedraws: 0,
+    pixelsSaved: 0;
     ,}
-                performanceGain: 0 }
-};
+                performanceGain: 0 
+    };
         // Object tracking for change detection
         this.objectTracking = new Map();
         this.userDirtyRegions = new Set();
@@ -178,10 +178,10 @@ export class BasicDirtyRegionManager {
         if (!tracking) return null;
 
         return { x: tracking.x,
-            y: tracking.y;
-           , width: tracking.width, };
-            height: tracking.height }
-        }
+            y: tracking.y,
+    width: tracking.width, };
+            height: tracking.height 
+    }
 
     /**
      * Calculate object bounds
@@ -189,8 +189,8 @@ export class BasicDirtyRegionManager {
     calculateObjectBounds(obj: TrackedObject): DirtyRegionBounds { const bounds: DirtyRegionBounds = {
             x: obj.x || 0;
             y: obj.y || 0;
-            width: obj.width || 0;
-           , height: obj.height || 0 };
+            width: obj.width || 0,
+    height: obj.height || 0 };
         // Account for rotation and scaling
         if(obj.rotation || (obj.scale !== undefined && obj.scale !== 1) {
             const centerX = bounds.x + bounds.width / 2;
@@ -218,8 +218,8 @@ export class BasicDirtyRegionManager {
         const expanded: DirtyRegionBounds = {
             x: Math.floor(bounds.x - bounds.width * (this.config.expansionFactor - 1) / 2);
             y: Math.floor(bounds.y - bounds.height * (this.config.expansionFactor - 1) / 2);
-            width: Math.ceil(bounds.width * this.config.expansionFactor);
-           , height: Math.ceil(bounds.height * this.config.expansionFactor };
+            width: Math.ceil(bounds.width * this.config.expansionFactor),
+    height: Math.ceil(bounds.height * this.config.expansionFactor };
 
         // Only, add if, region meets, minimum size, requirements
         if (expanded.width >= this.config.minRegionSize || ;
@@ -328,8 +328,8 @@ export class BasicDirtyRegionManager {
             height: obj.height || 0;
             rotation: obj.rotation || 0;
             scale: obj.scale || 1);
-            alpha: obj.alpha !== undefined ? obj.alpha : 1);
-           , visible: obj.visible !== undefined ? obj.visible : true,);
+            alpha: obj.alpha !== undefined ? obj.alpha : 1),
+    visible: obj.visible !== undefined ? obj.visible : true,);
             dirty: obj.dirty || false ,}
 
     /**
@@ -388,6 +388,6 @@ export class BasicDirtyRegionManager {
             totalRegions: 0;
             mergedRegions: 0;
             skippedRedraws: 0;
-            pixelsSaved: 0;
-           , performanceGain: 0 }
-}
+            pixelsSaved: 0,
+    performanceGain: 0 
+    }

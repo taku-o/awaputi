@@ -7,8 +7,8 @@ interface ErrorInfo { id: string,
     timestamp: number;
     severity: string;
     category: string;
-    message: string;
-   , fingerprint: string;
+    message: string,
+    fingerprint: string;
     sessionId?: string;
     context?: {
         componen;t?: string; ,};
@@ -30,8 +30,8 @@ interface CollectionFilters { enabled: boolean,
 
 interface CollectionMetrics { totalCollected: number;
     filtered: number;
-    stored: number;
-   , dropped: number }
+    stored: number,
+    dropped: number }
 
 interface ErrorStatistics { total: number, }
     byCategory: { [category: string]: number }
@@ -42,16 +42,16 @@ interface ErrorStatistics { total: number, }
 }
 
 interface MemoryUsage { estimated: number,
-    errorCount: number;
-   , maxCapacity: number ,}
+    errorCount: number,
+    maxCapacity: number ,}
 
 interface ExportData { errors: ErrorInfo[];
     statistics: ErrorStatistics;
-    filters: CollectionFilters;
-   , exportedAt: number }
+    filters: CollectionFilters,
+    exportedAt: number }
 
 interface ErrorReporter { errorStorage?: {
-        store: (erro;r: ErrorInfo) => void ,}
+        store: (error: ErrorInfo) => void ,}
     }
 
 export class ErrorCollector {
@@ -69,16 +69,16 @@ export class ErrorCollector {
         // 収集フィルター
         this.filters = {
             enabled: true;
-            excludeCategories: new Set();
-           , excludeSeverities: new Set();
+            excludeCategories: new Set(),
+    excludeSeverities: new Set();
     ,}
-            excludePatterns: [] }
-        };
+            excludePatterns: [] 
+    };
         // エラー収集メトリクス
         this.collectionMetrics = { totalCollected: 0,
             filtered: 0;
-            stored: 0;
-           , dropped: 0 ,}
+            stored: 0,
+    dropped: 0 ,}
     
     /**
      * エラーの収集
@@ -203,12 +203,12 @@ export class ErrorCollector {
      * エラーの検索'
      */''
     public searchErrors(query: string): ErrorInfo[] { ''
-        const regex = new RegExp(query, 'i);
+        const regex = new RegExp(query, 'i';
         ';
 
         return this.collectedErrors.filter(error => { );''
             return regex.test(error.message) ||'';
-                   regex.test(error.context? .component || '') ||'';
+                   regex.test(error.context?.component || '') ||'';
                    regex.test(error.category) ||' }'
 
                    regex.test(error.stack || ''); }
@@ -237,8 +237,8 @@ export class ErrorCollector {
             byCategory: Object.fromEntries(this.categoryStats), };
             bySeverity: Object.fromEntries(this.severityStats), }
             metrics: { ...this.collectionMetrics;
-            oldestError: this.collectedErrors[0]? .timestamp, : undefined
-            newestError: this.collectedErrors[this.collectedErrors.length - 1]? .timestamp;
+            oldestError: this.collectedErrors[0]?.timestamp, : undefined
+            newestError: this.collectedErrors[this.collectedErrors.length - 1]?.timestamp;
         ,},
     }
     
@@ -278,8 +278,8 @@ export class ErrorCollector {
         const data: ExportData = {
             errors: this.collectedErrors;
             statistics: this.getStatistics();
-            filters: this.filters;
-           , exportedAt: Date.now( };
+            filters: this.filters,
+    exportedAt: Date.now( };
 
         switch(format) {'
 
@@ -297,7 +297,7 @@ export class ErrorCollector {
     private convertToCSV(errors: ErrorInfo[]): string { ''
         const headers = ['id', 'timestamp', 'severity', 'category', 'message', 'fingerprint'];
         const rows = errors.map(error => [)';
-            error.id);''
+            error.id';''
             new Date(error.timestamp).toISOString()';
             error.message.replace(/"/g, '"")]';
             error.fingerprint']';
@@ -306,12 +306,12 @@ export class ErrorCollector {
 
         const csv = ['';
             headers.join(',''),]';
-            ...rows.map(row => row.map(cell => `"${cell)"`").join(',}}]
+            ...rows.map(row => row.map(cell => `"${cell""`").join(',}}]
         ];
 
         ' }'
 
-        return csv.join('\n'});
+        return csv.join('\n'}';
     }
     
     /**
@@ -321,6 +321,6 @@ export class ErrorCollector {
         const avgErrorSize = 1024; // 1KB per error (estimated);
         return { estimated: this.collectedErrors.length * avgErrorSize,
             errorCount: this.collectedErrors.length, };
-            maxCapacity: this.maxStorageSize }
-        }''
+            maxCapacity: this.maxStorageSize 
+    }''
 }

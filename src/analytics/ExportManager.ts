@@ -41,11 +41,11 @@ export class ExportManager {"
         this.config = {""
             defaultFormat: 'json';
             includeMetadata: true;
-            anonymizeData: true;
-           , maxExportSize: 50 * 1024 * 1024, // 50MB
+            anonymizeData: true,
+    maxExportSize: 50 * 1024 * 1024, // 50MB
     }
-            compressionThreshold: 1024 * 1024 // 1MB }
-        };
+            compressionThreshold: 1024 * 1024 // 1MB 
+    };
         // サポートされるデータタイプ
         this.supportedDataTypes = new Set(['';
             'sessionData',
@@ -61,8 +61,8 @@ export class ExportManager {"
         this.exportStats = { totalExports: 0,
             successfulExports: 0;
             failedExports: 0;
-            averageExportSize: 0;
-           , lastExportTime: null ,};
+            averageExportSize: 0,
+    lastExportTime: null ,};
         this.initialize();
     }
     
@@ -72,7 +72,7 @@ export class ExportManager {"
     initialize()';
             console.log('Analytics, ExportManager initialized');''
         } catch (error) {
-            console.error('ExportManager initialization error:', error);
+            console.error('ExportManager initialization error:', error';
             throw error; }
     }
     
@@ -87,12 +87,12 @@ export class ExportManager {"
      * @returns {Promise<Object>} エクスポート結果
      */'
     async exportData(options: any = { ) {''
-        const startTime = performance.now(''';
-                dataTypes: 'all';
-               , format: this.config.defaultFormat, }
+        const startTime = performance.now('''
+                dataTypes: 'all',
+    format: this.config.defaultFormat, }
                 filters: {};
-                includeMetadata: this.config.includeMetadata);
-               , anonymize: this.config.anonymizeData);
+                includeMetadata: this.config.includeMetadata),
+    anonymize: this.config.anonymizeData);
                 ...options;
             
             // データタイプの検証)
@@ -115,8 +115,8 @@ export class ExportManager {"
                 version: '1.0.0';
                 timestamp: new Date().toISOString();
                 format: exportOptions.format;
-                metadata: exportOptions.includeMetadata ? metadata : null;
-               , data: convertedData };
+                metadata: exportOptions.includeMetadata ? metadata : null,
+    data: convertedData };
             // サイズチェック
             const dataSize = this.calculateDataSize(exportData);
             if(dataSize > this.config.maxExportSize) {
@@ -139,8 +139,8 @@ export class ExportManager {"
             
             return { success: true,
                 data: exportData;
-                format: exportOptions.format;
-               , size: dataSize;
+                format: exportOptions.format,
+    size: dataSize;
                 duration,
                 filename: this.generateFilename(exportOptions.dataTypes, exportOptions.format), };
                 metadata }
@@ -215,7 +215,7 @@ export class ExportManager {"
 
                     throw new Error(`Unsupported, format: ${format}`});''
             } catch (error) {
-            console.error('Data format conversion error:', error);
+            console.error('Data format conversion error:', error';
             throw error; }
     }
     
@@ -250,12 +250,12 @@ export class ExportManager {"
 
                     // CSVエスケープ処理');' }
 
-                    if (typeof value === 'string' && (value.includes(','') || value.includes('"'') || value.includes('\n)) {' }
+                    if (typeof value === 'string' && (value.includes(','') || value.includes('"'') || value.includes('\n)' {' }
 
-                        return `"${value.replace(/"/g, '""''})"`;
+                        return `"${value.replace(/"/g, '""''}'"`;
                     }"
 
-                    return value ? ? '';''
+                    return value ? ? '';
                 }');
 
                 csvContent += values.join(','') + '\n';
@@ -272,7 +272,7 @@ export class ExportManager {"
      */''
     convertToXML(data) {'
 
-        let xmlContent = '<?xml version="1.0" encoding="UTF-8"?>\n';''
+        let xmlContent = '<?xml version="1.0" encoding="UTF-8"?>\n';
         xmlContent += '<analyticsData>\n';
         
     }
@@ -289,16 +289,16 @@ export class ExportManager {"
             
             }
 
-                        const escapedValue = this.escapeXML(String(value ?? '')); }
+                        const escapedValue = this.escapeXML(String(value ?? '')'; }
                         xmlContent += `      <${key}>${escapedValue}</${key}>\n`;
                     }
 
                     xmlContent += '    </record>\n';
 
                 }''
-            } else if(typeof, records === 'object) { ''
+            } else if(typeof, records === 'object' { ''
                 for(const [key, value] of Object.entries(records)) {''
-                    const escapedValue = this.escapeXML(String(value ?? '')); }
+                    const escapedValue = this.escapeXML(String(value ?? '')'; }
                     xmlContent += `    <${key}>${escapedValue}</${key}>\n`;
                 }
             }
@@ -319,9 +319,9 @@ export class ExportManager {"
 
         return str.replace(/[<>&'"]/g, (match) => { ""
             switch (match") { : undefined""
-                case '<': return '&lt';';''
-                case '>': return '&gt';';''
-                case '&': return '&amp';';''
+                case '<': return '&lt';';
+                case '>': return '&gt';';
+                case '&': return '&amp';';
                 case '"': return '&quot';';
 
     }
@@ -344,21 +344,21 @@ export class ExportManager {"
 
         return { ' }'
 
-            exportId: `export_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9'})`,''
+            exportId: `export_${Date.now())_${Math.random().toString(36).substr(2, 9'}'`,''
             exportedBy: 'AnalyticsExportManager';
             dataTypes: Object.keys(data);
             format: options.format;
-            filters: options.filters;
-           , anonymized: options.anonymize;
+            filters: options.filters,
+    anonymized: options.anonymize;
             dataSize,
             recordCounts,
             totalRecords: Object.values(recordCounts).reduce((sum, count) => sum + count, 0),
-            exportTime: new Date().toISOString(''';
+            exportTime: new Date().toISOString('''
             gameVersion: window.GAME_VERSION || '1.0.0';
             userAgent: navigator.userAgent;
-            platform: navigator.platform;
-           , language: navigator.language);
-        })
+            platform: navigator.platform,
+    language: navigator.language);
+        }'
     
     /**
      * データタイプの正規化
@@ -367,12 +367,12 @@ export class ExportManager {"
      */')'
     normalizeDataTypes(dataTypes) {'
 
-        if(dataTypes === 'all) {'
+        if(dataTypes === 'all' {'
     }
 
             return Array.from(this.supportedDataTypes);
 
-        if(typeof, dataTypes === 'string) { return [dataTypes]; }'
+        if(typeof, dataTypes === 'string' { return [dataTypes]; }'
 
         if(Array.isArray(dataTypes)) { return dataTypes; }
 
@@ -436,7 +436,7 @@ export class ExportManager {"
         let filteredData = [...data];
         ';
         // カスタムフィルター関数の適用
-        if(filters.customFilter && typeof, filters.customFilter === 'function) {'
+        if(filters.customFilter && typeof, filters.customFilter === 'function' {'
     }
             filteredData = filteredData.filter(filters.customFilter); }
         }
@@ -497,9 +497,9 @@ export class ExportManager {"
             csv: 'csv';
     ,}
 
-            xml: 'xml' }
-        };
-        return extensions[format.toLowerCase(')] || 'dat';
+            xml: 'xml' 
+    };
+        return extensions[format.toLowerCase()] || 'dat';
     }
     
     /**
@@ -528,9 +528,9 @@ export class ExportManager {"
     getExportStats() {
         return { ...this.exportStats,
     }
-            successRate: this.exportStats.totalExports > 0 ?   : undefined };
-                Math.round((this.exportStats.successfulExports / this.exportStats.totalExports) * 100) : 0 }
-        },
+            successRate: this.exportStats.totalExports > 0 ? undefined : undefined };
+                Math.round((this.exportStats.successfulExports / this.exportStats.totalExports) * 100) : 0 
+    },
     }
     
     /**

@@ -11,28 +11,28 @@ import { ErrorHandler  } from '../utils/ErrorHandler.js';
 interface CacheOptions { maxSize?: number;
     ttl?: number;
     cleanupInterval?: number;
-    priorityFunction?: (entr;y: CacheEntry) => number ,}
+    priorityFunction?: (entry: CacheEntry) => number ,}
 }
 
 interface CacheEntry { value: any;
     expiresAt: number;
     priority: number;
-    createdAt: number;
-   , accessCount: number }
+    createdAt: number,
+    accessCount: number }
 
 interface CacheStats { hits: number;
     misses: number;
     evictions: number;
     expirations: number;
-    size: number;
-   , totalRequests: number;
+    size: number,
+    totalRequests: number;
     hitRate?: string;
     memoryUsage?: string; }
 
 interface CacheConfig { maxSize: number,
     ttl: number;
-    cleanupInterval: number;
-   , priorityFunction: (entr;y: CacheEntry) => number ,}
+    cleanupInterval: number,
+    priorityFunction: (entry: CacheEntry) => number ,}
 }
 
 interface SetOptions { ttl?: number;
@@ -48,41 +48,41 @@ interface MemoryLeak { type: string,
 interface LeakDetectionResult { potentialLeaks: MemoryLeak[];
     recommendations: string[];
     memoryUsage: string;
-    cacheSize: number;
-   , accessHistorySize: number }
+    cacheSize: number,
+    accessHistorySize: number }
 
 interface MemoryStats { cacheSize: number;
-    memoryUsage: string;
-   , accessHistorySize: number }
+    memoryUsage: string,
+    accessHistorySize: number }
 
 interface MemoryFixResult { before: MemoryStats;
     after: MemoryStats;
     expiredEntriesRemoved: number;
-    memoryFreed: string;
-   , success: boolean }
+    memoryFreed: string,
+    success: boolean }
 
-interface EntryWithSize { key: string;
-   , size: number }
+interface EntryWithSize { key: string,
+    size: number }
 
-interface EntryWithPriority { key: string;
-   , priority: number }
+interface EntryWithPriority { key: string,
+    priority: number }
 
 interface MemoryOverview { totalMemoryUsage: string;
     cacheSize: number;
-    accessHistorySize: number;
-   , averageEntrySize: string }
+    accessHistorySize: number,
+    averageEntrySize: string }
 
 interface MemoryBreakdown { cacheEntries: string;
-    accessHistory: string;
-   , metadata: string }
+    accessHistory: string,
+    metadata: string }
 
-interface LargestEntry { key: string;
-   , size: string }
+interface LargestEntry { key: string,
+    size: string }
 
 interface MemoryReport { overview: MemoryOverview;
     breakdown: MemoryBreakdown;
-    topLargestEntries: LargestEntry[];
-   , recommendations: string[] }
+    topLargestEntries: LargestEntry[],
+    recommendations: string[] }
 
 class CacheSystem { private cache: Map<string, CacheEntry>;
     private config: CacheConfig;
@@ -98,19 +98,19 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
         
         // キャッシュ設定
         this.config = {
-            maxSize: options.maxSize || 1000;
-           , ttl: options.ttl || 60000, // デフォルト有効期限: 60秒;
+            maxSize: options.maxSize || 1000,
+    ttl: options.ttl || 60000, // デフォルト有効期限: 60秒;
             cleanupInterval: options.cleanupInterval || 300000, // デフォルトクリーンアップ間隔: 5分
     }
-            priorityFunction: options.priorityFunction || this._defaultPriorityFunction }
-        };
+            priorityFunction: options.priorityFunction || this._defaultPriorityFunction 
+    };
         // キャッシュ統計
         this.stats = { hits: 0,
             misses: 0;
             evictions: 0;
             expirations: 0;
-            size: 0;
-           , totalRequests: 0 ,};
+            size: 0,
+    totalRequests: 0 ,};
         // アクセス履歴（LRU用）
         this.accessHistory = new Map();
         
@@ -144,8 +144,8 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
             const entry: CacheEntry = { value,
                 expiresAt,
                 priority,
-                createdAt: Date.now(;
-               , accessCount: 0 ,}))
+                createdAt: Date.now(,
+    accessCount: 0 ,}))
             // キャッシュに保存)
             this.cache.set(key, entry);
             
@@ -446,7 +446,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
 
             if (type === 'number'') { return 8; }
 
-            if(type === 'string) { return obj.length * 2 + 4; // 文字列は約2バイト/文字 + 長さ }'
+            if(type === 'string' { return obj.length * 2 + 4; // 文字列は約2バイト/文字 + 長さ }'
             
             if(Array.isArray(obj) {
             
@@ -468,7 +468,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
                 return size;
             }
 
-            if(type === 'object) {'
+            if(type === 'object' {'
                 let size = 32; // オブジェクトオーバーヘッド
                 
                 // 最初の10プロパティのみ計算（パフォーマンス対策）
@@ -684,8 +684,8 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
             potentialLeaks: [];
             recommendations: [];
             memoryUsage: this._estimateMemoryUsage(;
-            cacheSize: this.cache.size;
-           , accessHistorySize: this.accessHistory.size }))
+            cacheSize: this.cache.size,
+    accessHistorySize: this.accessHistory.size }))
         );
         const now = Date.now();
         
@@ -705,13 +705,13 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
         if(staleCount > this.cache.size * 0.3) {
             // 30%以上が古い場合
             results.potentialLeaks.push({)'
-                type: 'stale_entries')';
-               , count: staleCount,')';
+                type: 'stale_entries')',
+    count: staleCount,')';
                 description: '長期間アクセスされていないエントリが多数存在')');
 
         ,}
 
-            results.recommendations.push('古いエントリのクリーンアップを実行してください); }'
+            results.recommendations.push('古いエントリのクリーンアップを実行してください'; }'
         }
         
         // 2. アクセス履歴とキャッシュの不整合を検出
@@ -724,8 +724,8 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
 
         if(orphanedHistory.length > 0) {'
             results.potentialLeaks.push({)'
-                type: 'orphaned_history')';
-               , count: orphanedHistory.length,')';
+                type: 'orphaned_history')',
+    count: orphanedHistory.length,')';
                 description: 'キャッシュに存在しないアクセス履歴')');''
             results.recommendations.push('アクセス履歴の整合性チェックを実行してください);
             
@@ -739,13 +739,13 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
         if(memoryKB > 10000) {
             // 10MB以上
             results.potentialLeaks.push({)'
-                type: 'high_memory_usage')';
-               , usage: results.memoryUsage,')';
+                type: 'high_memory_usage')',
+    usage: results.memoryUsage,')';
                 description: 'メモリ使用量が異常に高い')');
 
         ,}
 
-            results.recommendations.push('キャッシュサイズの制限を見直してください); }'
+            results.recommendations.push('キャッシュサイズの制限を見直してください'; }'
         }
         ';
         // 4. キャッシュサイズの異常を検出
@@ -753,13 +753,13 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
             // 制限の110%以上
             results.potentialLeaks.push({''
                 type: 'cache_size_overflow);
-                currentSize: this.cache.size)';
-               , maxSize: this.config.maxSize,')';
+                currentSize: this.cache.size'',
+    maxSize: this.config.maxSize,')';
                 description: 'キャッシュサイズが制限を超過')');
 
         ,}
 
-            results.recommendations.push('キャッシュの強制クリーンアップを実行してください); }'
+            results.recommendations.push('キャッシュの強制クリーンアップを実行してください'; }'
         }
         
         return results;
@@ -770,8 +770,8 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
      */
     fixMemoryLeaks(): MemoryFixResult { const beforeStats: MemoryStats = {
             cacheSize: this.cache.size;
-            memoryUsage: this._estimateMemoryUsage(;
-           , accessHistorySize: this.accessHistory.size }))
+            memoryUsage: this._estimateMemoryUsage(,
+    accessHistorySize: this.accessHistory.size }))
         // 1. 期限切れエントリの削除)
         const expiredCount = this._cleanupExpiredEntries();
         
@@ -789,8 +789,8 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
         }
         
         const afterStats: MemoryStats = { cacheSize: this.cache.size,
-            memoryUsage: this._estimateMemoryUsage(;
-           , accessHistorySize: this.accessHistory.size ,}
+            memoryUsage: this._estimateMemoryUsage(,
+    accessHistorySize: this.accessHistory.size ,}
         );
         return { before: beforeStats)
            , after: afterStats, };
@@ -853,17 +853,17 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
             overview: {
                 totalMemoryUsage: this._estimateMemoryUsage(;
                 cacheSize: this.cache.size);
-                accessHistorySize: this.accessHistory.size);
-               , averageEntrySize: this.cache.size > 0 ? ' }'
+                accessHistorySize: this.accessHistory.size),
+    averageEntrySize: this.cache.size > 0 ? ' }'
 
-                    `${Math.round(parseInt(this._estimateMemoryUsage(} / this.cache.size'}) KB` : '0 KB'
+                    `${Math.round(parseInt(this._estimateMemoryUsage(} / this.cache.size'}' KB` : '0 KB'
             };
             breakdown: { ''
                 cacheEntries: '0 KB',
                 accessHistory: '0 KB',
                 metadata: '0 KB' ,};
-            topLargestEntries: [];
-           , recommendations: [];
+            topLargestEntries: [],
+    recommendations: [];
         },
         
         // エントリサイズの分析
@@ -896,14 +896,14 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
 
         }
 
-            report.recommendations.push('メモリ使用量が高いため、キャッシュサイズの削減を検討してください); }'
+            report.recommendations.push('メモリ使用量が高いため、キャッシュサイズの削減を検討してください'; }'
         }
 
         if(this.cache.size > this.config.maxSize * 0.8) {', ';
 
         }
 
-            report.recommendations.push('キャッシュサイズが上限に近づいています); }'
+            report.recommendations.push('キャッシュサイズが上限に近づいています'; }'
         }
         
         const hitRate = this.stats.totalRequests > 0 ? ';
@@ -913,7 +913,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>;
 
         }
 
-            report.recommendations.push('キャッシュヒット率が低いため、キャッシュ戦略の見直しを検討してください); }'
+            report.recommendations.push('キャッシュヒット率が低いため、キャッシュ戦略の見直しを検討してください'; }'
         }
         
         return report;

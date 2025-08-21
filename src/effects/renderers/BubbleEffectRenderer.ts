@@ -5,8 +5,8 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
  */
 interface BubbleEffectConfig { baseParticleCount: number,
     colors: string[];
-    specialEffects: string[];
-   , priority: number ,}
+    specialEffects: string[],
+    priority: number ,}
 
 /**
  * Bubble effect configs map interface
@@ -35,8 +35,8 @@ interface Particle { x: number,
     alpha: number;
     gravity: number;
     friction: number;
-    bounce?: number;
-   , type: string;
+    bounce?: number,
+    type: string;
     rotation?: number;
     rotationSpeed?: number;
     scale?: number;
@@ -82,8 +82,8 @@ export class BubbleEffectRenderer {
                 colors: ['#4A90E2', '#7ED321', '#50E3C2', '#A8E6CF', '#C7CEEA],
                 specialEffects: ['sparkle', 'ripple'],
     }
-                priority: 5 }
-            };
+                priority: 5 
+    };
             stone: { baseParticleCount: 20,''
                 colors: ['#8E8E93', '#C7C7CC', '#EFEFF4', '#D3D3D3],
                 specialEffects: ['debris', 'dust'],
@@ -137,14 +137,14 @@ export class BubbleEffectRenderer {
             
             // 特殊効果の追加
             config.specialEffects.forEach(effectType => {  ); }
-                this.createSpecialBubbleEffect(x, y, effectType, bubbleSize, config); }
-            });
+                this.createSpecialBubbleEffect(x, y, effectType bubbleSize config); }
+            }');
             
             // バブルタイプ別の個別処理
             this.createTypeSpecificEffect(x, y, bubbleType, bubbleSize, options');
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'BUBBLE_EFFECT_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'BUBBLE_EFFECT_ERROR', {''
                 context: 'BubbleEffectRenderer.createAdvancedBubbleEffect' ,});
         }
     }
@@ -220,14 +220,14 @@ export class BubbleEffectRenderer {
         if(qualitySettings.complexityLevel >= 3) {
         ;
             // 高品質: 多様なタイプを使用
-            if(ratio < 0.3) return 'glow_circle';''
-            if(ratio < 0.6) return 'advanced_circle';''
+            if(ratio < 0.3) return 'glow_circle';
+            if(ratio < 0.6) return 'advanced_circle';
             if(ratio < 0.8) return 'trail_particle';
 
         }
 
             return 'star'; else if (qualitySettings.complexityLevel >= 2) { // 中品質: 基本的な拡張タイプ
-            if(ratio < 0.5) return 'advanced_circle';''
+            if(ratio < 0.5) return 'advanced_circle';
             return 'circle'; else {  // 低品質: 基本タイプのみ' }
 
             return 'circle';
@@ -465,7 +465,7 @@ export class BubbleEffectRenderer {
             particle.vx = Math.cos(angle) * 150;
             particle.vy = Math.sin(angle) * 150;
             particle.size = 2;''
-            particle.color = Math.random(') > 0.5 ? '#FFFF00' : '#00FFFF';''
+            particle.color = Math.random() > 0.5 ? '#FFFF00' : '#00FFFF';
             particle.life = 300 + Math.random(''';
             particle.type = 'lightning';
             particle.maxTrailLength = 8;
@@ -637,7 +637,7 @@ export class BubbleEffectRenderer {
             particle.size = 2 + Math.random() * 2;
             particle.color = config.colors[Math.floor(Math.random() * config.colors.length)];''
             particle.life = 600 + Math.random(''';
-            particle.type = 'circle';)', ');
+            particle.type = 'circle';'', ');
 
         }
 

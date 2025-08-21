@@ -115,7 +115,7 @@ export class ScaledRenderingContext {
      * @param baseFontSize - ベースフォントサイズ
      * @param fontFamily - フォントファミリー'
      */''
-    setScaledFont(baseFontSize: number, fontFamily: string = 'Arial): void { try {'
+    setScaledFont(baseFontSize: number, fontFamily: string = 'Arial': void { try {'
             const scaleFactor = this.scaledCoordinateManager.getScaleFactor();
             const scaledFontSize = baseFontSize * scaleFactor;
             
@@ -159,8 +159,8 @@ export class ScaledRenderingContext {
             
             // 追加の状態情報を保存
             this.stateStack.push({);
-                timestamp: Date.now();
-               , scaleFactor: this.scaledCoordinateManager.getScaleFactor( });''
+                timestamp: Date.now(),
+    scaleFactor: this.scaledCoordinateManager.getScaleFactor( });''
         } catch (error) { console.warn('ScaledRenderingContext: save failed', error }
     }
     

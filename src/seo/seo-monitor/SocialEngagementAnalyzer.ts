@@ -8,8 +8,8 @@ interface SEOConfig { [key: string]: any, }
 
 interface SocialEngagementData { timestamp: number,
     platforms: Record<string, number>;
-    totalShares: number;
-   , engagementRate: number;
+    totalShares: number,
+    engagementRate: number;
     ogTags?: Record<string, string>;
     twitterCard?: Record<string, string>; }
 
@@ -17,8 +17,8 @@ interface MonitoringData { socialEngagement: SocialEngagementData[]
     }
 
 interface SocialEngagementTrend { timestamp: number,
-    totalShares: number;
-   , engagementRate: number ,}
+    totalShares: number,
+    engagementRate: number ,}
 
 export class SocialEngagementAnalyzer {
     private config: SEOConfig;
@@ -38,8 +38,8 @@ export class SocialEngagementAnalyzer {
             const socialData: SocialEngagementData = {
                 timestamp: Date.now( }
                 platforms: {};
-                totalShares: 0;
-               , engagementRate: 0;
+                totalShares: 0,
+    engagementRate: 0;
             },
 
             // ソーシャルメディアボタンのクリックトラッキング
@@ -58,7 +58,7 @@ export class SocialEngagementAnalyzer {
 
             return socialData;
 
-        } catch (error) { console.error('Failed to analyze social engagement', error);
+        } catch (error) { console.error('Failed to analyze social engagement', error';
             return null;
     
     /**
@@ -75,7 +75,7 @@ export class SocialEngagementAnalyzer {
 
         platforms.forEach(platform => { ');' }
 
-            const buttons = document.querySelectorAll(`[data-share="${platform}"], .share-${ platform)`);""
+            const buttons = document.querySelectorAll(`[data-share="${platform}"], .share-${ platform)`";""
             buttons.forEach(button => { ");""
                 if(!button.hasAttribute('data-tracked}} {' }
 
@@ -88,7 +88,7 @@ export class SocialEngagementAnalyzer {
                     button.setAttribute('data-tracked', 'true);
                 }
             });
-        });
+        }';
     }
     
     /**
@@ -97,7 +97,7 @@ export class SocialEngagementAnalyzer {
     private analyzeOGTags()';
         if(typeof, document !== 'undefined'') {'
 
-            const ogMetas = document.querySelectorAll('meta[property^="og: "]),
+            const ogMetas = document.querySelectorAll('meta[property^="og: "]",
             ogMetas.forEach(meta => { ');''
                 const property = meta.getAttribute('property'');''
                 const content = meta.getAttribute('content);
@@ -117,7 +117,7 @@ export class SocialEngagementAnalyzer {
     private analyzeTwitterCard()';
         if(typeof, document !== 'undefined'') {'
 
-            const twitterMetas = document.querySelectorAll('meta[name^="twitter: "]),
+            const twitterMetas = document.querySelectorAll('meta[name^="twitter: "]",
             twitterMetas.forEach(meta => { ');''
                 const name = meta.getAttribute('name'');''
                 const content = meta.getAttribute('content);
@@ -155,9 +155,9 @@ export class SocialEngagementAnalyzer {
      * エンゲージメントトレンドの取得
      */
     getSocialEngagementTrend(): SocialEngagementTrend[] { return this.monitoringData.socialEngagement.map(data => ({)
-            timestamp: data.timestamp)';
-           , totalShares: data.totalShares,')';
-            engagementRate: data.engagementRate))') ,}'
+            timestamp: data.timestamp)',
+    totalShares: data.totalShares,')';
+            engagementRate: data.engagementRate)'') ,}'
 
     }''
 }

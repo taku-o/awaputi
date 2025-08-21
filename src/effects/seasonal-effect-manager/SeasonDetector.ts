@@ -10,18 +10,18 @@ export type Season = 'spring' | 'summer' | 'autumn' | 'winter';
 // イベントテーマの型定義
 export interface EventTheme { name: string,
     duration: {
-        star;t: string, // MM-DD形式;
+        start: string, // MM-DD形式;
         end: string,   // MM-DD形式 },
     colors: { primary: string[];
-        secondary: string[];
-       , accent: string[] };
+        secondary: string[],
+    accent: string[] };
     particles: { types: string[];
         density: number;
-        movement: string;
-       , spawnRate: number };
+        movement: string,
+    spawnRate: number };
     effects: { bubbleDestruction: string;
-        comboEffect: string;
-       , backgroundPattern: string }
+        comboEffect: string,
+    backgroundPattern: string }
 
 export interface EventThemes { [eventName: string]: EventTheme,
     }
@@ -30,15 +30,15 @@ export interface SeasonalSummary { currentSeason: Season,
     currentEvent: string | null;
     activeEvents: string[];
     daysUntilNextSeason: number;
-    lastCheck: Date;
-   , nextCheck: Date
+    lastCheck: Date,
+    nextCheck: Date
     ,}
 
 export interface DetectorStatus { currentSeason: Season;
     currentEvent: string | null;
     lastCheck: number;
-    checkInterval: number;
-   , isCheckRequired: boolean }
+    checkInterval: number,
+    isCheckRequired: boolean }
 
 export interface DetectorSettings { seasonCheckInterval?: number; }
 
@@ -84,7 +84,7 @@ export class SeasonDetector {
      */'
     getActiveEvent(eventThemes: EventThemes): string | null { const now = new Date();' }'
 
-        const currentDate = `${String(now.getMonth(} + 1'}.padStart(2, '0'})-${ String(now.getDate( }.padStart(2, '0'})`;
+        const currentDate = `${String(now.getMonth(} + 1'}.padStart(2, '0'}'-${ String(now.getDate( }.padStart(2, '0'})`;
         
         for(const [eventName, event] of Object.entries(eventThemes) {
         
@@ -140,7 +140,7 @@ export class SeasonDetector {
      */''
     isDateInEventPeriod(eventDuration: EventTheme['duration'], date: Date = new Date(): boolean { ' }
 
-        const currentDate = `${String(date.getMonth(} + 1'}.padStart(2, '0'})-${ String(date.getDate( }.padStart(2, '0'})`;
+        const currentDate = `${String(date.getMonth(} + 1'}.padStart(2, '0'}'-${ String(date.getDate( }.padStart(2, '0'})`;
         return this._isDateInRange(currentDate, eventDuration.start, eventDuration.end);
     }
     
@@ -179,7 +179,7 @@ export class SeasonDetector {
      */
     getAllActiveEvents(eventThemes: EventThemes): string[] { const now = new Date();' }'
 
-        const currentDate = `${String(now.getMonth(} + 1'}.padStart(2, '0'})-${ String(now.getDate( }.padStart(2, '0'})`;
+        const currentDate = `${String(now.getMonth(} + 1'}.padStart(2, '0'}'-${ String(now.getDate( }.padStart(2, '0'})`;
         
         return Object.entries(eventThemes);
             .filter(([_, event]) => this._isDateInRange(currentDate, event.duration.start, event.duration.end);
@@ -197,10 +197,10 @@ export class SeasonDetector {
         return { currentSeason: this.currentSeason,
             currentEvent: this.currentEvent;
             activeEvents: activeEvents;
-            daysUntilNextSeason: daysUntilNext;
-           , lastCheck: new Date(this.lastSeasonCheck), };
-            nextCheck: new Date(this.lastSeasonCheck + this.seasonCheckInterval); }
-        }
+            daysUntilNextSeason: daysUntilNext,
+    lastCheck: new Date(this.lastSeasonCheck), };
+            nextCheck: new Date(this.lastSeasonCheck + this.seasonCheckInterval); 
+    }
     
     /**
      * 日付が指定範囲内かを判定
@@ -232,7 +232,7 @@ export class SeasonDetector {
      */
     getDetectorStatus(): DetectorStatus { return { currentSeason: this.currentSeason,
             currentEvent: this.currentEvent;
-            lastCheck: this.lastSeasonCheck;
-           , checkInterval: this.seasonCheckInterval,' };
+            lastCheck: this.lastSeasonCheck,
+    checkInterval: this.seasonCheckInterval,' };
 
-            isCheckRequired: this.shouldCheckSeason(') }')
+            isCheckRequired: this.shouldCheckSeason() }')

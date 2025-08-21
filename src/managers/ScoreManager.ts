@@ -140,7 +140,7 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
      */
     notifyScoreGained(score: number, x: number, y: number, multiplier: number): void { // GameSceneのonScoreGainedメソッドを呼び出し
         const gameScene = this.gameEngine.sceneManager.getCurrentScene()';
-        if(gameScene && typeof, gameScene.onScoreGained === 'function) {'
+        if(gameScene && typeof, gameScene.onScoreGained === 'function' {'
             
         }
             gameScene.onScoreGained(score, x, y, multiplier); }
@@ -174,7 +174,7 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
     notifyComboBonus(bonusScore: number, x: number, y: number, _combo: number): void { const gameScene = this.gameEngine.sceneManager.getCurrentScene();
         if(gameScene && gameScene.floatingTextManager) {
             gameScene.floatingTextManager.addEffectText()';
-                x, y - 50)'';
+                x, y - 50''';
                 `COMBO BONUS! +${bonusScore'}`,
 
         }
@@ -263,10 +263,10 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
     getDebugInfo(): ScoreDebugInfo { return { combo: this.combo,
             comboMultiplier: this.getComboMultiplier();
             itemMultiplier: this.getItemScoreMultiplier();
-            specialMultiplier: this.gameEngine.getScoreMultiplier();
-           , totalMultiplier: this.getTotalMultiplier(), };
-            comboTimer: this.comboTimer }
-        }
+            specialMultiplier: this.gameEngine.getScoreMultiplier(),
+    totalMultiplier: this.getTotalMultiplier(), };
+            comboTimer: this.comboTimer 
+    }
 
     // =======================
     // EventStageManager対応メソッド（要件7: 未実装メソッド実装）
@@ -280,6 +280,6 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
 
         } else { }'
 
-            console.warn('[ScoreManager] setGlobalScoreMultiplier: gameEngineまたはメソッドが存在しません''); }
-}''
+            console.warn('[ScoreManager] setGlobalScoreMultiplier: gameEngineまたはメソッドが存在しません''); 
+    }''
 }

@@ -7,19 +7,19 @@
 interface DataPoint { x: number,
     y: number ,}
 
-interface AnalysisDataPoint { timestamp: number;
-   , metrics: Map<string, any> }
+interface AnalysisDataPoint { timestamp: number,
+    metrics: Map<string, any> }
 
 interface StatisticalProcessor { metrics?: string[];
     metricPairs?: [string, string][];
     method?: string;
-    calculate: (dat;a: AnalysisDataPoint[]) => any ,}
+    calculate: (data: AnalysisDataPoint[]) => any ,}
 }
 
 interface TrendData { trend: 'stable' | 'increasing' | 'decreasing';
     confidence: number;
-    timestamp: number;
-   , analyzer: string }
+    timestamp: number,
+    analyzer: string }
 
 interface DescriptiveStats { count: number;
     mean: number;
@@ -28,13 +28,13 @@ interface DescriptiveStats { count: number;
     min: number;
     max: number;
     p25: number;
-    p75: number;
-   , p95: number }
+    p75: number,
+    p95: number }
 
 interface HistogramData { bins: number[];
     binWidth: number;
-    min: number;
-   , max: number }
+    min: number,
+    max: number }
 
 interface OutlierData { outliers: number[], }
     bounds: { lower: number;, upper: number },
@@ -42,25 +42,24 @@ interface OutlierData { outliers: number[], }
 }
 
 interface StatisticalData { timestamp: number,
-    stats: any;
-   , dataPoints: number ,}
+    stats: any,
+    dataPoints: number ,}
 
-interface HistoryPoint { timestamp: number;
-   , value: number }
+interface HistoryPoint { timestamp: number,
+    value: number }
 ';
 
 interface TrendAnalyzer { ''
     type: 'moving_average' | 'linear_regression' | 'exponential_smoothing';
     window: number;
     sensitivity?: number;
-    alpha?: number;
-
-   , history: HistoryPoint[],
+    alpha?: number,
+    history: HistoryPoint[],
     trend: 'stable' | 'increasing' | 'decreasing' ,}
 
 interface MainController { trendAnalyzers: Map<string, TrendAnalyzer>;
     metricsCollector: {
-        getRecentAnalysisData(windo;w: number): AnalysisDataPoint[] ,};
+        getRecentAnalysisData(window: number): AnalysisDataPoint[] ,};
     analysisConfig: { statisticalWindow: number };
     errorHandler: any;
 }
@@ -105,7 +104,7 @@ export class PerformanceDataProcessor {
         // Correlation analysis processor
         this.statisticalProcessors.set('correlation', { metricPairs: [']'
                 ['fps', 'frame_time'],
-                ['memory_used', 'frame_variance'],)';
+                ['memory_used', 'frame_variance'],'';
                 ['network_latency', 'response_time]);
             ]);
 
@@ -154,8 +153,8 @@ export class PerformanceDataProcessor {
                 
                 // Store trend data
                 this.trends.set(metricId, { )
-                    trend: analyzer.trend);
-                   , confidence: this.calculateTrendConfidence(analyzer);
+                    trend: analyzer.trend),
+    confidence: this.calculateTrendConfidence(analyzer);
                     timestamp,
                     analyzer: analyzer.type ,});
             } catch (error) {
@@ -199,7 +198,7 @@ export class PerformanceDataProcessor {
         const olderAvg = older.reduce((sum, h) => sum + h.value, 0) / older.length;
         const change = (recentAvg - olderAvg) / olderAvg;
 
-        if (Math.abs(change) < (analyzer.sensitivity || 0.1)') return 'stable';''
+        if (Math.abs(change) < (analyzer.sensitivity || 0.1)') return 'stable';
         return change > 0 ? 'increasing' : 'decreasing';
     
     /**
@@ -211,7 +210,7 @@ export class PerformanceDataProcessor {
         const data = analyzer.history.map((h, i) => ({ x: i, y: h.value ,});
         const slope = this.calculateLinearRegressionSlope(data);
 
-        if (Math.abs(slope) < (analyzer.sensitivity || 0.1)') return 'stable';''
+        if (Math.abs(slope) < (analyzer.sensitivity || 0.1)') return 'stable';
         return slope > 0 ? 'increasing' : 'decreasing';
     }
     
@@ -246,7 +245,7 @@ export class PerformanceDataProcessor {
         const current = analyzer.history[analyzer.history.length - 1].value;
         const change = (current - smoothed) / smoothed;
 
-        if (Math.abs(change) < (analyzer.sensitivity || 0.1)') return 'stable';''
+        if (Math.abs(change) < (analyzer.sensitivity || 0.1)') return 'stable';
         return change > 0 ? 'increasing' : 'decreasing';
     }
     
@@ -297,7 +296,7 @@ export class PerformanceDataProcessor {
         const stats: Record<string, DescriptiveStats> = {};
 
         const descriptiveProcessor = this.statisticalProcessors.get('descriptive);
-        if (!descriptiveProcessor? .metrics) return stats;
+        if (!descriptiveProcessor?.metrics) return stats;
         
         for(const, processor of, descriptiveProcessor.metrics) {
         ';
@@ -313,8 +312,8 @@ export class PerformanceDataProcessor {
                 median: this.calculateMedian(values);
                 std: Math.sqrt(this.calculateVariance(values);
                 min: Math.min(...values);
-                max: Math.max(...values);
-               , p25: this.calculatePercentile(values, 25),
+                max: Math.max(...values),
+    p25: this.calculatePercentile(values, 25),
                 p75: this.calculatePercentile(values, 75),
         
         }
@@ -333,13 +332,13 @@ export class PerformanceDataProcessor {
         const correlations: Record<string, number> = {};
 
         const correlationProcessor = this.statisticalProcessors.get('correlation);
-        if (!correlationProcessor? .metricPairs) return correlations;
+        if (!correlationProcessor?.metricPairs) return correlations;
         
         for(const [metric1, metric2] of correlationProcessor.metricPairs) {
         ';
 
             const values1 = data.map(point => point.metrics.get(metric1))'';
-                               .filter(val => typeof, val === 'number) as number[];''
+                               .filter(val => typeof, val === 'number' as number[];''
             const values2 = data.map(point => point.metrics.get(metric2))'';
                                .filter(val => typeof, val === 'number) as number[];
             
@@ -362,7 +361,7 @@ export class PerformanceDataProcessor {
         const distributions: Record<string, HistogramData> = {};
 
         const distributionProcessor = this.statisticalProcessors.get('distribution);
-        if (!distributionProcessor? .metrics) return distributions;
+        if (!distributionProcessor?.metrics) return distributions;
         
         for(const, metricId of, distributionProcessor.metrics) {
         ';
@@ -388,7 +387,7 @@ export class PerformanceDataProcessor {
         const outliers: Record<string, OutlierData> = {};
 
         const outliersProcessor = this.statisticalProcessors.get('outliers);
-        if (!outliersProcessor? .metrics) return outliers;
+        if (!outliersProcessor?.metrics) return outliers;
         
         for(const, metricId of, outliersProcessor.metrics) {
         ';

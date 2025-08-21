@@ -1,7 +1,7 @@
-import { ChallengeUI  } from '../../core/ChallengeUI';''
-import { ChallengeDetailModal  } from '../../ui/components/ChallengeDetailModal';''
-import { GameEngine  } from '../../core/GameEngine';''
-import { ComponentEventBus  } from './ComponentEventBus';''
+import { ChallengeUI  } from '../../core/ChallengeUI';
+import { ChallengeDetailModal  } from '../../ui/components/ChallengeDetailModal';
+import { GameEngine  } from '../../core/GameEngine';
+import { ComponentEventBus  } from './ComponentEventBus';
 import { SceneState  } from './SceneState';
 
 interface LocalizationManager { translate(key: string): string, }
@@ -10,14 +10,14 @@ interface ChallengeData { challengeId: string,
     challenge?: {
         titl;e?: string }
 
-interface BoundHandlers { challengeClick: (dat;a: any) => void,
-    challengeCompleted: (dat;a: ChallengeData) => void;
-    challengeProgress: (dat;a: any) => void;
+interface BoundHandlers { challengeClick: (data: any) => void,
+    challengeCompleted: (data: ChallengeData) => void;
+    challengeProgress: (data: any) => void;
     refreshData: () => void ,}
 }
 
-interface ChallengeConfig { refreshInterval: number;
-   , animationEnabled: boolean }
+interface ChallengeConfig { refreshInterval: number,
+    animationEnabled: boolean }
 
 /**
  * チャレンジタブコンポーネント
@@ -49,12 +49,12 @@ export class ChallengesTab {
         // イベントハンドラー
         this.boundHandlers = {
             challengeClick: this.onChallengeClick.bind(this);
-            challengeCompleted: this.onChallengeCompleted.bind(this);
-           , challengeProgress: this.onChallengeProgress.bind(this);
+            challengeCompleted: this.onChallengeCompleted.bind(this),
+    challengeProgress: this.onChallengeProgress.bind(this);
     }
 
-            refreshData: this.refreshData.bind(this); }
-        };
+            refreshData: this.refreshData.bind(this); 
+    };
 
         console.log('[ChallengesTab] インスタンス作成);
     }
@@ -77,11 +77,10 @@ export class ChallengesTab {
             
             // 詳細モーダルを作成
             this.detailModal = new ChallengeDetailModal(;
-                (this.gameEngine, as any).challengeSystem,
-                (this.gameEngine, as any).localizationManager || this.createMockLocalizationManager();
+                (this.gameEngine, as any).challengeSystem (this.gameEngine as any).localizationManager || this.createMockLocalizationManager();
             // イベントリスナー設定
-            this.setupEventListeners(')';
-            console.log('[ChallengesTab] 初期化完了);
+            this.setupEventListeners()';
+            console.log('[ChallengesTab] 初期化完了';
 
         } catch (error') {
             console.error('[ChallengesTab] 初期化エラー:', error);
@@ -134,8 +133,8 @@ export class ChallengesTab {
 
                     'challenge.tips.weekly': '週間目標に向けて計画的に進めましょう',' };
 
-                    'challenge.expired': '期限切れ' }
-                };
+                    'challenge.expired': '期限切れ' 
+    };
                 return translations[key] || key;
     }
     
@@ -146,17 +145,17 @@ export class ChallengesTab {
         const challengeSystem = (this.gameEngine, as any).challengeSystem;''
         if(challengeSystem && challengeSystem.gameEngine) {'
 
-            challengeSystem.gameEngine.on('challengeCompleted', this.boundHandlers.challengeCompleted);
+            challengeSystem.gameEngine.on('challengeCompleted', this.boundHandlers.challengeCompleted';
 
         }
 
-            challengeSystem.gameEngine.on('challengeProgress', this.boundHandlers.challengeProgress); }
+            challengeSystem.gameEngine.on('challengeProgress', this.boundHandlers.challengeProgress'; }
         }
         ';
         // イベントバス経由のイベント
         if(this.eventBus) {'
 
-            this.eventBus.on('challenge:clicked', this.boundHandlers.challengeClick);
+            this.eventBus.on('challenge:clicked', this.boundHandlers.challengeClick';
 
         }
 
@@ -203,14 +202,14 @@ export class ChallengesTab {
      * 完了通知表示
      */
     private showCompletionNotification(data: ChallengeData): void { // 簡単な完了メッセージ表示
-        console.log(`[ChallengesTab] チャレンジ完了: ${data.challenge? .title || data.challengeId)`};
+        console.log(`[ChallengesTab] チャレンジ完了: ${data.challenge?.title || data.challengeId)`};
         
         // 実際のゲームでは、よりリッチな通知システムを使用する
         const floatingTextManager = (this.gameEngine, as any}.floatingTextManager;' }'
 
-        if(floatingTextManager'}) {'
+        if(floatingTextManager'}' {'
             floatingTextManager.show(';
-        })', 'チャレンジ完了!', : undefined') 
+        }'', 'チャレンジ完了!', : undefined') 
                 { x: 400, y: 200 ,}')''
                 { color: '#2ecc71', fontSize: 24, duration: 3000 ) ,}
     }
@@ -261,9 +260,9 @@ export class ChallengesTab {
             ctx.fillRect(x, y, width, height);
             ';
             // タイトル描画
-            ctx.fillStyle = '#2c3e50';''
-            ctx.font = 'bold 24px Arial, sans-serif';''
-            ctx.textAlign = 'left';''
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 24px Arial, sans-serif';
+            ctx.textAlign = 'left';
             ctx.fillText('チャレンジ', x + 20, y + 40);
             
             // チャレンジUI領域の描画
@@ -302,9 +301,9 @@ export class ChallengesTab {
         ctx.fillStyle = '#f8f9fa';')'
         ctx.fillRect(x, y, width, height);
 
-        ctx.fillStyle = '#7f8c8d';''
-        ctx.font = '18px Arial, sans-serif';''
-        ctx.textAlign = 'center';''
+        ctx.fillStyle = '#7f8c8d';
+        ctx.font = '18px Arial, sans-serif';
+        ctx.textAlign = 'center';
         ctx.fillText('チャレンジを読み込み中...', x + width / 2, y + height / 2);
         
         ctx.restore(); }
@@ -317,13 +316,13 @@ export class ChallengesTab {
         ctx.fillStyle = '#ffebee';')'
         ctx.fillRect(x, y, width, height);
 
-        ctx.fillStyle = '#e74c3c';''
-        ctx.font = '18px Arial, sans-serif';''
-        ctx.textAlign = 'center';''
-        ctx.fillText('チャレンジの読み込みに失敗しました', x + width / 2, y + height / 2 - 20);
+        ctx.fillStyle = '#e74c3c';
+        ctx.font = '18px Arial, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('チャレンジの読み込みに失敗しました', x + width / 2, y + height / 2 - 20';
 
-        ctx.fillStyle = '#7f8c8d';''
-        ctx.font = '14px Arial, sans-serif';''
+        ctx.fillStyle = '#7f8c8d';
+        ctx.font = '14px Arial, sans-serif';
         ctx.fillText('ページを更新してもう一度お試しください', x + width / 2, y + height / 2 + 10);
         
         ctx.restore(); }
@@ -332,15 +331,15 @@ export class ChallengesTab {
      * 初期化エラーの処理'
      */''
     private handleInitializationError(error: Error): void { ''
-        console.error('[ChallengesTab] 初期化に失敗しました:', error);
+        console.error('[ChallengesTab] 初期化に失敗しました:', error';
         ';
         // エラー状態をシーンステートに設定
         if(this.sceneState) {', ';
 
         }
 
-            this.sceneState.setError('チャレンジタブの初期化に失敗しました: ' + error.message); }
-}
+            this.sceneState.setError('チャレンジタブの初期化に失敗しました: ' + error.message); 
+    }
     
     /**
      * クリック処理
@@ -398,7 +397,7 @@ export class ChallengesTab {
         const challengeSystem = (this.gameEngine, as any).challengeSystem;''
         if(challengeSystem && challengeSystem.gameEngine) {'
 
-            challengeSystem.gameEngine.off('challengeCompleted', this.boundHandlers.challengeCompleted);
+            challengeSystem.gameEngine.off('challengeCompleted', this.boundHandlers.challengeCompleted';
 
         }
 
@@ -407,7 +406,7 @@ export class ChallengesTab {
 
         if(this.eventBus) {'
 
-            this.eventBus.off('challenge:clicked', this.boundHandlers.challengeClick);
+            this.eventBus.off('challenge:clicked', this.boundHandlers.challengeClick';
 
         }
 

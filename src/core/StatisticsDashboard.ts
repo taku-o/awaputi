@@ -14,11 +14,11 @@ export class StatisticsDashboard {
         this.config = {
             layout: {
                 rows: 3;
-                columns: 4;
-               , gridGap: 10;
+                columns: 4,
+    gridGap: 10;
     ,}
-                padding: 20 }
-            };
+                padding: 20 
+    };
             widgets: { keyMetrics: {
                     enabled: true, }
                     span: { rows: 1, cols: 2 ,},
@@ -57,22 +57,22 @@ export class StatisticsDashboard {
                         growthTrends: { span: { rows: 1, cols: 1 ,}, position: { row: 2, col: 0 ,},
                         playStyle: { span: { rows: 1, cols: 1 ,}, position: { row: 2, col: 1 ,},
                         performanceChart: { enabled: false };
-                        statisticsBreakdown: { enabled: false }
-}
+                        statisticsBreakdown: { enabled: false 
+    }
         };
         // ウィジェット管理
         this.widgets = new Map();
         this.layoutCache = new Map();
         // イベントハンドラ
-        this.eventHandlers = new Map(''';
-            easing: 'ease-in-out';
-           , stagger: 50;
+        this.eventHandlers = new Map('''
+            easing: 'ease-in-out',
+    stagger: 50;
         },
         
         // 更新状態管理
         this.updateState = { isUpdating: false,
-            lastUpdateTime: 0;
-           , updateInterval: 5000, // 5秒間隔;
+            lastUpdateTime: 0,
+    updateInterval: 5000, // 5秒間隔;
             autoUpdate: false ,}))
         this.initialize();
     }
@@ -121,10 +121,10 @@ export class StatisticsDashboard {
                 return this.animateWidgets(renderPromises);
 
             return Promise.all(renderPromises).then(results => ({ ')'
-                type: 'dashboard');
-               , widgets: results,);
-                layout: layout);
-               , timestamp: Date.now( ,});
+                type: 'dashboard'),
+    widgets: results,);
+                layout: layout),
+    timestamp: Date.now( ,});
 
         } catch (error) {
             console.error('Dashboard rendering failed:', error);
@@ -276,7 +276,7 @@ export class StatisticsDashboard {
      */''
     renderWidgetError(context, area, name, error) {'
         // エラー背景
-        context.fillStyle = '#FEE2E2';''
+        context.fillStyle = '#FEE2E2';
         context.fillRect(area.x, area.y, area.width, area.height);
         ';
         // エラー枠線
@@ -286,9 +286,9 @@ export class StatisticsDashboard {
         context.strokeRect(area.x, area.y, area.width, area.height);
         ';
         // エラーメッセージ
-        context.fillStyle = '#DC2626';''
-        context.font = '14px system-ui, -apple-system, sans-serif';''
-        context.textAlign = 'center';''
+        context.fillStyle = '#DC2626';
+        context.font = '14px system-ui, -apple-system, sans-serif';
+        context.textAlign = 'center';
         context.textBaseline = 'middle';
         
         const centerX = area.x + area.width / 2;
@@ -314,15 +314,15 @@ export class StatisticsDashboard {
                     promise.then(result => {)
                         results[index] = result;)
                         completedCount++';
-                        );''
+                        ';''
                         if(completedCount === renderPromises.length) {'
                             resolve({''
-                                type: 'dashboard';
-                               , widgets: results;
+                                type: 'dashboard',
+    widgets: results;
     ,})
                                 animated: true) }
-                                timestamp: Date.now(); }
-                            });
+                                timestamp: Date.now(); 
+    });
                         }
                     });
                 }, index * this.animationConfig.stagger);
@@ -339,19 +339,19 @@ export class StatisticsDashboard {
         const centerY = canvas.height / 2;
         ';
         // 背景
-        context.fillStyle = '#F8FAFC';''
+        context.fillStyle = '#F8FAFC';
         context.fillRect(0, 0, canvas.width, canvas.height);
         ';
         // エラーアイコン
-        context.fillStyle = '#EF4444';''
-        context.font = '48px system-ui, -apple-system, sans-serif';''
-        context.textAlign = 'center';''
-        context.fillText('⚠', centerX, centerY - 30);
+        context.fillStyle = '#EF4444';
+        context.font = '48px system-ui, -apple-system, sans-serif';
+        context.textAlign = 'center';
+        context.fillText('⚠', centerX, centerY - 30';
         ';
         // エラーメッセージ
-        context.fillStyle = '#374151';''
-        context.font = '16px system-ui, -apple-system, sans-serif';''
-        context.fillText('ダッシュボードの読み込みに失敗しました', centerX, centerY + 20);''
+        context.fillStyle = '#374151';
+        context.font = '16px system-ui, -apple-system, sans-serif';
+        context.fillText('ダッシュボードの読み込みに失敗しました', centerX, centerY + 20';''
         context.fillText(error.message, centerX, centerY + 40);
         ';
 
@@ -359,8 +359,8 @@ export class StatisticsDashboard {
             type: 'dashboard',);
             error: error.message);
     ,}
-            timestamp: Date.now(); }
-        });
+            timestamp: Date.now(); 
+    });
     }
     
     /**
@@ -410,7 +410,7 @@ export class StatisticsDashboard {
         try {
             // 各ウィジェットのデータ更新
             const updatePromises = Array.from(this.widgets.values().map(widget => { ');''
-                if(typeof, widget.refreshData === 'function) { }'
+                if(typeof, widget.refreshData === 'function' { }'
                     return widget.refreshData();
                 return Promise.resolve();
             });
@@ -419,12 +419,12 @@ export class StatisticsDashboard {
             await Promise.all(updatePromises);''
             this.updateState.lastUpdateTime = Date.now()';
             this.emit('dataUpdated', { )
-                timestamp: this.updateState.lastUpdateTime),
+                timestamp: this.updateState.lastUpdateTime',
             ' }'
 
         } catch (error) {
-            console.error('Dashboard data refresh failed:', error);''
-            this.emit('updateError', error); } finally { this.updateState.isUpdating = false; }
+            console.error('Dashboard data refresh failed:', error';''
+            this.emit('updateError', error'; } finally { this.updateState.isUpdating = false; }
     }
     
     /**
@@ -491,4 +491,4 @@ export class StatisticsDashboard {
 
     }
 
-        this.eventHandlers.clear(') }'
+        this.eventHandlers.clear() }'

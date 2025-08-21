@@ -16,8 +16,8 @@ interface LayerProperties { opacity?: number;
 
 interface BoundingBox { x: number,
     y: number;
-    width: number;
-   , height: number ,}
+    width: number,
+    height: number ,}
 
 interface Layer { name: string;
     order: number;
@@ -42,8 +42,8 @@ interface LayerStats { totalLayers: number;
     activeLayers: number;
     cachedLayers: number;
     renderTime: number;
-    compositionTime: number;
-   , cacheHitRatio: number }
+    compositionTime: number,
+    cacheHitRatio: number }
 
 interface Viewport { x?: number;
     y?: number;
@@ -89,18 +89,18 @@ export class AdvancedLayerManager {
         this.cachingEnabled = config.cachingEnabled !== undefined ? config.cachingEnabled: true,
         this.cachedLayers = new Map();''
         this.cacheInvalidation = new Set(''';
-        this.globalCompositeOperation = config.globalCompositeOperation || 'source-over';
+        this.globalCompositeOperation = config.globalCompositeOperation || 'source-over'
         
         // Performance tracking
         this.stats = {
             totalLayers: 0;
             activeLayers: 0;
             cachedLayers: 0;
-            renderTime: 0;
-           , compositionTime: 0;
+            renderTime: 0,
+    compositionTime: 0;
     ,}
-            cacheHitRatio: 0 }
-        };
+            cacheHitRatio: 0 
+    };
         // Configuration
         this.config = { maxLayers: config.maxLayers || 16,
             cacheThreshold: config.cacheThreshold || 100, // ms;
@@ -118,19 +118,19 @@ export class AdvancedLayerManager {
         try {'
             if(this.layers.has(name)) {' }'
 
-                throw new Error(`Layer '${name}' already, exists`});
+                throw new Error(`Layer '${name}' already, exists`}';
             }
             ';
 
             if (this.layers.size >= this.config.maxLayers) { ' }'
 
-                throw new Error(`Maximum, layer count (${this.config.maxLayers} exceeded`'});
+                throw new Error(`Maximum, layer count (${this.config.maxLayers} exceeded`'}';
             }
             
             const layer: Layer = { name,
                 order,
-                enabled: true;
-               , visible: true,
+                enabled: true,
+    visible: true,
                 opacity: properties.opacity || 1.0,
                 blendMode: properties.blendMode || 'source-over';
                 // Layer canvas for caching
@@ -148,8 +148,8 @@ export class AdvancedLayerManager {
                 // Performance tracking
                 renderTime: 0;
                 complexity: 0;
-                cacheHits: 0;
-               , cacheMisses: 0;
+                cacheHits: 0,
+    cacheMisses: 0;
             },
             ;
             // Create layer canvas if cacheable
@@ -162,7 +162,7 @@ export class AdvancedLayerManager {
 
             }
 
-                layer.context = layer.canvas.getContext('2d); }'
+                layer.context = layer.canvas.getContext('2d'; }'
             }
             
             this.layers.set(name, layer);

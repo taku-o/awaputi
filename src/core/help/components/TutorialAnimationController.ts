@@ -4,7 +4,7 @@
  * TutorialOverlayから分離されたアニメーション機能
  */
 
-import { getErrorHandler  } from '../../../utils/ErrorHandler.js';''
+import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 import { LoggingSystem  } from '../../LoggingSystem.js';
 
 // 型定義
@@ -18,37 +18,37 @@ export interface AnimationConfig { fadeInDuration: number,
     sparkleAnimationDuration: number;
     glowIntensity: number;
     bounceHeight: number;
-    bounceDuration: number;
-   , easingFunction: string ,}
+    bounceDuration: number,
+    easingFunction: string ,}
 
 export interface HighlightAnimation { isActive: boolean;
     startTime: number;
     type: HighlightAnimationType;
     intensity: number;
-    currentFrame: number;
-   , element: HTMLElement | null }
+    currentFrame: number,
+    element: HTMLElement | null }
 
 export interface PanelAnimation { isActive: boolean;
     startTime: number;
     type: PanelAnimationType;
     direction: AnimationDirection;
-    progress: number;
-   , element: HTMLElement | null }
+    progress: number,
+    element: HTMLElement | null }
 
 export interface SpotlightAnimation { isActive: boolean;
     startTime: number;
     currentRadius: number;
     targetRadius: number;
-    expansion: boolean;
-   , element: HTMLElement | null }
+    expansion: boolean,
+    element: HTMLElement | null }
 
 export interface AnimationState { highlight: HighlightAnimation;
-    panel: PanelAnimation;
-   , spotlight: SpotlightAnimation
+    panel: PanelAnimation,
+    spotlight: SpotlightAnimation
     }
 
-export type HighlightAnimationType = 'pulse' | 'breathing' | 'ripple' | 'sparkle' | 'bounce';''
-export type PanelAnimationType = 'slideIn' | 'slideOut' | 'bounceIn' | 'scaleIn';''
+export type HighlightAnimationType = 'pulse' | 'breathing' | 'ripple' | 'sparkle' | 'bounce';
+export type PanelAnimationType = 'slideIn' | 'slideOut' | 'bounceIn' | 'scaleIn';
 export type AnimationDirection = 'top' | 'bottom' | 'left' | 'right';
 
 export type EasingFunction = (t: number) => number;
@@ -60,8 +60,8 @@ export interface EasingFunctions { linear: EasingFunction,
     easeInCubic: EasingFunction;
     easeOutCubic: EasingFunction;
     easeInOutCubic: EasingFunction;
-    easeInBounce: EasingFunction;
-   , easeOutBounce: EasingFunction
+    easeInBounce: EasingFunction,
+    easeOutBounce: EasingFunction
     ,}
 
 export type AnimationFunction = () => void;
@@ -82,31 +82,31 @@ export class TutorialAnimationController {
 
         this.errorHandler = getErrorHandler();''
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem('';
-    })'
+    }''
             easingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)' }
         };
         
         // アニメーション状態管理
         this.animations = { highlight: {
-                isActive: false;
-               , startTime: 0,
+                isActive: false,
+    startTime: 0,
                 type: 'pulse';
                 intensity: 1.0;
-                currentFrame: 0;
-               , element: null ,};
-            panel: { isActive: false;
-               , startTime: 0,
+                currentFrame: 0,
+    element: null ,};
+            panel: { isActive: false,
+    startTime: 0,
                 type: 'slideIn',
                 direction: 'bottom';
-                progress: 0;
-               , element: null ,};
+                progress: 0,
+    element: null ,};
             spotlight: { isActive: false;
                 startTime: 0;
                 currentRadius: 0;
                 targetRadius: 0;
-                expansion: false;
-               , element: null }
-        };
+                expansion: false,
+    element: null 
+    };
         // アニメーションキュー
         this.animationQueue = [];
         this.isProcessingQueue = false;
@@ -137,10 +137,10 @@ export class TutorialAnimationController {
      */
     initialize(): void { try {'
             this.startAnimationLoop()';
-            this.loggingSystem.debug('TutorialAnimationController', 'Animation controller initialized);' }
+            this.loggingSystem.debug('TutorialAnimationController', 'Animation controller initialized';' }
 
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'TutorialAnimationController.initialize); }'
+            this.errorHandler.handleError(error as Error, 'TutorialAnimationController.initialize'; }'
     }
     
     /**
@@ -161,12 +161,12 @@ export class TutorialAnimationController {
      * @param type - アニメーションタイプ
      * @param intensity - アニメーション強度'
      */''
-    startHighlightAnimation(element: HTMLElement, type: HighlightAnimationType = 'pulse', intensity: number = 1.0): void { try {'
+    startHighlightAnimation(element: HTMLElement, type: HighlightAnimationType = 'pulse', intensity: number = 1.0': void { try {'
             if(!element) {', ';
 
             }
 
-                throw new Error('Element, is required, for highlight, animation); }'
+                throw new Error('Element, is required, for highlight, animation'; }'
             }
             ';
 
@@ -185,12 +185,12 @@ export class TutorialAnimationController {
      * @param type - アニメーションタイプ
      * @param direction - 方向'
      */''
-    startPanelAnimation(element: HTMLElement, type: PanelAnimationType = 'slideIn', direction: AnimationDirection = 'bottom): void { try {'
+    startPanelAnimation(element: HTMLElement, type: PanelAnimationType = 'slideIn', direction: AnimationDirection = 'bottom': void { try {'
             if(!element) {', ';
 
             }
 
-                throw new Error('Element, is required, for panel, animation); }'
+                throw new Error('Element, is required, for panel, animation'; }'
             }
             ';
 
@@ -200,7 +200,7 @@ export class TutorialAnimationController {
                 `Panel animation started: ${type} from ${direction}`}),
 
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'TutorialAnimationController.startPanelAnimation); }'
+            this.errorHandler.handleError(error as Error, 'TutorialAnimationController.startPanelAnimation'; }'
     }
     
     /**
@@ -214,7 +214,7 @@ export class TutorialAnimationController {
 
             }
 
-                throw new Error('Element, is required, for spotlight, animation); }'
+                throw new Error('Element, is required, for spotlight, animation'; }'
             }
             ';
 
@@ -224,7 +224,7 @@ export class TutorialAnimationController {
                 `Spotlight animation started: radius ${targetRadius}, expansion: ${expansion}`});
 
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'TutorialAnimationController.startSpotlightAnimation); }'
+            this.errorHandler.handleError(error as Error, 'TutorialAnimationController.startSpotlightAnimation'; }'
     }
     
     /**
@@ -266,8 +266,8 @@ export class TutorialAnimationController {
                 duration = this.animationConfig.bounceDuration;
                 break;
         }
-            default: duration = this.animationConfig.pulseInterval; }
-        }
+            default: duration = this.animationConfig.pulseInterval; 
+    }
         
         const elapsed = currentTime - animation.startTime;
         const progress = (elapsed % duration) / duration;
@@ -300,15 +300,15 @@ export class TutorialAnimationController {
                 progress = this.easingFunctions.easeOutCubic(progress);
                 break;
         }
-            default: progress = this.easingFunctions.easeOutQuad(progress); }
-        }
+            default: progress = this.easingFunctions.easeOutQuad(progress); 
+    }
         
         animation.progress = progress;
 
         this.applyPanelAnimationStyles(animation);
         ';
         // アニメーション完了チェック
-        if(progress >= 1 && animation.type !== 'slideOut) { animation.isActive = false; }'
+        if(progress >= 1 && animation.type !== 'slideOut' { animation.isActive = false; }'
     }
     
     /**
@@ -408,17 +408,17 @@ export class TutorialAnimationController {
     private applyRippleEffect(element: HTMLElement, progress: number, intensity: number): void { const rippleSize = progress * 50 * intensity;''
         const opacity = (1 - progress') * intensity;
 
-        element.style.position = 'relative';''
+        element.style.position = 'relative';
         element.style.overflow = 'visible';
         ';
         // リップル要素を動的に作成・更新
-        let ripple = element.querySelector('.tutorial-ripple) as HTMLElement;''
+        let ripple = element.querySelector('.tutorial-ripple' as HTMLElement;''
         if(!ripple) {'
 
             ripple = document.createElement('div'');''
-            ripple.className = 'tutorial-ripple';''
-            ripple.style.position = 'absolute';''
-            ripple.style.borderRadius = '50%';''
+            ripple.className = 'tutorial-ripple';
+            ripple.style.position = 'absolute';
+            ripple.style.borderRadius = '50%';
             ripple.style.pointerEvents = 'none';
         }
             element.appendChild(ripple); }
@@ -428,10 +428,10 @@ export class TutorialAnimationController {
 
         ripple.style.height = `${rippleSize}px`;''
         ripple.style.border = `2px solid rgba(0, 123, 255, ${ opacity }`;''
-        ripple.style.left = '50%';''
+        ripple.style.left = '50%';
         ripple.style.top = '50%';' }
 
-        ripple.style.transform = 'translate(-50%, -50%'})';
+        ripple.style.transform = 'translate(-50%, -50%'}'';
     }
     
     /**
@@ -449,12 +449,12 @@ export class TutorialAnimationController {
         for(let, i = 0; i < sparkleCount; i++) {'
 
             const sparkle = document.createElement('div'');''
-            sparkle.className = 'tutorial-sparkle';''
-            sparkle.style.position = 'absolute';''
-            sparkle.style.width = '4px';''
-            sparkle.style.height = '4px';''
-            sparkle.style.backgroundColor = '#ffd700';''
-            sparkle.style.borderRadius = '50%';''
+            sparkle.className = 'tutorial-sparkle';
+            sparkle.style.position = 'absolute';
+            sparkle.style.width = '4px';
+            sparkle.style.height = '4px';
+            sparkle.style.backgroundColor = '#ffd700';
+            sparkle.style.borderRadius = '50%';
             sparkle.style.pointerEvents = 'none';
             
             const angle = (i / sparkleCount) * Math.PI * 2;
@@ -571,7 +571,7 @@ export class TutorialAnimationController {
             case 'left':'';
                 transform = `translateX(${progress * -100}%'}`;
 
-                break;
+                break
 
         }
 
@@ -622,14 +622,14 @@ export class TutorialAnimationController {
         this.isProcessingQueue = true;
 
         const nextAnimation = this.animationQueue.shift()';
-        if(nextAnimation && typeof, nextAnimation === 'function) {'
+        if(nextAnimation && typeof, nextAnimation === 'function' {'
             try {
         }
 
                 nextAnimation();' }'
 
             } catch (error) {
-                this.errorHandler.handleError(error as Error, 'TutorialAnimationController.processAnimationQueue); }'
+                this.errorHandler.handleError(error as Error, 'TutorialAnimationController.processAnimationQueue'; }'
         }
         
         this.isProcessingQueue = false;
@@ -652,7 +652,7 @@ export class TutorialAnimationController {
         ';
 
         this.animationQueue = [];''
-        this.loggingSystem.debug('TutorialAnimationController', 'All animations stopped);
+        this.loggingSystem.debug('TutorialAnimationController', 'All animations stopped';
     }
     
     /**
@@ -666,7 +666,7 @@ export class TutorialAnimationController {
 
             this.animations[animationType].isActive = false;' }'
 
-            this.loggingSystem.debug('TutorialAnimationController', `Animation stopped: ${animationType}`});
+            this.loggingSystem.debug('TutorialAnimationController', `Animation stopped: ${animationType}`}';
         }
     }
     
@@ -700,7 +700,7 @@ export class TutorialAnimationController {
 
             }');
 
-            this.loggingSystem.debug('TutorialAnimationController', 'Animation controller disposed);''
+            this.loggingSystem.debug('TutorialAnimationController', 'Animation controller disposed';''
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'TutorialAnimationController.dispose''); }
 

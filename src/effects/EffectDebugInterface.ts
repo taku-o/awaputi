@@ -7,8 +7,8 @@
 interface PerformanceMetrics { fps: number,
     particleCount: number;
     effectCount: number;
-    memoryUsage: number;
-   , renderTime: number ,}
+    memoryUsage: number,
+    renderTime: number ,}
 
 interface QualityLevel { readonly LOW: 'low',''
     readonly MEDIUM: 'medium',
@@ -32,9 +32,9 @@ interface EffectType { ''
 
 type EffectTypeString = 'bubble-normal' | 'bubble-rainbow' | 'bubble-electric' | 'bubble-spiky' | 'bubble-diamond' | 'combo-basic' | 'combo-enhanced' | 'combo-spectacular' | 'screen-flash' | 'screen-shake';
 
-type BubbleEffectType = 'normal' | 'rainbow' | 'electric' | 'spiky' | 'diamond';''
-type ComboEffectType = 'basic' | 'enhanced' | 'spectacular';''
-type ScreenEffectType = 'flash' | 'shake';''
+type BubbleEffectType = 'normal' | 'rainbow' | 'electric' | 'spiky' | 'diamond';
+type ComboEffectType = 'basic' | 'enhanced' | 'spectacular';
+type ScreenEffectType = 'flash' | 'shake';
 type ToggleEffectType = 'particles' | 'screenEffects' | 'animations' | 'seasonal';
 
 interface GameEngine { canvas?: HTMLCanvasElement;
@@ -63,8 +63,8 @@ interface BenchmarkResult { fps: number,
     duration: number ,}
 
 interface BenchmarkResults { particleStress: BenchmarkResult;
-    effectStress: BenchmarkResult;
-   , animationStress: BenchmarkResult
+    effectStress: BenchmarkResult,
+    animationStress: BenchmarkResult
     }
 
 interface DebugUIElements { fpsValue: HTMLElement | null;
@@ -84,8 +84,8 @@ interface DebugUIElements { fpsValue: HTMLElement | null;
     toggleAnimations: HTMLInputElement | null;
     toggleSeasonal: HTMLInputElement | null;
     clearEffects: HTMLButtonElement | null;
-    benchmarkEffects: HTMLButtonElement | null;
-   , closeDebug: HTMLButtonElement | null }
+    benchmarkEffects: HTMLButtonElement | null,
+    closeDebug: HTMLButtonElement | null }
 
 export class EffectDebugInterface {
     private gameEngine: GameEngine;
@@ -96,8 +96,8 @@ export class EffectDebugInterface {
         fps: 0;
         particleCount: 0;
         effectCount: 0;
-        memoryUsage: 0;
-       , renderTime: 0 };
+        memoryUsage: 0,
+    renderTime: 0 };
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -111,16 +111,16 @@ export class EffectDebugInterface {
 
     private createDebugPanel()';
         this.debugPanel = document.createElement('div'');''
-        this.debugPanel.id = 'effect-debug-panel';''
+        this.debugPanel.id = 'effect-debug-panel';
         this.debugPanel.className = 'effect-debug-panel';
         this.debugPanel.style.cssText = `;
             position: fixed;
-            top: 10px;
-           , right: 10px,
+            top: 10px,
+    right: 10px,
             width: 300px,
             background: rgba(0, 0, 0, 0.8),
-            color: white;
-           , padding: 15px;
+            color: white,
+    padding: 15px;
             border-radius: 8px,
             font-family: monospace,
             font-size: 12px,
@@ -219,9 +219,9 @@ export class EffectDebugInterface {
         document.body.appendChild(this.debugPanel);
     }"
 
-    private bindEvents("): void { // 閉じるボタン""
+    private bindEvents(): void { // 閉じるボタン""
         const closeButton = document.getElementById('close-debug'') as HTMLButtonElement;''
-        closeButton? .addEventListener('click', () => {  }
+        closeButton?.addEventListener('click', () => {  }
 
             this.hide();' }'
 
@@ -261,7 +261,7 @@ export class EffectDebugInterface {
 ';
         // エフェクトプレビュー
         const triggerPreview = document.getElementById('trigger-preview'') as HTMLButtonElement;''
-        triggerPreview? .addEventListener('click', () => {  ''
+        triggerPreview?.addEventListener('click', () => {  ''
             const effectTypeSelect = document.getElementById('preview-effect-type) as HTMLSelectElement;
             const effectType = effectTypeSelect?.value as EffectTypeString;
             if (effectType) { }
@@ -274,34 +274,34 @@ export class EffectDebugInterface {
         const toggleParticles = document.getElementById('toggle-particles'') as HTMLInputElement; : undefined''
         toggleParticles?.addEventListener('change', (e: Event) => {  const target = e.target as HTMLInputElement;' }
 
-            this.toggleEffectType('particles', target.checked);' }
+            this.toggleEffectType('particles', target.checked';' }
 
         }');
 
         const toggleScreenEffects = document.getElementById('toggle-screen-effects'') as HTMLInputElement;''
         toggleScreenEffects?.addEventListener('change', (e: Event) => {  const target = e.target as HTMLInputElement;' }
 
-            this.toggleEffectType('screenEffects', target.checked);' }
+            this.toggleEffectType('screenEffects', target.checked';' }
 
         }');
 
         const toggleAnimations = document.getElementById('toggle-animations'') as HTMLInputElement;''
         toggleAnimations?.addEventListener('change', (e: Event) => {  const target = e.target as HTMLInputElement;' }
 
-            this.toggleEffectType('animations', target.checked);' }
+            this.toggleEffectType('animations', target.checked';' }
 
         }');
 
         const toggleSeasonal = document.getElementById('toggle-seasonal'') as HTMLInputElement;''
         toggleSeasonal?.addEventListener('change', (e: Event) => {  const target = e.target as HTMLInputElement;' }
 
-            this.toggleEffectType('seasonal', target.checked);' }
+            this.toggleEffectType('seasonal', target.checked';' }
 
         }');
 ';
         // パフォーマンス制御
         const clearEffects = document.getElementById('clear-effects'') as HTMLButtonElement;''
-        clearEffects? .addEventListener('click', () => { this.clearAllEffects();' }
+        clearEffects?.addEventListener('click', () => { this.clearAllEffects();' }
 
         }');
 
@@ -312,7 +312,7 @@ export class EffectDebugInterface {
 ';
         // キーボードショートカット（Ctrl+Shift+E でトグル） : undefined
         document.addEventListener('keydown', (e: KeyboardEvent) => {  ''
-            if(e.ctrlKey && e.shiftKey && e.key === 'E) {'
+            if(e.ctrlKey && e.shiftKey && e.key === 'E' {'
                 
             
                 this.toggle(); }
@@ -391,7 +391,7 @@ export class EffectDebugInterface {
     }
 
     private calculateFPS(): number { // GameEngineからFPS情報を取得
-        if(this.gameEngine? .performanceOptimizer) {
+        if(this.gameEngine?.performanceOptimizer) {
             
         }
             return this.gameEngine.performanceOptimizer.getCurrentFPS() || 0;
@@ -399,7 +399,7 @@ export class EffectDebugInterface {
     }
  : undefined
     private getParticleCount(): number { let count = 0;
-        if(this.gameEngine? .enhancedParticleManager) {
+        if(this.gameEngine?.enhancedParticleManager) {
             
         }
             count += this.gameEngine.enhancedParticleManager.getActiveParticleCount() || 0; }
@@ -408,7 +408,7 @@ export class EffectDebugInterface {
     }
  : undefined
     private getEffectCount(): number { let count = 0;
-        if(this.gameEngine? .enhancedEffectManager) {
+        if(this.gameEngine?.enhancedEffectManager) {
             
         }
             count += this.gameEngine.enhancedEffectManager.getActiveEffectCount() || 0; }
@@ -426,7 +426,7 @@ export class EffectDebugInterface {
     }
 
     private getRenderTime(): number { // パフォーマンス測定から取得
-        if(this.gameEngine? .performanceOptimizer) {
+        if(this.gameEngine?.performanceOptimizer) {
             
         }
             return this.gameEngine.performanceOptimizer.getAverageRenderTime() || 0;
@@ -434,7 +434,7 @@ export class EffectDebugInterface {
     }
  : undefined
     private loadCurrentSettings(): void { // 現在の設定をUIに反映
-        const qualityController = this.gameEngine? .effectQualityController;
+        const qualityController = this.gameEngine?.effectQualityController;
         if(qualityController) {
 
             const currentQuality = qualityController.getCurrentQualityLevel()';
@@ -445,15 +445,15 @@ export class EffectDebugInterface {
 }
     }
  : undefined
-    private updateQualityLevel(level: QualityLevelType): void { if (this.gameEngine? .effectQualityController) {
+    private updateQualityLevel(level: QualityLevelType): void { if (this.gameEngine?.effectQualityController) {
             this.gameEngine.effectQualityController.setQualityLevel(level); }
     }
  : undefined
-    private updateParticleMultiplier(multiplier: number): void { if (this.gameEngine? .enhancedParticleManager) {
+    private updateParticleMultiplier(multiplier: number): void { if (this.gameEngine?.enhancedParticleManager) {
             this.gameEngine.enhancedParticleManager.setParticleMultiplier(multiplier); }
     }
  : undefined
-    private updateEffectIntensity(intensity: number): void { if (this.gameEngine? .enhancedEffectManager) {
+    private updateEffectIntensity(intensity: number): void { if (this.gameEngine?.enhancedEffectManager) {
             this.gameEngine.enhancedEffectManager.setEffectIntensity(intensity); }
     }
 
@@ -477,7 +477,7 @@ export class EffectDebugInterface {
                 break; }
 }
 
-    private triggerBubbleEffect(type: BubbleEffectType): void { const canvas = this.gameEngine? .canvas;
+    private triggerBubbleEffect(type: BubbleEffectType): void { const canvas = this.gameEngine?.canvas;
         if (!canvas) return;
 
         const x = canvas.width / 2;
@@ -495,7 +495,7 @@ export class EffectDebugInterface {
     private triggerComboEffect(type: ComboEffectType): void { ''
         const comboValue = type === 'basic' ? 3 : type === 'enhanced' ? 7 : 15;
         
-        if(this.gameEngine? .enhancedParticleManager) {
+        if(this.gameEngine?.enhancedParticleManager) {
         
             
         
@@ -504,7 +504,7 @@ export class EffectDebugInterface {
 }
  : undefined';
     private triggerScreenEffect(type: ScreenEffectType): void { ''
-        if(this.gameEngine? .enhancedEffectManager) {'
+        if(this.gameEngine?.enhancedEffectManager) {'
 
             if (type === 'flash'') {'
         }
@@ -518,7 +518,7 @@ export class EffectDebugInterface {
         switch(effectType) {'
 
             case 'particles':';
-                if (this.gameEngine? .enhancedParticleManager) {'
+                if (this.gameEngine?.enhancedParticleManager) {'
         }
 
                     this.gameEngine.enhancedParticleManager.setEnabled(enabled); }
@@ -526,7 +526,7 @@ export class EffectDebugInterface {
 
                 break; : undefined''
             case 'screenEffects':;
-                if(this.gameEngine? .enhancedEffectManager) {', ';
+                if(this.gameEngine?.enhancedEffectManager) {', ';
 
                 }
 
@@ -535,7 +535,7 @@ export class EffectDebugInterface {
 
                 break; : undefined''
             case 'animations':;
-                if(this.gameEngine? .animationManager) {', ';
+                if(this.gameEngine?.animationManager) {', ';
 
                 }
 
@@ -544,12 +544,12 @@ export class EffectDebugInterface {
 
                 break; : undefined''
             case 'seasonal':;
-                if (this.gameEngine? .seasonalEffectManager) { this.gameEngine.seasonalEffectManager.setEnabled(enabled); }
+                if (this.gameEngine?.seasonalEffectManager) { this.gameEngine.seasonalEffectManager.setEnabled(enabled); }
                 break;
         }
     }
  : undefined
-    private clearAllEffects(): void { if (this.gameEngine? .enhancedParticleManager) {
+    private clearAllEffects(): void { if (this.gameEngine?.enhancedParticleManager) {
             this.gameEngine.enhancedParticleManager.clearAllParticles(); }
         if (this.gameEngine?.enhancedEffectManager) { this.gameEngine.enhancedEffectManager.clearAllEffects(); }
         if (this.gameEngine?.animationManager) { this.gameEngine.animationManager.clearAllAnimations(); }
@@ -561,7 +561,7 @@ export class EffectDebugInterface {
         
         Promise.all([);
             this.benchmarkParticles(),
-            Promise.resolve(this.benchmarkEffects(')]';
+            Promise.resolve(this.benchmarkEffects()]';
             Promise.resolve(this.benchmarkAnimations()']';
         ]).then(([particleStress, effectStress, animationStress]) => {  const benchmarkResults: BenchmarkResults = {
                 particleStress,
@@ -588,7 +588,7 @@ Animation Stress: ${benchmarkResults.animationStress.fps.toFixed(1}) FPS`);
 
         }
 
-            this.triggerBubbleEffect('normal); }'
+            this.triggerBubbleEffect('normal'; }'
         }
         
         // 1秒間のFPS測定
@@ -598,8 +598,8 @@ Animation Stress: ${benchmarkResults.animationStress.fps.toFixed(1}) FPS`);
                     requestAnimationFrame(measureFrames); }
                 } else { resolve({)
                         fps: frameCount }
-                        duration: performance.now() - startTime }
-                    });
+                        duration: performance.now() - startTime 
+    });
                 }
             };
             requestAnimationFrame(measureFrames);
@@ -611,9 +611,9 @@ Animation Stress: ${benchmarkResults.animationStress.fps.toFixed(1}) FPS`);
         this.triggerScreenEffect('flash'');''
         this.triggerScreenEffect('shake);
         
-        return { fps: this.calculateFPS( };
-            duration: performance.now() - startTime }
-        }
+        return { fps: this.calculateFPS( }
+            duration: performance.now() - startTime 
+    }
 
     private benchmarkAnimations(): BenchmarkResult { // アニメーションストレステスト
         const startTime = performance.now();
@@ -622,15 +622,15 @@ Animation Stress: ${benchmarkResults.animationStress.fps.toFixed(1}) FPS`);
 
         }
 
-            this.triggerComboEffect('spectacular); }'
+            this.triggerComboEffect('spectacular'; }'
         }
         
         return { fps: this.calculateFPS(), };
-            duration: performance.now() - startTime }
-        }
+            duration: performance.now() - startTime 
+    }
 
     public destroy(): void { this.stopMetricsUpdate();
-        if(this.debugPanel? .parentNode) {
+        if(this.debugPanel?.parentNode) {
             
         }
             this.debugPanel.parentNode.removeChild(this.debugPanel); }

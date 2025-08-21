@@ -7,24 +7,24 @@ interface TestResult { id: string,
     name: string;
     status: 'passed' | 'failed' | 'skipped';
     duration: number;
-    error?: Error;
-   , timestamp: number;
+    error?: Error,
+    timestamp: number;
     tags?: string[];
     category?: string; ,}
 
 interface CoverageData { lines: {
         tota;l: number;
-        covered: number;
-       , percentage: number };
+        covered: number,
+    percentage: number };
     branches: { total: number;
-        covered: number;
-       , percentage: number };
+        covered: number,
+    percentage: number };
     functions: { total: number;
-        covered: number;
-       , percentage: number };
+        covered: number,
+    percentage: number };
     statements: { total: number;
-        covered: number;
-       , percentage: number }
+        covered: number,
+    percentage: number }
 
 export class TestDataVisualizer {
     private visualizer: any;
@@ -35,7 +35,7 @@ export class TestDataVisualizer {
         const container = this.getContainer('test-details);
         if (!container) return;
 
-        const results = this.getTestResults(');
+        const results = this.getTestResults();
 
         ')';
         container.innerHTML = `'';
@@ -59,11 +59,11 @@ export class TestDataVisualizer {
         this.setupTestDetailsEventHandlers();
     }"
 
-    public renderCoverageDetails("): void { ""
+    public renderCoverageDetails(): void { ""
         const container = this.getContainer('coverage-details);
         if (!container) return;
 
-        const coverage = this.getCoverageData(');
+        const coverage = this.getCoverageData();
 
         ')';
         container.innerHTML = `'';
@@ -71,7 +71,7 @@ export class TestDataVisualizer {
                 <h3>Code Coverage Analysis</h3>";
             </div>"";
             <div class="coverage-summary">" }"
-                ${this.renderCoverageSummary(coverage"})"
+                ${this.renderCoverageSummary(coverage"}""
             </div>"";
             <div class="coverage-breakdown">;
                 ${this.renderCoverageBreakdown(coverage})
@@ -82,7 +82,7 @@ export class TestDataVisualizer {
     public renderPerformanceMetrics(): void { const results = this.getTestResults();""
         const metrics = this.calculatePerformanceMetrics(results);"
 
-        const container = this.getContainer('performance-metrics);''
+        const container = this.getContainer('performance-metrics';''
         if(!container) return;
 ';
 
@@ -92,20 +92,20 @@ export class TestDataVisualizer {
                 <div class="metrics-grid">"";
                     <div class="metric-card">";
                         <h4>Total Duration</h4>" }"
-                        <span class="metric-value">${metrics.totalDuration.toFixed(2"})ms</span>"
+                        <span class="metric-value">${metrics.totalDuration.toFixed(2"}"ms</span>"
                     </div>"";
                     <div class="metric-card">";
                         <h4>Average Duration</h4>"";
-                        <span class="metric-value">${metrics.averageDuration.toFixed(2"})ms</span>"
+                        <span class="metric-value">${metrics.averageDuration.toFixed(2"}"ms</span>"
                     </div>"";
                     <div class="metric-card">";
                         <h4>Slowest Test</h4>"";
-                        <span class="metric-value">${metrics.slowestTest? .duration.toFixed(2"})ms</span>""
+                        <span class="metric-value">${metrics.slowestTest?.duration.toFixed(2"}"ms</span>""
                         <span class="metric-label">${metrics.slowestTest?.name}</span>"
                     </div>"";
                     <div class="metric-card">";
                         <h4>Fastest Test</h4>"";
-                        <span class="metric-value">${metrics.fastestTest?.duration.toFixed(2"})ms</span>""
+                        <span class="metric-value">${metrics.fastestTest?.duration.toFixed(2"}"ms</span>""
                         <span class="metric-label">${metrics.fastestTest?.name}</span>
                     </div>;
                 </div>;
@@ -122,22 +122,22 @@ export class TestDataVisualizer {
         const rows = results.map(result => `)';
             <tr class="test-row ${result.status}">")""
                 <td class="test-name" title="${ result.name"}">" }"
-                    ${this.truncateText(result.name, 50"})"
+                    ${this.truncateText(result.name, 50"}""
                 </td>"";
                 <td class="test-status">"";
                     <span class="status-badge status-${result.status}">""
-                        ${this.getStatusIcon(result.status"}) ${result.status}"
+                        ${this.getStatusIcon(result.status"}" ${result.status}"
                     </span>";
                 </td>"";
-                <td class="test-duration">${result.duration.toFixed(2"})ms</td>""
-                <td class="test-timestamp">${this.formatTimestamp(result.timestamp"})</td>""
+                <td class="test-duration">${result.duration.toFixed(2"}"ms</td>""
+                <td class="test-timestamp">${this.formatTimestamp(result.timestamp"}"</td>""
                 <td class="test-actions">"";
                     <button class="btn-small" onclick="this.showTestDetails('${ result.id}''}">
                         Details";
                     </button>"";
                     ${result.status === 'failed' ? `' }
 
-                        <button, class="btn-small, btn-warning" onclick="this.showError('${result.id}''})">
+                        <button, class="btn-small, btn-warning" onclick="this.showError('${result.id}''}'">
                             Error";
                         </button> : undefined"";
                     ` : ''}
@@ -172,7 +172,7 @@ export class TestDataVisualizer {
                         <div class="progress-bar">" }"
                             <div class="progress-fill" style="width: ${coverage.lines.percentage}%"></div>"
                         </div>"";
-                        <span class="coverage-text">${coverage.lines.percentage.toFixed(1"})%</span>
+                        <span class="coverage-text">${coverage.lines.percentage.toFixed(1"}"%</span>
                     </div>;
                     <small>${coverage.lines.covered}/${coverage.lines.total} lines covered</small>
                 </div>";
@@ -183,7 +183,7 @@ export class TestDataVisualizer {
                         <div class="progress-bar">"";
                             <div class="progress-fill" style="width: ${coverage.branches.percentage}%"></div>"
                         </div>"";
-                        <span class="coverage-text">${coverage.branches.percentage.toFixed(1"})%</span>
+                        <span class="coverage-text">${coverage.branches.percentage.toFixed(1"}"%</span>
                     </div>;
                     <small>${coverage.branches.covered}/${coverage.branches.total} branches covered</small>
                 </div>";
@@ -194,7 +194,7 @@ export class TestDataVisualizer {
                         <div class="progress-bar">"";
                             <div class="progress-fill" style="width: ${coverage.functions.percentage}%"></div>"
                         </div>"";
-                        <span class="coverage-text">${coverage.functions.percentage.toFixed(1"})%</span>
+                        <span class="coverage-text">${coverage.functions.percentage.toFixed(1"}"%</span>
                     </div>;
                     <small>${coverage.functions.covered}/${coverage.functions.total} functions covered</small>
                 </div>";
@@ -242,7 +242,7 @@ export class TestDataVisualizer {
             </div>;
         `; }"
 
-    private setupTestDetailsEventHandlers("): void { ""
+    private setupTestDetailsEventHandlers(): void { ""
         const statusFilter = document.getElementById('status-filter'') as HTMLSelectElement;''
         const searchFilter = document.getElementById('search-filter) as HTMLInputElement;
 
@@ -266,34 +266,34 @@ export class TestDataVisualizer {
     }
 
     private filterTests()';
-        const statusFilter = (document.getElementById('status-filter) as HTMLSelectElement')? .value;''
+        const statusFilter = (document.getElementById('status-filter' as HTMLSelectElement')?.value;''
         const searchFilter = (document.getElementById('search-filter) as HTMLInputElement)?.value.toLowerCase()';
-        const rows = document.querySelectorAll('.test-row);
+        const rows = document.querySelectorAll('.test-row';
 
         rows.forEach(row => {  ')'
             const element = row as HTMLElement'); : undefined''
             const status = element.classList.contains('passed'') ? 'passed' : '';
-                          element.classList.contains('failed'') ? 'failed' : 'skipped';''
-            const name = element.querySelector('.test-name)? .textContent?.toLowerCase(') || '';
+                          element.classList.contains('failed'') ? 'failed' : 'skipped';
+            const name = element.querySelector('.test-name'?.textContent?.toLowerCase() || '';
 ';
 
             const matchesStatus = !statusFilter || status === statusFilter;''
             const matchesSearch = !searchFilter || name.includes(searchFilter);
 
  : undefined', '
-            element.style.display = matchesStatus && matchesSearch ? '' : 'none'; }
-        });
+            element.style.display = matchesStatus && matchesSearch ? '' : 'none'; 
+    });
     }
 
     private calculatePerformanceMetrics(results: TestResult[]): { totalDuration: number,
         averageDuration: number;
-        slowestTest: TestResult | null;
-       , fastestTest: TestResult | null ,} { if (!results.length) {
+        slowestTest: TestResult | null,
+    fastestTest: TestResult | null ,} { if (!results.length) {
             return { totalDuration: 0;
-                averageDuration: 0;
-               , slowestTest: null, };
-                fastestTest: null }
-            }
+                averageDuration: 0,
+    slowestTest: null, };
+                fastestTest: null 
+    }
 
         const totalDuration = results.reduce((sum, test) => sum + test.duration, 0);
         const averageDuration = totalDuration / results.length;
@@ -325,8 +325,8 @@ export class TestDataVisualizer {
     private getStatusIcon(status: string): string { ''
         switch(status) {'
 
-            case 'passed': return '✓';''
-            case 'failed': return '✗';''
+            case 'passed': return '✓';
+            case 'failed': return '✗';
             case 'skipped': return '⚠';
 
         }

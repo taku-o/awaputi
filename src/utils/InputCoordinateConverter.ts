@@ -9,8 +9,8 @@ interface Point { x: number,
 
 interface BaseRect { x: number;
     y: number;
-    width: number;
-   , height: number }
+    width: number,
+    height: number }
 
 interface ConvertedCoordinates { x: number;
     y: number;
@@ -18,8 +18,8 @@ interface ConvertedCoordinates { x: number;
     canvasY?: number;
     scaledX?: number;
     scaledY?: number;
-    touchIndex?: number;
-   , originalEvent: Event
+    touchIndex?: number,
+    originalEvent: Event
     }
 
 interface ScaledEvent { type: string;
@@ -32,11 +32,11 @@ interface ScaledEvent { type: string;
     originalEvent: Event;
     timestamp: number;
     preventDefault: () => void;
-    stopPropagation: () => void }
-}
+    stopPropagation: () => void 
+    }
 
-interface ValidationResult { valid: boolean;
-   , clampedPoint: Point
+interface ValidationResult { valid: boolean,
+    clampedPoint: Point
     }
 
 interface ScaledCoordinateManager { getCanvasInfo(): any;
@@ -63,11 +63,11 @@ export class InputCoordinateConverter {
                 return { x: event.clientX,
     }
                     y: event.clientY, };
-                    originalEvent: event }
-                }
+                    originalEvent: event 
+    }
             
             // キャンバスの境界矩形を取得
-            const rect = canvas.getBoundingClientRect(');
+            const rect = canvas.getBoundingClientRect();
             
             // 画面座標からキャンバス座標に変換
             const canvasX = event.clientX - rect.left;
@@ -79,27 +79,26 @@ export class InputCoordinateConverter {
             const baseY = canvasY / scaleFactor;
             // 座標の妥当性を検証
             if(!this.scaledCoordinateManager.validateCoordinates(baseX, baseY)) { ''
-                console.warn('InputCoordinateConverter: Invalid converted mouse coordinates', { baseX, baseY );
+                console.warn('InputCoordinateConverter: Invalid converted mouse coordinates', { baseX, baseY ';
                 return { x: event.clientX,
                     y: event.clientY, };
-                    originalEvent: event }
-                }
+                    originalEvent: event 
+    }
             
             return { x: baseX,
                 y: baseY;
                 canvasX: canvasX;
                 canvasY: canvasY;
-                scaledX: baseX * scaleFactor;
-               , scaledY: baseY * scaleFactor, };
-                originalEvent: event }
-
-            };''
+                scaledX: baseX * scaleFactor,
+    scaledY: baseY * scaleFactor, };
+                originalEvent: event 
+    };''
         } catch (error) {
             console.warn('InputCoordinateConverter: Mouse event conversion failed', error);
             return { x: event.clientX,
                 y: event.clientY, };
-                originalEvent: event }
-            }
+                originalEvent: event 
+    }
     }
     
     /**
@@ -118,20 +117,20 @@ export class InputCoordinateConverter {
                 return { x: 0,
     }
                     y: 0, };
-                    originalEvent: event }
-                }
+                    originalEvent: event 
+    }
             
             // タッチポイントを取得
             const touches = event.touches || event.changedTouches;''
             if(!touches || touchIndex >= touches.length) {'
 
-                console.warn('InputCoordinateConverter: Touch point not available', { touchIndex, touchesLength: touches? .length ),
+                console.warn('InputCoordinateConverter: Touch point not available', { touchIndex, touchesLength: touches?.length ),
                 return { : undefined
                     x: 0;
             ,}
                     y: 0, };
-                    originalEvent: event }
-                }
+                    originalEvent: event 
+    }
             
             const touch = touches[touchIndex];
             const rect = canvas.getBoundingClientRect();
@@ -146,28 +145,27 @@ export class InputCoordinateConverter {
             const baseY = canvasY / scaleFactor;
             // 座標の妥当性を検証
             if(!this.scaledCoordinateManager.validateCoordinates(baseX, baseY)) { ''
-                console.warn('InputCoordinateConverter: Invalid converted touch coordinates', { baseX, baseY );
+                console.warn('InputCoordinateConverter: Invalid converted touch coordinates', { baseX, baseY ';
                 return { x: 0,
                     y: 0, };
-                    originalEvent: event }
-                }
+                    originalEvent: event 
+    }
             
             return { x: baseX,
                 y: baseY;
                 canvasX: canvasX;
                 canvasY: canvasY;
                 scaledX: baseX * scaleFactor;
-                scaledY: baseY * scaleFactor;
-               , touchIndex: touchIndex, };
-                originalEvent: event }
-
-            };''
+                scaledY: baseY * scaleFactor,
+    touchIndex: touchIndex, };
+                originalEvent: event 
+    };''
         } catch (error) {
             console.warn('InputCoordinateConverter: Touch event conversion failed', error);
             return { x: 0,
                 y: 0, };
-                originalEvent: event }
-            }
+                originalEvent: event 
+    }
     }
     
     /**
@@ -230,23 +228,22 @@ export class InputCoordinateConverter {
                 canvasY: coords.canvasY;
                 scaledX: coords.scaledX;
                 scaledY: coords.scaledY;
-                originalEvent: originalEvent;
-               , timestamp: Date.now();
+                originalEvent: originalEvent,
+    timestamp: Date.now();
     ,}
                 preventDefault: () => originalEvent.preventDefault(), };
-                stopPropagation: () => originalEvent.stopPropagation(); }
-
-            };''
+                stopPropagation: () => originalEvent.stopPropagation(); 
+    };''
         } catch (error) {
             console.warn('InputCoordinateConverter: Scaled event creation failed', error);
             return { type: originalEvent.type,
                 x: 0;
                 y: 0;
                 originalEvent: originalEvent;
-                timestamp: Date.now();
-               , preventDefault: () => originalEvent.preventDefault(), };
-                stopPropagation: () => originalEvent.stopPropagation(); }
-            }
+                timestamp: Date.now(),
+    preventDefault: () => originalEvent.preventDefault(), };
+                stopPropagation: () => originalEvent.stopPropagation(); 
+    }
     }
     
     /**
@@ -309,17 +306,17 @@ export class InputCoordinateConverter {
     getDebugInfo(event) {'
         const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();''
         const scaleFactor = this.scaledCoordinateManager.getScaleFactor()';
-        if(event.type.includes('touch) {'
+        if(event.type.includes('touch' {'
     }
             convertedCoords = this.convertTouchEvent(event); }
         } else { convertedCoords = this.convertMouseEvent(event); }
         
         return { eventType: event.type,
             canvasInfo: canvasInfo;
-            scaleFactor: scaleFactor;
-           , originalCoords: {
+            scaleFactor: scaleFactor,
+    originalCoords: {
                 clientX: event.clientX, };
-                clientY: event.clientY }
-            };
+                clientY: event.clientY 
+    };
             convertedCoords: convertedCoords,
-            timestamp: Date.now(');
+            timestamp: Date.now();

@@ -12,8 +12,8 @@
 // Type definitions
 interface BoundingBox { x: number,
     y: number;
-    width: number;
-   , height: number ,}
+    width: number,
+    height: number ,}
 
 interface Layer { name: string;
     order: number;
@@ -37,11 +37,11 @@ interface LayerProperties { static?: boolean;
 interface LayerStats { totalLayers: number,
     cachedLayers: number;
     compositedLayers: number;
-    cacheHitRate: number;
-   , compositionTime: number ,}
+    cacheHitRate: number,
+    compositionTime: number ,}
 
-interface LayerManagerConfig { enabled: boolean;
-   , layers: Map<string, Layer>;
+interface LayerManagerConfig { enabled: boolean,
+    layers: Map<string, Layer>;
     layerOrder: string[];
     staticLayers: Set<string>;
     dynamicLayers: Set<string>;
@@ -51,8 +51,8 @@ interface LayerManagerConfig { enabled: boolean;
     currentCacheSize: number;
     compositionMode: 'simple' | 'smart' | 'advanced';
     blendOptimization: boolean;
-    layerFusion: boolean;
-   , layerProperties: Map<string, LayerProperties>;
+    layerFusion: boolean,
+    layerProperties: Map<string, LayerProperties>;
     stats: LayerStats
     ,}
 
@@ -61,8 +61,8 @@ interface RenderObject { type?: string;
     material?: string;
     x: number;
     y: number;
-    width: number;
-   , height: number;
+    width: number,
+    height: number;
     rotation?: number;
     scale?: number;
     alpha?: number;
@@ -75,8 +75,8 @@ interface RenderObject { type?: string;
 
 interface DirtyRegion { x: number,
     y: number;
-    width: number;
-   , height: number ,}
+    width: number,
+    height: number ,}
 
 interface ConfigurationOptions { enabled?: boolean;
     cacheEnabled?: boolean;
@@ -102,21 +102,21 @@ export class BasicLayerManager {
             dynamicLayers: new Set();
             ;
             // Layer caching
-            layerCache: new Map(''';
-           , compositionMode: 'smart', // 'simple', 'smart', 'advanced);
-            blendOptimization: true);
-           , layerFusion: true, // Merge compatible layers;
+            layerCache: new Map(''',
+    compositionMode: 'smart', // 'simple', 'smart', 'advanced);
+            blendOptimization: true),
+    layerFusion: true, // Merge compatible layers;
             // Layer properties
             layerProperties: new Map();
             // Statistics
            , stats: {
                 totalLayers: 0;
                 cachedLayers: 0;
-                compositedLayers: 0;
-               , cacheHitRate: 0;
+                compositedLayers: 0,
+    cacheHitRate: 0;
     ,}
-                compositionTime: 0 }
-};
+                compositionTime: 0 
+    };
         this.initializeDefaultLayers();
     }
 
@@ -124,9 +124,9 @@ export class BasicLayerManager {
      * Initialize default layers
      */''
     private initializeDefaultLayers()';
-        this.createLayer('background', 0, { static: true, cacheable: true )),''
-        this.createLayer('game', 1, { static: false, cacheable: false )),''
-        this.createLayer('ui', 2, { static: true, cacheable: true )),''
+        this.createLayer('background', 0, { static: true, cacheable: true )',''
+        this.createLayer('game', 1, { static: false, cacheable: false )',''
+        this.createLayer('ui', 2, { static: true, cacheable: true )',''
         this.createLayer('overlay', 3, { static: false, cacheable: false ,}
 
     /**
@@ -140,8 +140,8 @@ export class BasicLayerManager {
         const layer: Layer = {
             name,
             order,
-            enabled: true;
-           , visible: true,
+            enabled: true,
+    visible: true,
             opacity: 1.0,
             blendMode: 'source-over';
             // Layer canvas for caching
@@ -156,8 +156,8 @@ export class BasicLayerManager {
             boundingBox: { x: 0, y: 0, width: 0, height: 0 ,},
             
             // Performance tracking
-            renderTime: 0;
-           , complexity: 0;
+            renderTime: 0,
+    complexity: 0;
         },
         ;
         // Create layer canvas if cacheable
@@ -170,14 +170,14 @@ export class BasicLayerManager {
 
         }
 
-            layer.context = layer.canvas.getContext('2d); }'
+            layer.context = layer.canvas.getContext('2d'; }'
         }
         
         this.config.layers.set(name, layer);
         this.config.layerOrder.push(name);
         this.config.layerOrder.sort((a, b) => {  const layerA = this.config.layers.get(a);
             const layerB = this.config.layers.get(b); }
-            return (layerA? .order || 0) - (layerB?.order || 0);
+            return (layerA?.order || 0) - (layerB?.order || 0);
         
         // Track layer type
         if (layer.static) { this.config.staticLayers.add(name); } else { this.config.dynamicLayers.add(name); }
@@ -384,8 +384,8 @@ export class BasicLayerManager {
      * @param ctx - Rendering context'
      */''
     private renderText(obj: RenderObject, ctx: CanvasRenderingContext2D): void { ''
-        ctx.font = obj.font || '16px Arial';''
-        ctx.fillStyle = obj.color || '#000000';''
+        ctx.font = obj.font || '16px Arial';
+        ctx.fillStyle = obj.color || '#000000';
         ctx.textAlign = (obj.align || 'left') as CanvasTextAlign;
         if(obj.text) {
             
@@ -473,7 +473,7 @@ export class BasicLayerManager {
             mainCtx.globalAlpha = layer.opacity; }
         }
 
-        if(layer.blendMode !== 'source-over) { mainCtx.globalCompositeOperation = layer.blendMode as GlobalCompositeOperation; }'
+        if(layer.blendMode !== 'source-over' { mainCtx.globalCompositeOperation = layer.blendMode as GlobalCompositeOperation; }'
         
         // Render layer content
         if(layer.cacheable && layer.canvas && !layer.dirty) {

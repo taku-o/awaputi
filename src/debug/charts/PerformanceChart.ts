@@ -19,13 +19,13 @@ interface DataPoint { value: number,
 
 interface ChartPadding { top: number;
     right: number;
-    bottom: number;
-   , left: number }
+    bottom: number,
+    left: number }
 
 interface ChartArea { x: number;
     y: number;
-    width: number;
-   , height: number }
+    width: number,
+    height: number }
 
 interface Metrics { [key: string]: number, }
 
@@ -42,7 +42,7 @@ export class PerformanceChart {
     constructor(canvas: HTMLCanvasElement, config: ChartConfig = {) {
 
         this.canvas = canvas;
-        const context = canvas.getContext('2d);''
+        const context = canvas.getContext('2d';''
         if(!context) {'
 
     ,}
@@ -59,8 +59,8 @@ export class PerformanceChart {
             min: 0;
             max: 100;
             warning: 80;
-            critical: 90;
-           , samples: 100,
+            critical: 90,
+    samples: 100,
             gridLines: 5,
             key: '';
             ...config;
@@ -71,14 +71,14 @@ export class PerformanceChart {
         this.padding = { top: 20, right: 20, bottom: 30, left: 50 ,}
         this.chartArea = { x: this.padding.left,
             y: this.padding.top;
-            width: this.canvas.width - this.padding.left - this.padding.right;
-           , height: this.canvas.height - this.padding.top - this.padding.bottom ,};
+            width: this.canvas.width - this.padding.left - this.padding.right,
+    height: this.canvas.height - this.padding.top - this.padding.bottom ,};
         this.setupCanvas();
         this.render();
     }
 
     private setupCanvas(''';
-        this.ctx.lineCap = 'round';''
+        this.ctx.lineCap = 'round';
         this.ctx.lineJoin = 'round';
     }
 );
@@ -124,7 +124,7 @@ export class PerformanceChart {
             this.chartArea.x );
             this.chartArea.y);
             this.chartArea.width, )';
-            this.chartArea.height)'';
+            this.chartArea.height''';
         ');
 
         ';
@@ -246,7 +246,7 @@ export class PerformanceChart {
 }
 
     private drawLabels(''';
-        this.ctx.fillStyle = '#ccc';''
+        this.ctx.fillStyle = '#ccc';
         this.ctx.font = '11px, monospace';
         
         // Y軸ラベル)
@@ -281,7 +281,7 @@ export class PerformanceChart {
     }
 
     private drawLegend(''';
-        this.ctx.fillStyle = '#fff';''
+        this.ctx.fillStyle = '#fff';
         this.ctx.font = 'bold, 12px monospace';)
         this.ctx.fillText(this.config.label, this.chartArea.x, 15);
         
@@ -304,7 +304,7 @@ export class PerformanceChart {
             const max = Math.max(...values);''
             const avg = values.reduce((a, b) => a + b, 0') / values.length;
 
-            this.ctx.fillStyle = '#aaa';''
+            this.ctx.fillStyle = '#aaa';
             this.ctx.font = '10px monospace';
             
         }
@@ -346,8 +346,8 @@ export class PerformanceChart {
         this.chartArea = {
             x: this.padding.left;
             y: this.padding.top;
-            width: this.canvas.width - this.padding.left - this.padding.right;
-           , height: this.canvas.height - this.padding.top - this.padding.bottom };
+            width: this.canvas.width - this.padding.left - this.padding.right,
+    height: this.canvas.height - this.padding.top - this.padding.bottom };
         this.setupCanvas();
         this.render();
     }

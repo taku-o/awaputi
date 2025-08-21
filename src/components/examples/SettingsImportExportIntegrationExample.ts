@@ -13,8 +13,8 @@ import { SettingsImportExportComponent  } from '../SettingsImportExportComponent
 interface GameEngine { // Define game engine interface properties as needed }
 
 interface SettingItem { key: string,
-    label: string;
-   , type: string;
+    label: string,
+    type: string;
     component?: string;
     description?: string;
     category?: string; ,}
@@ -46,7 +46,7 @@ export class SettingsImportExportIntegrationExample {
      * 
      * 実際のSettingsSceneでinitializeSettingItems()を拡張する方法
      */''
-    getExtendedSettingItems(''';
+    getExtendedSettingItems('''
                 { key: 'accessibility.highContrast', label: 'ハイコントラスト', type: 'toggle' ,},''
                 { key: 'accessibility.largeText', label: '大きな文字', type: 'toggle' ,},''
                 { key: 'accessibility.reducedMotion', label: 'モーション削減', type: 'toggle' ,},
@@ -94,7 +94,7 @@ export class SettingsImportExportIntegrationExample {
             return componentElement;
 
         } catch (error) {
-            console.error('[SettingsImportExportIntegration] Integration error:', error);
+            console.error('[SettingsImportExportIntegration] Integration error:', error';
             return null;
     
     /**
@@ -118,40 +118,40 @@ export class SettingsImportExportIntegrationExample {
      * 設定エクスポート成功時の処理'
      */''
     private handleSettingsExported(detail: any): void { ''
-        console.log('[SettingsImportExportIntegration] Settings exported:', detail);
+        console.log('[SettingsImportExportIntegration] Settings exported:', detail';
         ';
         // ユーザーフィードバック
-        this.showUserFeedback('success', `設定をエクスポートしました: ${detail.filename)`');
+        this.showUserFeedback('success', `設定をエクスポートしました: ${detail.filename'`');
         ';
         // アナリティクス記録
         this.recordAnalytics('settings_exported', {)
             filename: detail.filename,};
             dataSize: detail.dataSize,} }
-            timestamp: detail.timestamp)});
+            timestamp: detail.timestamp)}';
     }
     
     /**
      * 設定インポート成功時の処理'
      */''
     private handleSettingsImported(detail: any): void { ''
-        console.log('[SettingsImportExportIntegration] Settings imported:', detail);
+        console.log('[SettingsImportExportIntegration] Settings imported:', detail';
         
         // ユーザーフィードバック
         const warningsText = detail.warnings && detail.warnings.length > 0 ' }'
 
-            ? `\n注意: ${detail.warnings.join(', ''})` ''
-            : '';''
+            ? `\n注意: ${detail.warnings.join(', ''}'` ''
+            : '';
         this.showUserFeedback('success);
-            `設定をインポートしました: ${detail.settingsCount}項目が適用されました${ warningsText)`);
+            `設定をインポートしました: ${detail.settingsCount}項目が適用されました${ warningsText)`';
         ';
         // SettingsSceneの再描画を要求
-        this.requestSettingsRefresh(''';
+        this.requestSettingsRefresh('''
         this.recordAnalytics('settings_imported', {
-            filename: detail.filename);
-           , settingsCount: detail.settingsCount,}';
+            filename: detail.filename',
+    settingsCount: detail.settingsCount,}';
             warnings: detail.warnings,'} }'
 
-            timestamp: detail.timestamp)'});
+            timestamp: detail.timestamp''}';
     }
     
     /**
@@ -173,7 +173,7 @@ export class SettingsImportExportIntegrationExample {
      */''
     private recordAnalytics(eventType: string, data: any): void { try {
             // アナリティクスシステムに記録
-            console.log('[Analytics]', eventType, data);' }
+            console.log('[Analytics]', eventType, data';' }
 
         } catch (error) { console.warn('[SettingsImportExportIntegration] Analytics recording failed:', error }
     }

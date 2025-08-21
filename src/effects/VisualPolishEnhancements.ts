@@ -24,8 +24,8 @@ interface AnimationManager { setEasingFunctions(functions: EasingFunctions): voi
 interface PolishSettings { smoothTransitions: boolean,
     enhancedTiming: boolean;
     refinedColors: boolean;
-    improvedPhysics: boolean;
-   , subtleAnimations: boolean ,}
+    improvedPhysics: boolean,
+    subtleAnimations: boolean ,}
 
 interface TimingProfile { duration: number;
     fadeStart?: number;
@@ -42,39 +42,39 @@ interface ScreenEffectsProfile {
     shake: { duration: number;, intensity: number }
 
 interface TimingProfiles { bubble_pop: TimingProfile,
-    combo_effect: ComboTimingProfile;
-   , screen_effects: ScreenEffectsProfile
+    combo_effect: ComboTimingProfile,
+    screen_effects: ScreenEffectsProfile
     ,}
 
 interface EasingFunction { (t: number): number, }
 
 interface EasingFunctions { easeOutQuart: EasingFunction,
     easeInOutCubic: EasingFunction;
-    easeOutElastic: EasingFunction;
-   , easeOutBounce: EasingFunction
+    easeOutElastic: EasingFunction,
+    easeOutBounce: EasingFunction
     ,}
 
 interface ColorPalettes { bubble_effects: {
         norma;l: string[];
         rainbow: string[];
         electric: string[];
-        spiky: string[];
-       , diamond: string[] };
+        spiky: string[],
+    diamond: string[] };
     combo_effects: { basic: string[];
-        enhanced: string[];
-       , spectacular: string[] };
+        enhanced: string[],
+    spectacular: string[] };
     seasonal: { spring: string[];
         summer: string[];
-        autumn: string[];
-       , winter: string[] }
+        autumn: string[],
+    winter: string[] }
 
 interface GradientProfile { type: 'radial' | 'linear',
-    colors: string[];
-   , stops: number[] ,}
+    colors: string[],
+    stops: number[] ,}
 
 interface GradientProfiles { bubble_destruction: GradientProfile;
-    combo_glow: GradientProfile;
-   , screen_flash: GradientProfile
+    combo_glow: GradientProfile,
+    screen_flash: GradientProfile
     }
 
 interface PhysicsProfile { gravity?: number;
@@ -90,8 +90,8 @@ interface PhysicsProfile { gravity?: number;
     momentum_transfer?: boolean; }
 
 interface PhysicsEnhancements { particle_physics: PhysicsProfile,
-    bubble_physics: PhysicsProfile;
-   , effect_physics: PhysicsProfile
+    bubble_physics: PhysicsProfile,
+    effect_physics: PhysicsProfile
     ,}
 
 interface SubtleAnimation { enabled: boolean;
@@ -107,8 +107,8 @@ interface SubtleAnimation { enabled: boolean;
 
 interface SubtleAnimations { idle_floating: SubtleAnimation,
     breathing_effect: SubtleAnimation;
-    shimmer_effect: SubtleAnimation;
-   , glow_pulse: SubtleAnimation
+    shimmer_effect: SubtleAnimation,
+    glow_pulse: SubtleAnimation
     ,}
 
 type QualityLevel = 'low' | 'medium' | 'high' | 'ultra';
@@ -116,8 +116,8 @@ type QualityLevel = 'low' | 'medium' | 'high' | 'ultra';
 interface QualityProfile { smoothTransitions: boolean,
     enhancedTiming: boolean;
     refinedColors: boolean;
-    improvedPhysics: boolean;
-   , subtleAnimations: boolean ,}
+    improvedPhysics: boolean,
+    subtleAnimations: boolean ,}
 
 export class VisualPolishEnhancements {
     private gameEngine: GameEngine;
@@ -132,11 +132,11 @@ export class VisualPolishEnhancements {
         this.polishSettings = {
             smoothTransitions: true;
             enhancedTiming: true;
-            refinedColors: true;
-           , improvedPhysics: true;
+            refinedColors: true,
+    improvedPhysics: true;
     }
-            subtleAnimations: true }
-        };
+            subtleAnimations: true 
+    };
         this.initialize();
     }
 
@@ -173,8 +173,8 @@ export class VisualPolishEnhancements {
             bubble_pop: {
                 duration: 800;
                 fadeStart: 0.6;
-                scaleStart: 0.0;
-               , particleDelay: 50 };
+                scaleStart: 0.0,
+    particleDelay: 50 };
             combo_effect: {
                 basic: { duration: 1000, intensity: 1.0 ,},
                 enhanced: { duration: 1500, intensity: 1.5 ,},
@@ -236,8 +236,8 @@ export class VisualPolishEnhancements {
         this.setupGradientEnhancements();
     }
 
-    private setupGradientEnhancements(''';
-                type: 'radial',)';
+    private setupGradientEnhancements('''
+                type: 'radial','';
                 colors: ['rgba(255, 255, 255, 0.8)', 'rgba(100, 150, 255, 0.6)', 'rgba(50, 100, 200, 0.2)],
                 stops: [0, 0.5, 1.0];
             },
@@ -264,15 +264,15 @@ export class VisualPolishEnhancements {
                 gravity: 0.3;
                 airResistance: 0.95;
                 bounce: 0.7;
-                spin: true;
-               , tumble: true };
+                spin: true,
+    tumble: true };
             bubble_physics: { floatiness: 0.8;
-                wobble: 0.2;
-               , surface_tension: 0.1 };
+                wobble: 0.2,
+    surface_tension: 0.1 };
             effect_physics: { wave_propagation: true;
-                energy_conservation: true;
-               , momentum_transfer: true }
-        };
+                energy_conservation: true,
+    momentum_transfer: true 
+    };
         // 物理設定を適用
         if (this.gameEngine.enhancedParticleManager) { this.gameEngine.enhancedParticleManager.setPhysicsEnhancements(physicsEnhancements); }
     }
@@ -286,17 +286,17 @@ export class VisualPolishEnhancements {
             idle_floating: {
                 enabled: true;
                 amplitude: 2;
-                frequency: 0.01;
-               , phase_offset: Math.PI / 4 };
-            breathing_effect: { enabled: true;
-               , scale_range: [0.98, 1.02],
+                frequency: 0.01,
+    phase_offset: Math.PI / 4 };
+            breathing_effect: { enabled: true,
+    scale_range: [0.98, 1.02],
                 duration: 3000 ,};
-            shimmer_effect: { enabled: true;
-               , opacity_range: [0.7, 1.0],
-                duration: 2000;
-               , delay: 500 ,};
-            glow_pulse: { enabled: true;
-               , intensity_range: [0.5, 1.2],;
+            shimmer_effect: { enabled: true,
+    opacity_range: [0.7, 1.0],
+                duration: 2000,
+    delay: 500 ,};
+            glow_pulse: { enabled: true,
+    intensity_range: [0.5, 1.2],;
                 duration: 1500,
                 easing: 'easeInOutSine' ,}
         };
@@ -310,24 +310,24 @@ export class VisualPolishEnhancements {
                 smoothTransitions: false;
                 enhancedTiming: false;
                 refinedColors: false;
-                improvedPhysics: false;
-               , subtleAnimations: false ,};
+                improvedPhysics: false,
+    subtleAnimations: false ,};
             medium: { smoothTransitions: true;
                 enhancedTiming: false;
                 refinedColors: true;
-                improvedPhysics: false;
-               , subtleAnimations: false };
+                improvedPhysics: false,
+    subtleAnimations: false };
             high: { smoothTransitions: true;
                 enhancedTiming: true;
                 refinedColors: true;
-                improvedPhysics: true;
-               , subtleAnimations: false };
+                improvedPhysics: true,
+    subtleAnimations: false };
             ultra: { smoothTransitions: true;
                 enhancedTiming: true;
                 refinedColors: true;
-                improvedPhysics: true;
-               , subtleAnimations: true }
-        };
+                improvedPhysics: true,
+    subtleAnimations: true 
+    };
         const profile = qualityProfiles[qualityLevel] || qualityProfiles.medium;
         this.polishSettings = { ...this.polishSettings, ...profile;
         
@@ -353,8 +353,8 @@ export class VisualPolishEnhancements {
             smoothTransitions: false;
             enhancedTiming: false;
             refinedColors: false;
-            improvedPhysics: false;
-           , subtleAnimations: false };
+            improvedPhysics: false,
+    subtleAnimations: false };
         this.applyPolishSettings();
     }
 
@@ -364,8 +364,8 @@ export class VisualPolishEnhancements {
             smoothTransitions: true;
             enhancedTiming: true;
             refinedColors: true;
-            improvedPhysics: true;
-           , subtleAnimations: true };
+            improvedPhysics: true,
+    subtleAnimations: true };
         this.applyPolishSettings();
     }
 
@@ -389,4 +389,4 @@ export class VisualPolishEnhancements {
             this.optimizeForPerformance(); }
 }
 
-    public isEnabled(');
+    public isEnabled();

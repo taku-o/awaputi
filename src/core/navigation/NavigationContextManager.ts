@@ -8,15 +8,15 @@
  * @since Issue #163 - Duplicate help/settings screen consolidation
  */
 
-import { getLoggingSystem  } from '../LoggingSystem.js';''
+import { getLoggingSystem  } from '../LoggingSystem.js';
 import { ErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
 export interface NavigationContext { scene: string,
     method: AccessMethod;
     timestamp: number;
-    data: ContextData;
-   , id: string ,}
+    data: ContextData,
+    id: string ,}
 
 export interface ContextData { [key: string]: any;
     preserveState?: boolean }
@@ -27,33 +27,33 @@ export interface ReturnContext { targetScene: string;
 
 export interface NavigationConfig { maxStackSize: number,
     enableLogging: boolean;
-    defaultReturnScene: string;
-   , allowCircularNavigation: boolean ,}
+    defaultReturnScene: string,
+    allowCircularNavigation: boolean ,}
 
 export interface DebugInfo { stackSize: number;
     maxStackSize: number;
     currentContext: NavigationContext | null;
-    stack: NavigationContext[];
-   , config: NavigationConfig
+    stack: NavigationContext[],
+    config: NavigationConfig
     }
 
 export interface GameEngine { sceneManager?: SceneManager;
     }
 
-export interface SceneManager { hasScene: (sceneNam;e: string) => boolean,
-    switchScene?: (sceneNam;e: string, options?: any) => void;
-    getCurrentScene?: () => string; }
-}
+export interface SceneManager { hasScene: (sceneName: string) => boolean,
+    switchScene?: (sceneName: string, options?: any) => void;
+    getCurrentScene?: () => string; 
+    }
 
-export interface LoggingSystem { info: (componen;t: string, message: string, ...args: any[]) => void,
-    debug: (componen;t: string, message: string, ...args: any[]) => void,
-    warn: (componen;t: string, message: string, ...args: any[]) => void,
-    error: (componen;t: string, message: string, ...args: any[]) => void, }
+export interface LoggingSystem { info: (component: string, message: string, ...args: any[]) => void,
+    debug: (component: string, message: string, ...args: any[]) => void,
+    warn: (component: string, message: string, ...args: any[]) => void,
+    error: (component: string, message: string, ...args: any[]) => void, }
 }
 ';
 
 export interface ErrorHandlerInstance {;
-    handleError: (erro;r: Error, context: string, additionalData?: any') => void }'
+    handleError: (error: Error, context: string, additionalData?: any') => void }'
 }
 
 // 列挙型
@@ -78,8 +78,8 @@ export const CONTEXT_ID_LENGTH = 9;
 // デフォルト設定
 export const DEFAULT_CONFIG: NavigationConfig = { maxStackSize: DEFAULT_MAX_STACK_SIZE,
     enableLogging: true;
-    defaultReturnScene: DEFAULT_RETURN_SCENE;
-   , allowCircularNavigation: false ,};
+    defaultReturnScene: DEFAULT_RETURN_SCENE,
+    allowCircularNavigation: false ,};
 ;
 // 型ガード
 export function isValidAccessMethod(method: string): method is AccessMethod { return ['', 'menu_click', 'keyboard_h', 'keyboard_s', 'keyboard_i',
@@ -156,7 +156,7 @@ export class NavigationContextManager {
 
             } catch (error) {
             const err = error instanceof Error ? error: new Error(String(error)),
-            this.errorHandler.handleError(err, 'NavigationContextManager.initialize);
+            this.errorHandler.handleError(err, 'NavigationContextManager.initialize';
             throw err; }
     }
     
@@ -177,7 +177,7 @@ export class NavigationContextManager {
 
             }
 
-                throw new Error('Invalid, accessMethod parameter); }'
+                throw new Error('Invalid, accessMethod parameter'; }'
             }
 
             if(!isValidAccessMethod(accessMethod)) { ''
@@ -186,13 +186,13 @@ export class NavigationContextManager {
             }
 
             if(!isValidContextData(additionalData)) { ''
-                throw new Error('Invalid, additionalData parameter); }'
+                throw new Error('Invalid, additionalData parameter'; }'
             
             const context: NavigationContext = { scene: fromScene,
                 method: accessMethod as AccessMethod;
                 timestamp: Date.now();
-                data: additionalData;
-               , id: this.generateContextId( ,};
+                data: additionalData,
+    id: this.generateContextId( ,};
             
             // 循環ナビゲーションのチェック
             if(!this.config.allowCircularNavigation && this.isCircularNavigation(fromScene) {
@@ -200,7 +200,7 @@ export class NavigationContextManager {
                 if(this.config.enableLogging) {'
             }
 
-                    this.loggingSystem.warn('NavigationContextManager) }'
+                    this.loggingSystem.warn('NavigationContextManager' }'
                         `Circular navigation detected: ${fromScene}`});
                 }
                 return false;
@@ -212,7 +212,7 @@ export class NavigationContextManager {
                 if(removed && this.config.enableLogging) {'
             }
 
-                    this.loggingSystem.debug('NavigationContextManager) }'
+                    this.loggingSystem.debug('NavigationContextManager' }'
                         `Removed oldest context: ${removed.scene}`});
                 }
             }
@@ -225,7 +225,7 @@ export class NavigationContextManager {
 
             }
 
-                this.loggingSystem.debug('NavigationContextManager) }'
+                this.loggingSystem.debug('NavigationContextManager' }'
                     `Context pushed: ${fromScene} via ${accessMethod} (ID: ${ context.id }`});
             }
             
@@ -259,7 +259,7 @@ export class NavigationContextManager {
 
             }
 
-                this.loggingSystem.debug('NavigationContextManager) }'
+                this.loggingSystem.debug('NavigationContextManager' }'
                     `Context popped: ${poppedContext.scene} (ID: ${ poppedContext.id }`});
             }
             
@@ -267,7 +267,7 @@ export class NavigationContextManager {
 
         } catch (error) {
             const err = error instanceof Error ? error: new Error(String(error)),
-            this.errorHandler.handleError(err, 'NavigationContextManager.popContext);
+            this.errorHandler.handleError(err, 'NavigationContextManager.popContext';
             return null;
     
     /**
@@ -280,8 +280,8 @@ export class NavigationContextManager {
             // 現在のコンテキストを上書きする形で戻り先を設定
             const context: NavigationContext = { scene: returnContext.targetScene,''
                 method: 'explicit_return';
-                timestamp: Date.now();
-               , data: {
+                timestamp: Date.now(),
+    data: {
                     ...returnContext.contextData;
                     preserveState: returnContext.preserveState || false ,};
                 id: this.generateContextId();
@@ -296,7 +296,7 @@ export class NavigationContextManager {
 
             }
 
-                this.loggingSystem.debug('NavigationContextManager) }'
+                this.loggingSystem.debug('NavigationContextManager' }'
                     `Return context set: ${returnContext.targetScene} (ID: ${ context.id }`});
             }
             
@@ -325,7 +325,7 @@ export class NavigationContextManager {
                     if(this.config.enableLogging) {'
             }
 
-                        this.loggingSystem.warn('NavigationContextManager) }'
+                        this.loggingSystem.warn('NavigationContextManager' }'
                             `Return scene not found: ${returnScene}, using default`});
                     }
                     return this.config.defaultReturnScene;
@@ -385,14 +385,14 @@ export class NavigationContextManager {
 
             }
 
-                throw new Error('maxStackSize, must be, at least, 1); }'
+                throw new Error('maxStackSize, must be, at least, 1'; }'
             }
 
             if(newConfig.defaultReturnScene !== undefined && !newConfig.defaultReturnScene) {', ';
 
             }
 
-                throw new Error('defaultReturnScene, cannot be, empty); }'
+                throw new Error('defaultReturnScene, cannot be, empty'; }'
             }
 
             this.config = { ...this.config, ...newConfig;
@@ -405,15 +405,15 @@ export class NavigationContextManager {
 
             } catch (error) {
             const err = error instanceof Error ? error: new Error(String(error)),
-            this.errorHandler.handleError(err, 'NavigationContextManager.updateConfig); }'
+            this.errorHandler.handleError(err, 'NavigationContextManager.updateConfig'; }'
     }
     
     /**
      * デバッグ情報を取得
      */
     getDebugInfo(): DebugInfo { return { stackSize: this.navigationStack.length,
-            maxStackSize: this.config.maxStackSize;
-           , currentContext: this.currentContext, };
+            maxStackSize: this.config.maxStackSize,
+    currentContext: this.currentContext, };
             stack: [...this.navigationStack], // 防御的コピー }
             config: { ...this.config // 防御的コピー
         }
@@ -438,7 +438,7 @@ export class NavigationContextManager {
      * コンテキストIDを生成
      */
     private generateContextId(): string {
-        return `nav_${Date.now(})_${Math.random(}.toString(36}.substr(2, CONTEXT_ID_LENGTH})`;
+        return `nav_${Date.now())_${Math.random().toString(36).substr(2, CONTEXT_ID_LENGTH})`;
     }
 
     /**
@@ -453,7 +453,7 @@ export class NavigationContextManager {
      * 特定のシーンへの直接戻りパスを設定
      */''
     setDirectReturnPath(targetScene: string, preserveState = false): boolean { ''
-        if(!targetScene || typeof, targetScene !== 'string) {'
+        if(!targetScene || typeof, targetScene !== 'string' {'
             
         }
             return false;
@@ -488,12 +488,12 @@ export class NavigationContextManager {
 
             }
 
-                this.loggingSystem.debug('NavigationContextManager) }'
+                this.loggingSystem.debug('NavigationContextManager' }'
                     `Popped ${poppedContexts.length} contexts to reach context: ${contextId}`});
 
             } catch (error) {
             const err = error instanceof Error ? error: new Error(String(error)),
-            this.errorHandler.handleError(err, 'NavigationContextManager.popToContext); }'
+            this.errorHandler.handleError(err, 'NavigationContextManager.popToContext'; }'
 
         return poppedContexts;
     }
@@ -512,10 +512,10 @@ export class NavigationContextManager {
      * 統計情報の取得
      */
     getStatistics(): { totalContexts: number,
-        uniqueScenes: number;
-       , accessMethods: Record<string, number>,
-        averageStackDepth: number;
-       , oldestContext: NavigationContext | null ,} {
+        uniqueScenes: number,
+    accessMethods: Record<string, number>,
+        averageStackDepth: number,
+    oldestContext: NavigationContext | null ,} {
         const accessMethods: Record<string, number> = {};
         const uniqueScenes = new Set<string>();
 

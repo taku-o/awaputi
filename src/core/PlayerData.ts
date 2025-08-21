@@ -10,9 +10,9 @@ function getErrorHandler(): ErrorHandler { if (!errorHandlerInstance) {
 // Simple validation for PlayerData (fallback, implementation);
 function validateInput(value: any, type: string, constraints: any = {}): ValidationResult { const result: ValidationResult = {
         isValid: false;
-        sanitizedValue: value;
-       , errors: [] };
-    if(type === 'number) {'
+        sanitizedValue: value,
+    errors: [] };
+    if(type === 'number' {'
         const num = Number(value);''
         if(isNaN(num)) {''
             result.errors.push('Value, must be, a number);
@@ -31,7 +31,7 @@ function validateInput(value: any, type: string, constraints: any = {}): Validat
 
             if (constraints.max !== undefined && num > constraints.max) { ' }'
 
-                result.errors.push(`Value, must be, at most ${constraints.max}`'});
+                result.errors.push(`Value, must be, at most ${constraints.max}`'}';
                 result.sanitizedValue = constraints.max;
             }
 
@@ -77,14 +77,14 @@ interface OwnedItem { id: string,
 
 interface PlayerDataSave { username: string;
     ap: number;
-    tap: number;
-   , highScores: Record<string, number>;
-    unlockedStages: string[];
-   , ownedItems: (string | OwnedItem)[] ,}
+    tap: number,
+    highScores: Record<string, number>;
+    unlockedStages: string[],
+    ownedItems: (string | OwnedItem)[] ,}
 
 interface ValidationResult { isValid: boolean;
-    sanitizedValue: any;
-   , errors: string[] }
+    sanitizedValue: any,
+    errors: string[] }
 
 interface ItemManager { useRevival(): boolean; }
 
@@ -127,13 +127,13 @@ export class PlayerData {
             // 入力値を検証
             const validation = validateInput(points, 'number', {
                 min: 0);
-                max: 1000000);
-               , integer: true;
+                max: 1000000),
+    integer: true;
             ),
 
             if (!validation.isValid) {' }'
 
-                getErrorHandler(').handleError(new Error(`Invalid score points: ${validation.errors.join(', '})`'), 'VALIDATION_ERROR', { input: points,
+                getErrorHandler().handleError(new Error(`Invalid score points: ${validation.errors.join(', '}'`'), 'VALIDATION_ERROR', { input: points,
                     errors: validation.errors ,});
                 return;
             }
@@ -144,7 +144,7 @@ export class PlayerData {
 
         } catch (error) { }
 
-            getErrorHandler(').handleError(error, 'PLAYER_DATA_ERROR', { operation: 'addScore', points });
+            getErrorHandler().handleError(error, 'PLAYER_DATA_ERROR', { operation: 'addScore', points }';
         }
     }
     
@@ -155,13 +155,13 @@ export class PlayerData {
             // 入力値を検証
             const validation = validateInput(amount, 'number', {
                 min: 0);
-                max: this.maxHP);
-               , integer: true;
+                max: this.maxHP),
+    integer: true;
             ),
 
             if (!validation.isValid) {' }'
 
-                getErrorHandler(').handleError(new Error(`Invalid damage amount: ${validation.errors.join(', '})`'), 'VALIDATION_ERROR', { input: amount,
+                getErrorHandler().handleError(new Error(`Invalid damage amount: ${validation.errors.join(', '}'`'), 'VALIDATION_ERROR', { input: amount,
                     errors: validation.errors ,});
                 return { died: false }
             
@@ -180,14 +180,14 @@ export class PlayerData {
                         return { died: false, revived: true ,}; // 復活したのでゲームオーバーではない
                     } catch (error) { }
 
-                    getErrorHandler(').handleError(error, 'ITEM_SYSTEM_ERROR', { operation: 'useRevival' });
+                    getErrorHandler().handleError(error, 'ITEM_SYSTEM_ERROR', { operation: 'useRevival' });
                 }
                 return { died: true, revived: false ,}; // ゲームオーバー
             }
             return { died: false } catch (error) { }
 
-            getErrorHandler(').handleError(error, 'PLAYER_DATA_ERROR', { operation: 'takeDamage', amount });
-            return { died: false }
+            getErrorHandler().handleError(error, 'PLAYER_DATA_ERROR', { operation: 'takeDamage', amount }';
+            return { died: false 
     }
     
     /**
@@ -197,13 +197,13 @@ export class PlayerData {
             // 入力値を検証
             const validation = validateInput(amount, 'number', {
                 min: 0);
-                max: this.maxHP);
-               , integer: true;
+                max: this.maxHP),
+    integer: true;
             ),
 
             if (!validation.isValid) {' }'
 
-                getErrorHandler(').handleError(new Error(`Invalid heal amount: ${validation.errors.join(', '})`'), 'VALIDATION_ERROR', { input: amount,
+                getErrorHandler().handleError(new Error(`Invalid heal amount: ${validation.errors.join(', '}'`'), 'VALIDATION_ERROR', { input: amount,
                     errors: validation.errors ,});
                 return;
             }
@@ -214,7 +214,7 @@ export class PlayerData {
 
         } catch (error) { }
 
-            getErrorHandler(').handleError(error, 'PLAYER_DATA_ERROR', { operation: 'heal', amount });
+            getErrorHandler().handleError(error, 'PLAYER_DATA_ERROR', { operation: 'heal', amount }';
         }
     }
     
@@ -248,7 +248,7 @@ export class PlayerData {
 
             if (!validation.isValid) {' }'
 
-                getErrorHandler(').handleError(new Error(`Invalid username: ${validation.errors.join(', '})`'), 'VALIDATION_ERROR', { input: this.username,
+                getErrorHandler().handleError(new Error(`Invalid username: ${validation.errors.join(', '}'`'), 'VALIDATION_ERROR', { input: this.username,
                     errors: validation.errors ,});
                 // サニタイズされた値を使用
                 this.username = validation.sanitizedValue;
@@ -273,12 +273,12 @@ export class PlayerData {
                     fallbackStorage.setItem('bubblePop_playerData', JSON.stringify(data); }
                 } else { throw storageError; }
 
-            } catch (error) { getErrorHandler(').handleError(error, 'STORAGE_ERROR', { ''
+            } catch (error) { getErrorHandler().handleError(error, 'STORAGE_ERROR', { ''
                 operation: 'save',
                 data: 'playerData);
-                username: this.username);
-               , ap: this.ap,);
-                tap: this.tap ,});
+                username: this.username),
+    ap: this.ap,);
+                tap: this.tap ,}';
         }
     }
     
@@ -293,7 +293,7 @@ export class PlayerData {
 
                 }
 
-                    savedData = fallbackStorage.getItem('bubblePop_playerData); }'
+                    savedData = fallbackStorage.getItem('bubblePop_playerData'; }'
                 } else { throw storageError; }
             }
             
@@ -306,18 +306,18 @@ export class PlayerData {
                     data = JSON.parse(savedData); }
 
                 } catch (parseError) {
-                    getErrorHandler(').handleError(parseError, 'STORAGE_ERROR', { ')'
+                    getErrorHandler().handleError(parseError, 'STORAGE_ERROR', { ')'
                         operation: 'parse',')';
-                        data: 'playerData');
-                       , savedData: savedData.substring(0, 100) // 最初の100文字のみログ });
+                        data: 'playerData'),
+    savedData: savedData.substring(0, 100) // 最初の100文字のみログ });
                     return; // パースエラーの場合はデフォルト値を使用
                 }
                 
                 // データを検証して読み込み
                 this.loadValidatedData(data);
-            } catch (error) { getErrorHandler(').handleError(error, 'STORAGE_ERROR', { ')'
+            } catch (error) { getErrorHandler().handleError(error, 'STORAGE_ERROR', { ')'
                 operation: 'load',')';
-                data: 'playerData' ,});
+                data: 'playerData' ,}';
             // エラーの場合はデフォルト値を使用
         }
     }
@@ -328,26 +328,26 @@ export class PlayerData {
     private loadValidatedData(data: Partial<PlayerDataSave>): void { try {
             // ユーザー名を検証
             const usernameValidation = validateInput(data.username, 'string', {)
-                maxLength: 50)';
-               , escapeHtml: true'';
-            )');''
+                maxLength: 50'',
+    escapeHtml: true'';
+            '');''
             this.username = usernameValidation.isValid ? usernameValidation.sanitizedValue: '',
             // APを検証
             const apValidation = validateInput(data.ap, 'number', {
                 min: 0);
-                max: 999999999)';
-               , integer: true'';
-            )'),
+                max: 999999999'',
+    integer: true'';
+            ''),
             this.ap = apValidation.isValid ? apValidation.sanitizedValue: 0,
             // TAPを検証
             const tapValidation = validateInput(data.tap, 'number', {
                 min: 0);
-                max: 999999999)';
-               , integer: true'';
-            )'),
+                max: 999999999'',
+    integer: true'';
+            ''),
             this.tap = tapValidation.isValid ? tapValidation.sanitizedValue: 0,
             // ハイスコアを検証
-            const highScoresValidation = validateInput(data.highScores, 'object', {)); }
+            const highScoresValidation = validateInput(data.highScores, 'object', {)'; }
             this.highScores = highScoresValidation.isValid ? highScoresValidation.sanitizedValue : {};
             ';
             // 開放済みステージを検証
@@ -355,8 +355,8 @@ export class PlayerData {
                 itemType: 'string', }
 
                 itemConstraints: { maxLength: 20 })
-            )'),
-            this.unlockedStages = stagesValidation.isValid ?   : undefined'';
+            ''),
+            this.unlockedStages = stagesValidation.isValid ? undefined : undefined'';
                 stagesValidation.sanitizedValue : ['tutorial', 'normal'];
             ';
             // 所持アイテムを検証
@@ -366,7 +366,7 @@ export class PlayerData {
             );
             this.ownedItems = itemsValidation.isValid ? itemsValidation.sanitizedValue: [],
 
-        } catch (error) { getErrorHandler(').handleError(error, 'VALIDATION_ERROR', { ')'
+        } catch (error) { getErrorHandler().handleError(error, 'VALIDATION_ERROR', { ')'
                 operation: 'loadValidatedData',);
                 data: data ,});
             // エラーの場合はデフォルト値を使用
@@ -398,20 +398,20 @@ export class PlayerData {
         tap: number;
         combo: number;
         totalHighScore: number;
-        unlockedStagesCount: number;
-       , itemsCount: number ,} { const totalHighScore = Object.values(this.highScores).reduce((sum, score) => sum + score, 0);
+        unlockedStagesCount: number,
+    itemsCount: number ,} { const totalHighScore = Object.values(this.highScores).reduce((sum, score) => sum + score, 0);
         
         return { username: this.username,
             currentHP: this.currentHP;
             maxHP: this.maxHP;
             currentScore: this.currentScore;
             ap: this.ap;
-            tap: this.tap;
-           , combo: this.combo;
+            tap: this.tap,
+    combo: this.combo;
             totalHighScore,
             unlockedStagesCount: this.unlockedStages.length, };
-            itemsCount: this.ownedItems.length }
-        }
+            itemsCount: this.ownedItems.length 
+    }
     
     /**
      * ステージをアンロック
@@ -518,7 +518,7 @@ export class PlayerData {
      * アイテムを所有しているかチェック'
      */''
     hasItem(itemId: string): boolean { return this.ownedItems.some(item => ')'
-            typeof item === 'object' && item !== null && 'id' in item && item.id === itemId);
+            typeof item === 'object' && item !== null && 'id' in item && item.id === itemId';
     
     /**
      * アイテムのレベルを取得'
@@ -540,13 +540,13 @@ export class PlayerData {
             // 入力値を検証
             const validation = validateInput(amount, 'number', {
                 min: 0);
-                max: 100000);
-               , integer: true;
+                max: 100000),
+    integer: true;
             ),
 
             if (!validation.isValid) {' }'
 
-                getErrorHandler(').handleError(new Error(`Invalid AP amount: ${validation.errors.join(', '})`'), 'VALIDATION_ERROR', { input: amount,
+                getErrorHandler().handleError(new Error(`Invalid AP amount: ${validation.errors.join(', '}'`'), 'VALIDATION_ERROR', { input: amount,
                     errors: validation.errors ,});
                 return;
             }
@@ -559,7 +559,7 @@ export class PlayerData {
 
         } catch (error) { }
 
-            getErrorHandler(').handleError(error, 'PLAYER_DATA_ERROR', { operation: 'addAP', amount });
+            getErrorHandler().handleError(error, 'PLAYER_DATA_ERROR', { operation: 'addAP', amount }';
         }
 
     }''

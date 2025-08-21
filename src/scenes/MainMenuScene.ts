@@ -1,11 +1,11 @@
-import { Scene  } from '../core/Scene.js';''
-import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { Scene  } from '../core/Scene.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 import type { MenuItem, MainMenuScene as IMainMenuScene } from '../types/game';
 ';
 // サブコンポーネントのインポート
-import { MainMenuRenderer  } from './main-menu/MainMenuRenderer.js';''
-import { UsernameInputManager  } from './main-menu/UsernameInputManager.js';''
-import { MainMenuDialogManager  } from './main-menu/MainMenuDialogManager.js';''
+import { MainMenuRenderer  } from './main-menu/MainMenuRenderer.js';
+import { UsernameInputManager  } from './main-menu/UsernameInputManager.js';
+import { MainMenuDialogManager  } from './main-menu/MainMenuDialogManager.js';
 import { MenuInputHandler  } from './main-menu/MenuInputHandler.js';
 
 /**
@@ -112,10 +112,10 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
             // リサイズハンドラーを登録
             if(this.gameEngine.responsiveCanvas) {
 
-                this.resizeCallback = (') => {;
+                this.resizeCallback = () => {;
             }
 
-                    if(this.mainMenuRenderer && typeof, this.mainMenuRenderer.handleResize === 'function) { }'
+                    if(this.mainMenuRenderer && typeof, this.mainMenuRenderer.handleResize === 'function' { }'
                         this.mainMenuRenderer.handleResize(); }
 };''
                 this.gameEngine.responsiveCanvas.onResizeCallbacks.push(this.resizeCallback);
@@ -125,18 +125,18 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
             const testUsername = localStorage.getItem('testUsername'');''
             const skipUsernameInput = localStorage.getItem('skipUsernameInput'');
 
-            if(testUsername && skipUsernameInput === 'true) {'
+            if(testUsername && skipUsernameInput === 'true' {'
                 // テスト用ユーザー名を設定
                 this.gameEngine.playerData.username = testUsername;''
                 this.gameEngine.playerData.save()';
-                console.log('[Test Mode] Username auto-set:', testUsername);
+                console.log('[Test Mode] Username auto-set:', testUsername';
                 ';
                 // localStorageをクリア（一回限りの処理）
                 localStorage.removeItem('testUsername'');
 
             }
 
-                localStorage.removeItem('skipUsernameInput); }'
+                localStorage.removeItem('skipUsernameInput'; }'
             }
             // 初回起動時にユーザー名が未設定の場合、ユーザー名入力を表示
             else if (!this.gameEngine.playerData.username) { this.showUsernameInput();' }'
@@ -207,7 +207,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
             } else { this.handleMainMenuInput(event);' }'
 
             } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'MainMenuScene.handleInput' ,});
+                context: 'MainMenuScene.handleInput' ,}';
         }
     }
     
@@ -217,7 +217,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
     handleMainMenuInput(event: Event): void { const keyboardEvent = event as KeyboardEvent;
         const mouseEvent = event as MouseEvent;
 
-        if(event.type === 'keydown) {'
+        if(event.type === 'keydown' {'
 
             switch(keyboardEvent.code) {''
                 case 'ArrowUp':'';
@@ -236,7 +236,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
                     break; }
 
             }''
-        } else if(event.type === 'click) { this.menuInputHandler.handleMainMenuClick('
+        } else if(event.type === 'click' { this.menuInputHandler.handleMainMenuClick('
                 mouseEvent);
                 this.selectedMenuIndex, );
                 this.menuItems);
@@ -252,12 +252,12 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
     handleUsernameInput(event: Event): void { const keyboardEvent = event as KeyboardEvent;
         const mouseEvent = event as MouseEvent;
 
-        if(event.type === 'keydown) {'
+        if(event.type === 'keydown' {'
 
             switch(keyboardEvent.code) {''
                 case 'Enter':'';
-                    this.confirmUsername(''';
-                case 'Escape':'';
+                    this.confirmUsername('''
+                case 'Escape': '';
                     this.cancelUsernameInput()';
                 case 'Backspace':);
                     this.usernameInputManager.handleBackspace();
@@ -285,7 +285,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
 
         if(event.type === 'keydown'') {'
 
-            if(keyboardEvent.code === 'Escape) {'
+            if(keyboardEvent.code === 'Escape' {'
         }
 
                 this.cancelDataClear() }
@@ -304,7 +304,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
 
         if(event.type === 'keydown'') {'
 
-            if(keyboardEvent.code === 'Escape) {'
+            if(keyboardEvent.code === 'Escape' {'
         }
 
                 this.closeControlsHelp() }
@@ -324,7 +324,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
 
         if(event.type === 'keydown'') {'
 
-            if(keyboardEvent.code === 'Escape) {'
+            if(keyboardEvent.code === 'Escape' {'
         }
 
                 this.closeUserInfo() }
@@ -364,16 +364,16 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      */
     startGame(): void { if (!this.gameEngine.playerData.username) {''
             this.showUsernameInput()';
-        this.gameEngine.sceneManager.switchScene('stageSelect); }'
+        this.gameEngine.sceneManager.switchScene('stageSelect'; }'
     
     /**
      * 設定画面を開く
      * NavigationContextManagerを使用してコンテキストを管理'
      */''
-    openSettings(''';
+    openSettings('''
                 accessMethod: 'menu_click',
                 sourceScene: 'MainMenuScene);
-            })'
+            }''
 
             const success = this.gameEngine.sceneManager.switchScene('settings', contextData);
 
@@ -401,7 +401,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      * ショップ画面を開く'
      */''
     openShop()';
-            const success = this.gameEngine.sceneManager.switchScene('shop);''
+            const success = this.gameEngine.sceneManager.switchScene('shop';''
             if(!success) {'
 
                 console.error('[MainMenuScene] Failed, to switch, to shop, scene');
@@ -410,7 +410,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
                 // フォールバック: エラーメッセージ表示' }'
 
             } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'MainMenuScene.openShop' ,});
+                context: 'MainMenuScene.openShop' ,}';
         }
     }
     
@@ -418,11 +418,11 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      * ヘルプ画面を開く
      * NavigationContextManagerを使用してコンテキストを管理'
      */''
-    openHelp(''';
+    openHelp('''
                 accessMethod: 'menu_click',
-                sourceScene: 'MainMenuScene';
-               , standard: true // 標準ヘルプモード);
-            })
+                sourceScene: 'MainMenuScene',
+    standard: true // 標準ヘルプモード);
+            }'
 
             const success = this.gameEngine.sceneManager.switchScene('help', contextData);
 
@@ -504,4 +504,4 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
     /**
      * 操作説明画面を閉じる
      */''
-    closeControlsHelp(');
+    closeControlsHelp();

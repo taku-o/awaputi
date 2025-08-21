@@ -6,14 +6,14 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
 interface EnhancedTransform { depthOfField: number,
     motionBlur: {
         ;x: number;
-        y: number;
-       , intensity: number ,};
+        y: number,
+    intensity: number ,};
     chromatic: number;
     vignette: number;
     noise: number;
-    scanlines: number;
-   , glitch: { intensity: number;
-       , frequency: number }
+    scanlines: number,
+    glitch: { intensity: number,
+    frequency: number }
 
 /**
  * レンダリング設定インターフェース
@@ -24,14 +24,14 @@ interface RenderSettings { enablePostProcessing: boolean,''
 /**
  * グリッチ効果設定インターフェース
  */
-interface GlitchEffect { intensity: number;
-   , frequency: number }
+interface GlitchEffect { intensity: number,
+    frequency: number }
 
 /**
  * フォーカスポイントインターフェース
  */
-interface FocusPoint { x: number;
-   , y: number }
+interface FocusPoint { x: number,
+    y: number }
 
 /**
  * Post Processing Renderer
@@ -132,7 +132,7 @@ export class PostProcessingRenderer {
     renderScanlinesEffect(context: CanvasRenderingContext2D, intensity: number): void { try {
             const canvas = this.canvas;''
             context.save(''';
-            context.globalCompositeOperation = 'multiply';)', ')';
+            context.globalCompositeOperation = 'multiply';'', ')';
             for(let, y = 0; y < canvas.height; y += 4) {'
 
                 context.fillStyle = 'rgba(0, 0, 0, 0.1)';
@@ -216,7 +216,7 @@ export class PostProcessingRenderer {
 
             context.restore(});''
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'PostProcessingRenderer.renderDepthBlurEffect),' }
+                context: 'PostProcessingRenderer.renderDepthBlurEffect',' }
 
             }');
         }

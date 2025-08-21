@@ -14,26 +14,26 @@ export interface SecurityConfiguration { xssProtection: boolean,
     injectionPrevention: boolean;
     sanitization: boolean;
     trustedDomains: string[];
-    maxTranslationLength: number;
-   , maxParameterCount: number ,}
+    maxTranslationLength: number,
+    maxParameterCount: number ,}
 
 export interface SecurityRules { forbiddenTags: string[];
     forbiddenAttributes: string[];
     suspiciousPatterns: RegExp[];
-    allowedTags: string[];
-   , allowedAttributes: string[] }
+    allowedTags: string[],
+    allowedAttributes: string[] }
 
 export interface SecurityStatistics { totalValidations: number;
     blockedAttempts: number;
     xssAttempts: number;
     injectionAttempts: number;
     parameterViolations: number;
-    contentViolations: number;
-   , lastThreat: ThreatInfo | null }
+    contentViolations: number,
+    lastThreat: ThreatInfo | null }
 
 export interface ThreatInfo { timestamp: number;
-    type: string;
-   , details: any }
+    type: string,
+    details: any }
 ';
 
 export interface CSPConfiguration {;
@@ -41,8 +41,8 @@ export interface CSPConfiguration {;
 
 export interface SecurityViolation { type: SecurityViolationType,
     path?: string;
-    message: string;
-   , severity: SecuritySeverity;
+    message: string,
+    severity: SecuritySeverity;
     details?: SecurityViolationDetails
     ,}
 
@@ -62,27 +62,27 @@ export interface SecurityStats { totalValidations: number;
     contentViolations: number;
     lastThreat: ThreatInfo | null;
     uptime: number;
-    securityLevel: SecurityLevel;
-   , threatLevel: ThreatLevel
+    securityLevel: SecurityLevel,
+    threatLevel: ThreatLevel
     }
 
 export interface SecurityReport { timestamp: number;
     securityConfig: SecurityConfiguration;
     statistics: SecurityStats;
     cspConfig: CSPConfiguration;
-    recentThreats: ThreatInfo[];
-   , recommendations: SecurityRecommendation[]
+    recentThreats: ThreatInfo[],
+    recommendations: SecurityRecommendation[]
     }
 
 export interface SecurityRecommendation { priority: RecommendationPriority;
-    message: string;
-   , action: SecurityAction
+    message: string,
+    action: SecurityAction
     }
 
 export interface SecurityPolicyViolationEvent { violatedDirective: string;
     blockedURI: string;
-    sourceFile: string;
-   , lineNumber: number }
+    sourceFile: string,
+    lineNumber: number }
 
 export interface SanitizedParameters { [key: string]: string, }
 
@@ -100,9 +100,9 @@ export type SecurityViolationType = '';
     | 'forbidden_html_attribute', '';
     | 'validation_error';
 
-export type SecuritySeverity = 'low' | 'medium' | 'high';''
-export type SecurityLevel = 'low' | 'medium' | 'high';''
-export type ThreatLevel = 'low' | 'medium' | 'high';''
+export type SecuritySeverity = 'low' | 'medium' | 'high';
+export type SecurityLevel = 'low' | 'medium' | 'high';
+export type ThreatLevel = 'low' | 'medium' | 'high';
 export type RecommendationPriority = 'low' | 'medium' | 'high';
 
 export type SecurityAction = '';
@@ -140,7 +140,7 @@ export class I18nSecurityManager {
         this.initTime = Date.now(''';
                 'script', 'iframe', 'object', 'embed', 'form', 'input',
                 'button', 'textarea', 'select', 'option', 'link', 'meta',
-                'base', 'style', 'title', 'head', 'html', 'body';
+                'base', 'style', 'title', 'head', 'html', 'body'
             ],
             
             // 危険な属性
@@ -185,8 +185,8 @@ export class I18nSecurityManager {
             xssAttempts: 0;
             injectionAttempts: 0;
             parameterViolations: 0;
-            contentViolations: 0;
-           , lastThreat: null ,}))
+            contentViolations: 0,
+    lastThreat: null ,})'
         // CSP設定
         this.cspConfig = {;
             'default-src': "'self'",
@@ -210,7 +210,7 @@ export class I18nSecurityManager {
         this.setupCSP();
         ";
         // セキュリティイベントリスナーの設定""
-        this.setupSecurityEventListeners(");"
+        this.setupSecurityEventListeners();"
 
         console.log('I18nSecurityManager, initialized'); }'
     
@@ -220,7 +220,7 @@ export class I18nSecurityManager {
     private setupCSP()';
             if(typeof, document !== 'undefined'') {'
                 // CSPメタタグが存在しない場合は作成
-                let cspMeta = document.querySelector('meta[http-equiv="Content-Security-Policy"]) as HTMLMetaElement;''
+                let cspMeta = document.querySelector('meta[http-equiv="Content-Security-Policy"]" as HTMLMetaElement;''
                 if(!cspMeta) {''
                     cspMeta = document.createElement('meta'');''
                     cspMeta.setAttribute('http-equiv', 'Content-Security-Policy);
@@ -233,8 +233,8 @@ export class I18nSecurityManager {
                     .map(([directive, value]) => `${directive} ${value}`')''
                     .join('; '');
 
-                cspMeta.setAttribute('content', cspValue);''
-                console.log('CSP configured:', cspValue);''
+                cspMeta.setAttribute('content', cspValue';''
+                console.log('CSP configured:', cspValue';''
             } catch (error) { console.warn('Failed to setup CSP:', error }
     }
     
@@ -256,7 +256,7 @@ export class I18nSecurityManager {
             window.addEventListener('error', (event: ErrorEvent) => {  ''
                 if(event.message && this.containsSuspiciousContent(event.message)) {' }'
 
-                    this.handleSuspiciousActivity('error_message', event.message); }
+                    this.handleSuspiciousActivity('error_message', event.message'; }
 
                 }''
             }');
@@ -271,9 +271,9 @@ export class I18nSecurityManager {
         try {
             const violations: SecurityViolation[] = [],
             // データ型チェック
-            if(typeof, data !== 'object' || data === null) {'
+            if(typeof, data !== 'object' || data === null' {'
                 violations.push({''
-                    type: 'invalid_data_type',)';
+                    type: 'invalid_data_type','';
                     message: 'Translation data must be an object',' }
 
                     severity: 'high')'), }
@@ -285,14 +285,14 @@ export class I18nSecurityManager {
                     ';
                     // キーの検証
                     if(!this.validateTranslationKey(key)) { violations.push({)'
-                            type: 'invalid_key');
-                           , path: currentPath, }
+                            type: 'invalid_key'),
+    path: currentPath, }
 
                             message: `Invalid translation, key: ${key}`,')'
                             severity: 'medium')');
                     }
 
-                    if(typeof, value === 'string) {'
+                    if(typeof, value === 'string' {'
                         // 文字列値の検証
                         const stringViolations = this.validateTranslationString(value, currentPath);
 
@@ -304,13 +304,12 @@ export class I18nSecurityManager {
                         validateObject(value, currentPath);' }'
 
                     } else if(!Array.isArray(value)) { violations.push({)'
-                            type: 'invalid_value_type');
-                           , path: currentPath, }
+                            type: 'invalid_value_type'),
+    path: currentPath, }
 
                             message: `Invalid value type at ${currentPath}`,')'
                             severity: 'medium');
-                    }
-};
+    };
             
             validateObject(data);
             
@@ -328,9 +327,9 @@ export class I18nSecurityManager {
             ';
 
         } catch (error) {
-            getErrorHandler(').handleError(error as Error, 'I18N_SECURITY_ERROR', {)'
-                operation: 'validateTranslationData',)';
-                source: source),' }'
+            getErrorHandler().handleError(error as Error, 'I18N_SECURITY_ERROR', {''
+                operation: 'validateTranslationData','';
+                source: source',' }'
 
             }');
             
@@ -359,7 +358,7 @@ export class I18nSecurityManager {
         // パターンマッチング
         if(!keyPattern.test(key) { ' }'
 
-            console.log(`I18nSecurityManager: Invalid, characters in, key: ${key}`'});
+            console.log(`I18nSecurityManager: Invalid, characters in, key: ${key}`'}';
             return false;
         }
         
@@ -407,8 +406,8 @@ export class I18nSecurityManager {
         ';
         // 危険なコンテンツのチェック
         if(this.containsSuspiciousContent(str)) { violations.push({)'
-                type: 'suspicious_content')';
-               , path: path,
+                type: 'suspicious_content')',
+    path: path,
                 message: 'Translation contains potentially dangerous content',')';
                 severity: 'high');
             this.securityStats.xssAttempts++ ,}
@@ -424,7 +423,7 @@ export class I18nSecurityManager {
      * 疑わしいコンテンツの検出
      */''
     private containsSuspiciousContent(content: any): boolean { ''
-        if(typeof, content !== 'string) {'
+        if(typeof, content !== 'string' {'
             
         }
             return false;
@@ -449,28 +448,28 @@ export class I18nSecurityManager {
             // 禁止されたタグのチェック
             if(this.securityRules.forbiddenTags.includes(tagName)) {'
                 violations.push({)'
-                    type: 'forbidden_html_tag');
-                   , path: path ,}
+                    type: 'forbidden_html_tag'),
+    path: path ,}
 
                     message: `Forbidden HTML tag, found: ${tagName}`,''
                     severity: 'high',);
-                    details: { tag: tagName, fullMatch: match[0] ,});
+                    details: { tag: tagName, fullMatch: match[0] ,}';
             }
             ';
             // 許可されていないタグのチェック
             else if(!this.securityRules.allowedTags.includes(tagName)) { violations.push({)'
-                    type: 'unknown_html_tag');
-                   , path: path, }
+                    type: 'unknown_html_tag'),
+    path: path, }
 
                     message: `Unknown HTML tag, found: ${tagName}`,''
                     severity: 'medium',);
-                    details: { tag: tagName, fullMatch: match[0] ,});
+                    details: { tag: tagName, fullMatch: match[0] ,}';
             }
         }
         ';
         // 危険な属性のチェック
         this.securityRules.forbiddenAttributes.forEach(attr => { ');''
-            const attrPattern = new RegExp(attr, 'gi);''
+            const attrPattern = new RegExp(attr, 'gi';''
             if(attrPattern.test(content)) {'
                 violations.push({)'
                     type: 'forbidden_html_attribute' ,}
@@ -481,7 +480,7 @@ export class I18nSecurityManager {
                     details: { attribute: attr });
                 });
             }
-        });
+        }';
         
         return violations;
     }
@@ -490,7 +489,7 @@ export class I18nSecurityManager {
      * 翻訳パラメータの安全な処理'
      */''
     sanitizeTranslationParameters(params: Record<string, any>): SanitizedParameters { ''
-        if(!params || typeof, params !== 'object) { }'
+        if(!params || typeof, params !== 'object' { }'
             return {}
         
         this.securityStats.totalValidations++;
@@ -592,15 +591,15 @@ export class I18nSecurityManager {
             const safeParams = this.sanitizeTranslationParameters(params);
             // テンプレート文字列のセキュリティチェック
             if(this.containsSuspiciousContent(template)) {''
-                console.warn('Suspicious, content in, translation template);
+                console.warn('Suspicious, content in translation template);
                 return this.sanitizeString(template); }
             
             // パラメータ置換（安全な方法）
             let result = template;
             
-            for(const [key, value] of Object.entries(safeParams) { // 安全なパラメータ置換パターン }
+            for(const [key value] of Object.entries(safeParams) { // 安全なパラメータ置換パターン }
                 const placeholder = `{{${key}}`;
-                const escapedValue = this.sanitizeString(String(value);
+                const escapedValue = this.sanitizeString(String(value');
                 
                 // すべての出現を置換
                 result = result.split(placeholder).join(escapedValue');
@@ -609,7 +608,7 @@ export class I18nSecurityManager {
             return result;
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error as Error, 'I18N_SECURITY_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error as Error, 'I18N_SECURITY_ERROR', {''
                 operation: 'generateSafeTranslation',);
                 template: template ,});
             
@@ -621,17 +620,17 @@ export class I18nSecurityManager {
      */
     private handleSecurityViolation(event: SecurityPolicyViolationEvent): void { this.securityStats.blockedAttempts++;
         this.securityStats.lastThreat = {''
-            timestamp: Date.now(''';
-            type: 'csp_violation';
-           , details: {
+            timestamp: Date.now('''
+            type: 'csp_violation',
+    details: {
                 violatedDirective: event.violatedDirective;
                 blockedURI: event.blockedURI;
-                sourceFile: event.sourceFile;
-               , lineNumber: event.lineNumber }))', ')';
-        console.warn('CSP Violation detected:', event);
+                sourceFile: event.sourceFile,
+    lineNumber: event.lineNumber })'', ')';
+        console.warn('CSP Violation detected:', event';
         ';
         // 重要な違反の場合は追加の処理
-        if(event.violatedDirective.includes('script-src)) { ''
+        if(event.violatedDirective.includes('script-src)' { ''
             this.handleSuspiciousActivity('script_injection', event.blockedURI); }
     }
     
@@ -640,8 +639,8 @@ export class I18nSecurityManager {
      */
     private handleSuspiciousActivity(type: SuspiciousActivityType, details: any): void { this.securityStats.lastThreat = {
             timestamp: Date.now();
-            type: type;
-           , details: details };
+            type: type,
+    details: details };
         switch(type) {'
 
             case 'script_injection':;
@@ -703,32 +702,32 @@ export class I18nSecurityManager {
                 source: source,);
                 violations: highSeverityViolations);
         ,}
-                timestamp: new Date().toISOString(); }
-            });
+                timestamp: new Date().toISOString(); 
+    });
             ';
             // 高重要度の違反が複数ある場合
             if(highSeverityViolations.length > 3) { '
 
-                this.handleSuspiciousActivity('multiple_violations', {)'
+                this.handleSuspiciousActivity('multiple_violations', {''
                     source: source,' }'
 
-                    count: highSeverityViolations.length)'); }'
+                    count: highSeverityViolations.length''); }'
 }
         ';
         // すべての違反をデバッグログに記録
         console.debug('Translation security violations:', { source: source)
-            violations: violations);
-           , timestamp: new Date().toISOString( });
+            violations: violations),
+    timestamp: new Date().toISOString( });
     }
     
     /**
      * セキュリティ統計の取得
      */
     getSecurityStats(): SecurityStats { return { ...this.securityStats,
-            uptime: Date.now() - this.initTime;
-           , securityLevel: this.calculateSecurityLevel(), };
-            threatLevel: this.calculateThreatLevel(); }
-        }
+            uptime: Date.now() - this.initTime,
+    securityLevel: this.calculateSecurityLevel(), };
+            threatLevel: this.calculateThreatLevel(); 
+    }
     
     /**
      * セキュリティレベルの計算
@@ -737,8 +736,8 @@ export class I18nSecurityManager {
         const enabledCount = configs.filter(Boolean).length;
         const percentage = (enabledCount / configs.length) * 100;
 
-        if(percentage >= 90) return 'high';''
-        if(percentage >= 70) return 'medium';''
+        if(percentage >= 90) return 'high';
+        if(percentage >= 70) return 'medium';
         return 'low'; }
     
     /**
@@ -772,7 +771,7 @@ export class I18nSecurityManager {
 
             }
 
-                throw new Error('Invalid, security config); }'
+                throw new Error('Invalid, security config'; }'
             }
             ';
             // 安全な設定のみ更新
@@ -792,7 +791,7 @@ export class I18nSecurityManager {
                     (this.security, as any')[key] = value; }'
 }
 
-            console.log('Security, configuration updated);
+            console.log('Security, configuration updated';
             return true;
 
         } catch (error') {
@@ -805,10 +804,10 @@ export class I18nSecurityManager {
     generateSecurityReport(): SecurityReport { return {  };
             timestamp: Date.now(), }
             securityConfig: { ...this.security;
-            statistics: this.getSecurityStats();
-           , cspConfig: { ...this.cspConfig;
-            recentThreats: this.securityStats.lastThreat ? [this.securityStats.lastThreat] : [];
-           , recommendations: this.generateSecurityRecommendations();
+            statistics: this.getSecurityStats(),
+    cspConfig: { ...this.cspConfig;
+            recentThreats: this.securityStats.lastThreat ? [this.securityStats.lastThreat] : [],
+    recommendations: this.generateSecurityRecommendations();
         }
     
     /**
@@ -818,27 +817,27 @@ export class I18nSecurityManager {
         const stats = this.getSecurityStats()';
         if(stats.threatLevel === 'high'') {'
             recommendations.push({''
-                priority: 'high',)';
+                priority: 'high','';
                 message: 'High threat level detected. Consider enabling stricter security policies.',' }
 
-                action: 'enable_strict_mode'); }
-        }
+                action: 'enable_strict_mode'); 
+    }
 
         if(stats.xssAttempts > 0) { '
             recommendations.push({''
-                priority: 'medium',)';
+                priority: 'medium','';
                 message: 'XSS attempts detected. Review translation sources.',' }
 
-                action: 'review_translation_sources')'); }
-        }
+                action: 'review_translation_sources')'); 
+    }
 
         if(stats.securityLevel === 'low'') { '
             recommendations.push({''
-                priority: 'medium',)';
+                priority: 'medium','';
                 message: 'Security level is low. Enable more security features.',' }
 
-                action: 'enable_security_features'); }
-        }
+                action: 'enable_security_features'); 
+    }
         
         return recommendations;
     }
@@ -861,8 +860,8 @@ export class I18nSecurityManager {
             xssAttempts: 0;
             injectionAttempts: 0;
             parameterViolations: 0;
-            contentViolations: 0;
-           , lastThreat: null ,};
+            contentViolations: 0,
+    lastThreat: null ,};
         console.log('I18nSecurityManager, cleaned up'');
 
     }''

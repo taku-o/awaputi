@@ -8,12 +8,12 @@ import { AchievementHelpSystem  } from '../../../ui/AchievementHelpSystem.js';
 
 // ヘルプセクションのインターフェース
 interface HelpSection { id: string,
-    name: string;
-   , icon: string ,}
+    name: string,
+    icon: string ,}
 
 // ヘルプコンテンツのインターフェース
-interface HelpContent { title: string;
-   , content: string[] | string }
+interface HelpContent { title: string,
+    content: string[] | string }
 
 // ヘルプコンテンツマップのインターフェース
 interface HelpContentMap { [sectionId: string]: HelpContent;
@@ -23,18 +23,18 @@ interface HelpContentMap { [sectionId: string]: HelpContent;
 interface HelpSystemStatus { isActive: boolean,
     currentSection: string;
     hasContent: boolean;
-    availableSections: number;
-   , systemType: string ,}
+    availableSections: number,
+    systemType: string ,}
 
 // ゲームエンジンのインターフェース
 interface GameEngine { canvas: HTMLCanvasElement;
     achievementManager?: any }
 
 // イベントバスのインターフェース
-interface EventBus { on(event: string, callback: (dat;a?: any) => void): void;
-    off(event: string, callback?: (dat;a?: any) => void): void;
-    emit(event: string, data?: any): void }
-}
+interface EventBus { on(event: string, callback: (data?: any) => void): void;
+    off(event: string, callback?: (data?: any) => void): void;
+    emit(event: string, data?: any): void 
+    }
 
 // シーン状態のインターフェース
 interface SceneState { get(key: string): any,''
@@ -96,9 +96,8 @@ export class UserHelpIntegration {
 
             }');
 
-            this.eventBus.on('helpSystemToggle', (active: boolean) => { this.isHelpSystemActive = active;' }
-
-            }');
+            this.eventBus.on('helpSystemToggle', (active: boolean) => { this.isHelpSystemActive = active;' 
+    }');
 
             this.eventBus.on('helpContentReload', () => { this.loadHelpContent(); });
         }
@@ -146,7 +145,7 @@ export class UserHelpIntegration {
 
             }
 
-                this.eventBus.emit('helpContentLoaded', this.helpContent);' }
+                this.eventBus.emit('helpContentLoaded', this.helpContent';' }
 
             } catch (error) {
             console.error('Failed to load help content:', error);
@@ -158,8 +157,8 @@ export class UserHelpIntegration {
      */
     public renderHelpWithComponent(;
         context: CanvasRenderingContext2D;
-        y: number );
-       , height: number);
+        y: number ),
+    height: number);
         helpTabComponent?: any;
     ): void { const canvas = this.gameEngine.canvas;
         const contentWidth = canvas.width - this.contentPadding * 2;
@@ -185,9 +184,9 @@ export class UserHelpIntegration {
         // ヘルプシステムが利用可能かチェック
         if(!this.isHelpSystemActive || !this.helpContent) {'
 
-            context.fillStyle = '#cccccc';''
-            context.font = '18px Arial';''
-            context.textAlign = 'center';''
+            context.fillStyle = '#cccccc';
+            context.font = '18px Arial';
+            context.textAlign = 'center';
             context.fillText('ヘルプシステムが利用できません', canvas.width / 2, currentY + 50);
         }
             return; }
@@ -207,8 +206,8 @@ export class UserHelpIntegration {
     private renderHelpSectionSelector(;
         context: CanvasRenderingContext2D;
         x: number );
-        y: number);
-       , width: number;
+        y: number),
+    width: number;
     ): number { const buttonWidth = Math.min(100, width / this.helpSections.length - 10);
         const buttonHeight = 35;
         
@@ -219,7 +218,7 @@ export class UserHelpIntegration {
             const isActive = this.currentHelpSection === section.id;
             ';
             // ボタン背景
-            context.fillStyle = isActive ? '#4CAF50' : '#2196F3';''
+            context.fillStyle = isActive ? '#4CAF50' : '#2196F3';
             context.fillRect(currentX, y, buttonWidth, buttonHeight);
             ';
             // ボタン枠線
@@ -229,8 +228,8 @@ export class UserHelpIntegration {
             context.strokeRect(currentX, y, buttonWidth, buttonHeight);
             ';
             // ボタンテキスト
-            context.fillStyle = '#ffffff';''
-            context.font = '12px Arial';''
+            context.fillStyle = '#ffffff';
+            context.font = '12px Arial';
             context.textAlign = 'center';
             context.fillText(section.icon, currentX + buttonWidth / 2, y + 12);
             context.fillText(section.name, currentX + buttonWidth / 2, y + 28);
@@ -250,11 +249,11 @@ export class UserHelpIntegration {
      * ヘルプコンテンツを描画
      */
     private renderHelpContent(;
-        context: CanvasRenderingContext2D;
-       , x: number, ;
+        context: CanvasRenderingContext2D,
+    x: number, ;
         y: number );
-        width: number);
-       , height: number;
+        width: number),
+    height: number;
     ): void { if (!this.helpContent) return,
         
         const content = this.helpContent[this.currentHelpSection];
@@ -262,7 +261,7 @@ export class UserHelpIntegration {
         if(!content) return;
         ';
         // セクション背景
-        context.fillStyle = '#16213e';''
+        context.fillStyle = '#16213e';
         context.fillRect(x, y, width, height);
         ';
         // セクション枠線
@@ -272,13 +271,13 @@ export class UserHelpIntegration {
         context.strokeRect(x, y, width, height);
         ';
         // セクションタイトル
-        context.fillStyle = '#ffffff';''
-        context.font = 'bold 18px Arial';''
-        context.textAlign = 'left';''
-        context.fillText(content.title || 'ヘルプ', x + 15, y + 25);
+        context.fillStyle = '#ffffff';
+        context.font = 'bold 18px Arial';
+        context.textAlign = 'left';
+        context.fillText(content.title || 'ヘルプ', x + 15, y + 25';
         ';
         // コンテンツ描画
-        context.fillStyle = '#cccccc';''
+        context.fillStyle = '#cccccc';
         context.font = '14px Arial';
         
         const lineHeight = 20;
@@ -302,13 +301,13 @@ export class UserHelpIntegration {
                 ';
                 // 特別なスタイリング
                 if (line.startsWith('🎯 '') || line.startsWith('⏰ '') || '';
-                    line.startsWith('💡 '') || line.startsWith('🏆 ')) { ''
+                    line.startsWith('💡 '') || line.startsWith('🏆 ')' { ''
                     context.fillStyle = '#FFD700';' }
 
-                } else if(line.startsWith('❓ ')) { ''
+                } else if(line.startsWith('❓ ')' { ''
                     context.fillStyle = '#87CEEB';' }
 
-                } else if(line.startsWith('📋 ')) { ''
+                } else if(line.startsWith('📋 ')' { ''
                     context.fillStyle = '#90EE90'; }
 
                 } else { }'
@@ -327,12 +326,12 @@ export class UserHelpIntegration {
      * ヘルプテキストの折り返し描画
      */
     private renderWrappedHelpText(;
-        context: CanvasRenderingContext2D;
-       , text: string, ;
+        context: CanvasRenderingContext2D,
+    text: string, ;
         x: number, ;
         y: number );
-        maxWidth: number)';
-       , lineHeight: number'';
+        maxWidth: number)',
+    lineHeight: number'';
     '): void { ''
         const words = text.split(', '');''
         let line = '';
@@ -433,7 +432,7 @@ export class UserHelpIntegration {
     /**
      * 基本的なヘルプコンテンツを生成（フォールバック）'
      */''
-    private generateBasicHelpContent(''';
+    private generateBasicHelpContent('''
                 title: '概要',
                 content: ['';
                     '📋 このゲームについて',
@@ -475,8 +474,8 @@ export class UserHelpIntegration {
                 ] ,},
 
             progress: { ')'
-                title: '進捗システム')';
-               , content: ['';
+                title: '進捗システム')',
+    content: ['';
                     '📊 進捗の仕組み',
                     '',
                     '🏆 AP(Awaputi, Points)',
@@ -569,8 +568,8 @@ export class UserHelpIntegration {
      * エラー時のヘルプコンテンツを生成'
      */''
     private generateErrorHelpContent()';
-                title: 'エラー')';
-               , content: ['';
+                title: 'エラー')',
+    content: ['';
                     'ヘルプコンテンツの読み込みに失敗しました。',]';
                     'ページをリロードして再度お試しください。'];
                 ];
@@ -610,9 +609,9 @@ export class UserHelpIntegration {
     /**
      * ヘルプシステムの状態を取得'
      */''
-    public getSystemStatus(''';
+    public getSystemStatus('''
             systemType: this.helpSystem ? 'achievement' : 'basic);
-        })
+        }'
     
     /**
      * ヘルプシステムをリセット'

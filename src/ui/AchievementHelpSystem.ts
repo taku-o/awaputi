@@ -6,30 +6,30 @@ export interface HelpColors { background: string,
     accent: string;
     highlight: string;
     border: string;
-    button: string;
-   , buttonHover: string ,}
+    button: string,
+    buttonHover: string ,}
 
 export interface HelpContent { title: string;
-    icon: string;
-   , content: string[] }
+    icon: string,
+    content: string[] }
 
 export interface HelpContentMap { [key: string]: HelpContent;
     }
 
 export interface TutorialHighlight { x: number,
     y: number;
-    width: number;
-   , height: number ,}
+    width: number,
+    height: number ,}
 
 export interface TutorialStep { title: string;
     content: string;
-    target: string;
-   , highlight: TutorialHighlight
+    target: string,
+    highlight: TutorialHighlight
     }
 
 export interface HelpState { isVisible: boolean;
-    currentSection: string;
-   , tutorialProgress: number }
+    currentSection: string,
+    tutorialProgress: number }
 
 /**
  * 実績システムヘルプ・チュートリアルクラス
@@ -77,8 +77,8 @@ export class AchievementHelpSystem {
             button: '#2196F3';
     ,}
 
-            buttonHover: '#1976D2' }
-        };
+            buttonHover: '#1976D2' 
+    };
         // ヘルプコンテンツ
         this.helpContent = this.initializeHelpContent();
         
@@ -98,7 +98,7 @@ export class AchievementHelpSystem {
     /**
      * ヘルプコンテンツを初期化'
      */''
-    private initializeHelpContent(''';
+    private initializeHelpContent('''
                 title: '実績システム概要',
                 icon: '🏆',
                 content: ['';
@@ -279,8 +279,8 @@ export class AchievementHelpSystem {
     private initializeTutorialSteps(''';
                 title: 'ようこそ実績システムへ！',
                 content: 'ゲームプレイで様々な実績を解除してAPを獲得しましょう。',
-                target: 'achievement-overview';
-               , highlight: { x: 100, y: 100, width: 200, height: 50 ,},
+                target: 'achievement-overview',
+    highlight: { x: 100, y: 100, width: 200, height: 50 ,},
 
             { ''
                 title: '実績カテゴリ',
@@ -298,7 +298,7 @@ export class AchievementHelpSystem {
                 title: '実績解除！',
                 content: '条件を満たすと実績が解除され、APが獲得できます。',
                 target: 'achievement-unlock', }
-                highlight: { x: 200, y: 150, width: 300, height: 80 ,}))'
+                highlight: { x: 200, y: 150, width: 300, height: 80 ,})''
             { ''
                 title: 'AP活用',
                 content: '獲得したAPはショップでアイテム購入に使用できます。',
@@ -362,10 +362,10 @@ export class AchievementHelpSystem {
     public render(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void { if (!this.isHelpVisible) return;
 
         context.save()';
-        context.fillStyle = 'rgba(0, 0, 0, 0.8)';''
+        context.fillStyle = 'rgba(0, 0, 0, 0.8)';
         context.fillRect(0, 0, canvas.width, canvas.height);
 
-        if(this.currentHelpSection === 'tutorial) {'
+        if(this.currentHelpSection === 'tutorial' {'
             
         }
             this.renderTutorial(context, canvas); }
@@ -422,8 +422,8 @@ export class AchievementHelpSystem {
             // ボタンテキスト
             const content = this.helpContent[section];
             context.fillStyle = this.colors.text;''
-            context.font = '14px Arial';''
-            context.textAlign = 'center';''
+            context.font = '14px Arial';
+            context.textAlign = 'center';
             context.textBaseline = 'middle'; }
             context.fillText() }
                 `${content.icon} ${ content.title}`,
@@ -444,8 +444,8 @@ export class AchievementHelpSystem {
         ';
 
         context.fillStyle = this.colors.text;''
-        context.font = '14px Arial';''
-        context.textAlign = 'left';''
+        context.font = '14px Arial';
+        context.textAlign = 'left';
         context.textBaseline = 'top';
         ';
 
@@ -464,16 +464,16 @@ export class AchievementHelpSystem {
                 line.startsWith('🎮 '') || line.startsWith('🎨 '') || '';
                 line.startsWith('⭐ '') || line.startsWith('💰 '') || '';
                 line.startsWith('🛍️ '') || line.startsWith('📊 '') ||'';
-                line.startsWith('🎁 ')) { context.fillStyle = this.colors.highlight;''
+                line.startsWith('🎁 ')' { context.fillStyle = this.colors.highlight;''
                 context.font = 'bold 14px Arial';' }
 
-            } else if(line.startsWith('• ')) { context.fillStyle = this.colors.subtext;''
+            } else if(line.startsWith('• ')' { context.fillStyle = this.colors.subtext;''
                 context.font = '13px Arial';' }
 
-            } else if(line.startsWith('Q: ')) { context.fillStyle = this.colors.accent;''
+            } else if(line.startsWith('Q: ')' { context.fillStyle = this.colors.accent;''
                 context.font = 'bold 14px Arial';' }
 
-            } else if(line.startsWith('A: ')) { context.fillStyle = this.colors.text;''
+            } else if(line.startsWith('A: ')' { context.fillStyle = this.colors.text;''
                 context.font = '14px Arial'; }
 
             } else {  context.fillStyle = this.colors.text;' }'
@@ -530,18 +530,18 @@ export class AchievementHelpSystem {
         
         // タイトル
         context.fillStyle = this.colors.highlight;''
-        context.font = 'bold 16px Arial';''
-        context.textAlign = 'left';''
+        context.font = 'bold 16px Arial';
+        context.textAlign = 'left';
         context.fillText(step.title, panelX + 15, panelY + 25);
         
         // 内容
         context.fillStyle = this.colors.text;''
-        context.font = '14px Arial';''
+        context.font = '14px Arial';
         this.renderWrappedText(context, step.content, panelX + 15, panelY + 50, panelWidth - 30);
         
         // プログレス表示
         context.fillStyle = this.colors.subtext;''
-        context.font = '12px Arial';''
+        context.font = '12px Arial';
         context.textAlign = 'right';
         context.fillText();
             `${this.tutorialProgress + 1} / ${ this.tutorialSteps.length)`,
@@ -576,8 +576,8 @@ export class AchievementHelpSystem {
         
         // ボタンテキスト
         context.fillStyle = this.colors.text;''
-        context.font = '12px Arial';''
-        context.textAlign = 'center';''
+        context.font = '12px Arial';
+        context.textAlign = 'center';
         context.textBaseline = 'middle';
         context.fillText(text, x + buttonWidth / 2, y + buttonHeight / 2); }
     
@@ -632,7 +632,7 @@ export class AchievementHelpSystem {
     public handleClick(x: number, y: number, canvas: HTMLCanvasElement): boolean { ''
         if(!this.isHelpVisible) return false;
 
-        if(this.currentHelpSection === 'tutorial) {'
+        if(this.currentHelpSection === 'tutorial' {'
             
         }
             return this.handleTutorialClick(x, y, canvas); else { return this.handleHelpClick(x, y, canvas);
@@ -702,13 +702,13 @@ export class AchievementHelpSystem {
      */
     public getHelpState(): HelpState { return { isVisible: this.isHelpVisible,
             currentSection: this.currentHelpSection, };
-            tutorialProgress: this.tutorialProgress }
-        }
+            tutorialProgress: this.tutorialProgress 
+    }
     
     /**
      * コンテキストヘルプを表示
      */
-    public showContextHelp(achievementId: string): void { const achievement = this.achievementManager? .getAchievement(achievementId);
+    public showContextHelp(achievementId: string): void { const achievement = this.achievementManager?.getAchievement(achievementId);
         if (!achievement) return;
         // 該当実績のカテゴリに応じたヘルプセクションを表示
         const category = this.achievementManager.getAchievementCategory(achievementId); : undefined 

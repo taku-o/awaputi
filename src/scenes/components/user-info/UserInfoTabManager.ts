@@ -4,18 +4,18 @@
  * UserInfoSceneから分離されたタブ管理機能を提供
  */
 
-import { HelpTab  } from '../HelpTab.js';''
-import { HelpSectionSelector  } from '../HelpSectionSelector.js';''
-import { ManagementTab  } from '../ManagementTab.js';''
-import { AchievementsTab  } from '../AchievementsTab.js';''
-import { StatisticsTab  } from '../StatisticsTab.js';''
-import { LeaderboardTab  } from '../LeaderboardTab.js';''
+import { HelpTab  } from '../HelpTab.js';
+import { HelpSectionSelector  } from '../HelpSectionSelector.js';
+import { ManagementTab  } from '../ManagementTab.js';
+import { AchievementsTab  } from '../AchievementsTab.js';
+import { StatisticsTab  } from '../StatisticsTab.js';
+import { LeaderboardTab  } from '../LeaderboardTab.js';
 import { ChallengesTab  } from '../ChallengesTab.js';
 
 // タブ情報のインターフェース
 interface Tab { id: string,
-    name: string;
-   , icon: string ,}
+    name: string,
+    icon: string ,}
 
 // タブコンポーネントのインターフェース
 interface TabComponent { initialize(): void;
@@ -34,10 +34,10 @@ interface GameEngine { canvas: HTMLCanvasElement,
     settingsManager?: any; }
 
 // イベントバスのインターフェース
-interface EventBus { on(event: string, callback: (dat;a?: any) => void): void;
-    off(event: string, callback?: (dat;a?: any) => void): void;
-    emit(event: string, data?: any): void }
-}
+interface EventBus { on(event: string, callback: (data?: any) => void): void;
+    off(event: string, callback?: (data?: any) => void): void;
+    emit(event: string, data?: any): void 
+    }
 
 // シーン状態のインターフェース
 interface SceneState { get(key: string): any,
@@ -83,101 +83,100 @@ export class UserInfoTabManager {
      */''
     private initializeTabComponents()';
         this.componentFactory.set('statistics', () => {  ''
-            if(!this.componentCache.has('statistics) {'
+            if(!this.componentCache.has('statistics' {'
                 const component = new StatisticsTab(this.gameEngine, this.eventBus, this.sceneState);''
                 component.initialize();
             }
 
-                this.componentCache.set('statistics', component);' }
+                this.componentCache.set('statistics', component';' }
 
                 console.log('StatisticsTab, lazy loaded, and cached''); }
 
             }''
-            return this.componentCache.get('statistics)!;''
+            return this.componentCache.get('statistics'!;''
         }');
 
         this.componentFactory.set('help', () => {  ''
-            if(!this.componentCache.has('help) {'
+            if(!this.componentCache.has('help' {'
                 const component = new HelpTab(this.gameEngine, this.eventBus, this.sceneState);''
                 component.initialize();
             }
 
-                this.componentCache.set('help', component);' }
+                this.componentCache.set('help', component';' }
 
                 console.log('HelpTab, lazy loaded, and cached''); }
 
             }''
-            return this.componentCache.get('help)!;''
+            return this.componentCache.get('help'!;''
         }');
 
         this.componentFactory.set('management', () => {  ''
-            if(!this.componentCache.has('management) {'
+            if(!this.componentCache.has('management' {'
                 const component = new ManagementTab(this.gameEngine, this.eventBus, this.sceneState);''
                 component.initialize();
             }
 
-                this.componentCache.set('management', component);' }
+                this.componentCache.set('management', component';' }
 
                 console.log('ManagementTab, lazy loaded, and cached''); }
 
             }''
-            return this.componentCache.get('management)!;''
+            return this.componentCache.get('management'!;''
         }');
 
         this.componentFactory.set('achievements', () => {  ''
-            if(!this.componentCache.has('achievements) {'
+            if(!this.componentCache.has('achievements' {'
                 const component = new AchievementsTab(this.gameEngine, this.eventBus, this.sceneState);''
                 component.initialize();
             }
 
-                this.componentCache.set('achievements', component);' }
+                this.componentCache.set('achievements', component';' }
 
                 console.log('AchievementsTab, lazy loaded, and cached''); }
 
             }''
-            return this.componentCache.get('achievements)!;''
+            return this.componentCache.get('achievements'!;''
         }');
 
         this.componentFactory.set('leaderboard', () => {  ''
-            if(!this.componentCache.has('leaderboard) {'
+            if(!this.componentCache.has('leaderboard' {'
                 const component = new LeaderboardTab(this.gameEngine, this.eventBus, this.sceneState);''
                 component.initialize();
             }
 
-                this.componentCache.set('leaderboard', component);' }
+                this.componentCache.set('leaderboard', component';' }
 
                 console.log('LeaderboardTab, lazy loaded, and cached''); }
 
             }''
-            return this.componentCache.get('leaderboard)!;''
+            return this.componentCache.get('leaderboard'!;''
         }');
 
         this.componentFactory.set('challenges', () => {  ''
-            if(!this.componentCache.has('challenges) {'
+            if(!this.componentCache.has('challenges' {'
                 const component = new ChallengesTab(this.gameEngine, this.eventBus, this.sceneState);''
                 component.initialize();
             }
 
-                this.componentCache.set('challenges', component);' }
+                this.componentCache.set('challenges', component';' }
 
                 console.log('ChallengesTab, lazy loaded, and cached''); }
 
             }''
             return this.componentCache.get('challenges)!;
-        });
+        }';
     }
     
     /**
      * イベントリスナーを設定'
      */''
     private setupEventListeners()';
-        this.eventBus.on('switchTab', (tabId: string) => { this.switchTab(tabId);' }
-
-        }');
+        this.eventBus.on('switchTab', (tabId: string) => { this.switchTab(tabId);' 
+    }');
 
         this.eventBus.on('tabsUpdated', () => {  ' }
 
-            this.sceneState.markDirty(['tabs]); }'
+            this.sceneState.markDirty(['tabs]'; }'
         });
     }
     
@@ -201,7 +200,7 @@ export class UserInfoTabManager {
         if(this.componentCache.has(this.activeTab) {
 
             const oldComponent = this.componentCache.get(this.activeTab);''
-            if(oldComponent && typeof, oldComponent.onDeactivate === 'function) {'
+            if(oldComponent && typeof, oldComponent.onDeactivate === 'function' {'
         }
                 oldComponent.onDeactivate(); }
 }
@@ -223,7 +222,7 @@ export class UserInfoTabManager {
             return null;
         }
 
-        const component = this.componentFactory.get(this.activeTab)!(');
+        const component = this.componentFactory.get(this.activeTab)!();
         ';
         // アクティブ化
         if(component && typeof, component.onActivate === 'function) { component.onActivate(); }'
@@ -267,11 +266,11 @@ export class UserInfoTabManager {
      * タブコンテンツをレンダリング
      */
     public renderTabContent(;
-        ctx: CanvasRenderingContext2D;
-       , contentX: number, ;
+        ctx: CanvasRenderingContext2D,
+    contentX: number, ;
         contentY: number );
-        contentWidth: number);
-       , contentHeight: number;
+        contentWidth: number),
+    contentHeight: number;
     ): void { const activeComponent = this.getActiveTabComponent(),
         if(!activeComponent) {
 
@@ -288,11 +287,11 @@ export class UserInfoTabManager {
      * タブヘッダーをレンダリング
      */
     public renderTabHeaders(;
-        ctx: CanvasRenderingContext2D;
-       , headerX: number, ;
+        ctx: CanvasRenderingContext2D,
+    headerX: number, ;
         headerY: number );
-        headerWidth: number);
-       , headerHeight: number;
+        headerWidth: number),
+    headerHeight: number;
     ): void { const tabWidth = headerWidth / this.tabs.length,
 
         this.tabs.forEach((tab, index) => { 
@@ -300,7 +299,7 @@ export class UserInfoTabManager {
             const isActive = tab.id === this.activeTab;
             ';
             // タブ背景
-            ctx.fillStyle = isActive ? '#4A90E2' : '#2A2A2A';''
+            ctx.fillStyle = isActive ? '#4A90E2' : '#2A2A2A';
             ctx.fillRect(tabX, headerY, tabWidth, headerHeight);
             ';
             // タブ境界線
@@ -310,9 +309,9 @@ export class UserInfoTabManager {
             ctx.strokeRect(tabX, headerY, tabWidth, headerHeight);
             ';
             // タブテキスト
-            ctx.fillStyle = isActive ? '#FFFFFF' : '#CCCCCC';''
-            ctx.font = '16px Arial';''
-            ctx.textAlign = 'center';''
+            ctx.fillStyle = isActive ? '#FFFFFF' : '#CCCCCC';
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             
             const textX = tabX + tabWidth / 2;
@@ -326,19 +325,19 @@ export class UserInfoTabManager {
      * コンテンツがない場合のレンダリング
      */
     private renderNoContent(;
-        ctx: CanvasRenderingContext2D;
-       , x: number, ;
+        ctx: CanvasRenderingContext2D,
+    x: number, ;
         y: number );
-        width: number)';
-       , height: number'';
+        width: number)',
+    height: number'';
     '): void { ''
-        ctx.fillStyle = '#333333';''
+        ctx.fillStyle = '#333333';
         ctx.fillRect(x, y, width, height);
 
-        ctx.fillStyle = '#CCCCCC';''
-        ctx.font = '16px Arial';''
-        ctx.textAlign = 'center';''
-        ctx.textBaseline = 'middle';''
+        ctx.fillStyle = '#CCCCCC';
+        ctx.font = '16px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
         ctx.fillText('コンテンツが利用できません', x + width / 2, y + height / 2); }
     
     /**
@@ -349,8 +348,8 @@ export class UserInfoTabManager {
         y: number, ;
         headerX: number, ;
         headerY: number );
-        headerWidth: number);
-       , headerHeight: number;
+        headerWidth: number),
+    headerHeight: number;
     ): boolean { if (y < headerY || y > headerY + headerHeight) {
             return false, }
         
@@ -376,11 +375,11 @@ export class UserInfoTabManager {
         y: number, ;
         contentX: number, ;
         contentY: number );
-        contentWidth: number);
-       , contentHeight: number';
-    ): boolean { ''
+        contentWidth: number),
+    contentHeight: number';
+    ': boolean { ''
         const activeComponent = this.getActiveTabComponent()';
-        if(activeComponent && typeof, activeComponent.handleClick === 'function) {'
+        if(activeComponent && typeof, activeComponent.handleClick === 'function' {'
             
         }
             return activeComponent.handleClick(x, y, contentX, contentY, contentWidth, contentHeight);
@@ -392,7 +391,7 @@ export class UserInfoTabManager {
      */'
     public dispose(): void { // キャッシュされたコンポーネントのクリーンアップ
         this.componentCache.forEach((component) => { ''
-            if(component && typeof, component.dispose === 'function) { }'
+            if(component && typeof, component.dispose === 'function' { }'
                 component.dispose(); }
 });
         

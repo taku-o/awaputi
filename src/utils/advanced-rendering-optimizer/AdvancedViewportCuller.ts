@@ -8,44 +8,44 @@ interface ViewportCullerConfig { enabled?: boolean;
 
 interface Viewport { x: number,
     y: number;
-    width: number;
-   , height: number ,}
+    width: number,
+    height: number ,}
 
 interface Frustum { left: number;
     right: number;
     top: number;
     bottom: number;
-    near: number;
-   , far: number }
+    near: number,
+    far: number }
 
 interface ObjectBounds { x: number;
     y: number;
-    width: number;
-   , height: number }
+    width: number,
+    height: number }
 
 interface RenderableObject { id: string;
-    bounds: ObjectBounds;
-   , metadata: Record<string, any>;
+    bounds: ObjectBounds,
+    metadata: Record<string, any>;
     visible: boolean;
-    lastCullCheck: number;
-   , gridCells: Set<string>
+    lastCullCheck: number,
+    gridCells: Set<string>
     ,}
 
 interface CullingStats { totalObjects: number;
     culledObjects: number;
     cullingEfficiency: number;
-    renderTime: number;
-   , cullingTime: number }
+    renderTime: number,
+    cullingTime: number }
 
 interface PerformanceEntry { timestamp: number;
     cullingTime: number;
     cullingEfficiency: number;
-    totalObjects: number;
-   , culledObjects: number }
+    totalObjects: number,
+    culledObjects: number }
 
 interface VisibleObjectData { id: string;
-    bounds: ObjectBounds;
-   , metadata: Record<string, any> }
+    bounds: ObjectBounds,
+    metadata: Record<string, any> }
 
 /**
  * Viewport Culling System
@@ -93,8 +93,8 @@ export class AdvancedViewportCuller {
         this.stats = { totalObjects: 0,
             culledObjects: 0;
             cullingEfficiency: 0;
-            renderTime: 0;
-           , cullingTime: 0 ,};
+            renderTime: 0,
+    cullingTime: 0 ,};
         // Performance tracking
         this.performanceHistory = [];
         this.historySize = config.historySize || 60;
@@ -111,8 +111,8 @@ export class AdvancedViewportCuller {
                 right: x + width + this.cullingMargin;
                 top: y - this.cullingMargin;
                 bottom: y + height + this.cullingMargin;
-                near: 0;
-               , far: 1000 ,};
+                near: 0,
+    far: 1000 ,};
             // Clear visibility cache when viewport changes
             this.visibilityCache.clear();
             
@@ -134,8 +134,8 @@ export class AdvancedViewportCuller {
                 bounds: { ...bounds
                 metadata;
                 visible: false;
-                lastCullCheck: 0;
-               , gridCells: new Set<string>();
+                lastCullCheck: 0,
+    gridCells: new Set<string>();
             };
             
             this.renderableObjects.set(id, object);
@@ -219,7 +219,7 @@ export class AdvancedViewportCuller {
             // Update statistics
             this.stats.totalObjects = this.renderableObjects.size;
             this.stats.culledObjects = this.culledObjects.size;
-            this.stats.cullingEfficiency = this.stats.totalObjects > 0 ?   : undefined
+            this.stats.cullingEfficiency = this.stats.totalObjects > 0 ? undefined : undefined
                 this.stats.culledObjects / this.stats.totalObjects: 0,
             
             const endTime = performance.now();
@@ -265,8 +265,8 @@ export class AdvancedViewportCuller {
             totalObjects: 0;
             culledObjects: 0;
             cullingEfficiency: 0;
-            renderTime: 0;
-           , cullingTime: 0 };
+            renderTime: 0,
+    cullingTime: 0 };
         this.performanceHistory = [];
     }
     
@@ -358,8 +358,8 @@ export class AdvancedViewportCuller {
             timestamp: Date.now();
             cullingTime: this.stats.cullingTime;
             cullingEfficiency: this.stats.cullingEfficiency;
-            totalObjects: this.stats.totalObjects;
-           , culledObjects: this.stats.culledObjects };
+            totalObjects: this.stats.totalObjects,
+    culledObjects: this.stats.culledObjects };
         this.performanceHistory.push(entry);
         
         if(this.performanceHistory.length > this.historySize) {
@@ -369,4 +369,4 @@ export class AdvancedViewportCuller {
 
         }
 
-            this.performanceHistory.shift(') }'
+            this.performanceHistory.shift() }'

@@ -1,37 +1,37 @@
 // Type definitions
 interface Viewport { x: number,
     y: number;
-    width: number;
-   , height: number ,}
+    width: number,
+    height: number ,}
 
 interface Frustum { left: number;
     right: number;
     top: number;
     bottom: number;
-    near: number;
-   , far: number }
+    near: number,
+    far: number }
 
 interface ViewportCullingStats { totalObjects: number;
     culledObjects: number;
-    cullingEfficiency: number;
-   , processingTime: number }
+    cullingEfficiency: number,
+    processingTime: number }
 
 interface CullingConfig { enabled: boolean;
     viewport: Viewport;
-    cullingMargin: number;
-   , spatialGrid: Map<string, Set<RenderableObject>>;
+    cullingMargin: number,
+    spatialGrid: Map<string, Set<RenderableObject>>;
     gridSize: number;
     renderableObjects: Set<RenderableObject>;
     culledObjects: Set<RenderableObject>;
     visibilityCache: Map<string | number, boolean>;
-    frustum: Frustum;
-   , stats: ViewportCullingStats
+    frustum: Frustum,
+    stats: ViewportCullingStats
     ,}
 
 interface ObjectBounds { x: number;
     y: number;
-    width: number;
-   , height: number }
+    width: number,
+    height: number }
 
 interface RenderableObject { id?: string | number;
     x?: number;
@@ -84,9 +84,9 @@ export class BasicViewportCuller {
             // Statistics
             stats: { totalObjects: 0;
                 culledObjects: 0;
-                cullingEfficiency: 0;
-               , processingTime: 0 }
-        };
+                cullingEfficiency: 0,
+    processingTime: 0 
+    };
         this.updateViewport();
         this.rebuildSpatialGrid();
     }
@@ -214,8 +214,8 @@ export class BasicViewportCuller {
     calculateObjectBounds(obj: RenderableObject): ObjectBounds { const bounds: ObjectBounds = {
             x: obj.x || 0;
             y: obj.y || 0;
-            width: obj.width || 0;
-           , height: obj.height || 0 };
+            width: obj.width || 0,
+    height: obj.height || 0 };
         // Account for rotation and scaling
         if(obj.rotation || obj.scale !== 1) {
             const centerX = bounds.x + bounds.width / 2;
@@ -307,8 +307,8 @@ export class BasicViewportCuller {
         this.config.stats = {
             totalObjects: 0;
             culledObjects: 0;
-            cullingEfficiency: 0;
-           , processingTime: 0 }
+            cullingEfficiency: 0,
+    processingTime: 0 }
 
     /**
      * Handle canvas resize

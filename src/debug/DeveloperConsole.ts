@@ -3,19 +3,19 @@
  * インタラクティブなコマンドライン環境でゲーム状態操作とデバッグを支援
  */
 
-import { ConfigurationCommands  } from './ConfigurationCommands.js';''
-import { EnhancedAutocompleteEngine  } from './EnhancedAutocompleteEngine.js';''
-import { EnhancedHistoryManager  } from './EnhancedHistoryManager.js';''
-import { TestDataGenerationCommands  } from './TestDataGenerationCommands.js';''
-import { AutocompleteEngine  } from './AutocompleteEngine.js';''
+import { ConfigurationCommands  } from './ConfigurationCommands.js';
+import { EnhancedAutocompleteEngine  } from './EnhancedAutocompleteEngine.js';
+import { EnhancedHistoryManager  } from './EnhancedHistoryManager.js';
+import { TestDataGenerationCommands  } from './TestDataGenerationCommands.js';
+import { AutocompleteEngine  } from './AutocompleteEngine.js';
 import { ExecutionContext  } from './ExecutionContext.js';
 
 import type { GameEngine } from '../core/GameEngine';
 
 interface CommandParameter { name: string,
     type: string;
-    required: boolean;
-   , description: string ,}
+    required: boolean,
+    description: string ,}
 
 interface CommandOptions { description?: string;
     usage?: string;
@@ -34,31 +34,31 @@ interface CommandData { name: string,
     aliases: string[];
     parameters: CommandParameter[];
     examples: string[];
-    permissions: string;
-   , hidden: boolean ,}
+    permissions: string,
+    hidden: boolean ,}
 
 interface ParsedCommand { name: string;
-    args: string[];
-   , raw: string }
+    args: string[],
+    raw: string }
 
 interface OutputLine { message: string;
     type: string;
-    timestamp: string;
-   , id: number }
+    timestamp: string,
+    id: number }
 
 interface ExecutionMetadata { success: boolean;
     executionTime: number;
     errorMessage: string | null;
     resultType: string;
-    commandName: string;
-   , args: string[] }
+    commandName: string,
+    args: string[] }
 
 interface HistoryEntry { command: string;
-    timestamp: number;
-   , metadata: any }
+    timestamp: number,
+    metadata: any }
 
-interface AutocompleteSuggestion { suggestion: string;
-   , type: string;
+interface AutocompleteSuggestion { suggestion: string,
+    type: string;
     description?: string }
 
 interface HistorySearchOptions { type?: string;
@@ -68,12 +68,12 @@ interface HistorySearchOptions { type?: string;
 interface HistoryStatistics { totalCommands: number,
     sessionCommands: number;
     averageCommandLength: number;
-    historySize: number;
-   , topCommands: [string, number][];
+    historySize: number,
+    topCommands: [string, number][];
     errorCommands: Set<string>;
     currentSession?: {
-        command;s: any[];
-       , totalTime: number ,}
+        command;s: any[],
+    totalTime: number ,}
 
 interface ExportOptions { includeMetadata?: boolean; }
 
@@ -172,11 +172,11 @@ export class DeveloperConsole {
             description: options.description || '',
             usage: options.usage || name,
             group: options.group || 'custom';
-            aliases: options.aliases || [];
-           , parameters: options.parameters || [],
+            aliases: options.aliases || [],
+    parameters: options.parameters || [],
             examples: options.examples || [],
-            permissions: options.permissions || 'user';
-           , hidden: options.hidden || false ,};
+            permissions: options.permissions || 'user',
+    hidden: options.hidden || false ,};
         // メインコマンドの登録
         this.commands.set(name, commandData);
         
@@ -212,7 +212,7 @@ export class DeveloperConsole {
 
             } catch (error) { }
 
-            this.output(`Error: ${(error, as, Error'}).message}`, 'error'');''
+            this.output(`Error: ${(error, as, Error'}'.message}`, 'error'');''
             console.error('Console command error:', error);
         }
     }
@@ -226,7 +226,7 @@ export class DeveloperConsole {
 
         }
 
-            throw new Error('Empty, command); }'
+            throw new Error('Empty, command'; }'
         }
         
         const commandName = parts[0];
@@ -237,8 +237,8 @@ export class DeveloperConsole {
         
         return { name: resolvedName,
             args, };
-            raw: commandLine }
-        }
+            raw: commandLine 
+    }
 
     /**
      * コマンドラインのトークン化
@@ -307,8 +307,8 @@ export class DeveloperConsole {
                 success,
                 executionTime,
                 errorMessage);
-                resultType: typeof result);
-               , commandName: parsed.name,);
+                resultType: typeof result),
+    commandName: parsed.name,);
                 args: parsed.args ,}
         
         return result;
@@ -337,8 +337,8 @@ export class DeveloperConsole {
             if(param.type && !this.validateParameterType(arg, param.type)) {
         }
 
-                throw new Error(' })'
-                    `Parameter '${param.name}' must be of type ${param.type}, got: ${ arg}` });
+                throw new Error(' }''
+                    `Parameter '${param.name}' must be of type ${param.type}, got: ${ arg}` }';
             }
 }
 
@@ -412,13 +412,13 @@ export class DeveloperConsole {
         // フォールバック: 既存の実装
         if(this.history.length === 0) return '';
 
-        if(direction === 'up) {', ';
+        if(direction === 'up' {', ';
 
         }
 
             this.historyIndex = Math.max(0, this.historyIndex - 1);' }'
 
-        } else if(direction === 'down) { ''
+        } else if(direction === 'down' { ''
             this.historyIndex = Math.min(this.history.length, this.historyIndex + 1); }
         
         return this.historyIndex < this.history.length ';
@@ -451,7 +451,7 @@ export class DeveloperConsole {
      */
     getHistoryStatistics(): HistoryStatistics { ''
         return this.historyManager.getStatistics()';
-    exportHistory(format: string = 'json', options: ExportOptions = {): string {''
+    exportHistory(format: string = 'json', options: ExportOptions = {': string {''
         return this.historyManager.exportHistory(format, options }
 
     /**
@@ -649,7 +649,7 @@ export class DeveloperConsole {
                 output += `  ${group}: ${commands.length} commands\n`;
             }
 
-            output += '\nUse "help <command>" for detailed information.\n';''
+            output += '\nUse "help <command>" for detailed information.\n';
             output += 'Use "commands [group]" to list commands in a group.';
             
             return output;
@@ -715,13 +715,13 @@ export class DeveloperConsole {
         let output = `Recent commands(${recentHistory.length} of ${ allHistory.length):\n`;
         recentHistory.forEach((entry, index} => { '
             const num = allHistory.length - count + index + 1;''
-            const time = new Date(entry.timestamp}.toLocaleTimeString('' })'
+            const time = new Date(entry.timestamp}.toLocaleTimeString('' }''
             const status = entry.metadata.success ? '✓' : '✗';') }
 
             const execTime = entry.metadata.executionTime ? ` (${entry.metadata.executionTime.toFixed(1})ms')` : '';
             
             output += `  ${num}: [${time}] ${status} ${entry.command}${execTime}\n`;
-        });
+        }';
         
         return output;
     }
@@ -751,20 +751,20 @@ export class DeveloperConsole {
 
         let output = `Search results for "${query}" (${results.length} found):\n`;"
         results.forEach((entry, index) => {  ""
-            const time = new Date(entry.timestamp).toLocaleTimeString(");" }"
+            const time = new Date(entry.timestamp).toLocaleTimeString();" }"
             const status = entry.metadata.success ? '✓' : '✗';' }
 
-            const score = (entry, as any).relevanceScore ? ` [${((entry, as, any}.relevanceScore * 100}.toFixed(0'})%]` : '';
+            const score = (entry, as any).relevanceScore ? ` [${((entry, as, any}.relevanceScore * 100}.toFixed(0'}'%]` : '';
             
             output += `  ${index + 1}: [${time}] ${status} ${entry.command}${score}\n`;
-        });
+        }';
         
         return output;
     }
 ';
 
     private historyStatsCommand(): string { ''
-        const stats = this.getHistoryStatistics(''';
+        const stats = this.getHistoryStatistics('''
         let, output = 'Command, History Statistics: \n' }
         output += `  Total, Commands: ${stats.totalCommands}\n`;)
         output += `  Session Commands: ${stats.sessionCommands}\n`;)
@@ -810,8 +810,8 @@ export class DeveloperConsole {
                 }');
             }
 
-            const lines = exported.split('\n).length;''
-            return `History exported in ${format} format(${lines} lines).\n${format === 'json' ? 'Copied, to clipboard, if supported.' : ''}\n\n${exported.substring(0, 500'})${exported.length > 500 ? '...\n\n[Output, truncated. Full, data copied, to clipboard.]' : ''}`;
+            const lines = exported.split('\n'.length;''
+            return `History exported in ${format} format(${lines} lines).\n${format === 'json' ? 'Copied, to clipboard, if supported.' : ''}\n\n${exported.substring(0, 500'}'${exported.length > 500 ? '...\n\n[Output, truncated. Full, data copied, to clipboard.]' : ''}`;
         } catch (error) {
             return `Error exporting history: ${(error, as, Error}).message}`;
 
@@ -843,8 +843,8 @@ export class DeveloperConsole {
         try {
             // コンテキストに gameEngine を追加
             const context = {
-                gameEngine: this.gameEngine;
-               , console: this;
+                gameEngine: this.gameEngine,
+    console: this;
                 ...this.context.variables;
             
             // セキュリティ上の理由でeval()の代わりにFunction()を使用
@@ -870,8 +870,8 @@ export class DeveloperConsole {
             commands = Array.from(groupCommands);
         } else { commands = Array.from(this.commands.keys(); }
 
-        commands.sort(''';
-            ? `Commands, in group '${groupFilter}':\n`)'
+        commands.sort('''
+            ? `Commands, in group '${groupFilter}': \n`''
             : 'All available commands: \n');
         );
         for(const, cmdName of, commands) {
@@ -911,4 +911,4 @@ export class DeveloperConsole {
         
         this.commands.clear();
         this.commandGroups.clear();''
-        this.aliases.clear(');
+        this.aliases.clear();

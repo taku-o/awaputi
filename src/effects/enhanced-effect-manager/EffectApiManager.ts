@@ -4,29 +4,29 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
  * レンダリング設定インターフェース
  */
 interface RenderSettings { enableLighting: boolean,
-    enableShadows: boolean;
-   , enableReflections: boolean,
+    enableShadows: boolean,
+    enableReflections: boolean,
     enablePostProcessing: boolean,
     qualityLevel: 'low' | 'medium' | 'high' | 'ultra';
     enableBatching: boolean;
     reducedEffects: boolean;
-    transitionSmoothing: boolean;
-   , transitionDuration: number ,}
+    transitionSmoothing: boolean,
+    transitionDuration: number ,}
 
 /**
  * 拡張変換状態インターフェース
  */
-interface EnhancedTransform { depthOfField: number;
-   , motionBlur: {
+interface EnhancedTransform { depthOfField: number,
+    motionBlur: {
         ;x: number;
-        y: number;
-       , intensity: number };
+        y: number,
+    intensity: number };
     chromatic: number;
     vignette: number;
     noise: number;
-    scanlines: number;
-   , glitch: { intensity: number;
-       , frequency: number }
+    scanlines: number,
+    glitch: { intensity: number,
+    frequency: number }
 
 /**
  * 遷移効果オプションインターフェース
@@ -37,7 +37,7 @@ interface TransitionOptions { ''
     color?: string;
 
     intensity?: number;''
-    slideDirection?: 'left' | 'right' | 'up' | 'down';''
+    slideDirection?: 'left' | 'right' | 'up' | 'down';
     zoomType?: 'in' | 'out'; }
 
     center?: { x: number;, y: number }''
@@ -54,16 +54,16 @@ interface TransitionEffect { id: number,''
     type: 'transition';
     transitionType: string;
     duration: number;
-    elapsed: number;
-   , options: TransitionOptions
+    elapsed: number,
+    options: TransitionOptions
     ,}
 
 /**
  * エフェクトコントローラーインターフェース
  */
 interface EffectController { effectId: number;
-    transitionEffects: TransitionEffect[];
-   , performanceMetrics: Record<string, any> }
+    transitionEffects: TransitionEffect[],
+    performanceMetrics: Record<string, any> }
 
 /**
  * Effect API Manager
@@ -80,22 +80,22 @@ export class EffectApiManager {
         this.canvas = canvas;
 
         this.effectController = effectController;''
-        this.errorHandler = getErrorHandler(''';
+        this.errorHandler = getErrorHandler('''
             qualityLevel: 'high', // 'low', 'medium', 'high', 'ultra';
             enableBatching: false;
-            reducedEffects: false;
-           , transitionSmoothing: false;
+            reducedEffects: false,
+    transitionSmoothing: false;
     ,}
-            transitionDuration: 300 }
-        };
+            transitionDuration: 300 
+    };
         // 拡張変換状態
         this.enhancedTransform = { depthOfField: 0 }
             motionBlur: { x: 0, y: 0, intensity: 0 ,},
             chromatic: 0;
             vignette: 0;
             noise: 0);
-            scanlines: 0);
-           , glitch: { intensity: 0, frequency: 0 ,};
+            scanlines: 0',
+    glitch: { intensity: 0, frequency: 0 ,};
 
         console.log('[EffectApiManager] API管理システムを初期化しました');
     }
@@ -113,13 +113,13 @@ export class EffectApiManager {
                 id: this.effectController.effectId++,
                 type: 'transition',
                 transitionType: type, // 'fade', 'slide', 'zoom', 'wipe', 'dissolve';
-                duration: duration;
-               , elapsed: 0,
+                duration: duration,
+    elapsed: 0,
                 options: {''
                     direction: options.direction || 'in', // 'in', 'out', 'cross''';
                     easing: options.easing || 'easeInOut',
-                    color: options.color || '#000000';
-                   , intensity: options.intensity || 1.0;
+                    color: options.color || '#000000',
+    intensity: options.intensity || 1.0;
                     ...options
             ,};
             
@@ -128,7 +128,7 @@ export class EffectApiManager {
 
             return effect.id;''
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'EffectApiManager.addTransitionEffect),' }
+                context: 'EffectApiManager.addTransitionEffect',' }
 
             }');
             return -1;
@@ -137,7 +137,7 @@ export class EffectApiManager {
      * フェード遷移効果'
      */''
     addFadeTransition(duration: number, color: string = '#000000', direction: 'in' | 'out' | 'cross' = 'out''): number { ''
-        return this.addTransitionEffect('fade', duration, { color, direction )); }
+        return this.addTransitionEffect('fade', duration, { color, direction )'; }
     
     /**
      * スライド遷移効果'
@@ -151,12 +151,12 @@ export class EffectApiManager {
     /**
      * ズーム遷移効果'
      */''
-    addZoomTransition(duration: number, zoomType: 'in' | 'out' = 'in', center: { x: number;, y: number ) | null = null'): number { }
+    addZoomTransition(duration: number, zoomType: 'in' | 'out' = 'in', center: { x: number,  y: number ' | null = null'): number { }
 
         const centerPoint = center || { x: this.canvas.width / 2, y: this.canvas.height / 2 ,}''
         return this.addTransitionEffect('zoom', duration, { ')'
             zoomType, // 'in', 'out'')';
-            center: centerPoint)' ,}'
+            center: centerPoint'' ,}'
     
     /**
      * ワイプ遷移効果'
@@ -172,7 +172,7 @@ export class EffectApiManager {
     addDissolveTransition(duration: number, noiseScale: number = 1.0, threshold: number = 0.5): number { ''
         return this.addTransitionEffect('dissolve', duration, { )
             noiseScale, );
-            threshold ); }
+            threshold '; }
     
     // ========================================
     // 設定管理API
@@ -184,9 +184,9 @@ export class EffectApiManager {
     updateRenderSettings(newSettings: Partial<RenderSettings>): void { try { }
 
             this.renderSettings = { ...this.renderSettings, ...newSettings;''
-            console.log('[EffectApiManager] レンダリング設定を更新しました', newSettings);''
+            console.log('[EffectApiManager] レンダリング設定を更新しました', newSettings';''
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'EffectApiManager.updateRenderSettings),' }
+                context: 'EffectApiManager.updateRenderSettings',' }
 
             }');
         }
@@ -195,7 +195,7 @@ export class EffectApiManager {
     /**
      * 品質レベルを設定'
      */''
-    setQualityLevel(level: 'low' | 'medium' | 'high' | 'ultra): void { try {
+    setQualityLevel(level: 'low' | 'medium' | 'high' | 'ultra': void { try {
             this.renderSettings.qualityLevel = level;
             ';
             // 品質レベルに応じた設定調整
@@ -234,7 +234,7 @@ export class EffectApiManager {
 
             console.log(`[EffectApiManager] 品質レベルを${level}に設定しました`});''
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'EffectApiManager.setQualityLevel' ,});
+                context: 'EffectApiManager.setQualityLevel' ,}';
         }
     }
     
@@ -247,9 +247,9 @@ export class EffectApiManager {
 
             ' }'
 
-            console.log(`[EffectApiManager] パフォーマンス最適化を${enabled ? '有効' : '無効}にしました`});''
+            console.log(`[EffectApiManager] パフォーマンス最適化を${enabled ? '有効' : '無効}にしました`}';''
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'EffectApiManager.enableOptimization' ,});
+                context: 'EffectApiManager.enableOptimization' ,}';
         }
     }
     
@@ -325,7 +325,7 @@ export class EffectApiManager {
     setGlitchEffect(intensity: number, frequency: number): void { try {
             this.enhancedTransform.glitch = { 
                 intensity: Math.max(0, Math.min(1, intensity),
-                frequency: Math.max(0, frequency };
+                frequency: Math.max(0, frequency }
 
             console.log(`[EffectApiManager] グリッチ効果を設定: ${intensity}, ${frequency}`});''
         } catch (error) { this.errorHandler.handleError(error, {)'
@@ -348,4 +348,4 @@ export class EffectApiManager {
     /**
      * パフォーマンスメトリクスを取得
      */''
-    getPerformanceMetrics(');
+    getPerformanceMetrics();

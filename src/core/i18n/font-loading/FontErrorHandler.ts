@@ -18,8 +18,8 @@ export interface ErrorInfo { type: string,''
     severity: 'info' | 'warn' | 'error' ,}
 export interface SuppressionRules { repeatSuppression: {
         enable;d: boolean;
-        timeWindow: number;
-       , maxOccurrences: number 
+        timeWindow: number,
+    maxOccurrences: number 
 };
     sourceBasedSuppression: { [source: string]: {''
             [errorType: string]: 'suppress' | 'warn_once' | 'error', };
@@ -42,17 +42,15 @@ export class FontErrorHandler {
         this.suppressionRules = this._initializeSuppressionRules(); }
     }
 
-    private _initializeSuppressionRules(''';
+    private _initializeSuppressionRules('''
                 'local': { '', 'FileNotFoundError': 'suppress',
-                    'TimeoutError': 'warn_once' }
-
-                },'', 'google': { '', 'NetworkError': 'warn_once',
-                    'TimeoutError': 'warn_once' }
-
-                },'', 'system': { '', 'FileNotFoundError': 'warn_once',  // システムフォント不在は一度だけ警告;
-                    'ConfigurationError': 'error' }
-}
-)';
+                    'TimeoutError': 'warn_once' 
+    },'', 'google': { '', 'NetworkError': 'warn_once',
+                    'TimeoutError': 'warn_once' 
+    },'', 'system': { '', 'FileNotFoundError': 'warn_once',  // システムフォント不在は一度だけ警告;
+                    'ConfigurationError': 'error' 
+    }
+'';
     handleFontError(error: Error, context: FontErrorContext): boolean { ''
         const errorInfo = this._categorizeError(error, context);' }'
 
@@ -61,13 +59,13 @@ export class FontErrorHandler {
         // warn_once チェック
         const shouldSuppress = this.shouldSuppressError(errorInfo.type, context.source);
 
-        if(shouldSuppress === 'warn_once) {'
+        if(shouldSuppress === 'warn_once' {'
             if(this.suppressedErrors.has(errorKey) {
         }
                 return false; // 既に警告済みなので抑制 }
             }''
             this.suppressedErrors.add(errorKey);''
-        } else if(shouldSuppress === 'suppress) { return false; }'
+        } else if(shouldSuppress === 'suppress' { return false; }'
         const logLevel = this._getLogLevel(shouldSuppress, errorInfo.type, context);
         this.logFontError(error, logLevel, context);
 
@@ -81,24 +79,24 @@ export class FontErrorHandler {
         if (errorMessage.includes('network'') || '';
             errorMessage.includes('fetch'') || '';
             errorMessage.includes('cors'') ||'';
-            context.source === 'google' && errorMessage.includes('failed)) {' }
+            context.source === 'google' && errorMessage.includes('failed)' {' }
 
             return { type: 'NetworkError', severity: 'warn' ,}
 
         if (errorMessage.includes('not, found'') || '';
             errorMessage.includes('404'') ||'';
             errorMessage.includes('file'') && errorMessage.includes('not'') ||'';
-            context.source === 'local' && errorMessage.includes('failed)) { ' }
+            context.source === 'local' && errorMessage.includes('failed)' { ' }
 
             return { type: 'FileNotFoundError', severity: 'warn' ,}
 
         if (errorMessage.includes('timeout'') || '';
-            errorMessage.includes('time, out)) { ' }
+            errorMessage.includes('time, out)' { ' }
 
             return { type: 'TimeoutError', severity: 'warn' ,}
 
         if (errorMessage.includes('config'') || '';
-            errorMessage.includes('setting)) { ' }
+            errorMessage.includes('setting)' { ' }
 
             return { type: 'ConfigurationError', severity: 'error' ,}
 
@@ -133,7 +131,7 @@ export class FontErrorHandler {
         return false;
     }
 
-    private _getLogLevel(suppressionType: 'suppress' | 'warn_once' | 'error' | false, errorType: string, context: FontErrorContext = { ) as FontErrorContext'): 'debug' | 'info' | 'warn' | 'error' {''
+    private _getLogLevel(suppressionType: 'suppress' | 'warn_once' | 'error' | false, errorType: string, context: FontErrorContext = { ' as FontErrorContext'): 'debug' | 'info' | 'warn' | 'error' {''
         if(suppressionType === 'warn_once'') {', ';
 
         }
@@ -159,7 +157,7 @@ export class FontErrorHandler {
     logFontError(error: Error, level: 'debug' | 'info' | 'warn' | 'error' = 'warn', context: FontErrorContext = { ) as FontErrorContext): void {
         const message = this._formatErrorMessage(error, context);
 
-        if(this.config.development? .verboseLogging) {
+        if(this.config.development?.verboseLogging) {
 
             
 
@@ -170,7 +168,7 @@ export class FontErrorHandler {
 
  : undefined'';
     private _formatErrorMessage(error: Error, context: FontErrorContext): string { ''
-        const fontFamily = context.fontFamily || 'unknown';''
+        const fontFamily = context.fontFamily || 'unknown';
         const source = context.source || 'unknown';
         const suggestion = this._getSuggestion(error, context);
  }
@@ -180,15 +178,15 @@ export class FontErrorHandler {
 
     private _getSuggestion(error: Error, context: FontErrorContext): string { ''
         const errorMessage = error.message || error.toString().toLowerCase()';
-        if(context.source === 'google' && errorMessage.includes('network)) {''
+        if(context.source === 'google' && errorMessage.includes('network)' {''
             return 'Check network connectivity or consider using local fonts as fallback.'; }
 
-        if(context.source === 'local' && errorMessage.includes('not, found)) { ' }
+        if(context.source === 'local' && errorMessage.includes('not, found)' { ' }
 
             return `Ensure font file exists at '/fonts/${context.fontFamily}.woff2' or disable local font loading.`;
         }
 
-        if(errorMessage.includes('timeout)) { ''
+        if(errorMessage.includes('timeout)' { ''
             return 'Font loading is taking too long. Using system fonts as fallback.'; }
 ';
         // システムフォントが見つからない場合は、より一般的なメッセージ
@@ -206,14 +204,14 @@ export class FontErrorHandler {
             source: context.source;
             error: error.message;
             stack: error.stack;
-            timestamp: new Date().toISOString();
-           , suggestion: this._getSuggestion(error, context };
+            timestamp: new Date().toISOString(),
+    suggestion: this._getSuggestion(error, context };
 
         (console as any)[level]('[FontErrorHandler] Detailed font loading error:', details');
     }
 
     private _logSimpleError(message: string, level: 'debug' | 'info' | 'warn' | 'error''): void { // debugレベルは本番環境では表示しない
-        if(level === 'debug' && !this.config.development? .verboseLogging) {
+        if(level === 'debug' && !this.config.development?.verboseLogging) {
             
         }
             return; }
@@ -240,7 +238,7 @@ export class FontErrorHandler {
         const stats: Record<string, Record<string, number>> = {};
 
         for(const [errorKey, history] of this.errorHistory.entries()) { ''
-            const [source, type] = errorKey.split(':);''
+            const [source, type] = errorKey.split(':';''
             if(!stats[source]) { }
                 stats[source] = {}
             stats[source][type] = history.length;

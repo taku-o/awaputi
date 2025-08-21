@@ -5,16 +5,16 @@
  * 4つの専門コンポーネントに機能を委譲し、統一されたインターフェースを提供。
  */
 
-import { BubbleGenerationCommands  } from './test-data-generation/BubbleGenerationCommands.js';''
-import { GameStateGenerationCommands  } from './test-data-generation/GameStateGenerationCommands.js';''
-import { ScenarioCommands  } from './test-data-generation/ScenarioCommands.js';''
+import { BubbleGenerationCommands  } from './test-data-generation/BubbleGenerationCommands.js';
+import { GameStateGenerationCommands  } from './test-data-generation/GameStateGenerationCommands.js';
+import { ScenarioCommands  } from './test-data-generation/ScenarioCommands.js';
 import { CommandValidator  } from './test-data-generation/CommandValidator.js';
 
 // Type definitions
 interface GameEngine { [key: string]: any, }
 
-interface ErrorHandler { handleError: (erro;r: Error, context: string, details?: any) => void }
-}
+interface ErrorHandler { handleError: (error: Error, context: string, details?: any) => void 
+    }
 
 interface ComponentConfig { name: string,
     class: ComponentConstructor
@@ -59,24 +59,24 @@ interface CommandRegistration { command: string,
     description: string;
     usage: string;
     parameters: Parameter[];
-    examples: string[];
-   , group: string ,}
+    examples: string[],
+    group: string ,}
 
 interface Parameter { name: string;
     type: string;
-    required: boolean;
-   , description: string }
+    required: boolean,
+    description: string }
 
-interface ValidationResult { valid: boolean;
-   , errors: string[] }
+interface ValidationResult { valid: boolean,
+    errors: string[] }
 
-interface Scenario { name: string;
-   , description: string }
+interface Scenario { name: string,
+    description: string }
 
 interface Statistics { initialized: boolean;
     componentsCount: number;
-    generatedDataCount: number;
-   , components: Record<string, any> }
+    generatedDataCount: number,
+    components: Record<string, any> }
 
 interface DeveloperConsole { register(command: string, handler: Function, config: CommandRegistration): void ,}
 
@@ -108,7 +108,7 @@ export class TestDataGenerationCommands {
     /**
      * コンポーネントを初期化'
      */''
-    async initializeComponents(''';
+    async initializeComponents('''
                 { name: 'bubbleGenerator', class: BubbleGenerationCommands ,},''
                 { name: 'gameStateGenerator', class: GameStateGenerationCommands ,},''
                 { name: 'scenarioProcessor', class: ScenarioCommands ,},''
@@ -127,10 +127,10 @@ export class TestDataGenerationCommands {
 ';
 
             this.initialized = true;''
-            console.log('[TestDataGenerationCommands] 全コンポーネント初期化完了);
+            console.log('[TestDataGenerationCommands] 全コンポーネント初期化完了';
 
         } catch (error') {
-            this.errorHandler.handleError(error as Error, 'Component initialization failed); }'
+            this.errorHandler.handleError(error as Error, 'Component initialization failed'; }'
     }
 
     /**
@@ -139,17 +139,17 @@ export class TestDataGenerationCommands {
      * @returns フォールバック機能
      */'
     createFallbackComponent(name: string): FallbackComponent { return { initialized: false,''
-            processBubbleCommand: (') => 'Component not available',
-            processGameStateCommand: (') => 'Component not available',
-            processPlayerDataCommand: (') => 'Component not available',
-            processStatisticsCommand: (') => 'Component not available',
-            processPerformanceTestCommand: (') => 'Component not available',
-            processConfigTestCommand: (') => 'Component not available',
-            processErrorSimulationCommand: (') => 'Component not available',' };
+            processBubbleCommand: () => 'Component not available',
+            processGameStateCommand: () => 'Component not available',
+            processPlayerDataCommand: () => 'Component not available',
+            processStatisticsCommand: () => 'Component not available',
+            processPerformanceTestCommand: () => 'Component not available',
+            processConfigTestCommand: () => 'Component not available',
+            processErrorSimulationCommand: () => 'Component not available',' };
 
-            processStressTestCommand: (') => 'Component not available',' }
+            processStressTestCommand: () => 'Component not available',' }
 
-            validateCommand: (') => ({ valid: false, errors: ['Component not available] ,});
+            validateCommand: () => ({ valid: false, errors: ['Component not available] ,});
         }
 
     /**
@@ -166,7 +166,7 @@ export class TestDataGenerationCommands {
     registerCommands(console: DeveloperConsole): void { try {
             // バブル生成コマンド
             const bubbleGenerator = this.getComponent('bubbleGenerator) as Component;
-            if(bubbleGenerator? .getBubbleCommandRegistration) {'
+            if(bubbleGenerator?.getBubbleCommandRegistration) {'
                 const bubbleReg = bubbleGenerator.getBubbleCommandRegistration();
 
             }
@@ -204,7 +204,7 @@ export class TestDataGenerationCommands {
             this.registerUtilityCommands(console);
 
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'Command registration failed); }'
+            this.errorHandler.handleError(error as Error, 'Command registration failed'; }'
     }
 
     /**
@@ -232,7 +232,7 @@ export class TestDataGenerationCommands {
             ],
             examples: ['test.list', 'test.list generators', 'test.list scenarios],
             group: 'test';
-        }),
+        }',
     }
 
     /**
@@ -258,7 +258,7 @@ export class TestDataGenerationCommands {
         const validator = this.getComponent('validator'') as Component;''
         const bubbleGenerator = this.getComponent('bubbleGenerator) as Component;
 
-        if(validator? .validateCommand) {'
+        if(validator?.validateCommand) {'
 
             const validation = validator.validateCommand('test.bubbles', args);
 
@@ -267,7 +267,7 @@ export class TestDataGenerationCommands {
             if(!validation.valid) { : undefined', '
                 return `Validation errors: ${validation.errors.join(', '})`;
         
-        if(bubbleGenerator? .processBubbleCommand) {', ';
+        if(bubbleGenerator?.processBubbleCommand) {', ';
 
             ';
 
@@ -283,7 +283,7 @@ export class TestDataGenerationCommands {
         const validator = this.getComponent('validator'') as Component;''
         const gameStateGenerator = this.getComponent('gameStateGenerator) as Component;
 
-        if(validator? .validateCommand) {'
+        if(validator?.validateCommand) {'
 
             const validation = validator.validateCommand('test.gamestate', args);
 
@@ -292,7 +292,7 @@ export class TestDataGenerationCommands {
             if(!validation.valid) { : undefined', '
                 return `Validation errors: ${validation.errors.join(', '})`;
         
-        if(gameStateGenerator? .processGameStateCommand) {', ';
+        if(gameStateGenerator?.processGameStateCommand) {', ';
 
             ';
 
@@ -308,7 +308,7 @@ export class TestDataGenerationCommands {
         const validator = this.getComponent('validator'') as Component;''
         const gameStateGenerator = this.getComponent('gameStateGenerator) as Component;
 
-        if(validator? .validateCommand) {'
+        if(validator?.validateCommand) {'
 
             const validation = validator.validateCommand('test.playerdata', args);
 
@@ -317,7 +317,7 @@ export class TestDataGenerationCommands {
             if(!validation.valid) { : undefined', '
                 return `Validation errors: ${validation.errors.join(', '})`;
         
-        if(gameStateGenerator? .processPlayerDataCommand) {', ';
+        if(gameStateGenerator?.processPlayerDataCommand) {', ';
 
             ';
 
@@ -333,7 +333,7 @@ export class TestDataGenerationCommands {
         const validator = this.getComponent('validator'') as Component;''
         const gameStateGenerator = this.getComponent('gameStateGenerator) as Component;
 
-        if(validator? .validateCommand) {'
+        if(validator?.validateCommand) {'
 
             const validation = validator.validateCommand('test.statistics', args);
 
@@ -342,7 +342,7 @@ export class TestDataGenerationCommands {
             if(!validation.valid) { : undefined', '
                 return `Validation errors: ${validation.errors.join(', '})`;
         
-        if(gameStateGenerator? .processStatisticsCommand) {', ';
+        if(gameStateGenerator?.processStatisticsCommand) {', ';
 
             ';
 
@@ -358,7 +358,7 @@ export class TestDataGenerationCommands {
         const validator = this.getComponent('validator'') as Component;''
         const scenarioProcessor = this.getComponent('scenarioProcessor) as Component;
 
-        if(validator? .validateCommand) {'
+        if(validator?.validateCommand) {'
 
             const validation = validator.validateCommand('test.performance', args);
 
@@ -367,7 +367,7 @@ export class TestDataGenerationCommands {
             if(!validation.valid) { : undefined', '
                 return `Validation errors: ${validation.errors.join(', '})`;
         
-        if(scenarioProcessor? .processPerformanceTestCommand) {', ';
+        if(scenarioProcessor?.processPerformanceTestCommand) {', ';
 
             ';
 
@@ -383,7 +383,7 @@ export class TestDataGenerationCommands {
         const validator = this.getComponent('validator'') as Component;''
         const scenarioProcessor = this.getComponent('scenarioProcessor) as Component;
 
-        if(validator? .validateCommand) {'
+        if(validator?.validateCommand) {'
 
             const validation = validator.validateCommand('test.config', args);
 
@@ -392,7 +392,7 @@ export class TestDataGenerationCommands {
             if(!validation.valid) { : undefined', '
                 return `Validation errors: ${validation.errors.join(', '})`;
         
-        if(scenarioProcessor? .processConfigTestCommand) {', ';
+        if(scenarioProcessor?.processConfigTestCommand) {', ';
 
             ';
 
@@ -408,7 +408,7 @@ export class TestDataGenerationCommands {
         const validator = this.getComponent('validator'') as Component;''
         const scenarioProcessor = this.getComponent('scenarioProcessor) as Component;
 
-        if(validator? .validateCommand) {'
+        if(validator?.validateCommand) {'
 
             const validation = validator.validateCommand('test.errors', args);
 
@@ -417,7 +417,7 @@ export class TestDataGenerationCommands {
             if(!validation.valid) { : undefined', '
                 return `Validation errors: ${validation.errors.join(', '})`;
         
-        if(scenarioProcessor? .processErrorSimulationCommand) {', ';
+        if(scenarioProcessor?.processErrorSimulationCommand) {', ';
 
             ';
 
@@ -433,7 +433,7 @@ export class TestDataGenerationCommands {
         const validator = this.getComponent('validator'') as Component;''
         const scenarioProcessor = this.getComponent('scenarioProcessor) as Component;
 
-        if(validator? .validateCommand) {'
+        if(validator?.validateCommand) {'
 
             const validation = validator.validateCommand('test.stress', args);
 
@@ -442,7 +442,7 @@ export class TestDataGenerationCommands {
             if(!validation.valid) { : undefined', '
                 return `Validation errors: ${validation.errors.join(', '})`;
         
-        if(scenarioProcessor? .processStressTestCommand) {', ';
+        if(scenarioProcessor?.processStressTestCommand) {', ';
 
             ';
 
@@ -457,14 +457,14 @@ export class TestDataGenerationCommands {
     async clearTestDataCommand(args: string[], context: any, console: any): Promise<string> { ''
         const type = args[0] || 'all';
 
-        if(type === 'all) {'
+        if(type === 'all' {'
             this.generatedData.clear();
             
             // 各コンポーネントのデータもクリア
             for(const, component of, this.components.values() {
                 if (component.clearCache) {''
                     component.clearCache('';
-        })'
+        }''
             return 'Cleared all test data';) }
         } else if(this.generatedData.has(type) { this.generatedData.delete(type); }
             return `Cleared test data: ${type}`;
@@ -472,7 +472,7 @@ export class TestDataGenerationCommands {
             return `No test data found for: ${type}`;
 
     async listTestDataCommand(args: string[], context: any, console: any): Promise<string> { ''
-        const category = args[0] || 'all';''
+        const category = args[0] || 'all';
         let output = '';
 
         if(category === 'all' || category === 'generators'') {'
@@ -481,7 +481,7 @@ export class TestDataGenerationCommands {
             const bubbleGenerator = this.getComponent('bubbleGenerator'');''
             const gameStateGenerator = this.getComponent('gameStateGenerator);
 
-            if(bubbleGenerator) output += '  - Bubble Generator(bubbles)\n';''
+            if(bubbleGenerator) output += '  - Bubble Generator(bubbles)\n';
             if(gameStateGenerator) {'
         }
 
@@ -497,7 +497,7 @@ export class TestDataGenerationCommands {
             const gameStateGenerator = this.getComponent('gameStateGenerator'') as Component;''
             const scenarioProcessor = this.getComponent('scenarioProcessor);
             
-            if (gameStateGenerator? .getAvailableScenarios) {
+            if (gameStateGenerator?.getAvailableScenarios) {
                 const scenarios = gameStateGenerator.getAvailableScenarios();
         }
                 for (const, scenario of, scenarios) { : undefined 
@@ -507,8 +507,8 @@ export class TestDataGenerationCommands {
 
             if(scenarioProcessor) {'
 
-                output += '  - Performance tests: memory, cpu, rendering, particles\n';''
-                output += '  - Config tests: game, audio, effects, performance\n';''
+                output += '  - Performance tests: memory, cpu, rendering, particles\n';
+                output += '  - Config tests: game, audio, effects, performance\n';
                 output += '  - Error simulations: memory, network, render, logic, crash\n';
 
             }
@@ -543,8 +543,8 @@ export class TestDataGenerationCommands {
      */
     getStatistics(): Statistics { const stats: Statistics = {
             initialized: this.initialized;
-            componentsCount: this.components.size;
-           , generatedDataCount: this.generatedData.size, }
+            componentsCount: this.components.size,
+    generatedDataCount: this.generatedData.size, }
             components: {};
         // 各コンポーネントの統計を収集
         for(const [name, component] of this.components) {
@@ -553,8 +553,8 @@ export class TestDataGenerationCommands {
         }
                 stats.components[name] = comp.getGenerationStatistics(); }
             } else if (comp.getValidationStatistics) { stats.components[name] = comp.getValidationStatistics(); } else {  }
-                stats.components[name] = { initialized: component.initialized }
-        }
+                stats.components[name] = { initialized: component.initialized 
+    }
 
         return stats;
     }

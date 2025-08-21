@@ -1,5 +1,5 @@
-import fs from 'fs';''
-import path from 'path';''
+import fs from 'fs';
+import path from 'path';
 import { glob  } from 'glob';
 
 interface Reference { file: string,
@@ -10,8 +10,8 @@ interface Reference { file: string,
 export interface ReferenceResult { filePath: string;
     references: Reference[];
     hasReferences: boolean;
-    importCount: number;
-   , stringCount: number }
+    importCount: number,
+    stringCount: number }
 
 export class ReferenceChecker {
     private searchExtensions: string[]';
@@ -39,7 +39,7 @@ export class ReferenceChecker {
         const relativeFromRoot = path.relative(rootPath, filePath);
         ";
         const patterns = ["]";
-            fileName.replace(/[.*+? ^${)(")|[\]\\]/g, '\\$&'),''
+            fileName.replace(/[.*+? ^${)()|[\]\\]/g, '\\$&'),''
             relativeFromRoot.replace(/[.*+?^${)('}|[\]\\]/g, '\\$&'}
         ];
  }
@@ -49,7 +49,7 @@ export class ReferenceChecker {
  : undefined'';
     async searchPatterns(patterns: string[], targetFile: string, rootPath: string = process.cwd()): Promise<Reference[]> { ''
         const allFiles = await glob('**/*', {'
-            cwd: rootPath,)';
+            cwd: rootPath,'';
             ignore: ['node_modules/**', '.git/**', 'dist/**', 'build/**', '*.log]);
             absolute: true;
         ),
@@ -72,11 +72,11 @@ export class ReferenceChecker {
                         if(regex.test(line) {
                             references.push({);
                                 file: path.relative(rootPath, file),
-                                line: i + 1;
-                               , context: line.trim();
+                                line: i + 1,
+    context: line.trim();
         ,}
-                                type: this.detectReferenceType(line); }
-                            });
+                                type: this.detectReferenceType(line); 
+    });
                         }
 } catch (error) {
                 console.error(`Error reading file ${file}:`, error);
@@ -88,7 +88,7 @@ export class ReferenceChecker {
 
     private detectReferenceType(line: string): 'import' | 'string' {;
         if(/import.*from|require\(|import\(/.test(line)) {''
-            return 'import';''
+            return 'import';
         return 'string';
     }
 
@@ -107,7 +107,7 @@ export class ReferenceChecker {
             hasReferences: uniqueReferences.length > 0,
             importCount: uniqueReferences.filter(ref => ref.type === 'import'').length,' };
 
-            stringCount: uniqueReferences.filter(ref => ref.type === 'string).length }'
+            stringCount: uniqueReferences.filter(ref => ref.type === 'string'.length }'
         }
 
     private removeDuplicateReferences(references: Reference[]): Reference[] { const seen = new Set<string>();

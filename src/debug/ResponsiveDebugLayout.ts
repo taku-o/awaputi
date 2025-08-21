@@ -3,27 +3,27 @@
  */
 
 interface DebugInterface { debugPanel: HTMLElement,
-    switchPanel: (panelNam;e: string) => void;
+    switchPanel: (panelName: string) => void;
     activePanel: string;
     getAllPanels: () => DebugPanel[] ,}
 }
 
 interface DebugPanel { element?: HTMLElement;
-    updateSize?: () => void; }
-}
+    updateSize?: () => void; 
+    }
 
 interface Breakpoints { mobile: number,
     tablet: number;
-    desktop: number;
-   , large: number ,}
+    desktop: number,
+    large: number ,}
 
 interface MediaQueries { mobile: MediaQueryList;
     tablet: MediaQueryList;
-    desktop: MediaQueryList;
-   , large: MediaQueryList
+    desktop: MediaQueryList,
+    large: MediaQueryList
     }
 
-type BreakpointName = 'mobile' | 'tablet' | 'desktop' | 'large';''
+type BreakpointName = 'mobile' | 'tablet' | 'desktop' | 'large';
 type Orientation = 'portrait' | 'landscape';
 
 export class ResponsiveDebugLayout {
@@ -41,12 +41,11 @@ export class ResponsiveDebugLayout {
         this.currentBreakpoint = null;
         this.breakpoints = {
             mobile: 480;
-            tablet: 768;
-           , desktop: 1024;
+            tablet: 768,
+    desktop: 1024;
     }
-    }
-            large: 1440 }
-        };
+            large: 1440 
+    };
         this.orientationLock = false;''
         this.touchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         
@@ -122,7 +121,7 @@ export class ResponsiveDebugLayout {
                 }, 100');
 
             };''
-            window.addEventListener('orientationchange', this.orientationChangeHandler);
+            window.addEventListener('orientationchange', this.orientationChangeHandler';
         }
     }
 
@@ -210,12 +209,12 @@ export class ResponsiveDebugLayout {
         switch(breakpoint} {'
 
             case 'mobile':'';
-                this.applyMobileLayout(''';
-            case 'tablet':'';
+                this.applyMobileLayout('''
+            case 'tablet': '';
                 this.applyTabletLayout(''';
             case 'desktop':'';
                 this.applyDesktopLayout('';
-        })'
+        }''
             case 'large':) }
                 this.applyLargeLayout(});
                 break;
@@ -227,14 +226,14 @@ export class ResponsiveDebugLayout {
     /**
      * モバイルレイアウトを適用'
      */''
-    private applyMobileLayout(''';
+    private applyMobileLayout('''
             position: 'fixed',
             top: '0',
             left: '0',
             width: '100vw',
             height: '100vh',
             maxHeight: '100vh',
-            fontSize: '16px',)';
+            fontSize: '16px','';
             padding: '10px');
 ';
         // パネル切り替えをタブ形式に
@@ -245,13 +244,13 @@ export class ResponsiveDebugLayout {
     /**
      * タブレットレイアウトを適用'
      */''
-    private applyTabletLayout(''';
+    private applyTabletLayout('''
             position: 'fixed',
             top: '10px',
             right: '10px',
             width: '400px',
             height: '80vh',
-            maxHeight: '80vh',)';
+            maxHeight: '80vh','';
             fontSize: '14px',')';
             padding: '15px');
         this.setupTabletLayout();
@@ -260,14 +259,14 @@ export class ResponsiveDebugLayout {
     /**
      * デスクトップレイアウトを適用'
      */''
-    private applyDesktopLayout(''';
+    private applyDesktopLayout('''
             position: 'fixed',
             top: '10px',
             right: '10px',
             width: '350px',
             height: '70vh',
             maxHeight: '70vh',
-            fontSize: '12px',)';
+            fontSize: '12px','';
             padding: '15px');
         this.setupDesktopLayout();
     }
@@ -275,14 +274,14 @@ export class ResponsiveDebugLayout {
     /**
      * 大画面レイアウトを適用'
      */''
-    private applyLargeLayout(''';
+    private applyLargeLayout('''
             position: 'fixed',
             top: '20px',
             right: '20px',
             width: '400px',
             height: '60vh',
             maxHeight: '60vh',
-            fontSize: '12px',)';
+            fontSize: '12px','';
             padding: '20px');
         this.setupLargeLayout();
     }
@@ -312,7 +311,7 @@ export class ResponsiveDebugLayout {
         }
 ";
         // タブボタンイベント""
-        tabNav.querySelectorAll('.tab-btn).forEach(btn => {  ')'
+        tabNav.querySelectorAll('.tab-btn'.forEach(btn => {  ')'
             const button = btn as HTMLButtonElement');''
             button.addEventListener('click', () => {
                 const panelName = button.dataset.panel;
@@ -323,7 +322,7 @@ export class ResponsiveDebugLayout {
                 }
                 ';
                 // アクティブボタンを更新
-                tabNav.querySelectorAll('.tab-btn'').forEach(b => b.classList.remove('active));''
+                tabNav.querySelectorAll('.tab-btn'').forEach(b => b.classList.remove('active)';''
                 button.classList.add('active);
             });
         });
@@ -361,7 +360,7 @@ export class ResponsiveDebugLayout {
                 element.style.minHeight = '44px';' }
 
                 element.style.padding = '8px 16px'; }
-});
+}';
     }
 
     /**
@@ -414,7 +413,7 @@ export class ResponsiveDebugLayout {
     private updatePanelSizes(): void { // 各パネルのサイズを現在のレイアウトに合わせて調整
         const panels = this.debugInterface.getAllPanels();''
         panels.forEach(panel => { ');''
-            if(panel.element && typeof, panel.updateSize === 'function) { }'
+            if(panel.element && typeof, panel.updateSize === 'function' { }'
                 panel.updateSize(); }
 });
     }
@@ -427,9 +426,8 @@ export class ResponsiveDebugLayout {
 
         }
 
-            return screen.orientation.angle === 0 || screen.orientation.angle === 180 ? 'portrait' : 'landscape';' }
-
-        } else if(window.orientation !== undefined) { ''
+            return screen.orientation.angle === 0 || screen.orientation.angle === 180 ? 'portrait' : 'landscape';' 
+    } else if(window.orientation !== undefined) { ''
             return window.orientation === 0 || window.orientation === 180 ? 'portrait' : 'landscape'; else {  ' }
 
             return window.innerHeight > window.innerWidth ? 'portrait' : 'landscape';
@@ -439,12 +437,12 @@ export class ResponsiveDebugLayout {
      */''
     private applyOrientationLayout(orientation: Orientation): void { const debugPanel = this.debugInterface.debugPanel;
 
-        debugPanel.classList.remove('orientation-portrait', 'orientation-landscape);''
+        debugPanel.classList.remove('orientation-portrait', 'orientation-landscape';''
         debugPanel.classList.add(`orientation-${orientation)`'};
 
         if (this.currentBreakpoint === 'mobile''} {' }
 
-            if(orientation === 'landscape''}) {'
+            if(orientation === 'landscape''}' {'
                 // 横向きの場合は高さを調整
                 debugPanel.style.height = '100vh';
 
@@ -469,20 +467,20 @@ export class ResponsiveDebugLayout {
             .enhanced-debug-interface.layout-mobile { font-size: 16px }
             
             .enhanced-debug-interface.layout-mobile .mobile-tab-nav { position: sticky,
-                top: 0;
-               , background: rgba(0, 0, 0, 0.9);
+                top: 0,
+    background: rgba(0, 0, 0, 0.9);
                 z-index: 1000,
-                margin: -10px -10px 10px -10px;
-               , padding: 10px ,}
+                margin: -10px -10px 10px -10px,
+    padding: 10px ,}
             
-            .enhanced-debug-interface.layout-mobile .tab-buttons { display: flex;
-               , gap: 5px;
+            .enhanced-debug-interface.layout-mobile .tab-buttons { display: flex,
+    gap: 5px;
                 overflow-x: auto, }
             
             .enhanced-debug-interface.layout-mobile .tab-btn { flex: 1,
                 min-width: 60px,
-                padding: 8px 12px;
-               , background: rgba(255, 255, 255, 0.1);
+                padding: 8px 12px,
+    background: rgba(255, 255, 255, 0.1);
                 border: 1px solid rgba(255, 255, 255, 0.2);
                 color: white;
                 border-radius: 4px,
@@ -520,13 +518,13 @@ export class ResponsiveDebugLayout {
         // イベントリスナーを削除
         if(this.resizeHandler) {' }'
 
-            window.removeEventListener('resize', this.resizeHandler); }
+            window.removeEventListener('resize', this.resizeHandler'; }
 
         }''
         if(this.orientationChangeHandler) {', ';
 
         }
 
-            window.removeEventListener('orientationchange', this.orientationChangeHandler); }
+            window.removeEventListener('orientationchange', this.orientationChangeHandler'; }
 }''
 }

@@ -9,13 +9,13 @@
 // Type definitions
 interface CacheData { dataURL: string,
     timestamp: number;
-    size: number;
-   , configHash: string ,}
+    size: number,
+    configHash: string ,}
 
 interface CacheStats { totalEntries: number;
     totalSize: number;
-    expiredCount?: number;
-   , available: boolean;
+    expiredCount?: number,
+    available: boolean;
     error?: string }
 
 interface FaviconConfig { backgroundColor?: string;
@@ -106,8 +106,8 @@ export default class FaviconCacheManager { /**
     static generateConfigHash(config: FaviconConfig): string { const hashableConfig: HashableConfig = {
             backgroundColor: config.backgroundColor;
             textColor: config.textColor;
-            text: config.text;
-           , fontFamily: config.fontFamily };
+            text: config.text,
+    fontFamily: config.fontFamily };
         const configStr = JSON.stringify(hashableConfig);
         return this._simpleHash(configStr);
     }
@@ -159,8 +159,8 @@ export default class FaviconCacheManager { /**
             return { totalEntries: keys.length,
                 totalSize,
                 expiredCount, };
-                available: true }
-            } catch (error) { return { totalEntries: 0, 
+                available: true 
+    } catch (error) { return { totalEntries: 0, 
                 totalSize: 0, ;
                 available: false,  };
                 error: (error, as Error).message  }

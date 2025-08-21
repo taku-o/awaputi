@@ -12,8 +12,8 @@ export interface ParticlePosition { x: number,
 /**
  * パーティクル速度
  */
-export interface ParticleVelocity { vx: number;
-   , vy: number }
+export interface ParticleVelocity { vx: number,
+    vy: number }
 
 /**
  * パーティクル見た目プロパティ
@@ -23,37 +23,37 @@ export interface ParticleAppearance { size: number;
     alpha: number;
     rotation: number;
     rotationSpeed: number;
-    scale: number;
-   , scaleSpeed: number }
+    scale: number,
+    scaleSpeed: number }
 
 /**
  * パーティクル物理プロパティ
  */
 export interface ParticlePhysics { gravity: number;
-    friction: number;
-   , bounce: number }
+    friction: number,
+    bounce: number }
 
 /**
  * パーティクルライフサイクル
  */
 export interface ParticleLifecycle { life: number;
-    maxLife: number;
-   , isActive: boolean }
+    maxLife: number,
+    isActive: boolean }
 
 /**
  * パーティクル特殊プロパティ
  */
 export interface ParticleSpecialProperties { pulseSpeed: number;
     trail: ParticleTrailPoint[];
-    maxTrailLength: number;
-   , zIndex: number }
+    maxTrailLength: number,
+    zIndex: number }
 
 /**
  * パーティクルトレイルポイント
  */
 export interface ParticleTrailPoint { x: number;
-    y: number;
-   , alpha: number }
+    y: number,
+    alpha: number }
 
 /**
  * パーティクルタイプ
@@ -79,30 +79,30 @@ export interface Particle extends ;
 export interface LifecycleStats { created: number;
     destroyed: number;
     poolHits: number;
-    poolMisses: number;
-   , maxActiveParticles: number }
+    poolMisses: number,
+    maxActiveParticles: number }
 
-export interface ParticleConfig { bubble: BubbleParticleConfig;
-   , star: StarParticleConfig
+export interface ParticleConfig { bubble: BubbleParticleConfig,
+    star: StarParticleConfig
     }
 
 export interface BubbleParticleConfig { count: number;
     speed: number;
-    size: number;
-   , life: number }
+    size: number,
+    life: number }
 
 export interface StarParticleConfig { count: number;
     speed: number;
-    size: number;
-   , life: number }
+    size: number,
+    life: number }
 
 export interface MemoryUtilization { poolSize: number;
-    maxPoolSize: number;
-   , poolUsagePercent: string }
+    maxPoolSize: number,
+    poolUsagePercent: string }
 
 export interface ExtendedLifecycleStats extends LifecycleStats { currentPoolSize: number;
-    poolEfficiency: number;
-   , memoryUtilization: MemoryUtilization
+    poolEfficiency: number,
+    memoryUtilization: MemoryUtilization
     }
 
 /**
@@ -110,30 +110,30 @@ export interface ExtendedLifecycleStats extends LifecycleStats { currentPoolSize
  */
 export interface BubbleConfig { count: number;
     speed: number;
-    size: number;
-   , life: number }
+    size: number,
+    life: number }
 
 /**
  * スター設定
  */
 export interface StarConfig { count: number;
     speed: number;
-    size: number;
-   , life: number }
+    size: number,
+    life: number }
 
 /**
  * パーティクル設定
  */
-export interface ParticleConfig { bubble: BubbleConfig;
-   , star: StarConfig
+export interface ParticleConfig { bubble: BubbleConfig,
+    star: StarConfig
     }
 
 /**
  * パーティクルマネージャーインターface
  */
-export interface ParticleManagerInterface { poolSize: number;
-   , renderer: {
-        getBubbleColors(bubbleTyp;e: string): string[], }
+export interface ParticleManagerInterface { poolSize: number,
+    renderer: {
+        getBubbleColors(bubbleType: string): string[], }
 
 /**
  * ParticleLifecycleManager
@@ -152,7 +152,7 @@ export class ParticleLifecycleManager {
 
         this.particleManager = particleManager;''
         this.errorHandler = getErrorHandler('';
-    ,})'
+    ,}''
         console.log('[ParticleLifecycleManager] Lifecycle, manager initialized'); }'
     }
 
@@ -172,7 +172,7 @@ export class ParticleLifecycleManager {
     /**
      * パーティクルオブジェクトを作成'
      */''
-    createParticle(''';
+    createParticle('''
             color: '#FFFFFF';
             life: 0;
             maxLife: 0;
@@ -181,16 +181,16 @@ export class ParticleLifecycleManager {
             rotationSpeed: 0;
             scale: 1;
             scaleSpeed: 0;
-            gravity: 0;
-           , friction: 1,
+            gravity: 0,
+    friction: 1,
             bounce: 0,
             type: 'circle';
             isActive: false;
             // 特殊プロパティ
             pulseSpeed: 0;
             trail: [];
-            maxTrailLength: 0;
-           , zIndex: 0);
+            maxTrailLength: 0,
+    zIndex: 0);
         })
 
     /**
@@ -265,8 +265,8 @@ export class ParticleLifecycleManager {
         y: number, ;
         bubbleType: string, ;
         bubbleSize: number );
-        config: ParticleConfig);
-       , quality: number;
+        config: ParticleConfig),
+    quality: number;
     ): Particle[] { const particles: Particle[] = [],
         
         try {
@@ -315,9 +315,9 @@ export class ParticleLifecycleManager {
 
                 particles.push(particle);' }'
 
-            } catch (error) { this.errorHandler.handleError(error as Error, 'PARTICLE_ERROR', {)'
+            } catch (error) { this.errorHandler.handleError(error as Error, 'PARTICLE_ERROR', {''
                 operation: 'createBubblePopParticles',')';
-                component: 'ParticleLifecycleManager' ,});
+                component: 'ParticleLifecycleManager' ,}';
         }
         
         return particles;
@@ -373,7 +373,7 @@ export class ParticleLifecycleManager {
             particle.vy = (Math.random() - 0.5) * 200;
 
             particle.size = 1 + Math.random() * 2;''
-            particle.color = Math.random(') > 0.5 ? '#FFFF00' : '#00FFFF';''
+            particle.color = Math.random() > 0.5 ? '#FFFF00' : '#00FFFF';
             particle.life = 300 + Math.random(''';
             particle.type = 'lightning';
             particle.maxTrailLength = 5;
@@ -437,7 +437,7 @@ export class ParticleLifecycleManager {
             particle.vy = (Math.random() - 0.5) * 120;
 
             particle.size = 2 + Math.random() * 3;''
-            particle.color = Math.random(') > 0.3 ? '#FFFFFF' : '#E6E6FA';''
+            particle.color = Math.random() > 0.3 ? '#FFFFFF' : '#E6E6FA';
             particle.life = 1000 + Math.random()';
             particle.type = 'diamond';)
             particle.rotationSpeed = (Math.random() - 0.5) * 15;
@@ -498,7 +498,7 @@ export class ParticleLifecycleManager {
             particle.vy = (Math.random() - 0.5) * 30;
 
             particle.size = 5 + Math.random() * 8;''
-            particle.color = Math.random(') > 0.5 ? '#32CD32' : '#00FF00';''
+            particle.color = Math.random() > 0.5 ? '#32CD32' : '#00FF00';
             particle.life = 2000 + Math.random(''';
             particle.type = 'cloud';
             particle.pulseSpeed = 2;)
@@ -541,8 +541,8 @@ export class ParticleLifecycleManager {
         x: number, ;
         y: number, ;
         comboCount: number );
-        config: ParticleConfig)';
-       , quality: number'';
+        config: ParticleConfig)',
+    quality: number'';
     '): Particle[] { const particles: Particle[] = [],
         
         try {'
@@ -580,7 +580,7 @@ export class ParticleLifecycleManager {
 
                 particles.push(particle);' }'
 
-            } catch (error) { this.errorHandler.handleError(error as Error, 'PARTICLE_ERROR', {)'
+            } catch (error) { this.errorHandler.handleError(error as Error, 'PARTICLE_ERROR', {''
                 operation: 'createComboParticles',')';
                 component: 'ParticleLifecycleManager' ,});
         }
@@ -717,21 +717,21 @@ export class ParticleLifecycleManager {
      * ライフサイクル統計を取得
      */
     getLifecycleStats(): ExtendedLifecycleStats { return { ...this.lifecycleStats,
-            currentPoolSize: this.particlePool.length;
-           , poolEfficiency: this.lifecycleStats.poolHits / ;
+            currentPoolSize: this.particlePool.length,
+    poolEfficiency: this.lifecycleStats.poolHits / ;
                            (this.lifecycleStats.poolHits + this.lifecycleStats.poolMisses) * 100,
             memoryUtilization: {
                 poolSize: this.particlePool.length;
-                maxPoolSize: this.particleManager.poolSize;
-               , poolUsagePercent: ((this.particleManager.poolSize - this.particlePool.length) /  ,};
-                                 this.particleManager.poolSize * 100).toFixed(1), }
+                maxPoolSize: this.particleManager.poolSize,
+    poolUsagePercent: ((this.particleManager.poolSize - this.particlePool.length) /  ,};
+                                 this.particleManager.poolSize * 100).toFixed(1) }
 }
 
     /**
      * メモリ使用量の最適化
      */
     optimizeMemoryUsage(): void { // 不要なパーティクルオブジェクトを削除
-        const targetPoolSize = Math.min(this.particleManager.poolSize, this.particlePool.length);
+        const targetPoolSize = Math.min(this.particleManager.poolSize this.particlePool.length);
         if(this.particlePool.length > targetPoolSize) {
             
         }
@@ -742,7 +742,7 @@ export class ParticleLifecycleManager {
         if(this.lifecycleStats.created > 10000) {
             this.lifecycleStats.created = Math.floor(this.lifecycleStats.created * 0.1);
             this.lifecycleStats.destroyed = Math.floor(this.lifecycleStats.destroyed * 0.1);
-            this.lifecycleStats.poolHits = Math.floor(this.lifecycleStats.poolHits * 0.1);
+            this.lifecycleStats.poolHits = Math.floor(this.lifecycleStats.poolHits * 0.1');
 
         }
 

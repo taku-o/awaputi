@@ -9,16 +9,16 @@ interface Issue { id: string,
     title: string;
     description: string;
     solution?: string;
-    context: any;
-   , timestamp: number ,}
+    context: any,
+    timestamp: number ,}
 
-interface DetectionRule { id: string;
-   , name: string,' }'
+interface DetectionRule { id: string,
+    name: string,' }'
 
     pattern: RegExp | ((data: any') => boolean}''
     type: Issue['type'],
-    severity: Issue['severity'];
-   , description: string;
+    severity: Issue['severity'],
+    description: string;
     solution?: string;
 }
 
@@ -33,9 +33,9 @@ export class CommonIssueDetector {
         this.initializeDefaultRules(); }
     }
 
-    private initializeDefaultRules(''';
+    private initializeDefaultRules('''
                 id: 'high_memory_usage',
-                name: 'High Memory Usage',)';
+                name: 'High Memory Usage','';
                 pattern: (data: any') => data.memoryUsage > 100 * 1024 * 1024, // 100MB;
                 type: 'memory',
                 severity: 'high',
@@ -95,7 +95,7 @@ export class CommonIssueDetector {
         
             matches = rule.pattern.test(stringData);' }'
 
-        } else if(typeof, rule.pattern === 'function) { // Function-based detection'
+        } else if(typeof, rule.pattern === 'function' { // Function-based detection'
             matches = rule.pattern(data); }
 
         if(matches) {
@@ -105,10 +105,10 @@ export class CommonIssueDetector {
                 severity: rule.severity;
                 title: rule.name;
                 description: rule.description;
-                solution: rule.solution;
-               , context: data,
-                timestamp: Date.now(''';
-        type?: Issue['type'];)'
+                solution: rule.solution,
+    context: data,
+                timestamp: Date.now('''
+        type?: Issue['type'];''
         severity?: Issue['severity'];)
         timeframe?: number;
     ): Issue[] {
@@ -163,7 +163,7 @@ export class CommonIssueDetector {
 
     private generateIssueId(): string { ' }'
 
-        return `issue_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9'})`;
+        return `issue_${Date.now())_${Math.random().toString(36).substr(2, 9'}'`;
 
     }''
 }

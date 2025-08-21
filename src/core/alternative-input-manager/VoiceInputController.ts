@@ -9,27 +9,27 @@ export interface VoiceConfig { enabled: boolean,
     language: string;
     confidence: number;
     continuousListening: boolean;
-    pushToTalk: boolean;
-   , commands: Map<string, string>, }
+    pushToTalk: boolean,
+    commands: Map<string, string>, }
 
 export interface VoiceState { isListening: boolean,
     recognition: SpeechRecognition | null;
     lastCommand: string | null;
     commandQueue: string[];
-    confidence: number;
-   , isInitialized: boolean ,}
+    confidence: number,
+    isInitialized: boolean ,}
 
 export interface VoiceStats { commandsRecognized: number;
     commandsExecuted: number;
     averageConfidence: number;
-    listeningTime: number;
-   , sessionStart: number }
+    listeningTime: number,
+    sessionStart: number }
 
 export interface DetailedVoiceStats extends VoiceStats { isListening: boolean;
     isInitialized: boolean;
     currentContext: string;
-    lastCommand: string | null;
-   , confidence: number }
+    lastCommand: string | null,
+    confidence: number }
 
 export interface CommandExecutionData { command: string;
     originalTranscript?: string;
@@ -43,26 +43,26 @@ export interface VoiceControllerConfig { voiceControl?: Partial<VoiceConfig>;
 export interface SimilarityResult { command: string | null,
     similarity: number ,}
 
-export interface VoiceUIElement extends HTMLElement { className: string;
-   , style: CSSStyleDeclaration
+export interface VoiceUIElement extends HTMLElement { className: string,
+    style: CSSStyleDeclaration
     }
 
 // Web Speech API関連型定義
-export interface SpeechRecognitionEvent { results: SpeechRecognitionResultList;
-   , resultIndex: number }
+export interface SpeechRecognitionEvent { results: SpeechRecognitionResultList,
+    resultIndex: number }
 
 export interface SpeechRecognitionErrorEvent { error: SpeechRecognitionErrorCode;
     message?: string }
 
 export interface SpeechRecognitionResult { 0: SpeechRecognitionAlternative;
-    isFinal: boolean;
-   , length: number }
+    isFinal: boolean,
+    length: number }
 
-export interface SpeechRecognitionAlternative { transcript: string;
-   , confidence: number }
+export interface SpeechRecognitionAlternative { transcript: string,
+    confidence: number }
 
-export interface SpeechRecognitionResultList { [index: number]: SpeechRecognitionResult;
-   , length: number }
+export interface SpeechRecognitionResultList { [index: number]: SpeechRecognitionResult,
+    length: number }
 
 export interface ExtendedSpeechRecognition extends SpeechRecognition { continuous: boolean;
     interimResults: boolean;
@@ -72,8 +72,8 @@ export interface ExtendedSpeechRecognition extends SpeechRecognition { continuou
     onend: ((event: Event) => void) | null;
     onresult: ((event: SpeechRecognitionEvent) => void) | null;
     onerror: ((event: SpeechRecognitionErrorEvent) => void) | null;
-    onnomatch: ((event: Event) => void) | null }
-}
+    onnomatch: ((event: Event) => void) | null 
+    }
 
 // 列挙型
 export type SpeechRecognitionErrorCode = ;
@@ -153,8 +153,8 @@ export const CONTEXTUAL_COMMANDS: Record<VoiceContext, Record<string, CommandAct
         '音声設定': 'voice_settings',
         '画面設定': 'display_settings',
         '保存': 'save_settings',
-        'リセット': 'reset_settings' }
-};
+        'リセット': 'reset_settings' 
+    };
 
 // 音声応答メッセージ
 export const VOICE_RESPONSES: Record<CommandAction, string> = {;
@@ -225,7 +225,6 @@ declare global { interface Window {
     };
         SpeechRecognition: { new (): ExtendedSpeechRecognition;
     }
-}
 
 export class VoiceInputController {
     private voiceConfig: VoiceConfig;
@@ -251,8 +250,8 @@ export class VoiceInputController {
             enabled: false;
             language: DEFAULT_LANGUAGE;
             confidence: DEFAULT_CONFIDENCE;
-            continuousListening: false;
-           , pushToTalk: true;
+            continuousListening: false,
+    pushToTalk: true;
     ,}
             commands: new Map<string, string>(Object.entries(DEFAULT_VOICE_COMMANDS); }
         };
@@ -262,8 +261,8 @@ export class VoiceInputController {
             recognition: null;
             lastCommand: null;
             commandQueue: [];
-            confidence: 0;
-           , isInitialized: false ,};
+            confidence: 0,
+    isInitialized: false ,};
         // 音声フィードバック
         this.speechSynthesis = null;
         this.voiceList = [];
@@ -276,14 +275,14 @@ export class VoiceInputController {
         
         // コマンド処理
         this.commandHandlers = new Map<CommandAction, CommandHandler>();''
-        this.contextualCommands = new Map<VoiceContext, Map<string, CommandAction>>(');''
+        this.contextualCommands = new Map<VoiceContext, Map<string, CommandAction>>();''
         this.currentContext = 'default';
         
         // 統計
         this.stats = { commandsRecognized: 0,
             commandsExecuted: 0;
-            averageConfidence: 0;
-           , listeningTime: 0,
+            averageConfidence: 0,
+    listeningTime: 0,
             sessionStart: Date.now()';
         console.log('[VoiceInputController] Initialized'), }'
     
@@ -304,7 +303,7 @@ export class VoiceInputController {
             console.log('[VoiceInputController] Voice, input initialized');' }
 
         } catch (error) {
-            console.error('[VoiceInputController] Initialization failed:', error);
+            console.error('[VoiceInputController] Initialization failed:', error';
             throw error; }
     }
     
@@ -313,7 +312,7 @@ export class VoiceInputController {
      */'
     private async setupSpeechRecognition(): Promise<void> { ''
         if(!isSpeechRecognitionSupported()) {''
-            throw new Error('Speech, recognition not, supported); }'
+            throw new Error('Speech, recognition not, supported'; }'
         
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         this.voiceState.recognition = new SpeechRecognition();
@@ -350,10 +349,10 @@ export class VoiceInputController {
             this.handleSpeechError(errorEvent); }
         };
 
-        recognition.onnomatch = (') => {  ''
+        recognition.onnomatch = () => {  ''
             console.log('[VoiceInputController] No, speech match, found'');' }
 
-            this.provideFeedback('no_match); }'
+            this.provideFeedback('no_match'; }'
         }
     
     /**
@@ -361,7 +360,7 @@ export class VoiceInputController {
      */'
     private async setupSpeechSynthesis(): Promise<void> { ''
         if(!isSpeechSynthesisSupported()) {''
-            console.warn('[VoiceInputController] Speech, synthesis not, supported);
+            console.warn('[VoiceInputController] Speech synthesis not supported);
             return; }
         
         this.speechSynthesis = window.speechSynthesis;
@@ -374,7 +373,7 @@ export class VoiceInputController {
 
                 ' }'
 
-                console.log(`[VoiceInputController] Selected voice: ${this.selectedVoice? .name || 'default}`}, }'
+                console.log(`[VoiceInputController] Selected voice: ${this.selectedVoice?.name || 'default}`}, }'
                 resolve(});
             };
             
@@ -435,8 +434,8 @@ export class VoiceInputController {
         this.microphoneIndicator.style.cssText = `;
             position: fixed;
             top: 20px;
-            right: 20px;
-           , width: 50px,
+            right: 20px,
+    width: 50px,
             height: 50px,
             background: rgba(0, 0, 0, 0.7),
             border: 2px solid #ccc;
@@ -445,8 +444,8 @@ export class VoiceInputController {
             align-items: center,
             justify-content: center,
             z-index: 10005,
-            cursor: pointer;
-           , transition: all 0.3s ease;
+            cursor: pointer,
+    transition: all 0.3s ease;
         `;
         
         // マイクアイコン
@@ -475,14 +474,14 @@ export class VoiceInputController {
         this.commandHistory.style.cssText = `;
             position: fixed;
             top: 80px;
-            right: 20px;
-           , width: 200px;
+            right: 20px,
+    width: 200px;
             max-height: 150px,
             background: rgba(0, 0, 0, 0.8),
             border: 1px solid #ccc;
             border-radius: 8px,
-            padding: 10px;
-           , color: white;
+            padding: 10px,
+    color: white;
             font-size: 12px,
             overflow-y: auto,
             z-index: 10004,
@@ -500,14 +499,14 @@ export class VoiceInputController {
         this.voiceInterface.className = 'voice-control-panel';
         this.voiceInterface.style.cssText = `;
             position: fixed;
-            bottom: 20px;
-           , right: 20px,
+            bottom: 20px,
+    right: 20px,
             width: 250px,
             background: rgba(0, 0, 0, 0.9),
             border: 2px solid #444;
             border-radius: 12px,
-            padding: 15px;
-           , color: white;
+            padding: 15px,
+    color: white;
             z-index: 10003,
             display: none;
         `;
@@ -550,7 +549,7 @@ export class VoiceInputController {
             } else {
                 console.log('[VoiceInputController] Low confidence, command ignored'');' }
 
-                this.provideFeedback('low_confidence); }'
+                this.provideFeedback('low_confidence'; }'
             }
             
             this.updateCommandHistory(transcript, confidence);
@@ -561,14 +560,14 @@ export class VoiceInputController {
      * 音声認識エラーを処理'
      */''
     private handleSpeechError(event: SpeechRecognitionErrorEvent): void { ''
-        console.error('[VoiceInputController] Speech recognition error:', event.error);
+        console.error('[VoiceInputController] Speech recognition error:', event.error';
         ';
 
         const errorType: FeedbackType = (() => { ''
             switch(event.error) {'
 
-                case 'no-speech': return 'no_speech';''
-                case 'audio-capture': return 'microphone_error';''
+                case 'no-speech': return 'no_speech';
+                case 'audio-capture': return 'microphone_error';
                 case 'not-allowed': return 'permission_denied';
 
             ,}
@@ -599,9 +598,9 @@ export class VoiceInputController {
             this.executeCommand(command, transcript); }
 
         } else {
-            console.log('[VoiceInputController] Unknown command:', transcript);' }
+            console.log('[VoiceInputController] Unknown command:', transcript';' }
 
-            this.provideFeedback('unknown_command); }'
+            this.provideFeedback('unknown_command'; }'
             this.speakResponse(`コマンド「${transcript}」は認識できませんでした。`});
         }
     }
@@ -713,7 +712,7 @@ export class VoiceInputController {
 
             } catch (error) {
                 console.error(`[VoiceInputController] Command execution failed:`, error);''
-                this.provideFeedback('command_failed); }'
+                this.provideFeedback('command_failed'; }'
 
         } else { }'
 
@@ -793,7 +792,7 @@ export class VoiceInputController {
 
         if(isListening) {'
 
-            this.microphoneIndicator.style.background = 'rgba(255, 0, 0, 0.8)';''
+            this.microphoneIndicator.style.background = 'rgba(255, 0, 0, 0.8)';
             this.microphoneIndicator.style.borderColor = '#ff4444';
 
         }
@@ -801,7 +800,7 @@ export class VoiceInputController {
             this.microphoneIndicator.style.animation = 'pulse 1s infinite'; }
 
         } else {
-            this.microphoneIndicator.style.background = 'rgba(0, 0, 0, 0.7)';''
+            this.microphoneIndicator.style.background = 'rgba(0, 0, 0, 0.7)';
             this.microphoneIndicator.style.borderColor = '#ccc';' }
 
             this.microphoneIndicator.style.animation = 'none'; }
@@ -842,7 +841,7 @@ export class VoiceInputController {
             if(this.commandHistory) {' }'
 
                 this.commandHistory.style.display = 'none'; }
-}, COMMAND_HISTORY_DISPLAY_TIME);
+}, COMMAND_HISTORY_DISPLAY_TIME';
     }
     
     /**
@@ -899,10 +898,10 @@ export class VoiceInputController {
     getStats(): DetailedVoiceStats { return { ...this.stats,
             isListening: this.voiceState.isListening;
             isInitialized: this.voiceState.isInitialized;
-            currentContext: this.currentContext;
-           , lastCommand: this.voiceState.lastCommand, };
-            confidence: this.voiceState.confidence }
-        }
+            currentContext: this.currentContext,
+    lastCommand: this.voiceState.lastCommand, };
+            confidence: this.voiceState.confidence 
+    }
     
     /**
      * 設定を更新
@@ -922,8 +921,8 @@ export class VoiceInputController {
      * 音声制御設定の取得
      */
     getConfig(): VoiceConfig { return { ...this.voiceConfig, };
-            commands: new Map(this.voiceConfig.commands); }
-        }
+            commands: new Map(this.voiceConfig.commands); 
+    }
     
     /**
      * 現在の音声状態を取得
@@ -955,13 +954,13 @@ export class VoiceInputController {
      * カスタムコマンドハンドラーを追加
      */
     addCommandHandler(command: CommandAction, handler: CommandHandler): void { this.commandHandlers.set(command, handler); }
-        console.log(`[VoiceInputController] Custom, handler added, for: ${command}`});
+        console.log(`[VoiceInputController] Custom handler added for: ${command}`});
     }
     
     /**
      * コマンドハンドラーを削除
      */
-    removeCommandHandler(command: CommandAction): boolean { const removed = this.commandHandlers.delete(command);
+    removeCommandHandler(command: CommandAction): boolean { const removed = this.commandHandlers.delete(command');
         if (removed) { }
             console.log(`[VoiceInputController] Handler, removed for: ${command}`}');
         }
@@ -976,15 +975,14 @@ export class VoiceInputController {
 
         }
 
-            this.voiceInterface.style.display = show ? 'block' : 'none'; }
-
-        }''
+            this.voiceInterface.style.display = show ? 'block' : 'none'; 
+    }''
         if(this.microphoneIndicator) {', ';
 
         }
 
-            this.microphoneIndicator.style.display = show ? 'flex' : 'none'; }
-}
+            this.microphoneIndicator.style.display = show ? 'flex' : 'none'; 
+    }
     
     /**
      * リソースをクリーンアップ

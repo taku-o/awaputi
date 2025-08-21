@@ -36,10 +36,10 @@ interface AnnounceOptions { priority?: 'polite' | 'assertive';
 
 // Types for audio descriptions
 interface AudioDescription { category: string,
-    type: string;
-   , params: Record<string, any>;
-    priority: number;
-   , timestamp: number ,}
+    type: string,
+    params: Record<string, any>;
+    priority: number,
+    timestamp: number ,}
 ;
 // Bubble types
 type BubbleType = 'normal' | 'stone' | 'iron' | 'diamond' | 'rainbow' | 'pink' | '';
@@ -74,11 +74,11 @@ export class AudioDescriptionManager {
         // デフォルト設定を初期化
         if (!this.mainController.settings) {
             this.mainController.settings = {
-                visualFeedback: true;
-               , captioning: true;
+                visualFeedback: true,
+    captioning: true;
     }
-                audioDescriptions: true }
-            }
+                audioDescriptions: true 
+    }
         
         // 視覚的通知システム
         this.visualNotifications = [];
@@ -101,8 +101,8 @@ export class AudioDescriptionManager {
         this.notificationContainer.className = 'audio-accessibility-notifications';
         this.notificationContainer.style.cssText = `;
             position: fixed;
-            top: 10px;
-           , left: 10px;
+            top: 10px,
+    left: 10px;
             z-index: 10000,
             pointer-events: none,
         `;''
@@ -120,12 +120,12 @@ export class AudioDescriptionManager {
         this.captionContainer.className = 'audio-accessibility-captions';
         this.captionContainer.style.cssText = `;
             position: fixed;
-            bottom: 80px;
-           , left: 50%,
+            bottom: 80px,
+    left: 50%,
             transform: translateX(-50%),
             background-color: rgba(0, 0, 0, 0.8);
-            color: #ffffff;
-           , padding: 10px 20px;
+            color: #ffffff,
+    padding: 10px 20px;
             border-radius: 5px,
             font-size: 16px,
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -157,14 +157,14 @@ export class AudioDescriptionManager {
             duration = 3000 } = options;
         ';
         // 通知要素を作成
-        const notification = document.createElement('div);
+        const notification = document.createElement('div';
         notification.className = `notification notification-${type}`;
 
         notification.style.cssText = `'';
             background-color: rgba(0, 0, 0, 0.9);
             border: 2px solid ${color}
-            border-radius: 8px;
-           , padding: 10px 15px;
+            border-radius: 8px,
+    padding: 10px 15px;
             margin-bottom: 10px,
             color: ${color}
 
@@ -220,20 +220,19 @@ export class AudioDescriptionManager {
      * @private
      */''
     private ensureAnimationStyles()';
-        if(!document.querySelector('#audio-accessibility-animations)) { ''
+        if(!document.querySelector('#audio-accessibility-animations)' { ''
             const style = document.createElement('style'');''
             style.id = 'audio-accessibility-animations';
             style.textContent = `;
                 @keyframes slideInLeft {
                     from { }
-                        transform: translateX(-100%};
+                        transform: translateX(-100%}
                         opacity: 0;
                     }
                     to {
                         transform: translateX(0};
                         opacity: 1;
-                    }
-                }
+    }
                 @keyframes, slideOutLeft { from { }
                         transform: translateX(0};
                         opacity: 1;
@@ -274,7 +273,7 @@ export class AudioDescriptionManager {
         this.captionQueue.push(text);
         ';
         // 現在表示中でなければ表示開始
-        if(this.captionContainer && this.captionContainer.style.display === 'none) {'
+        if(this.captionContainer && this.captionContainer.style.display === 'none' {'
             
         }
             this.displayNextCaption(); }
@@ -294,7 +293,7 @@ export class AudioDescriptionManager {
 
         const text = this.captionQueue.shift(''';
         this.captionContainer.style.display = 'block';
-        )';
+        '';
         // アクセシビリティ属性を更新')'
         this.captionContainer.setAttribute('aria-label', `字幕: ${ text)`};
         
@@ -347,7 +346,7 @@ export class AudioDescriptionManager {
      */''
     public setEnabled(enabled: boolean): void { this.enabled = enabled;' }'
 
-        console.log(`AudioDescriptionManager: ${enabled ? 'enabled' : 'disabled}`});
+        console.log(`AudioDescriptionManager: ${enabled ? 'enabled' : 'disabled}`}';
     }
 
     /**
@@ -364,9 +363,9 @@ export class AudioDescriptionManager {
         // ARIAライブリージョンでのアナウンス
         if(this.notificationContainer) {'
 
-            this.notificationContainer.setAttribute('aria-live', priority);''
+            this.notificationContainer.setAttribute('aria-live', priority';''
             const announceElement = document.createElement('div'');''
-            announceElement.className = 'sr-only';''
+            announceElement.className = 'sr-only';
             announceElement.style.cssText = 'position: absolute; left: -10000px; width: 1px; height: 1px;, overflow: hidden;';
             announceElement.textContent = text;
             this.notificationContainer.appendChild(announceElement);
@@ -382,9 +381,9 @@ export class AudioDescriptionManager {
         // 視覚的通知も表示する場合
         if(visualNotification) { '
             this.showVisualNotification({''
-                type: 'announcement',)';
-                title: 'アナウンス')';
-               , message: text,
+                type: 'announcement','';
+                title: 'アナウンス')',
+    message: text,
                 icon: '📢', }
                 ...options);
         }
@@ -417,13 +416,13 @@ export class AudioDescriptionManager {
             params,
             priority,
             timestamp: Date.now()';
-        console.log('AudioDescriptionManager: Added, description:', description);
+        console.log('AudioDescriptionManager: Added, description:', description';
         ';
         // 視覚的な説明を表示
         if(description.category === 'game' && description.type === 'bubblePop'') {'
             this.showVisualNotification({''
                 type: 'info';
-        ,})'
+        ,}''
                 title: '泡破壊',) }
                 message: `${params.bubbleType}泡が弾けました`);
         }
@@ -435,8 +434,8 @@ export class AudioDescriptionManager {
      */
     public getStatus(): { enabled: boolean; activeDescriptions: number;, initialized: boolean } { return { enabled: this.enabled || false,
             activeDescriptions: 0, };
-            initialized: true }
-        }
+            initialized: true 
+    }
 
     /**
      * リソースの解放

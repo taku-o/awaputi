@@ -1,10 +1,10 @@
-import { getErrorHandler  } from '../utils/ErrorHandler.js';''
-import { getConfigurationManager  } from './ConfigurationManager.js';''
-import { getSettingsNotificationSystem  } from './SettingsNotificationSystem.js';''
-import { SettingsValidator  } from './settings/SettingsValidator.js';''
-import { SettingsStorageManager  } from './settings/SettingsStorageManager.js';''
-import { SettingsDataManager  } from './settings/SettingsDataManager.js';''
-import { SettingsUIController  } from './settings/SettingsUIController.js';''
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
+import { getConfigurationManager  } from './ConfigurationManager.js';
+import { getSettingsNotificationSystem  } from './SettingsNotificationSystem.js';
+import { SettingsValidator  } from './settings/SettingsValidator.js';
+import { SettingsStorageManager  } from './settings/SettingsStorageManager.js';
+import { SettingsDataManager  } from './settings/SettingsDataManager.js';
+import { SettingsUIController  } from './settings/SettingsUIController.js';
 import { SettingsExportImport  } from './settings/SettingsExportImport.js';
 
 // 型定義
@@ -63,21 +63,21 @@ export class SettingsManager {
      * @private
      */'
     private _setupConfigurationManager(): void { ''
-        const defaultSettings = this.dataManager.getDefaultSettings(''';
+        const defaultSettings = this.dataManager.getDefaultSettings('''
         this.dataManager.setupSettingsCategory('audio', {
             masterVolume: defaultSettings.masterVolume;
             sfxVolume: defaultSettings.sfxVolume;
-            bgmVolume: defaultSettings.bgmVolume;
-           , isMuted: defaultSettings.isMuted ,}, { masterVolume: this.validator.validationRules.masterVolume)
-            sfxVolume: this.validator.validationRules.sfxVolume)';
-           , bgmVolume: this.validator.validationRules.bgmVolume,' }'
+            bgmVolume: defaultSettings.bgmVolume,
+    isMuted: defaultSettings.isMuted ,}, { masterVolume: this.validator.validationRules.masterVolume)
+            sfxVolume: this.validator.validationRules.sfxVolume'',
+    bgmVolume: this.validator.validationRules.bgmVolume,' }'
 
-            isMuted: { type: 'boolean' })');
+            isMuted: { type: 'boolean' }'');
         ';
         // UI設定
         this.dataManager.setupSettingsCategory('ui', { language: defaultSettings.language)
-           , quality: defaultSettings.quality,)';
-            ...defaultSettings.ui)'';
+           , quality: defaultSettings.quality,'';
+            ...defaultSettings.ui''';
         '), {'
             language: { ''
                 type: 'string',
@@ -100,17 +100,17 @@ export class SettingsManager {
 
             highContrast: { type: 'boolean' },''
             reducedMotion: { type: 'boolean' },''
-            largeText: { type: 'boolean' },)'
+            largeText: { type: 'boolean' },''
             screenReader: { type: 'boolean' },')'
-            colorBlindSupport: { type: 'boolean' })');
+            colorBlindSupport: { type: 'boolean' }'');
         this.dataManager.setupSettingsCategory('controls', defaultSettings.controls, { ' }
 
-            keyboardEnabled: { type: 'boolean' },)'
+            keyboardEnabled: { type: 'boolean' },''
             mouseEnabled: { type: 'boolean' },')'
-            touchEnabled: { type: 'boolean' })');
-        this.dataManager.setupSettingsCategory('keyboard', defaultSettings.keyboardShortcuts, { ));''
-        this.dataManager.setupSettingsCategory('social', defaultSettings.social, {));''
-        this.dataManager.setupSettingsCategory('notifications', defaultSettings.notifications, {));''
+            touchEnabled: { type: 'boolean' }'');
+        this.dataManager.setupSettingsCategory('keyboard', defaultSettings.keyboardShortcuts, { )';''
+        this.dataManager.setupSettingsCategory('social', defaultSettings.social, {)';''
+        this.dataManager.setupSettingsCategory('notifications', defaultSettings.notifications, {)';''
         this.dataManager.setupSettingsCategory('privacy', defaultSettings.privacy, {); }
     
     // ========== 公開API（後方互換性維持） ==========
@@ -219,13 +219,13 @@ export class SettingsManager {
                     this.set(settingKey, defaultValue); }
 
                 }''
-                console.log('[SettingsManager] All, settings reset, to defaults);
+                console.log('[SettingsManager] All settings reset to defaults');
             } else {  // 特定の設定をリセット
                 const defaultValue = this.dataManager.getDefaultValue(key');' }'
 
                 this.set(key, defaultValue);' }'
 
-                console.log(`[SettingsManager] Setting '${key}' reset, to default`});''
+                console.log(`[SettingsManager] Setting '${key}' reset, to default`}';''
             } catch (error) { }
 
             this.errorHandler.handleError(error, 'SETTINGS_RESET_ERROR', { key });
@@ -250,7 +250,7 @@ export class SettingsManager {
      */
     addListener(key, callback, options = { ) {' }'
 
-        const listenerId = options.id || `listener_${Date.now(})_${ Math.random('''
+        const listenerId = options.id || `listener_${Date.now())_${ Math.random('''
         const, priority = options.priority || 'normal';)
         };
         if(!this.listeners.has(key} {
@@ -262,8 +262,8 @@ export class SettingsManager {
         this.listeners.get(key).push({ id: listenerId)
             callback);
             priority,);
-            once: options.once || false);
-           , addedAt: Date.now( ,});
+            once: options.once || false),
+    addedAt: Date.now( ,});
         
         // 優先度でソート
         this.listeners.get(key).sort((a, b) => {  }
@@ -340,7 +340,7 @@ export class SettingsManager {
 
         } catch (error) { }
 
-            this.errorHandler.handleError(error, 'SETTINGS_NOTIFY_ERROR', { key, newValue, oldValue });
+            this.errorHandler.handleError(error, 'SETTINGS_NOTIFY_ERROR', { key, newValue, oldValue }';
         }
     }
     
@@ -356,7 +356,7 @@ export class SettingsManager {
             this.uiController.applyAllUISettings()';
             console.log('[SettingsManager] All, settings applied, successfully');''
         } catch (error) {
-            this.errorHandler.handleError(error, 'SETTINGS_APPLY_ALL_ERROR); }'
+            this.errorHandler.handleError(error, 'SETTINGS_APPLY_ALL_ERROR'; }'
     }
     
     // ========== 保存・読み込み ==========
@@ -436,12 +436,12 @@ export class SettingsManager {
         return { dataManager: this.dataManager.getStats(),
             uiController: this.uiController.getUIStats();
             exportImport: this.exportImport.getStats();
-            validator: this.validator.getValidationStats();
-           , storageManager: this.storageManager.getSyncStats();
+            validator: this.validator.getValidationStats(),
+    storageManager: this.storageManager.getSyncStats();
     ,}
             listeners: this.getActiveListeners(), };
-            watchers: this.getActiveWatchers(); }
-        }
+            watchers: this.getActiveWatchers(); 
+    }
     
     /**
      * アクティブなリスナーを取得
@@ -470,12 +470,12 @@ export class SettingsManager {
             notificationSystem: !!this.notificationSystem;
             validator: !!this.validator;
             storageManager: !!this.storageManager;
-            dataManager: !!this.dataManager;
-           , uiController: !!this.uiController;
+            dataManager: !!this.dataManager,
+    uiController: !!this.uiController;
     ,}
             exportImport: !!this.exportImport, };
-            gameEngine: !!this.gameEngine }
-        }
+            gameEngine: !!this.gameEngine 
+    }
     
     // ========== コンポーネント管理 ==========
     

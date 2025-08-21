@@ -15,8 +15,8 @@ interface GameEndData { finalScore: number,
     bubblesMissed: number;
     playTime: number;
     accuracy: number;
-    itemsUsed: boolean;
-   , hp: number ,}
+    itemsUsed: boolean,
+    hp: number ,}
 
 interface BubbleEvent { bubbleType: string, }
     position: { x: number;, y: number },
@@ -24,8 +24,8 @@ interface BubbleEvent { bubbleType: string, }
 }
 
 interface StageData { stageId: string,
-    clearTime: number;
-   , score: number ,}
+    clearTime: number,
+    score: number ,}
 
 interface SessionData {
     sessionDuration: number;
@@ -99,8 +99,8 @@ export class AchievementEventIntegrator {
             // 実績システムにイベントを送信
             this.handleBubblePopped(bubble.type, { })
                 bubbleType: bubble.type,) }
-                position: { x: bubble.x, y: bubble.y ,});
-                reactionTime: Date.now(') - bubble.spawnTime'';
+                position: { x: bubble.x y: bubble.y  }');
+                reactionTime: Date.now() - bubble.spawnTime'';
             }'),
             
             return result; }
@@ -131,7 +131,7 @@ export class AchievementEventIntegrator {
         const originalAddScore = scoreManager.addScore.bind(scoreManager);
         
         // addScoreメソッドを拡張
-        scoreManager.addScore = (points: number, ...args: any[]) => {  const result = originalAddScore(points, ...args);
+        scoreManager.addScore = (points: number ...args: any[]) => {  const result = originalAddScore(points ...args');
             
             // コンボ更新イベントを送信
             if (scoreManager.combo > 0') {' }'
@@ -142,7 +142,7 @@ export class AchievementEventIntegrator {
             return result; }
         ';
         // breakComboメソッドの存在確認と拡張
-        if(typeof, scoreManager.resetCombo === 'function) {'
+        if(typeof, scoreManager.resetCombo === 'function' {'
             // 元のresetComboメソッドを保存（正しいメソッド名を使用）
             const originalResetCombo = scoreManager.resetCombo.bind(scoreManager);
             
@@ -167,21 +167,21 @@ export class AchievementEventIntegrator {
     /**
      * GameSceneとの統合
      */'
-    private integrateGameScene(): void { const gameScene = this.gameEngine.sceneManager? .scenes?.game;''
+    private integrateGameScene(): void { const gameScene = this.gameEngine.sceneManager?.scenes?.game;''
         if(!gameScene) {'
 
             console.debug('GameScene, not found, during integration - will, retry later);
             // 遅延統合：1秒後に再試行
         }
             setTimeout(() => {  }
-                this.integrateGameScene(');' }'
+                this.integrateGameScene();' }'
 
             }, 1000');
             return;
         }
         ';
         // gameOverメソッドの存在確認と拡張
-        if(typeof, gameScene.gameOver === 'function) {'
+        if(typeof, gameScene.gameOver === 'function' {'
             // 元のgameOverメソッドを保存
             const originalGameOver = gameScene.gameOver.bind(gameScene);
             
@@ -204,7 +204,7 @@ export class AchievementEventIntegrator {
         }
         ';
         // ステージクリア統合
-        if(typeof, gameScene.completeStage === 'function) {'
+        if(typeof, gameScene.completeStage === 'function' {'
             const originalCompleteStage = gameScene.completeStage.bind(gameScene);
             
             gameScene.completeStage = (stageId: string, ...args: any[]) => { 
@@ -215,7 +215,7 @@ export class AchievementEventIntegrator {
                     stageId: stageId);
         ,}
                     clearTime: Date.now() - this.sessionStartTime, }
-                    score: this.gameEngine.scoreManager? .score || 0' }'
+                    score: this.gameEngine.scoreManager?.score || 0' }'
 
                 }');
                 return result;
@@ -243,14 +243,14 @@ export class AchievementEventIntegrator {
      * セッション追跡設定
      */
     private setupSessionTracking(): void { // 1日1回のプレイイベント送信
-        const today = new Date().toDateString(');''
+        const today = new Date().toDateString();''
         this.handleDayPlayed(today);
         ';
         // セッション終了時のイベント設定
         window.addEventListener('beforeunload', () => { 
             this.handleSessionEnd({); }
-                sessionDuration: Date.now() - this.sessionStartTime }
-            });
+                sessionDuration: Date.now() - this.sessionStartTime 
+    });
         });
         
         // 定期的なスピードチェック（1分毎）
@@ -269,7 +269,7 @@ export class AchievementEventIntegrator {
 
         }
 
-            this.achievementManager.updateProgress('bubblePopped', data); }
+            this.achievementManager.updateProgress('bubblePopped', data'; }
         }
         ';
         // 特殊効果発動チェック
@@ -309,7 +309,7 @@ export class AchievementEventIntegrator {
     private handleComboUpdate(combo: number, broken: boolean): void { ''
         if (this.achievementManager && typeof, this.achievementManager.updateProgress === 'function'') {' }
 
-            this.achievementManager.updateProgress('comboUpdate', { combo, broken });
+            this.achievementManager.updateProgress('comboUpdate', { combo, broken }';
         }
     }
     
@@ -319,7 +319,7 @@ export class AchievementEventIntegrator {
     private handleSpecialEffect(effectType: string): void { ''
         if (this.achievementManager && typeof, this.achievementManager.updateProgress === 'function'') {' }
 
-            this.achievementManager.updateProgress('specialEffect', { effectType });
+            this.achievementManager.updateProgress('specialEffect', { effectType }';
         }
     }
     
@@ -331,7 +331,7 @@ export class AchievementEventIntegrator {
 
         }
 
-            this.achievementManager.updateProgress('stageCleared', data); }
+            this.achievementManager.updateProgress('stageCleared', data'; }
 }
     
     /**
@@ -340,7 +340,7 @@ export class AchievementEventIntegrator {
     private handleDayPlayed(date: string): void { ''
         if (this.achievementManager && typeof, this.achievementManager.updateProgress === 'function'') {' }
 
-            this.achievementManager.updateProgress('dayPlayed', { date });
+            this.achievementManager.updateProgress('dayPlayed', { date }';
         }
     }
     
@@ -366,19 +366,19 @@ export class AchievementEventIntegrator {
         const playerData = this.gameEngine.playerData;
         
         const playTime = Date.now() - this.sessionStartTime;
-        const bubblesPopped = scoreManager? .bubblesPopped || 0;
+        const bubblesPopped = scoreManager?.bubblesPopped || 0;
         const bubblesMissed = bubbleManager?.bubblesMissed || 0;
         
         return { : undefined
-            finalScore: scoreManager? .score || 0, : undefined
-            maxCombo: scoreManager? .maxCombo || 0, : undefined
+            finalScore: scoreManager?.score || 0, : undefined
+            maxCombo: scoreManager?.maxCombo || 0, : undefined
             bubblesPopped: bubblesPopped;
             bubblesMissed: bubblesMissed;
             playTime: playTime;
             accuracy: bubblesPopped > 0 ? (bubblesPopped / (bubblesPopped + bubblesMissed)) * 100 : 0;
             itemsUsed: this.checkItemsUsed(), };
-            hp: playerData? .hp || 100 }
-        }
+            hp: playerData?.hp || 100 
+    }
     
     /**
      * アイテム使用状況をチェック'
@@ -399,7 +399,7 @@ export class AchievementEventIntegrator {
 
             if (this.achievementManager && typeof, this.achievementManager.updateProgress === 'function'') {' }
 
-                this.achievementManager.updateProgress('accuracy', { accuracy: gameData.accuracy });
+                this.achievementManager.updateProgress('accuracy', { accuracy: gameData.accuracy }';
             }
 }
     
@@ -421,7 +421,7 @@ export class AchievementEventIntegrator {
      */
     private checkSpeedChallenge(): void { const scoreManager = this.gameEngine.scoreManager;
         const timeElapsed = Date.now() - this.sessionStartTime;
-        const bubblesPopped = scoreManager? .bubblesPopped || 0;
+        const bubblesPopped = scoreManager?.bubblesPopped || 0;
         ';
         // 1分以内に100個の泡を割る実績
         if(timeElapsed <= 60000 && bubblesPopped >= 100) {'
@@ -456,8 +456,8 @@ export class AchievementEventIntegrator {
                 if (this.achievementManager && typeof, this.achievementManager.updateProgress === 'function'') {''
                     this.achievementManager.updateProgress('lowHpSurvival', {)
                         hp: playerData.hp, }
-                        survivalTime: survivalTime); }
-                    });
+                        survivalTime: survivalTime); 
+    });
                 }
 } else { this.lowHpStartTime = null; }
     }

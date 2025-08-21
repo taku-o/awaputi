@@ -1,65 +1,65 @@
-import fs from 'fs/promises';''
+import fs from 'fs/promises';
 import path from 'path';
 
 // Type definitions
 interface TargetFile { filePath: string,
     currentFilePath: string;
-    expectedWordCount: number;
-   , description: string ,}
+    expectedWordCount: number,
+    description: string ,}
 
-interface GitCommit { commit: string;
-   , message: string }
+interface GitCommit { commit: string,
+    message: string }
 
-interface GitHistoryError { error: string;
-   , gitHistoryFailed: boolean }
+interface GitHistoryError { error: string,
+    gitHistoryFailed: boolean }
 
 interface SizeAnalysis { bytes: number;
     wordCount: number;
     lineCount: number;
-    characters: number;
-   , lastModified: string }
+    characters: number,
+    lastModified: string }
 
-interface SizeAnalysisError { error: string;
-   , analyzeFailed: boolean }
+interface SizeAnalysisError { error: string,
+    analyzeFailed: boolean }
 
 interface FileComparison { identical: boolean;
     backupLines: number;
     currentLines: number;
-    sizeDifference: number;
-   , comparedAt: string }
+    sizeDifference: number,
+    comparedAt: string }
 
-interface ComparisonError { error: string;
-   , comparisonFailed: boolean }
+interface ComparisonError { error: string,
+    comparisonFailed: boolean }
 
 interface InvestigationResult extends TargetFile { exists: boolean;
     sizeAnalysis?: SizeAnalysis | SizeAnalysisError;
     gitHistory?: GitCommit[] | GitHistoryError[];
     currentFileExists: boolean;
-    comparison?: FileComparison | ComparisonError;
-   , investigatedAt: string;
+    comparison?: FileComparison | ComparisonError,
+    investigatedAt: string;
     error?: string;
     investigationFailed?: boolean; }
 
 interface ReportSummary { totalFiles: number,
     existingFiles: number;
     missingFiles: number;
-    currentFilesExist: number;
-   , investigationErrors: number ,}
+    currentFilesExist: number,
+    investigationErrors: number ,}
 
-interface SizeEstimate { bytes: number;
-   , words: number }
+interface SizeEstimate { bytes: number,
+    words: number }
 ';
 
 interface Recommendation { ''
     type: 'safe_deletion' | 'needs_attention';
-    message: string;
-   , files: string[] }
+    message: string,
+    files: string[] }
 
 interface InvestigationReport { summary: ReportSummary;
     files: InvestigationResult[];
     totalSizeEstimate: SizeEstimate;
-    recommendations: Recommendation[];
-   , generatedAt: string }
+    recommendations: Recommendation[],
+    generatedAt: string }
 
 /**
  * BackupFileInvestigator - バックアップファイルの詳細調査を行うクラス
@@ -68,7 +68,7 @@ interface InvestigationReport { summary: ReportSummary;
 export class BackupFileInvestigator {
     private targetFiles: TargetFile[]';
 
-    constructor(''';
+    constructor('''
                , filePath: 'src/utils/TestConfigurationGenerator_old.js',
                 currentFilePath: 'src/utils/TestConfigurationGenerator.js',
                 expectedWordCount: 3288,
@@ -110,8 +110,8 @@ export class BackupFileInvestigator {
                     ...targetFile);
                     exists: false,);
                     currentFileExists: false);
-                    investigatedAt: new Date().toISOString();
-                   , error: (error, as Error).message;
+                    investigatedAt: new Date().toISOString(),
+    error: (error, as Error).message;
                     investigationFailed: true ,});
             }
         }
@@ -183,10 +183,10 @@ export class BackupFileInvestigator {
                 wordCount,
                 lineCount,
                 characters: content.length, };
-                lastModified: stats.mtime.toISOString(); }
-            } catch (error) { return { error: (error, as Error).message, };
-                analyzeFailed: true }
-            }
+                lastModified: stats.mtime.toISOString(); 
+    } catch (error) { return { error: (error, as Error).message, };
+                analyzeFailed: true 
+    }
     }
 
     /**
@@ -195,17 +195,17 @@ export class BackupFileInvestigator {
     async getGitHistory(filePath: string): Promise<GitCommit[] | GitHistoryError[]> { try { }
 
             const { exec } = await import('child_process'');''
-            const { promisify } = await import('util);''
+            const { promisify } = await import('util';''
             const execAsync = promisify(exec);
             
             // Git log for specific file
-            const { stdout } = await execAsync(')'
+            const { stdout } = await execAsync()'
                 `git log --oneline -10 -- "${ filePath"}"`, };
                 { cwd: process.cwd(});
             
             if(!stdout.trim() { return []; }"
 
-            return stdout.trim(").split('\n).map(line => {  ');''
+            return stdout.trim().split('\n'.map(line => {  ');''
                 const [commit, ...messageParts] = line.split(', ''); }
 
                 return { commit,' };
@@ -231,12 +231,12 @@ export class BackupFileInvestigator {
             
             return { identical: backupContent === currentContent,
                 backupLines: backupLines.length;
-                currentLines: currentLines.length;
-               , sizeDifference: currentContent.length - backupContent.length, };
-                comparedAt: new Date().toISOString(); }
-            } catch (error) { return { error: (error, as Error).message, };
-                comparisonFailed: true }
-            }
+                currentLines: currentLines.length,
+    sizeDifference: currentContent.length - backupContent.length, };
+                comparedAt: new Date().toISOString(); 
+    } catch (error) { return { error: (error, as Error).message, };
+                comparisonFailed: true 
+    }
     }
 
     /**
@@ -252,14 +252,14 @@ export class BackupFileInvestigator {
             };
             files: investigationResults,
             totalSizeEstimate: { bytes: investigationResults''
-                    .filter(r => r.sizeAnalysis && !('analyzeFailed' in, r.sizeAnalysis)'';
+                    .filter(r => r.sizeAnalysis && !('analyzeFailed' in, r.sizeAnalysis''';
                     .reduce((sum, r) => sum + (r.sizeAnalysis, as SizeAnalysis).bytes, 0'),
                 words: investigationResults'';
                     .filter(r => r.sizeAnalysis && !('analyzeFailed' in, r.sizeAnalysis);
                     .reduce((sum, r) => sum + (r.sizeAnalysis, as SizeAnalysis).wordCount, 0); }
             },
-            recommendations: this.generateRecommendations(investigationResults);
-           , generatedAt: new Date().toISOString();
+            recommendations: this.generateRecommendations(investigationResults),
+    generatedAt: new Date().toISOString();
         };
         
         return report;

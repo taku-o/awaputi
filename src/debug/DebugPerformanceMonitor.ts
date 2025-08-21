@@ -4,52 +4,52 @@
 
 interface DebugInterface { debugPanel?: HTMLElement;
     accessibilityManager?: {
-        announceToScreenReader(messag;e: string, priority: string): void ,}
+        announceToScreenReader(message: string, priority: string): void ,}
 
 interface PerformanceMetric { timestamp: number,
     value: number ,}
 
 interface OperationCounts { panelSwitches: number;
-    modalOpens: number;
-   , settingsChanges: number;
+    modalOpens: number,
+    settingsChanges: number;
     [key: string]: number, }
 
 interface PerformanceThresholds { renderTimeWarning: number,
     renderTimeCritical: number;
-    memoryWarning: number;
-   , memoryCritical: number ,}
+    memoryWarning: number,
+    memoryCritical: number ,}
 
 interface PerformanceMetrics { renderTime: PerformanceMetric[];
     updateTime: PerformanceMetric[];
-    memoryUsage: PerformanceMetric[];
-   , operationCounts: OperationCounts;
+    memoryUsage: PerformanceMetric[],
+    operationCounts: OperationCounts;
     [key: string]: PerformanceMetric[] | OperationCounts, }
 
 interface MetricStats { current: number,
     average: number;
     min: number;
-    max: number;
-   , count: number ,}
+    max: number,
+    count: number ,}
 
 interface PerformanceStats { uptime: number;
     monitoringEnabled: boolean;
-    operationCounts: OperationCounts;
-   , currentMetrics: Record<string, MetricStats> }
+    operationCounts: OperationCounts,
+    currentMetrics: Record<string, MetricStats> }
 
 interface ImpactEvaluation { level: 'minimal' | 'low' | 'moderate' | 'high',
     score: number;
-    issues: string[];
-   , recommendations: string[] ,}
+    issues: string[],
+    recommendations: string[] ,}
 
-interface OptimizationSuggestions { impact: ImpactEvaluation;
-   , suggestions: string[] }
+interface OptimizationSuggestions { impact: ImpactEvaluation,
+    suggestions: string[] }
 
 interface PerformanceReport { timestamp: string;
     uptime: number;
     performance: PerformanceStats;
     impact: ImpactEvaluation;
-    suggestions: string[];
-   , thresholds: PerformanceThresholds
+    suggestions: string[],
+    thresholds: PerformanceThresholds
     }
 
 export class DebugPerformanceMonitor {
@@ -68,13 +68,13 @@ export class DebugPerformanceMonitor {
         this.metrics = {
             renderTime: [];
             updateTime: [];
-            memoryUsage: [];
-           , operationCounts: {
-                panelSwitches: 0;
-               , modalOpens: 0;
+            memoryUsage: [],
+    operationCounts: {
+                panelSwitches: 0,
+    modalOpens: 0;
     }
-                settingsChanges: 0 }
-};
+                settingsChanges: 0 
+    };
         this.thresholds = { renderTimeWarning: 16.67, // 60fps threshold (ms);
             renderTimeCritical: 33.33, // 30fps threshold (ms);
             memoryWarning: 50, // MB;
@@ -140,8 +140,8 @@ export class DebugPerformanceMonitor {
      * パフォーマンスエントリを処理'
      */''
     private processPerformanceEntry(entry: PerformanceEntry): void { ''
-        if(entry.name.startsWith('debug-)) {''
-            this.addMetric('operationTime', entry.duration);
+        if(entry.name.startsWith('debug-)' {''
+            this.addMetric('operationTime', entry.duration';
             ';
             // 閾値チェック
             if(entry.duration > this.thresholds.renderTimeCritical) {' }'
@@ -182,7 +182,7 @@ export class DebugPerformanceMonitor {
     private collectCurrentMetrics(): void { // メモリ使用量を測定
         if ((performance, as any).memory) {''
             const memoryMB = (performance, as any').memory.usedJSHeapSize / 1024 / 1024;''
-            this.addMetric('memoryUsage', memoryMB);
+            this.addMetric('memoryUsage', memoryMB';
             ';
             // メモリ使用量閾値チェック
             if(memoryMB > this.thresholds.memoryCritical) {' }'
@@ -212,8 +212,8 @@ export class DebugPerformanceMonitor {
         
         const metricArray = this.metrics[type] as PerformanceMetric[];
         metricArray.push({ );
-            timestamp: performance.now();
-           , value: value };
+            timestamp: performance.now(),
+    value: value };
         // 古いメトリクスを削除
         if (metricArray.length > this.maxMetricHistory) { metricArray.shift(); }
     }
@@ -271,16 +271,16 @@ export class DebugPerformanceMonitor {
             message,
             timestamp: Date.now(),
             uptime: performance.now()';
-        if(level === 'critical) { ,}'
+        if(level === 'critical' { ,}'
             console.error(`[Debug, Performance Critical] ${message}`}),
 
         } else { }'
 
-            console.warn(`[Debug, Performance Warning] ${message}`'});
+            console.warn(`[Debug, Performance Warning] ${message}`'}';
         }
         ';
         // アクセシビリティマネージャーがあればスクリーンリーダーに通知
-        if(this.debugInterface.accessibilityManager && level === 'critical) {'
+        if(this.debugInterface.accessibilityManager && level === 'critical' {'
             this.debugInterface.accessibilityManager.announceToScreenReader()';
         }
 
@@ -292,8 +292,8 @@ export class DebugPerformanceMonitor {
      * パフォーマンス統計を取得
      */
     getPerformanceStats(): PerformanceStats { const stats: PerformanceStats = {
-            uptime: performance.now() - this.startTime;
-           , monitoringEnabled: this.monitoringEnabled, }
+            uptime: performance.now() - this.startTime,
+    monitoringEnabled: this.monitoringEnabled, }
             operationCounts: { ...this.metrics.operationCounts;
             currentMetrics: {};
         ';
@@ -305,13 +305,13 @@ export class DebugPerformanceMonitor {
             if(metricArray.length > 0) {
                 const recentValues = metricArray.slice(-10).map(v => v.value);
                 stats.currentMetrics[type] = {
-                    current: recentValues[recentValues.length - 1];
-                   , average: recentValues.reduce((a, b) => a + b, 0) / recentValues.length,
-                    min: Math.min(...recentValues);
-                   , max: Math.max(...recentValues);
+                    current: recentValues[recentValues.length - 1],
+    average: recentValues.reduce((a, b) => a + b, 0) / recentValues.length,
+                    min: Math.min(...recentValues),
+    max: Math.max(...recentValues);
             ,}
-                    count: metricArray.length }
-                }
+                    count: metricArray.length 
+    }
         }
         
         return stats;
@@ -329,11 +329,11 @@ export class DebugPerformanceMonitor {
      * デバッグインパクトを評価
      */'
     evaluateDebugImpact(): ImpactEvaluation { ''
-        const stats = this.getPerformanceStats(''';
+        const stats = this.getPerformanceStats('''
             level: 'minimal';
             score: 0;
-            issues: [];
-           , recommendations: [] }))
+            issues: [],
+    recommendations: [] }))
         // メモリ使用量評価)
         if(stats.currentMetrics.memoryUsage) {
             const memUsage = stats.currentMetrics.memoryUsage.current;''
@@ -344,7 +344,7 @@ export class DebugPerformanceMonitor {
                 impact.score += 40;' }'
 
                 impact.issues.push(`High, memory usage: ${memUsage.toFixed(1})MB`');''
-                impact.recommendations.push('Consider, reducing debug, panel complexity);''
+                impact.recommendations.push('Consider, reducing debug, panel complexity';''
             } else if(memUsage > 50) { ''
                 impact.level = impact.level === 'high' ? 'high' : 'moderate';
                 impact.score += 20; }
@@ -364,7 +364,7 @@ export class DebugPerformanceMonitor {
 
                 impact.issues.push(`High DOM element count: ${elemCount}`'},' }
 
-                impact.recommendations.push('Implement virtual scrolling for large lists'});''
+                impact.recommendations.push('Implement virtual scrolling for large lists'}';''
             } else if(elemCount > 500) { ''
                 impact.level = impact.level === 'high' ? 'high' : 'moderate';
                 impact.score += 15; }
@@ -377,7 +377,7 @@ export class DebugPerformanceMonitor {
 
         }
 
-            impact.recommendations.push('Consider, debouncing frequent, operations); }'
+            impact.recommendations.push('Consider, debouncing frequent, operations'; }'
         }
         
         return impact;
@@ -389,7 +389,7 @@ export class DebugPerformanceMonitor {
     generateOptimizationSuggestions(): OptimizationSuggestions { ''
         const impact = this.evaluateDebugImpact(''';
             'Use lazy loading for debug panels',
-            'Minimize DOM manipulations during updates',)';
+            'Minimize DOM manipulations during updates','';
             'Cache frequently accessed elements',')';
             'Use requestAnimationFrame for smooth animations');
         
@@ -406,10 +406,10 @@ export class DebugPerformanceMonitor {
         return { timestamp: new Date().toISOString(),
             uptime: stats.uptime;
             performance: stats;
-            impact: optimization.impact;
-           , suggestions: optimization.suggestions, };
-            thresholds: this.thresholds }
-        }
+            impact: optimization.impact,
+    suggestions: optimization.suggestions, };
+            thresholds: this.thresholds 
+    }
 
     /**
      * メトリクスをクリア
@@ -417,7 +417,7 @@ export class DebugPerformanceMonitor {
     clearMetrics(): void { ''
         for(const, key in, this.metrics) {'
 
-            if(key === 'operationCounts) {'
+            if(key === 'operationCounts' {'
                 for (const, opKey in, this.metrics.operationCounts) {
         }
                     this.metrics.operationCounts[opKey] = 0; }
@@ -438,4 +438,4 @@ export class DebugPerformanceMonitor {
      * 破棄
      */'
     destroy(): void { this.stopMonitoring();''
-        this.clearMetrics(' })'
+        this.clearMetrics(' }''

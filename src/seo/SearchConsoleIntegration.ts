@@ -4,30 +4,30 @@
  * Google Search Console統合準備、設定ガイド、認証準備機能を提供
  */
 
-import { seoLogger  } from './SEOLogger';''
+import { seoLogger  } from './SEOLogger';
 import { seoErrorHandler  } from './SEOErrorHandler';
 
 // 認証方法インターフェース
 interface VerificationMethod { name: string,
     description: string,
-    difficulty: 'easy' | 'medium' | 'hard';
-   , setup: (para;m?: string) => VerificationSetupInstructions ,}
+    difficulty: 'easy' | 'medium' | 'hard',
+    setup: (param?: string) => VerificationSetupInstructions ,}
 }
 
 // 認証設定手順インターフェース
-interface VerificationSetupInstructions { method: string;
-   , steps: Array<{
-        ste;p: number;
-       , action: string;
+interface VerificationSetupInstructions { method: string,
+    steps: Array<{
+        ste;p: number,
+    action: string;
         description?: string;
         code?: string;
         location?: string;
         record?: {
             typ;e: string;
-            name: string;
-           , value: string }>;
-    verificationUrl: string;
-   , estimated_time: string;
+            name: string,
+    value: string }>;
+    verificationUrl: string,
+    estimated_time: string;
     note?: string;
     advantage?: string;
     requirements?: string;
@@ -38,15 +38,15 @@ interface VerificationSetupInstructions { method: string;
 interface IntegrationStatus { verified: boolean,
     verificationMethod: string | null;
     sitemapSubmitted: boolean;
-    dataCollection: boolean;
-   , lastCheck: number | null ,}
+    dataCollection: boolean,
+    lastCheck: number | null ,}
 
 // 準備状況チェック結果インターフェース
 interface ReadinessCheckResult { timestamp: number;
     ready: boolean;
     issues: string[];
-    recommendations: string[];
-   , checklist: {
+    recommendations: string[],
+    checklist: {
         sitemap?: {
             exist;s: boolean;
             status?: number;
@@ -59,19 +59,19 @@ interface ReadinessCheckResult { timestamp: number;
             hasSitemapReference?: boolean;
             error?: string; };
         metaTags?: { found: string[];
-            missing: string[];
-           , total: number };
+            missing: string[],
+    total: number };
         structuredData?: { hasValidData: boolean;
             validCount: number;
-            errorCount: number;
-           , types: string[], }
+            errorCount: number,
+    types: string[], }
             errors: Array<{ index: number;, error: string }>;
         };
         https?: boolean;
         indexablePages?: Array<{ url: string;
             title: string;
-            priority: number;
-           , changefreq: string }>;
+            priority: number,
+    changefreq: string }>;
     };
     error?: string;
 }
@@ -79,39 +79,39 @@ interface ReadinessCheckResult { timestamp: number;
 // 推奨認証方法インターフェース
 interface RecommendedVerificationMethod { method: string,
     reason: string;
-    priority: number;
-   , setup: VerificationMethod
+    priority: number,
+    setup: VerificationMethod
     ,}
 
 // サイトマップ送信準備インターフェース
-interface SitemapSubmissionPreparation { title: string;
-   , steps: Array<{
+interface SitemapSubmissionPreparation { title: string,
+    steps: Array<{
         ste;p: number;
-        action: string;
-       , description: string;
+        action: string,
+    description: string;
         checkUrl?: string;
         submitUrl?: string; }>;
     automaticSubmission: { available: boolean;
-        description: string;
-       , implementation: string }
+        description: string,
+    implementation: string }
 
 // API統合準備インターフェース
 interface ApiIntegrationPreparation { title: string,
-    overview: string;
-   , steps: Array<{
-        ste;p: number;
-       , action: string;
+    overview: string,
+    steps: Array<{
+        ste;p: number,
+    action: string;
         description?: string;
         url?: string; ,}>;
-    scopes: string[];
-   , documentation: string;
+    scopes: string[],
+    documentation: string;
 }
 
 // 監視設定インターフェース
 interface MonitoringSetup { title: string,
     recommendations: Array<{
-        categor;y: string;
-       , items: string[] ,}>;
+        categor;y: string,
+    items: string[] ,}>;
 }
 
 // Window拡張インターフェース
@@ -122,11 +122,11 @@ interface ExtendedWindow extends Window { gtag?: any;
 export class SearchConsoleIntegration { private verificationMethods: Record<string, VerificationMethod>;
     private integrationStatus: IntegrationStatus;
 
-    constructor(''';
+    constructor('''
                , name: 'HTML ファイル アップロード',
                 description: 'HTML 確認ファイルをサイトにアップロード',
-                difficulty: 'easy',)';
-                setup: this.setupHtmlFileVerification.bind(this ,};
+                difficulty: 'easy','';
+                setup: this.setupHtmlFileVerification.bind(this ,}
             htmlTag: { ''
                 name: 'HTML タグ',
                 description: 'meta タグをサイトのヘッドセクションに追加',
@@ -140,15 +140,15 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
             googleAnalytics: { ''
                 name: 'Google Analytics',
                 description: 'Google Analytics アカウントを使用',
-                difficulty: 'easy';
-               , setup: this.setupAnalyticsVerification.bind(this ,}
+                difficulty: 'easy',
+    setup: this.setupAnalyticsVerification.bind(this ,}
         };
         
         this.integrationStatus = { verified: false,
             verificationMethod: null;
             sitemapSubmitted: false;
-            dataCollection: false;
-           , lastCheck: null ,}
+            dataCollection: false,
+    lastCheck: null ,}
 
     /**
      * Search Console統合の準備状況チェック
@@ -157,8 +157,8 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
             const readiness: ReadinessCheckResult = {
                 timestamp: Date.now();
                 ready: true;
-                issues: [];
-               , recommendations: [], }
+                issues: [],
+    recommendations: [], }
                 checklist: {};
             // サイトマップ確認
             readiness.checklist.sitemap = await this.checkSitemapStatus();''
@@ -168,7 +168,7 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
 
             }
 
-                readiness.recommendations.push('Create, and submit, sitemap.xml); }'
+                readiness.recommendations.push('Create, and submit, sitemap.xml'; }'
             }
 
             // robots.txt確認
@@ -179,14 +179,14 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
 
             }
 
-                readiness.recommendations.push('Create, robots.txt, file); }'
+                readiness.recommendations.push('Create, robots.txt, file'; }'
             }
 
             // 重要メタタグ確認
             readiness.checklist.metaTags = this.checkRequiredMetaTags();''
             if(readiness.checklist.metaTags.missing.length > 0) { readiness.ready = false;' }'
 
-                readiness.issues.push(`Missing meta tags: ${readiness.checklist.metaTags.missing.join(', '})`');''
+                readiness.issues.push(`Missing meta tags: ${readiness.checklist.metaTags.missing.join(', '}'`');''
                 readiness.recommendations.push('Add, missing meta, tags);
             }
 
@@ -198,7 +198,7 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
 
             }
 
-                readiness.recommendations.push('Add, structured data, markup); }'
+                readiness.recommendations.push('Add, structured data, markup'; }'
             }
 
             // HTTPS確認
@@ -209,7 +209,7 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
 
             }
 
-                readiness.recommendations.push('Enable, HTTPS for, your site); }'
+                readiness.recommendations.push('Enable, HTTPS for, your site'; }'
             }
 
             // インデックス可能ページ確認
@@ -229,8 +229,8 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
         } catch (error) {
             seoErrorHandler.handle(error as Error, 'checkIntegrationReadiness);
             return { timestamp: Date.now(),
-                ready: false;
-               , issues: [], };
+                ready: false,
+    issues: [], };
                 recommendations: [], }
                 checklist: {};
                 error: (error, as Error).message;
@@ -245,30 +245,30 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
         // Google Analytics が既にある場合
         if(this.hasGoogleAnalytics()) {'
             recommendations.push({''
-                method: 'googleAnalytics',)';
-                reason: 'Google Analyticsが既に実装されているため最も簡単')';
-               , priority: 1,')';
-                setup: this.verificationMethods.googleAnalytics)' ,}'
+                method: 'googleAnalytics','';
+                reason: 'Google Analyticsが既に実装されているため最も簡単')',
+    priority: 1,')';
+                setup: this.verificationMethods.googleAnalytics'' ,}'
 
         // HTMLタグ方式
         recommendations.push({ ''
-            method: 'htmlTag',)';
-            reason: 'HTMLに直接追加できるため実装が簡単')';
-           , priority: 2,')';
-            setup: this.verificationMethods.htmlTag)');
+            method: 'htmlTag','';
+            reason: 'HTMLに直接追加できるため実装が簡単')',
+    priority: 2,')';
+            setup: this.verificationMethods.htmlTag'');
         // HTMLファイル方式
         recommendations.push({''
-            method: 'htmlFile',)';
-            reason: 'ファイルアップロードが可能な場合に適している');
-           , priority: 3,);
-            setup: this.verificationMethods.htmlFile);
+            method: 'htmlFile','';
+            reason: 'ファイルアップロードが可能な場合に適している'),
+    priority: 3,);
+            setup: this.verificationMethods.htmlFile';
 ';
         // DNS方式
         if(this.hasDnsAccess()) {'
             recommendations.push({''
-                method: 'dnsRecord',)';
-                reason: 'DNSアクセスがある場合、最も信頼性が高い');
-               , priority: 4,);
+                method: 'dnsRecord','';
+                reason: 'DNSアクセスがある場合、最も信頼性が高い'),
+    priority: 4,);
                 setup: this.verificationMethods.dnsRecord ,}
 
         return recommendations.sort((a, b) => a.priority - b.priority);
@@ -278,8 +278,8 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
      * HTMLタグ認証の設定'
      */''
     setupHtmlTagVerification(verificationCode?: string): VerificationSetupInstructions { const instructions: VerificationSetupInstructions = {''
-            method: 'HTML Tag Verification';
-           , steps: [{'
+            method: 'HTML Tag Verification',
+    steps: [{'
                     step: 1,
                     action: 'Google Search Consoleで認証コードを取得',
                     description: 'Search Console > プロパティを追加 > URL プレフィックス > HTML タグを選択' ,};
@@ -311,13 +311,13 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
      * HTMLファイル認証の設定'
      */''
     setupHtmlFileVerification(fileName?: string): VerificationSetupInstructions { return { ''
-            method: 'HTML File Verification';
-           , steps: [{'
+            method: 'HTML File Verification',
+    steps: [{'
                     step: 1,
                     action: 'Google Search Consoleで確認ファイルをダウンロード',' };
 
-                    description: 'Search Console > プロパティを追加 > URL プレフィックス > HTML ファイルを選択' }
-                };
+                    description: 'Search Console > プロパティを追加 > URL プレフィックス > HTML ファイルを選択' 
+    };
                 { step: 2,]'
                     action: 'ファイルをルートディレクトリにアップロード',' }]'
                     description: `${fileName || 'google[hash].html'}をウェブサイトのルートに配置`,''
@@ -342,13 +342,13 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
      * DNS認証の設定'
      */''
     setupDnsVerification(txtRecord?: string): VerificationSetupInstructions { return { ''
-            method: 'DNS Record Verification';
-           , steps: [{'
+            method: 'DNS Record Verification',
+    steps: [{'
                     step: 1,
                     action: 'Google Search ConsoleでTXTレコードを取得',' };
 
-                    description: 'Search Console > プロパティを追加 > ドメイン > DNS レコードを選択' }
-                };
+                    description: 'Search Console > プロパティを追加 > ドメイン > DNS レコードを選択' 
+    };
                 { step: 2,''
                     action: 'DNS設定にTXTレコードを追加',
                     record: {''
@@ -377,14 +377,14 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
     /**
      * Google Analytics認証の設定'
      */''
-    setupAnalyticsVerification(''';
+    setupAnalyticsVerification('''
             method: 'Google Analytics Verification',
             steps: [{ step: 1,''
                     action: 'Google Analyticsが実装済みであることを確認',
                     description: 'サイトにGoogle Analytics（GA4）が正しく実装されている' ,};
                 { step: 2,''
                     action: 'Search Consoleで認証方法を選択',
-                    description: 'Google Analytics > 確認を選択' ,})) {'
+                    description: 'Google Analytics > 確認を選択' ,})' {'
         step: 3,
                     action: '自動確認';
     ,}
@@ -395,14 +395,14 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
             verificationUrl: 'https://search.google.com/search-console',
             estimated_time: '1-2分',
             requirements: 'Google Analyticsの実装が必要',
-            currentStatus: this.hasGoogleAnalytics(') ? '実装済み' : '未実装';
+            currentStatus: this.hasGoogleAnalytics() ? '実装済み' : '未実装';
         },
     }
 
     /**
      * サイトマップ送信の準備'
      */''
-    prepareSitemapSubmission(''';
+    prepareSitemapSubmission('''
             title: 'サイトマップ送信の準備',
             steps: [{ step: 1,''
                     action: 'サイトマップの生成確認',
@@ -474,8 +474,8 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
                     ] },
 
                 { ')'
-                    category: '分析頻度')';
-                   , items: ['';
+                    category: '分析頻度')',
+    items: ['';
                         '毎日: 重要なエラーとアラートの確認',
                         '週次: 検索パフォーマンスレポートの分析',
                         '月次: 総合的なSEO健全性の評価',]';
@@ -493,13 +493,13 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
                 status: response.status,
                 lastModified: response.headers.get('last-modified''),' };
 
-                size: response.headers.get('content-length); }'
+                size: response.headers.get('content-length'; }'
             } catch (error) {
             return { exists: false, error: (error, as Error).message ,}
     }
 
     private async checkRobotsTxtStatus()';
-            const response = await fetch('/robots.txt);''
+            const response = await fetch('/robots.txt';''
             const content = response.ok ? await response.text()';
                 hasSitemapReference: content ? content.includes('Sitemap:) : false;
             },
@@ -510,23 +510,23 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
     private checkRequiredMetaTags('';
 
         const required = ['title', 'description'];''
-        const optional = ['keywords', 'author', 'robots'];
+        const optional = ['keywords', 'author', 'robots']
         const found: string[] = []);
-        const, missing: string[] = [])';
+        const, missing: string[] = []'';
         // Title tag
-        const titleTag = document.querySelector('title);''
-        if(titleTag && titleTag.textContent? .trim()) { ''
+        const titleTag = document.querySelector('title';''
+        if(titleTag && titleTag.textContent?.trim()) { ''
             found.push('title''); }
 
         } else { }'
 
-            missing.push('title); }'
+            missing.push('title'; }'
         }
 ';
         // Meta tags
         required.slice(1).concat(optional).forEach(tagName => {  ');''
             const tag = document.querySelector(`meta[name="${tagName}"]`"};" }"
-            if(tag && tag.getAttribute('content) { }'
+            if(tag && tag.getAttribute('content' { }'
                 found.push(tagName});
             } else if (required.includes(tagName) { missing.push(tagName); }
         });
@@ -540,31 +540,31 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
         scripts.forEach((script, index) => { try { }
 
                 const data = JSON.parse(script.textContent || '{}'');''
-                if(data['@context] && data['@type]) { '
+                if(data['@context] && data['@type]' { '
                     validData.push({)'
                         type: data['@type],' }
 
-                        context: data['@context]); }'
+                        context: data['@context]'; }'
                     });
                 } catch (error) { errors.push({)
-                    index: index);
-                   , error: (error, as Error).message });
+                    index: index),
+    error: (error, as Error).message });
             }
         });
 
         return { hasValidData: validData.length > 0,
             validCount: validData.length;
-            errorCount: errors.length;
-           , types: validData.map(d = > d.type ,};
-            errors: errors }
-        }
+            errorCount: errors.length,
+    types: validData.map(d = > d.type ,}
+            errors: errors 
+    }
 
     private checkHttpsStatus(''';
         return location.protocol = == 'https: ' }
 
     private getIndexablePages(''';
-                url: '/';
-               , title: document.title,
+                url: '/',
+    title: document.title,
                 priority: 1.0,
                 changefreq: 'daily';
             },
@@ -588,7 +588,7 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
 
         if(existingTag) {'
 
-            existingTag.setAttribute('content', verificationCode);
+            existingTag.setAttribute('content', verificationCode';
 
         }
 
@@ -597,10 +597,10 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
         } else {
             const metaTag = document.createElement('meta'');''
             metaTag.setAttribute('name', 'google-site-verification'');''
-            metaTag.setAttribute('content', verificationCode);''
+            metaTag.setAttribute('content', verificationCode';''
             document.head.appendChild(metaTag);' }'
 
-            seoLogger.info('Added, Google site, verification tag); }'
+            seoLogger.info('Added, Google site, verification tag'; }'
 }
 
     /**
@@ -622,4 +622,4 @@ export class SearchConsoleIntegration { private verificationMethods: Record<stri
 let searchConsoleIntegrationInstance: SearchConsoleIntegration | null = null,
 
 export function getSearchConsoleIntegration(): SearchConsoleIntegration { if (!searchConsoleIntegrationInstance) {''
-        searchConsoleIntegrationInstance = new SearchConsoleIntegration(' })'
+        searchConsoleIntegrationInstance = new SearchConsoleIntegration(' }''

@@ -2,9 +2,9 @@
  * ヘルプタブコンポーネント
  * UserInfoSceneのヘルプ機能を担当
  */
-import { TabComponent  } from './TabComponent';''
-import { GameEngine  } from '../../core/GameEngine';''
-import { ComponentEventBus  } from './ComponentEventBus';''
+import { TabComponent  } from './TabComponent';
+import { GameEngine  } from '../../core/GameEngine';
+import { ComponentEventBus  } from './ComponentEventBus';
 import { SceneState  } from './SceneState';
 
 interface HelpSectionContent { title: string,
@@ -22,8 +22,8 @@ interface TextSettings { titleFont: string;
     titleColor: string;
     headerColor: string;
     contentColor: string;
-    questionColor: string;
-   , answerColor: string }
+    questionColor: string,
+    answerColor: string }
 ';
 export class HelpTab extends TabComponent { // ヘルプセクション
     private readonly helpSections: string[] = ['overview', 'categories', 'progress', 'rewards', 'tips', 'faq'];''
@@ -65,7 +65,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション
     /**
      * ヘルプコンテンツを初期化
      */''
-    private initializeHelpContent(''';
+    private initializeHelpContent('''
                     title: '実績システム概要',
                     content: ['';
                         'このゲームには豊富な実績システムが用意されています。',
@@ -173,8 +173,8 @@ export class HelpTab extends TabComponent { // ヘルプセクション
                     ] },
 
                 faq: { ')'
-                    title: 'よくある質問')';
-                   , content: ['';
+                    title: 'よくある質問')',
+    content: ['';
                         '【Q: 実績が解除されません】',
                         'A: 条件を正確に満たしているか確認してください。',
                         '   一部の実績は複数回の条件達成が必要です。',
@@ -210,8 +210,8 @@ export class HelpTab extends TabComponent { // ヘルプセクション
      * フォールバックコンテンツを作成'
      */''
     private createFallbackContent()';
-                title: 'ヘルプ')';
-               , content: ['';
+                title: 'ヘルプ')',
+    content: ['';
                     'ヘルプコンテンツの読み込みに失敗しました。',]';
                     'ゲームを再起動して再度お試しください。'];
                 ];
@@ -244,7 +244,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション
      * 背景を描画
      */''
     private renderBackground(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#F8F9FA';''
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#F8F9FA';
         context.fillRect(x, y, width, height);
 
         context.strokeStyle = this.accessibilitySettings.highContrast ? '#000000' : '#DEE2E6';
@@ -272,13 +272,13 @@ export class HelpTab extends TabComponent { // ヘルプセクション
             context.fillStyle = isActive ? '#007BFF' : '#E9ECEF';
 
             this.roundRect(context, buttonX, buttonY, buttonWidth, this.sectionButtonHeight, 4);''
-            context.fill(''';
+            context.fill('''
             context.strokeStyle = isActive ? '#0056B3' : '#CED4DA';)
-            context.lineWidth = 1;)'
+            context.lineWidth = 1;''
             this.roundRect(context, buttonX, buttonY, buttonWidth, this.sectionButtonHeight, 4);''
-            context.stroke(''';
-            context.fillStyle = isActive ? '#FFFFFF' : '#495057';''
-            context.textAlign = 'center';)'
+            context.stroke('''
+            context.fillStyle = isActive ? '#FFFFFF' : '#495057';
+            context.textAlign = 'center';''
             context.textBaseline = 'middle'; }
             context.fillText(label, buttonX + buttonWidth / 2, buttonY + this.sectionButtonHeight / 2); }
         }
@@ -299,9 +299,9 @@ export class HelpTab extends TabComponent { // ヘルプセクション
         const contentWidth = width - this.contentPadding * 2 - 20; // スクロールバー分を除く
         let currentY = y + this.contentPadding - this.scrollPosition;
         // タイトル描画
-        context.font = this.accessibilitySettings.largeText ? '20px bold sans-serif' : '18px bold sans-serif';''
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#212529';''
-        context.textAlign = 'left';''
+        context.font = this.accessibilitySettings.largeText ? '20px bold sans-serif' : '18px bold sans-serif';
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#212529';
+        context.textAlign = 'left';
         context.textBaseline = 'top';
         
         if(currentY + 30 > y && currentY < y + height) {
@@ -316,7 +316,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション
         currentY += 40;
         ';
         // コンテンツ描画
-        context.font = this.accessibilitySettings.largeText ? '16px sans-serif' : '14px sans-serif';''
+        context.font = this.accessibilitySettings.largeText ? '16px sans-serif' : '14px sans-serif';
         context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#495057';
         
         for(const, line of, currentSection.content) {
@@ -333,15 +333,15 @@ export class HelpTab extends TabComponent { // ヘルプセクション
             } else if (line.startsWith('【'') && line.endsWith('】) { // セクションヘッダー
                 if(currentY + this.lineHeight > y) {'
 
-                    context.font = this.accessibilitySettings.largeText ? '16px bold sans-serif' : '14px bold sans-serif';''
-                    context.fillStyle = '#007BFF';''
+                    context.font = this.accessibilitySettings.largeText ? '16px bold sans-serif' : '14px bold sans-serif';
+                    context.fillStyle = '#007BFF';
                     context.fillText(line, contentX, currentY);''
                     context.font = this.accessibilitySettings.largeText ? '16px sans-serif' : '14px sans-serif';
 
                 }
 
-                    context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#495057'; }
-                }
+                    context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#495057'; 
+    }
 
                 currentY += this.lineHeight + 5;''
             } else if (line.startsWith('•'') || line.startsWith('Q:'') || line.startsWith('A:) { // リストアイテムや質問回答
@@ -354,8 +354,8 @@ export class HelpTab extends TabComponent { // ヘルプセクション
 
                 }
 
-                    context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#495057'; }
-                }
+                    context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#495057'; 
+    }
                 currentY += this.lineHeight + 2;
             } else {  // 通常のテキスト
                 if (currentY + this.lineHeight > y) { }
@@ -411,7 +411,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション
         const trackHeight = height * (height / (height + this.maxScrollPosition));''
         const trackY = y + (this.scrollPosition / this.maxScrollPosition) * (height - trackHeight');
 
-        context.fillStyle = '#6C757D';''
+        context.fillStyle = '#6C757D';
         context.fillRect(x + 2, trackY, width - 4, trackHeight);
         ';
         // スクロールバー枠線
@@ -461,7 +461,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション
     handleInput(event: Event): boolean { ''
         if(!this.isActive) return false;
 
-        if(event.type === 'keydown) {'
+        if(event.type === 'keydown' {'
             const keyEvent = event as KeyboardEvent;''
             switch(keyEvent.key) {''
                 case 'ArrowUp':';
@@ -485,9 +485,9 @@ export class HelpTab extends TabComponent { // ヘルプセクション
                     return true;
 
                 case 'Home':'';
-                    keyEvent.preventDefault(''';
-                case 'End':';
-        })'
+                    keyEvent.preventDefault('''
+                case 'End': ';
+        }''
                     keyEvent.preventDefault() }
 
         } else if(event.type === 'wheel) { const wheelEvent = event as WheelEvent;
@@ -543,9 +543,9 @@ export class HelpTab extends TabComponent { // ヘルプセクション
         if(this.contentRenderer) {
         ';
 
-            this.contentRenderer.cleanup(''';
-        titleFont: '18px bold sans-serif''';
-       , headerFont: '14px bold sans-serif',
+            this.contentRenderer.cleanup('''
+        titleFont: '18px bold sans-serif''',
+    headerFont: '14px bold sans-serif',
         contentFont: '14px sans-serif',
         titleColor: '#212529',
         headerColor: '#007BFF',
@@ -577,7 +577,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション
 
         if(settings.largeText) {'
 
-            this.textSettings.titleFont = '22px bold sans-serif';''
+            this.textSettings.titleFont = '22px bold sans-serif';
             this.textSettings.headerFont = '18px bold sans-serif';
 
         }
@@ -587,9 +587,9 @@ export class HelpTab extends TabComponent { // ヘルプセクション
 
         if(settings.highContrast) {'
 
-            this.textSettings.titleColor = '#000000';''
-            this.textSettings.headerColor = '#000000';''
-            this.textSettings.contentColor = '#000000';''
+            this.textSettings.titleColor = '#000000';
+            this.textSettings.headerColor = '#000000';
+            this.textSettings.contentColor = '#000000';
             this.textSettings.questionColor = '#000000';
 
         }
@@ -600,4 +600,4 @@ export class HelpTab extends TabComponent { // ヘルプセクション
     /**
      * クリーンアップ'
      */''
-    cleanup(');
+    cleanup();

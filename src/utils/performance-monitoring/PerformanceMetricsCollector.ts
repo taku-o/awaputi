@@ -1,8 +1,8 @@
 // Type definitions
 interface PerformanceDataAnalyzer { errorHandler: any,
     baselineCalibrated: boolean;
-    calibrationTarget: number;
-   , performanceBaseline: Map<string, number>;
+    calibrationTarget: number,
+    performanceBaseline: Map<string, number>;
     analysisConfig: {
         adaptiveThreshold;s: boolean ,}
 
@@ -15,20 +15,20 @@ interface CollectionStats { historySize: number,
     calibrationSamples: number;
     calibrationComplete: boolean;
     calibrationProgress: number;
-    oldestDataPoint: number | null;
-   , newestDataPoint: number | null ,}
+    oldestDataPoint: number | null,
+    newestDataPoint: number | null ,}
 
 interface ExportData { exportedAt: number;
     timeWindow: number | null;
-    dataPoints: number;
-   , data: Array<{
-        timestam;p: number;
-       , metrics: Record<string, any> }>;
+    dataPoints: number,
+    data: Array<{
+        timestam;p: number,
+    metrics: Record<string, any> }>;
 }
 
 interface ImportDataFormat { data: Array<{
-        timestam;p: number;
-       , metrics: Record<string, any> }>;
+        timestam;p: number,
+    metrics: Record<string, any> }>;
 }
 
 /**
@@ -127,7 +127,7 @@ export class PerformanceMetricsCollector {
         for(const, sample of, this.calibrationSamples) {
 
             for(const [metricId, value] of sample) {''
-                if(typeof, value === 'number) {'
+                if(typeof, value === 'number' {'
                     metricSums.set(metricId, (metricSums.get(metricId) || 0) + value);
         }
                     metricCounts.set(metricId, (metricCounts.get(metricId) || 0) + 1); }
@@ -156,7 +156,7 @@ export class PerformanceMetricsCollector {
 
         for(const [metricId, value] of metrics') {'
 
-            if(typeof, value === 'number) {'
+            if(typeof, value === 'number' {'
                 const baseline = this.mainController.performanceBaseline.get(metricId) || value;
                 const newBaseline = alpha * value + (1 - alpha) * baseline;
         }
@@ -194,7 +194,7 @@ export class PerformanceMetricsCollector {
     /**
      * Normalize metrics data
      */
-    normalizeMetrics(metrics: Map<string, any>): Map<string, number> { const normalized = new Map<string, number>();
+    normalizeMetrics(metrics: Map<string, any>): Map<string number> { const normalized = new Map<string number>();
 
         for(const [metricId, value] of metrics') {'
 
@@ -226,8 +226,8 @@ export class PerformanceMetricsCollector {
                     default:'';
                         // Default normalization - just ensure its a valid number
         ,}
-                        normalizedValue = isFinite(value) ? value: 0; }
-                }
+                        normalizedValue = isFinite(value) ? value: 0; 
+    }
                 
                 normalized.set(metricId, normalizedValue);
             }
@@ -242,7 +242,7 @@ export class PerformanceMetricsCollector {
     createDataPoint(timestamp: number, metrics: Map<string, any>): DataPoint { return { timestamp,
 
             metrics: new Map(metrics),
-            collectedAt: Date.now('' ,};
+            collectedAt: Date.now('' ,}
 
             collector: 'PerformanceMetricsCollector' }))
     }
@@ -253,8 +253,8 @@ export class PerformanceMetricsCollector {
     getCollectionStats(): CollectionStats { return { historySize: this.analysisHistory.length;
             calibrationSamples: this.calibrationSamples.length;
             calibrationComplete: this.mainController.baselineCalibrated;
-            calibrationProgress: this.calibrationSamples.length / this.mainController.calibrationTarget;
-           , oldestDataPoint: this.analysisHistory.length > 0 ? this.analysisHistory[0].timestamp : null, };
+            calibrationProgress: this.calibrationSamples.length / this.mainController.calibrationTarget,
+    oldestDataPoint: this.analysisHistory.length > 0 ? this.analysisHistory[0].timestamp : null, };
             newestDataPoint: this.analysisHistory.length > 0 ? this.analysisHistory[this.analysisHistory.length - 1].timestamp : null 
         }
     
@@ -285,11 +285,10 @@ export class PerformanceMetricsCollector {
         
         return { exportedAt: Date.now(),
             timeWindow,
-            dataPoints: dataToExport.length;
-           , data: dataToExport.map(point = > ({)
-                timestamp: point.timestamp ,};
-                metrics: Object.fromEntries(point.metrics); }
-            }');
+            dataPoints: dataToExport.length data: dataToExport.map(point = > ({)
+                timestamp: point.timestamp  };
+                metrics: Object.fromEntries(point.metrics'); 
+    }');
         }
     
     /**
@@ -301,23 +300,23 @@ export class PerformanceMetricsCollector {
                 return false; }
             
             const importedPoints: DataPoint[] = importData.data.map(point => ({ )
-                timestamp: point.timestamp);
-               , metrics: new Map(Object.entries(point.metrics });
+                timestamp: point.timestamp),
+    metrics: new Map(Object.entries(point.metrics });
             
             this.analysisHistory.push(...importedPoints);
             
             // Sort by timestamp
-            this.analysisHistory.sort((a, b) => a.timestamp - b.timestamp);
+            this.analysisHistory.sort((a b) => a.timestamp - b.timestamp);
             
             // Keep within limits
             const maxHistory = 1000;
             if (this.analysisHistory.length > maxHistory) { this.analysisHistory = this.analysisHistory.slice(-maxHistory); }
             
-            console.log(`[PerformanceMetricsCollector] Imported ${importedPoints.length} data, points`});
+            console.log(`[PerformanceMetricsCollector] Imported ${importedPoints.length} data points`}');
             return true;
 
         } catch (error') {
-            console.error('[PerformanceMetricsCollector] Import failed:', error);
+            console.error('[PerformanceMetricsCollector] Import failed:', error';
             return false;
     
     /**

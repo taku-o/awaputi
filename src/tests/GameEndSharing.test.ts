@@ -5,27 +5,27 @@ import { jest  } from '@jest/globals';
 // モック用の型定義
 interface MockSocialSharingManager {
     settings: { enable;d: boolean }
-    onHighScore: jest.Mock;
-   , onGameEnd: jest.Mock;
+    onHighScore: jest.Mock,
+    onGameEnd: jest.Mock;
 }
 interface MockStatisticsManager { getAccuracy: jest.Mock,
-    getMaxCombo: jest.Mock;
-   , getBubblesPopped: jest.Mock ,}
+    getMaxCombo: jest.Mock,
+    getBubblesPopped: jest.Mock ,}
 interface MockStageManager { getCurrentStage: jest.Mock }
 interface MockPlayerData { currentScore: number;
     ap: number;
-    tap: number;
-   , highScores: Record<string, number>;
+    tap: number,
+    highScores: Record<string, number>;
     save: jest.Mock ,}
 interface MockGameEngine { isGameOver: boolean;
     playerData: MockPlayerData;
     stageManager: MockStageManager;
     statisticsManager: MockStatisticsManager | null;
-    socialSharingManager: MockSocialSharingManager | null;
-   , errorHandler: {
+    socialSharingManager: MockSocialSharingManager | null,
+    errorHandler: {
         handleErro;r: jest.Mock };
-    emit: jest.Mock;
-   , canvas: { width: number;, height: number },
+    emit: jest.Mock,
+    canvas: { width: number;, height: number },
     timeRemaining: number;
     getGameTime?: jest.Mock;
 }
@@ -36,17 +36,17 @@ interface GameEndData { score: number,
     accuracy: number;
     combo: number;
     bubblesPopped: number;
-    playTime: number;
-   , timestamp: number ,}
+    playTime: number,
+    timestamp: number ,}
 interface ShareSettings { shareOnHighScore: boolean;
     shareOnGameEnd: boolean;
     minScoreThreshold: number;
     shareInterval: number;
     lastShareTime: number;
-    preferredPlatforms: string[];
-   , autoPrompt: boolean }
-interface MockGameScene { gameEngine: MockGameEngine;
-   , floatingTextManager: {
+    preferredPlatforms: string[],
+    autoPrompt: boolean }
+interface MockGameScene { gameEngine: MockGameEngine,
+    floatingTextManager: {
         addAnimatedTex;t: jest.Mock };
     prepareGameEndData: (finalScore: number, isNewHighScore: boolean, currentStage: any) => GameEndData;
     triggerSharePrompt: (gameEndData: GameEndData) => Promise<void>;
@@ -63,15 +63,13 @@ interface MockGameScene { gameEngine: MockGameEngine;
 }
 // LocalStorageのモック型
 interface MockLocalStorage { getItem: jest.Mock,
-    setItem: jest.Mock;
-   , removeItem: jest.Mock,
-    clear?: (') => void; }'
+    setItem: jest.Mock,
+    removeItem: jest.Mock,
+    clear?: () => void; }'
 }
 declare global { interface Window {
     localStorage: MockLocalStorage;
-}
-
-}''
+    }''
 describe('GameEndSharing', () => {  let gameScene: MockGameScene,
     let mockGameEngine: MockGameEngine,
     let mockSocialSharingManager: MockSocialSharingManager,
@@ -79,35 +77,35 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
         // GameEngineのモック }
         mockSocialSharingManager = { }
             settings: { enabled: true },''
-            onHighScore: jest.fn<() => Promise<{ success: boolean;, method: string }>>(').mockResolvedValue({ success: true, method: 'web-share' ,}),''
-            onGameEnd: jest.fn<() => Promise<{ success: boolean;, method: string }>>(').mockResolvedValue({ success: true, method: 'web-share' ,});
+            onHighScore: jest.fn<() => Promise<{ success: boolean;, method: string }>>().mockResolvedValue({ success: true, method: 'web-share' ,}',''
+            onGameEnd: jest.fn<() => Promise<{ success: boolean;, method: string }>>().mockResolvedValue({ success: true, method: 'web-share' ,});
         
         mockGameEngine = { isGameOver: false,
             playerData: {
                 currentScore: 1500;
-                ap: 100;
-               , tap: 500, }
+                ap: 100,
+    tap: 500, }
                 highScores: {};
         save: jest.fn();
             },
 
             stageManager: { ''
-                getCurrentStage: jest.fn()';
-                   , id: 'normal',')';
+                getCurrentStage: jest.fn()',
+    id: 'normal',')';
                     type: 'normal' ,};
             statisticsManager: { getAccuracy: jest.fn().mockReturnValue(85.5);
-                getMaxCombo: jest.fn().mockReturnValue(15);
-               , getBubblesPopped: jest.fn().mockReturnValue(150 };
-            socialSharingManager: mockSocialSharingManager;
-       , errorHandler: { handleError: jest.fn( };
-            emit: jest.fn();
-           , canvas: { width: 800, height: 600 ,},
+                getMaxCombo: jest.fn().mockReturnValue(15),
+    getBubblesPopped: jest.fn().mockReturnValue(150 }
+            socialSharingManager: mockSocialSharingManager,
+    errorHandler: { handleError: jest.fn( };
+            emit: jest.fn(),
+    canvas: { width: 800, height: 600 ,},
 
             timeRemaining: 240000, // 4分残り;
             getGameTime: jest.fn().mockReturnValue(60000) // 1分経過;
         },
         // GameSceneのモック（必要なメソッドのみ）
-        const { GameScene } = await import('../scenes/GameScene.ts);
+        const { GameScene } = await import('../scenes/GameScene.ts';
         // GameSceneの部分モック
         gameScene = { gameEngine: mockGameEngine,
         floatingTextManager: {''
@@ -123,16 +121,16 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
             getShareSettings: GameScene.prototype.getShareSettings;
             saveShareSettings: GameScene.prototype.saveShareSettings;
             updateLastShareTime: GameScene.prototype.updateLastShareTime;
-            log: GameScene.prototype.log;
-           , getGameTime: GameScene.prototype.getGameTime;
+            log: GameScene.prototype.log,
+    getGameTime: GameScene.prototype.getGameTime;
         },
         ;
         // LocalStorageのモック
         Object.defineProperty(window, 'localStorage', { )
             value: {);
                 getItem: jest.fn();
-                setItem: jest.fn();
-       , removeItem: jest.fn( };
+                setItem: jest.fn(),
+    removeItem: jest.fn( }
             writable: true;
         }),
         // console.logのモック
@@ -140,7 +138,7 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
         global.console.error = jest.fn();
     });
     afterEach(() => {  jest.clearAllMocks(); }
-        (localStorage, as MockLocalStorage).clear? .();' }'
+        (localStorage, as MockLocalStorage).clear?.();' }'
 
     }');''
     describe('prepareGameEndData', () => {  ''
@@ -158,12 +156,12 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
                 stageType: 'boss';
                 accuracy: 85.5;
                 combo: 15);
-                bubblesPopped: 150);
-               , playTime: 60000,);
+                bubblesPopped: 150),
+    playTime: 60000,';
         timestamp: expect.any(Number ,}
 
             }''
-        });''
+        }';''
         test('StatisticsManagerが無い場合のフォールバック', () => { mockGameEngine.statisticsManager = null;
             ';
 
@@ -175,9 +173,9 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
                 stageType: 'normal';
                 accuracy: 0;
                 combo: 0);
-                bubblesPopped: 0);
-               , playTime: 60000, }
-        timestamp: expect.any(Number); }
+                bubblesPopped: 0),
+    playTime: 60000, }
+        timestamp: expect.any(Number); 
     });
 
             }''
@@ -193,23 +191,23 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
                 stageType: 'normal';
                 accuracy: 85.5;
                 combo: 15;
-                bubblesPopped: 150;
-               , playTime: 60000, }
-        timestamp: Date.now(); }
-            };
+                bubblesPopped: 150,
+    playTime: 60000, }
+        timestamp: Date.now(); 
+    };
 
-            gameScene.getShareSettings = jest.fn<() => ShareSettings>(').mockReturnValue({ shareOnHighScore: true,
+            gameScene.getShareSettings = jest.fn<() => ShareSettings>().mockReturnValue({ shareOnHighScore: true,
                 shareOnGameEnd: false;
                 minScoreThreshold: 1000);
-                shareInterval: 5 * 60 * 1000)';
-               , lastShareTime: 0,
+                shareInterval: 5 * 60 * 1000)',
+    lastShareTime: 0,
                 preferredPlatforms: ['web-share', 'twitter', 'facebook'],);
                 autoPrompt: true);
             gameScene.showHighScoreSharePrompt = jest.fn<() => Promise<void>>().mockResolvedValue();
             await gameScene.triggerSharePrompt(gameEndData);
             expect(gameScene.showHighScoreSharePrompt).toHaveBeenCalledWith(;
                 gameEndData)';
-                mockSocialSharingManager);' ,}'
+                mockSocialSharingManager';' ,}'
 
         }');''
         test('通常ゲーム終了時に共有プロンプトが表示される', async () => {  const gameEndData: GameEndData = {
@@ -219,16 +217,16 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
                 stageType: 'normal';
                 accuracy: 85.5;
                 combo: 15;
-                bubblesPopped: 150;
-               , playTime: 60000, }
-        timestamp: Date.now(); }
-            };
+                bubblesPopped: 150,
+    playTime: 60000, }
+        timestamp: Date.now(); 
+    };
 
-            gameScene.getShareSettings = jest.fn<() => ShareSettings>(').mockReturnValue({ shareOnHighScore: true,
+            gameScene.getShareSettings = jest.fn<() => ShareSettings>().mockReturnValue({ shareOnHighScore: true,
                 shareOnGameEnd: true;
                 minScoreThreshold: 1000);
-                shareInterval: 5 * 60 * 1000)';
-               , lastShareTime: 0,
+                shareInterval: 5 * 60 * 1000)',
+    lastShareTime: 0,
                 preferredPlatforms: ['web-share', 'twitter', 'facebook'],);
                 autoPrompt: true);
             gameScene.shouldShowSharePrompt = jest.fn<() => boolean>().mockReturnValue(true);
@@ -236,7 +234,7 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
             await gameScene.triggerSharePrompt(gameEndData);
             expect(gameScene.showGameEndSharePrompt).toHaveBeenCalledWith(;
                 gameEndData)';
-                mockSocialSharingManager);' ,}'
+                mockSocialSharingManager';' ,}'
 
         }');''
         test('SocialSharingManagerが無効時は何もしない', async () => {  mockGameEngine.socialSharingManager = null;
@@ -246,22 +244,22 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
                 isHighScore: false;
                 accuracy: 0;
                 combo: 0;
-                bubblesPopped: 0;
-               , playTime: 60000, }
-        timestamp: Date.now(); }
-            };
+                bubblesPopped: 0,
+    playTime: 60000, }
+        timestamp: Date.now(); 
+    };
             gameScene.log = jest.fn();
 
             await gameScene.triggerSharePrompt(gameEndData);''
-            expect(gameScene.log).toHaveBeenCalledWith(')';
+            expect(gameScene.log).toHaveBeenCalledWith()';
                 'ソーシャル共有システムが無効、またはSocialSharingManagerが見つかりません');''
         }');''
         test('エラー発生時の処理', async () => {  const gameEndData: GameEndData = {
                 score: 1000;
                 isHighScore: true;
                 accuracy: 0;
-                combo: 0;
-               , bubblesPopped: 0,
+                combo: 0,
+    bubblesPopped: 0,
                 playTime: 60000,
         timestamp: Date.now()';
             const testError = new Error('テストエラー),
@@ -277,7 +275,7 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
                     context: 'triggerSharePrompt');
                     gameEndData }
 
-                });''
+                }';''
         }');
 
     }''
@@ -289,13 +287,13 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
                 accuracy: 90;
                 combo: 20;
                 isHighScore: true;
-                bubblesPopped: 200;
-               , playTime: 120000, }
-        timestamp: Date.now(); }
-            };
+                bubblesPopped: 200,
+    playTime: 120000, }
+        timestamp: Date.now(); 
+    };
 
-            gameScene.generateHighScoreMessage = jest.fn(''';
-                title: '新記録達成！ BubblePop',)';
+            gameScene.generateHighScoreMessage = jest.fn('''
+                title: '新記録達成！ BubblePop','';
                 text: '🎉 新記録達成！5,000点を記録しました！ステージ: boss',')';
                 hashtags: ['BubblePop', 'NewRecord', 'HighScore', 'Gaming]);
             gameScene.updateLastShareTime = jest.fn();
@@ -304,7 +302,7 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
             await gameScene.showHighScoreSharePrompt(gameEndData, mockSocialSharingManager);''
             expect(mockSocialSharingManager.onHighScore).toHaveBeenCalledWith({ ...gameEndData,''
                 title: '新記録達成！ BubblePop',
-                text: '🎉 新記録達成！5,000点を記録しました！ステージ: boss',)';
+                text: '🎉 新記録達成！5,000点を記録しました！ステージ: boss','';
                 hashtags: ['BubblePop', 'NewRecord', 'HighScore', 'Gaming'],);
                 url: window.location.href),
             expect(gameScene.updateLastShareTime).toHaveBeenCalled();' }'
@@ -319,13 +317,13 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
                 accuracy: 85;
                 combo: 12;
                 isHighScore: false;
-                bubblesPopped: 150;
-               , playTime: 90000, }
-        timestamp: Date.now(); }
-            };
+                bubblesPopped: 150,
+    playTime: 90000, }
+        timestamp: Date.now(); 
+    };
 
-            gameScene.generateGameEndMessage = jest.fn(''';
-                title: 'BubblePop - 2,500点獲得',)';
+            gameScene.generateGameEndMessage = jest.fn('''
+                title: 'BubblePop - 2,500点獲得','';
                 text: '🎮 BubblePopで2,500点を獲得！ 精度85%の素晴らしいプレイ！ 最大コンボ12連鎖達成！',')';
                 hashtags: ['BubblePop', 'Gaming', 'Score]);
             gameScene.updateLastShareTime = jest.fn();
@@ -334,7 +332,7 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
             await gameScene.showGameEndSharePrompt(gameEndData, mockSocialSharingManager);''
             expect(mockSocialSharingManager.onGameEnd).toHaveBeenCalledWith({ ...gameEndData,''
                 title: 'BubblePop - 2,500点獲得',
-                text: '🎮 BubblePopで2,500点を獲得！ 精度85%の素晴らしいプレイ！ 最大コンボ12連鎖達成！',)';
+                text: '🎮 BubblePopで2,500点を獲得！ 精度85%の素晴らしいプレイ！ 最大コンボ12連鎖達成！','';
                 hashtags: ['BubblePop', 'Gaming', 'Score'],);
                 url: window.location.href),
             expect(gameScene.updateLastShareTime).toHaveBeenCalled();' }'
@@ -350,17 +348,17 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
                 isHighScore: true;
                 accuracy: 95;
                 combo: 30;
-                bubblesPopped: 300;
-               , playTime: 180000, }
-        timestamp: Date.now(); }
-            };
+                bubblesPopped: 300,
+    playTime: 180000, }
+        timestamp: Date.now(); 
+    };
             ';
 
             const message = gameScene.generateHighScoreMessage(gameEndData);''
             expect(message).toEqual({ ''
-                title: '新記録達成！ BubblePop',)';
+                title: '新記録達成！ BubblePop','';
                 text: '🎉 新記録達成！15,000点を記録しました！ステージ: ultimate',')';
-                hashtags: ['BubblePop', 'NewRecord', 'HighScore', 'Gaming])' }
+                hashtags: ['BubblePop', 'NewRecord', 'HighScore', 'Gaming]'' }
 
         }''
         test('ゲーム終了メッセージ（高精度）が正しく生成される', () => {  const gameEndData: GameEndData = {
@@ -368,55 +366,55 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
                 accuracy: 92.5;
                 combo: 25;
                 isHighScore: false;
-                bubblesPopped: 250;
-               , playTime: 150000, }
-        timestamp: Date.now(); }
-            };
+                bubblesPopped: 250,
+    playTime: 150000, }
+        timestamp: Date.now(); 
+    };
             ';
 
             const message = gameScene.generateGameEndMessage(gameEndData);''
-            expect(message.title).toBe('BubblePop - 8,500点獲得);''
-            expect(message.text).toContain('🎮 BubblePopで8,500点を獲得！);''
-            expect(message.text).toContain('精度93%の素晴らしいプレイ！); // 四捨五入'
-            expect(message.text).toContain('最大コンボ25連鎖達成！);''
-            expect(message.hashtags).toEqual(['BubblePop', 'Gaming', 'Score]);''
+            expect(message.title).toBe('BubblePop - 8,500点獲得';''
+            expect(message.text).toContain('🎮 BubblePopで8,500点を獲得！';''
+            expect(message.text).toContain('精度93%の素晴らしいプレイ！'; // 四捨五入'
+            expect(message.text).toContain('最大コンボ25連鎖達成！';''
+            expect(message.hashtags).toEqual(['BubblePop', 'Gaming', 'Score]';''
         }');''
         test('ゲーム終了メッセージ（低精度・低コンボ）が正しく生成される', () => {  const gameEndData: GameEndData = {
                 score: 1200;
                 accuracy: 60;
                 combo: 5;
                 isHighScore: false;
-                bubblesPopped: 50;
-               , playTime: 60000, }
-        timestamp: Date.now(); }
-            };
+                bubblesPopped: 50,
+    playTime: 60000, }
+        timestamp: Date.now(); 
+    };
             ';
 
             const message = gameScene.generateGameEndMessage(gameEndData);''
-            expect(message.text).toBe('🎮 BubblePopで1,200点を獲得！);''
-            expect(message.text).not.toContain('精度);''
-            expect(message.text).not.toContain('コンボ);''
+            expect(message.text).toBe('🎮 BubblePopで1,200点を獲得！';''
+            expect(message.text).not.toContain('精度';''
+            expect(message.text).not.toContain('コンボ';''
         }');
 
     }''
     describe('shouldShowSharePrompt', () => {  ''
         test('最小スコア閾値を下回る場合はfalse', () => {''
-            gameScene.getShareSettings = jest.fn<() => ShareSettings>(').mockReturnValue({'
+            gameScene.getShareSettings = jest.fn<() => ShareSettings>().mockReturnValue({'
                 shareOnHighScore: true;
                 shareOnGameEnd: true;
                 minScoreThreshold: 2000);
-                shareInterval: 5 * 60 * 1000)';
-               , lastShareTime: 0,
+                shareInterval: 5 * 60 * 1000'',
+    lastShareTime: 0,
                 preferredPlatforms: ['web-share', 'twitter', 'facebook'],) }
-                autoPrompt: true); }
-            });
+                autoPrompt: true); 
+    });
             const gameEndData: GameEndData = { score: 1500,
                 isHighScore: false;
                 accuracy: 70;
                 combo: 10;
                 bubblesPopped: 100;
-                playTime: 60000;
-       , timestamp: Date.now( ,};
+                playTime: 60000,
+    timestamp: Date.now( ,};
             const result = gameScene.shouldShowSharePrompt(gameEndData);
 
             expect(result).toBe(false);''
@@ -424,22 +422,22 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
         test('共有間隔が短すぎる場合はfalse', () => {  const now = Date.now();
             const recentShareTime = now - (2 * 60 * 1000); // 2分前
 
-            gameScene.getShareSettings = jest.fn<() => ShareSettings>(').mockReturnValue({'
+            gameScene.getShareSettings = jest.fn<() => ShareSettings>().mockReturnValue({'
                 shareOnHighScore: true;
                 shareOnGameEnd: true);
-                minScoreThreshold: 1000);
-               , shareInterval: 5 * 60 * 1000, // 5分間隔;
+                minScoreThreshold: 1000',
+    shareInterval: 5 * 60 * 1000, // 5分間隔;
                 lastShareTime: recentShareTime,
                 preferredPlatforms: ['web-share', 'twitter', 'facebook'],) }
-                autoPrompt: true); }
-            });
+                autoPrompt: true); 
+    });
             const gameEndData: GameEndData = { score: 2000,
                 isHighScore: false;
                 accuracy: 80;
                 combo: 15;
                 bubblesPopped: 150;
-                playTime: 90000;
-       , timestamp: Date.now( ,};
+                playTime: 90000,
+    timestamp: Date.now( ,};
             const result = gameScene.shouldShowSharePrompt(gameEndData);
 
             expect(result).toBe(false);''
@@ -447,22 +445,22 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
         test('条件を満たす場合はtrue', () => {  const now = Date.now();
             const oldShareTime = now - (10 * 60 * 1000); // 10分前
 
-            gameScene.getShareSettings = jest.fn<() => ShareSettings>(').mockReturnValue({'
+            gameScene.getShareSettings = jest.fn<() => ShareSettings>().mockReturnValue({'
                 shareOnHighScore: true;
                 shareOnGameEnd: true;
                 minScoreThreshold: 1000);
-                shareInterval: 5 * 60 * 1000)';
-               , lastShareTime: oldShareTime,
+                shareInterval: 5 * 60 * 1000'',
+    lastShareTime: oldShareTime,
                 preferredPlatforms: ['web-share', 'twitter', 'facebook'],) }
-                autoPrompt: true); }
-            });
+                autoPrompt: true); 
+    });
             const gameEndData: GameEndData = { score: 2000,
                 isHighScore: false;
                 accuracy: 80;
                 combo: 15;
                 bubblesPopped: 150;
-                playTime: 90000;
-       , timestamp: Date.now( ,};
+                playTime: 90000,
+    timestamp: Date.now( ,};
             const result = gameScene.shouldShowSharePrompt(gameEndData);
 
             expect(result).toBe(true);''
@@ -478,20 +476,20 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
                 shareOnHighScore: true;
                 shareOnGameEnd: false;
                 minScoreThreshold: 1000);
-                shareInterval: 5 * 60 * 1000)';
-               , lastShareTime: 0,
+                shareInterval: 5 * 60 * 1000)',
+    lastShareTime: 0,
                 preferredPlatforms: ['web-share', 'twitter', 'facebook'],) }
 
-                autoPrompt: true),' }'
+                autoPrompt: true',' }'
 
             }');
 
         }''
         test('保存済み設定が正しく読み込まれる', () => {  const savedSettings: Partial<ShareSettings> = {
-                shareOnHighScore: false;
-               , shareOnGameEnd: true, }
-                minScoreThreshold: 5000 }
-            };
+                shareOnHighScore: false,
+    shareOnGameEnd: true, }
+                minScoreThreshold: 5000 
+    };
             (localStorage.getItem, as jest.Mock).mockReturnValue(JSON.stringify(savedSettings);
             const settings = gameScene.getShareSettings();
             expect(settings.shareOnHighScore).toBe(false);
@@ -502,8 +500,8 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
         }');''
         test('設定が正しく保存される', () => {  const existingSettings: Partial<ShareSettings> = {
                 shareOnHighScore: true, }
-                minScoreThreshold: 1000 }
-            };
+                minScoreThreshold: 1000 
+    };
             (localStorage.getItem, as jest.Mock).mockReturnValue(JSON.stringify(existingSettings);
             const newSettings: Partial<ShareSettings> = { shareOnGameEnd: true,
                 minScoreThreshold: 2000 ,};
@@ -531,17 +529,17 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
         test('設定読み込みエラー時のフォールバック', () => {  ''
             (localStorage.getItem, as jest.Mock).mockImplementation(() => {' }'
 
-                throw new Error('Storage, error); }'
+                throw new Error('Storage, error'; }'
             });
 
             const settings = gameScene.getShareSettings();''
             expect(settings).toEqual({ shareOnHighScore: true,
                 shareOnGameEnd: false;
                 minScoreThreshold: 1000);
-                shareInterval: 5 * 60 * 1000)';
-               , lastShareTime: 0,
-                preferredPlatforms: ['web-share', 'twitter', 'facebook'],)';
-                autoPrompt: true),' }'
+                shareInterval: 5 * 60 * 1000)',
+    lastShareTime: 0,
+                preferredPlatforms: ['web-share', 'twitter', 'facebook'],'';
+                autoPrompt: true',' }'
 
             }');
 
@@ -549,12 +547,12 @@ describe('GameEndSharing', () => {  let gameScene: MockGameScene,
         test('設定保存エラー時の処理', () => {  ''
             (localStorage.setItem, as jest.Mock).mockImplementation(() => {' }'
 
-                throw new Error('Storage, error); }'
+                throw new Error('Storage, error'; }'
             });
             global.console.error = jest.fn();
 
             gameScene.saveShareSettings({ shareOnHighScore: false });''
-            expect(console.error).toHaveBeenCalledWith(')';
+            expect(console.error).toHaveBeenCalledWith()';
                 '共有設定の保存エラー:');
 
                 expect.any(Error);''

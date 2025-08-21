@@ -13,14 +13,14 @@ export interface MemoryOptimizerOptions { maxMemoryUsage?: number;
 export interface MemoryUsage { translations: number,
     cache: number;
     metadata: number;
-    other: number;
-   , total: number ,}
+    other: number,
+    total: number ,}
 
 export interface OptimizationStrategies { stringDeduplication: boolean;
     objectPooling: boolean;
     lazyLoading: boolean;
-    compressionThreshold: number;
-   , weakReferences: boolean }
+    compressionThreshold: number,
+    weakReferences: boolean }
 
 export interface OptimizationStats { totalOptimizations: number;
     memoryFreed: number;
@@ -28,8 +28,8 @@ export interface OptimizationStats { totalOptimizations: number;
     objectsPooled: number;
     gcRuns: number;
     lastGcTime: number;
-    averageGcTime: number;
-   , memoryPressureEvents: number }
+    averageGcTime: number,
+    memoryPressureEvents: number }
 
 export type MemoryPressureHandler = () => void;
 
@@ -70,11 +70,11 @@ export class MemoryOptimizer {
         this.memoryUsage = {
             translations: 0;
             cache: 0;
-            metadata: 0;
-           , other: 0;
+            metadata: 0,
+    other: 0;
     ,}
-            total: 0 }
-        };
+            total: 0 
+    };
         // オブジェクト参照管理
         this.objectReferences = new WeakMap<object, any>();
         this.stringPool = new Map<string, string>(); // 文字列プール
@@ -83,8 +83,8 @@ export class MemoryOptimizer {
         // 最適化戦略
         this.optimizationStrategies = { stringDeduplication: true,
             objectPooling: true;
-            lazyLoading: true;
-           , compressionThreshold: 1024, // 1KB;
+            lazyLoading: true,
+    compressionThreshold: 1024, // 1KB;
             weakReferences: true ,};
         // 統計情報
         this.stats = { totalOptimizations: 0,
@@ -93,8 +93,8 @@ export class MemoryOptimizer {
             objectsPooled: 0;
             gcRuns: 0;
             lastGcTime: 0;
-            averageGcTime: 0;
-           , memoryPressureEvents: 0 ,};
+            averageGcTime: 0,
+    memoryPressureEvents: 0 ,};
         // メモリ圧迫対応
         this.memoryPressureHandlers = new Set<MemoryPressureHandler>();
         this.isUnderMemoryPressure = false;
@@ -157,7 +157,7 @@ export class MemoryOptimizer {
         const processedStrings = new Set();
 
         const processValue = (value') => {  ''
-            if(typeof, value === 'string) {'
+            if(typeof, value === 'string' {'
                 // 既存の文字列プールをチェック
                 if(this.stringPool.has(value) {
             }
@@ -284,7 +284,7 @@ export class MemoryOptimizer {
      * 弱参照を登録'
      */''
     private _registerWeakReferences(data: any, language: string): void { ''
-        if(typeof, WeakRef !== 'undefined) {'
+        if(typeof, WeakRef !== 'undefined' {'
             const weakRef = new WeakRef(data);
             this.objectReferences.set(data, {)
                 language);
@@ -337,7 +337,7 @@ export class MemoryOptimizer {
             try {
         }
 
-                handler('critical);' }
+                handler('critical';' }
 
             } catch (error) { console.error('Memory pressure handler failed:', error }
 }
@@ -346,7 +346,7 @@ export class MemoryOptimizer {
      * メモリ警告への対応'
      */''
     _handleMemoryWarning()';
-        console.warn('Memory, usage exceeds, warning threshold);
+        console.warn('Memory usage exceeds warning threshold';
         
         this.isUnderMemoryPressure = true;
         
@@ -357,7 +357,7 @@ export class MemoryOptimizer {
             try {
         }
 
-                handler('warning);' }
+                handler('warning';' }
 
             } catch (error) { console.error('Memory pressure handler failed:', error }
 }
@@ -375,7 +375,7 @@ export class MemoryOptimizer {
             try {
         }
 
-                handler('recovered);' }
+                handler('recovered';' }
 
             } catch (error) { console.error('Memory pressure handler failed:', error }
 }
@@ -474,7 +474,7 @@ export class MemoryOptimizer {
 
             }
 
-                const temp = new Array(100000).fill('temp); }'
+                const temp = new Array(100000).fill('temp'; }'
                 temp.length = 0; }
 }
         
@@ -497,14 +497,14 @@ export class MemoryOptimizer {
             return new Blob([jsonString]).size;' }'
 
         } catch (error) {
-            console.warn('Failed to calculate object size:', error);
+            console.warn('Failed to calculate object size:', error';
             return 0;
     
     /**
      * パフォーマンスオブザーバーを設定'
      */''
     setupPerformanceObserver()';
-        if(typeof, PerformanceObserver !== 'undefined) {'
+        if(typeof, PerformanceObserver !== 'undefined' {'
         try {
                 this.performanceObserver = new PerformanceObserver((list) => { 
                     const entries = list.getEntries();
@@ -519,7 +519,7 @@ export class MemoryOptimizer {
                 ';
 
                 this.performanceObserver.observe({ ')'
-                    entryTypes: ['measure', 'navigation] );' }
+                    entryTypes: ['measure', 'navigation] ';' }
 
             } catch (error) { console.warn('Performance observer setup failed:', error }
 }
@@ -569,7 +569,7 @@ export class MemoryOptimizer {
      */''
     addMemoryPressureHandler(handler) {'
 
-        if(typeof, handler === 'function) {'
+        if(typeof, handler === 'function' {'
             this.memoryPressureHandlers.add(handler);
     }
             return true;
@@ -589,12 +589,12 @@ export class MemoryOptimizer {
             usagePercent: Math.round((this.memoryUsage.total / this.maxMemoryUsage) * 10000) / 100;
             maxMemoryMB: Math.round(this.maxMemoryUsage / 1024 / 1024);
             totalMB: Math.round(this.memoryUsage.total / 1024 / 1024);
-            isUnderPressure: this.isUnderMemoryPressure;
-           , stringPoolSize: this.stringPool.size;
+            isUnderPressure: this.isUnderMemoryPressure,
+    stringPoolSize: this.stringPool.size;
     ,}
             translationPoolSize: this.translationPool.size, };
-            weakReferencesCount: this.objectReferences.size }
-        }
+            weakReferencesCount: this.objectReferences.size 
+    }
     
     /**
      * 詳細統計を取得
@@ -604,15 +604,15 @@ export class MemoryOptimizer {
         
         return { ...this.stats,
             memoryUsage,
-            optimizationStrategies: this.optimizationStrategies;
-           , thresholds: {
+            optimizationStrategies: this.optimizationStrategies,
+    thresholds: {
     ,}
                 warning: this.warningThreshold, };
-                critical: this.criticalThreshold }
-            };
+                critical: this.criticalThreshold 
+    };
             performance: { averageGcTime: Math.round(this.stats.averageGcTime * 100) / 100;
-                lastGcTime: Math.round(this.stats.lastGcTime * 100) / 100;
-               , gcFrequency: this.stats.gcRuns / Math.max((Date.now() - this.stats.lastGcTime) / 1000, 1 }
+                lastGcTime: Math.round(this.stats.lastGcTime * 100) / 100,
+    gcFrequency: this.stats.gcRuns / Math.max((Date.now() - this.stats.lastGcTime) / 1000, 1 }
         }
     
     /**
@@ -645,34 +645,34 @@ export class MemoryOptimizer {
         
         const report = {
             timestamp: new Date().toISOString();
-            memoryUsage: stats.memoryUsage;
-           , optimizations: {
+            memoryUsage: stats.memoryUsage,
+    optimizations: {
                 total: stats.totalOptimizations;
-                stringsDeduped: stats.stringsDeduped;
-               , objectsPooled: stats.objectsPooled;
+                stringsDeduped: stats.stringsDeduped,
+    objectsPooled: stats.objectsPooled;
     }
-                memoryFreedMB: Math.round(stats.memoryFreed / 1024 / 1024); }
-            },
-            performance: stats.performance;
-           , recommendations: [];
+                memoryFreedMB: Math.round(stats.memoryFreed / 1024 / 1024); 
+    },
+            performance: stats.performance,
+    recommendations: [];
         },
         // 推奨事項を生成
         if(stats.memoryUsage.usagePercent > 80) {', ';
 
         }
 
-            report.recommendations.push('Consider, increasing memory, limit or, improving cleanup, frequency); }'
+            report.recommendations.push('Consider, increasing memory, limit or, improving cleanup, frequency'; }'
         }
 
         if(stats.performance.averageGcTime > 50) {', ';
 
         }
 
-            report.recommendations.push('Garbage collection is taking too long, consider optimizing object lifecycle); }'
+            report.recommendations.push('Garbage collection is taking too long, consider optimizing object lifecycle'; }'
         }
 
         if (stats.stringsDeduped / Math.max(stats.totalOptimizations, 1) > 0.5) { ''
-            report.recommendations.push('High string duplication detected, consider improving string management); }'
+            report.recommendations.push('High string duplication detected, consider improving string management'; }'
         
         return report;
     }

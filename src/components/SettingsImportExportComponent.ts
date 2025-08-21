@@ -1,4 +1,4 @@
-import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 import { getLocalizationManager  } from '../core/LocalizationManager.js';
 
 interface GameEngine { version?: string;
@@ -9,15 +9,15 @@ interface GameEngine { version?: string;
     };
 }
 
-interface SettingsManager { get: (ke;y: string) => any,
-    set: (ke;y: string, value: any) => void,
+interface SettingsManager { get: (key: string) => any,
+    set: (key: string, value: any) => void,
     save: () => void ,}
 }
 
 interface AccessibilitySettingsManager { currentProfile?: string;
     getExtendedAccessibilitySettings: () => AccessibilitySetting[];
     getStats: () => any;
-    importSettings: (fil;e: File) => Promise<void> ,}
+    importSettings: (file: File) => Promise<void> ,}
 }
 
 interface AccessibilitySetting { key: string;
@@ -25,7 +25,7 @@ interface AccessibilitySetting { key: string;
 ';
 
 interface ErrorHandler { ''
-    handleError: (erro;r: Error, code: string, context?: any') => void }'
+    handleError: (error: Error, code: string, context?: any') => void }'
 }
 
 interface LocalizationManager { // Define methods as needed }
@@ -33,37 +33,37 @@ interface LocalizationManager { // Define methods as needed }
 interface ExportData { timestamp: string,
     version: string;
     gameVersion: string;
-    source: string;
-   , settings: Record<string, any>;
+    source: string,
+    settings: Record<string, any>;
     accessibility: Record<string, any>;
     metadata: {
         userAgen;t: string;
-        language: string;
-       , exportedBy: string ,}
+        language: string,
+    exportedBy: string ,}
 
 interface ValidationResult { valid: boolean,
     error?: string }
 
-interface ApplyResult { appliedCount: number;
-   , warnings: string[] }
+interface ApplyResult { appliedCount: number,
+    warnings: string[] }
 ';
 
 interface OperationRecord { ''
     type: 'export' | 'import';
-    timestamp: number;
-   , filename: string;
+    timestamp: number,
+    filename: string;
     settingsCount?: number }
 
 interface Statistics { exportCount: number;
     importCount: number;
     errorsCount: number;
     lastExport: string | null;
-    lastImport: string | null;
-   , sessionStart: number }
+    lastImport: string | null,
+    sessionStart: number }
 
 interface ExtendedStatistics extends Statistics { lastOperation: OperationRecord | null;
-    operationHistory: OperationRecord[];
-   , sessionDuration: number }
+    operationHistory: OperationRecord[],
+    sessionDuration: number }
 
 type StatusType = 'ready' | 'processing' | 'success' | 'error';
 
@@ -135,16 +135,16 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
         this.operationHistory = [];
         
         // AccessibilitySettingsManagerの参照を取得
-        this.accessibilityManager = this.gameEngine.sceneManager? .currentScene?.accessibilitySettingsManager;
+        this.accessibilityManager = this.gameEngine.sceneManager?.currentScene?.accessibilitySettingsManager
         
         // 統計情報
         this.stats = { : undefined, exportCount: 0;
             importCount: 0;
             errorsCount: 0;
-            lastExport: null);
-           , lastImport: null ,}
-            sessionStart: Date.now(); }
-        }
+            lastExport: null),
+    lastImport: null ,}
+            sessionStart: Date.now(); 
+    }
     
     /**
      * コンポーネントを初期化してDOMに追加
@@ -159,17 +159,17 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
                 return this.container;
 
             if(!parentElement || !(parentElement, instanceof HTMLElement)') { ''
-                throw new Error('Valid, parent element, is required); }'
+                throw new Error('Valid, parent element, is required'; }'
 
             this.createImportExportUI(parentElement);''
             this.updateStatusIndicator('ready', '設定のインポート・エクスポートが利用可能です'');
             this.isInitialized = true;
 
-            console.log('[SettingsImportExportComponent] Initialized, successfully);
+            console.log('[SettingsImportExportComponent] Initialized, successfully';
             return this.container;
 
-        } catch (error') { this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_EXPORT_ERROR', {)'
-                operation: 'initialize' ,});
+        } catch (error') { this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_EXPORT_ERROR', {''
+                operation: 'initialize' ,}';
             return null;
     
     /**
@@ -183,8 +183,8 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
             display: flex;
             flex-direction: column,
             gap: 15px;
-            padding: 20px;
-           , border: 1px solid #ddd;
+            padding: 20px,
+    border: 1px solid #ddd;
             border-radius: 8px,
             background-color: #f9f9f9,
             font-family: Arial, sans-serif;
@@ -199,7 +199,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
             color: #333;
             margin-bottom: 5px,
         `;''
-        header.textContent = '設定管理';''
+        header.textContent = '設定管理';
         this.container.appendChild(header);
         ';
         // 説明文
@@ -207,30 +207,30 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
         description.className = 'import-export-description';
         description.style.cssText = `;
             font-size: 14px,
-            color: #666;
-           , margin: 0 0 15px 0,
+            color: #666,
+    margin: 0 0 15px 0,
         `;''
-        description.textContent = '設定をJSONファイルでエクスポート・インポートできます。';''
+        description.textContent = '設定をJSONファイルでエクスポート・インポートできます。';
         this.container.appendChild(description);
         ';
         // ボタンコンテナ
         const buttonContainer = document.createElement('div'');''
         buttonContainer.className = 'button-container';
         buttonContainer.style.cssText = `;
-            display: flex;
-           , gap: 15px;
+            display: flex,
+    gap: 15px;
             align-items: center,
         `;
         ';
         // エクスポートボタン
         this.exportButton = document.createElement('button'');''
-        this.exportButton.className = 'export-settings-button';''
+        this.exportButton.className = 'export-settings-button';
         this.exportButton.innerHTML = '📤 設定をエクスポート';
         this.exportButton.style.cssText = `;
             background: linear-gradient(135deg, #4CAF50, #45a049),
             color: white;
-            border: none;
-           , padding: 12px 24px;
+            border: none,
+    padding: 12px 24px;
             border-radius: 6px,
             cursor: pointer;
             font-size: 14px,
@@ -247,13 +247,13 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
         ';
         // インポートボタン
         this.importButton = document.createElement('button'');''
-        this.importButton.className = 'import-settings-button';''
+        this.importButton.className = 'import-settings-button';
         this.importButton.innerHTML = '📥 設定をインポート';
         this.importButton.style.cssText = `;
             background: linear-gradient(135deg, #2196F3, #1976D2),
             color: white;
-            border: none;
-           , padding: 12px 24px;
+            border: none,
+    padding: 12px 24px;
             border-radius: 6px,
             cursor: pointer;
             font-size: 14px,
@@ -272,9 +272,9 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
         ';
         // 隠しファイル入力
         this.fileInput = document.createElement('input'');''
-        this.fileInput.type = 'file';''
-        this.fileInput.accept = '.json';''
-        this.fileInput.style.display = 'none';''
+        this.fileInput.type = 'file';
+        this.fileInput.accept = '.json';
+        this.fileInput.style.display = 'none';
         this.fileInput.addEventListener('change', this.handleFileSelect.bind(this);''
         this.container.appendChild(this.fileInput);
         ';
@@ -282,8 +282,8 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
         this.progressBar = document.createElement('div'');''
         this.progressBar.className = 'progress-bar';
         this.progressBar.style.cssText = `;
-            width: 100%;
-           , height: 6px;
+            width: 100%,
+    height: 6px;
             background-color: #e0e0e0,
             border-radius: 3px,
             overflow: hidden;
@@ -293,10 +293,10 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
         const progressFill = document.createElement('div'');''
         progressFill.className = 'progress-fill';
         progressFill.style.cssText = `;
-            height: 100%;
-           , background: linear-gradient(90deg, #4CAF50, #45a049),
-            width: 0%;
-           , transition: width 0.3s ease;
+            height: 100%,
+    background: linear-gradient(90deg, #4CAF50, #45a049),
+            width: 0%,
+    transition: width 0.3s ease;
         `;
 
         this.progressBar.appendChild(progressFill);''
@@ -319,8 +319,8 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
         this.infoPanel.className = 'info-panel';
         this.infoPanel.style.cssText = `;
             font-size: 12px,
-            color: #666;
-           , padding: 10px;
+            color: #666,
+    padding: 10px;
             background-color: #f0f0f0,
             border-radius: 4px,
             border-left: 4px solid #2196F3,
@@ -378,7 +378,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
             }, { ''
                 background: 'linear-gradient(135deg, #1976D2, #2196F3)',
                 transform: 'scale(1.05)',
-                boxShadow: '0 4px 8px rgba(0,0,0,0.2)' });
+                boxShadow: '0 4px 8px rgba(0,0,0,0.2)' }';
         }
     }
     
@@ -412,16 +412,16 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
             ';
             // 成功フィードバック
             await this.delay(500);''
-            this.updateStatusIndicator('success', `設定をエクスポートしました: ${ filename)`');
+            this.updateStatusIndicator('success', `設定をエクスポートしました: ${ filename'`');
             ';
             // カスタムイベントの発火
             this.dispatchCustomEvent('settingsExported', {)
                 filename};
-                timestamp: Date.now(}, }
+                timestamp: Date.now(), }
                 dataSize: JSON.stringify(exportData}).length
             });
         } catch (error) { this.stats.errorsCount++;''
-            this.errorHandler.handleError(error as Error, 'SETTINGS_EXPORT_ERROR', {)'
+            this.errorHandler.handleError(error as Error, 'SETTINGS_EXPORT_ERROR', {''
                 operation: 'export'),' }
 
             }');''
@@ -435,7 +435,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
                 if(!this.isProcessing) {' }'
 
                     this.updateStatusIndicator('ready', '設定のインポート・エクスポートが利用可能です); }
-}, 3000);
+}, 3000';
         }
     }
     
@@ -448,12 +448,12 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
 
         try {'
             this.updateStatusIndicator('processing', 'ファイルを選択してください...);
-            this.fileInput? .click();
+            this.fileInput?.click();
 
             ' }'
 
         } catch (error) { this.stats.errorsCount++;''
-            this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_ERROR', { : undefined)'
+            this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_ERROR', { : undefined''
                 operation: 'import_trigger'),' 
             }');''
             this.updateStatusIndicator('error', 'インポートの開始に失敗しました);
@@ -465,7 +465,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
      */
     private async handleFileSelect(event: Event): Promise<void> { const target = event.target as HTMLInputElement;
 
-        const file = target.files? .[0];''
+        const file = target.files?.[0];''
         if(!file) {'
 
             this.updateStatusIndicator('ready', '設定のインポート・エクスポートが利用可能です'');
@@ -490,7 +490,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
             }
             ';
             // ファイル読み込み
-            this.updateStatusIndicator('processing', 'ファイルを読み込み中...);''
+            this.updateStatusIndicator('processing', 'ファイルを読み込み中...';''
             const importData = await this.readImportFile(file);
             ';
             // データ検証
@@ -510,30 +510,30 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
             
             // 統計更新
             this.stats.importCount++;''
-            this.stats.lastImport = new Date().toISOString(''';
+            this.stats.lastImport = new Date().toISOString('''
                 type: 'import', ;
                 timestamp: Date.now( );
-                filename: file.name);
-               , settingsCount: applyResult.appliedCount';
+                filename: file.name),
+    settingsCount: applyResult.appliedCount';
             };')'
             this.operationHistory.push(this.lastOperation);
             ';
             // 成功フィードバック
-            this.updateStatusIndicator('success)'';
-                `設定をインポートしました: ${ applyResult.appliedCount)項目が適用されました`');
+            this.updateStatusIndicator('success''';
+                `設定をインポートしました: ${ applyResult.appliedCount'項目が適用されました`');
             ';
             // カスタムイベントの発火
             this.dispatchCustomEvent('settingsImported', {}
                 filename: file.name}, }
-                timestamp: Date.now(});
-                settingsCount: applyResult.appliedCount;
-               , warnings: applyResult.warnings;
+                timestamp: Date.now());
+                settingsCount: applyResult.appliedCount,
+    warnings: applyResult.warnings;
             }),
 
         } catch (error) { this.stats.errorsCount++;''
-            this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_ERROR', {)'
-                operation: 'import_process',)';
-                filename: file.name),' }'
+            this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_ERROR', {''
+                operation: 'import_process','';
+                filename: file.name',' }'
 
             }');''
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',
@@ -555,7 +555,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
                 if(!this.isProcessing) {' }'
 
                     this.updateStatusIndicator('ready', '設定のインポート・エクスポートが利用可能です); }
-}, 5000);
+}, 5000';
         }
     }
     
@@ -564,15 +564,15 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
      * @returns エクスポートデータ
      */'
     private async prepareExportData(): Promise<ExportData> { const exportData: ExportData = {''
-            timestamp: new Date().toISOString(''';
-           , version: '1.0.0',
+            timestamp: new Date().toISOString(''',
+    version: '1.0.0',
             gameVersion: this.gameEngine.version || '1.0.0',
             source: 'SettingsImportExportComponent', }
             settings: {};
             accessibility: {};
-            metadata: { userAgent: navigator.userAgent;
-               , language: navigator.language,
-                exportedBy: 'awaputi-bubble-pop-game' ,}))'
+            metadata: { userAgent: navigator.userAgent,
+    language: navigator.language,
+                exportedBy: 'awaputi-bubble-pop-game' ,})''
         // 一般設定の収集')'
         if(this.gameEngine.settingsManager) {'
             const generalSettings = ['';
@@ -596,7 +596,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
             try {
                 const accessibilitySettings = this.accessibilityManager.getExtendedAccessibilitySettings();
                 accessibilitySettings.forEach(setting => { );
-                    const value = this.gameEngine.settingsManager? .get(setting.key);
+                    const value = this.gameEngine.settingsManager?.get(setting.key);
         }
                     if (value !== undefined) { }
                         exportData.accessibility[setting.key] = value; }
@@ -619,8 +619,8 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
      * @returns ファイル名
      */'
     private generateExportFilename(): string { const now = new Date();''
-        const dateStr = now.toISOString(').split('T)[0]; // YYYY-MM-DD
-        const timeStr = now.toTimeString(').split(', '')[0].replace(/:/g, ''); // HHMMSS }
+        const dateStr = now.toISOString().split('T'[0]; // YYYY-MM-DD
+        const timeStr = now.toTimeString().split(', '')[0].replace(/:/g, ''); // HHMMSS }
         return `${this.EXPORT_FILENAME_PREFIX}-${dateStr}-${timeStr}.json`;
     }
     
@@ -631,7 +631,7 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
      */
     private downloadAsFile(data: ExportData, filename: string): void { ''
         const jsonString = JSON.stringify(data, null, 2);''
-        const blob = new Blob([jsonString], { type: 'application/json ),''
+        const blob = new Blob([jsonString], { type: 'application/json ',''
         const url = URL.createObjectURL(blob);
 
         const a = document.createElement('a'');
@@ -662,19 +662,19 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
             }
         ';
         // ファイル形式チェック
-        const fileExtension = file.name.split('.).pop()? .toLowerCase(') || '';''
+        const fileExtension = file.name.split('.).pop()?.toLowerCase() || '';
         if(!this.SUPPORTED_FORMATS.includes(fileExtension)) { return { : undefined };
 
                 valid: false,' }'
 
-                error: `サポートされていないファイル形式です (対応形式: ${this.SUPPORTED_FORMATS.join(', '}))`
+                error: `サポートされていないファイル形式です (対応形式: ${this.SUPPORTED_FORMATS.join(', '})'`
             }
         ';
         // MIME Type チェック
-        if(file.type && !file.type.includes('json)) { return { valid: false,' };
+        if(file.type && !file.type.includes('json)' { return { valid: false,' };
 
-                error: 'JSONファイルを選択してください' }
-            }
+                error: 'JSONファイルを選択してください' 
+    }
         
         return { valid: true }
     
@@ -688,18 +688,18 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
             
             reader.onload = (event) => {
                 try {
-                    const result = event.target? .result as string;
+                    const result = event.target?.result as string;
                     const data = JSON.parse(result); }
 
                     resolve(data);' }'
 
                 } catch (error) {
-                    reject(new, Error('JSONファイルの解析に失敗しました); }'
+                    reject(new, Error('JSONファイルの解析に失敗しました'; }'
             };
 
-            reader.onerror = (') => {  ' }
+            reader.onerror = () => {  ' }
 
-                reject(new, Error('ファイルの読み込みに失敗しました); }'
+                reject(new, Error('ファイルの読み込みに失敗しました'; }'
             };
             
             reader.readAsText(file);
@@ -779,8 +779,8 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
 });
 
             } catch (error) {
-                console.warn('[SettingsImportExportComponent] Failed to apply accessibility settings:', error);''
-                warnings.push('アクセシビリティ設定の適用に一部失敗しました); }'
+                console.warn('[SettingsImportExportComponent] Failed to apply accessibility settings:', error';''
+                warnings.push('アクセシビリティ設定の適用に一部失敗しました'; }'
         }
         
         return { appliedCount, warnings }
@@ -828,14 +828,14 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
 
         if(show) {'
 
-            const fill = this.progressBar.querySelector('.progress-fill) as HTMLElement;''
+            const fill = this.progressBar.querySelector('.progress-fill' as HTMLElement;''
             if(fill) {'
                 // アニメーション効果
         }
 
                 fill.style.width = '0%';' }
 
-                setTimeout(() => { fill.style.width = '100%'; }, 100);
+                setTimeout(() => { fill.style.width = '100%'; }, 100';
             }
 }
     
@@ -851,8 +851,8 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
 
                 button.style.opacity = enabled ? '1' : '0.6';' }
 
-                button.style.cursor = enabled ? 'pointer' : 'not-allowed'; }
-});
+                button.style.cursor = enabled ? 'pointer' : 'not-allowed'; 
+    });
     }
     
     /**
@@ -877,10 +877,10 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
      * @returns 統計情報
      */
     getStats(): ExtendedStatistics { return { ...this.stats,
-            lastOperation: this.lastOperation;
-           , operationHistory: this.operationHistory.slice(-10), // 最新10件 };
-            sessionDuration: Date.now() - this.stats.sessionStart }
-        }
+            lastOperation: this.lastOperation,
+    operationHistory: this.operationHistory.slice(-10), // 最新10件 };
+            sessionDuration: Date.now() - this.stats.sessionStart 
+    }
     
     /**
      * 操作履歴の取得
@@ -903,8 +903,8 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
 
         }
 
-            this.container.style.display = visible ? 'flex' : 'none'; }
-}
+            this.container.style.display = visible ? 'flex' : 'none'; 
+    }
     
     /**
      * コンポーネントのクリーンアップ
@@ -956,10 +956,10 @@ export class SettingsImportExportComponent { private gameEngine: GameEngine;
             
             this.isInitialized = false;
 
-            console.log('[SettingsImportExportComponent] Destroyed, successfully);
+            console.log('[SettingsImportExportComponent] Destroyed, successfully';
 
         } catch (error') {
-            this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_EXPORT_ERROR', {)'
+            this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_EXPORT_ERROR', {''
                 operation: 'destroy'),' }
 
             }');

@@ -28,7 +28,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
     updateBubble(bubble: Bubble, deltaTime: number): void { const deltaSeconds = deltaTime / 1000;
         ';
         // 逃げる泡の特殊処理
-        if(bubble.type === 'escaping) {'
+        if(bubble.type === 'escaping' {'
             
         }
             this.updateEscapingBubble(bubble, deltaSeconds); }
@@ -111,8 +111,8 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
             const escapeForce = 200 * (1 - distance / escapeDistance);
             const escapeDirection = {
                 x: dx / distance }
-                y: dy / distance }
-            };
+                y: dy / distance 
+    };
             bubble.velocity.x += escapeDirection.x * escapeForce * deltaSeconds;
             bubble.velocity.y += escapeDirection.y * escapeForce * deltaSeconds;
             
@@ -292,8 +292,8 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
         
         // @ts-ignore 将来の方向ベクトル計算で使用予定
         const _direction = {
-            x: (endPos.x - startPos.x) / pathLength;
-           , y: (endPos.y - startPos.y) / pathLength ,};
+            x: (endPos.x - startPos.x) / pathLength,
+    y: (endPos.y - startPos.y) / pathLength ,};
         // パス上のバブルを検出
         bubbles.forEach(bubble => {  );
             if (!bubble.isAlive) return;

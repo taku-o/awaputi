@@ -10,12 +10,12 @@
  * -, SessionManager: セッション管理と統計収集
  */
 
-import analytics from '../utils/Analytics.ts';''
-import { PrivacyManager  } from './PrivacyManager.ts';''
-import { IndexedDBStorageManager  } from './IndexedDBStorageManager.ts';''
-import { PlayerBehaviorAnalyzer  } from './enhanced-analytics-manager/PlayerBehaviorAnalyzer.ts';''
-import { GameBalanceAnalyzer  } from './enhanced-analytics-manager/GameBalanceAnalyzer.ts';''
-import { AnalyticsPerformanceMonitor  } from './enhanced-analytics-manager/AnalyticsPerformanceMonitor.ts';''
+import analytics from '../utils/Analytics.ts';
+import { PrivacyManager  } from './PrivacyManager.ts';
+import { IndexedDBStorageManager  } from './IndexedDBStorageManager.ts';
+import { PlayerBehaviorAnalyzer  } from './enhanced-analytics-manager/PlayerBehaviorAnalyzer.ts';
+import { GameBalanceAnalyzer  } from './enhanced-analytics-manager/GameBalanceAnalyzer.ts';
+import { AnalyticsPerformanceMonitor  } from './enhanced-analytics-manager/AnalyticsPerformanceMonitor.ts';
 import { SessionManager  } from './enhanced-analytics-manager/SessionManager.ts';
 
 // Enhanced Analytics Manager interfaces and types
@@ -33,12 +33,12 @@ export interface AnalyticsData { sessionData?: any[];
 export interface AnalyticsReport { summary: {
         totalSession;s: number;
         totalEvents: number;
-        avgSessionDuration: number;
-       , errorRate: number 
+        avgSessionDuration: number,
+    errorRate: number 
 };
     trends: any[];
-    recommendations: string[];
-   , issues: any[];
+    recommendations: string[],
+    issues: any[];
 }
 export interface Analytics { trackEvent(event: string, data?: any): void;
     startSession(): void;
@@ -62,8 +62,8 @@ export class EnhancedAnalyticsManager {
             enableBalanceAnalysis: true;
             enablePerformanceMonitoring: true;
             enableSessionTracking: true;
-            enablePrivacyProtection: true;
-           , storageQuota: 50 * 1024 * 1024, // 50MB;
+            enablePrivacyProtection: true,
+    storageQuota: 50 * 1024 * 1024, // 50MB;
             retentionDays: 30
 ,}
             ...options
@@ -92,7 +92,7 @@ export class EnhancedAnalyticsManager {
     private async initialize(): Promise<void> { try {
             // Privacy check
             if(this.options.enablePrivacyProtection && !this.privacyManager.checkConsent()) {''
-                console.log('Analytics, disabled due, to privacy, settings);
+                console.log('Analytics, disabled due to privacy settings);
                 return; }
             // Initialize components
             await this.storageManager.initialize();
@@ -103,7 +103,7 @@ export class EnhancedAnalyticsManager {
             if (this.options.enableSessionTracking) { await this.sessionManager.initialize(); }
 ;
             // Start periodic analysis
-            this.startPeriodicAnalysis(')';
+            this.startPeriodicAnalysis()';
             console.log('EnhancedAnalyticsManager, initialized successfully');''
         } catch (error) { console.error('Failed to initialize EnhancedAnalyticsManager:', error }
     }
@@ -119,8 +119,8 @@ export class EnhancedAnalyticsManager {
                 ...eventData,
                 timestamp: Date.now();
                 sessionId: this.sessionManager.getCurrentSessionId();
-                performanceMetrics: this.performanceMonitor.getCurrentMetrics();
-               , contextData: this.captureEventContext( ,};
+                performanceMetrics: this.performanceMonitor.getCurrentMetrics(),
+    contextData: this.captureEventContext( ,};
 
             // Track with base analytics
             this.analytics.trackEvent(eventType, enhancedData);
@@ -137,7 +137,7 @@ export class EnhancedAnalyticsManager {
     /**
      * プレイヤー行動の分析
      */'
-    async analyzePlayerBehavior(timeRange?: { start: Date;, end: Date }): Promise<any> { ''
+    async analyzePlayerBehavior(timeRange?: { start: Date,  end: Date }): Promise<any> { ''
         if(!this.options.enableBehaviorAnalysis) {', ';
 
         }
@@ -149,7 +149,7 @@ export class EnhancedAnalyticsManager {
     /**
      * ゲームバランスの分析
      */'
-    async analyzeGameBalance(timeRange?: { start: Date;, end: Date ): Promise<any> {''
+    async analyzeGameBalance(timeRange?: { start: Date,  end: Date ): Promise<any> {''
         if(!this.options.enableBalanceAnalysis) {', '
         }
 
@@ -172,7 +172,7 @@ export class EnhancedAnalyticsManager {
     /**
      * セッション統計の取得
      */'
-    async getSessionStatistics(timeRange?: { start: Date;, end: Date ): Promise<any> {''
+    async getSessionStatistics(timeRange?: { start: Date,  end: Date ): Promise<any> {''
         if(!this.options.enableSessionTracking) {', '
         }
 
@@ -183,17 +183,17 @@ export class EnhancedAnalyticsManager {
     /**
      * 総合レポートの生成
      */
-    async generateAnalyticsReport(timeRange?: { start: Date;, end: Date ): Promise<AnalyticsReport> {
+    async generateAnalyticsReport(timeRange?: { start: Date,  end: Date ): Promise<AnalyticsReport> {
         const report: AnalyticsReport = {
             summary: {
                 totalSessions: 0;
                 totalEvents: 0;
-                avgSessionDuration: 0;
-               , errorRate: 0 
+                avgSessionDuration: 0,
+    errorRate: 0 
 };
             trends: [];
-            recommendations: [];
-           , issues: [];
+            recommendations: [],
+    issues: [];
         },
 
         try { // Session statistics
@@ -226,8 +226,8 @@ export class EnhancedAnalyticsManager {
 
             report.issues.push({)'
                 type: 'error',')';
-                message: 'Failed to generate complete report');
-               , timestamp: Date.now( ,});
+                message: 'Failed to generate complete report'),
+    timestamp: Date.now( ,});
         }
 
         return report;
@@ -293,16 +293,14 @@ export class EnhancedAnalyticsManager {
      */
     private captureEventContext(): any { return { url: window.location.href,
             userAgent: navigator.userAgent;
-            timestamp: Date.now();
-           , screenResolution: {
+            timestamp: Date.now(),
+    screenResolution: {
                 width: window.screen.width, };
                 height: window.screen.height ;
-}
-            },
-            viewportSize: { width: window.innerWidth;
-               , height: window.innerHeight 
-}
-        },
+    },
+            viewportSize: { width: window.innerWidth,
+    height: window.innerHeight 
+    },
     }
 
     /**
@@ -340,14 +338,13 @@ export class EnhancedAnalyticsManager {
      * 統計情報の取得
      */
     getManagerStatistics(): any { return { isInitialized: this.isInitialized,
-            options: this.options;
-           , components: {
+            options: this.options,
+    components: {
                 behaviorAnalyzer: this.options.enableBehaviorAnalysis;
-                balanceAnalyzer: this.options.enableBalanceAnalysis;
-               , performanceMonitor: this.options.enablePerformanceMonitoring, };
+                balanceAnalyzer: this.options.enableBalanceAnalysis,
+    performanceMonitor: this.options.enablePerformanceMonitoring, };
                 sessionManager: this.options.enableSessionTracking ;
-}
-            },
+    },
             storage: this.storageManager ? this.storageManager.getStorageStats() : null;
         },
     }

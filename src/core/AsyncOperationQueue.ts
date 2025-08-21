@@ -6,13 +6,13 @@ interface QueueOptions { maxConcurrent?: number;
 
 interface QueueStats { totalQueued: number,
     totalCompleted: number;
-    totalFailed: number;
-   , averageExecutionTime: number;
+    totalFailed: number,
+    averageExecutionTime: number;
     [key: string]: number, }
 
 interface QueueOperation { id: string,
-    priority: number;
-   , operation: () => Promise<unknown>;
+    priority: number,
+    operation: () => Promise<unknown>;
     metadata?: unknown;
     [key: string]: unknown, }
 }
@@ -52,11 +52,11 @@ export class AsyncOperationQueue {
         this.stats = {
             totalQueued: 0;
             totalCompleted: 0;
-            totalFailed: 0;
-           , averageExecutionTime: 0;
+            totalFailed: 0,
+    averageExecutionTime: 0;
     ,}
-            currentQueueSize: 0 }
-        };
+            currentQueueSize: 0 
+    };
         // イベントリスナー
         this.listeners = new Map();
         
@@ -87,11 +87,11 @@ export class AsyncOperationQueue {
      */
     async enqueue(operation, options = { ) {'
         return new Promise((resolve, reject) => { ''
-            const operationId = this.generateOperationId(''';
+            const operationId = this.generateOperationId('''
                 priority: options.priority || 'normal', // 'high', 'normal', 'low';
                 timeout: options.timeout || this.queueTimeout);
-                retryCount: 0);
-               , maxRetries: options.maxRetries || this.retryAttempts,) }
+                retryCount: 0),
+    maxRetries: options.maxRetries || this.retryAttempts,) }
                 timestamp: Date.now(), }
                 metadata: options.metadata || {};
             ';
@@ -154,11 +154,11 @@ export class AsyncOperationQueue {
 
                         const result = await this.enqueue(operation, batchOptions);' }'
 
-                        results.push({ status: 'fulfilled', value: result ),' }
+                        results.push({ status: 'fulfilled', value: result ',' }
 
                     } catch (error) { }
 
-                        results.push({ status: 'rejected', reason: error ,});
+                        results.push({ status: 'rejected', reason: error ,}';
                     }
 }
 
@@ -198,13 +198,13 @@ export class AsyncOperationQueue {
     async executeOperation(item) { ''
         const startTime = Date.now(''';
             this.emit('operationStarted', {)
-                id: item.id);
-               , priority: item.priority,);
+                id: item.id),
+    priority: item.priority,);
                 activeCount: this.activeOperations.size);
             // タイムアウト設定
             const timeoutPromise = new Promise((_, reject) => { ' }'
 
-                setTimeout(() => reject(new, Error('Operation, timeout), item.timeout); }'
+                setTimeout(() => reject(new, Error('Operation, timeout), item.timeout'; }'
             });
             
             // 操作実行
@@ -243,8 +243,8 @@ export class AsyncOperationQueue {
 
             this.emit('operationRetry', {
                 id: item.id);
-                retryCount: item.retryCount);
-               , maxRetries: item.maxRetries,);
+                retryCount: item.retryCount),
+    maxRetries: item.maxRetries,);
                 error: error.message);
             // 指数バックオフでリトライ
             const delay = Math.min(1000 * Math.pow(2, item.retryCount - 1), 10000);
@@ -269,12 +269,12 @@ export class AsyncOperationQueue {
             error);
             executionTime);
             retryCount: item.retryCount,);
-            activeCount: this.activeOperations.size),
+            activeCount: this.activeOperations.size',
 
-        getErrorHandler(').handleError(error, 'ASYNC_OPERATION_ERROR', {)
-            operationId: item.id);
-           , retryCount: item.retryCount,);
-            metadata: item.metadata);
+        getErrorHandler().handleError(error, 'ASYNC_OPERATION_ERROR', {)
+            operationId: item.id),
+    retryCount: item.retryCount,);
+            metadata: item.metadata';
         item.reject(error ,}
     
     /**
@@ -308,7 +308,7 @@ export class AsyncOperationQueue {
     generateOperationId() {
         
     }
-        return `op_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
+        return `op_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
     }
     
     /**
@@ -376,8 +376,8 @@ export class AsyncOperationQueue {
             maxConcurrent: this.maxConcurrent, };
             isProcessing: this.isProcessing, }
             stats: { ...this.stats;
-            recentCompleted: Array.from(this.completedOperations.values().slice(-10);
-           , recentFailed: Array.from(this.failedOperations.values().slice(-5);
+            recentCompleted: Array.from(this.completedOperations.values().slice(-10),
+    recentFailed: Array.from(this.failedOperations.values().slice(-5);
         }
     
     /**
@@ -406,7 +406,7 @@ export class AsyncOperationQueue {
             const item = this.queue.pop();
     }
 
-            item.reject(new, Error('Queue, cleared)); }'
+            item.reject(new, Error('Queue, cleared)'; }'
         }
         ';
 
@@ -493,4 +493,4 @@ let queueInstance = null;
  * AsyncOperationQueueシングルトンインスタンスの取得
  */
 export function getAsyncOperationQueue() { if (!queueInstance) {''
-        queueInstance = new AsyncOperationQueue(' })'
+        queueInstance = new AsyncOperationQueue(' }''

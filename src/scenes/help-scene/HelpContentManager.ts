@@ -42,7 +42,7 @@ export class HelpContentManager {
         this.selectedTopicIndex = 0;
 
         this.currentContent = null;''
-        this.searchQuery = '';''
+        this.searchQuery = '';
         this.currentSearchQuery = '';
         this.searchResults = [];
         this.isSearching = false;
@@ -107,14 +107,14 @@ export class HelpContentManager {
             if(this.helpManager) { this.helpManager.analytics = this.helpAnalytics; }
             ';
             // ヘルプフィードバックシステムの初期化
-            const { getHelpFeedbackSystem } = await import('../../core/help/HelpFeedbackSystem.js);''
+            const { getHelpFeedbackSystem } = await import('../../core/help/HelpFeedbackSystem.js';''
             this.helpFeedbackSystem = getHelpFeedbackSystem(this.gameEngine);
             ';
             // ヘルプ効果測定ツールの初期化
-            const { getHelpEffectivenessAnalyzer } = await import('../../core/help/HelpEffectivenessAnalyzer.js);''
+            const { getHelpEffectivenessAnalyzer } = await import('../../core/help/HelpEffectivenessAnalyzer.js';''
             this.helpEffectivenessAnalyzer = getHelpEffectivenessAnalyzer(this.gameEngine);
 
-            console.log('HelpContentManager: Analytics, systems initialized, successfully),
+            console.log('HelpContentManager: Analytics, systems initialized, successfully',
 
         } catch (error') { console.warn('Some analytics systems failed to initialize:', error }
     }
@@ -131,7 +131,7 @@ export class HelpContentManager {
 ';
 
         try {'
-            console.log('Indexing, help content, for search...);
+            console.log('Indexing help content for search...');
             
             // 全カテゴリのトピックを収集してインデックス化
             const allContent = [];
@@ -150,7 +150,7 @@ export class HelpContentManager {
                         }
                         ';
                         // コンテンツテキストの抽出（オブジェクト構造に対応）
-                        let contentText = '';''
+                        let contentText = '';
                         if(content) {'
 
                             if (typeof, content.content === 'string'') {
@@ -158,7 +158,7 @@ export class HelpContentManager {
                         }
                                 contentText = content.content;' }'
 
-                            } else if(content.content && typeof, content.content === 'object) { // content.contentがオブジェクトの場合（overview, objective, basic_rules, tipsなど）'
+                            } else if(content.content && typeof, content.content === 'object' { // content.contentがオブジェクトの場合（overview, objective, basic_rules, tipsなど）'
                                 const contentValues = Object.values(content.content).filter(val => typeof, val === 'string'');''
                                 contentText = contentValues.join(', '');' }
 
@@ -172,18 +172,18 @@ export class HelpContentManager {
                         // 検索用データ構造を作成
                         const searchItem = {
                             id: `${category.id}:${topic.id}`;
-                            categoryId: category.id;
-                           , topicId: topic.id,
-                            title: topic.title || topic.question || '';
-                           , content: contentText,
+                            categoryId: category.id,
+    topicId: topic.id,
+                            title: topic.title || topic.question || '',
+    content: contentText,
                             category: category.id,
-                            categoryName: this.gameEngine.localizationManager? .t(category.key, category.id) || category.id, : undefined';
+                            categoryName: this.gameEngine.localizationManager?.t(category.key, category.id) || category.id, : undefined';
                             tags: topic.tags || [],
                             language: 'ja',
                             difficulty: topic.difficulty || 'beginner';
                             popularity: topic.popularity || 0;
-                            lastUpdated: Date.now();
-                           , searchKeywords: topic.searchKeywords || [];
+                            lastUpdated: Date.now(),
+    searchKeywords: topic.searchKeywords || [];
                         },
                         
                         allContent.push(searchItem);
@@ -198,9 +198,9 @@ export class HelpContentManager {
 
             }
 
-                this.searchEngine.indexContent(allContent, 'help);' }
+                this.searchEngine.indexContent(allContent, 'help';' }
 
-                console.log(`Successfully, indexed ${allContent.length} help, topics for, search`'});
+                console.log(`Successfully, indexed ${allContent.length} help, topics for, search`'}';
 
             } else { }'
 
@@ -221,19 +221,19 @@ export class HelpContentManager {
             }
 
             // 各カテゴリのコンテンツを読み込み
-            for(const, category of, this.categories) {
+            for(const, category of this.categories) {
                 try {
                     const topics = await this.helpManager.getCategoryTopics(category.id);
             }
                     category.topics = topics || []; }
                 } catch (error) {
-                    console.error(`Failed to load topics for category ${category.id}:`, error);
+                    console.error(`Failed to load topics for category ${category.id}:` error);
                     category.topics = [];
                 }
             }
 
             // 初期コンテンツの読み込み
-            await this.loadCategoryContent(this.selectedCategory);
+            await this.loadCategoryContent(this.selectedCategory');
 
         } catch (error') { console.error('Failed to load help content:', error }
     }
@@ -260,7 +260,7 @@ export class HelpContentManager {
                     this.setContentCache(cacheKey, this.currentContent); }
                 }''
             } catch (error) {
-            console.error('Failed to load category content:', error);
+            console.error('Failed to load category content:', error';
             this.currentContent = null; }
     }
 
@@ -305,7 +305,7 @@ export class HelpContentManager {
             // selectedTopicIndexはそのまま維持（検索結果の自動選択は行わない）
 ;
             // アナリティクス記録
-            if(this.helpAnalytics && typeof, this.helpAnalytics.recordSearchQuery === 'function) {'
+            if(this.helpAnalytics && typeof, this.helpAnalytics.recordSearchQuery === 'function' {'
                 try {
             }
 
@@ -341,7 +341,7 @@ export class HelpContentManager {
         await this.loadCategoryContent(categoryId);
 ';
         // アナリティクス記録
-        if(this.helpAnalytics && typeof, this.helpAnalytics.recordCategorySelection === 'function) {'
+        if(this.helpAnalytics && typeof, this.helpAnalytics.recordCategorySelection === 'function' {'
             try {
         }
 
@@ -432,7 +432,7 @@ export class HelpContentManager {
             // IDが 'category:topic' 形式の場合は分割''
             if(!categoryId || !topicId) {'
                 const fullId = resultData.id || result.id;''
-                if(fullId && fullId.includes(':)) {''
+                if(fullId && fullId.includes(':)' {''
                     const parts = fullId.split(':'');
                     categoryId = categoryId || parts[0];
         }
@@ -445,7 +445,7 @@ export class HelpContentManager {
 
             if(!categoryId || !topicId) { '
 
-                console.error('Invalid search result structure - missing categoryId or topicId:', result);''
+                console.error('Invalid search result structure - missing categoryId or topicId:', result';''
                 console.log('Extracted categoryId:', categoryId, 'topicId:', topicId }
                 return null;
             
@@ -457,7 +457,7 @@ export class HelpContentManager {
             // カテゴリとトピックを設定
             await this.selectCategory(categoryId);
             const topicIndex = this.categories;
-                .find(c => c.id === categoryId)? .topics : undefined
+                .find(c => c.id === categoryId)?.topics : undefined
                 .findIndex((t: any) => t.id === topicId) || 0;
             
             return await this.selectTopic(topicIndex, true); // fromSearchResult = true
@@ -567,8 +567,8 @@ export class HelpContentManager {
             currentContent: this.currentContent;
             searchQuery: this.searchQuery;
             searchResults: [...searchResults];
-            isSearching: this.isSearching;
-           , categories: this.categories.map(cat => ({
+            isSearching: this.isSearching,
+    categories: this.categories.map(cat => ({
     ,})
                 ...cat,) };
                 topics: [...cat.topics])));
@@ -581,7 +581,7 @@ export class HelpContentManager {
      * @returns {HelpTopic|null} 現在のトピック
      */
     getCurrentTopic(): HelpTopic | null { const category = this.getCurrentCategory();
-        return category? .topics[this.selectedTopicIndex] || null; }
+        return category?.topics[this.selectedTopicIndex] || null; }
 
     getSearchResults() { return [...this.searchResults];
 
@@ -683,9 +683,9 @@ export class HelpSearchManager {
                 topic.title.toLowerCase().includes(query.toLowerCase();
             ).map((topic: any) => ({
                 text: topic.title;
-                category: cat.id);
-               , topicId: topic.id }
-            })
+                category: cat.id),
+    topicId: topic.id 
+    })
         ).slice(0, 5); // 最大5個の提案
     }
 
@@ -693,4 +693,4 @@ export class HelpSearchManager {
 
     getSearchSuggestions(): Array<{text: string, category: string, topicId: string,}> { return [...this.searchSuggestions];
 
-    clearSearchHistory(');
+    clearSearchHistory();

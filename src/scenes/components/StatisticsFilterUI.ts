@@ -4,28 +4,28 @@
  */
 
 interface GameEngine { errorHandler?: {
-        handleError(erro;r: Error, context: any): void ,}
+        handleError(error: Error, context: any): void ,}
 
 interface EventBus { on(event: string, callback: Function): void,
     off(event: string): void,
     emit(event: string, data?: any): void }
 
 interface AccessibilitySettings { highContrast: boolean,
-    largeText: boolean;
-   , reducedMotion: boolean ,}
+    largeText: boolean,
+    reducedMotion: boolean ,}
 
 interface ComponentState {
     accessibilitySettings: AccessibilitySettings;
 }
 
-interface FilterOption { key: string;
-   , label: string }
+interface FilterOption { key: string,
+    label: string }
 
 interface ButtonInfo { key: string;
     x: number;
     y: number;
-    width: number;
-   , height: number }
+    width: number,
+    height: number }
 
 export class StatisticsFilterUI {
     private gameEngine: GameEngine;
@@ -74,11 +74,11 @@ export class StatisticsFilterUI {
         
         // アクセシビリティ設定
         this.accessibilitySettings = state.accessibilitySettings || {
-            highContrast: false;
-           , largeText: false;
+            highContrast: false,
+    largeText: false;
     }
-            reducedMotion: false }
-        };
+            reducedMotion: false 
+    };
         this.setupEventListeners();
     }
     
@@ -86,9 +86,8 @@ export class StatisticsFilterUI {
      * イベントリスナーの設定
      */''
     private setupEventListeners()';
-        this.eventBus.on('set-period-filter', (period: string) => { this.setPeriodFilter(period);' }
-
-        }');
+        this.eventBus.on('set-period-filter', (period: string) => { this.setPeriodFilter(period);' 
+    }');
 
         this.eventBus.on('set-view-mode', (mode: string) => { this.setViewMode(mode); });
     }
@@ -113,9 +112,9 @@ export class StatisticsFilterUI {
             return currentY - y;
             ' }'
 
-        } catch (error) { this.errorHandler? .handleError(error as Error, { : undefined)'
+        } catch (error) { this.errorHandler?.handleError(error as Error, { : undefined)'
                 context: 'StatisticsFilterUI.render',')';
-                details: 'フィルターUIの描画でエラーが発生しました' ,});
+                details: 'フィルターUIの描画でエラーが発生しました' ,}';
             return this.filterHeight + this.modeHeight + 10; // フォールバック高さ
         }
     }
@@ -135,7 +134,7 @@ export class StatisticsFilterUI {
         // クリック判定用配列をリセット
         this.periodButtons = [];
         // フィルター背景
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#F8FAFC';''
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#F8FAFC';
         context.fillRect(x, y, width, filterHeight);
         ';
         // フィルター枠線
@@ -145,10 +144,10 @@ export class StatisticsFilterUI {
         context.strokeRect(x, y, width, filterHeight);
         ';
         // フィルタータイトル
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#374151';''
-        context.font = this.accessibilitySettings.largeText ? '16px system-ui, -apple-system, sans-serif' : '14px system-ui, -apple-system, sans-serif';''
-        context.textAlign = 'left';''
-        context.textBaseline = 'middle';''
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#374151';
+        context.font = this.accessibilitySettings.largeText ? '16px system-ui, -apple-system, sans-serif' : '14px system-ui, -apple-system, sans-serif';
+        context.textAlign = 'left';
+        context.textBaseline = 'middle';
         context.fillText('期間フィルター:', x + 10, y + filterHeight / 2);
         
         // 期間フィルターボタン
@@ -160,22 +159,21 @@ export class StatisticsFilterUI {
             this.periodButtons.push({)
                 key: period.key,);
                 x: buttonX);
-                y: y + (filterHeight - buttonHeight) / 2;
-               , width: buttonWidth, }
-                height: buttonHeight }
-            });
+                y: y + (filterHeight - buttonHeight) / 2,
+    width: buttonWidth, }
+                height: buttonHeight 
+    });
             ;
             // ボタン背景
             if(this.accessibilitySettings.highContrast) {', ';
 
             }
 
-                context.fillStyle = isActive ? '#FFFFFF' : '#444444'; }
+                context.fillStyle = isActive ? '#FFFFFF' : '#444444'; 
+    } else { }'
 
-            } else { }'
-
-                context.fillStyle = isActive ? '#3B82F6' : '#FFFFFF'; }
-            }
+                context.fillStyle = isActive ? '#3B82F6' : '#FFFFFF'; 
+    }
             context.fillRect(buttonX, y + (filterHeight - buttonHeight) / 2, buttonWidth, buttonHeight);
             ';
             // ボタン枠線
@@ -187,8 +185,8 @@ export class StatisticsFilterUI {
 
             } else { }'
 
-                context.strokeStyle = isActive ? '#3B82F6' : '#D1D5DB'; }
-            }
+                context.strokeStyle = isActive ? '#3B82F6' : '#D1D5DB'; 
+    }
             context.lineWidth = 2;
             context.strokeRect(buttonX, y + (filterHeight - buttonHeight) / 2, buttonWidth, buttonHeight);
             ';
@@ -197,15 +195,13 @@ export class StatisticsFilterUI {
 
             }
 
-                context.fillStyle = isActive ? '#000000' : '#FFFFFF'; }
+                context.fillStyle = isActive ? '#000000' : '#FFFFFF'; 
+    } else { }'
 
-            } else { }'
-
-                context.fillStyle = isActive ? '#FFFFFF' : '#374151'; }
-
-            }''
-            context.font = this.accessibilitySettings.largeText ? '14px system-ui, -apple-system, sans-serif' : '12px system-ui, -apple-system, sans-serif';''
-            context.textAlign = 'center';''
+                context.fillStyle = isActive ? '#FFFFFF' : '#374151'; 
+    }''
+            context.font = this.accessibilitySettings.largeText ? '14px system-ui, -apple-system, sans-serif' : '12px system-ui, -apple-system, sans-serif';
+            context.textAlign = 'center';
             context.textBaseline = 'middle';
             context.fillText(period.label, buttonX + buttonWidth / 2, y + filterHeight / 2);
             
@@ -230,14 +226,14 @@ export class StatisticsFilterUI {
         // クリック判定用配列をリセット
         this.modeButtons = [];
         // モード切り替え背景
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#F8FAFC';''
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#F8FAFC';
         context.fillRect(x, y, width, modeHeight);
         ';
         // モード切り替えタイトル
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#374151';''
-        context.font = this.accessibilitySettings.largeText ? '14px system-ui, -apple-system, sans-serif' : '12px system-ui, -apple-system, sans-serif';''
-        context.textAlign = 'left';''
-        context.textBaseline = 'middle';''
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#374151';
+        context.font = this.accessibilitySettings.largeText ? '14px system-ui, -apple-system, sans-serif' : '12px system-ui, -apple-system, sans-serif';
+        context.textAlign = 'left';
+        context.textBaseline = 'middle';
         context.fillText('表示モード:', x + 10, y + modeHeight / 2);
         
         // 表示モードボタン
@@ -249,22 +245,21 @@ export class StatisticsFilterUI {
             this.modeButtons.push({)
                 key: mode.key,);
                 x: buttonX);
-                y: y + (modeHeight - buttonHeight) / 2;
-               , width: buttonWidth, }
-                height: buttonHeight }
-            });
+                y: y + (modeHeight - buttonHeight) / 2,
+    width: buttonWidth, }
+                height: buttonHeight 
+    });
             ;
             // ボタン背景
             if(this.accessibilitySettings.highContrast) {', ';
 
             }
 
-                context.fillStyle = isActive ? '#FFFFFF' : '#444444'; }
+                context.fillStyle = isActive ? '#FFFFFF' : '#444444'; 
+    } else { }'
 
-            } else { }'
-
-                context.fillStyle = isActive ? '#10B981' : '#FFFFFF'; }
-            }
+                context.fillStyle = isActive ? '#10B981' : '#FFFFFF'; 
+    }
             context.fillRect(buttonX, y + (modeHeight - buttonHeight) / 2, buttonWidth, buttonHeight);
             ';
             // ボタン枠線
@@ -276,8 +271,8 @@ export class StatisticsFilterUI {
 
             } else { }'
 
-                context.strokeStyle = isActive ? '#10B981' : '#D1D5DB'; }
-            }
+                context.strokeStyle = isActive ? '#10B981' : '#D1D5DB'; 
+    }
             context.lineWidth = 2;
             context.strokeRect(buttonX, y + (modeHeight - buttonHeight) / 2, buttonWidth, buttonHeight);
             ';
@@ -286,15 +281,13 @@ export class StatisticsFilterUI {
 
             }
 
-                context.fillStyle = isActive ? '#000000' : '#FFFFFF'; }
+                context.fillStyle = isActive ? '#000000' : '#FFFFFF'; 
+    } else { }'
 
-            } else { }'
-
-                context.fillStyle = isActive ? '#FFFFFF' : '#374151'; }
-
-            }''
-            context.font = this.accessibilitySettings.largeText ? '12px system-ui, -apple-system, sans-serif' : '10px system-ui, -apple-system, sans-serif';''
-            context.textAlign = 'center';''
+                context.fillStyle = isActive ? '#FFFFFF' : '#374151'; 
+    }''
+            context.font = this.accessibilitySettings.largeText ? '12px system-ui, -apple-system, sans-serif' : '10px system-ui, -apple-system, sans-serif';
+            context.textAlign = 'center';
             context.textBaseline = 'middle';
             context.fillText(mode.label, buttonX + buttonWidth / 2, y + modeHeight / 2);
             
@@ -329,8 +322,8 @@ export class StatisticsFilterUI {
             
             return false;
 
-        } catch (error) { this.errorHandler? .handleError(error as Error, { : undefined)'
-                context: 'StatisticsFilterUI.handleClick), '
+        } catch (error) { this.errorHandler?.handleError(error as Error, { : undefined)'
+                context: 'StatisticsFilterUI.handleClick', '
                 details: `クリック処理でエラーが発生しました: (${x,}, ${y})`
             });
             return false;
@@ -343,7 +336,7 @@ export class StatisticsFilterUI {
         if(this.periods.some(p => p.key === period)) {'
             this.currentPeriodFilter = period;''
             this.eventBus.emit('statistics-filter-changed', { )
-                period: period ) ,}
+                period: period ' ,}
 }
     
     /**
@@ -372,7 +365,7 @@ export class StatisticsFilterUI {
      * フィルター状態のリセット'
      */''
     reset(''';
-        this.currentPeriodFilter = 'last7days';''
+        this.currentPeriodFilter = 'last7days';
         this.currentViewMode = 'dashboard';
         this.periodButtons = [];
         this.modeButtons = [];
@@ -389,7 +382,7 @@ export class StatisticsFilterUI {
      */''
     cleanup()';
         this.eventBus.off('set-period-filter'');''
-        this.eventBus.off('set-view-mode);
+        this.eventBus.off('set-view-mode';
         ';
         // 状態のリセット
-        this.reset('));
+        this.reset()';

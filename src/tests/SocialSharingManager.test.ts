@@ -11,27 +11,27 @@ interface MockGameEngine { statisticsManager: MockStatisticsManager,
     localizationManager: MockLocalizationManager;
     on: jest.Mock;
     off: jest.Mock;
-    emit: jest.Mock;
-   , isDebugMode: jest.Mock<boolean> ,}
+    emit: jest.Mock,
+    isDebugMode: jest.Mock<boolean> ,}
 interface MockLocalStorage { getItem: jest.Mock<string | null>;
     setItem: jest.Mock;
     removeItem: jest.Mock }
 interface ShareSettings { enabled: boolean;
-    autoPrompt: boolean;
-   , shareOnHighScore: boolean }
+    autoPrompt: boolean,
+    shareOnHighScore: boolean }
 interface PerformanceStats { shareRequests: number;
-    successfulShares: number;
-   , failedShares: number }
+    successfulShares: number,
+    failedShares: number }
 interface GameData { score: number;
-    isHighScore: boolean;
-   , stage: string }
-interface ScoreData { score: number;
-   , stage: string }
-interface AchievementData { id: string;
-   , name: string;
+    isHighScore: boolean,
+    stage: string }
+interface ScoreData { score: number,
+    stage: string }
+interface AchievementData { id: string,
+    name: string;
     description?: string }
-interface ShareResult { type: string;
-   , content: {
+interface ShareResult { type: string,
+    content: {
         scor;e?: number;
         message: string;
         achievement?: AchievementData
@@ -44,10 +44,10 @@ interface DebugInfo { settings: ShareSettings,
     performanceStats: PerformanceStats & { successRate?: number }
     systemIntegration: { gameEngine: boolean;
         statisticsManager: boolean;
-        achievementManager: boolean;
-       , localizationManager: boolean };
-    platform: string;
-   , onlineStatus: boolean;
+        achievementManager: boolean,
+    localizationManager: boolean };
+    platform: string,
+    onlineStatus: boolean;
 }
 interface MockShareContentGenerator { generateScoreMessage?: jest.Mock;
     generateAchievementMessage?: jest.Mock; }
@@ -56,8 +56,8 @@ interface SocialSharingManagerInstance { gameEngine: MockGameEngine,
     performanceStats: PerformanceStats;
     statisticsManager?: MockStatisticsManager;
     achievementManager?: MockAchievementManager;
-    localizationManager?: MockLocalizationManager;
-   , shareContentGenerator: MockShareContentGenerator | null;
+    localizationManager?: MockLocalizationManager,
+    shareContentGenerator: MockShareContentGenerator | null;
     initialize(): Promise<void>;
     loadSettings(): Promise<void>;
     saveSettings(): Promise<void>;
@@ -85,13 +85,13 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
         // モックGameEngineの作成
         gameEngine = {
             statisticsManager: { ,}
-                recordSocialEvent: jest.fn(); }
-            },
-        achievementManager: { getAchievements: jest.fn( };
+                recordSocialEvent: jest.fn(); 
+    },
+        achievementManager: { getAchievements: jest.fn( }
             localizationManager: { ''
-                translate: jest.fn<string>().mockReturnValue('test, message };
-            on: jest.fn();
-           , off: jest.fn(),
+                translate: jest.fn<string>().mockReturnValue('test, message }
+            on: jest.fn(),
+    off: jest.fn(),
             emit: jest.fn(),
             isDebugMode: jest.fn<boolean>().mockReturnValue(false);
         };
@@ -101,15 +101,14 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
             value: {);
                 getItem: jest.fn<string | null>();
                 setItem: jest.fn();
-        removeItem: jest.fn( }
-
-            } as, MockLocalStorage''
-        });
+        removeItem: jest.fn( 
+    } as, MockLocalStorage''
+        }';
 
         // Navigatorのモック
-        Object.defineProperty(navigator, 'onLine', { writable: true,)'
-            value: true)');''
-        Object.defineProperty(navigator, 'userAgent', {)'
+        Object.defineProperty(navigator, 'onLine', { writable: true,''
+            value: true'');''
+        Object.defineProperty(navigator, 'userAgent', {''
             writable: true'),
             value: 'Mozilla/5.0(Chrome/90.0)' ,});
     }
@@ -171,7 +170,7 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
             expect(socialSharingManager.settings.autoPrompt).toBe(false);''
         }');''
         test('設定の保存', async () => {  await socialSharingManager.saveSettings();''
-            expect(window.localStorage.setItem).toHaveBeenCalledWith(')';
+            expect(window.localStorage.setItem).toHaveBeenCalledWith()';
                 'socialSharingSettings'); }
 
                 JSON.stringify(socialSharingManager.settings);' }'
@@ -198,12 +197,12 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
 
                 isHighScore: true,' }'
 
-                stage: 'normal' }
-            };
+                stage: 'normal' 
+    };
             await socialSharingManager.onGameEnd(gameData);
 
             // 統計イベントの記録確認
-            expect(gameEngine.statisticsManager.recordSocialEvent).toHaveBeenCalledWith(')';
+            expect(gameEngine.statisticsManager.recordSocialEvent).toHaveBeenCalledWith()';
                 'gameEnd');
                 expect.objectContaining({ score: 1000)
                    , wasShared: false),
@@ -221,10 +220,10 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
             expect(result.type).toBe('score);
 
             expect(result.content.score).toBe(2000);''
-            expect(result.content.message).toContain('2,000);''
+            expect(result.content.message).toContain('2,000';''
         }');''
         test('実績解除時の処理', async () => {  ''
-            await socialSharingManager.initialize(''';
+            await socialSharingManager.initialize('''
                 id: 'first_100', ' }
 
                 name: '初回100点達成'  }))
@@ -235,7 +234,7 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
             expect(result.type).toBe('achievement);
 
             expect(result.content.achievement).toBe(achievementData);''
-            expect(result.content.message).toContain('初回100点達成);''
+            expect(result.content.message).toContain('初回100点達成';''
         }');
 
     }''
@@ -256,14 +255,14 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
             expect(result.content.message).toContain('1,500);
 
             expect(result.metadata.platform).toBeDefined();''
-            expect(result.metadata.language).toBe('ja);''
+            expect(result.metadata.language).toBe('ja';''
         }');''
         test('実績メッセージが正しく生成される', async () => {  const achievementData: AchievementData = { ''
                 id: 'combo_master',
                 name: 'コンボマスター',' }
 
-                description: '10連続コンボ達成' }
-            };
+                description: '10連続コンボ達成' 
+    };
             const result = await socialSharingManager.promptShareAchievement(achievementData);''
             expect(result.content.message).toContain('コンボマスター);
 
@@ -274,9 +273,9 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
             const scoreData: ScoreData = { score: 1000, stage: 'normal' ,}
 
             const url = socialSharingManager.getShareUrl(scoreData);''
-            expect(url).toContain('score=1000);''
-            expect(url).toContain('stage=normal);''
-            expect(url).toContain('utm_source=social_share);''
+            expect(url).toContain('score=1000';''
+            expect(url).toContain('stage=normal';''
+            expect(url).toContain('utm_source=social_share';''
         }');''
         test('ShareContentGeneratorエラー時のフォールバック', async () => {  // ShareContentGeneratorを無効化
             socialSharingManager.shareContentGenerator = null; }
@@ -286,7 +285,7 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
             const result = await socialSharingManager.promptShareScore(scoreData);
 
             expect(result.metadata.isFallback).toBe(true);''
-            expect(result.content.message).toContain('1000点);''
+            expect(result.content.message).toContain('1000点';''
         }');
 
     }''
@@ -301,24 +300,24 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
         test('Web Share API対応ブラウザの検出', () => {  ''
             Object.defineProperty(navigator, 'share', {);
                 value: jest.fn(), }
-                writable: true }
-            });
+                writable: true 
+    });
             const platform = socialSharingManager.detectPlatform();''
-            expect(platform).toBe('web-share);''
+            expect(platform).toBe('web-share';''
         }');''
         test('Twitter ブラウザの検出', () => { ''
-            Object.defineProperty(navigator, 'userAgent', {)'
+            Object.defineProperty(navigator, 'userAgent', {''
                 writable: true,' }'
 
-                value: 'Mozilla/5.0 Twitter'); }
-            });
+                value: 'Mozilla/5.0 Twitter'); 
+    });
 
             const platform = socialSharingManager.detectPlatform();''
-            expect(platform).toBe('twitter);''
+            expect(platform).toBe('twitter';''
         }');''
         test('一般ブラウザの検出', () => {  const platform = socialSharingManager.detectPlatform();' }
 
-            expect(platform).toBe('generic);' }
+            expect(platform).toBe('generic';' }
 
         }');
 
@@ -341,7 +340,7 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
         test('設定読み込みエラーの処理', async () => {  ''
             (window.localStorage, as unknown, as MockLocalStorage).getItem.mockImplementation(() => {' }'
 
-                throw new Error('Storage, error); }'
+                throw new Error('Storage, error'; }'
             });
             // エラーが発生してもクラッシュしないことを確認
             await expect(socialSharingManager.loadSettings().resolves.not.toThrow();''
@@ -377,12 +376,12 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
             socialSharingManager = new SocialSharingManager(gameEngine);''
         }');''
         test('デバッグ情報の取得', () => {  const debugInfo = socialSharingManager.getDebugInfo();''
-            expect(debugInfo).toHaveProperty('settings);''
-            expect(debugInfo).toHaveProperty('performanceStats);''
-            expect(debugInfo).toHaveProperty('systemIntegration);''
-            expect(debugInfo).toHaveProperty('platform);' }
+            expect(debugInfo).toHaveProperty('settings';''
+            expect(debugInfo).toHaveProperty('performanceStats';''
+            expect(debugInfo).toHaveProperty('systemIntegration';''
+            expect(debugInfo).toHaveProperty('platform';' }
 
-            expect(debugInfo).toHaveProperty('onlineStatus);' }
+            expect(debugInfo).toHaveProperty('onlineStatus';' }
 
         }');''
         test('システム連携状態の確認', () => {  const debugInfo = socialSharingManager.getDebugInfo();

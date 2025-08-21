@@ -6,17 +6,17 @@
 interface TestFailure { testName: string,
     error: Error;
     timestamp: number;
-    category: string;
-   , severity: 'low' | 'medium' | 'high' | 'critical' ,}
+    category: string,
+    severity: 'low' | 'medium' | 'high' | 'critical' ,}
 
 interface FailurePattern { pattern: RegExp;
-    category: string;
-   , description: string;
+    category: string,
+    description: string;
     solution?: string }
 
 interface AnalysisResult { patterns: FailurePattern[];
-    recommendations: string[];
-   , statistics: {
+    recommendations: string[],
+    statistics: {
         totalFailure;s: number, }
         byCategory: { [category: string]: number }
         bySeverity: { [severity: string]: number }
@@ -32,7 +32,7 @@ export class TestFailureAnalyzer {
         this.initializePatterns(); }
     }
 
-    private initializePatterns(''';
+    private initializePatterns('''
                 category: 'undefined_reference',
                 description: 'Undefined reference error',
                 solution: 'Check variable initialization and object properties';
@@ -56,13 +56,13 @@ export class TestFailureAnalyzer {
 
         return { patterns: matchedPatterns,
             recommendations: this.generateRecommendations(matchedPatterns), };
-            statistics: this.generateStatistics(); }
-        }
+            statistics: this.generateStatistics(); 
+    }
 
     private generateRecommendations(patterns: FailurePattern[]): string[] { ''
-        return patterns.map(pattern => pattern.solution || 'No, specific solution, available);
+        return patterns.map(pattern => pattern.solution || 'No, specific solution, available';
 
-    private generateStatistics('): AnalysisResult['statistics] {
+    private generateStatistics(): AnalysisResult['statistics] {
         const byCategory: { [category: string]: number ,} = {}
         const bySeverity: { [severity: string]: number } = {}
         this.failures.forEach(failure => {  );
@@ -77,4 +77,4 @@ export class TestFailureAnalyzer {
 
     public getFailures(): TestFailure[] { return [...this.failures];
 
-    public clearFailures(');
+    public clearFailures();

@@ -9,7 +9,7 @@ interface TransitionOptions { ''
     color?: string;
 
     intensity?: number;''
-    slideDirection?: 'left' | 'right' | 'up' | 'down';''
+    slideDirection?: 'left' | 'right' | 'up' | 'down';
     zoomType?: 'in' | 'out'; }
 
     center?: { x: number;, y: number }''
@@ -25,8 +25,8 @@ interface TransitionEffect { id: number,''
     type: 'transition';
     transitionType: string;
     duration: number;
-    elapsed: number;
-   , options: TransitionOptions
+    elapsed: number,
+    options: TransitionOptions
     ,}
 
 /**
@@ -98,7 +98,7 @@ export class EffectTransitionRenderer {
 
             context.restore();''
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'EffectTransitionRenderer.renderSlideTransition' ,});
+                context: 'EffectTransitionRenderer.renderSlideTransition' ,}';
         }
     }
     
@@ -133,7 +133,7 @@ export class EffectTransitionRenderer {
             const canvas = this.canvas;
 
             context.save(''';
-            context.fillStyle = effect.options.color || '#000000';)', ')';
+            context.fillStyle = effect.options.color || '#000000';'', ')';
             switch(effect.options.pattern) {'
 
                 case 'horizontal':';
@@ -183,7 +183,7 @@ export class EffectTransitionRenderer {
 
             context.putImageData(imageData, 0, 0);''
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'EffectTransitionRenderer.renderDissolveTransition' ,});
+                context: 'EffectTransitionRenderer.renderDissolveTransition' ,}';
         }
     }
     

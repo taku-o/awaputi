@@ -9,30 +9,30 @@ interface ReporterConfig { enabled: boolean,
     trackTrends: boolean;
     historyLimit: number;
     trendThreshold: number;
-    exportFormats: string[];
-   , scoringWeights: ScoringWeights
+    exportFormats: string[],
+    scoringWeights: ScoringWeights
     ,}
 
 interface ScoringWeights { perceivable: number;
     operable: number;
-    understandable: number;
-   , robust: number }
+    understandable: number,
+    robust: number }
 
 interface ReportingState { lastReport: Report | null;
     history: Report[];
-    trends: Trends;
-   , statistics: Statistics
+    trends: Trends,
+    statistics: Statistics
     }
 
 interface Trends { weekly: any[];
     monthly: any[];
-    improvements: Improvement[];
-   , regressions: Regression[]
+    improvements: Improvement[],
+    regressions: Regression[]
     }
 
 interface Statistics { totalValidations: number;
-    averageScore: number;
-   , mostCommonIssues: Map<string, number>;
+    averageScore: number,
+    mostCommonIssues: Map<string, number>;
     fixedIssues: Map<string, number> }
 
 interface Report { id: string,
@@ -42,41 +42,41 @@ interface Report { id: string,
     summary: ReportSummary;
     details: ReportDetails | null;
     trends: TrendAnalysis | null;
-    recommendations: Recommendation[];
-   , metadata: ReportMetadata
+    recommendations: Recommendation[],
+    metadata: ReportMetadata
     ,}
 
 interface ComplianceScore { raw: number;
     adjusted: number;
-    grade: string;
-   , penalty: number }
+    grade: string,
+    penalty: number }
 
 interface ReportSummary { overallScore: number;
     grade: string;
     totalIssues: number;
-    issuesByPriority: IssuesByPriority;
-   , categoryScores: Record<string, CategoryScore>;
-    topIssues: TopIssue[];
-   , complianceLevel: string ,}
+    issuesByPriority: IssuesByPriority,
+    categoryScores: Record<string, CategoryScore>;
+    topIssues: TopIssue[],
+    complianceLevel: string ,}
 
 interface IssuesByPriority { critical: number;
     high: number;
-    medium: number;
-   , low: number }
+    medium: number,
+    low: number }
 
 interface CategoryScore { score: number;
     passed: number;
-    failed: number;
-   , grade: string }
+    failed: number,
+    grade: string }
 
 interface TopIssue { guideline: string;
     count: number;
-    severity: 'critical' | 'high' | 'medium' | 'low';
-   , examples: IssueExample[];
+    severity: 'critical' | 'high' | 'medium' | 'low',
+    examples: IssueExample[];
     suggestion?: string }
 
-interface IssueExample { issue: string;
-   , element: string }
+interface IssueExample { issue: string,
+    element: string }
 
 interface ReportDetails { testResults: Record<string, TestResults>;
     issueBreakdown: Record<string, IssueBreakdown>;
@@ -86,60 +86,60 @@ interface ReportDetails { testResults: Record<string, TestResults>;
 
 interface TestResults { total: number;
     passed: number;
-    failed: number;
-   , tests: TestDetail[]
+    failed: number,
+    tests: TestDetail[]
     }
 
 interface TestDetail { guideline: string;
     test: string;
     passed: boolean;
-    issues: number;
-   , warnings: number }
+    issues: number,
+    warnings: number }
 
-interface IssueBreakdown { bySeverity: IssuesByPriority;
-   , byGuideline: Record<string, number>;
+interface IssueBreakdown { bySeverity: IssuesByPriority,
+    byGuideline: Record<string, number>;
     byType: Record<string, number> }
 
 interface GuidelineAnalysis { name: string,
     compliance: number;
     testCount: number;
-    issueCount: number;
-   , recommendations: GuidelineRecommendation[]
+    issueCount: number,
+    recommendations: GuidelineRecommendation[]
     ,}
 ';
 
 interface GuidelineRecommendation { ''
-    priority: 'high' | 'medium' | 'low';
-   , action: string }
+    priority: 'high' | 'medium' | 'low',
+    action: string }
 
-interface ElementAnalysis { tag: string;
-   , count: number,
+interface ElementAnalysis { tag: string,
+    count: number,
     issues: string[],
     severity: 'critical' | 'high' | 'medium' | 'low' ,}
 
 interface TrendAnalysis { scoreChange: ScoreChange | null;
     issueChange: IssueChange | null;
     improvements: Improvement[];
-    regressions: Regression[];
-   , projection: TrendProjection | null }
+    regressions: Regression[],
+    projection: TrendProjection | null }
 
-interface ScoreChange { absolute: number;
-   , percentage: number,
+interface ScoreChange { absolute: number,
+    percentage: number,
     trend: 'improving' | 'declining' | 'stable' ,}
 
-interface IssueChange { absolute: number;
-   , percentage: number,
+interface IssueChange { absolute: number,
+    percentage: number,
     trend: 'improving' | 'declining' | 'stable' ,}
 
 interface Improvement { category: string;
     improvement: number;
-    from: number;
-   , to: number }
+    from: number,
+    to: number }
 
 interface Regression { category: string;
     regression: number;
-    from: number;
-   , to: number }
+    from: number,
+    to: number }
 ';
 
 interface TrendProjection { nextScore: number,''
@@ -152,26 +152,26 @@ interface Recommendation { ''
     category: string;
     title: string;
     description: string;
-    impact: string;
-   , effort: string;
+    impact: string,
+    effort: string;
     guidelines?: string[];
     actions?: CategoryAction[];
     }
 
 interface CategoryAction { guideline: string,
-    action: string;
-   , count: number ,}
+    action: string,
+    count: number ,}
 
 interface ReportMetadata { wcagLevel: string;
     validationDuration: number;
-    totalTests: number;
-   , environment: EnvironmentInfo
+    totalTests: number,
+    environment: EnvironmentInfo
     }
 
-interface EnvironmentInfo { userAgent: string;
-   , viewport: {
-        widt;h: number;
-       , height: number };
+interface EnvironmentInfo { userAgent: string,
+    viewport: {
+        widt;h: number,
+    height: number };
     timestamp: string;
 }
 
@@ -207,42 +207,42 @@ export class ComplianceReporter {
         this.config = {
             enabled: true;
             generateDetailedReports: true;
-            trackTrends: true;
-           , historyLimit: 50,
+            trackTrends: true,
+    historyLimit: 50,
             trendThreshold: 5, // 5% change to trigger trend;
             exportFormats: ['json', 'html', 'csv'],
             scoringWeights: {
                 perceivable: 0.25;
                 operable: 0.25;
-                understandable: 0.25;
-               , robust: 0.25 ,};
+                understandable: 0.25,
+    robust: 0.25 ,};
             ...config;
 
         // Reporting state
         this.reportingState = { lastReport: null,
-            history: [];
-           , trends: {
+            history: [],
+    trends: {
                 weekly: [];
                 monthly: [];
-                improvements: [];
-               , regressions: [] ,};
+                improvements: [],
+    regressions: [] ,};
             statistics: { totalValidations: 0;
                 averageScore: 0;
-                mostCommonIssues: new Map();
-               , fixedIssues: new Map( }
-        }
+                mostCommonIssues: new Map(),
+    fixedIssues: new Map( 
+    }
 
     /**
      * Generate compliance report
      */''
     generateReport(auditResults: AuditResults, options: { type?: string; format?: string } = { )): Report | string {''
-        const reportType = options.type || 'summary';''
+        const reportType = options.type || 'summary';
         const format = options.format || 'json';
 
         const report: Report = {
             id: this.generateReportId();
-            timestamp: Date.now();
-           , type: reportType,
+            timestamp: Date.now(),
+    type: reportType,
             score: this.calculateComplianceScore(auditResults),
             summary: this.generateSummary(auditResults),
             details: reportType === 'detailed' ? this.generateDetails(auditResults) : null,
@@ -251,8 +251,8 @@ export class ComplianceReporter {
             metadata: {''
                 wcagLevel: auditResults.level || 'AA';
                 validationDuration: auditResults.duration || 0;
-                totalTests: this.countTotalTests(auditResults);
-               , environment: this.getEnvironmentInfo( ,}
+                totalTests: this.countTotalTests(auditResults),
+    environment: this.getEnvironmentInfo( ,}
         };
 
         // Store report
@@ -293,10 +293,10 @@ export class ComplianceReporter {
         const finalScore = Math.max(0, overallScore - criticalPenalty);
 
         return { raw: overallScore,
-            adjusted: finalScore;
-           , grade: this.getScoreGrade(finalScore), };
-            penalty: criticalPenalty }
-        }
+            adjusted: finalScore,
+    grade: this.getScoreGrade(finalScore), };
+            penalty: criticalPenalty 
+    }
 
     /**
      * Calculate penalty for critical issues
@@ -319,14 +319,14 @@ export class ComplianceReporter {
      * Get letter grade for score
      */
     private getScoreGrade(score: number): string { ''
-        if(score >= 95) return 'A+';''
-        if(score >= 90) return 'A';''
-        if(score >= 85) return 'B+';''
-        if(score >= 80) return 'B';''
-        if(score >= 75) return 'C+';''
-        if(score >= 70) return 'C';''
-        if(score >= 65) return 'D+';''
-        if(score >= 60) return 'D';''
+        if(score >= 95) return 'A+';
+        if(score >= 90) return 'A';
+        if(score >= 85) return 'B+';
+        if(score >= 80) return 'B';
+        if(score >= 75) return 'C+';
+        if(score >= 70) return 'C';
+        if(score >= 65) return 'D+';
+        if(score >= 60) return 'D';
         return 'F'; }
 
     /**
@@ -337,15 +337,15 @@ export class ComplianceReporter {
 
         return { overallScore: score.adjusted,
             grade: score.grade;
-            totalIssues: issues.totalIssues || 0;
-           , issuesByPriority: {
+            totalIssues: issues.totalIssues || 0,
+    issuesByPriority: {
                 critical: issues.criticalIssues || 0;
-                high: issues.highIssues || 0;
-               , medium: issues.mediumIssues || 0, };
-                low: issues.lowIssues || 0 }
-            };
-            categoryScores: this.getCategoryScores(auditResults);
-           , topIssues: this.getTopIssues(auditResults, 5),
+                high: issues.highIssues || 0,
+    medium: issues.mediumIssues || 0, };
+                low: issues.lowIssues || 0 
+    };
+            categoryScores: this.getCategoryScores(auditResults),
+    topIssues: this.getTopIssues(auditResults, 5),
             complianceLevel: this.determineComplianceLevel(score.adjusted);
         }
 
@@ -360,11 +360,11 @@ export class ComplianceReporter {
             )) {
             scores[category] = {
                 score: results.score || 0;
-                passed: results.passed || 0;
-               , failed: results.failed || 0;
+                passed: results.passed || 0,
+    failed: results.failed || 0;
         }
-                grade: this.getScoreGrade(results.score || 0); }
-            }
+                grade: this.getScoreGrade(results.score || 0); 
+    }
         
         return scores;
     }
@@ -377,20 +377,20 @@ export class ComplianceReporter {
         // Aggregate issues across categories
         for(const, category of, Object.values(auditResults.categories || {)) {''
             for(const, issue of (category.issues || [])) {''
-                const key = issue.guideline || 'unknown';''
+                const key = issue.guideline || 'unknown';
                 const existing = issueMap.get(key) || {
                     guideline: key,
                     count: 0,
-                    severity: issue.severity || 'medium';
-                   , examples: [] ,};
+                    severity: issue.severity || 'medium',
+    examples: [] ,};
                 ';
 
                 existing.count++;''
                 if(existing.examples.length < 3) { existing.examples.push({)'
                         issue: issue.issue,' }'
 
-                        element: issue.element? .tagName || 'unknown'); }
-                }
+                        element: issue.element?.tagName || 'unknown'); 
+    }
                 
                 issueMap.set(key, existing);
             }
@@ -414,10 +414,10 @@ export class ComplianceReporter {
      * Determine WCAG compliance level
      */
     private determineComplianceLevel(score: number): string { ''
-        if(score >= 95) return 'Full AA Compliance';''
-        if(score >= 85) return 'Partial AA Compliance';''
-        if(score >= 75) return 'A Compliance';''
-        if(score >= 65) return 'Partial A Compliance';''
+        if(score >= 95) return 'Full AA Compliance';
+        if(score >= 85) return 'Partial AA Compliance';
+        if(score >= 75) return 'A Compliance';
+        if(score >= 65) return 'Partial A Compliance';
         return 'Non-Compliant'; }
 
     /**
@@ -451,8 +451,8 @@ export class ComplianceReporter {
     private processTestResults(category: CategoryResult): TestResults { const results: TestResults = {
             total: 0;
             passed: 0;
-            failed: 0;
-           , tests: [] };
+            failed: 0,
+    tests: [] };
         for(const [guidelineId, guideline] of Object.entries(category.guidelines ||) {
 
             )) {
@@ -466,9 +466,9 @@ export class ComplianceReporter {
                 
                 results.tests.push({ guideline: guidelineId,
                     test: testName);
-                    passed: test.passed);
-                   , issues: test.issues? .length || 0, : undefined);
-                    warnings: test.warnings? .length || 0 ,}
+                    passed: test.passed),
+    issues: test.issues?.length || 0, : undefined);
+                    warnings: test.warnings?.length || 0 ,}
         }
 
         return results;
@@ -506,9 +506,9 @@ export class ComplianceReporter {
             )) {
             analysis[guidelineId] = {
                 name: guideline.name;
-                compliance: this.calculateGuidelineCompliance(guideline);
-               , testCount: Object.keys(guideline.tests || {).length;
-                issueCount: guideline.issues? .length || 0, : undefined
+                compliance: this.calculateGuidelineCompliance(guideline),
+    testCount: Object.keys(guideline.tests || {).length;
+                issueCount: guideline.issues?.length || 0, : undefined
         
                 recommendations: this.getGuidelineRecommendations(guideline); ,}
             }
@@ -529,7 +529,7 @@ export class ComplianceReporter {
 
         if(guideline.failed > 0) {'
             recommendations.push({'
-        })'
+        }''
                 priority: guideline.failed > 3 ? 'high' : 'medium',) 
                 action: `Address ${guideline.failed} failing tests in ${guideline.name}`);
         }
@@ -547,15 +547,15 @@ export class ComplianceReporter {
                 const element = issue.element;''
                 if(!element) continue;
 
-                const tag = element.tagName || 'unknown';''
+                const tag = element.tagName || 'unknown';
                 const existing = elementMap.get(tag) || {
                     tag,
                     count: 0,
                     issues: [];
             ,}
 
-                    severity: 'low' as const }
-                };
+                    severity: 'low' as const 
+    };
                 existing.count++;
                 if (issue.guideline) { existing.issues.push(issue.guideline); }
                 
@@ -586,8 +586,8 @@ export class ComplianceReporter {
             scoreChange: this.calculateScoreChange();
             issueChange: this.calculateIssueChange();
             improvements: this.identifyImprovements();
-            regressions: this.identifyRegressions();
-           , projection: this.projectFutureTrend( };
+            regressions: this.identifyRegressions(),
+    projection: this.projectFutureTrend( };
 
         return, trends;
     }
@@ -648,10 +648,10 @@ export class ComplianceReporter {
             if (previousScore && currentScore.score > previousScore.score + this.config.trendThreshold) {
                 improvements.push({
                     category);
-                    improvement: currentScore.score - previousScore.score);
-                   , from: previousScore.score, }
-                    to: currentScore.score); }
-}
+                    improvement: currentScore.score - previousScore.score),
+    from: previousScore.score, }
+                    to: currentScore.score); 
+    }
 
         return improvements;
     }
@@ -671,10 +671,10 @@ export class ComplianceReporter {
             if (previousScore && currentScore.score < previousScore.score - this.config.trendThreshold) {
                 regressions.push({
                     category);
-                    regression: previousScore.score - currentScore.score);
-                   , from: previousScore.score, }
-                    to: currentScore.score); }
-}
+                    regression: previousScore.score - currentScore.score),
+    from: previousScore.score, }
+                    to: currentScore.score); 
+    }
 
         return regressions;
     }
@@ -692,8 +692,8 @@ export class ComplianceReporter {
 
         return { nextScore: recentScores[recentScores.length - 1] + changeRate,''
             trend: changeRate > 0 ? 'improving' : changeRate < 0 ? 'declining' : 'stable', };
-            confidence: this.calculateTrendConfidence(recentScores); }
-        }
+            confidence: this.calculateTrendConfidence(recentScores); 
+    }
 
     /**
      * Calculate average change rate
@@ -717,8 +717,8 @@ export class ComplianceReporter {
         const mean = scores.reduce((a, b) => a + b) / scores.length;
         const variance = scores.reduce((sum, score) => sum + Math.pow(score - mean, 2), 0) / scores.length;
         // Lower variance = higher confidence
-        if(variance < 5) return 'high';''
-        if(variance < 10) return 'medium';''
+        if(variance < 5) return 'high';
+        if(variance < 10) return 'medium';
         return 'low';
 
     /**
@@ -730,7 +730,7 @@ export class ComplianceReporter {
         // Critical issues recommendations
         if(summary.criticalIssues && summary.criticalIssues > 0) {'
             recommendations.push({''
-                priority: 'critical',)';
+                priority: 'critical','';
                 category: 'immediate-action',')';
                 title: 'Address Critical Accessibility Barriers'),
                 description: `Fix ${summary.criticalIssues',} critical issues blocking functionality`,''
@@ -749,15 +749,15 @@ export class ComplianceReporter {
             if(results.score && results.score < 80) {'
                 recommendations.push({)'
                     priority: results.score < 60 ? 'high' : 'medium',);
-                    category: category);
+                    category: category';
         ,}
 
                     title: `Improve ${category} accessibility`,' }'
 
-                    description: `Current, score: ${results.score.toFixed(1'})%. Target: 80%+`,''
+                    description: `Current, score: ${results.score.toFixed(1'}'%. Target: 80%+`,''
                     impact: 'medium',
-                    effort: 'medium';
-                   , actions: this.getCategoryActions(results);
+                    effort: 'medium',
+    actions: this.getCategoryActions(results);
                 });
             }
         }
@@ -795,10 +795,10 @@ export class ComplianceReporter {
 
         for(const, issue of, topIssues) {
             actions.push({'
-                guideline: issue.guideline,)';
+                guideline: issue.guideline,'';
                 action: issue.suggestion || 'Fix accessibility issue', }
-                count: issue.count); }
-        }
+                count: issue.count); 
+    }
         
         return actions;
     }
@@ -816,11 +816,11 @@ export class ComplianceReporter {
             const existing = issueMap.get(key) || {
                 guideline: key,
                 count: 0,
-                severity: issue.severity || 'medium';
-               , suggestion: issue.suggestion;
+                severity: issue.severity || 'medium',
+    suggestion: issue.suggestion;
         ,}
-                examples: [] }
-            };
+                examples: [] 
+    };
             existing.count++;
             issueMap.set(key, existing);
         }
@@ -840,7 +840,7 @@ export class ComplianceReporter {
                 priority: 'medium',
                 category: 'process',
                 title: 'Implement Regular Accessibility Testing',
-                description: 'Set up automated and manual accessibility testing processes',)';
+                description: 'Set up automated and manual accessibility testing processes','';
                 impact: 'high',')';
                 effort: 'medium' ,}
         ';
@@ -849,7 +849,7 @@ export class ComplianceReporter {
                 priority: 'medium',
                 category: 'training',
                 title: 'Accessibility Training',
-                description: 'Provide accessibility training for development team',)';
+                description: 'Provide accessibility training for development team','';
                 impact: 'medium',')';
                 effort: 'low' ,}
         
@@ -891,7 +891,7 @@ export class ComplianceReporter {
         
         for(const, report of, this.reportingState.history.slice(-10) {
         
-            for (const, issue of, report.summary? .topIssues || []) {
+            for (const, issue of, report.summary?.topIssues || []) {
                 const count = issueFrequency.get(issue.guideline) || 0;
         
         }
@@ -974,7 +974,7 @@ export class ComplianceReporter {
             rows.push([category, scores.score.toString(), scores.grade]'); }'
         }
 
-        return rows.map(row => row.join(',)).join('\n);
+        return rows.map(row => row.join(',)'.join('\n';
     }
 
     /**
@@ -982,11 +982,11 @@ export class ComplianceReporter {
      */'
     private getIssueType(issue: Issue): string { ''
         const issueText = issue.issue.toLowerCase()';
-        if(issueText.includes('alt)) return 'alt-text';''
-        if(issueText.includes('contrast)) return 'color-contrast';''
-        if(issueText.includes('keyboard)) return 'keyboard-access';''
-        if(issueText.includes('aria)) return 'aria-attributes';''
-        if(issueText.includes('label)) return 'form-labels';
+        if(issueText.includes('alt)' return 'alt-text';
+        if(issueText.includes('contrast)' return 'color-contrast';
+        if(issueText.includes('keyboard)' return 'keyboard-access';
+        if(issueText.includes('aria)' return 'aria-attributes';
+        if(issueText.includes('label)' return 'form-labels';
 
         return 'other'; }
 
@@ -994,7 +994,7 @@ export class ComplianceReporter {
      * Generate report ID
      */
     private generateReportId(): string {
-        return `wcag-report-${Date.now(})-${Math.random(}.toString(36}.substr(2, 9})`;
+        return `wcag-report-${Date.now())-${Math.random().toString(36).substr(2, 9})`;
     }
 
     /**
@@ -1003,8 +1003,8 @@ export class ComplianceReporter {
     private getEnvironmentInfo(): EnvironmentInfo { return { userAgent: navigator.userAgent,
             viewport: {
                 width: window.innerWidth, };
-                height: window.innerHeight }
-            };
+                height: window.innerHeight 
+    };
             timestamp: new Date().toISOString();
         }
 

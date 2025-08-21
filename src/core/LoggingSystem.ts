@@ -19,20 +19,20 @@ class LoggingSystem { ''
             logLevel: options.logLevel || 'info', // 'debug', 'info', 'warn', 'error';
             enableConsole: options.enableConsole !== undefined ? options.enableConsole : true;
             enableTimestamp: options.enableTimestamp !== undefined ? options.enableTimestamp : true;
-            enableSource: options.enableSource !== undefined ? options.enableSource : true;
-           , filterCategories: options.filterCategories || null ,};
+            enableSource: options.enableSource !== undefined ? options.enableSource : true,
+    filterCategories: options.filterCategories || null ,};
         // ログレベル定義
         this.logLevels = { debug: 0,
             info: 1;
-            warn: 2;
-           , error: 3 ,};
+            warn: 2,
+    error: 3 ,};
         // 統計情報
         this.stats = { total: 0,
             byLevel: {
                 debug: 0;
                 info: 0;
-                warn: 0;
-               , error: 0 ,};
+                warn: 0,
+    error: 0 ,};
             byCategory: {}
     
     /**
@@ -45,7 +45,7 @@ class LoggingSystem { ''
 
     }
 
-        this._log('debug', message, data, source); }
+        this._log('debug', message, data, source'; }
     }
     
     /**
@@ -58,7 +58,7 @@ class LoggingSystem { ''
 
     }
 
-        this._log('info', message, data, source); }
+        this._log('info', message, data, source'; }
     }
     
     /**
@@ -71,7 +71,7 @@ class LoggingSystem { ''
 
     }
 
-        this._log('warn', message, data, source); }
+        this._log('warn', message, data, source'; }
     }
     
     /**
@@ -84,7 +84,7 @@ class LoggingSystem { ''
 
     }
 
-        this._log('error', message, data, source); }
+        this._log('error', message, data, source'; }
     }
     
     /**
@@ -105,7 +105,7 @@ class LoggingSystem { ''
     
                         newValue === undefined ? 'delete' : 'update' 
         ,};
-        this._log('info', `設定変更: ${category}.${key}`, data, source});
+        this._log('info', `設定変更: ${category}.${key}`, data, source}';
     }
     
     /**
@@ -174,7 +174,7 @@ class LoggingSystem { ''
 }
             ';
             // カテゴリでフィルタ
-            if(options.category && options.category !== 'all) {'
+            if(options.category && options.category !== 'all' {'
                 result = result.filter(log => { );
             }
                     if (log.data && log.data.category) { }
@@ -269,17 +269,17 @@ class LoggingSystem { ''
      */''
     exportLogs(format = 'json'') {'
         try {'
-            if(format === 'json) {'
+            if(format === 'json' {'
     }
 
                 return JSON.stringify(this.logs, null, 2);' }'
 
             } else if(format === 'csv) { return this._exportToCsv(); else { ' }
 
-                console.warn(`未対応のエクスポート形式: ${format}`'});''
-                return '';''
+                console.warn(`未対応のエクスポート形式: ${format}`'}';''
+                return '';
             } catch (error) {
-            console.error('ログエクスポートエラー:', error);''
+            console.error('ログエクスポートエラー:', error';''
             return '';
     
     /**
@@ -350,8 +350,8 @@ class LoggingSystem { ''
                 case 'warn': consoleMethod = console.warn; break;''
                 case 'error': consoleMethod = console.error; break;
             }
-                default: consoleMethod = console.log; }
-            }
+                default: consoleMethod = console.log; 
+    }
 
             let logMessage = '';
             
@@ -411,14 +411,14 @@ class LoggingSystem { ''
      */
     _resetStats() {
         this.stats = {
-            total: 0;
-           , byLevel: {
+            total: 0,
+    byLevel: {
                 debug: 0;
-                info: 0;
-               , warn: 0;
+                info: 0,
+    warn: 0;
     }
-                error: 0 }
-            };
+                error: 0 
+    };
             byCategory: {}
     
     /**
@@ -432,7 +432,7 @@ class LoggingSystem { ''
         );
         for (const, log of, this.logs) {'
         const row = ['';
-                log.timestamp ? log.timestamp.toISOString(') : '',
+                log.timestamp ? log.timestamp.toISOString() : '',
                 log.level,
                 log.source || '',
                 log.message,]';
@@ -446,12 +446,12 @@ class LoggingSystem { ''
         return rows.map(row => row.map(cell => {  ')'
             // CSVエスケープ処理');' }
 
-            if (typeof cell === 'string' && (cell.includes(','') || cell.includes('"'') || cell.includes('\n)) {' }
+            if (typeof cell === 'string' && (cell.includes(','') || cell.includes('"'') || cell.includes('\n)' {' }
 
-                return `"${cell.replace(/"/g, '""''})"`;
+                return `"${cell.replace(/"/g, '""''}'"`;
             }"
             return cell;""
-        }").join(',)).join('\n);
+        }").join(',)'.join('\n';
     }
     
     /**
@@ -460,7 +460,7 @@ class LoggingSystem { ''
      * @private'
      */''
     _isDebugMode()';
-            if (typeof, window !== 'undefined' && window.location) {'
+            if (typeof, window !== 'undefined' && window.location' {'
 
                 return new URLSearchParams(window.location.search).has('debug'') ||';
     }

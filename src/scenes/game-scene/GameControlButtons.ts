@@ -1,7 +1,7 @@
-import { InputCoordinateConverter  } from '../../utils/InputCoordinateConverter.js';''
-import { ScaledCoordinateManager  } from '../../utils/ScaledCoordinateManager.js';''
-import { UIPositionCalculator  } from '../../utils/UIPositionCalculator.js';''
-import { ResponsiveCanvasManager  } from '../../managers/ResponsiveCanvasManager.js';''
+import { InputCoordinateConverter  } from '../../utils/InputCoordinateConverter.js';
+import { ScaledCoordinateManager  } from '../../utils/ScaledCoordinateManager.js';
+import { UIPositionCalculator  } from '../../utils/UIPositionCalculator.js';
+import { ResponsiveCanvasManager  } from '../../managers/ResponsiveCanvasManager.js';
 import { GameUIManager  } from './GameUIManager.js';
 
 /**
@@ -16,12 +16,12 @@ interface ButtonSize { width: number,
 interface ButtonStyle { backgroundColor: string;
     textColor: string;
     borderColor: string;
-    hoverColor: string;
-   , activeColor: string }
+    hoverColor: string,
+    activeColor: string }
 
 interface ButtonConfig { text: string;
-    size: ButtonSize;
-   , style: ButtonStyle;
+    size: ButtonSize,
+    style: ButtonStyle;
     }
     position?: { x: number;, y: number }
 
@@ -38,13 +38,13 @@ interface ButtonState { enabled: boolean,''
 interface DeviceInfo { isTouchDevice: boolean,
     isMobile: boolean ,}
 
-interface ButtonVisibility { giveUp: boolean;
-   , restart: boolean }
+interface ButtonVisibility { giveUp: boolean,
+    restart: boolean }
 ';
 
 interface AccessibilityState { ''
-    focusedButton: 'giveUp' | 'restart' | null;
-   , keyboardNavigation: boolean }
+    focusedButton: 'giveUp' | 'restart' | null,
+    keyboardNavigation: boolean }
 
 interface GameState { isGameStarted?: boolean;
     isGameOver?: boolean;
@@ -57,8 +57,8 @@ interface GameEngine { canvas: HTMLCanvasElement,
 
 interface ButtonBounds { x: number;
     y: number;
-    width: number;
-   , height: number }
+    width: number,
+    height: number }
 
 export class GameControlButtons {
     private gameEngine: GameEngine;
@@ -103,13 +103,13 @@ export class GameControlButtons {
 };
         // ボタン状態
         this.buttonState = { enabled: true,
-            hoveredButton: null;
-           , activeButton: null,  // タッチ/クリック中のボタン }
+            hoveredButton: null,
+    activeButton: null,  // タッチ/クリック中のボタン }
             lastMousePosition: { x: 0, y: 0 ,};
         
         // モバイルデバイス検出
         this.deviceInfo = { isTouchDevice: this.detectTouchDevice(),
-            isMobile: this.detectMobileDevice( ,};
+            isMobile: this.detectMobileDevice( ,}
         
         // ボタン表示状態（ゲーム状態に応じて制御）
         this.buttonVisibility = { giveUp: false,   // 初期状態では非表示
@@ -143,7 +143,7 @@ export class GameControlButtons {
                 this.inputCoordinateConverter = null;' }'
 
             } catch (error) {
-            console.error('GameControlButtons: Failed to initialize coordinate system', error);
+            console.error('GameControlButtons: Failed to initialize coordinate system', error';
             this.uiPositionCalculator = null;
             this.scaledCoordinateManager = null;
             this.inputCoordinateConverter = null; }
@@ -169,8 +169,8 @@ export class GameControlButtons {
     public updateButtonPositions(): void { try {'
             if(this.uiPositionCalculator) {'
                 // UIPositionCalculatorを使用した新しい実装
-                const giveUpPosition = this.uiPositionCalculator.getButtonPosition('giveup', 0);''
-                const restartPosition = this.uiPositionCalculator.getButtonPosition('restart', 1);
+                const giveUpPosition = this.uiPositionCalculator.getButtonPosition('giveup', 0';''
+                const restartPosition = this.uiPositionCalculator.getButtonPosition('restart', 1';
                 
                 // UIPositionCalculatorはすでにベース座標系で計算されているので、
                 // 追加の変換は不要。直接使用する。
@@ -185,7 +185,7 @@ export class GameControlButtons {
                 
                 let giveUpX: number, giveUpY: number, restartX: number, restartY: number,
 
-                if(this.gameEngine.responsiveCanvasManager && typeof, this.gameEngine.responsiveCanvasManager.getScaledCoordinates === 'function) {'
+                if(this.gameEngine.responsiveCanvasManager && typeof, this.gameEngine.responsiveCanvasManager.getScaledCoordinates === 'function' {'
                     const canvasInfo = this.gameEngine.responsiveCanvasManager.getCanvasInfo();
                     const baseWidth = canvasInfo ? canvasInfo.baseWidth: canvas.width,
                     
@@ -269,7 +269,7 @@ export class GameControlButtons {
 
                 this.navigateButtons(direction, visibleButtons);''
                 event.preventDefault(''';
-            case 'Enter':)';
+            case 'Enter':'';
             case ', ':  // スペースキー);
                 if (this.accessibilityState.focusedButton) {'
                     this.handleButtonActivation(this.accessibilityState.focusedButton);''
@@ -286,10 +286,10 @@ export class GameControlButtons {
      * 表示されているボタンの一覧を取得
      * @returns 表示されているボタンタイプの配列'
      */''
-    private getVisibleButtons('): ('giveUp' | 'restart'')[] { ''
+    private getVisibleButtons(): ('giveUp' | 'restart'')[] { ''
         const buttons: ('giveUp' | 'restart'')[] = [],
-        if(this.isButtonVisible('giveUp)) buttons.push('giveUp'');''
-        if(this.isButtonVisible('restart)) buttons.push('restart);
+        if(this.isButtonVisible('giveUp)' buttons.push('giveUp'');''
+        if(this.isButtonVisible('restart)' buttons.push('restart';
         return buttons; }
     
     /**'
@@ -315,7 +315,7 @@ export class GameControlButtons {
      * キーボードフォーカスを設定
      * @param buttonType - フォーカスするボタンタイプ'
      */''
-    private setKeyboardFocus(buttonType: 'giveUp' | 'restart): void { this.accessibilityState.focusedButton = buttonType;
+    private setKeyboardFocus(buttonType: 'giveUp' | 'restart': void { this.accessibilityState.focusedButton = buttonType;
         this.accessibilityState.keyboardNavigation = true; }
     
     /**
@@ -352,24 +352,24 @@ export class GameControlButtons {
             }
             ';
             // 表示されているボタンのみタッチ処理（変換された座標でテスト）
-            if (this.isButtonVisible('giveUp'') && this.isButtonClicked(convertedCoords.x, convertedCoords.y, 'giveUp)) { ''
-                this.buttonState.activeButton = 'giveUp';''
+            if (this.isButtonVisible('giveUp'') && this.isButtonClicked(convertedCoords.x, convertedCoords.y, 'giveUp)' { ''
+                this.buttonState.activeButton = 'giveUp';
                 return 'giveUp';' }
 
-            } else if (this.isButtonVisible('restart'') && this.isButtonClicked(convertedCoords.x, convertedCoords.y, 'restart)) { ''
-                this.buttonState.activeButton = 'restart';''
+            } else if (this.isButtonVisible('restart'') && this.isButtonClicked(convertedCoords.x, convertedCoords.y, 'restart)' { ''
+                this.buttonState.activeButton = 'restart';
                 return 'restart';' }
 
             } catch (error) {
-            console.warn('GameControlButtons: Touch start failed, using fallback', error);
+            console.warn('GameControlButtons: Touch start failed, using fallback', error';
 
             // フォールバック: 元の座標でタッチ判定
-            if (this.isButtonVisible('giveUp'') && this.isButtonClicked(x, y, 'giveUp)) {''
-                this.buttonState.activeButton = 'giveUp';''
+            if (this.isButtonVisible('giveUp'') && this.isButtonClicked(x, y, 'giveUp)' {''
+                this.buttonState.activeButton = 'giveUp';
                 return 'giveUp';' }
 
-            } else if (this.isButtonVisible('restart'') && this.isButtonClicked(x, y, 'restart)) { ''
-                this.buttonState.activeButton = 'restart';''
+            } else if (this.isButtonVisible('restart'') && this.isButtonClicked(x, y, 'restart)' { ''
+                this.buttonState.activeButton = 'restart';
                 return 'restart';
         
         return null;
@@ -441,7 +441,7 @@ export class GameControlButtons {
             // クリック検出と同じ座標システムを使用することで一貫性を保つ
             if(this.inputCoordinateConverter && event) {'
 
-                if(event.type && event.type.includes('touch) {'
+                if(event.type && event.type.includes('touch' {'
             }
                     convertedCoords = this.inputCoordinateConverter.convertTouchEvent(event, as TouchEvent); }
 
@@ -452,20 +452,20 @@ export class GameControlButtons {
             
             // ホバー状態の更新（表示されているボタンのみ、変換された座標を使用）
             this.buttonState.hoveredButton = null;''
-            if (this.isButtonVisible('giveUp'') && this.isButtonClicked(convertedCoords.x, convertedCoords.y, 'giveUp)) { ''
+            if (this.isButtonVisible('giveUp'') && this.isButtonClicked(convertedCoords.x, convertedCoords.y, 'giveUp)' { ''
                 this.buttonState.hoveredButton = 'giveUp';' }
 
-            } else if (this.isButtonVisible('restart'') && this.isButtonClicked(convertedCoords.x, convertedCoords.y, 'restart)) { ''
+            } else if (this.isButtonVisible('restart'') && this.isButtonClicked(convertedCoords.x, convertedCoords.y, 'restart)' { ''
                 this.buttonState.hoveredButton = 'restart';' }
 
             } catch (error) {
-            console.warn('GameControlButtons: Mouse position update failed, using fallback', error);
+            console.warn('GameControlButtons: Mouse position update failed, using fallback', error';
             // フォールバック: 元の座標でテスト
             this.buttonState.hoveredButton = null;''
-            if (this.isButtonVisible('giveUp'') && this.isButtonClicked(x, y, 'giveUp)) {''
+            if (this.isButtonVisible('giveUp'') && this.isButtonClicked(x, y, 'giveUp)' {''
                 this.buttonState.hoveredButton = 'giveUp';' }
 
-            } else if (this.isButtonVisible('restart'') && this.isButtonClicked(x, y, 'restart)) { ''
+            } else if (this.isButtonVisible('restart'') && this.isButtonClicked(x, y, 'restart)' { ''
                 this.buttonState.hoveredButton = 'restart'; }
 }
     
@@ -485,7 +485,7 @@ export class GameControlButtons {
             // InputCoordinateConverterが利用可能な場合は座標変換を実行
             if(this.inputCoordinateConverter && event) {'
 
-                if(event.type && event.type.includes('touch) {'
+                if(event.type && event.type.includes('touch' {'
             }
                     convertedCoords = this.inputCoordinateConverter.convertTouchEvent(event, as TouchEvent); }
 
@@ -495,20 +495,20 @@ export class GameControlButtons {
 }
             ';
             // 変換された座標でボタンクリック判定
-            if (this.isButtonVisible('giveUp'') && this.isButtonClicked(convertedCoords.x, convertedCoords.y, 'giveUp)) { ''
+            if (this.isButtonVisible('giveUp'') && this.isButtonClicked(convertedCoords.x, convertedCoords.y, 'giveUp)' { ''
                 return 'giveUp';' }
 
-            } else if (this.isButtonVisible('restart'') && this.isButtonClicked(convertedCoords.x, convertedCoords.y, 'restart)) { ''
+            } else if (this.isButtonVisible('restart'') && this.isButtonClicked(convertedCoords.x, convertedCoords.y, 'restart)' { ''
                 return 'restart';' }
 
             } catch (error) {
-            console.warn('GameControlButtons: Click detection failed, using fallback', error);
+            console.warn('GameControlButtons: Click detection failed, using fallback', error';
 
             // フォールバック: 元の座標でテスト
-            if (this.isButtonVisible('giveUp'') && this.isButtonClicked(x, y, 'giveUp)) {''
+            if (this.isButtonVisible('giveUp'') && this.isButtonClicked(x, y, 'giveUp)' {''
                 return 'giveUp';' }
 
-            } else if (this.isButtonVisible('restart'') && this.isButtonClicked(x, y, 'restart)) { ''
+            } else if (this.isButtonVisible('restart'') && this.isButtonClicked(x, y, 'restart)' { ''
                 return 'restart';
         
         return null;
@@ -553,10 +553,10 @@ export class GameControlButtons {
                 const scaledSize = this.scaledCoordinateManager.getScaledSize(config.size.width, config.size.height);
                 
                 return { x: scaledPosition.x,
-                    y: scaledPosition.y;
-                   , width: scaledSize.width, };
-                    height: scaledSize.height }
-                } else {  // フォールバック: 既存のResponsiveCanvasManagerを使用
+                    y: scaledPosition.y,
+    width: scaledSize.width, };
+                    height: scaledSize.height 
+    } else {  // フォールバック: 既存のResponsiveCanvasManagerを使用
                 let scaleFactor = 1;
                 if(this.gameEngine && this.gameEngine.responsiveCanvasManager) {
                     
@@ -566,17 +566,17 @@ export class GameControlButtons {
                 }
                 
                 return { x: config.position.x,
-                    y: config.position.y;
-                   , width: config.size.width * scaleFactor, };
-                    height: config.size.height * scaleFactor }
-                };''
+                    y: config.position.y,
+    width: config.size.width * scaleFactor, };
+                    height: config.size.height * scaleFactor 
+    };''
             } catch (error) {
             console.warn('GameControlButtons: Failed to get scaled button bounds', error);
             return { x: config.position.x,
-                y: config.position.y;
-               , width: config.size.width, };
-                height: config.size.height }
-            }
+                y: config.position.y,
+    width: config.size.width, };
+                height: config.size.height 
+    }
     }
     
     /**
@@ -590,12 +590,12 @@ export class GameControlButtons {
         this.updateButtonPositions();
 
         context.save()';
-        if(this.isButtonVisible('giveUp)) { ''
+        if(this.isButtonVisible('giveUp)' { ''
             this.renderButton(context, 'giveUp''); }
         ';
         // Restartボタンの描画（表示状態の場合のみ）
-        if(this.isButtonVisible('restart)) { ''
-            this.renderButton(context, 'restart); }'
+        if(this.isButtonVisible('restart)' { ''
+            this.renderButton(context, 'restart'; }'
 
         context.restore()';
     private renderButton(context: CanvasRenderingContext2D, buttonType: 'giveUp' | 'restart): void { const config = this.buttonConfig[buttonType];
@@ -641,7 +641,7 @@ export class GameControlButtons {
         context.fillStyle = config.style.textColor;
         const fontSize = this.deviceInfo.isMobile ? 13 : 14;
         context.font = `bold ${fontSize}px Arial`;''
-        context.textAlign = 'center';''
+        context.textAlign = 'center';
         context.textBaseline = 'middle';
         ';
         // 影効果
@@ -716,4 +716,4 @@ export class GameControlButtons {
      * ボタンの状態を取得
      * @returns ボタン状態
      */''
-    public getButtonState(');
+    public getButtonState();

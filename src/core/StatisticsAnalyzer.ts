@@ -19,15 +19,15 @@ export class StatisticsAnalyzer {
                 short: 7,    // 7日;
                 medium: 30,  // 30日
     }
-                long: 90     // 90日 }
-            };
+                long: 90     // 90日 
+    };
             // 分析品質設定
             qualityThresholds: { minDataPoints: 5;
-                confidenceThreshold: 0.6;
-               , significanceLevel: 0.05 };
+                confidenceThreshold: 0.6,
+    significanceLevel: 0.05 };
             // キャッシュ設定
-            cache: { enabled: true;
-               , ttl: 300000, // 5分;
+            cache: { enabled: true,
+    ttl: 300000, // 5分;
                 maxSize: 100 ,}
         };
         // 分析結果キャッシュ
@@ -82,7 +82,7 @@ export class StatisticsAnalyzer {
         ';
 
         const analysisResult = { analysisId: this.generateAnalysisId(),''
-            timestamp: Date.now(''';
+            timestamp: Date.now('''
             analysisType: 'comprehensive';
             // 基本統計データ
             basicStatistics: null;
@@ -96,8 +96,8 @@ export class StatisticsAnalyzer {
             integratedAnalysis: null;
             // メタデータ
            , metadata: {)
-                dataQuality: null);
-               , analysisConfidence: null,);
+                dataQuality: null),
+    analysisConfidence: null,);
                 componentsAvailable: this.getComponentsStatus( ,}
         };
         
@@ -128,10 +128,10 @@ export class StatisticsAnalyzer {
             if (this.analysisConfigs.cache.enabled) { this.cacheAnalysisResult(cacheKey, analysisResult);' }'
 
             } catch (error) {
-            console.error('Comprehensive analysis failed:', error);
+            console.error('Comprehensive analysis failed:', error';
             analysisResult.error = {
-                message: error.message;
-               , stack: error.stack ,}
+                message: error.message,
+    stack: error.stack ,}
         
         return analysisResult;
     }
@@ -160,13 +160,13 @@ export class StatisticsAnalyzer {
                     trendResults[category] = trendAnalysis; }
                 } catch (error) {
                 console.error(`Trend analysis failed for category ${category}:`, error);
-                trendResults[category] = { error: error.message }
-        }
+                trendResults[category] = { error: error.message 
+    }
         
         return { categories: trendResults,
             summary: this.summarizeTrendAnalysis(trendResults), };
-            recommendations: this.generateTrendRecommendations(trendResults); }
-        }
+            recommendations: this.generateTrendRecommendations(trendResults); 
+    }
     
     /**
      * 比較分析の実行
@@ -186,8 +186,8 @@ export class StatisticsAnalyzer {
                 comparisonResults.weeklyComparison = this.comparisonEngine.compareTimePeriods(;
                     thisWeekData)';
                     lastWeekData,
-                    'score',)';
-                    options)';
+                    'score','';
+                    options'';
             }
 
                 '); }'
@@ -225,8 +225,8 @@ export class StatisticsAnalyzer {
         
         return { results: comparisonResults,
             summary: this.summarizeComparisonAnalysis(comparisonResults), };
-            significantChanges: this.identifySignificantChanges(comparisonResults); }
-        }
+            significantChanges: this.identifySignificantChanges(comparisonResults); 
+    }
     
     /**
      * 洞察生成の実行
@@ -246,7 +246,7 @@ export class StatisticsAnalyzer {
             return insights;' }'
 
         } catch (error) { console.error('Insight generation failed:', error }
-            return { error: error.message }
+            return { error: error.message 
     }
     
     /**
@@ -256,11 +256,11 @@ export class StatisticsAnalyzer {
         const integrated = {
             overallPerformanceScore: this.calculateOverallPerformanceScore(analysisResult);
             keyFindings: this.extractKeyFindings(analysisResult);
-            priorityAreas: this.identifyPriorityAreas(analysisResult);
-           , actionPlan: this.generateActionPlan(analysisResult);
+            priorityAreas: this.identifyPriorityAreas(analysisResult),
+    actionPlan: this.generateActionPlan(analysisResult);
     }
-            progressSummary: this.generateProgressSummary(analysisResult); }
-        };
+            progressSummary: this.generateProgressSummary(analysisResult); 
+    };
         
         return integrated;
     }
@@ -319,34 +319,34 @@ export class StatisticsAnalyzer {
         // トレンド分析からの発見
         if (analysisResult.trendAnalysis) {''
             Object.entries(analysisResult.trendAnalysis.categories).forEach(([category, analysis]) => { ''
-                if(analysis.trends && analysis.trends.overall.trendType.includes('strongly)) {'
+                if(analysis.trends && analysis.trends.overall.trendType.includes('strongly)' {'
                     findings.push({'
-    })'
+    }''
                         type: 'trend',') }
 
                         category: category'),' }
 
-                        finding: `${category}に強い${analysis.trends.overall.trendType.includes('improving''}) ? '改善' : '悪化'}トレンド`,''
+                        finding: `${category}に強い${analysis.trends.overall.trendType.includes('improving''}' ? '改善' : '悪化'}トレンド`,''
                         significance: 'high';
                     }),
                 }
-            });
+            }';
         }
         ';
         // 洞察からの発見
         if(analysisResult.insights && analysisResult.insights.insights) {'
             const highPriorityInsights = analysisResult.insights.insights'';
-                .filter(insight => insight.priority === 'high' || insight.priority === 'critical)'';
+                .filter(insight => insight.priority === 'high' || insight.priority === 'critical''';
                 .slice(0, 3);
             
             highPriorityInsights.forEach(insight => { '
                 findings.push({''
-                    type: 'insight);
-                   , category: insight.type)
+                    type: 'insight),
+    category: insight.type)
         ,}
                     finding: insight.description,) }
-                    significance: insight.priority); }
-            });
+                    significance: insight.priority); 
+    });
         }
         
         return findings;
@@ -363,13 +363,13 @@ export class StatisticsAnalyzer {
             // 精度が低い場合
             if (stats.bubbles && parseFloat(stats.bubbles.accuracy) < 70') {'
                 areas.push({''
-                    area: 'accuracy',)';
-                    priority: 'high')';
-                   , currentValue: stats.bubbles.accuracy,
+                    area: 'accuracy','';
+                    priority: 'high')',
+    currentValue: stats.bubbles.accuracy,
                     targetValue: '80%+',' }
 
-                    impact: 'high'); }
-            }
+                    impact: 'high'); 
+    }
             ';
             // 完了率が低い場合
             if(stats.basic && stats.basic.completionRate < 50) { '
@@ -378,22 +378,22 @@ export class StatisticsAnalyzer {
 
                     priority: 'high'),' }
 
-                    currentValue: `${stats.basic.completionRate.toFixed(1'})%`,''
+                    currentValue: `${stats.basic.completionRate.toFixed(1'}'%`,''
                     targetValue: '70%+',
                     impact: 'high';
-                }),
+                }',
             }
             ';
             // コンボ性能が低い場合
             if(stats.combos && stats.combos.highestCombo < 10) { '
                 areas.push({''
-                    area: 'combo_performance',)';
-                    priority: 'medium')';
-                   , currentValue: stats.combos.highestCombo,
+                    area: 'combo_performance','';
+                    priority: 'medium')',
+    currentValue: stats.combos.highestCombo,
                     targetValue: '15+',' }
 
-                    impact: 'medium'); }
-}
+                    impact: 'medium'); 
+    }
         
         return areas.slice(0, 5); // 上位5つまで
     }
@@ -406,8 +406,8 @@ export class StatisticsAnalyzer {
             immediate: [],  // 即座に実行可能;
             shortTerm: [],  // 1週間以内
     }
-            longTerm: []    // 1ヶ月以内 }
-        };
+            longTerm: []    // 1ヶ月以内 
+    };
         const priorityAreas = this.identifyPriorityAreas(analysisResult);
         ';
 
@@ -432,7 +432,7 @@ export class StatisticsAnalyzer {
 
             }
 
-                    plan.longTerm.push('コンボ戦略の最適化); }'
+                    plan.longTerm.push('コンボ戦略の最適化'; }'
                     break; }
 });
         
@@ -449,12 +449,12 @@ export class StatisticsAnalyzer {
         
         return { totalGamesPlayed: stats.basic.totalGamesPlayed,
             totalPlayTime: stats.basic.totalPlayTime;
-            currentLevel: this.calculatePlayerLevel(stats);
-           , achievements: stats.progress.achievementsUnlocked;
+            currentLevel: this.calculatePlayerLevel(stats),
+    achievements: stats.progress.achievementsUnlocked;
     ,}
             recentTrend: this.getRecentTrendSummary(analysisResult), };
-            nextMilestone: this.getNextMilestone(stats); }
-        }
+            nextMilestone: this.getNextMilestone(stats); 
+    }
     
     /**
      * ヘルパーメソッド群
@@ -463,8 +463,8 @@ export class StatisticsAnalyzer {
         return { trendAnalyzer: !!this.trendAnalyzer,
     }
             comparisonEngine: !!this.comparisonEngine, };
-            insightGenerator: !!this.insightGenerator }
-        }
+            insightGenerator: !!this.insightGenerator 
+    }
     
     generateCacheKey(type, options) {
     
@@ -484,8 +484,8 @@ export class StatisticsAnalyzer {
         }
         
         this.analysisCache.set(key, { )
-            result: result);
-           , timestamp: Date.now( });
+            result: result),
+    timestamp: Date.now( });
     }
     
     generateAnalysisId() {
@@ -493,7 +493,7 @@ export class StatisticsAnalyzer {
         
     
     }
-        return `analysis_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
+        return `analysis_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
     }
     
     assessDataQuality(analysisResult) {
@@ -506,7 +506,7 @@ export class StatisticsAnalyzer {
 
     }
 
-            issues.push('Basic, statistics unavailable); }'
+            issues.push('Basic, statistics unavailable'; }'
         }
 
         if(analysisResult.basicStatistics && analysisResult.basicStatistics.basic.totalGamesPlayed < 10) {'
@@ -514,12 +514,12 @@ export class StatisticsAnalyzer {
 
         }
 
-            issues.push('Limited, game data); }'
+            issues.push('Limited, game data'; }'
         }
         
         return { score: Math.max(0, qualityScore), };
-            issues: issues }
-        }
+            issues: issues 
+    }
     
     calculateAnalysisConfidence(analysisResult) {
     
@@ -545,5 +545,5 @@ export class StatisticsAnalyzer {
 
     calculatePlayerLevel(stats) { return Math.floor(stats.basic.totalGamesPlayed / 10) + 1; }''
     getRecentTrendSummary(result) { return 'stable'; }''
-    getNextMilestone(stats) { return `${((Math.floor(stats.basic.totalGamesPlayed / 10} + 1} * 10'})ゲーム達成`; }''
+    getNextMilestone(stats) { return `${((Math.floor(stats.basic.totalGamesPlayed / 10} + 1} * 10'}'ゲーム達成`; }''
 }

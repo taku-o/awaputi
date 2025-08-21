@@ -5,8 +5,8 @@
  * Requirements: 7.1, 7.3
  */
 
-import { getErrorHandler  } from '../core/ErrorHandler.js';''
-import { RealTimePerformanceMonitor  } from './performance-monitoring/RealTimePerformanceMonitor.js';''
+import { getErrorHandler  } from '../core/ErrorHandler.js';
+import { RealTimePerformanceMonitor  } from './performance-monitoring/RealTimePerformanceMonitor.js';
 import { PerformanceDataAnalyzer  } from './performance-monitoring/PerformanceDataAnalyzer.js';
 import { PerformanceDashboard, 
     PerformanceDataGatherer, ;
@@ -25,8 +25,8 @@ interface ErrorHandler { ''
 interface MetricConfig { id: string,
     name: string;
     category: string;
-    unit: string;
-   , target: number;
+    unit: string,
+    target: number;
     min?: number;
     max?: number;
     warning_min?: number;
@@ -47,21 +47,21 @@ interface DataPoint { timestamp: number,
     value: number ,}
 
 interface MetricStats { current: number;
-    average: number;
-   , min: number,
+    average: number,
+    min: number,
     max: number,
     trend: 'stable' | 'increasing' | 'decreasing';
-    variance: number;
-   , samplesCount: number ,}
+    variance: number,
+    samplesCount: number ,}
 
 interface TimeRange { startTime: number;
-    endTime: number;
-   , duration: number }
+    endTime: number,
+    duration: number }
 
 interface Alert { metricId: string;
     threshold: number;
-    condition: string;
-   , timestamp: number;
+    condition: string,
+    timestamp: number;
     [key: string]: any, }
 
 interface PerformanceEvent { type: string,
@@ -73,26 +73,26 @@ interface AnalysisResults { [key: string]: any, }
 interface MonitoringStats { [key: string]: any, }
 
 interface ReportSummary { totalMetrics: number,
-    healthyMetrics: number;
-   , warningMetrics: number,
+    healthyMetrics: number,
+    warningMetrics: number,
     criticalMetrics: number,
     overallHealth: 'healthy' | 'warning' | 'critical' | 'unknown' ,}
 
-interface PerformanceReport { timeRange: TimeRange;
-   , metrics: Map<string, MetricStats>;
+interface PerformanceReport { timeRange: TimeRange,
+    metrics: Map<string, MetricStats>;
     summary: ReportSummary;
     alerts: Alert[];
     analysisResults: AnalysisResults;
-    performanceEvents: PerformanceEvent[];
-   , timestamp: number ,}
+    performanceEvents: PerformanceEvent[],
+    timestamp: number ,}
 
 interface MonitoringStatus { active: boolean;
     config: MonitoringConfig | null;
     metricsCount: number;
     dataPoints: number;
     activeAlerts: number;
-    realTimeStats: MonitoringStats;
-   , analysisResults: AnalysisResults
+    realTimeStats: MonitoringStats,
+    analysisResults: AnalysisResults
     }
 
 interface TrendData { [key: string]: any, }
@@ -207,12 +207,12 @@ export class PerformanceMonitoringSystem {
             console.log('[PerformanceMonitoringSystem] Monitoring, system initialized, successfully');' }
 
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
-                context: 'PerformanceMonitoringSystem.initializeMonitoring' ,});
+                context: 'PerformanceMonitoringSystem.initializeMonitoring' ,}';
             throw error;
         }
     }
 
-    async setupMetricsRegistry(''';
+    async setupMetricsRegistry('''
             { id: 'fps', name: 'Frame Rate', category: 'rendering', unit: 'fps', target: 60, min: 30 ,},''
             { id: 'frame_time', name: 'Frame Time', category: 'rendering', unit: 'ms', target: 16.67, max: 33.33 ,},''
             { id: 'frame_variance', name: 'Frame Variance', category: 'rendering', unit: 'ms', target: 0, max: 5 ,},
@@ -229,8 +229,8 @@ export class PerformanceMonitoringSystem {
             { id: 'bandwidth', name: 'Bandwidth Usage', category: 'network', unit: 'KB/s', target: 100, max: 1000 ,},''
             { id: 'error_rate', name: 'Network Error Rate', category: 'network', unit: '%', target: 0, max: 5 ,},
             // ユーザーインタラクション
-            { id: 'input_lag', name: 'Input Lag', category: 'interaction', unit: 'ms', target: 10, max: 50 ,},)'
-            { id: 'response_time', name: 'Response Time', category: 'interaction', unit: 'ms', target: 100, max: 500 ,})'
+            { id: 'input_lag', name: 'Input Lag', category: 'interaction', unit: 'ms', target: 10, max: 50 ,},''
+            { id: 'response_time', name: 'Response Time', category: 'interaction', unit: 'ms', target: 100, max: 500 ,}''
             // バッテリー（モバイル）
             { id: 'power_consumption', name: 'Power Consumption', category: 'battery', unit: 'mW', target: 200, max: 800 ,},''
             { id: 'thermal_state', name: 'Thermal State', category: 'battery', unit: 'level', target: 0, max: 2 ,}
@@ -252,9 +252,9 @@ export class PerformanceMonitoringSystem {
             enableDashboard: config.enableDashboard !== false;
             enableHistory: config.enableHistory !== false;
             enableAlerts: config.enableAlerts !== false;
-            enableRealtimeStream: config.enableRealtimeStream !== false;
-           , metricsFilter: config.metricsFilter || [], // 空の場合は全メトリクス;
-            retention: config.retention || 24 * 60 * 60 * 1000, // 24時間;
+            enableRealtimeStream: config.enableRealtimeStream !== false,
+    metricsFilter: config.metricsFilter || [] // 空の場合は全メトリクス;
+            retention: config.retention || 24 * 60 * 60 * 1000 // 24時間;
             ...config;
 
         this.monitoring = true;
@@ -279,19 +279,19 @@ export class PerformanceMonitoringSystem {
             if (this.monitoringConfig.enableAlerts) { await this.alertManager.start(this.monitoringConfig); }
 
             // リアルタイムストリーム開始
-            if (this.monitoringConfig.enableRealtimeStream) { await this.realtimeStream.start(this.monitoringConfig); }
+            if (this.monitoringConfig.enableRealtimeStream) { await this.realtimeStream.start(this.monitoringConfig'); }
 
             // 定期データ収集
-            this.monitoringInterval = setInterval(() => { this.collectAndProcessMetrics(');' }'
+            this.monitoringInterval = setInterval(() => { this.collectAndProcessMetrics();' }'
 
-            }, this.monitoringConfig.interval);
+            }, this.monitoringConfig.interval';
 
             console.log('[PerformanceMonitoringSystem] Performance, monitoring started);
 
         } catch (error) { this.monitoring = false;
 
             this.errorHandler.handleError(error as Error, {')'
-                context: 'PerformanceMonitoringSystem.startMonitoring' ,});
+                context: 'PerformanceMonitoringSystem.startMonitoring' ,}';
             throw error;
         }
     }
@@ -300,7 +300,7 @@ export class PerformanceMonitoringSystem {
     async stopMonitoring(): Promise<void> { ''
         if(!this.monitoring) {'
 
-            console.warn('[PerformanceMonitoringSystem] Monitoring, is not, active);
+            console.warn('[PerformanceMonitoringSystem] Monitoring is not active);
         }
             return; }
         }
@@ -324,9 +324,9 @@ export class PerformanceMonitoringSystem {
             await this.realtimeStream.stop();
 
             // ダッシュボード非表示
-            if(this.monitoringConfig? .enableDashboard) {
+            if(this.monitoringConfig?.enableDashboard) {
 
-                await this.dashboard.hide(');
+                await this.dashboard.hide();
 
             console.log('[PerformanceMonitoringSystem] Performance, monitoring stopped');
             }
@@ -347,7 +347,7 @@ export class PerformanceMonitoringSystem {
             const filteredMetrics = this.filterMetrics(metrics);
 
             // 履歴に追加
-            if(this.monitoringConfig? .enableHistory) {
+            if(this.monitoringConfig?.enableHistory) {
                 
             }
                 this.historyTracker.addDataPoint(timestamp, filteredMetrics); }
@@ -370,7 +370,7 @@ export class PerformanceMonitoringSystem {
         }
     }
 
-    private filterMetrics(metrics: PerformanceMetrics): PerformanceMetrics { if (!this.monitoringConfig? .metricsFilter || this.monitoringConfig.metricsFilter.length === 0) {
+    private filterMetrics(metrics: PerformanceMetrics): PerformanceMetrics { if (!this.monitoringConfig?.metricsFilter || this.monitoringConfig.metricsFilter.length === 0) {
             return metrics; }
 
         const filtered = new Map();
@@ -422,10 +422,10 @@ export class PerformanceMonitoringSystem {
             config: this.monitoringConfig;
             metricsCount: this.metricsRegistry.getCount();
             dataPoints: this.historyTracker.getDataPointCount();
-            activeAlerts: this.alertManager.getActiveAlerts().length;
-           , realTimeStats: this.realTimeMonitor.getMonitoringStats(), };
-            analysisResults: this.dataAnalyzer.getAnalysisResults(); }
-        }
+            activeAlerts: this.alertManager.getActiveAlerts().length,
+    realTimeStats: this.realTimeMonitor.getMonitoringStats(), };
+            analysisResults: this.dataAnalyzer.getAnalysisResults(); 
+    }
 
     // パフォーマンスレポート生成
     async generateReport(timeRange: number = 3600000): Promise<PerformanceReport> { const endTime = Date.now();
@@ -433,12 +433,12 @@ export class PerformanceMonitoringSystem {
 
         const report: PerformanceReport = { }
             timeRange: { startTime, endTime, duration: timeRange ,},
-            metrics: new Map();
-           , summary: {} as ReportSummary;
+            metrics: new Map(),
+    summary: {} as ReportSummary;
             alerts: this.alertManager.getAlertsInRange(startTime, endTime),
             analysisResults: this.dataAnalyzer.getAnalysisResults();
-            performanceEvents: this.realTimeMonitor.getEventsHistory(timeRange);
-           , timestamp: endTime;
+            performanceEvents: this.realTimeMonitor.getEventsHistory(timeRange),
+    timestamp: endTime;
         },
 
         // 各メトリクスの統計情報を計算
@@ -452,8 +452,8 @@ export class PerformanceMonitoringSystem {
                     max: Math.max(...history.map(h => h.value);
                     trend: this.calculateTrend(history);
                     variance: this.calculateVariance(history.map(h = > h.value) ,}
-                    samplesCount: history.length }
-                });
+                    samplesCount: history.length 
+    });
             }
         }
 
@@ -472,7 +472,7 @@ export class PerformanceMonitoringSystem {
         const last = history[history.length - 1].value;
         const change = (last - first) / first;
 
-        if (Math.abs(change) < 0.05) return 'stable';''
+        if (Math.abs(change) < 0.05) return 'stable';
         return change > 0 ? 'increasing' : 'decreasing'; ,}
 
     private calculateVariance(values: number[]): number { const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
@@ -497,16 +497,16 @@ export class PerformanceMonitoringSystem {
 
         return { totalMetrics: metrics.size,
             healthyMetrics: healthy;
-            warningMetrics: warning;
-           , criticalMetrics: critical, };
+            warningMetrics: warning,
+    criticalMetrics: critical, };
             overallHealth: this.calculateOverallHealth(healthy, warning, critical); }
         }
 
     private evaluateMetricHealth(value: number, config: MetricConfig): 'healthy' | 'warning' | 'critical' { ''
-        if(config.max && value > config.max) return 'critical';''
-        if(config.min && value < config.min) return 'critical';''
-        if(config.warning_max && value > config.warning_max) return 'warning';''
-        if(config.warning_min && value < config.warning_min) return 'warning';''
+        if(config.max && value > config.max) return 'critical';
+        if(config.min && value < config.min) return 'critical';
+        if(config.warning_max && value > config.warning_max) return 'warning';
+        if(config.warning_min && value < config.warning_min) return 'warning';
         return 'healthy'; }
 
     private calculateOverallHealth(healthy: number, warning: number, critical: number): 'healthy' | 'warning' | 'critical' | 'unknown' { const total = healthy + warning + critical;''
@@ -515,8 +515,8 @@ export class PerformanceMonitoringSystem {
         const healthyRatio = healthy / total;
         const criticalRatio = critical / total;
 
-        if(criticalRatio > 0.2) return 'critical';''
-        if(criticalRatio > 0.1 || healthyRatio < 0.7) return 'warning';''
+        if(criticalRatio > 0.2) return 'critical';
+        if(criticalRatio > 0.1 || healthyRatio < 0.7) return 'warning';
         return 'healthy'; }
 
     /**

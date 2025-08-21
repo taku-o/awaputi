@@ -86,7 +86,7 @@ export class Scene implements IScene { public gameEngine: any,
      * シーンの破棄時に呼び出される
      * 継承クラスでオーバーライドしてリソース解放等を実装します
      */''
-    destroy?('): void { this.isActive = false;
+    destroy?(): void { this.isActive = false;
         this.isLoaded = false;
         // オーバーライド用 }''
 }

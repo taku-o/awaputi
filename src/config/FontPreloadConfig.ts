@@ -56,6 +56,6 @@ export const fontPreloadConfig: FontPreloadConfig = { preload: ["ja","", "en",
  */"
 export const generatePreloadLinks = (language: string): string[] => {  const fonts = fontPreloadConfig.fallbacks[language] || fontPreloadConfig.fallbacks.en;" }"
     return fonts.map(font => ")" }"
-        `<link rel="preload" href="/fonts/${font.replace(' ', '-}.toLowerCase('}).woff2" as="font" type="font/woff2" crossorigin>`"", "); }"
+        `<link rel="preload" href="/fonts/${font.replace(' ', '-}.toLowerCase('}'.woff2" as="font" type="font/woff2" crossorigin>`"", "); }"
 
 export default fontPreloadConfig;

@@ -9,17 +9,17 @@ interface Position { x: number,
 
 interface Margins { top: number;
     right: number;
-    bottom: number;
-   , left: number }
+    bottom: number,
+    left: number }
 
 interface Breakpoints { mobile: number;
-    tablet: number;
-   , desktop: number }
+    tablet: number,
+    desktop: number }
 
 interface CanvasInfo { baseWidth: number;
     baseHeight: number;
-    displayWidth: number;
-   , displayHeight: number }
+    displayWidth: number,
+    displayHeight: number }
 
 interface ScaledCoordinateManager { getCanvasInfo(): CanvasInfo;
     }
@@ -38,8 +38,8 @@ interface LayoutResult { element: UIElement,
     position: Position
     ,}
 
-type DeviceType = 'mobile' | 'tablet' | 'desktop';''
-type StatusElement = 'score' | 'time' | 'hp';''
+type DeviceType = 'mobile' | 'tablet' | 'desktop';
+type StatusElement = 'score' | 'time' | 'hp';
 type Edge = 'top' | 'right' | 'bottom' | 'left';
 
 export class UIPositionCalculator {
@@ -57,12 +57,12 @@ export class UIPositionCalculator {
             right: 5, // ボタンを右端により近く;
             bottom: 20;
     ,}
-            left: 20 }
-        };
+            left: 20 
+    };
         // ブレークポイント設定
         this.breakpoints = { mobile: 480,
-            tablet: 768;
-           , desktop: 1024 ,};
+            tablet: 768,
+    desktop: 1024 ,};
         // ステータス要素の垂直間隔
         this.statusVerticalSpacing = 40;
     }
@@ -94,7 +94,7 @@ export class UIPositionCalculator {
 
                 default:' }'
 
-                    console.warn(`UIPositionCalculator: Unknown status element '${element}', using default position`});
+                    console.warn(`UIPositionCalculator: Unknown status element '${element}', using default position`}';
                     baseY = margins.top;
             }
             
@@ -158,14 +158,14 @@ export class UIPositionCalculator {
                         right: 5;
             ,}
                         bottom: 15, };
-                        left: 15 }
-                    };''
+                        left: 15 
+    };''
                 case 'tablet':;
                     return { top: 5,   // すべてのデバイスで右上端配置
-                        right: 5;
-                       , bottom: 18, };
-                        left: 18 }
-                    };''
+                        right: 5,
+    bottom: 18, };
+                        left: 18 
+    };''
                 case 'desktop':';
                 default: return this.defaultMargins,
             } catch (error) {
@@ -185,15 +185,15 @@ export class UIPositionCalculator {
             elements.forEach((element, index) => { 
                 let position: Position,
 
-                if(element.type === 'status) {' }
+                if(element.type === 'status' {' }
 
                     position = this.getStatusPosition(element.name, as StatusElement);' }'
 
-                } else if(element.type === 'button) { ''
+                } else if(element.type === 'button' { ''
                     position = this.getButtonPosition(element.name, index);' }'
 
                 } else if(element.type === 'dialog) { position = this.getDialogPosition(element.name); } else {  // カスタム配置ロジック（ベース座標）'
-                    const baseX = margins.left + (element.offset? .x || 0); }
+                    const baseX = margins.left + (element.offset?.x || 0); }
                     const baseY = margins.top + (element.offset?.y || 0); : undefined 
                     position = { x: baseX, y: baseY ,}
                 
@@ -203,7 +203,7 @@ export class UIPositionCalculator {
 
             return positions;''
         } catch (error) {
-            console.warn('UIPositionCalculator: Layout calculation failed', error);
+            console.warn('UIPositionCalculator: Layout calculation failed', error';
             return [];
     
     /**
@@ -242,7 +242,7 @@ export class UIPositionCalculator {
 
                 default:' }'
 
-                    console.warn(`UIPositionCalculator: Unknown edge '${edge}', using center`});
+                    console.warn(`UIPositionCalculator: Unknown edge '${edge}', using center`}';
                     baseX = canvasInfo.baseWidth / 2;
                     baseY = canvasInfo.baseHeight / 2;
             }
@@ -265,7 +265,7 @@ export class UIPositionCalculator {
             const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
             
             // コンテナが指定されていない場合はキャンバス全体を使用
-            const containerWidth = container? .width || canvasInfo.baseWidth;
+            const containerWidth = container?.width || canvasInfo.baseWidth;
             const containerHeight = container?.height || canvasInfo.baseHeight;
             const containerX = container?.x || 0;
             const containerY = container?.y || 0;
@@ -276,7 +276,7 @@ export class UIPositionCalculator {
             // ベース座標をそのまま返す（一貫性のため） : undefined 
             return { x: baseX, y: baseY ,}''
         } catch (error) {
-            console.warn('UIPositionCalculator: Center alignment failed, using default center', error);
+            console.warn('UIPositionCalculator: Center alignment failed, using default center', error';
             // フォールバック: ベース座標 }
             return { x: 400, y: 300 ,}
     }
@@ -296,5 +296,5 @@ export class UIPositionCalculator {
         } else if(width < this.breakpoints.tablet) { ''
             return 'tablet'; else {  ' }
 
-            return 'desktop';''
+            return 'desktop';
 }

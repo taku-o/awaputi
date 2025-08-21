@@ -3,15 +3,15 @@
  * ステージ選択関連のデータ管理と描画調整を担当
  */
 
-import type { StageSelectScene } from '../StageSelectScene';''
-import type { StageManager, UnlockedStageInfo, LockedStageInfo } from '../../types/game';''
-import type { SceneManager } from '../../core/SceneManager';''
+import type { StageSelectScene } from '../StageSelectScene';
+import type { StageManager, UnlockedStageInfo, LockedStageInfo } from '../../types/game';
+import type { SceneManager } from '../../core/SceneManager';
 import type { AchievementNotificationSystem } from '../../core/achievements/AchievementNotificationSystem';
 
 // Interfaces for Stage Data
 export interface StageInfo { id: string,
-    name: string;
-   , description: string;
+    name: string,
+    description: string;
     duration?: number;
     unlockMessage?: string; ,}
 
@@ -20,17 +20,17 @@ export interface StageSelectionState { selectedStageIndex: number,
 
 export interface StageUpdateResult { unlockedChanged: boolean;
     lockedChanged: boolean;
-    unlockedCount: number;
-   , lockedCount: number }
+    unlockedCount: number,
+    lockedCount: number }
 
 export interface DebugInfo { selectedStageIndex: number;
     totalUnlockedStages: number;
     totalLockedStages: number;
     scrollOffset: number;
-    maxVisibleStages: number;
-   , visibleRange: {
-        star;t: number;
-       , end: number }
+    maxVisibleStages: number,
+    visibleRange: {
+        start: number,
+    end: number }
 
 // Extended interfaces for game engine components
 interface ExtendedGameEngine { stageManager: StageManager,
@@ -44,8 +44,8 @@ interface ExtendedGameEngine { stageManager: StageManager,
             type: string;
             title: string;
             message: string;
-            icon: string);
-           , duration: number);
+            icon: string),
+    duration: number);
         ): void; }
 
 interface ExtendedStageSelectScene extends StageSelectScene { sceneManager: SceneManager
@@ -113,13 +113,13 @@ export class StageSelectDataManager {
             // BubbleManagerの存在確認
             if(!this.gameEngine.bubbleManager} {' }'
 
-                console.error('BubbleManager, not initialized''});
+                console.error('BubbleManager, not initialized''}';
                 return;
             }
             ';
             // ゲームシーンに切り替えてステージ開始
-            console.log('Attempting, to start, stage...);
-            const success = this.gameEngine.stageManager.startStage(selectedStage.id);
+            console.log('Attempting to start stage...';
+            const success = this.gameEngine.stageManager.startStage(selectedStage.id');
             console.log(`Stage, start result: ${ success')`},
 
             if(success} {', ';
@@ -128,7 +128,7 @@ export class StageSelectDataManager {
 
                 console.log('Switching, to game, scene...'');'
 
-                this.stageSelectScene.sceneManager.switchScene('game''});
+                this.stageSelectScene.sceneManager.switchScene('game''}';
 
             } else { }'
 
@@ -168,11 +168,11 @@ export class StageSelectDataManager {
         if (!playerData) return;
 
         context.save(''';
-        context.fillStyle = '#CCCCCC';''
-        context.font = '16px, Arial';''
-        context.textAlign = 'left';''
+        context.fillStyle = '#CCCCCC';
+        context.font = '16px, Arial';
+        context.textAlign = 'left';
         context.textBaseline = 'top';
-        )';
+        '';
         const infoY = 70;')'
         context.fillText(`プレイヤー: ${playerData.username || '名無し)`, 20, infoY);
         context.fillText(`AP: ${playerData.ap || 0)`, 20, infoY + 25);
@@ -191,9 +191,9 @@ export class StageSelectDataManager {
         const itemX = 20;
         // セクションタイトル
         context.save(''';
-        context.fillStyle = '#FFFFFF';''
-        context.font = 'bold, 20px Arial';''
-        context.textAlign = 'left';)'
+        context.fillStyle = '#FFFFFF';
+        context.font = 'bold, 20px Arial';
+        context.textAlign = 'left';''
         context.textBaseline = 'top';')'
         context.fillText('通常ステージ', itemX, startY - 30);
         context.restore();
@@ -224,14 +224,14 @@ export class StageSelectDataManager {
      * ステージアイテムを描画
      */
     private renderStageItem(;
-        context: CanvasRenderingContext2D;
-       , stage: UnlockedStageInfo | LockedStageInfo, ;
+        context: CanvasRenderingContext2D,
+    stage: UnlockedStageInfo | LockedStageInfo, ;
         x: number, ;
         y: number, ;
         width: number, ;
         height: number );
-        isSelected: boolean);
-       , isLocked: boolean;
+        isSelected: boolean),
+    isLocked: boolean;
     ): void { context.save(),
         ;
         // 背景
@@ -239,13 +239,11 @@ export class StageSelectDataManager {
 
         }
 
-            context.fillStyle = isLocked ? '#444444' : '#0066CC'; }
+            context.fillStyle = isLocked ? '#444444' : '#0066CC'; 
+    } else { }'
 
-        } else { }'
-
-            context.fillStyle = isLocked ? '#222222' : '#333333'; }
-
-        }''
+            context.fillStyle = isLocked ? '#222222' : '#333333'; 
+    }''
         context.fillRect(x, y, width, height);
         ';
         // 枠線
@@ -258,23 +256,23 @@ export class StageSelectDataManager {
         context.fillStyle = isLocked ? '#888888' : '#FFFFFF';
         ';
         // ステージ名
-        context.font = 'bold 20px Arial';''
-        context.textAlign = 'left';''
+        context.font = 'bold 20px Arial';
+        context.textAlign = 'left';
         context.textBaseline = 'top';
 
         const stageName = isLocked ? `🔒 ${stage.name}` : stage.name;''
         context.fillText(stageName, x + 15, y + 10);
         ';
         // 説明文
-        context.font = '14px Arial';''
+        context.font = '14px Arial';
         context.fillStyle = isLocked ? '#666666' : '#CCCCCC';
         const description = isLocked ? (stage, as LockedStageInfo).unlockMessage: stage.description,
         context.fillText(description, x + 15, y + 35);
         ';
         // 時間表示（開放済みのみ）
         if (!isLocked && (stage, as UnlockedStageInfo).duration) { ''
-            context.font = '12px Arial';''
-            context.textAlign = 'right';''
+            context.font = '12px Arial';
+            context.textAlign = 'right';
             context.fillStyle = '#AAAAAA';
             const duration = (stage, as UnlockedStageInfo).duration;
             const minutes = Math.floor(duration / 60000);
@@ -294,13 +292,13 @@ export class StageSelectDataManager {
     public renderControls(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas;
 
         context.save(''';
-        context.fillStyle = '#AAAAAA';''
-        context.font = '14px, Arial';''
-        context.textAlign = 'center';''
+        context.fillStyle = '#AAAAAA';
+        context.font = '14px, Arial';
+        context.textAlign = 'center';
         context.textBaseline = 'bottom';
-        )';
+        '';
         const controlsY = canvas.height - 40;')'
-        context.fillText('↑↓: 選択  Enter: 決定  H: ヘルプ , ESC: 戻る', canvas.width / 2, controlsY);''
+        context.fillText('↑↓: 選択  Enter: 決定  H: ヘルプ , ESC: 戻る', canvas.width / 2, controlsY';''
         context.fillText('クリックでも操作できます', canvas.width / 2, controlsY + 20);
         
         context.restore(); }
@@ -310,10 +308,10 @@ export class StageSelectDataManager {
      */
     public getStageData() { return { selectedStageIndex: this.selectedStageIndex,
             unlockedStages: this.unlockedStages;
-            lockedStages: this.lockedStages;
-           , scrollOffset: this.scrollOffset, };
-            maxVisibleStages: this.maxVisibleStages }
-        }
+            lockedStages: this.lockedStages,
+    scrollOffset: this.scrollOffset, };
+            maxVisibleStages: this.maxVisibleStages 
+    }
 
     /**
      * ステージ状態の設定
@@ -350,8 +348,8 @@ export class StageSelectDataManager {
             totalUnlockedStages: this.unlockedStages.length;
             totalLockedStages: this.lockedStages.length;
             scrollOffset: this.scrollOffset;
-            maxVisibleStages: this.maxVisibleStages;
-           , visibleRange: {
+            maxVisibleStages: this.maxVisibleStages,
+    visibleRange: {
                 start: this.scrollOffset, };
                 end: Math.min(this.scrollOffset + this.maxVisibleStages, this.unlockedStages.length + this.lockedStages.length); }
 }
@@ -391,10 +389,10 @@ export class StageSelectDataManager {
         }
         
         return { unlockedChanged: newUnlockedCount !== currentUnlockedCount,
-            lockedChanged: newLockedCount !== currentLockedCount;
-           , unlockedCount: newUnlockedCount, };
-            lockedCount: newLockedCount }
-        }
+            lockedChanged: newLockedCount !== currentLockedCount,
+    unlockedCount: newUnlockedCount, };
+            lockedCount: newLockedCount 
+    }
 
     /**
      * ステージ選択範囲の制約チェック

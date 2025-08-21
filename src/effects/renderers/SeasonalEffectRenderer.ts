@@ -10,18 +10,18 @@ interface ParticleConfig { count: number,
  * Theme colors interface
  */
 interface ThemeColors { primary: string[];
-    secondary: string[];
-   , accent: string[] }
+    secondary: string[],
+    accent: string[] }
 
 /**
  * Seasonal theme interface
  */
 interface SeasonalTheme { name: string;
-    colors: ThemeColors;
-   , particles: {
+    colors: ThemeColors,
+    particles: {
         [ke;y: string]: ParticleConfig };
-    weather: string;
-   , priority: number;
+    weather: string,
+    priority: number;
 }
 
 /**
@@ -35,8 +35,8 @@ interface EventDuration { start: string,
  */
 interface EventTheme { name: string;
     duration: EventDuration;
-    colors: ThemeColors;
-   , particles: {
+    colors: ThemeColors,
+    particles: {
         [ke;y: string]: ParticleConfig };
     priority: number;
 }
@@ -60,8 +60,8 @@ interface Particle { x: number,
     alpha: number;
     gravity: number;
     friction: number;
-    bounce?: number;
-   , type: string;
+    bounce?: number,
+    type: string;
     rotation?: number;
     rotationSpeed?: number;
     scale?: number;
@@ -116,8 +116,8 @@ export class SeasonalEffectRenderer {
                     green_sparkle: { count: 6, type: 'star' ,}
 
                 },''
-                weather: 'gentle_breeze';
-               , priority: 5;
+                weather: 'gentle_breeze',
+    priority: 5;
             },
 
             summer: { ''
@@ -134,8 +134,8 @@ export class SeasonalEffectRenderer {
                     fire_spark: { count: 8, type: 'lightning' ,}
 
                 },''
-                weather: 'heat_shimmer';
-               , priority: 6;
+                weather: 'heat_shimmer',
+    priority: 6;
             },
 
             autumn: { ''
@@ -152,8 +152,8 @@ export class SeasonalEffectRenderer {
                     harvest_glow: { count: 6, type: 'magic_sparkle' ,}
 
                 },''
-                weather: 'falling_leaves';
-               , priority: 7;
+                weather: 'falling_leaves',
+    priority: 7;
             },
 
             winter: { ''
@@ -170,10 +170,9 @@ export class SeasonalEffectRenderer {
                     frost_sparkle: { count: 10, type: 'star' ,}
 
                 },''
-                weather: 'snowfall';
-               , priority: 8;
-            }
-        },
+                weather: 'snowfall',
+    priority: 8;
+    },
         
         // イベントテーマの定義
         this.eventThemes = { halloween: {''
@@ -246,13 +245,12 @@ export class SeasonalEffectRenderer {
                     love_glow: { count: 10, type: 'glow_circle' ,},''
                     cupid_trail: { count: 6, type: 'trail_particle' ,},
                 priority: 8;
-            }
-        },
+    },
         
         // 現在のテーマ状態
         this.currentSeason = this.detectCurrentSeason();''
         this.activeEvents = this.detectActiveEvents()';
-        console.log('[SeasonalEffectRenderer] 初期化完了 - 現在の季節:', this.currentSeason);''
+        console.log('[SeasonalEffectRenderer] 初期化完了 - 現在の季節:', this.currentSeason';''
         if(this.activeEvents.length > 0) {', ';
 
         }
@@ -279,8 +277,8 @@ export class SeasonalEffectRenderer {
                 this.createEventEffect(x, y, event); }
             } else if (season && this.seasonalThemes[season]) { this.createSeasonEffect(x, y, this.seasonalThemes[season]); } else {  // フォールバック: デフォルト効果 }
                 this.createDefaultSeasonalEffect(x, y); }
-            } catch (error) { getErrorHandler(').handleError(error, 'SEASONAL_EFFECT_ERROR', {)'
-                context: 'SeasonalEffectRenderer.createSeasonalEffect' ,});
+            } catch (error) { getErrorHandler().handleError(error, 'SEASONAL_EFFECT_ERROR', {''
+                context: 'SeasonalEffectRenderer.createSeasonalEffect' ,}';
         }
     }
     
@@ -560,9 +558,9 @@ export class SeasonalEffectRenderer {
      */
     detectCurrentSeason(): string { const month = new Date().getMonth() + 1; // 1-12
 
-        if(month >= 3 && month <= 5) return 'spring';''
-        if(month >= 6 && month <= 8) return 'summer';''
-        if(month >= 9 && month <= 11) return 'autumn';''
+        if(month >= 3 && month <= 5) return 'spring';
+        if(month >= 6 && month <= 8) return 'summer';
+        if(month >= 9 && month <= 11) return 'autumn';
         return 'winter'; }
     
     /**
@@ -571,7 +569,7 @@ export class SeasonalEffectRenderer {
      */'
     detectActiveEvents(): ActiveEvent[] { const now = new Date();' }'
 
-        const currentDate = `${String(now.getMonth(} + 1'}.padStart(2, '0'})-${ String(now.getDate( }.padStart(2, '0'})`;
+        const currentDate = `${String(now.getMonth(} + 1'}.padStart(2, '0'}'-${ String(now.getDate( }.padStart(2, '0'})`;
         
         return Object.entries(this.eventThemes);
             .filter(([key, event]) => {  if (!event.duration) return false; }
@@ -663,12 +661,12 @@ export class SeasonalEffectRenderer {
      * 簡略化されたイベント効果'
      */''
     createSimplifiedEventEffect(x: number, y: number, event: EventTheme | ActiveEvent): void { const theme: SeasonalTheme = {
-            name: event.name;
-           , colors: event.colors, }
+            name: event.name,
+    colors: event.colors, }
 
             particles: {},''
-            weather: '';
-           , priority: event.priority;
+            weather: '',
+    priority: event.priority;
         },
         this.createSimplifiedSeasonalEffect(x, y, theme);
     }
@@ -709,10 +707,10 @@ export class SeasonalEffectRenderer {
         return { season: this.currentSeason,
             seasonTheme: this.seasonalThemes[this.currentSeason];
             activeEvents: this.activeEvents;
-            primaryEvent: activeEvent;
-           , customTheme: this.customTheme, };
-            effectsAvailable: this.getAvailableEffects().length }
-        }
+            primaryEvent: activeEvent,
+    customTheme: this.customTheme, };
+            effectsAvailable: this.getAvailableEffects().length 
+    }
     
     /**
      * 利用可能な効果のリストを取得

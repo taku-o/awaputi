@@ -11,12 +11,12 @@ import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
 class DeviceSpecificHandler { constructor(gameEngine: any) {'
         this.gameEngine = gameEngine;''
-        this.errorHandler = ErrorHandler.getInstance(''';
+        this.errorHandler = ErrorHandler.getInstance('''
             browser: 'unknown',
             version: 'unknown';
     ,}
-            devicePixelRatio: window.devicePixelRatio || 1 }
-        };
+            devicePixelRatio: window.devicePixelRatio || 1 
+    };
         // iOS固有設定
         this.iosConfig = { webkitOptimizations: {''
                 backfaceVisibility: 'hidden',
@@ -24,8 +24,8 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
                 transformStyle: 'preserve-3d',
                 willChange: 'transform' ,};
             touchDelayFix: { fastClickEnabled: true;
-                touchCalloutDisabled: true;
-               , touchDelayReduced: true };
+                touchCalloutDisabled: true,
+    touchDelayReduced: true };
             metaTags: { webAppCapable: true,''
                 statusBarStyle: 'black-translucent',
                 viewportFit: 'cover' ,}
@@ -33,27 +33,27 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
         // Android固有設定
         this.androidConfig = { blinkOptimizations: {
                 compositorThreaded: true;
-                acceleratedCanvas: true;
-               , gpuRasterization: true };
+                acceleratedCanvas: true,
+    gpuRasterization: true };
             performanceOptimizations: { reducedMotion: false;
-                lowMemoryMode: false;
-               , powerSaveMode: false };
+                lowMemoryMode: false,
+    powerSaveMode: false };
             touchOptimizations: { ''
                 touchAction: 'manipulation';
-                passiveListeners: true;
-               , preventZoom: true }
-        };
+                passiveListeners: true,
+    preventZoom: true 
+    };
         // 高DPI対応設定
         this.highDPIConfig = { scaling: {
-                autoScale: true;
-               , maxScale: 3.0,
+                autoScale: true,
+    maxScale: 3.0,
                 scalingMethod: 'nearest-neighbor' ,};
-            rendering: { sharpText: true;
-               , crispEdges: true,
+            rendering: { sharpText: true,
+    crispEdges: true,
                 antialiasing: 'subpixel' ,};
             performance: { optimizeForHighDPI: true;
-                useNativeResolution: true;
-               , fallbackResolution: 1.0 }))
+                useNativeResolution: true,
+    fallbackResolution: 1.0 }))
         );
         this.initialize();
     }
@@ -71,10 +71,10 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
             this.setupEventListeners();
     }
 
-            console.log('[DeviceSpecificHandler] デバイス固有最適化初期化完了', this.platform);' }
+            console.log('[DeviceSpecificHandler] デバイス固有最適化初期化完了', this.platform';' }
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'DeviceSpecificHandler.initialize); }'
+            this.errorHandler.handleError(error, 'DeviceSpecificHandler.initialize'; }'
     }
     
     /**
@@ -125,19 +125,19 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
      * ブラウザバージョン検出
      */''
     detectBrowserVersion()';
-        if(this.platform.browser === 'safari) {', ';
+        if(this.platform.browser === 'safari' {', ';
 
     }
 
             match = userAgent.match(/Version\/(\d+\.\d+)/');' }
 
-        } else if(this.platform.browser === 'chrome) { ''
+        } else if(this.platform.browser === 'chrome' { ''
             match = userAgent.match(/Chrome\/(\d+\.\d+)/');' }
 
-        } else if(this.platform.browser === 'firefox) { ''
+        } else if(this.platform.browser === 'firefox' { ''
             match = userAgent.match(/Firefox\/(\d+\.\d+)/');' }
 
-        } else if(this.platform.browser === 'edge) { ''
+        } else if(this.platform.browser === 'edge' { ''
             match = userAgent.match(/Edge\/(\d+\.\d+)/'); }'
 
         this.platform.version = match ? match[1] : 'unknown';
@@ -148,10 +148,10 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
      */''
     detectNotch()';
         const testElement = document.createElement('div'');''
-        testElement.style.position = 'fixed';''
-        testElement.style.top = '0';''
-        testElement.style.left = '0';''
-        testElement.style.paddingTop = 'env(safe-area-inset-top)';''
+        testElement.style.position = 'fixed';
+        testElement.style.top = '0';
+        testElement.style.left = '0';
+        testElement.style.paddingTop = 'env(safe-area-inset-top)';
         testElement.style.visibility = 'hidden';
         
         document.body.appendChild(testElement);
@@ -207,7 +207,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
      * WebKit最適化適用'
      */''
     applyWebKitOptimizations()';
-        canvas.style.transform = 'translateZ(0)';''
+        canvas.style.transform = 'translateZ(0)';
         canvas.style.webkitTransform = 'translateZ(0)';
         ';
         // コンテナ最適化
@@ -271,8 +271,8 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
             
             }
                     x: e.changedTouches[0].clientX, }
-                    y: e.changedTouches[0].clientY }
-                };
+                    y: e.changedTouches[0].clientY 
+    };
                 const distance = Math.sqrt();
                     Math.pow(touchEndPos.x - touchStartPos.x, 2) +;
                     Math.pow(touchEndPos.y - touchStartPos.y, 2);
@@ -282,8 +282,8 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
                     const clickEvent = new MouseEvent('click', {
                         bubbles: true;
                         cancelable: true);
-                        clientX: touchEndPos.x);
-                       , clientY: touchEndPos.y;
+                        clientX: touchEndPos.x),
+    clientY: touchEndPos.y;
                     ),
                 }
                     e.target.dispatchEvent(clickEvent); }
@@ -294,7 +294,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
     /**
      * iOS固有メタタグ設定'
      */''
-    applyIOSMetaTags(''';
+    applyIOSMetaTags('''
             { name: 'apple-mobile-web-app-capable', content: 'yes' ,},''
             { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' ,},''
             { name: 'apple-touch-fullscreen', content: 'yes' ,},''
@@ -304,7 +304,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
         ')';
         metaTags.forEach(({ name, content )) => {' }'
 
-            let meta = document.querySelector(`meta[name="${name}"]`);""
+            let meta = document.querySelector(`meta[name="${name}"]`";""
             if(!meta) {"
 
                 meta = document.createElement('meta);
@@ -323,7 +323,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
         // 100vh問題修正
     }
 
-        const updateViewportHeight = (') => {  }'
+        const updateViewportHeight = () => {  }'
 
             const vh = window.innerHeight * 0.01;' }'
 
@@ -331,7 +331,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
         };
 
         updateViewportHeight()';
-        window.addEventListener('resize', updateViewportHeight);
+        window.addEventListener('resize', updateViewportHeight';
         ';
         // スクロール禁止
         document.body.addEventListener('touchmove', (e) => { e.preventDefault();' }
@@ -479,7 +479,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
         }
         
         // ズーム防止
-        if (this.androidConfig.touchOptimizations.preventZoom) { this.preventZoom('); }
+        if (this.androidConfig.touchOptimizations.preventZoom) { this.preventZoom(); }
     }
     
     /**
@@ -528,7 +528,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
      */''
     setupDesktopMouseOptimizations()';
         canvas.addEventListener('pointermove', (e) => {  ''
-            if(e.pointerType === 'mouse) {'
+            if(e.pointerType === 'mouse' {'
                 
             }
                 // 高精度マウス座標処理 }
@@ -585,14 +585,14 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
     handleGameKeyboard(e) {'
 
         // フルスクリーン切り替え (F11');''
-        if(e.key === 'F11) {'
+        if(e.key === 'F11' {'
             e.preventDefault();
     }
             this.toggleFullscreen(); }
         }
 
         // パフォーマンス情報表示 (Ctrl+Shift+P');''
-        if(e.ctrlKey && e.shiftKey && e.key === 'P) {'
+        if(e.ctrlKey && e.shiftKey && e.key === 'P' {'
             e.preventDefault();
         }
             this.togglePerformanceInfo(); }
@@ -621,7 +621,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
             ';
             // Canvas内部解像度設定
             const rect = canvas.getBoundingClientRect(''';
-            canvas.style.width = rect.width + 'px';''
+            canvas.style.width = rect.width + 'px';
             canvas.style.height = rect.height + 'px';
             );
             // コンテキストスケーリング)
@@ -699,8 +699,8 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
 
         switch(this.platform.browser) {''
             case 'safari':'';
-                this.applySafariFixes(''';
-            case 'chrome':'';
+                this.applySafariFixes('''
+            case 'chrome': '';
                 this.applyChromeFixes(''';
             case 'firefox':'';
                 this.applyFirefoxFixes()';
@@ -753,15 +753,15 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
         if (this.gameEngine.audioManager && this.gameEngine.audioManager.audioContext) {
             const audioContext = this.gameEngine.audioManager.audioContext;
 
-            const resumeAudio = (') => { '
+            const resumeAudio = () => { '
     }
 
-                if(audioContext.state === 'suspended) {' }
+                if(audioContext.state === 'suspended' {' }
 
                     audioContext.resume() }
 
-            document.addEventListener('touchstart', resumeAudio, { once: true });''
-            document.addEventListener('click', resumeAudio, { once: true }
+            document.addEventListener('touchstart', resumeAudio, { once: true }';''
+            document.addEventListener('click', resumeAudio, { once: true 
     }
     
     /**
@@ -778,7 +778,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
      * Chrome最適化'
      */''
     setupChromeOptimizations(''';
-        canvas.style.willChange = 'transform';''
+        canvas.style.willChange = 'transform';
         canvas.style.contain = 'strict';
         
         // Chrome, V8最適化)
@@ -878,7 +878,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
             console.log('[DeviceSpecificHandler] 画面向き変更処理完了');' }
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'DeviceSpecificHandler.handleOrientationChange); }'
+            this.errorHandler.handleError(error, 'DeviceSpecificHandler.handleOrientationChange'; }'
     }
     
     /**
@@ -895,7 +895,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
                 this.gameEngine.handleResize();' }'
 
             } catch (error) {
-            this.errorHandler.handleError(error, 'DeviceSpecificHandler.handleResize); }'
+            this.errorHandler.handleError(error, 'DeviceSpecificHandler.handleResize'; }'
     }
     
     /**
@@ -935,7 +935,7 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
         }
         ;
         // DPI再確認
-        this.setupHighDPISupport(')';
+        this.setupHighDPISupport()';
         console.log('[DeviceSpecificHandler] フォアグラウンドモード復帰);
     }
     
@@ -948,10 +948,10 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
     }
                 this.gameEngine.canvas.requestFullscreen(); }
 
-            } else { document.exitFullscreen(');' }'
+            } else { document.exitFullscreen();' }'
 
             } catch (error) {
-            this.errorHandler.handleError(error, 'DeviceSpecificHandler.toggleFullscreen); }'
+            this.errorHandler.handleError(error, 'DeviceSpecificHandler.toggleFullscreen'; }'
     }
     
     /**
@@ -980,32 +980,32 @@ class DeviceSpecificHandler { constructor(gameEngine: any) {'
             capabilities: {
                 webgl: !!window.WebGLRenderingContext;
                 webgl2: !!window.WebGL2RenderingContext;
-                offscreenCanvas: !!window.OffscreenCanvas;
-               , serviceWorker: !!navigator.serviceWorker;
+                offscreenCanvas: !!window.OffscreenCanvas,
+    serviceWorker: !!navigator.serviceWorker;
     ,}
                 intersection: !!window.IntersectionObserver, };
-                resize: !!window.ResizeObserver }
-            };
+                resize: !!window.ResizeObserver 
+    };
             memory: performance.memory ? { : undefined
                 used: performance.memory.usedJSHeapSize;
-                total: performance.memory.totalJSHeapSize;
-               , limit: performance.memory.jsHeapSizeLimit ,} : null;
+                total: performance.memory.totalJSHeapSize,
+    limit: performance.memory.jsHeapSizeLimit ,} : null;
             timing: performance.timing ? { : undefined
-                loadTime: performance.timing.loadEventEnd - performance.timing.navigationStart;
-               , domReady: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart ,} : null)
+                loadTime: performance.timing.loadEventEnd - performance.timing.navigationStart,
+    domReady: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart ,} : null)
         })
     
     /**
      * クリーンアップ'
      */''
     cleanup()';
-            window.removeEventListener('orientationchange', this.handleOrientationChange);''
-            window.removeEventListener('resize', this.handleResize);''
-            document.removeEventListener('visibilitychange', this.handleVisibilityChange);
+            window.removeEventListener('orientationchange', this.handleOrientationChange';''
+            window.removeEventListener('resize', this.handleResize';''
+            document.removeEventListener('visibilitychange', this.handleVisibilityChange';
 
             console.log('[DeviceSpecificHandler] クリーンアップ完了');''
         } catch (error) {
-            this.errorHandler.handleError(error, 'DeviceSpecificHandler.cleanup); }'
+            this.errorHandler.handleError(error, 'DeviceSpecificHandler.cleanup'; }'
 }
 
 // シングルトンインスタンス

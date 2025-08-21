@@ -13,28 +13,28 @@ import { getErrorHandler  } from '../../core/ErrorHandler.js';
 interface ReporterConfig { enabled: boolean,
     generateDetailedReports: boolean;
     includeRecommendations: boolean;
-    exportFormats: string[];
-   , scoringWeights: ScoringWeights
+    exportFormats: string[],
+    scoringWeights: ScoringWeights
     ,}
 
 interface ScoringWeights { critical: number;
     high: number;
-    medium: number;
-   , low: number }
+    medium: number,
+    low: number }
 
-interface TestResults { overall: OverallResults;
-   , suiteResults: Record<string, SuiteResult>;
+interface TestResults { overall: OverallResults,
+    suiteResults: Record<string, SuiteResult>;
     issues: Issue[];
-    recommendations: Recommendation[];
-   , statistics: Statistics;
+    recommendations: Recommendation[],
+    statistics: Statistics;
     categorizedIssues?: CategorizedIssues;
     timestamp?: string; ,}
 
 interface OverallResults { score: number,
     passed: number;
     failed: number;
-    warnings: number;
-   , timestamp: string | null;
+    warnings: number,
+    timestamp: string | null;
     deductions?: number;
     level?: string; ,}
 
@@ -48,7 +48,7 @@ interface SuiteResult { score?: number;
 interface Issue { type: string,
     message: string;
     details?: string;''
-    severity?: 'critical' | 'high' | 'medium' | 'low';''
+    severity?: 'critical' | 'high' | 'medium' | 'low';
     priority?: 'critical' | 'high' | 'medium' | 'low';
     category?: string;
     impact?: number;
@@ -61,37 +61,37 @@ interface Recommendation { category?: string;''
     description: string;
     issueCount?: number;
     criticalCount?: number;
-    highCount?: number;
-   , actions: string[];
+    highCount?: number,
+    actions: string[];
     impact?: string ,}
 
 interface Statistics { totalIssues: number;
-    issuesByPriority: IssuesByPriority;
-   , issuesByCategory: Record<string, number>;
-    testCoverage: TestCoverage;
-   , wcagCompliance: WCAGCompliance
+    issuesByPriority: IssuesByPriority,
+    issuesByCategory: Record<string, number>;
+    testCoverage: TestCoverage,
+    wcagCompliance: WCAGCompliance
     ,}
 
 interface IssuesByPriority { critical: number;
     high: number;
-    medium: number;
-   , low: number }
+    medium: number,
+    low: number }
 
-interface TestCoverage { totalTests: number;
-   , passRate: number }
+interface TestCoverage { totalTests: number,
+    passRate: number }
 
-interface WCAGCompliance { level: string;
-   , score: number }
+interface WCAGCompliance { level: string,
+    score: number }
 
 interface IssueCategory { name: string;
-    weight: number;
-   , description: string }
+    weight: number,
+    description: string }
 ';
 
 interface RecommendationTemplate { ''
     priority: 'critical' | 'high' | 'medium' | 'low';
-    template: string;
-   , details: string }
+    template: string,
+    details: string }
 ';
 
 interface CategorizedIssues { '', 'focus-management': Issue[];'', 'keyboard-traps': Issue[];'', 'shortcut-conflicts': Issue[];'', 'custom-controls': Issue[];'', 'navigation-patterns': Issue[];
@@ -100,28 +100,28 @@ interface CategorizedIssues { '', 'focus-management': Issue[];'', 'keyboard-trap
 interface DetailedReport { metadata: ReportMetadata,
     executive_summary: ExecutiveSummary;
     detailed_results: DetailedResults;
-    recommendations: Recommendation[];
-   , appendix: Appendix
+    recommendations: Recommendation[],
+    appendix: Appendix
     ,}
 
 interface ReportMetadata { title: string;
     timestamp: string;
-    version: string;
-   , generator: string }
+    version: string,
+    generator: string }
 
 interface ExecutiveSummary { overall_score: number;
     level: string;
     total_issues: number;
-    critical_issues: number;
-   , pass_rate: number }
+    critical_issues: number,
+    pass_rate: number }
 
 interface DetailedResults { suite_results: Record<string, SuiteResult>;
     categorized_issues?: CategorizedIssues;
     statistics: Statistics
     ,}
 
-interface Appendix { test_configuration: ReporterConfig;
-   , wcag_references: Record<string, string> }
+interface Appendix { test_configuration: ReporterConfig,
+    wcag_references: Record<string, string> }
 ';
 
 interface IssueFilters { ''
@@ -136,15 +136,15 @@ export class KeyboardAccessibilityReporter {
 
     constructor(config: Partial<ReporterConfig> = {)) {
         this.config = {
-            enabled: true;
-           , generateDetailedReports: true,
+            enabled: true,
+    generateDetailedReports: true,
             includeRecommendations: true,
             exportFormats: ['html', 'json'],
             scoringWeights: {
                 critical: 10;
                 high: 7;
-                medium: 4;
-               , low: 1 ,};
+                medium: 4,
+    low: 1 ,};
             ...config;
         
         // テスト結果データ
@@ -152,24 +152,24 @@ export class KeyboardAccessibilityReporter {
                 score: 0;
                 passed: 0;
                 failed: 0;
-                warnings: 0;
-               , timestamp: null };
+                warnings: 0,
+    timestamp: null };
             suiteResults: {};
             issues: [];
-            recommendations: [];
-           , statistics: { totalIssues: 0;
-               , issuesByPriority: {
+            recommendations: [],
+    statistics: { totalIssues: 0,
+    issuesByPriority: {
                     critical: 0;
                     high: 0;
-                    medium: 0;
-                   , low: 0 };
+                    medium: 0,
+    low: 0 };
                 issuesByCategory: {};
-                testCoverage: { totalTests: 0;
-                   , passRate: 0 };
+                testCoverage: { totalTests: 0,
+    passRate: 0 };
                 wcagCompliance: { ''
-                    level: '';
-                   , score: 0 }
-};
+                    level: '',
+    score: 0 
+    };
         // 問題分類定義
         this.issueCategories = { '', 'focus-management': {''
                 name: 'フォーカス管理',
@@ -226,8 +226,7 @@ export class KeyboardAccessibilityReporter {
     processTestResults(results: Partial<TestResults>): TestResults | null { try {
             this.testResults = {
                 ...this.testResults,
-                ...results,
-                timestamp: new Date().toISOString( ,};
+                ...results timestamp: new Date().toISOString(  };
             
             // 問題の分類
             this.categorizeIssues();
@@ -238,19 +237,19 @@ export class KeyboardAccessibilityReporter {
             // 推奨事項の生成
             this.generateRecommendations();
             // 統計情報の更新
-            this.updateStatistics(')';
+            this.updateStatistics()';
             console.log('Test, results processed, successfully');
             return this.testResults;
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'TEST_RESULTS_PROCESSING_ERROR', {)'
-                component: 'KeyboardAccessibilityReporter' ,});
+        } catch (error) { getErrorHandler().handleError(error, 'TEST_RESULTS_PROCESSING_ERROR', {''
+                component: 'KeyboardAccessibilityReporter' ,}';
             return null;
     
     /**
      * 問題の分類と優先順位付け'
      */''
-    private categorizeIssues(''';
+    private categorizeIssues('''
             'focus-management': [],
             'keyboard-traps': [],
             'shortcut-conflicts': [],
@@ -280,13 +279,13 @@ export class KeyboardAccessibilityReporter {
                     const priorityOrder: Record<string, number> = { 'critical': 4, 'high': 3, 'medium': 2, 'low': 1 };''
                     return priorityOrder[b.priority || 'low] - priorityOrder[a.priority || 'low'];
                 });
-            });
+            }';
             
             this.testResults.categorizedIssues = categorizedIssues;
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'ISSUE_CATEGORIZATION_ERROR', {)'
-                component: 'KeyboardAccessibilityReporter' ,});
+        } catch (error) { getErrorHandler().handleError(error, 'ISSUE_CATEGORIZATION_ERROR', {''
+                component: 'KeyboardAccessibilityReporter' ,}';
         }
     }
     
@@ -334,15 +333,15 @@ export class KeyboardAccessibilityReporter {
             priority,
             category,
             impact: this.calculateIssueImpact(issue, category), };
-            wcagReference: this.getWCAGReference(issue); }
-        }
+            wcagReference: this.getWCAGReference(issue); 
+    }
     
     /**
      * 問題の影響度計算'
      */''
     private calculateIssueImpact(issue: Issue, category: string): number { ''
         const baseImpact = this.config.scoringWeights[issue.severity || 'low] || 1;
-        const categoryWeight = this.issueCategories[category]? .weight || 0.1;
+        const categoryWeight = this.issueCategories[category]?.weight || 0.1;
         
         return Math.round(baseImpact * categoryWeight * 10) / 10; }
     
@@ -380,7 +379,7 @@ export class KeyboardAccessibilityReporter {
             const totalWarnings = Object.values(this.testResults.suiteResults).reduce((sum, suite) => sum + (suite.warnings || 0), 0);
             
             // 基本スコア計算
-            const baseScore = suiteScores.length > 0 ?   : undefined
+            const baseScore = suiteScores.length > 0 ? undefined : undefined
                 Math.round(suiteScores.reduce((sum, score) => sum + score, 0) / suiteScores.length) : 0;
             
             // 問題による減点計算
@@ -400,15 +399,15 @@ export class KeyboardAccessibilityReporter {
                 passed: totalPassed;
                 failed: totalFailed;
                 warnings: totalWarnings;
-                deductions: Math.round(deductions * 10) / 10;
-               , timestamp: new Date().toISOString( ,};
+                deductions: Math.round(deductions * 10) / 10,
+    timestamp: new Date().toISOString( ,};
             
             // スコアレベルの決定
             this.testResults.overall.level = this.determineScoreLevel(finalScore);
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'SCORE_CALCULATION_ERROR', {)'
-                component: 'KeyboardAccessibilityReporter' ,});
+        } catch (error) { getErrorHandler().handleError(error, 'SCORE_CALCULATION_ERROR', {''
+                component: 'KeyboardAccessibilityReporter' ,}';
         }
     }
     
@@ -416,10 +415,10 @@ export class KeyboardAccessibilityReporter {
      * スコアレベルの決定
      */'
     private determineScoreLevel(score: number): string { ''
-        if(score >= 90) return 'Excellent';''
-        if(score >= 80) return 'Good';''
-        if(score >= 70) return 'Fair';''
-        if(score >= 60) return 'Poor';''
+        if(score >= 90) return 'Excellent';
+        if(score >= 80) return 'Good';
+        if(score >= 70) return 'Fair';
+        if(score >= 60) return 'Poor';
         return 'Critical'; }
     
     /**
@@ -448,13 +447,13 @@ export class KeyboardAccessibilityReporter {
 
                 const priorityOrder: Record<string, number> = { 'critical': 4, 'high': 3, 'medium': 2, 'low': 1 };
                 return priorityOrder[b.priority] - priorityOrder[a.priority];
-            });
+            }';
             
             this.testResults.recommendations = recommendations;
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'RECOMMENDATION_GENERATION_ERROR', {)'
-                component: 'KeyboardAccessibilityReporter' ,});
+        } catch (error) { getErrorHandler().handleError(error, 'RECOMMENDATION_GENERATION_ERROR', {''
+                component: 'KeyboardAccessibilityReporter' ,}';
         }
     }
     
@@ -468,7 +467,7 @@ export class KeyboardAccessibilityReporter {
         const highIssues = issues.filter(issue => issue.priority === 'high'').length;
 
         let priority: Recommendation['priority] = 'medium',
-        if(criticalIssues > 0) priority = 'critical';''
+        if(criticalIssues > 0) priority = 'critical';
         else if(highIssues > 0) priority = 'high';
         
         return { category: category ,};
@@ -477,8 +476,8 @@ export class KeyboardAccessibilityReporter {
             description: categoryInfo.description;
             issueCount: issues.length;
             criticalCount: criticalIssues;
-            highCount: highIssues;
-           , actions: this.generateCategoryActions(category, issues),
+            highCount: highIssues,
+    actions: this.generateCategoryActions(category, issues),
             impact: `${categoryInfo.name}の問題を解決することで、キーボードユーザーの操作性が向上します`
         }
     
@@ -523,25 +522,25 @@ export class KeyboardAccessibilityReporter {
         if(score < 60) {'
             recommendations.push({''
                 priority: 'critical',
-                title: '緊急対応が必要',)';
-                description: 'キーボードアクセシビリティに重大な問題があります')';
-               , actions: ['';
+                title: '緊急対応が必要','';
+                description: 'キーボードアクセシビリティに重大な問題があります')',
+    actions: ['';
                     '最も深刻な問題から優先的に対応',
                     'アクセシビリティ専門家に相談',]';
                     '段階的な改善計画の策定')];
         }
 
-                ]);' }'
+                ]';' }'
 
         } else if(score < 80) { recommendations.push({''
                 priority: 'high',
-                title: '継続的な改善が推奨',)';
-                description: 'アクセシビリティの向上により良いユーザー体験を提供できます')';
-               , actions: ['';
+                title: '継続的な改善が推奨','';
+                description: 'アクセシビリティの向上により良いユーザー体験を提供できます')',
+    actions: ['';
                     '問題の優先順位に基づいた修正',
                     '定期的なアクセシビリティテストの実施',]';
                     'ユーザーフィードバックの収集')];
-                ]); }
+                ]'; }
         
         return recommendations;
     }
@@ -549,9 +548,9 @@ export class KeyboardAccessibilityReporter {
     /**
      * 統計情報の更新'
      */''
-    private updateStatistics(''';
-                    level: this.testResults.overall.level || '';
-                   , score: this.testResults.overall.score;
+    private updateStatistics('''
+                    level: this.testResults.overall.level || '',
+    score: this.testResults.overall.score;
                 }))
             // 問題統計の計算
             if(this.testResults.categorizedIssues) {
@@ -578,8 +577,8 @@ export class KeyboardAccessibilityReporter {
             this.testResults.statistics = stats;
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'STATISTICS_UPDATE_ERROR', {)'
-                component: 'KeyboardAccessibilityReporter' ,});
+        } catch (error) { getErrorHandler().handleError(error, 'STATISTICS_UPDATE_ERROR', {''
+                component: 'KeyboardAccessibilityReporter' ,}';
         }
     }
     
@@ -593,29 +592,29 @@ export class KeyboardAccessibilityReporter {
             const report: DetailedReport = {'
                 metadata: {''
                     title: 'キーボードアクセシビリティテスト報告書',
-                    timestamp: this.testResults.timestamp || new Date().toISOString(''';
-                   , version: '1.0',
+                    timestamp: this.testResults.timestamp || new Date().toISOString(''',
+    version: '1.0',
                     generator: 'KeyboardAccessibilityReporter' ,};
                 executive_summary: { overall_score: this.testResults.overall.score,''
                     level: this.testResults.overall.level || '';
                     total_issues: this.testResults.statistics.totalIssues;
-                    critical_issues: this.testResults.statistics.issuesByPriority.critical;
-                   , pass_rate: this.testResults.statistics.testCoverage.passRate ,};
+                    critical_issues: this.testResults.statistics.issuesByPriority.critical,
+    pass_rate: this.testResults.statistics.testCoverage.passRate ,};
                 detailed_results: { suite_results: this.testResults.suiteResults;
-                    categorized_issues: this.testResults.categorizedIssues;
-                   , statistics: this.testResults.statistics })
-                recommendations: this.testResults.recommendations)';
-               , appendix: { test_configuration: this.config,''
+                    categorized_issues: this.testResults.categorizedIssues,
+    statistics: this.testResults.statistics })
+                recommendations: this.testResults.recommendations'',
+    appendix: { test_configuration: this.config,''
                     wcag_references: this.generateWCAGReferences()';
-            console.log('Detailed, report generated, successfully),
-            return report; catch (error') { getErrorHandler(').handleError(error, 'REPORT_GENERATION_ERROR', {)'
-                component: 'KeyboardAccessibilityReporter' ,});
+            console.log('Detailed, report generated, successfully',
+            return report; catch (error') { getErrorHandler().handleError(error, 'REPORT_GENERATION_ERROR', {''
+                component: 'KeyboardAccessibilityReporter' ,}';
             return null;
     
     /**
      * WCAG参照情報の生成'
      */''
-    private generateWCAGReferences(''';
+    private generateWCAGReferences('''
             '2.1.1': 'Keyboard: すべての機能がキーボードから利用可能',
             '2.1.2': 'No Keyboard Trap: キーボードトラップの回避',
             '2.1.4': 'Character Key Shortcuts: 文字キーショートカット',
@@ -626,7 +625,7 @@ export class KeyboardAccessibilityReporter {
     
     /**
      * HTMLレポートの生成
-     */)'
+     */''
     generateHTMLReport(): string | null { const report = this.generateDetailedReport();''
         if(!report) return null;
         
@@ -640,7 +639,7 @@ export class KeyboardAccessibilityReporter {
     <style>;
         body { font-family: Arial, sans-serif; margin: 0;, padding: 20px, }"
         .header { background: #f5f5f5;, padding: 20px; border-radius: 8px; margin-bottom: 20px, }""
-        .score { font-size: 2em; font-weight: bold;, color: ${this.getScoreColor(report.executive_summary.overall_score"}); }"
+        .score { font-size: 2em; font-weight: bold;, color: ${this.getScoreColor(report.executive_summary.overall_score"}"; }"
         .section { margin-bottom: 30px, }
         .issue { border: 1px solid #ddd; padding: 15px;, margin: 10px 0; border-radius: 4px, }
         .critical { border-left: 4px solid #d32f2f, }
@@ -653,8 +652,8 @@ export class KeyboardAccessibilityReporter {
 <body>"";
     <div class="header">";
         <h1>${report.metadata.title}</h1>""
-        <p>生成日時: ${new, Date(report.metadata.timestamp"}.toLocaleString('ja-JP''})</p>''
-        <div class="score">総合スコア: ${report.executive_summary.overall_score}/100 (${report.executive_summary.level}"})</div>
+        <p>生成日時: ${new, Date(report.metadata.timestamp"}.toLocaleString('ja-JP''}'</p>''
+        <div class="score">総合スコア: ${report.executive_summary.overall_score}/100 (${report.executive_summary.level}"}"</div>
     </div>";
 
     <div class="section">;
@@ -670,7 +669,7 @@ export class KeyboardAccessibilityReporter {
             <div, class="recommendation">})
                 <h3>${rec.title} (優先度: ${rec.priority}})</h3>"
                 <p>${rec.description}</p>""
-                ${rec.actions ? `<ul>${rec.actions.map(action => `<li>${action}</li>`"}.join('''})</ul>` : ''
+                ${rec.actions ? `<ul>${rec.actions.map(action => `<li>${action}</li>`"}.join('''}'</ul>` : ''
             </div>'';
         `').join()}'
     </div>;
@@ -684,10 +683,10 @@ export class KeyboardAccessibilityReporter {
      * スコア色の取得
      */'
     private getScoreColor(score: number): string { ''
-        if(score >= 90) return '#4caf50';''
-        if(score >= 80) return '#8bc34a';''
-        if(score >= 70) return '#ffc107';''
-        if(score >= 60) return '#ff9800';''
+        if(score >= 90) return '#4caf50';
+        if(score >= 80) return '#8bc34a';
+        if(score >= 70) return '#ffc107';
+        if(score >= 60) return '#ff9800';
         return '#d32f2f'; }
     
     /**
@@ -758,11 +757,10 @@ export class KeyboardAccessibilityReporter {
     /**
      * 結果のクリア'
      */''
-    clearResults(''';
-                    level: '';
-                   , score: 0;
-                }
-            }))'
+    clearResults('''
+                    level: '',
+    score: 0;
+    })''
 
         console.log('Test, results cleared');
     }

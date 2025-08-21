@@ -18,16 +18,16 @@ export class SyncManager {'
         this.config = {'
             autoSyncInterval: 5 * 60 * 1000, // 5分間隔;
             conflictResolutionStrategy: 'timestamp', // 'timestamp', 'manual', 'local', 'cloud';
-            maxSyncRetries: 3;
-           , syncBatchSize: 10;
+            maxSyncRetries: 3,
+    syncBatchSize: 10;
     ,}
-            enableOfflineMode: true }
-        };
+            enableOfflineMode: true 
+    };
         this.syncState = { isInProgress: false,
             lastSyncTime: null;
             pendingOperations: [];
-            conflicts: [];
-           , syncErrors: [] ,};
+            conflicts: [],
+    syncErrors: [] ,};
         this.autoSyncTimer = null;
         this.eventListeners = new Map();
         
@@ -41,16 +41,16 @@ export class SyncManager {'
             console.log('SyncManager: 同期マネージャーを初期化中...'),
             
             // 保存された同期状態の復元
-            await this.restoreSyncState(');
+            await this.restoreSyncState();
             
             // 自動同期の開始
             this.startAutoSync();
             // イベントリスナーの設定
             this.setupEventListeners()';
-            console.log('SyncManager: 初期化が完了しました),
+            console.log('SyncManager: 初期化が完了しました',
 
-        } catch (error') { getErrorHandler(').handleError(error, 'SYNC_MANAGER_INITIALIZATION_ERROR', {)'
-                operation: 'initialize' ,});
+        } catch (error') { getErrorHandler().handleError(error, 'SYNC_MANAGER_INITIALIZATION_ERROR', {''
+                operation: 'initialize' ,}';
         }
     }
     
@@ -60,34 +60,32 @@ export class SyncManager {'
     async sync(options = { ) {''
         if(this.syncState.isInProgress) {'
 
-            console.warn('SyncManager: Sync, already in, progress),
-            return this.getSyncStatus(')';
+            console.warn('SyncManager: Sync, already in, progress',
+            return this.getSyncStatus()';
         this.emitEvent('syncStarted'');
         ';
 
         try {'
-            console.log('SyncManager: Starting, manual sync...),
+            console.log('SyncManager: Starting manual sync...' const syncResult = await this.performSync(options');
             
-            const syncResult = await this.performSync(options);
-            
-            this.syncState.lastSyncTime = Date.now(');
+            this.syncState.lastSyncTime = Date.now();
             this.syncState.isInProgress = false;
             ';
             // 同期状態の保存
             await this.saveSyncState();
 
-            this.emitEvent('syncCompleted', syncResult);
+            this.emitEvent('syncCompleted', syncResult';
 
             console.log('SyncManager: Manual sync completed', syncResult);
             return syncResult; catch (error) { this.syncState.isInProgress = false;
 
             this.syncState.syncErrors.push({);''
-                timestamp: Date.now()';
-               , operation: 'manual_sync' ,});
-            getErrorHandler(').handleError(error, 'SYNC_ERROR', { ')'
+                timestamp: Date.now()',
+    operation: 'manual_sync' ,}';
+            getErrorHandler().handleError(error, 'SYNC_ERROR', { ')'
                 operation: 'sync')'),
 
-            this.emitEvent('syncFailed', error);
+            this.emitEvent('syncFailed', error';
             throw error; }
     }
     
@@ -100,19 +98,19 @@ export class SyncManager {'
             synchronized: 0;
             conflicts: 0;
             errors: 0;
-            skipped: 0;
-           , details: [] ,};
+            skipped: 0,
+    details: [] ,};
         ';
         try { // クラウドストレージの認証確認
             if(!this.cloudStorage.isAuthenticated()) {''
-                throw new Error('Cloud, storage not, authenticated); }', ';
+                throw new Error('Cloud, storage not, authenticated'; }', ';
             // オンライン状態の確認
             if(!navigator.onLine && !options.forceOffline) {'
                 ';
 
             }
 
-                throw new Error('Offline - cannot, sync); }'
+                throw new Error('Offline - cannot, sync'; }'
             }
             
             // ローカルキーとクラウドキーの取得
@@ -141,8 +139,8 @@ export class SyncManager {'
 
                 this.emitEvent('syncProgress', {); }
                     progress: Math.min(100, ((i + batch.length) / allKeys.length) * 100}),
-                    current: i + batch.length;
-                   , total: allKeys.length;
+                    current: i + batch.length,
+    total: allKeys.length;
                 }),
             }
             
@@ -152,7 +150,7 @@ export class SyncManager {'
             return syncResult;
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'SYNC_PERFORM_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'SYNC_PERFORM_ERROR', {''
                 operation: 'performSync' ,});
             throw error;
         }
@@ -165,8 +163,8 @@ export class SyncManager {'
             synchronized: 0;
             conflicts: 0;
             errors: 0;
-            skipped: 0;
-           , details: [] };
+            skipped: 0,
+    details: [] };
         for(const, key of, keys) {
         
             try {
@@ -175,17 +173,17 @@ export class SyncManager {'
                 batchResult[itemResult.action]++;
                 batchResult.details.push({)
                     key,);
-                    action: itemResult.action);
-                   , timestamp: Date.now();
+                    action: itemResult.action),
+    timestamp: Date.now();
         ,}
-                    message: itemResult.message }
-                });
+                    message: itemResult.message 
+    });
             } catch (error) { batchResult.errors++;
                 batchResult.details.push({)'
                     key,')';
                     action: 'error');
-                    timestamp: Date.now();
-                   , error: error.message ,});
+                    timestamp: Date.now(),
+    error: error.message ,});
                 console.error(`SyncManager: Error syncing key ${key}:`, error});
             }
         }
@@ -323,7 +321,7 @@ export class SyncManager {'
      */''
     removeMetadata(data) {'
 
-        if(!data || typeof, data !== 'object) {'
+        if(!data || typeof, data !== 'object' {'
     }
             return data;
         
@@ -375,7 +373,7 @@ export class SyncManager {'
                 if(navigator.onLine && this.cloudStorage.isAuthenticated()) {''
                     console.log('SyncManager: Running, auto sync...''),' }
 
-                    await this.sync({ direction: 'bidirectional ),' }
+                    await this.sync({ direction: 'bidirectional ',' }
 
                 } catch (error) { ;
 
@@ -407,7 +405,7 @@ export class SyncManager {'
                 lastSyncTime: this.syncState.lastSyncTime,
                 conflicts: this.syncState.conflicts,
                 syncErrors: this.syncState.syncErrors.slice(-10) // 最新10件のみ保存 ,};
-            await this.localStorage.save('_syncState', stateData);''
+            await this.localStorage.save('_syncState', stateData';''
         } catch (error) { console.warn('SyncManager: Failed to save sync, state:', error }
     }
     
@@ -415,7 +413,7 @@ export class SyncManager {'
      * 同期状態の復元'
      */''
     async restoreSyncState()';
-            const stateData = await this.localStorage.load('_syncState);''
+            const stateData = await this.localStorage.load('_syncState';''
             if(stateData) {
                 this.syncState.lastSyncTime = stateData.lastSyncTime;
                 this.syncState.conflicts = stateData.conflicts || [];
@@ -435,9 +433,9 @@ export class SyncManager {'
      */''
     setupEventListeners()';
         window.addEventListener('online', () => {  ''
-            console.log('SyncManager: Back online, triggering sync...);
+            console.log('SyncManager: Back online, triggering sync...';
 
-            setTimeout((') => {''
+            setTimeout(() => {''
                 if(this.cloudStorage.isAuthenticated()) {' }'
 
                     this.sync({ direction: 'bidirectional }'
@@ -452,12 +450,12 @@ export class SyncManager {'
         return { isInProgress: this.syncState.isInProgress,
             lastSyncTime: this.syncState.lastSyncTime;
             pendingConflicts: this.syncState.conflicts.length;
-            recentErrors: this.syncState.syncErrors.slice(-5);
-           , autoSyncEnabled: !!this.autoSyncTimer;
+            recentErrors: this.syncState.syncErrors.slice(-5),
+    autoSyncEnabled: !!this.autoSyncTimer;
     ,}
             cloudAuthenticated: this.cloudStorage.isAuthenticated(), };
-            isOnline: navigator.onLine }
-        }
+            isOnline: navigator.onLine 
+    }
     
     /**
      * 同期設定の更新
@@ -525,11 +523,11 @@ export class SyncManager {'
             this.eventListeners.clear();
             // 同期状態の最終保存
             this.saveSyncState()';
-            console.log('SyncManager: Destroyed),
+            console.log('SyncManager: Destroyed',
     }
 
         } catch (error') {
-            getErrorHandler(').handleError(error, 'SYNC_MANAGER_DESTROY_ERROR', {)'
+            getErrorHandler().handleError(error, 'SYNC_MANAGER_DESTROY_ERROR', {''
                 operation: 'destroy'),' }
 
             }');

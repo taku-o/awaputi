@@ -18,8 +18,8 @@ export class StatisticsErrorHandler {
                 PERMISSION_ERROR: 'permission_error';
     ,}
 
-                TIMEOUT_ERROR: 'timeout_error' }
-            };
+                TIMEOUT_ERROR: 'timeout_error' 
+    };
             severityLevels: { LOW: 1,      // 軽微なエラー（ログのみ）
                 MEDIUM: 2,   // 中程度（警告表示）;
                 HIGH: 3,     // 重大（自動復旧試行）;
@@ -27,11 +27,11 @@ export class StatisticsErrorHandler {
             recovery: { maxRetryAttempts: 3;
                 retryDelayMs: 1000;
                 autoRecoveryEnabled: true;
-                safeModeEnabled: true;
-               , fallbackDataEnabled: true };
+                safeModeEnabled: true,
+    fallbackDataEnabled: true };
             monitoring: { errorTrackingEnabled: true;
-                maxErrorHistory: 1000;
-               , alertThreshold: 10, // 10分間に10エラーで警告;
+                maxErrorHistory: 1000,
+    alertThreshold: 10, // 10分間に10エラーで警告;
                 alertWindowMs: 600000 // 10分間 ,}
         };
         // エラー状態管理
@@ -39,8 +39,8 @@ export class StatisticsErrorHandler {
             isRecovering: false;
             lastError: null;
             errorCount: 0;
-            consecutiveErrors: 0;
-           , recoveryAttempts: 0 ,};
+            consecutiveErrors: 0,
+    recoveryAttempts: 0 ,};
         // エラー履歴とメトリクス
         this.errorHistory = [];
         this.errorMetrics = new Map();
@@ -62,17 +62,17 @@ export class StatisticsErrorHandler {
         this.safeModeFeatures = { reducedStatistics: true,
             disableAnimations: true;
             simplifiedRendering: true;
-            limitedDataCollection: true;
-           , emergencyBackup: true ,};
+            limitedDataCollection: true,
+    emergencyBackup: true ,};
         // フォールバックデータ
         this.fallbackData = { statistics: this.createFallbackStatistics(),
-            config: this.createFallbackConfig();
-           , lastKnownGood: null ,};
+            config: this.createFallbackConfig(),
+    lastKnownGood: null ,};
         // エラー通知システム
         this.notificationCallbacks = new Set();
         this.alertSystem = { isEnabled: true,
-            lastAlert: null;
-           , alertCooldown: 30000 // 30秒のクールダウン ,};
+            lastAlert: null,
+    alertCooldown: 30000 // 30秒のクールダウン ,};
         this.initialize();
     }
     
@@ -98,16 +98,16 @@ export class StatisticsErrorHandler {
                     new Error(event.message),
                     this.config.errorTypes.CALCULATION_ERROR,
                     {
-                        filename: event.filename;
-                       , lineno: event.lineno;
+                        filename: event.filename,
+    lineno: event.lineno;
     ,}
 
                         colno: event.colno,' }'
 
-                        source: 'global' }
-                    }
+                        source: 'global' 
+    }
 
-                );''
+                ';''
             }');
             ';
             // Promiseの未捕捉拒否
@@ -115,9 +115,9 @@ export class StatisticsErrorHandler {
                     this.config.errorTypes.CALCULATION_ERROR,
                     {)'
                         source: 'promise_rejection' ,}
-                        promise: event.promise) }
-                    });
-            });
+                        promise: event.promise) 
+    });
+            }';
         }
     }
     
@@ -164,10 +164,10 @@ export class StatisticsErrorHandler {
             if(severity >= this.config.severityLevels.CRITICAL || this.shouldEnterSafeMode() { await this.enterSafeMode(errorDetails); }
             
             return { handled: true,
-                errorId: errorDetails.id;
-               , severity: severity, };
-                recoveryAttempted: severity >= this.config.severityLevels.HIGH }
-            } catch (handlingError) { // エラーハンドリング自体のエラー
+                errorId: errorDetails.id,
+    severity: severity, };
+                recoveryAttempted: severity >= this.config.severityLevels.HIGH 
+    } catch (handlingError) { // エラーハンドリング自体のエラー
             console.error('Error handler failed:', handlingError);
             await this.enterEmergencyMode(error, handlingError); }
             return { handled: false, emergencyMode: true ,}
@@ -178,23 +178,23 @@ export class StatisticsErrorHandler {
      */
     classifyError(error) {'
 
-        const message = error.message? .toLowerCase(') || '';''
-        const stack = error.stack?.toLowerCase(') || '';
+        const message = error.message?.toLowerCase() || '';
+        const stack = error.stack?.toLowerCase() || '';
         ';
         // メッセージによる分類
-        if (message.includes('quota'') || message.includes('storage)) {
+        if (message.includes('quota'') || message.includes('storage)' {
     }
             return this.config.errorTypes.STORAGE_FULL;
 
-        if (message.includes('memory'') || message.includes('heap)) { return this.config.errorTypes.MEMORY_ERROR; }
+        if (message.includes('memory'') || message.includes('heap)' { return this.config.errorTypes.MEMORY_ERROR; }
 
-        if (message.includes('network'') || message.includes('fetch)) { return this.config.errorTypes.NETWORK_ERROR; }
+        if (message.includes('network'') || message.includes('fetch)' { return this.config.errorTypes.NETWORK_ERROR; }
 
-        if (message.includes('permission'') || message.includes('denied)) { return this.config.errorTypes.PERMISSION_ERROR; }
+        if (message.includes('permission'') || message.includes('denied)' { return this.config.errorTypes.PERMISSION_ERROR; }
 
-        if(message.includes('timeout)) { return this.config.errorTypes.TIMEOUT_ERROR; }', ';
+        if(message.includes('timeout)' { return this.config.errorTypes.TIMEOUT_ERROR; }', ';
         // スタックトレースによる分類
-        if (stack.includes('canvas'') || stack.includes('render)) { return this.config.errorTypes.RENDERING_ERROR; }
+        if (stack.includes('canvas'') || stack.includes('render)' { return this.config.errorTypes.RENDERING_ERROR; }
 
         if (stack.includes('statistics'') || stack.includes('calculate) { return this.config.errorTypes.CALCULATION_ERROR; }
         
@@ -213,19 +213,19 @@ export class StatisticsErrorHandler {
     createErrorDetails(error, errorType, context) {
         return { : undefined
             id: this.generateErrorId(),
-            timestamp: Date.now(''';
-           , message: error.message || 'Unknown error',
-            stack: error.stack || '',)';
-            name: error.name || 'Error');
-           , context: {'
+            timestamp: Date.now(''',
+    message: error.message || 'Unknown error',
+            stack: error.stack || '','';
+            name: error.name || 'Error'),
+    context: {'
                 ...context,
                 userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown',
                 url: typeof location !== 'undefined' ? location.href : 'unknown',);
                 statisticsState: this.getStatisticsState();
     ,}
                 memoryUsage: this.getMemoryUsage(), };
-                storageUsage: this.getStorageUsage(); }
-            },
+                storageUsage: this.getStorageUsage(); 
+    },
             fingerprint: this.generateErrorFingerprint(error, errorType);
         }
     
@@ -235,7 +235,7 @@ export class StatisticsErrorHandler {
     generateErrorId() {
         
     }
-        return `error_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
+        return `error_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
     }
     
     /**
@@ -328,11 +328,11 @@ export class StatisticsErrorHandler {
         if(!this.errorMetrics.has(type) {
             this.errorMetrics.set(type, {)
                 count: 0,);
-                lastOccurred: null);
-               , severityDistribution: new Map();
+                lastOccurred: null),
+    severityDistribution: new Map();
         ,}
-                fingerprints: new Set(); }
-            });
+                fingerprints: new Set(); 
+    });
         }
         
         const typeMetrics = this.errorMetrics.get(type);
@@ -353,7 +353,7 @@ export class StatisticsErrorHandler {
         this.errorState.errorCount++;
         
         // 連続エラーのカウント
-        const timeSinceLastError = this.errorState.lastError ?   : undefined
+        const timeSinceLastError = this.errorState.lastError ? undefined : undefined
             Date.now() - this.errorState.lastError.timestamp: Infinity,
         if (timeSinceLastError < 10000) { // 10秒以内
     
@@ -366,8 +366,8 @@ export class StatisticsErrorHandler {
      */
     analyzeErrorPatterns(errorDetails) {
         const pattern = {
-            type: errorDetails.type;
-           , fingerprint: errorDetails.fingerprint,
+            type: errorDetails.type,
+    fingerprint: errorDetails.fingerprint,
             hour: new Date(errorDetails.timestamp).getHours(''
     ,}
 
@@ -422,14 +422,14 @@ export class StatisticsErrorHandler {
             [this.config.severityLevels.HIGH]: '統計システムで問題が発生しました。自動復旧を試行中です。',
     }
 
-            [this.config.severityLevels.CRITICAL]: '統計システムで重大な問題が発生しました。セーフモードで動作します。' }
-        };
+            [this.config.severityLevels.CRITICAL]: '統計システムで重大な問題が発生しました。セーフモードで動作します。' 
+    };
 
         const message = messages[severity] || '統計システムでエラーが発生しました。';
         
         // 実際のアプリケーションでは適切なUI通知システムを使用
         console.warn(`[User, Alert] ${ message}`}
-        this.alertSystem.lastAlert = Date.now(});
+        this.alertSystem.lastAlert = Date.now());
     }
     
     /**
@@ -442,15 +442,15 @@ export class StatisticsErrorHandler {
             [this.config.severityLevels.HIGH]: 'HIGH',
     }
 
-            [this.config.severityLevels.CRITICAL]: 'CRITICAL' }
-        };
+            [this.config.severityLevels.CRITICAL]: 'CRITICAL' 
+    };
 
         const logLevel = severity >= this.config.severityLevels.HIGH ? 'error' : 'warn';
         
         console[logLevel](`[StatisticsError:${severityNames[severity]}] ${errorDetails.type}: ${errorDetails.message}`, { id: errorDetails.id)
             timestamp: new Date(errorDetails.timestamp).toISOString();
-            context: errorDetails.context;
-           , stack: errorDetails.stack });
+            context: errorDetails.context,
+    stack: errorDetails.stack });
     }
     
     /**
@@ -529,8 +529,8 @@ export class StatisticsErrorHandler {
      */
     async handleCalculationError(errorDetails) { try {
             // 統計の再計算
-            await this.recalculateStatistics('' })'
-            return { success: true, method: 'recalculation' ,})'
+            await this.recalculateStatistics('' }''
+            return { success: true, method: 'recalculation' ,}''
         } catch (error) { // セーフな統計値の使用
             await this.useSafeStatistics('' }
 
@@ -542,8 +542,8 @@ export class StatisticsErrorHandler {
      */)
     async handleRenderingError(errorDetails) { try {
             // キャンバスのリセット
-            await this.resetRenderingContext('' })'
-            return { success: true, method: 'context_reset' ,})'
+            await this.resetRenderingContext('' }''
+            return { success: true, method: 'context_reset' ,}''
         } catch (error) { // フォールバックレンダリングの使用
             await this.useFallbackRendering('' }
 
@@ -551,7 +551,7 @@ export class StatisticsErrorHandler {
     }
     
     /**
-     * ネットワークエラーの処理)'
+     * ネットワークエラーの処理''
      */')'
     async handleNetworkError(errorDetails) { // リトライ処理（実装は外部システム依存）' }'
 
@@ -562,7 +562,7 @@ export class StatisticsErrorHandler {
      */
     async handleMemoryError(errorDetails) { try {
             // メモリクリーンアップ
-            await this.performMemoryCleanup('' })'
+            await this.performMemoryCleanup('' }''
             return { success: true, method: 'memory_cleanup' ,}) catch (error) {
             return { success: false, reason: error.message ,}
     }
@@ -622,8 +622,8 @@ export class StatisticsErrorHandler {
             // 通知の送信
             for(const, callback of, this.notificationCallbacks) { try {
                     await callback({''
-                        type: 'safe_mode_entered);
-                       , reason: errorDetails }
+                        type: 'safe_mode_entered),
+    reason: errorDetails }
                         timestamp: Date.now(), });''
                 } catch (error) { console.error('Safe mode notification failed:', error }
 
@@ -657,7 +657,7 @@ export class StatisticsErrorHandler {
      * 緊急モードへの移行
      */''
     async enterEmergencyMode(originalError, safeModeError) { ''
-        console.error('Entering, emergency mode - all, error handling, failed);
+        console.error('Entering, emergency mode - all error handling failed';
         
         // 最小限の機能のみ維持
         try {
@@ -665,7 +665,7 @@ export class StatisticsErrorHandler {
             await this.emergencySave();
             
             // フォールバックUIの表示
-            this.showEmergencyUI(');
+            this.showEmergencyUI();
             ' }'
 
         } catch (emergencyError) { console.error('Emergency mode failed:', emergencyError }
@@ -692,12 +692,11 @@ export class StatisticsErrorHandler {
     
     }
                 dataSize: JSON.stringify(this.statisticsManager.statistics || {).length, };
-                lastUpdate: this.statisticsManager.lastUpdateTime || null }
-
-            };''
+                lastUpdate: this.statisticsManager.lastUpdateTime || null 
+    };''
         } catch (error) { }
 
-            return { error: 'unable_to_get_state' }
+            return { error: 'unable_to_get_state' 
     }
     
     getMemoryUsage() {
@@ -708,8 +707,8 @@ export class StatisticsErrorHandler {
     
     }
                     total: performance.memory.totalJSHeapSize, };
-                    limit: performance.memory.jsHeapSizeLimit }
-                } catch (error) { // Memory API not available }
+                    limit: performance.memory.jsHeapSizeLimit 
+    } catch (error) { // Memory API not available }
         return null;
     }
     
@@ -730,7 +729,7 @@ export class StatisticsErrorHandler {
             this.handleError()';
                 new Error('Memory usage critical }'
                 this.config.errorTypes.MEMORY_ERROR, }
-                { memoryUsage: memory }
+                { memoryUsage: memory 
     }
 
     checkStorageUsage()';
@@ -739,7 +738,7 @@ export class StatisticsErrorHandler {
             localStorage.setItem(testKey, testData);
             localStorage.removeItem(testKey);''
         } catch (error) {
-            if(error.name === 'QuotaExceededError) {'
+            if(error.name === 'QuotaExceededError' {'
                 this.handleError(;
                     error);
             }
@@ -754,23 +753,23 @@ export class StatisticsErrorHandler {
      */
     createFallbackStatistics() {
         return { gamePlayStats: {
-                totalGames: 0;
-               , totalPlayTime: 0;
+                totalGames: 0,
+    totalPlayTime: 0;
     }
                 averageSessionTime: 0, };
-                lastPlayTime: null }
-            };
+                lastPlayTime: null 
+    };
             scoreStats: { totalScore: 0;
                 highestScore: 0;
-                averageScore: 0;
-               , scoreHistory: [] };
+                averageScore: 0,
+    scoreHistory: [] };
             bubbleStats: { totalPopped: 0;
-                accuracy: 0;
-               , bubbleTypeStats: new Map( };
+                accuracy: 0,
+    bubbleTypeStats: new Map( }
             comboStats: { maxCombo: 0;
-                averageCombo: 0;
-               , comboHistory: [] }
-        }
+                averageCombo: 0,
+    comboHistory: [] 
+    }
 
     createFallbackConfig(''';
             rendering: { quality: 'low' };
@@ -795,19 +794,19 @@ export class StatisticsErrorHandler {
             recoveryAttempts: this.errorState.recoveryAttempts;
             isInSafeMode: this.errorState.isInSafeMode;
             lastError: this.errorState.lastError;
-            errorMetrics: Object.fromEntries(this.errorMetrics);
-           , recentErrors: {
+            errorMetrics: Object.fromEntries(this.errorMetrics),
+    recentErrors: {
                 last5Minutes: this.getRecentErrorCount(300000);
     ,}
                 last10Minutes: this.getRecentErrorCount(600000), };
-                lastHour: this.getRecentErrorCount(3600000); }
-}
+                lastHour: this.getRecentErrorCount(3600000); 
+    }
     
     // セーフモードの解除
     async exitSafeMode() { ''
         if(!this.errorState.isInSafeMode) return;
 
-        console.info('Exiting, safe mode);
+        console.info('Exiting safe mode);
         this.errorState.isInSafeMode = false;
         this.errorState.consecutiveErrors = 0;
         
@@ -824,13 +823,13 @@ export class StatisticsErrorHandler {
     }
     
     // 設定の更新
-    updateConfig(newConfig) { Object.assign(this.config, newConfig); }
+    updateConfig(newConfig) { Object.assign(this.config newConfig'); }
     
     /**
      * データ永続化
      */
 
-    loadErrorHistory(')';
+    loadErrorHistory()';
             const saved = localStorage.getItem('statistics_error_history);
             if(saved) {
                 const data = JSON.parse(saved);
@@ -864,8 +863,8 @@ export class StatisticsErrorHandler {
         this.notificationCallbacks.clear();
         this.errorHistory = [];
 
-        this.errorMetrics.clear(');
+        this.errorMetrics.clear();
 
     }
 
-        this.errorPatterns.clear(') }'
+        this.errorPatterns.clear() }'

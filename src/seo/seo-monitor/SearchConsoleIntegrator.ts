@@ -23,13 +23,13 @@ interface StructuredDataResult { valid: boolean,
     error?: string; }
 
 interface IndexablePage { url: string,
-    title: string;
-   , priority: number ,}
+    title: string,
+    priority: number ,}
 
 interface SearchConsoleAPIReadiness { hasVerificationTag: boolean;
     hasGoogleAnalytics: boolean;
-    hasSitemap: boolean;
-   , hasRobotsTxt: boolean }
+    hasSitemap: boolean,
+    hasRobotsTxt: boolean }
 
 interface SearchConsoleIntegrationData { timestamp: number;
     sitemap: SitemapValidationResult;
@@ -37,16 +37,16 @@ interface SearchConsoleIntegrationData { timestamp: number;
     structuredData: StructuredDataResult[];
     pages: IndexablePage[];
     readyForIntegration: boolean;
-    verificationMethods: string[];
-   , apiReady: SearchConsoleAPIReadiness
+    verificationMethods: string[],
+    apiReady: SearchConsoleAPIReadiness
     }
 
 interface MonitoringData { searchConsoleMetrics: SearchConsoleIntegrationData[]
     }
 
 declare global { interface Window {
-        gtag?: (...arg;s: any[]) => void;
-        ga?: (...arg;s: any[]) => void ,}
+        gtag?: (...args: any[]) => void;
+        ga?: (...args: any[]) => void ,}
 }
 
 export class SearchConsoleIntegrator {
@@ -70,8 +70,8 @@ export class SearchConsoleIntegrator {
                 robots: await this.validateRobotsTxt();
                 structuredData: this.validateStructuredData();
                 pages: this.getIndexablePages();
-                readyForIntegration: true;
-               , verificationMethods: ['HTML file upload',
+                readyForIntegration: true,
+    verificationMethods: ['HTML file upload',
                     'HTML tag',
                     'Domain name provider',]';
                     'Google Analytics'];
@@ -84,7 +84,7 @@ export class SearchConsoleIntegrator {
             return integrationData;
 
         } catch (error) {
-            console.error('Failed to prepare Search Console integration', error);
+            console.error('Failed to prepare Search Console integration', error';
             return null;
     
     /**
@@ -96,13 +96,12 @@ export class SearchConsoleIntegrator {
 
                 status: response.status,' };
 
-                lastModified: response.headers.get('last-modified); }'
+                lastModified: response.headers.get('last-modified'; }'
 
             };''
         } catch (error) { return { exists: false, ' };
 
                 error: error instanceof Error ? error.message : 'Unknown error'  
-            }
     }
     
     /**
@@ -116,7 +115,6 @@ export class SearchConsoleIntegrator {
         } catch (error) { return { exists: false, ' };
 
                 error: error instanceof Error ? error.message : 'Unknown error'  
-            }
     }
     
     /**
@@ -125,20 +123,20 @@ export class SearchConsoleIntegrator {
     private validateStructuredData()';
         if (typeof, document === 'undefined'') { return []; }
 
-        const scripts = document.querySelectorAll('script[type="application/ld+json"]);
+        const scripts = document.querySelectorAll('script[type="application/ld+json"]";
         const results: StructuredDataResult[] = [],
 
         scripts.forEach(script => {  ')'
-            try {);' }'
+            try {';' }'
 
                 const data = JSON.parse(script.textContent || ''');' }
 
-                results.push({ valid: true, type: data['@type], data });''
+                results.push({ valid: true, type: data['@type], data }';''
             } catch (error) { results.push({ )'
                     valid: false, ')';
                     error: error instanceof Error ? error.message : 'Unknown error' ,});
             }
-        });
+        }';
         
         return results;
     }
@@ -163,14 +161,14 @@ export class SearchConsoleIntegrator {
                 hasGoogleAnalytics: false;
         ,}
                 hasSitemap: true, };
-                hasRobotsTxt: true }
-            }
+                hasRobotsTxt: true 
+    }
         ';
 
         return { ''
             hasVerificationTag: !!document.querySelector('meta[name="google-site-verification"]'');
-            hasGoogleAnalytics: !!window.gtag || !!window.ga;
-           , hasSitemap: true, };
-            hasRobotsTxt: true }
-        }''
+            hasGoogleAnalytics: !!window.gtag || !!window.ga,
+    hasSitemap: true, };
+            hasRobotsTxt: true 
+    }''
 }

@@ -35,11 +35,11 @@ export class StatisticsEventHandler {
                 gamesPlayed: 0;
                 gamesCompleted: 0;
                 totalScore: 0;
-                highScore: 0;
-               , totalPlayTime: 0;
+                highScore: 0,
+    totalPlayTime: 0;
     }
-                bubblesPopped: 0 }
-            }
+                bubblesPopped: 0 
+    }
         
         this.statistics.stageStats[stageId].gamesPlayed++;
         
@@ -524,7 +524,7 @@ export class StatisticsEventHandler {
         
         // コンボ成功率計算
         const totalComboAttempts = totalCombos + this.statistics.comboBreaks;
-        comboStats.comboSuccessRate = totalComboAttempts > 0 ?   : undefined
+        comboStats.comboSuccessRate = totalComboAttempts > 0 ? undefined : undefined
             (totalCombos / totalComboAttempts) * 100 : 0;
     }
 

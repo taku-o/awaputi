@@ -3,31 +3,31 @@
  * 
  * 全てのファビコンアセットを生成するスクリプト
  */
-import { FaviconManager  } from '../FaviconManager.js';''
+import { FaviconManager  } from '../FaviconManager.js';
 import { seoLogger  } from '../SEOLogger.js';
 
 interface FaviconResult { filename: string,
     size: string;
     type: string;
-    category: string;
-   , dataUrl: string ,}
+    category: string,
+    dataUrl: string ,}
 
-interface FaviconError { filename: string;
-   , error: string }
+interface FaviconError { filename: string,
+    error: string }
 
-interface GenerationResults { generated: FaviconResult[];
-   , errors: FaviconError[]
+interface GenerationResults { generated: FaviconResult[],
+    errors: FaviconError[]
     }
 
 interface ValidationResult { isValid: boolean;
     generatedCount: number;
-    issues: string[];
-   , warnings: string[] }
+    issues: string[],
+    warnings: string[] }
 
 // Window オブジェクト拡張の型定義
 declare global { interface Window {
         generateAllFavicons?: () => Promise<GenerationResults>;
-        generateFaviconCategory?: (categor;y: string) => Promise<FaviconResult[]>;
+        generateFaviconCategory?: (category: string) => Promise<FaviconResult[]>;
         generateFaviconPreview?: () => Promise<string>; ,}
 }
 
@@ -35,14 +35,14 @@ declare global { interface Window {
  * ファビコン生成のメイン関数
  */''
 async function generateAllFavicons()';
-        console.log('Starting, favicon generation...);
+        console.log('Starting, favicon generation...';
         
         // FaviconManagerの初期化
-        const faviconManager = new FaviconManager(');
+        const faviconManager = new FaviconManager();
         
         // 全ファビコンの生成
         const results = await faviconManager.generateAllFavicons({ ')'
-            forceRegenerate: true)');
+            forceRegenerate: true'');
         ';
 
         // 結果の表示';
@@ -51,7 +51,7 @@ async function generateAllFavicons()';
         console.log(`Generated: ${results.generated.length) favicons`),
         console.log(`Errors: ${results.errors.length')`,},
 
-        if(results.generated.length > 0} {', ';
+        if(results.generated.length > 0} {', '
 
         }
 
@@ -74,7 +74,7 @@ async function generateAllFavicons()';
         ';
         // ファビコンのHTML生成
         const htmlTags = faviconManager.generateFaviconMetaTags()';
-        console.log('\n=== HTML, Meta Tags ===);
+        console.log('\n=== HTML, Meta Tags ===';
         console.log(htmlTags');
         ';
         // 検証結果
@@ -83,7 +83,7 @@ async function generateAllFavicons()';
         console.log(`Valid: ${ validation.isValid)`),
         console.log(`Generated, count: ${validation.generatedCount')`,},
 
-        if(validation.issues.length > 0} {', ';
+        if(validation.issues.length > 0} {', '
 
         }
 
@@ -98,11 +98,11 @@ async function generateAllFavicons()';
 
             console.log('Warnings: '),' }
 
-            validation.warnings.forEach(warning => console.log(`  ⚠ ${warning}`}'});
+            validation.warnings.forEach(warning => console.log(`  ⚠ ${warning}`}'}';
         }
         ';
         // ファビコンファイルの保存を提案
-        if(typeof, window !== 'undefined' && results.generated.length > 0) {'
+        if(typeof, window !== 'undefined' && results.generated.length > 0' {'
 
             console.log('\n=== File, Save Options ==='');''
             console.log('To save favicon files, you can: ''),
@@ -122,7 +122,7 @@ async function generateAllFavicons()';
         ';
         // メモリクリーンアップ
         faviconManager.cleanup()';
-        console.log('\nFavicon, generation completed, successfully!);
+        console.log('\nFavicon generation completed successfully!');
         return results;
 
     } catch (error') { : undefined''
@@ -166,7 +166,7 @@ async function generateFaviconPreview()';
         ';
 
         const faviconManager = new FaviconManager();''
-        const results = await faviconManager.generateAllFavicons(');
+        const results = await faviconManager.generateAllFavicons();
         
         // プレビュー用のHTMLページを生成
         let html = `<!DOCTYPE html>'';
@@ -193,7 +193,7 @@ async function generateFaviconPreview()';
         const categories = [...new Set(results.generated.map(f => f.category)];"
 
         categories.forEach(category => { ");" }"
-            html += `<h2 class="category-header">${category.charAt(0}.toUpperCase(} + category.slice(1"}) Favicons</h2>`;""
+            html += `<h2 class="category-header">${category.charAt(0}.toUpperCase(} + category.slice(1"}" Favicons</h2>`;""
             html += '<div class="favicon-grid">';
 
             const categoryFavicons = results.generated.filter(f => f.category === category);
@@ -202,20 +202,20 @@ async function generateFaviconPreview()';
 
                 <div, class="favicon-item">" }"
                     <img, src="${favicon.dataUrl}" alt="${favicon.filename}" />""
-                    <div, class="favicon-info">;
+                    <div, class="favicon-info">
                         <strong>${favicon.filename}</strong><br>
                         Size: ${favicon.size}<br>
-                        Type: ${favicon.type})"
+                        Type: ${favicon.type}""
                     </div>")";
-                </div>`)"),
+                </div>`""),
 
-            html += '</div>';''
+            html += '</div>';
         }');
 
         html += '</body></html>';
         ';
         // プレビューファイルの保存
-        const blob = new Blob([html], { type: 'text/html ),''
+        const blob = new Blob([html], { type: 'text/html ',''
         const url = URL.createObjectURL(blob);
 
         if(typeof, window !== 'undefined'') {'
@@ -241,7 +241,7 @@ async function generateFaviconPreview()';
         return html;
 
     } catch (error) {
-        console.error('Failed to generate favicon preview:', error);
+        console.error('Failed to generate favicon preview:', error';
         throw error; }
 }
 ';
@@ -251,7 +251,7 @@ if (typeof, window !== 'undefined'') { // ブラウザ環境での実行
     window.generateFaviconCategory = generateFaviconCategory;
     window.generateFaviconPreview = generateFaviconPreview;
     // 自動実行（オプション）
-    if(window.location && window.location.search.includes('autorun=true) {', ';
+    if(window.location && window.location.search.includes('autorun=true' {', ';
 
     }
 

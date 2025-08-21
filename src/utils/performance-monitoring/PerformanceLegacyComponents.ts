@@ -11,15 +11,15 @@ interface MetricValue { timestamp: number,
 
 interface AlertEvent { alertId: string;
     metricId: string;
-    value: number;
-   , threshold: number,
-    condition: 'above' | 'below' | 'equal';
-   , timestamp: number ,}
-
-interface Alert { metricId: string;
-   , threshold: number,
+    value: number,
+    threshold: number,
     condition: 'above' | 'below' | 'equal',
-    callback?: (even;t: AlertEvent') => void;
+    timestamp: number ,}
+
+interface Alert { metricId: string,
+    threshold: number,
+    condition: 'above' | 'below' | 'equal',
+    callback?: (event: AlertEvent') => void;
     id: string ,}
 }
 
@@ -34,7 +34,7 @@ interface DataPoint { timestamp: number,
 ';
 
 interface DashboardConfig { updateInterval?: number;''
-    position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';''
+    position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
     theme?: 'dark' | 'light'; }
 
 interface PerformanceGathererConfig { collectors?: string[];
@@ -75,7 +75,7 @@ export class PerformanceDashboard {
 
     async show(): Promise<void> { if (this.visible) return;
         
-        this.createDashboard(');
+        this.createDashboard();
 
         this.visible = true;''
         this.startUpdates()';
@@ -97,10 +97,10 @@ export class PerformanceDashboard {
             position: fixed;
             top: 10px;
             right: 10px;
-            width: 300px;
-           , background: rgba(0, 0, 0, 0.8),
-            color: white;
-           , padding: 10px;
+            width: 300px,
+    background: rgba(0, 0, 0, 0.8),
+            color: white,
+    padding: 10px;
             border-radius: 5px,
             font-family: monospace,
             font-size: 12px,
@@ -126,7 +126,7 @@ export class PerformanceDashboard {
     }
 
     formatValue(value: any): string { ''
-        if(typeof, value === 'number) {'
+        if(typeof, value === 'number' {'
             
         }
             return value.toFixed(2);
@@ -156,7 +156,7 @@ export class PerformanceDataGatherer {
     }
 
     async initialize()';
-        console.log('PerformanceDataGatherer, initialized);
+        console.log('PerformanceDataGatherer, initialized';
     }
 
     async start(config?: PerformanceGathererConfig'): Promise<void> { this.collecting = true;''
@@ -168,7 +168,7 @@ export class PerformanceDataGatherer {
 ';
 
     async collectAllMetrics(): Promise<Map<string, number>> { ''
-        const metrics = new Map<string, number>(');
+        const metrics = new Map<string, number>();
         ';
         // Collect basic performance metrics
         metrics.set('fps', this.calculateFPS());''
@@ -184,8 +184,8 @@ export class PerformanceDataGatherer {
         return Math.random() * 100;
     }
 
-    getFrameTime(): number { return Math.random() * 30 + 10; // Simulated frame time }
-}
+    getFrameTime(): number { return Math.random() * 30 + 10; // Simulated frame time 
+    }
 
 // パフォーマンス履歴追跡
 export class PerformanceHistoryTracker {
@@ -205,7 +205,7 @@ export class PerformanceHistoryTracker {
 ';
 
     async start(config?: HistoryTrackerConfig): Promise<void> { ''
-        if(config? .maxDataPoints !== undefined) {
+        if(config?.maxDataPoints !== undefined) {
             
         }
             this.maxDataPoints = config.maxDataPoints; }
@@ -223,11 +223,11 @@ export class PerformanceHistoryTracker {
             if(!this.history.has(metricId) {
                 
             }
-                this.history.set(metricId, []); }
+                this.history.set(metricId []); }
             }
             
             const dataPoints = this.history.get(metricId)!;
-            dataPoints.push({ timestamp, value );
+            dataPoints.push({ timestamp value );
             
             // Keep history size manageable
             if(dataPoints.length > this.maxDataPoints) {
@@ -238,7 +238,7 @@ export class PerformanceHistoryTracker {
     }
 
     getHistory(metricId: string, timeRange: number): MetricValue[] { const dataPoints = this.history.get(metricId) || [];
-        const now = Date.now(');''
+        const now = Date.now();''
         return dataPoints.filter(point => now - point.timestamp < timeRange);
 
     getAggregated(metricId: string, timeRange: number, aggregation: 'average' | 'min' | 'max' | 'last): number | null { const history = this.getHistory(metricId, timeRange);
@@ -279,7 +279,7 @@ export class PerformanceAlertManager {
     }
 
     async initialize()';
-        console.log('PerformanceAlertManager, initialized);
+        console.log('PerformanceAlertManager, initialized';
     }
 
     async start(config?: AlertManagerConfig'): Promise<void> { ''
@@ -294,7 +294,7 @@ export class PerformanceAlertManager {
             threshold,
             condition,
             callback, }
-            id: `alert_${Date.now(})_${Math.random(})`
+            id: `alert_${Date.now())_${Math.random())`
         };
         this.alerts.set(alert.id, alert);
         return alert.id;
@@ -326,12 +326,12 @@ export class PerformanceAlertManager {
 }
 
     triggerAlert(alert: Alert, value: number): void { const alertEvent: AlertEvent = {
-            alertId: alert.id;
-           , metricId: alert.metricId;
+            alertId: alert.id,
+    metricId: alert.metricId;
             value,
             threshold: alert.threshold;
-            condition: alert.condition;
-           , timestamp: Date.now( ,};
+            condition: alert.condition,
+    timestamp: Date.now( ,};
         
         this.activeAlerts.push(alertEvent);
         this.alertHistory.push(alertEvent);
@@ -390,7 +390,7 @@ export class RealtimeMetricsStream {
     }
 
     async initialize()';
-        console.log('RealtimeMetricsStream, initialized);
+        console.log('RealtimeMetricsStream, initialized';
     }
 
     async start(config?: StreamConfig'): Promise<void> { this.streaming = true;''
@@ -403,8 +403,7 @@ export class RealtimeMetricsStream {
     send(timestamp: number, metrics: Map<string, any>): void { if (!this.streaming) return;
         
         const dataPoint: DataPoint = {
-            timestamp,
-            metrics: Object.fromEntries(metrics ,};
+            timestamp metrics: Object.fromEntries(metrics  };
         
         this.buffer.push(dataPoint);
         

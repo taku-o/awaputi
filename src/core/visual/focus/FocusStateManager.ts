@@ -20,65 +20,65 @@ export interface MainController { accessibilityManager: AccessibilityManager,
     config: FocusStateConfig;
     cssClasses: CSSClasses;
     state: FocusState;
-    focusEffectRenderer: FocusEffectRenderer;
-   , setupVisualStyles: () => void ,}
+    focusEffectRenderer: FocusEffectRenderer,
+    setupVisualStyles: () => void ,}
 }
 
 export interface AccessibilityManager { isScreenReaderActive: () => boolean;
-    getPreferences: () => AccessibilityPreferences }
-}
+    getPreferences: () => AccessibilityPreferences 
+    }
 
-export interface FocusManager { focusableElements: HTMLElement[] | null;
-   , getCurrentFocusIndex: () => number }
-}
+export interface FocusManager { focusableElements: HTMLElement[] | null,
+    getCurrentFocusIndex: () => number 
+    }
 
 export interface FocusStateConfig { focusRing: FocusRingConfig;
     visualCues: VisualCuesConfig;
-    highContrast: HighContrastConfig;
-   , navigation: NavigationConfig
+    highContrast: HighContrastConfig,
+    navigation: NavigationConfig
     }
 
 export interface FocusRingConfig { enabled: boolean;
     color: string;
-    width: number;
-   , style: string }
+    width: number,
+    style: string }
 
 export interface VisualCuesConfig { landmarkHighlight: boolean;
     groupIndicators: boolean;
-    navigationPath: boolean;
-   , breadcrumbs: boolean }
+    navigationPath: boolean,
+    breadcrumbs: boolean }
 
 export interface HighContrastConfig { enabled: boolean;
-    color: string;
-   , autoDetect: boolean }
+    color: string,
+    autoDetect: boolean }
 
 export interface NavigationConfig { trackPath: boolean;
-    maxPathLength: number;
-   , showDirection: boolean }
+    maxPathLength: number,
+    showDirection: boolean }
 
 export interface CSSClasses { focusVisible: string;
     keyboardMode: string;
     mouseMode: string;
-    highContrast: string;
-   , navigationActive: string }
+    highContrast: string,
+    navigationActive: string }
 
 export interface FocusState { currentFocusElement: HTMLElement | null;
     previousFocusElement: HTMLElement | null;
     keyboardHintVisible: boolean;
     isHighContrastMode: boolean;
     navigationPath: NavigationPathItem[];
-    keyboardMode: boolean;
-   , lastFocusChangeTime: number }
+    keyboardMode: boolean,
+    lastFocusChangeTime: number }
 
-export interface FocusEffectRenderer { positionFocusRing: (elemen;t: HTMLElement) => void;
-    updateFocusOverlay: (elemen;t: HTMLElement) => void;
-    highlightLandmarks: (elemen;t: HTMLElement) => void;
-    updateGroupIndicators: (elemen;t: HTMLElement) => void }
-}
+export interface FocusEffectRenderer { positionFocusRing: (element: HTMLElement) => void;
+    updateFocusOverlay: (element: HTMLElement) => void;
+    highlightLandmarks: (element: HTMLElement) => void;
+    updateGroupIndicators: (element: HTMLElement) => void 
+    }
 
 export interface NavigationPathItem { element: HTMLElement;
-    timestamp: number;
-   , position: string | null;
+    timestamp: number,
+    position: string | null;
     direction?: NavigationDirection;
     elementInfo?: ElementInfo;
     }
@@ -102,8 +102,8 @@ export interface ElementPosition { index: number,
 
 export interface SystemSettings { highContrast: boolean,
     reducedMotion: boolean;
-    forcedColors: boolean;
-   , screenReader: boolean ,}
+    forcedColors: boolean,
+    screenReader: boolean ,}
 
 export interface FocusStateReport { currentFocusElement: string | null;
     previousFocusElement: string | null;
@@ -111,28 +111,28 @@ export interface FocusStateReport { currentFocusElement: string | null;
     isHighContrastMode: boolean;
     keyboardMode: boolean;
     keyboardHintVisible: boolean;
-    lastChangeTime: number;
-   , systemSettings: SystemSettings
+    lastChangeTime: number,
+    systemSettings: SystemSettings
     }
 
 export interface AccessibilityPreferences { highContrast: boolean;
     reducedMotion: boolean;
-    screenReaderActive: boolean;
-   , keyboardNavigation: boolean }
+    screenReaderActive: boolean,
+    keyboardNavigation: boolean }
 
 export interface FocusValidationResult { isValid: boolean;
     reason?: string;
     shouldClear?: boolean; }
 
 // 列挙型
-export type FocusChangeReason = 'keyboard' | 'mouse' | 'programmatic' | 'system';''
-export type DirectionType = 'horizontal' | 'vertical' | 'diagonal' | 'unknown';''
+export type FocusChangeReason = 'keyboard' | 'mouse' | 'programmatic' | 'system';
+export type DirectionType = 'horizontal' | 'vertical' | 'diagonal' | 'unknown';
 export type ContainerType = 'section' | 'main' | 'nav' | 'aside' | 'form' | 'fieldset' | 'document';
 
 // 定数
 export const NAVIGATION_PATH_LIMITS = { MAX_LENGTH: 10,
-    CLEANUP_THRESHOLD: 50;
-   , MIN_TIME_BETWEEN_ENTRIES: 100 ,} as const;
+    CLEANUP_THRESHOLD: 50,
+    MIN_TIME_BETWEEN_ENTRIES: 100 ,} as const;
 export const DIRECTION_THRESHOLD = { MIN_MOVEMENT: 5,
     DIAGONAL_ANGLE: 30 ,} as const;
 ';
@@ -175,10 +175,10 @@ export function isValidFocusElement(element: any): element is HTMLElement { retu
 ';
 
 export function getElementInfo(element: HTMLElement): ElementInfo { return {;
-        tagName: element.tagName.toLowerCase()';
-       , role: element.getAttribute('role'') || undefined,
+        tagName: element.tagName.toLowerCase()',
+    role: element.getAttribute('role'') || undefined,
         ariaLabel: element.getAttribute('aria-label) || undefined, };
-        textContent: element.textContent? .trim() || undefined }
+        textContent: element.textContent?.trim() || undefined 
     }
  : undefined
 export function calculateDirection(fromRect: DOMRect, toRect: DOMRect): NavigationDirection { const dx = toRect.left - fromRect.left;
@@ -246,9 +246,9 @@ export function getElementPosition(element: HTMLElement, focusManager: FocusMana
 }
 
 export function detectSystemSettings(): SystemSettings { return { highContrast: window.matchMedia ? window.matchMedia(MEDIA_QUERIES.HIGH_CONTRAST).matches : false,
-        reducedMotion: window.matchMedia ? window.matchMedia(MEDIA_QUERIES.REDUCED_MOTION).matches : false;
-       , forcedColors: window.matchMedia ? window.matchMedia(MEDIA_QUERIES.FORCED_COLORS).matches : false, };
-        screenReader: false // 実際の検出は複雑なため、デフォルトはfalse }
+        reducedMotion: window.matchMedia ? window.matchMedia(MEDIA_QUERIES.REDUCED_MOTION).matches : false,
+    forcedColors: window.matchMedia ? window.matchMedia(MEDIA_QUERIES.FORCED_COLORS).matches : false, };
+        screenReader: false // 実際の検出は複雑なため、デフォルトはfalse 
     }
 
 export class FocusStateManager {
@@ -337,8 +337,8 @@ export class FocusStateManager {
         
         // パスアイテムの作成
         const pathItem: NavigationPathItem = { element,
-            timestamp: currentTime;
-           , position: this.getElementPosition(element);
+            timestamp: currentTime,
+    position: this.getElementPosition(element);
             direction,
             elementInfo: getElementInfo(element ,};
         
@@ -496,8 +496,8 @@ export class FocusStateManager {
             !isValidFocusElement(this.state.currentFocusElement)) {'
             return { isValid: false,''
                 reason: 'Current focus element is not valid or not in DOM', };
-                shouldClear: true }
-            }
+                shouldClear: true 
+    }
         
         // 前のフォーカス要素も同様にチェック
         if(this.state.previousFocusElement && );
@@ -520,7 +520,7 @@ export class FocusStateManager {
             document.body.classList.remove('reduced-motion''); }
         }
 
-        console.log(`Reduced, motion ${reducedMotion ? 'enabled' : 'disabled}`});
+        console.log(`Reduced, motion ${reducedMotion ? 'enabled' : 'disabled}`}';
     }
 
     /**
@@ -546,13 +546,13 @@ export class FocusStateManager {
      */
     generateStateReport(): FocusStateReport { const systemSettings = detectSystemSettings();
         
-        return { currentFocusElement: this.state.currentFocusElement? .tagName || null, : undefined
-            previousFocusElement: this.state.previousFocusElement? .tagName || null, : undefined
+        return { currentFocusElement: this.state.currentFocusElement?.tagName || null, : undefined
+            previousFocusElement: this.state.previousFocusElement?.tagName || null, : undefined
             navigationPathLength: this.state.navigationPath.length;
             isHighContrastMode: this.state.isHighContrastMode;
             keyboardMode: document.body.classList.contains(this.cssClasses.keyboardMode);
-            keyboardHintVisible: this.state.keyboardHintVisible;
-           , lastChangeTime: this.state.lastFocusChangeTime, };
+            keyboardHintVisible: this.state.keyboardHintVisible,
+    lastChangeTime: this.state.lastFocusChangeTime, };
             systemSettings }
         }
 

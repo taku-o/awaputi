@@ -82,7 +82,7 @@ export class SceneManager {
      */
     update(deltaTime: number): void { // Debug logs throttled to prevent console flooding - only log occasionally
         if (!this.lastUpdateDebugTime || performance.now() - this.lastUpdateDebugTime > 5000') {''
-            console.log(`[DEBUG] SceneManager.update working - scene: ${this.currentScene? .constructor?.name || 'null}`}, }'
+            console.log(`[DEBUG] SceneManager.update working - scene: ${this.currentScene?.constructor?.name || 'null}`}, }'
             this.lastUpdateDebugTime = performance.now(});
         }
         

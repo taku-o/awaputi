@@ -1,4 +1,4 @@
-import { getErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 import { EasingType  } from './AnimationEngineCore.js';
 
 /**
@@ -56,8 +56,8 @@ export type MenuSlideDirection = 'left' | 'right' | 'up' | 'down';
  * Bubble interface
  */
 export interface Bubble { x: number,
-    y: number;
-   , size: number;
+    y: number,
+    size: number;
     alpha?: number;
     rotation?: number;
     scale?: number;
@@ -77,7 +77,7 @@ export interface BaseAnimationOptions { duration?: number;
     easing?: EasingType;
 
     intensity?: number;''
-    onComplete?: (animatio;n: any') => void;
+    onComplete?: (animation: any') => void;
     [key: string]: any, }
 }
 
@@ -120,8 +120,8 @@ export interface BubbleSpawnAnimation {;
     elapsed: number;
     easing: EasingType;
     startValues: AnimationValues;
-    endValues: AnimationValues;
-   , options: BubbleSpawnOptions
+    endValues: AnimationValues,
+    options: BubbleSpawnOptions
     }
 
 /**
@@ -135,8 +135,8 @@ export interface BubbleDestroyAnimation {;
     elapsed: number;
     easing: EasingType;
     startValues: AnimationValues;
-    endValues: AnimationValues;
-   , options: BubbleDestroyOptions
+    endValues: AnimationValues,
+    options: BubbleDestroyOptions
     }
 
 /**
@@ -149,8 +149,8 @@ export interface BubbleMovementAnimation {;
     elapsed: number;
     easing: EasingType;
     startValues: Position;
-    endValues: Position;
-   , options: BubbleMovementOptions
+    endValues: Position,
+    options: BubbleMovementOptions
     }
 
 /**
@@ -193,8 +193,8 @@ export interface UIElementAnimation {;
     elapsed: number;
     easing: EasingType;
     startValues: AnimationValues;
-    endValues: AnimationValues;
-   , options: UIAnimationOptions
+    endValues: AnimationValues,
+    options: UIAnimationOptions
     }
 
 /**
@@ -204,13 +204,13 @@ export interface ScoreChangeAnimation {;
     type: 'scoreChange';
     target: UIElement;
     duration: number;
-    elapsed: number;
-   , easing: EasingType;
+    elapsed: number,
+    easing: EasingType;
     }
     startValues: AnimationValues & { score: number };
     endValues: AnimationValues & { score: number };
-    scoreDiff: number;
-   , options: ScoreChangeOptions;
+    scoreDiff: number,
+    options: ScoreChangeOptions;
     }
 
 /**
@@ -242,8 +242,8 @@ export interface MenuExitAnimation {;
     elapsed: number;
     easing: EasingType;
     startValues: AnimationValues;
-    endValues: AnimationValues;
-   , options: MenuTransitionOptions
+    endValues: AnimationValues,
+    options: MenuTransitionOptions
     }
 
 /**
@@ -256,8 +256,8 @@ export interface MenuEnterAnimation {;
     duration: number;
     elapsed: number;
     easing: EasingType;
-    startValues: AnimationValues;
-   , endValues: AnimationValues;
+    startValues: AnimationValues,
+    endValues: AnimationValues;
     }
     options: MenuTransitionOptions & { delay: number }
 
@@ -288,15 +288,15 @@ export interface LoadingAnimation {;
     phase?: number;
     dotPhases?: number[];
     waveOffset?: number;
-    completionTriggered?: boolean;
-   , options: LoadingAnimationOptions
+    completionTriggered?: boolean,
+    options: LoadingAnimationOptions
     }
 
 /**
  * Canvas interface
  */
-export interface Canvas { width: number;
-   , height: number }
+export interface Canvas { width: number,
+    height: number }
 
 /**
  * Bubble Animation Handler
@@ -306,26 +306,26 @@ export class BubbleAnimationHandler {
     private typeSettings: TypeSettings';
 
     constructor()';
-    createBubbleSpawnAnimation(bubble: Bubble, spawnType: BubbleSpawnType = 'scale', options: BubbleSpawnOptions = {)): BubbleSpawnAnimation | null {
+    createBubbleSpawnAnimation(bubble: Bubble, spawnType: BubbleSpawnType = 'scale', options: BubbleSpawnOptions = {)': BubbleSpawnAnimation | null {
         try {
             return { ''
-                type: 'bubbleSpawn';
-               , target: bubble;
+                type: 'bubbleSpawn',
+    target: bubble;
                 spawnType,
                 duration: options.duration || 800,
                 elapsed: 0,
-                easing: options.easing || 'easeOutBounce';
-               , startValues: this.getBubbleStartValues(bubble, spawnType),
+                easing: options.easing || 'easeOutBounce',
+    startValues: this.getBubbleStartValues(bubble, spawnType),
                 endValues: this.getBubbleEndValues(bubble, spawnType),
                 options: {
                     delay: options.delay || 0;
-                    intensity: options.intensity || 1.0;
-                   , direction: options.direction || 0, };
+                    intensity: options.intensity || 1.0,
+    direction: options.direction || 0, };
                     ...options
                 }
             } catch (error) {
             getErrorHandler()';
-                context: 'BubbleAnimationHandler.createBubbleSpawnAnimation),' }
+                context: 'BubbleAnimationHandler.createBubbleSpawnAnimation',' }
 
             }');
             return null;
@@ -333,24 +333,24 @@ export class BubbleAnimationHandler {
     /**
      * バブル破壊アニメーション作成'
      */''
-    createBubbleDestroyAnimation(bubble: Bubble, destroyType: BubbleDestroyType = 'shrink', options: BubbleDestroyOptions = { )): BubbleDestroyAnimation | null {
+    createBubbleDestroyAnimation(bubble: Bubble, destroyType: BubbleDestroyType = 'shrink', options: BubbleDestroyOptions = { )': BubbleDestroyAnimation | null {
         try {
             return { ''
-                type: 'bubbleDestroy';
-               , target: bubble;
+                type: 'bubbleDestroy',
+    target: bubble;
                 destroyType,
                 duration: options.duration || 600,
                 elapsed: 0,
-                easing: options.easing || 'easeInQuad';
-               , startValues: this.getBubbleStartValues(bubble, destroyType),
+                easing: options.easing || 'easeInQuad',
+    startValues: this.getBubbleStartValues(bubble, destroyType),
                 endValues: this.getBubbleDestroyEndValues(bubble, destroyType),
                 options: {
-                    intensity: options.intensity || 1.0;
-                   , fragments: options.fragments || 8, };
+                    intensity: options.intensity || 1.0,
+    fragments: options.fragments || 8, };
                     ...options
                 }
             } catch (error) { getErrorHandler()';
-                context: 'BubbleAnimationHandler.createBubbleDestroyAnimation' });
+                context: 'BubbleAnimationHandler.createBubbleDestroyAnimation' }';
             return null;
     
     /**
@@ -359,8 +359,8 @@ export class BubbleAnimationHandler {
     createBubbleMovementAnimation(bubble: Bubble, targetPosition: Position, duration: number = 1000, options: BubbleMovementOptions = { )): BubbleMovementAnimation | null {
         try {
             return { ''
-                type: 'bubbleMovement';
-               , target: bubble;
+                type: 'bubbleMovement',
+    target: bubble;
                 duration,
                 elapsed: 0,' };
 
@@ -370,11 +370,11 @@ export class BubbleAnimationHandler {
 
                 options: { ''
                     path: options.path || 'linear';
-                    controlPoints: options.controlPoints || [];
-                   , rotation: options.rotation || false;
+                    controlPoints: options.controlPoints || [],
+    rotation: options.rotation || false;
                     ...options
             } catch (error) { getErrorHandler()';
-                context: 'BubbleAnimationHandler.createBubbleMovementAnimation' });
+                context: 'BubbleAnimationHandler.createBubbleMovementAnimation' }';
             return null;
     
     /**
@@ -527,8 +527,8 @@ export class BubbleAnimationHandler {
             y: bubble.y;
             size: bubble.size;
             alpha: bubble.alpha || 1;
-            rotation: bubble.rotation || 0;
-           , scale: bubble.scale || 1 };
+            rotation: bubble.rotation || 0,
+    scale: bubble.scale || 1 };
         switch(animationType) {', ';
 
         }
@@ -552,10 +552,10 @@ export class BubbleAnimationHandler {
     private getBubbleEndValues(bubble: Bubble, animationType: BubbleSpawnType): AnimationValues { return { x: bubble.x,
             y: bubble.y;
             size: bubble.size;
-            alpha: 1;
-           , rotation: 0, };
-            scale: 1 }
-        }
+            alpha: 1,
+    rotation: 0, };
+            scale: 1 
+    }
     
     /**
      * バブル破壊終了値を取得
@@ -565,8 +565,8 @@ export class BubbleAnimationHandler {
             y: bubble.y;
             size: bubble.size;
             alpha: 0;
-            rotation: 0;
-           , scale: 1 };
+            rotation: 0,
+    scale: 1 };
         switch(destroyType) {', ';
 
         }
@@ -594,8 +594,8 @@ export class UIAnimationHandler {
     
         this.typeSettings = {
             enabled: true }
-            speedMultiplier: 1.0 }
-        }
+            speedMultiplier: 1.0 
+    }
     
     /**
      * UIエレメントアニメーション作成'
@@ -603,8 +603,8 @@ export class UIAnimationHandler {
     createUIElementAnimation(element: UIElement, animationType: UIAnimationType, duration: number = 500, options: UIAnimationOptions = { )): UIElementAnimation | null {
         try {
             return {;
-                type: 'uiElement';
-               , target: element;
+                type: 'uiElement',
+    target: element;
                 animationType,
                 duration,
                 elapsed: 0,
@@ -613,12 +613,12 @@ export class UIAnimationHandler {
                 endValues: this.getUIEndValues(element, animationType, options),
                 options: {''
                     direction: options.direction || 'up';
-                    distance: options.distance || 50;
-                   , intensity: options.intensity || 1.0, };
+                    distance: options.distance || 50,
+    intensity: options.intensity || 1.0, };
                     ...options
                 }
             } catch (error) { getErrorHandler()';
-                context: 'UIAnimationHandler.createUIElementAnimation' });
+                context: 'UIAnimationHandler.createUIElementAnimation' }';
             return null;
     
     /**
@@ -629,8 +629,8 @@ export class UIAnimationHandler {
             const scoreDiff = newScore - oldScore;
 
             return { ''
-                type: 'scoreChange';
-               , target: element;
+                type: 'scoreChange',
+    target: element;
                 duration,
                 elapsed: 0,' };
 
@@ -638,12 +638,12 @@ export class UIAnimationHandler {
                 startValues: { score: oldScore, scale: 1, alpha: 1 ,},
                 endValues: { score: newScore, scale: 1, alpha: 1 ,},
                 scoreDiff,
-                options: { showDifference: options.showDifference !== false;
-                   , animateScale: options.animateScale !== false,
+                options: { showDifference: options.showDifference !== false,
+    animateScale: options.animateScale !== false,
                     color: scoreDiff > 0 ? '#00FF00' : '#FF0000';
                     ...options
             ,} catch (error) { getErrorHandler()';
-                context: 'UIAnimationHandler.createScoreChangeAnimation' });
+                context: 'UIAnimationHandler.createScoreChangeAnimation' }';
             return null;
     
     /**
@@ -729,8 +729,8 @@ export class UIAnimationHandler {
             width: element.width || 100;
             height: element.height || 50;
             alpha: element.alpha || 1;
-            scale: element.scale || 1;
-           , rotation: element.rotation || 0 };
+            scale: element.scale || 1,
+    rotation: element.rotation || 0 };
         switch(animationType) {', ';
 
         }
@@ -768,8 +768,8 @@ export class UIAnimationHandler {
             width: element.width || 100;
             height: element.height || 50;
             alpha: element.alpha || 1;
-            scale: element.scale || 1;
-           , rotation: element.rotation || 0 };
+            scale: element.scale || 1,
+    rotation: element.rotation || 0 };
         switch(animationType) {'
 
             case 'fadeIn':';
@@ -813,8 +813,8 @@ export class MenuAnimationHandler {
         this.canvas = canvas;
         this.typeSettings = {
             enabled: true }
-            speedMultiplier: 0.8 }
-        }
+            speedMultiplier: 0.8 
+    }
     
     /**
      * メニュー遷移アニメーション作成'
@@ -826,8 +826,8 @@ export class MenuAnimationHandler {
             // 退出アニメーション
             if(fromMenu) {'
                 const exitAnimation: MenuExitAnimation = {''
-                    type: 'menuExit';
-                   , target: fromMenu;
+                    type: 'menuExit',
+    target: fromMenu;
                     transitionType,
                     duration: options.duration || 600,
                     elapsed: 0;
@@ -843,8 +843,8 @@ export class MenuAnimationHandler {
             // 入場アニメーション
             if(toMenu) {'
                 const enterAnimation: MenuEnterAnimation = {''
-                    type: 'menuEnter';
-                   , target: toMenu;
+                    type: 'menuEnter',
+    target: toMenu;
                     transitionType,
                     duration: options.duration || 600,
                     elapsed: 0,
@@ -955,15 +955,15 @@ export class LoadingAnimationHandler {
         this.canvas = canvas;
         this.typeSettings = {
             enabled: true }
-            speedMultiplier: 1.2 }
-        }
+            speedMultiplier: 1.2 
+    }
     
     /**
      * ローディングアニメーション作成'
      */''
-    createLoadingAnimation(type: LoadingAnimationType = 'spinner', position: Position | null = null, size: number = 50, options: LoadingAnimationOptions = { )): LoadingAnimation | null {
+    createLoadingAnimation(type: LoadingAnimationType = 'spinner', position: Position | null = null, size: number = 50, options: LoadingAnimationOptions = { )': LoadingAnimation | null {
         try {
-            const centerX = position? .x || this.canvas.width / 2;
+            const centerX = position?.x || this.canvas.width / 2;
             const centerY = position?.y || this.canvas.height / 2;
             ';
 
@@ -978,8 +978,8 @@ export class LoadingAnimationHandler {
                 options: { ''
                     color: options.color || '#4A90E2';
                     speed: options.speed || 1.0;
-                    elements: options.elements || 8;
-                   , thickness: options.thickness || 4;
+                    elements: options.elements || 8,
+    thickness: options.thickness || 4;
                     ...options
             } catch (error) { getErrorHandler()';
                 context: 'LoadingAnimationHandler.createLoadingAnimation' });
@@ -1015,7 +1015,7 @@ export class LoadingAnimationHandler {
      */''
     createProgressLoadingAnimation(position: Position, size: number, options: LoadingAnimationOptions = { )): LoadingAnimation | null {''
         const animation = this.createLoadingAnimation('progress', position, size, {)
-            ...options);
+            ...options';
             progress: 0, // 初期進行状況;
             showPercentage: options.showPercentage !== false,
             backgroundColor: options.backgroundColor || '#EEEEEE',')';
@@ -1026,7 +1026,7 @@ export class LoadingAnimationHandler {
      * プログレス更新'
      */''
     updateLoadingProgress(animation: LoadingAnimation | null, progress: number): boolean { ''
-        if(animation && animation.loadingType === 'progress) {'
+        if(animation && animation.loadingType === 'progress' {'
             animation.options.progress = Math.max(0, Math.min(1, progress);
             ';
             // 100%完了時の特別アニメーション

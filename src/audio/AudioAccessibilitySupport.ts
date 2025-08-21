@@ -1,9 +1,9 @@
-import { getErrorHandler  } from '../utils/ErrorHandler.js';''
-import { getConfigurationManager  } from '../core/ConfigurationManager.js';''
-import { getLocalizationManager  } from '../core/LocalizationManager.js';''
-import { AudioDescriptionManager  } from './accessibility/AudioDescriptionManager.js';''
-import { AudioCueManager  } from './accessibility/AudioCueManager.js';''
-import { AudioFeedbackManager  } from './accessibility/AudioFeedbackManager.js';''
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
+import { getConfigurationManager  } from '../core/ConfigurationManager.js';
+import { getLocalizationManager  } from '../core/LocalizationManager.js';
+import { AudioDescriptionManager  } from './accessibility/AudioDescriptionManager.js';
+import { AudioCueManager  } from './accessibility/AudioCueManager.js';
+import { AudioFeedbackManager  } from './accessibility/AudioFeedbackManager.js';
 import { AudioSettingsManager  } from './accessibility/AudioSettingsManager.js';
 
 // エラーハンドラー型定義
@@ -36,11 +36,11 @@ interface BubblePopEventData { bubbleType: string,
     comboLevel: number;
     position?: any ,}
 
-interface ComboEventData { comboLevel: string;
-   , comboCount: number }
+interface ComboEventData { comboLevel: string,
+    comboCount: number }
 
-interface AchievementEventData { achievementName: string;
-   , rarity: string }
+interface AchievementEventData { achievementName: string,
+    rarity: string }
 
 interface GameStateEventData { state: string;
     details?: string }
@@ -57,8 +57,8 @@ interface AudioEventData { bubbleType?: string;
 // 設定型定義
 interface AccessibilitySettings { visualFeedback: boolean,
     colorIndication: boolean;
-    hapticFeedback: boolean;
-   , captioning: boolean ,}
+    hapticFeedback: boolean,
+    captioning: boolean ,}
 
 // パターン認識型定義
 interface PatternRecognition {
@@ -87,9 +87,9 @@ interface PatternRecognition {
  * const accessibilitySupport = new AudioAccessibilitySupport(audioManager);''
  * await accessibilitySupport.initialize()'
  *   type: 'bubble_pop', ')'
- *   data: { bubbleType: 'special', score: 100 ,})';
+ *   data: { bubbleType: 'special', score: 100 ,}'';
 
- * )');
+ * '');
  * '
  * // Trigger haptic feedback
  * accessibilitySupport.triggerHapticFeedback('bubble_pop', { intensity: 0.8 ),
@@ -161,7 +161,7 @@ export class MainAudioAccessibilitySupport {
             this.audioCueManager.setupAudioEventListeners()';
             console.log('AudioAccessibilitySupport, initialized with, component architecture');' }
 
-        } catch (error) { this.errorHandler.handleError(error as Error, 'ACCESSIBILITY_ERROR', {)'
+        } catch (error) { this.errorHandler.handleError(error as Error, 'ACCESSIBILITY_ERROR', {''
                 component: 'AudioAccessibilitySupport',')';
                 operation: 'initialize' ,});
         }
@@ -188,13 +188,11 @@ export class MainAudioAccessibilitySupport {
 
         }');
 
-        this.addAudioEventListener('comboAchieved', (event: ComboEventData) => { this.handleComboEvent(event);' }
+        this.addAudioEventListener('comboAchieved', (event: ComboEventData) => { this.handleComboEvent(event);' 
+    }');
 
-        }');
-
-        this.addAudioEventListener('achievementUnlocked', (event: AchievementEventData) => { this.handleAchievementEvent(event);' }
-
-        }');
+        this.addAudioEventListener('achievementUnlocked', (event: AchievementEventData) => { this.handleAchievementEvent(event);' 
+    }');
 
         this.addAudioEventListener('gameStateChange', (event: GameStateEventData) => { this.handleGameStateEvent(event); });
     }
@@ -220,7 +218,7 @@ export class MainAudioAccessibilitySupport {
                 if(this.settings.hapticFeedback) {'
             }
 
-                    this.triggerAudioLevelVibration(stats.averageLevel || 0, 'background); }'
+                    this.triggerAudioLevelVibration(stats.averageLevel || 0, 'background'; }'
 }
             
             setTimeout(monitorLoop, updateInterval);
@@ -277,7 +275,7 @@ export class MainAudioAccessibilitySupport {
                     callback(eventData);' }'
 
                 } catch (error) { this.errorHandler.handleError(error as Error, 'ACCESSIBILITY_ERROR', {''
-                        component: 'AudioAccessibilitySupport',)';
+                        component: 'AudioAccessibilitySupport','';
                         operation: 'triggerAudioEvent',);
                         eventType: eventType ,});
                 }
@@ -317,7 +315,7 @@ export class MainAudioAccessibilitySupport {
 
         }
 
-            this.triggerHapticFeedback('bubblePop', event); }
+            this.triggerHapticFeedback('bubblePop', event'; }
 }
     
     /**
@@ -330,7 +328,7 @@ export class MainAudioAccessibilitySupport {
         // 視覚的通知
         this.showVisualNotification({ ''
             type: 'combo', })
-            title: `${comboLevel}連鎖`)'
+            title: `${comboLevel}連鎖`''
             message: `${comboCount}コンボ達成！`,''
             icon: '🔥',
             color: '#ff8000',);
@@ -347,7 +345,7 @@ export class MainAudioAccessibilitySupport {
 
         }
 
-            this.triggerHapticFeedback('comboAchieved', event); }
+            this.triggerHapticFeedback('comboAchieved', event'; }
 }
     
     /**
@@ -359,12 +357,12 @@ export class MainAudioAccessibilitySupport {
         
         // 視覚的通知
         this.showVisualNotification({ ''
-            type: 'achievement',)';
-            title: '実績解除')';
-           , message: achievementName,')';
+            type: 'achievement','';
+            title: '実績解除')',
+    message: achievementName,')';
             icon: '🏆');
-            color: this.getRarityColor(rarity);
-           , duration: 4000 ,});
+            color: this.getRarityColor(rarity),
+    duration: 4000 ,});
         // 字幕
         if(this.settings.captioning) {
             
@@ -377,7 +375,7 @@ export class MainAudioAccessibilitySupport {
 
         }
 
-            this.triggerHapticFeedback('achievementUnlocked', event); }
+            this.triggerHapticFeedback('achievementUnlocked', event'; }
 }
     
     /**
@@ -404,9 +402,9 @@ export class MainAudioAccessibilitySupport {
                 type: 'gameState',
                 title: stateInfo.title,
                 message: details || '');
-                icon: stateInfo.icon);
-               , color: stateInfo.color,);
-                duration: 3000);
+                icon: stateInfo.icon),
+    color: stateInfo.color,);
+                duration: 3000';
             ';
 
             // 字幕
@@ -414,7 +412,7 @@ export class MainAudioAccessibilitySupport {
 
             if(this.settings.captioning) {' }'
 
-                this.showCaption(`${stateInfo.title}${details ? ': ' + details : ''}`});
+                this.showCaption(`${stateInfo.title}${details ? ': ' + details : ''}`}';
             }
             ';
             // 触覚フィードバック

@@ -6,20 +6,20 @@
 // 型定義
 interface Viewport { x: number,
     y: number;
-    width: number;
-   , height: number ,}
+    width: number,
+    height: number ,}
 interface Region { x: number,
     y: number;
-    width: number;
-   , height: number ,}
+    width: number,
+    height: number ,}
 interface RenderStats { totalObjects: number,
     renderedObjects: number;
     culledObjects: number;
-    dirtyRegions: number;
-   , renderTime: number ,}
+    dirtyRegions: number,
+    renderTime: number ,}
 interface RenderObject { id?: string;
-    x: number;
-   , y: number;
+    x: number,
+    y: number;
     width?: number;
     height?: number;
     size?: number;
@@ -28,21 +28,21 @@ interface RenderObject { id?: string;
     scale?: number;
     opacity?: number;
     type?: string;
-    render?: (ct;x: CanvasRenderingContext2D) => void ,}
+    render?: (ctx: CanvasRenderingContext2D) => void ,}
 interface Layer { canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D;
     zIndex: number;
-    isDirty: boolean;
-   , objects: RenderObject[]
+    isDirty: boolean,
+    objects: RenderObject[]
     ,}
 interface PerformanceStats { fps: number,
     deltaTime: number;
     frameCount: number;
-    avgFrameTime: number;
-   , memoryUsage: {
+    avgFrameTime: number,
+    memoryUsage: {
         usedJSHeapSiz;e: number;
-        totalJSHeapSize: number;
-       , jsHeapSizeLimit: number ,}
+        totalJSHeapSize: number,
+    jsHeapSizeLimit: number ,}
 
 export class RenderOptimizer {
     private canvas: HTMLCanvasElement;
@@ -67,7 +67,7 @@ export class RenderOptimizer {
     constructor(canvas: HTMLCanvasElement) {
 
         this.canvas = canvas;
-        const context = canvas.getContext('2d);''
+        const context = canvas.getContext('2d';''
         if(!context) {'
 
     }
@@ -87,12 +87,12 @@ export class RenderOptimizer {
         this.offscreenCanvas.width = this.width;
 
         this.offscreenCanvas.height = this.height;''
-        const offscreenContext = this.offscreenCanvas.getContext('2d);''
+        const offscreenContext = this.offscreenCanvas.getContext('2d';''
         if(!offscreenContext) {', ';
 
         }
 
-            throw new Error('Failed, to get, 2D context, from offscreen, canvas); }
+            throw new Error('Failed, to get, 2D context, from offscreen, canvas'; }
         this.offscreenContext = offscreenContext;
     }
     
@@ -114,8 +114,8 @@ export class RenderOptimizer {
             
             this.layers.set(layerName, { canvas: canvas,
                 context: context);
-                zIndex: zIndex);
-               , isDirty: false,);
+                zIndex: zIndex),
+    isDirty: false,);
                 objects: []);
             // zIndexでソート
             this.layerOrder = Array.from(this.layers.keys().sort((a, b) => { 
@@ -162,11 +162,10 @@ export class RenderOptimizer {
      */
     getObjectBounds(obj: RenderObject): Region { const size = obj.size || 50;
         return { x: obj.x - size / 2,
-            y: obj.y - size / 2;
-           , width: size, };
+            y: obj.y - size / 2,
+    width: size, };
             height: size ;
-}
-        },
+    },
     }
     
     /**
@@ -220,11 +219,10 @@ export class RenderOptimizer {
         const bottom = Math.max(a.y + a.height, b.y + b.height);
         
         return { x: left,
-            y: top;
-           , width: right - left, };
+            y: top,
+    width: right - left, };
             height: bottom - top ;
-}
-        },
+    },
     }
     
     /**
@@ -301,8 +299,8 @@ export class RenderOptimizer {
             totalObjects: 0;
             renderedObjects: 0;
             culledObjects: 0;
-            dirtyRegions: this.dirtyRegions.length;
-           , renderTime: 0 
+            dirtyRegions: this.dirtyRegions.length,
+    renderTime: 0 
 };
         // 変更検出
         this.detectChanges();
@@ -432,8 +430,8 @@ export class PerformanceMonitor {
     private maxHistorySize: number;
     private, memoryUsage: {
         usedJSHeapSize: number;
-        totalJSHeapSize: number;
-       , jsHeapSizeLimit: number };
+        totalJSHeapSize: number,
+    jsHeapSizeLimit: number };
 
     constructor() {
 
@@ -445,12 +443,11 @@ export class PerformanceMonitor {
         this.maxHistorySize = 60;
         
         this.memoryUsage = {
-            usedJSHeapSize: 0;
-           , totalJSHeapSize: 0
+            usedJSHeapSize: 0,
+    totalJSHeapSize: 0
 }
             jsHeapSizeLimit: 0 ;
-}
-        },
+    },
     }
     
     /**
@@ -485,11 +482,10 @@ export class PerformanceMonitor {
      */
     getStats(): PerformanceStats { return { fps: Math.round(this.fps),
             deltaTime: Math.round(this.deltaTime);
-            frameCount: this.frameCount;
-           , avgFrameTime: Math.round(this.frameTimeHistory.reduce((a, b) => a + b, 0) / this.frameTimeHistory.length), };
+            frameCount: this.frameCount,
+    avgFrameTime: Math.round(this.frameTimeHistory.reduce((a, b) => a + b, 0) / this.frameTimeHistory.length), };
             memoryUsage: this.memoryUsage ;
-}
-        },
+    },
     }
     
     /**
@@ -502,16 +498,15 @@ export class PerformanceMonitor {
 
         }
 
-            warnings.push('Low, FPS detected: ' + Math.round(this.fps); }
-
-        }
+            warnings.push('Low, FPS detected: ' + Math.round(this.fps); 
+    }
 
         if(this.deltaTime > 50) {', ';
 
         }
 
-            warnings.push('High, frame time: ' + Math.round(this.deltaTime) + 'ms'); }
-        }
+            warnings.push('High, frame time: ' + Math.round(this.deltaTime) + 'ms'); 
+    }
 
         if(this.memoryUsage.usedJSHeapSize > this.memoryUsage.jsHeapSizeLimit * 0.8) {', ';
 

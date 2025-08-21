@@ -19,22 +19,22 @@ export interface TranslationFileData { meta?: TranslationMetadata;
 export interface CachedTranslation { data: TranslationFileData,
     timestamp: number ,}
 
-export interface PreloadResult { loaded: string[];
-   , failed: FailedLoad[]
+export interface PreloadResult { loaded: string[],
+    failed: FailedLoad[]
     }
 
-export interface FailedLoad { language: string;
-   , error: Error
+export interface FailedLoad { language: string,
+    error: Error
     }
 
 export interface LoaderStats { loadedLanguages: string[];
     translationFiles: string[];
     cache: CacheStats;
-    baseURL: string;
-   , pendingLoads: string[] }
+    baseURL: string,
+    pendingLoads: string[] }
 
-export interface CacheStats { entries: number;
-   , byLanguage: Record<string, number>, }
+export interface CacheStats { entries: number,
+    byLanguage: Record<string, number>, }
 
 export interface FlattenedTranslations { [key: string]: any, }
 
@@ -53,7 +53,7 @@ export class TranslationLoader {
 
         this.loadedTranslations = new Map<string, FlattenedTranslations>();
         this.loadingPromises = new Map<string, Promise<FlattenedTranslations>>();''
-        this.cache = new Map<string, CachedTranslation>(');''
+        this.cache = new Map<string, CachedTranslation>();''
         this.baseURL = '/assets/i18n/';
         
         // ロード対象ファイル
@@ -87,7 +87,7 @@ export class TranslationLoader {
                 return translations;
             } finally { this.loadingPromises.delete(language); }
 
-            } catch (error) { getErrorHandler(').handleError(error as Error, 'TRANSLATION_LOADER_ERROR', {)'
+            } catch (error) { getErrorHandler().handleError(error as Error, 'TRANSLATION_LOADER_ERROR', {''
                 operation: 'loadLanguage',);
                 language: language ,});
             return {};
@@ -103,24 +103,24 @@ export class TranslationLoader {
             const failed: FailedLoad[] = [],
 
             results.forEach((result, index) => { ''
-                if(result.status === 'fulfilled) { }'
+                if(result.status === 'fulfilled' { }'
                     loaded.push(languages[index]); }
                 } else { failed.push({)
                         language: languages[index], }
-                        error: result.reason as Error); }
-                    });
+                        error: result.reason as Error); 
+    });
                 }
             });
             
             console.log(`Preloaded languages - Success: ${loaded.length}, Failed: ${failed.length}`});
-            return { loaded, failed } catch (error) { getErrorHandler(').handleError(error as Error, 'TRANSLATION_LOADER_ERROR', {)'
+            return { loaded, failed } catch (error) { getErrorHandler().handleError(error as Error, 'TRANSLATION_LOADER_ERROR', {''
                 operation: 'preloadLanguages',);
                 languages: languages ,});
             return { loaded: [], 
                 failed: languages.map(lang => ({ )
                     language: lang, ) };
-                    error: error as Error ))) ; }
-            }
+                    error: error as Error ))) ; 
+    }
     }
     
     /**
@@ -192,8 +192,8 @@ export class TranslationLoader {
             
             // キャッシュに保存
             this.cache.set(cacheKey, { )
-                data: data);
-               , timestamp: Date.now( });
+                data: data),
+    timestamp: Date.now( });
             
             return data;
         } catch (error) {
@@ -234,7 +234,7 @@ export class TranslationLoader {
                 // 各カテゴリのネストされた構造をフラット化
             }
 
-                this._flattenNestedObject(translations, '', flattened); }
+                this._flattenNestedObject(translations, '', flattened'; }
 }
         
         return flattened;
@@ -265,9 +265,9 @@ export class TranslationLoader {
             }
             
             const data = await this._loadTranslationFile(language, category);
-            return data ? (data.translations || data) : {} catch (error) { getErrorHandler(').handleError(error as Error, 'TRANSLATION_LOADER_ERROR', {)'
-                operation: 'loadCategory');
-               , language: language,);
+            return data ? (data.translations || data) : {} catch (error) { getErrorHandler().handleError(error as Error, 'TRANSLATION_LOADER_ERROR', {''
+                operation: 'loadCategory'),
+    language: language,);
                 category: category ,});
             return {};
     
@@ -369,19 +369,18 @@ export class TranslationLoader {
      */
     getStats(): LoaderStats { const cacheStats: CacheStats = {
             entries: this.cache.size }
-            byLanguage: {}
-
-        };
+            byLanguage: {
+    };
         for(const, key of, this.cache.keys()) { ''
             const language = key.split(':)[0];
             cacheStats.byLanguage[language] = (cacheStats.byLanguage[language] || 0) + 1; }
         
         return { loadedLanguages: this.getLoadedLanguages(),
             translationFiles: this.translationFiles;
-            cache: cacheStats;
-           , baseURL: this.baseURL, };
-            pendingLoads: Array.from(this.loadingPromises.keys(); }
-        }
+            cache: cacheStats,
+    baseURL: this.baseURL, };
+            pendingLoads: Array.from(this.loadingPromises.keys(); 
+    }
     
     /**
      * リモート翻訳ファイルの存在確認'

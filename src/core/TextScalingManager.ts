@@ -9,7 +9,7 @@ export class TextScalingManager {'
     constructor(visualAccessibilityManager) {
         this.visualAccessibilityManager = visualAccessibilityManager;
         this.accessibilityManager = visualAccessibilityManager.accessibilityManager;
-        this.gameEngine = this.accessibilityManager? .gameEngine;
+        this.gameEngine = this.accessibilityManager?.gameEngine;
         
         // スケーリング設定
         this.config = { : undefined
@@ -18,21 +18,21 @@ export class TextScalingManager {'
             minScale: 0.8;
             maxScale: 3.0;
             step: 0.1;
-            preserveLayout: true;
-           , responsiveBreakpoints: {
-                mobile: 768;
-               , tablet: 1024;
+            preserveLayout: true,
+    responsiveBreakpoints: {
+                mobile: 768,
+    tablet: 1024;
     ,}
-                desktop: 1200 }
-            };
+                desktop: 1200 
+    };
             fontFamilies: { ''
                 dyslexiaFriendly: ['OpenDyslexic', 'Comic Sans MS', 'Arial', 'sans-serif],
                 highReadability: ['Atkinson Hyperlegible', 'Verdana', 'Tahoma', 'sans-serif],
                 default: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif] },
             lineHeight: { base: 1.4;
                 scaled: 1.6;
-                minimum: 1.2;
-               , maximum: 2.0 };
+                minimum: 1.2,
+    maximum: 2.0 };
             letterSpacing: { ''
                 base: 'normal',
                 scaled: '0.05em',
@@ -52,24 +52,24 @@ export class TextScalingManager {'
         this.dynamicStyleSheet = null;''
         this.cssVariables = new Map(''';
         this.currentBreakpoint = 'desktop';
-        this.viewportObserver = null;
+        this.viewportObserver = null
         
         // 統計情報
         this.stats = { scalingOperations: 0,
             elementsScaled: 0;
-            layoutReflows: 0;
-           , performanceMetrics: {
-                averageScalingTime: 0;
-               , totalScalingTime: 0 ,},''
+            layoutReflows: 0,
+    performanceMetrics: {
+                averageScalingTime: 0,
+    totalScalingTime: 0 ,},''
             sessionStart: Date.now(''';
             fontFamily: 'default';
             lineHeightAdjustment: 0;
             letterSpacingAdjustment: 0;
             wordSpacingAdjustment: 0;
             preserveGameLayout: true;
-            responsiveScaling: true;
-           , smoothTransitions: true);
-        })
+            responsiveScaling: true,
+    smoothTransitions: true);
+        }'
         // パフォーマンス最適化
         this.scalingQueue = [];
         this.isProcessing = false;
@@ -102,14 +102,14 @@ export class TextScalingManager {'
             // イベントリスナーの設定
             this.setupEventListeners();
             // 初期要素の分析
-            this.analyzeInitialElements(');
+            this.analyzeInitialElements();
 
     }
 
             console.log('TextScalingManager, initialized successfully'); }'
 
-        } catch (error) { getErrorHandler(').handleError(error, 'TEXT_SCALING_ERROR', {)'
-                operation: 'initialize' ,});
+        } catch (error) { getErrorHandler().handleError(error, 'TEXT_SCALING_ERROR', {''
+                operation: 'initialize' ,}';
         }
     }
     
@@ -120,8 +120,8 @@ export class TextScalingManager {'
             const testElement = document.createElement('div'');
             testElement.style.cssText = `;
                 font-size: 1rem,
-                position: absolute;
-               , visibility: hidden;
+                position: absolute,
+    visibility: hidden;
                 white-space: nowrap,
             `;''
             testElement.textContent = 'Test';
@@ -257,9 +257,9 @@ export class TextScalingManager {'
         ';
         // フォントファミリー変数
         this.cssVariables.set('--dyslexia-font-family'');''
-            this.config.fontFamilies.dyslexiaFriendly.join(', '));''
+            this.config.fontFamilies.dyslexiaFriendly.join(', ')';''
         this.cssVariables.set('--readability-font-family'');''
-            this.config.fontFamilies.highReadability.join(', '));''
+            this.config.fontFamilies.highReadability.join(', ')';''
         this.cssVariables.set('--default-font-family'');''
             this.config.fontFamilies.default.join(', ');
         
@@ -352,7 +352,7 @@ export class TextScalingManager {'
                     case '=':';
                         event.preventDefault();''
                         this.increaseScale()';
-                    case '-':)';
+                    case '-':'';
                         event.preventDefault();''
                         this.decreaseScale()';
                     case '0':);
@@ -382,7 +382,7 @@ export class TextScalingManager {'
             if (!this.config.enabled) return;
 
             mutations.forEach((mutation) => {''
-                if(mutation.type === 'childList) {'
+                if(mutation.type === 'childList' {'
                     mutation.addedNodes.forEach((node) => {
     }
                         if (node.nodeType === Node.ELEMENT_NODE) { }
@@ -407,7 +407,7 @@ export class TextScalingManager {'
 
         }');
 
-        console.log('Initial, element analysis, complete);
+        console.log('Initial element analysis complete);
     }
     
     /**
@@ -434,14 +434,14 @@ export class TextScalingManager {'
         if(this.isLayoutContainer(element) { this.layoutContainers.add(element); }
         
         // スケーリング対象として登録
-        this.registerScalableElement(element);
+        this.registerScalableElement(element');
     }
     
     /**
      * テキストコンテンツの有無をチェック
      */
     hasTextContent(element) {
-        const text = element.textContent? .trim(');
+        const text = element.textContent?.trim();
     }
         return text && text.length > 0;
     
@@ -464,7 +464,7 @@ export class TextScalingManager {'
 
     }
 
-            if(selector.startsWith('.) { }'
+            if(selector.startsWith('.' { }'
                 return element.classList.contains(selector.substring(1); else { return element.tagName.toLowerCase() === selector;);
     }
     
@@ -480,7 +480,7 @@ export class TextScalingManager {'
                element.classList.contains('container'') ||';
     }
 
-               element.classList.contains('layout); }'
+               element.classList.contains('layout'; }'
     }
     
     /**
@@ -496,8 +496,8 @@ export class TextScalingManager {'
         const originalStyle = { : undefined
             fontSize: styles.fontSize;
             lineHeight: styles.lineHeight;
-            letterSpacing: styles.letterSpacing;
-           , wordSpacing: styles.wordSpacing ,};
+            letterSpacing: styles.letterSpacing,
+    wordSpacing: styles.wordSpacing ,};
         this.originalStyles.set(element, originalStyle);
         this.scaledElements.set(element, { originalStyle)'
             isScaled: false,')';
@@ -525,11 +525,11 @@ export class TextScalingManager {'
         }
 
         const startTime = performance.now()';
-            element.style.setProperty('--original-font-size', originalStyle.fontSize);''
-            element.style.setProperty('--original-line-height', originalStyle.lineHeight);
+            element.style.setProperty('--original-font-size', originalStyle.fontSize';''
+            element.style.setProperty('--original-line-height', originalStyle.lineHeight';
             ';
             // スケーリングクラスを追加
-            element.classList.add('text-scalable);
+            element.classList.add('text-scalable';
             ';
             // レイアウト保持が有効な場合
             if(this.config.preserveLayout && this.shouldPreserveLayout(element)) { ''
@@ -621,9 +621,9 @@ export class TextScalingManager {'
      * 全要素の再計算
      */''
     recalculateAllElements()';
-        console.log('Recalculating, all scaled, elements...);
+        console.log('Recalculating, all scaled elements...);
         
-        for(const [element, elementData] of this.scaledElements) {
+        for(const [element elementData] of this.scaledElements) {
         
             if (elementData.isScaled) {
                 elementData.isScaled = false;
@@ -660,14 +660,14 @@ export class TextScalingManager {'
     /**
      * スケールのリセット
      */
-    resetScale() { this.setScale(1.0); }
+    resetScale() { this.setScale(1.0'); }
     
     /**
      * スケールの設定
      */
     setScale(scale) { if (scale < this.config.minScale || scale > this.config.maxScale') {' }'
 
-            console.warn(`Scale ${scale} is, out of, range`'});
+            console.warn(`Scale ${scale} is, out of, range`'}';
             return;
         }
         
@@ -693,14 +693,14 @@ export class TextScalingManager {'
      */
     setFontFamily(fontFamily) { if (!this.config.fontFamilies[fontFamily]) {' }'
 
-            console.warn(`Unknown, font family: ${fontFamily}`'});
+            console.warn(`Unknown, font family: ${fontFamily}`'}';
             return;
         }
         
         this.userPreferences.fontFamily = fontFamily;
         ';
         // 既存の要素からフォントクラスを削除
-        document.querySelectorAll('.dyslexia-friendly, .high-readability)'';
+        document.querySelectorAll('.dyslexia-friendly, .high-readability''';
             .forEach(element => {  ');' }
 
                 element.classList.remove('dyslexia-friendly', 'high-readability); }
@@ -773,7 +773,7 @@ export class TextScalingManager {'
     toggleSmoothTransitions(enabled) {
         this.userPreferences.smoothTransitions = enabled;
 
-        document.body.classList.toggle('smooth-transitions', enabled);
+        document.body.classList.toggle('smooth-transitions', enabled';
 
         ';
 
@@ -781,7 +781,7 @@ export class TextScalingManager {'
 
         this.saveUserPreferences() }
 
-        console.log(`Smooth, transitions ${enabled ? 'enabled' : 'disabled}`});
+        console.log(`Smooth, transitions ${enabled ? 'enabled' : 'disabled}`}';
     }
     
     /**
@@ -794,7 +794,7 @@ export class TextScalingManager {'
 
         }
 
-            document.body.classList.add('smooth-transitions); }'
+            document.body.classList.add('smooth-transitions'; }'
         }
         
         // 全要素にスケーリングを適用
@@ -813,7 +813,7 @@ export class TextScalingManager {'
      * テキストスケーリングの無効化'
      */''
     disable()';
-        document.body.classList.remove('text-scaling-enabled', 'smooth-transitions);
+        document.body.classList.remove('text-scaling-enabled', 'smooth-transitions';
         ';
         // 全要素からスケーリングを削除
         for(const [element, elementData] of this.scaledElements) {'
@@ -841,18 +841,18 @@ export class TextScalingManager {'
             scale: this.config.scale;
             fontFamily: this.userPreferences.fontFamily;
             lineHeightAdjustment: this.userPreferences.lineHeightAdjustment;
-            letterSpacingAdjustment: this.userPreferences.letterSpacingAdjustment;
-           , wordSpacingAdjustment: this.userPreferences.wordSpacingAdjustment;
+            letterSpacingAdjustment: this.userPreferences.letterSpacingAdjustment,
+    wordSpacingAdjustment: this.userPreferences.wordSpacingAdjustment;
     ,}
             smoothTransitions: this.userPreferences.smoothTransitions, };
-            currentBreakpoint: this.currentBreakpoint }
-        }
+            currentBreakpoint: this.currentBreakpoint 
+    }
     
     /**
      * 設定の適用
      */
     applyConfig(config') {'
-        if (config.visual? .textScaling) {'
+        if (config.visual?.textScaling) {'
     }
 
             Object.assign(this.config, config.visual.textScaling); }
@@ -868,23 +868,21 @@ export class TextScalingManager {'
         const sessionDuration = Date.now() - this.stats.sessionStart;
         
         return { : undefined
-            timestamp: new Date().toISOString();
-           , configuration: {
+            timestamp: new Date().toISOString(),
+    configuration: {
                 enabled: this.config.enabled;
     ,}
                 scale: this.config.scale, };
-                preserveLayout: this.config.preserveLayout }
-            };
+                preserveLayout: this.config.preserveLayout 
+    };
             statistics: { ...this.stats;
                 sessionDuration,
                 scaledElementsCount: this.scaledElements.size;
-                gameElementsCount: this.gameElements.size;
-               , layoutContainersCount: this.layoutContainers.size ,};
+                gameElementsCount: this.gameElements.size,
+    layoutContainersCount: this.layoutContainers.size ,};
             performance: this.stats.performanceMetrics;
-            userPreferences: this.userPreferences;
-           , responsive: { currentBreakpoint: this.currentBreakpoint;
-               , breakpoints: this.config.responsiveBreakpoints }
-        }
+            userPreferences: this.userPreferences responsive: { currentBreakpoint: this.currentBreakpoint breakpoints: this.config.responsiveBreakpoints 
+    }
     
     /**
      * 有効状態の設定
@@ -893,13 +891,13 @@ export class TextScalingManager {'
         if (enabled) {
             if (this.config.scale === 1.0) {
     }
-                this.setScale(1.2); // デフォルトスケール }
-            } else { this.enable('); }
+                this.setScale(1.2'); // デフォルトスケール }
+            } else { this.enable(); }
         } else { }'
 
             this.disable() }
 
-        console.log(`TextScalingManager ${enabled ? 'enabled' : 'disabled}`});
+        console.log(`TextScalingManager ${enabled ? 'enabled' : 'disabled}`}';
     }
     
     /**
@@ -926,7 +924,7 @@ export class TextScalingManager {'
         this.scaledElements.clear();
         this.originalStyles.clear();
         this.layoutContainers.clear();
-        this.gameElements.clear(');''
+        this.gameElements.clear();''
         this.cssVariables.clear()';
         console.log('TextScalingManager, destroyed'');
 

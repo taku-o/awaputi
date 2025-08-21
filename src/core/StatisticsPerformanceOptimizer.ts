@@ -10,67 +10,67 @@ export class StatisticsPerformanceOptimizer {
         this.config = {
             batchProcessing: {
                 enabled: true;
-                batchSize: 100;
-               , processingInterval: 16, // 60fps対応
+                batchSize: 100,
+    processingInterval: 16, // 60fps対応
     }
-                maxBatchWaitTime: 100 }
-            };
-            memoryManagement: { enabled: true;
-               , maxMemoryUsage: 50 * 1024 * 1024, // 50MB;
+                maxBatchWaitTime: 100 
+    };
+            memoryManagement: { enabled: true,
+    maxMemoryUsage: 50 * 1024 * 1024, // 50MB;
                 cleanupThreshold: 0.8, // 80%でクリーンアップ;
                 compressionThreshold: 1000, // 1000レコード以上で圧縮;
                 archiveThreshold: 10000 // 10000レコード以上でアーカイブ ,};
             renderingOptimization: { enabled: true;
                 useOffscreenCanvas: true;
                 enableDifferentialUpdate: true;
-                viewportCulling: true;
-               , renderBudget: 16, // 16ms以内でレンダリング完了;
+                viewportCulling: true,
+    renderBudget: 16, // 16ms以内でレンダリング完了;
                 frameThrottling: true ,};
             caching: { enabled: true;
-                maxCacheSize: 100;
-               , cacheTTL: 300000, // 5分;
+                maxCacheSize: 100,
+    cacheTTL: 300000, // 5分;
                 compressionLevel: 3 ,}
         };
         // パフォーマンス監視
         this.performanceMetrics = { dataCollection: {
                 averageTime: 0;
                 maxTime: 0;
-                sampleCount: 0;
-               , lastMeasurement: 0 };
+                sampleCount: 0,
+    lastMeasurement: 0 };
             memoryUsage: { current: 0;
                 peak: 0;
-                allocated: 0;
-               , freed: 0 };
+                allocated: 0,
+    freed: 0 };
             rendering: { averageFrameTime: 0;
                 maxFrameTime: 0;
-                frameCount: 0;
-               , droppedFrames: 0 };
+                frameCount: 0,
+    droppedFrames: 0 };
             cache: { hitRate: 0;
                 missCount: 0;
-                hitCount: 0;
-               , evictionCount: 0 }
-        };
+                hitCount: 0,
+    evictionCount: 0 
+    };
         // バッチ処理キュー
         this.processingQueue = { dataOperations: [],
-            renderOperations: [];
-           , cleanupOperations: [] ,};
+            renderOperations: [],
+    cleanupOperations: [] ,};
         // キャッシュシステム
         this.cache = new Map();
         this.cacheMetadata = new Map();
         
         // メモリ監視
         this.memoryMonitor = { interval: null,
-            measurements: [];
-           , alerts: [] ,};
+            measurements: [],
+    alerts: [] ,};
         // レンダリング最適化
         this.renderingOptimizer = { offscreenCanvas: null,
             dirtyRegions: new Set();
-            lastRenderTime: 0;
-           , frameRequestId: null ,};
+            lastRenderTime: 0,
+    frameRequestId: null ,};
         // データ圧縮マネージャー
         this.compressionManager = { compressionQueue: [],
-            isCompressing: false;
-           , compressionHistory: [] ,};
+            isCompressing: false,
+    compressionHistory: [] ,};
         this.initialize();
     }
     
@@ -94,19 +94,19 @@ export class StatisticsPerformanceOptimizer {
         // データ操作バッチ処理
     }
         setInterval(() => {  }
-            this.processBatch('dataOperations); }'
-        }, this.config.batchProcessing.processingInterval);
+            this.processBatch('dataOperations'; }'
+        }, this.config.batchProcessing.processingInterval';
         ';
         // レンダリング操作バッチ処理
         setInterval(() => {  ' }'
 
-            this.processBatch('renderOperations); }'
-        }, this.config.batchProcessing.processingInterval);
+            this.processBatch('renderOperations'; }'
+        }, this.config.batchProcessing.processingInterval';
         ';
         // クリーンアップ操作バッチ処理
         setInterval(() => {  ' }'
 
-            this.processBatch('cleanupOperations); }'
+            this.processBatch('cleanupOperations'; }'
         }, this.config.batchProcessing.processingInterval * 4); // 低頻度実行
     }
     
@@ -137,7 +137,7 @@ export class StatisticsPerformanceOptimizer {
 
             } catch (error) {
                 console.warn('OffscreenCanvas not supported, falling back to regular canvas'');''
-                this.renderingOptimizer.offscreenCanvas = document.createElement('canvas); }'
+                this.renderingOptimizer.offscreenCanvas = document.createElement('canvas'; }'
 }
     
     /**
@@ -157,7 +157,7 @@ export class StatisticsPerformanceOptimizer {
     /**
      * データ収集の最適化
      */''
-    optimizeDataCollection(operation, data, priority = 'normal) {'
+    optimizeDataCollection(operation, data, priority = 'normal' {'
 
         const startTime = performance.now(''';
             this.addToBatch('dataOperations', {)
@@ -176,13 +176,13 @@ export class StatisticsPerformanceOptimizer {
 
             }
 
-                this.processBatch('dataOperations); }'
+                this.processBatch('dataOperations'; }'
             }
             ';
 
             return true;''
         } catch (error) {
-            console.error('Data collection optimization failed:', error);
+            console.error('Data collection optimization failed:', error';
             return false; finally { ''
             this.updatePerformanceMetrics('dataCollection', startTime); }
     }
@@ -447,8 +447,8 @@ export class StatisticsPerformanceOptimizer {
         // 測定履歴を記録
         this.memoryMonitor.measurements.push({ );
             timestamp: Date.now();
-            usage: memoryUsage;
-           , statsUsage: this.performanceMetrics.memoryUsage.allocated });
+            usage: memoryUsage,
+    statsUsage: this.performanceMetrics.memoryUsage.allocated });
         // 履歴を制限（最新100件）
         if (this.memoryMonitor.measurements.length > 100) { this.memoryMonitor.measurements = this.memoryMonitor.measurements.slice(-100); }
     }
@@ -530,7 +530,7 @@ export class StatisticsPerformanceOptimizer {
         if(currentUsage > threshold) {'
     }
 
-            this.triggerMemoryCleanup('high_usage); }'
+            this.triggerMemoryCleanup('high_usage'; }'
         }
         
         // 統計データの圧縮チェック
@@ -573,7 +573,7 @@ export class StatisticsPerformanceOptimizer {
     triggerMemoryCleanup(reason) {'
 
         this.addToBatch('cleanupOperations', {''
-            type: 'memory',)';
+            type: 'memory','';
             target: 'all',);
             reason: reason);
     ,}
@@ -587,7 +587,7 @@ export class StatisticsPerformanceOptimizer {
 
         }
 
-            this.processBatch('cleanupOperations); }'
+            this.processBatch('cleanupOperations'; }'
 }
     
     /**
@@ -597,12 +597,12 @@ export class StatisticsPerformanceOptimizer {
 
         if(this.compressionManager.isCompressing) return;
 
-        this.addToBatch('cleanupOperations', {)'
+        this.addToBatch('cleanupOperations', {''
             type: 'compress',')';
             target: 'statistics');
     ,}
-            timestamp: Date.now(); }
-        });
+            timestamp: Date.now(); 
+    });
     }
     
     /**
@@ -611,8 +611,8 @@ export class StatisticsPerformanceOptimizer {
     triggerDataArchive(''';
         this.addToBatch('cleanupOperations', { ')'
             type: 'archive',')';
-            target: 'old_data');
-           , timestamp: Date.now( ,});
+            target: 'old_data'),
+    timestamp: Date.now( ,});
     }
     
     /**
@@ -628,8 +628,8 @@ export class StatisticsPerformanceOptimizer {
             this.compressionManager.compressionHistory.push({);
                 timestamp: Date.now();
                 originalSize: this.estimateObjectSize(data);
-                compressedSize: this.estimateObjectSize(compressedData);
-               , compressionRatio: this.estimateObjectSize(compressedData) / this.estimateObjectSize(data });
+                compressedSize: this.estimateObjectSize(compressedData),
+    compressionRatio: this.estimateObjectSize(compressedData) / this.estimateObjectSize(data });
             ';
 
             return compressedData;''
@@ -645,13 +645,13 @@ export class StatisticsPerformanceOptimizer {
         // 重複データの除去と要約
         const compressed = {
             summary: this.generateSessionSummary(data);
-            sampleData: this.sampleSessions(data);
-           , metadata: {
-                originalCount: data.sessions? .length || 0, : undefined
+            sampleData: this.sampleSessions(data),
+    metadata: {
+                originalCount: data.sessions?.length || 0, : undefined
                 compressedAt: Date.now();
     ,}
-                compressionLevel: this.config.caching.compressionLevel }
-};
+                compressionLevel: this.config.caching.compressionLevel 
+    };
         return compressed;
     }
     
@@ -668,8 +668,8 @@ export class StatisticsPerformanceOptimizer {
             dateRange: {
     ,}
                 start: Math.min(...sessions.map(s = > s.timestamp) };
-                end: Math.max(...sessions.map(s => s.timestamp); }
-}
+                end: Math.max(...sessions.map(s => s.timestamp); 
+    }
     
     /**
      * セッションのサンプリング
@@ -725,8 +725,8 @@ export class StatisticsPerformanceOptimizer {
         this.cache.set(cacheKey, data);
         this.cacheMetadata.set(cacheKey, { );
             timestamp: Date.now();
-            accessCount: 1;
-           , size: this.estimateObjectSize(data });
+            accessCount: 1,
+    size: this.estimateObjectSize(data });
         
         return data;
     }
@@ -780,7 +780,7 @@ export class StatisticsPerformanceOptimizer {
      */
     updateCacheHitRate() {
         const total = this.performanceMetrics.cache.hitCount + this.performanceMetrics.cache.missCount;
-        this.performanceMetrics.cache.hitRate = total > 0 ?   : undefined
+        this.performanceMetrics.cache.hitRate = total > 0 ? undefined : undefined
     
             this.performanceMetrics.cache.hitCount / total: 0; ,}
     }
@@ -849,20 +849,20 @@ export class StatisticsPerformanceOptimizer {
      */
     getPerformanceStatistics() {
         return { ...this.performanceMetrics,
-            configuration: this.config;
-           , memoryMonitor: {
+            configuration: this.config,
+    memoryMonitor: {
     ,}
                 measurementCount: this.memoryMonitor.measurements.length, };
-                alertCount: this.memoryMonitor.alerts.length }
-            };
+                alertCount: this.memoryMonitor.alerts.length 
+    };
             cacheStatistics: { size: this.cache.size;
                 totalSize: this.estimateCacheSize();
-                evictionCount: this.performanceMetrics.cache.evictionCount;
-               , hitRate: this.performanceMetrics.cache.hitRate };
+                evictionCount: this.performanceMetrics.cache.evictionCount,
+    hitRate: this.performanceMetrics.cache.hitRate };
             compressionStatistics: { historyCount: this.compressionManager.compressionHistory.length;
-                averageCompressionRatio: this.calculateAverageCompressionRatio();
-               , isCompressing: this.compressionManager.isCompressing }
-        }
+                averageCompressionRatio: this.calculateAverageCompressionRatio(),
+    isCompressing: this.compressionManager.isCompressing 
+    }
     
     /**
      * 平均圧縮率の計算
@@ -926,4 +926,4 @@ export class StatisticsPerformanceOptimizer {
 
     }
 
-        this.cacheMetadata.clear(') }'
+        this.cacheMetadata.clear() }'

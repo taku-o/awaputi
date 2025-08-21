@@ -5,39 +5,39 @@
 interface TestResult { type: string,
     totalTests: number;
     passedTests: number;
-    failedTests: number;
-   , duration: number;
+    failedTests: number,
+    duration: number;
     details?: TestDetail[]
     ,}
 
 interface TestDetail { name: string;
-    status: 'passed' | 'failed';
-   , duration: number;
+    status: 'passed' | 'failed',
+    duration: number;
     error?: string }
 
 interface BenchmarkResult { type: string;
     duration: number;
     fps: number;
     memoryUsage: number;
-    renderTime: number;
-   , score: number }
+    renderTime: number,
+    score: number }
 
 interface TestSummary { total: number;
     passed: number;
     failed: number;
-    successRate: number;
-   , duration: number }
+    successRate: number,
+    duration: number }
 
 interface CategoryStats { [category: string]: {
         tota;l: number;
-        passed: number;
-       , failed: number }
+        passed: number,
+    failed: number }
 ';
 
 interface IntegrationTestResult { name: string,''
     status: 'passed' | 'failed';
-    message: string;
-   , duration: number ,}
+    message: string,
+    duration: number ,}
 
 interface IntegrationTestResults { summary?: TestSummary;
     categoryStats?: CategoryStats;
@@ -48,8 +48,8 @@ interface ValidationResult { id: string,
 
     name: string,
     status: 'passed' | 'failed';
-    message: string;
-   , duration: number ,}
+    message: string,
+    duration: number ,}
 
 interface ValidationResults { summary?: TestSummary;
     categoryStats?: CategoryStats;
@@ -60,15 +60,15 @@ interface FinalValidationResult { category: string,
 
     name: string,
     status: 'passed' | 'failed';
-    message: string;
-   , duration: number ,}
+    message: string,
+    duration: number ,}
 
 interface FinalValidationResults { summary?: TestSummary;
     targets?: {
         debugOverhea;d: number;
         memoryIncrease: number;
-        initializationTime: number;
-       , panelSwitchTime: number ,};
+        initializationTime: number,
+    panelSwitchTime: number ,};
     categoryStats?: CategoryStats;
     results?: FinalValidationResult[];
     }
@@ -210,27 +210,27 @@ export class TestPanel {
         if (!this.element) return;
 ";
         // テスト実行ボタン""
-        this.element.querySelector('#run-unit-tests'')? .addEventListener('click', () => { ' }
+        this.element.querySelector('#run-unit-tests'')?.addEventListener('click', () => { ' }
 
-            this.runTests('unit);' }
+            this.runTests('unit';' }
 
         }');
 
         this.element.querySelector('#run-integration-tests'')?.addEventListener('click', () => {  ' }
 
-            this.runTests('integration);' }
+            this.runTests('integration';' }
 
         }');
 
         this.element.querySelector('#run-performance-tests'')?.addEventListener('click', () => {  ' }
 
-            this.runTests('performance);' }
+            this.runTests('performance';' }
 
         }');
 
         this.element.querySelector('#run-all-tests'')?.addEventListener('click', () => {  ' }
 
-            this.runTests('all);' }
+            this.runTests('all';' }
 
         }');
 ';
@@ -262,25 +262,25 @@ export class TestPanel {
         // ベンチマークボタン
         this.element.querySelector('#benchmark-particles'')?.addEventListener('click', () => {  ' }
 
-            this.runBenchmark('particles);' }
+            this.runBenchmark('particles';' }
 
         }');
 
         this.element.querySelector('#benchmark-rendering'')?.addEventListener('click', () => {  ' }
 
-            this.runBenchmark('rendering);' }
+            this.runBenchmark('rendering';' }
 
         }');
 
         this.element.querySelector('#benchmark-memory'')?.addEventListener('click', () => {  ' }
 
-            this.runBenchmark('memory);' }
+            this.runBenchmark('memory';' }
 
         }');
 
         this.element.querySelector('#benchmark-all'')?.addEventListener('click', () => {  ' }
 
-            this.runBenchmark('all);' }
+            this.runBenchmark('all';' }
 
         }');
 ';
@@ -291,13 +291,13 @@ export class TestPanel {
 
         this.element.querySelector('#run-game-integration'')?.addEventListener('click', () => {  ' }
 
-            this.runCategoryIntegrationTests('gameSystemIntegration);' }
+            this.runCategoryIntegrationTests('gameSystemIntegration';' }
 
         }');
 
         this.element.querySelector('#run-compatibility-tests'')?.addEventListener('click', () => {  ' }
 
-            this.runCategoryIntegrationTests('crossBrowserCompatibility);' }
+            this.runCategoryIntegrationTests('crossBrowserCompatibility';' }
 
         }');
 
@@ -335,7 +335,7 @@ export class TestPanel {
                 this.displayTestResults(results); }
             } catch (error) { }
 
-            this.addTestResult(`テスト実行エラー: ${(error, as, Error'}).message}`, 'error');
+            this.addTestResult(`テスト実行エラー: ${(error, as, Error'}'.message}`, 'error');
         }
     }
 
@@ -350,8 +350,8 @@ export class TestPanel {
             totalTests: 15;
             passedTests: 13;
             failedTests: 2;
-            duration: 1234;
-           , details: [' ,}'
+            duration: 1234,
+    details: [' ,}'
 
                 { name: 'GameEngine初期化テスト', status: 'passed', duration: 45 ,},''
                 { name: 'バブル生成テスト', status: 'passed', duration: 23 ,},''
@@ -385,7 +385,7 @@ export class TestPanel {
 
                     this.addTestResult(`  → ${detail.error}`, 'error'});
                 }
-            });
+            }';
         }
     }
 
@@ -409,7 +409,7 @@ export class TestPanel {
 
         } catch (error) { }
 
-            this.addTestResult(`バブル生成エラー: ${(error, as, Error'}).message}`, 'error');
+            this.addTestResult(`バブル生成エラー: ${(error, as, Error'}'.message}`, 'error');
         }
     }
 
@@ -434,7 +434,7 @@ export class TestPanel {
 
         } catch (error) { }
 
-            this.addTestResult(`プレイヤーデータ生成エラー: ${(error, as, Error'}).message}`, 'error');
+            this.addTestResult(`プレイヤーデータ生成エラー: ${(error, as, Error'}'.message}`, 'error');
         }
     }
 
@@ -463,7 +463,7 @@ export class TestPanel {
 
         } catch (error) { }
 
-            this.addTestResult(`ゲーム状態設定エラー: ${(error, as, Error'}).message}`, 'error');
+            this.addTestResult(`ゲーム状態設定エラー: ${(error, as, Error'}'.message}`, 'error');
         }
     }
 
@@ -479,7 +479,7 @@ export class TestPanel {
 
         } catch (error) { }
 
-            this.addBenchmarkResult(`ベンチマークエラー: ${(error, as, Error'}).message}`, 'error');
+            this.addBenchmarkResult(`ベンチマークエラー: ${(error, as, Error'}'.message}`, 'error');
         }
     }
 
@@ -497,8 +497,8 @@ export class TestPanel {
         // モック結果
         const mockResults: BenchmarkResult = {
             type: type;
-            duration: duration;
-           , fps: Math.random() * 20 + 40, // 40-60 FPS;
+            duration: duration,
+    fps: Math.random() * 20 + 40, // 40-60 FPS;
             memoryUsage: Math.random() * 50 + 50, // 50-100 MB;
             renderTime: Math.random() * 10 + 5, // 5-15 ms;
             score: Math.floor(Math.random() * 40 + 60) // 60-100点 ,}
@@ -512,7 +512,7 @@ export class TestPanel {
     private displayBenchmarkResults(results: BenchmarkResult): void { ''
         if(!this.element) return;
 
-        const resultsDiv = this.element.querySelector('#benchmark-results) as HTMLElement;''
+        const resultsDiv = this.element.querySelector('#benchmark-results' as HTMLElement;''
         if(resultsDiv) {'
 
             const div = document.createElement('div'');''
@@ -533,10 +533,10 @@ export class TestPanel {
     /**
      * テスト結果を追加'
      */''
-    private addTestResult(message: string, type: 'info' | 'success' | 'warning' | 'error' = 'info): void { ''
+    private addTestResult(message: string, type: 'info' | 'success' | 'warning' | 'error' = 'info': void { ''
         if(!this.element) return;
 
-        const results = this.element.querySelector('#test-results) as HTMLElement;''
+        const results = this.element.querySelector('#test-results' as HTMLElement;''
         if(results) {'
 
             // "結果がありません"メッセージを削除""
@@ -550,7 +550,7 @@ export class TestPanel {
             div.className = `test-result test-${type}`;
 
             div.innerHTML = `'';
-                <span class="result-time">${new, Date(}.toLocaleTimeString("})</span>""
+                <span class="result-time">${new, Date(}.toLocaleTimeString("}"</span>""
                 <span class="result-message">${message}</span>"
             `;""
             results.appendChild(div);
@@ -615,7 +615,7 @@ export class TestPanel {
 
             } catch (error) { }
 
-            this.addTestResult(`統合テスト実行エラー: ${(error, as, Error'}).message}`, 'error');
+            this.addTestResult(`統合テスト実行エラー: ${(error, as, Error'}'.message}`, 'error');
         }
     }
 
@@ -640,7 +640,7 @@ export class TestPanel {
 
                 const, results = await, this.debugInterface.runCategoryIntegrationTests(category);' }'
 
-                this.displayIntegrationTestResults(results'});
+                this.displayIntegrationTestResults(results'}';
 
             } else { }'
 
@@ -648,7 +648,7 @@ export class TestPanel {
 
             } catch (error) { }
 
-            this.addTestResult(`${categoryName}テスト実行エラー: ${(error, as, Error'}).message}`, 'error');
+            this.addTestResult(`${categoryName}テスト実行エラー: ${(error, as, Error'}'.message}`, 'error');
         }
     }
 
@@ -708,7 +708,7 @@ export class TestPanel {
         if(results.results && results.results.length > 0) {'
 
             const detailsDiv = document.createElement('div'');''
-            detailsDiv.className = 'integration-details';''
+            detailsDiv.className = 'integration-details';
             detailsDiv.innerHTML = '<h6>詳細結果</h6>';
 
             ';
@@ -741,7 +741,7 @@ export class TestPanel {
     private async exportIntegrationTestResults(): Promise<void> { try {
             if(this.debugInterface && this.debugInterface.exportIntegrationTestResults) {"
 
-                await this.debugInterface.exportIntegrationTestResults(");"
+                await this.debugInterface.exportIntegrationTestResults();"
             }"
                 this.addTestResult('統合テスト結果をエクスポートしました', 'success''); }
 
@@ -751,7 +751,7 @@ export class TestPanel {
 
             } catch (error) { }
 
-            this.addTestResult(`エクスポートエラー: ${(error, as, Error'}).message}`, 'error');
+            this.addTestResult(`エクスポートエラー: ${(error, as, Error'}'.message}`, 'error');
         }
     }
 
@@ -771,7 +771,7 @@ export class TestPanel {
 
             } catch (error) { }
 
-            this.addTestResult(`要件検証エラー: ${(error, as, Error'}).message}`, 'error');
+            this.addTestResult(`要件検証エラー: ${(error, as, Error'}'.message}`, 'error');
         }
     }
 
@@ -831,7 +831,7 @@ export class TestPanel {
         if(results.results && results.results.length > 0) {'
 
             const detailsDiv = document.createElement('div'');''
-            detailsDiv.className = 'validation-details';''
+            detailsDiv.className = 'validation-details';
             detailsDiv.innerHTML = '<h6>詳細結果</h6>';
 
             ';
@@ -865,7 +865,7 @@ export class TestPanel {
     private async exportValidationResults(): Promise<void> { try {
             if(this.debugInterface && this.debugInterface.exportRequirementsValidationResults) {"
 
-                await this.debugInterface.exportRequirementsValidationResults(");"
+                await this.debugInterface.exportRequirementsValidationResults();"
             }"
                 this.addTestResult('要件検証結果をエクスポートしました', 'success''); }
 
@@ -875,7 +875,7 @@ export class TestPanel {
 
             } catch (error) { }
 
-            this.addTestResult(`エクスポートエラー: ${(error, as, Error'}).message}`, 'error');
+            this.addTestResult(`エクスポートエラー: ${(error, as, Error'}'.message}`, 'error');
         }
     }
 
@@ -895,7 +895,7 @@ export class TestPanel {
 
             } catch (error) { }
 
-            this.addTestResult(`最終検証エラー: ${(error, as, Error'}).message}`, 'error');
+            this.addTestResult(`最終検証エラー: ${(error, as, Error'}'.message}`, 'error');
         }
     }
 
@@ -974,7 +974,7 @@ export class TestPanel {
         if(results.results && results.results.length > 0) {'
 
             const detailsDiv = document.createElement('div'');''
-            detailsDiv.className = 'final-validation-details';''
+            detailsDiv.className = 'final-validation-details';
             detailsDiv.innerHTML = '<h6>詳細結果</h6>';
 
             ';
@@ -1008,7 +1008,7 @@ export class TestPanel {
     private async exportFinalValidationResults(): Promise<void> { try {
             if(this.debugInterface && this.debugInterface.exportFinalValidationResults) {"
 
-                await this.debugInterface.exportFinalValidationResults(");"
+                await this.debugInterface.exportFinalValidationResults();"
             }"
                 this.addTestResult('最終検証結果をエクスポートしました', 'success''); }
 
@@ -1018,7 +1018,7 @@ export class TestPanel {
 
             } catch (error) { }
 
-            this.addTestResult(`エクスポートエラー: ${(error, as, Error'}).message}`, 'error');
+            this.addTestResult(`エクスポートエラー: ${(error, as, Error'}'.message}`, 'error');
         }
     }
 

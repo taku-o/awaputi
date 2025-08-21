@@ -5,7 +5,7 @@
  * Main Controller Pattern: Lightweight orchestrator delegating to specialized sub-components
  */
 
-import { TestChartGenerator  } from './test-result-visualizer/TestChartGenerator.js';''
+import { TestChartGenerator  } from './test-result-visualizer/TestChartGenerator.js';
 import { TestDataVisualizer  } from './test-result-visualizer/TestDataVisualizer.js';
 
 interface TestSupportTools { // Define the interface based on usage }
@@ -14,14 +14,14 @@ interface TestResult { id: string,
     name: string,
     status: 'passed' | 'failed' | 'skipped';
     duration: number;
-    error?: Error;
-   , timestamp: number ,}
+    error?: Error,
+    timestamp: number ,}
 
 interface TestSummary { total: number;
     passed: number;
     failed: number;
-    skipped: number;
-   , duration: number;
+    skipped: number,
+    duration: number;
     coverage?: number }
 
 export class TestResultVisualizer {
@@ -51,17 +51,17 @@ export class TestResultVisualizer {
 
     private createContainer()';
         this.container = document.createElement('div'');''
-        this.container.id = 'test-result-visualizer';''
+        this.container.id = 'test-result-visualizer';
         this.container.className = 'test-result-visualizer';
         this.container.style.cssText = `;
             position: fixed;
             top: 10px;
-            left: 10px;
-           , width: 900px,
+            left: 10px,
+    width: 900px,
             height: 700px,
             background: rgba(0, 0, 0, 0.9),
-            color: white;
-           , padding: 20px,
+            color: white,
+    padding: 20px,
             border-radius: 12px,
             font-family: 'Segoe UI', monospace;
             font-size: 13px,
@@ -76,7 +76,7 @@ export class TestResultVisualizer {
         document.body.appendChild(this.container);
     }
 
-    private createDashboardHTML('): string { return `''
+    private createDashboardHTML(): string { return `''
             <div class="dashboard-header">"";
                 <h2 style="margin: 0 0 15px 0; color: #00ff88; display: flex; align-items: center;">""
                     <span style="margin-right: 10px;">📊</span>
@@ -193,13 +193,13 @@ export class TestResultVisualizer {
         const clearBtn = this.container.querySelector('#clear-history'');''
         const closeBtn = this.container.querySelector('#close-visualizer'');
 
-        refreshBtn? .addEventListener('click', () => this.refreshResults());''
+        refreshBtn?.addEventListener('click', () => this.refreshResults());''
         exportBtn?.addEventListener('click', () => this.exportResults());''
         clearBtn?.addEventListener('click', () => this.clearHistory());''
         closeBtn?.addEventListener('click', () => this.hide());
 ';
         // Tab buttons
-        const tabButtons = this.container.querySelectorAll('.tab-button);''
+        const tabButtons = this.container.querySelectorAll('.tab-button';''
         tabButtons.forEach(button => { ');''
             button.addEventListener('click', (e) => {'
                 const target = e.target as HTMLElement;''
@@ -237,19 +237,19 @@ export class TestResultVisualizer {
         if(!this.container) return;
 ';
         // Update tab buttons
-        const tabButtons = this.container.querySelectorAll('.tab-button);''
+        const tabButtons = this.container.querySelectorAll('.tab-button';''
         tabButtons.forEach(btn => { ');''
-            btn.classList.remove('active);''
+            btn.classList.remove('active';''
             (btn, as HTMLElement').style.background = '#222';' }
 
             (btn, as HTMLElement').style.color = '#ccc';' }
 
         }');
 
-        const activeButton = this.container.querySelector(`[data-tab="${tabName}"]`);""
+        const activeButton = this.container.querySelector(`[data-tab="${tabName}"]`";""
         if(activeButton) {"
 
-            activeButton.classList.add('active);''
+            activeButton.classList.add('active';''
             (activeButton, as HTMLElement').style.background = '#444';
 
         }
@@ -282,8 +282,8 @@ export class TestResultVisualizer {
         switch(tabName) {'
 
             case 'summary':'';
-                this.loadSummaryContent(''';
-            case 'performance':'';
+                this.loadSummaryContent('''
+            case 'performance': '';
                 this.loadPerformanceContent(''';
             case 'trends':'';
                 this.loadTrendsContent(''';
@@ -313,7 +313,7 @@ export class TestResultVisualizer {
     private refreshResults(): void { // Get latest test results from testSupportTools
         // this.currentTestResults = this.testSupportTools.getLatestResults();
         this.updateSummaryDisplay()';
-        this.loadTabContent('summary); }'
+        this.loadTabContent('summary'; }'
 
     private updateSummaryDisplay(): void { if (!this.currentTestResults || !this.container) return;
 
@@ -329,7 +329,7 @@ export class TestResultVisualizer {
         this.updateElement('avg-duration', `${(summary.duration / summary.total}.toFixed(2})ms`);
     }
 
-    private updateElement(id: string, text: string): void { const element = this.container? .querySelector(`#${id}`}
+    private updateElement(id: string, text: string): void { const element = this.container?.querySelector(`#${id}`}
         if (element}) { element.textContent = text; }
     }
 
@@ -345,14 +345,14 @@ export class TestResultVisualizer {
 
         const data = {
             results: this.currentTestResults;
-            summary: this.calculateSummary(this.currentTestResults);
-           , exportedAt: new Date().toISOString( };
+            summary: this.calculateSummary(this.currentTestResults),
+    exportedAt: new Date().toISOString( };
 
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });''
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }';''
         const url = URL.createObjectURL(blob);''
         const a = document.createElement('a);
         a.href = url;
-        a.download = `test-results-${Date.now(}).json`;
+        a.download = `test-results-${Date.now()).json`;
         a.click();
         URL.revokeObjectURL(url);
     }
@@ -367,11 +367,11 @@ export class TestResultVisualizer {
             this.updateSummaryDisplay();
         }
 
-            this.loadTabContent('summary); }'
+            this.loadTabContent('summary'; }'
 }
 
     public destroy(): void { if (this.container && this.container.parentNode) {
             this.container.parentNode.removeChild(this.container); }
 
         }''
-        this.charts.clear(');
+        this.charts.clear();

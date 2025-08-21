@@ -6,13 +6,13 @@
 // IndexedDB Storage Manager interfaces and types
 export interface StoreDefinition { name: string,
     keyPath: string;
-    autoIncrement?: boolean;
-   , indexes: IndexDefinition[]
+    autoIncrement?: boolean,
+    indexes: IndexDefinition[]
     ,}
 
 export interface IndexDefinition { name: string;
-    keyPath: string;
-   , unique: boolean }
+    keyPath: string,
+    unique: boolean }
 
 export interface QueryOptions { limit?: number;
     offset?: number;
@@ -23,12 +23,12 @@ export interface QueryOptions { limit?: number;
 ';
 
 export interface QueryFilter { field: string,''
-    operator: 'equals' | 'greaterThan' | 'lessThan' | 'between' | 'in';
-   , value: any ,}
+    operator: 'equals' | 'greaterThan' | 'lessThan' | 'between' | 'in',
+    value: any ,}
 
 export interface StorageStats { totalRecords: number;
-    storageSize: number;
-   , stores: Record<string, number>, }
+    storageSize: number,
+    stores: Record<string, number>, }
 
 export class IndexedDBStorageManager {
     private dbName: string;
@@ -39,7 +39,7 @@ export class IndexedDBStorageManager {
     constructor(''';
         this.dbName = 'BubblePopAnalytics';
         this.version = 1;
-        this.db = null;
+        this.db = null
         
         // ストア定義
         this.stores = {
@@ -56,8 +56,8 @@ export class IndexedDBStorageManager {
 
             bubbleInteractions: { ''
                 name: 'bubbleInteractions',
-                keyPath: 'id';
-               , autoIncrement: true,
+                keyPath: 'id',
+    autoIncrement: true,
                 indexes: [' ,}'
 
                     { name: 'sessionId', keyPath: 'sessionId', unique: false ,},''
@@ -69,8 +69,8 @@ export class IndexedDBStorageManager {
 
             performance: { ''
                 name: 'performance',
-                keyPath: 'id';
-               , autoIncrement: true,
+                keyPath: 'id',
+    autoIncrement: true,
                 indexes: [' ,}'
 
                     { name: 'sessionId', keyPath: 'sessionId', unique: false ,},''
@@ -81,8 +81,8 @@ export class IndexedDBStorageManager {
 
             gameBalance: { ''
                 name: 'gameBalance',
-                keyPath: 'id';
-               , autoIncrement: true,
+                keyPath: 'id',
+    autoIncrement: true,
                 indexes: [' ,}'
 
                     { name: 'sessionId', keyPath: 'sessionId', unique: false ,},''
@@ -94,8 +94,8 @@ export class IndexedDBStorageManager {
             userBehavior: { ''
                 name: 'userBehavior',
                 keyPath: 'id);
-                autoIncrement: true)';
-               , indexes: [' ,}'
+                autoIncrement: true'',
+    indexes: [' ,}'
 
                     { name: 'sessionId', keyPath: 'sessionId', unique: false ,},''
                     { name: 'timestamp', keyPath: 'timestamp', unique: false ,},]'
@@ -128,7 +128,7 @@ export class IndexedDBStorageManager {
 
             }
 
-                reject(new, Error('IndexedDB, is not, supported); }'
+                reject(new, Error('IndexedDB, is not, supported'; }'
                 return; }
             }
             
@@ -162,8 +162,8 @@ export class IndexedDBStorageManager {
             
             // インデックスの作成
             store.indexes.forEach(index => { objectStore.createIndex(index.name, index.keyPath, { }
-                    unique: index.unique); }
-            };
+                    unique: index.unique); 
+    };
     }
     
     /**
@@ -178,7 +178,7 @@ export class IndexedDBStorageManager {
 
             }
 
-                reject(new, Error('Database, not available)); }'
+                reject(new, Error('Database, not available)'; }'
                 return; }
             }
 
@@ -211,7 +211,7 @@ export class IndexedDBStorageManager {
 
             }
 
-                reject(new, Error('Database, not available)); }'
+                reject(new, Error('Database, not available)'; }'
                 return; }
             }
 
@@ -242,8 +242,8 @@ export class IndexedDBStorageManager {
                         request = index.openCursor(IDBKeyRange.bound(filter.value[0], filter.value[1]);
                         break;
             }
-                    default: request = store.openCursor(); }
-} else { request = store.openCursor(); }
+                    default: request = store.openCursor(); 
+    } else { request = store.openCursor(); }
             
             let count = 0;
             const offset = options.offset || 0;
@@ -278,7 +278,7 @@ export class IndexedDBStorageManager {
 
             }
 
-                reject(new, Error('Database, not available)); }'
+                reject(new, Error('Database, not available)'; }'
                 return; }
             }
 
@@ -306,7 +306,7 @@ export class IndexedDBStorageManager {
 
             }
 
-                reject(new, Error('Database, not available)); }'
+                reject(new, Error('Database, not available)'; }'
                 return; }
             }
 
@@ -334,7 +334,7 @@ export class IndexedDBStorageManager {
 
             }
 
-                reject(new, Error('Database, not available)); }'
+                reject(new, Error('Database, not available)'; }'
                 return; }
             }
 
@@ -362,7 +362,7 @@ export class IndexedDBStorageManager {
 
             }
 
-                reject(new, Error('Database, not available)); }'
+                reject(new, Error('Database, not available)'; }'
                 return; }
             }
 
@@ -391,8 +391,8 @@ export class IndexedDBStorageManager {
                         request = index.count(IDBKeyRange.bound(filter.value[0], filter.value[1]);
                         break;
             }
-                    default: request = store.count(); }
-} else { request = store.count(); }
+                    default: request = store.count(); 
+    } else { request = store.count(); }
             
             request.onsuccess = () => { resolve(request.result); };
             
@@ -435,9 +435,9 @@ export class IndexedDBStorageManager {
             for(const, storeName of, Object.keys(this.stores)) {
                 const oldData = await this.getData(storeName, {'
                     filters: [{''
-                        field: 'timestamp',)';
-                        operator: 'lessThan')];
-                       , value: cutoffTime ,}]
+                        field: 'timestamp','';
+                        operator: 'lessThan')],
+    value: cutoffTime ,}]
                     }]);
                 ;
                 for(const, item of, oldData) {'
@@ -459,8 +459,8 @@ export class IndexedDBStorageManager {
      * データのエクスポート
      */
     async exportData(storeName?: string): Promise<any> { const exportData: any = {
-            exportDate: new Date().toISOString();
-           , version: this.version, }
+            exportDate: new Date().toISOString(),
+    version: this.version, }
             stores: {};
         try { const storeNames = storeName ? [storeName] : Object.keys(this.stores);
             
@@ -513,7 +513,7 @@ export class IndexedDBStorageManager {
 
             return true;''
         } catch (error) {
-            console.error('Health check failed:', error);
+            console.error('Health check failed:', error';
             return false;
     
     /**

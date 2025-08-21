@@ -3,17 +3,17 @@
  * リアルタイム設定値修正、検証、エクスポート・インポート機能を提供するコマンド群
  */
 
-import type { GameEngine } from '../core/GameEngine';''
-import type { ConfigurationManager } from '../core/ConfigurationManager';''
+import type { GameEngine } from '../core/GameEngine';
+import type { ConfigurationManager } from '../core/ConfigurationManager';
 import type { DeveloperConsole } from './DeveloperConsole';
 
 interface CommandParameter { name: string,
     type: string;
-    required: boolean;
-   , description: string ,}
+    required: boolean,
+    description: string ,}
 
-interface CommandOptions { description: string;
-   , usage: string;
+interface CommandOptions { description: string,
+    usage: string;
     parameters?: CommandParameter[];
     examples?: string[];
     group?: string; }
@@ -21,8 +21,8 @@ interface CommandOptions { description: string;
 interface ChangeHistoryEntry { timestamp: string,
     path: string;
     oldValue: any;
-    newValue: any;
-   , source: string ,}
+    newValue: any,
+    source: string ,}
 
 interface ConfigurationSetOptions { validate?: boolean;
     saveToStorage?: boolean; }
@@ -30,25 +30,25 @@ interface ConfigurationSetOptions { validate?: boolean;
 interface ImportResult { path: string,
     value: any ,}
 
-interface ImportError { path: string;
-   , message: string }
+interface ImportError { path: string,
+    message: string }
 
 interface DiffEntry { path: string;
-    current: any;
-   , default: any }
+    current: any,
+    default: any }
 
 interface ConfigurationTemplate { [key: string]: any, }
 
 interface TemplateResult { path: string,
     value: any ,}
 
-interface TemplateError { path: string;
-   , error: string }
+interface TemplateError { path: string,
+    error: string }
 
-interface ValidationResult { isValid: boolean;
-   , errors: Array<{
-        pat;h: string;
-       , message: string }>;
+interface ValidationResult { isValid: boolean,
+    errors: Array<{
+        pat;h: string,
+    message: string }>;
 }
 
 export class ConfigurationCommands {
@@ -399,13 +399,13 @@ export class ConfigurationCommands {
 
             } catch (parseError) { }
 
-                return `Invalid JSON format: ${(parseError, as, Error'}).message}`;
+                return `Invalid JSON format: ${(parseError, as, Error'}'.message}`;
             }
             
             const importResults: ImportResult[] = [],
             const errors: ImportError[] = [],
 
-            this.importConfigRecursive(config, '', importResults, errors);
+            this.importConfigRecursive(config, '', importResults, errors';
 
             let output = '';
             if(importResults.length > 0) {
@@ -566,8 +566,8 @@ export class ConfigurationCommands {
             test: { '', 'performance.targetFPS': 30,
                 'debug.enabled': true,
                 'audio.volume.master': 0.0,
-                'game.difficulty.modifier': 0.5 }
-        };
+                'game.difficulty.modifier': 0.5 
+    };
         ';
 
         const template = templates[templateName];''
@@ -598,8 +598,8 @@ export class ConfigurationCommands {
                 this.changeHistory.push({);
                     timestamp: new Date().toISOString();
                     path,
-                    oldValue: this.configManager.get(path);
-                   , newValue: value, }
+                    oldValue: this.configManager.get(path),
+    newValue: value, }
                     source: `template:${templateName}`
                 });
             } catch (error) { }
@@ -728,8 +728,8 @@ export class ConfigurationCommands {
                     
                     // 変更履歴に記録
                     this.changeHistory.push({);
-                        timestamp: new Date().toISOString();
-                       , path: fullPath,
+                        timestamp: new Date().toISOString(),
+    path: fullPath,
                         oldValue: this.configManager.get(fullPath),
                         newValue: value,
                         source: 'import' ,});
@@ -761,8 +761,8 @@ export class ConfigurationCommands {
                 differences.push(...childDiffs);
         } else if (current !== defaults) { // プリミティブ値の比較
             differences.push({)
-                path: basePath);
-               , current: current,);
+                path: basePath),
+    current: current,);
                 default: defaults ,}
         
         return differences;

@@ -11,23 +11,23 @@ interface GameStats { totalScore: number,
     bestCombo: number;
     accuracy: number;
     bubblesPopped: number;
-    perfectRounds: number;
-   , highestStreak: number ,}
+    perfectRounds: number,
+    highestStreak: number ,}
 interface Achievement { id: string;
     name: string;
     description: string;
     unlocked: boolean;
     unlockedAt?: number;
     rare: boolean;
-    rarity?: string;
-   , category: string;
+    rarity?: string,
+    category: string;
     progress?: number;
     target?: number; }
 interface GameResult { score: number,
     stage: string;
     playTime: number;
-    combo: number;
-   , accuracy: number;
+    combo: number,
+    accuracy: number;
     isHighScore?: boolean;
     bubblesPopped?: number;
     perfectStreak?: number;
@@ -35,8 +35,8 @@ interface GameResult { score: number,
 interface ShareSettings { autoShare: boolean,
     shareHighScores: boolean;
     shareAchievements: boolean;
-    shareProgress: boolean;
-   , privacy: string ,}
+    shareProgress: boolean,
+    privacy: string ,}
 interface PlayerSettings {
     shareSettings: ShareSettings;
 }
@@ -50,8 +50,8 @@ interface ChallengeData { id: string,
     type: string;
     completed: boolean;
     completedAt?: number;
-    progress?: number;
-   , target: number;
+    progress?: number,
+    target: number;
     reward?: {
         a;p?: number;
         items?: string[]; ,}
@@ -62,8 +62,8 @@ interface CleanupResult { cleaned: boolean,
     itemsRemoved: number ,}
 interface AchievementProgress { total: number;
     unlocked: number;
-    percentage: number;
-   , rare: number }
+    percentage: number,
+    rare: number }
 interface GameEngine { canvas: HTMLCanvasElement;
     getCanvas(): HTMLCanvasElement
     }
@@ -103,8 +103,8 @@ interface SocialSharingManager { gameEngine: GameEngine,
     isInitialized: boolean;
     shareContentGenerator: any;
     screenshotCapture: any;
-    leaderboardManager: any;
-   , challengeSystem: any;
+    leaderboardManager: any,
+    challengeSystem: any;
     initialize(): Promise<void>;
     checkShareSuggestion(gameResult: GameResult): Promise<ShareSuggestion>,
     handleGameEnd(gameResult: GameResult): Promise<void>,
@@ -124,8 +124,8 @@ interface SocialSharingManager { gameEngine: GameEngine,
 class FullSystemMock { gameEngine: GameEngine,
     statisticsManager: StatisticsManager;
     achievementManager: AchievementManager;
-    playerData: PlayerData;
-   , settingsManager: SettingsManager;
+    playerData: PlayerData,
+    settingsManager: SettingsManager;
     constructor() {
         this.gameEngine = this.createGameEngine();
         this.statisticsManager = this.createStatisticsManager();
@@ -142,29 +142,29 @@ class FullSystemMock { gameEngine: GameEngine,
         const ctx = canvas.getContext('2d'')!;
 
         // テストゲーム画面を描画
-        ctx.fillStyle = '#1a1a2e';''
+        ctx.fillStyle = '#1a1a2e';
         ctx.fillRect(0, 0, 800, 600);''
         ctx.fillStyle = '#16213e';
         ctx.beginPath();
 
         ctx.arc(400, 300, 200, 0, Math.PI * 2);''
         ctx.fill(''';
-        ctx.fillStyle = '#0f3460';''
-        ctx.font = 'bold, 48px Arial';)'
+        ctx.fillStyle = '#0f3460';
+        ctx.font = 'bold, 48px Arial';''
         ctx.textAlign = 'center';')'
-        ctx.fillText('BubblePop', 400, 200);''
-        ctx.fillStyle = '#e94560';''
-        ctx.font = '32px Arial';''
-        ctx.fillText('Score: 75000', 400, 320);''
+        ctx.fillText('BubblePop', 400, 200';''
+        ctx.fillStyle = '#e94560';
+        ctx.font = '32px Arial';
+        ctx.fillText('Score: 75000', 400, 320';''
         ctx.fillText('Combo: 25x', 400, 380);
         return { canvas, };
 
             getCanvas: () => canvas;' }'
 
-            getCurrentScene: (') => ({ name: 'GameScene', isGameEnd: true ,}),
+            getCurrentScene: () => ({ name: 'GameScene', isGameEnd: true ,}),
             isRunning: () => true;
             render: () => { // レンダリングロジックのシミュレート }
-                ctx.fillStyle = `hsl(${Date.now(}) % 360}, 70%, 50%)`;
+                ctx.fillStyle = `hsl(${Date.now()) % 360}, 70%, 50%)`;
                 for(let, i = 0; i < 10; i++) {
                     ctx.beginPath();
                     ctx.arc();
@@ -187,7 +187,7 @@ class FullSystemMock { gameEngine: GameEngine,
                 totalGames++;
                 totalScore += session.score;
             },
-            getDetailedStatistics: () => ({ totalScore;
+            getDetailedStatistics: () => ({ totalScore
                 totalGames,
                 averageScore: Math.floor(totalScore / totalGames;
                 totalPlayTime: 180000;
@@ -196,8 +196,8 @@ class FullSystemMock { gameEngine: GameEngine,
                 bubblesPopped: 25000;
                 perfectRounds: 12;
                 highestStreak: 8);
-                highScore: 75000);
-               , gamesPlayed: totalGames ,});
+                highScore: 75000),
+    gamesPlayed: totalGames ,});
             getHighScore: (stage: string) => {  }
                 const highScores: Record<string, number> = { normal: 65000, hard: 48000, expert: 32000 ,}
                 return highScores[stage] || 0;
@@ -209,22 +209,22 @@ class FullSystemMock { gameEngine: GameEngine,
             getAccuracy: () => 0.82;
             getSessions: () => [...sessions];,
     }''
-    createAchievementManager(''';
+    createAchievementManager('''
             ['first_win', { ''
                 id: 'first_win',
                 name: '初勝利',
                 description: '初めてゲームをクリア',
                 unlocked: true,
-                unlockedAt: Date.now(']';
-               , category: 'progress' ,}]'
+                unlockedAt: Date.now(']',
+    category: 'progress' ,}]'
             }],''
             ['high_scorer', { ''
                 id: 'high_scorer',
                 name: 'ハイスコアラー',
                 description: '50000点を達成',
                 unlocked: true,
-                unlockedAt: Date.now(']';
-               , category: 'score' ,}]'
+                unlockedAt: Date.now(']',
+    category: 'score' ,}]'
             }],''
             ['combo_master', { ''
                 id: 'combo_master',
@@ -232,8 +232,8 @@ class FullSystemMock { gameEngine: GameEngine,
                 description: '30コンボを達成';
                 unlocked: false;
                 progress: 25);
-                target: 30)';
-               , rare: true,]';
+                target: 30'',
+    rare: true,]';
                 category: 'skill' ,}]
             }])
         ]);
@@ -250,7 +250,7 @@ class FullSystemMock { gameEngine: GameEngine,
 
             },''
             checkAndUnlockAchievements: (gameData: GameResult') => {  const newlyUnlocked: Achievement[] = [];
-                if(gameData.combo >= 30 && !achievements.get('combo_master)!.unlocked) {''
+                if(gameData.combo >= 30 && !achievements.get('combo_master)!.unlocked' {''
                     const achievement = achievements.get('combo_master)!;
                     achievement.unlocked = true;
                     achievement.unlockedAt = Date.now(); }
@@ -260,15 +260,15 @@ class FullSystemMock { gameEngine: GameEngine,
                 return newlyUnlocked;
 
     }''
-    createPlayerData(''';
+    createPlayerData('''
             playerName: 'TestPlayer';
             totalAP: 8500;
-            totalTAP: 25000;
-           , highScores: { normal: 65000, hard: 48000, expert: 32000 ,},
+            totalTAP: 25000,
+    highScores: { normal: 65000, hard: 48000, expert: 32000 ,},
             settings: { shareSettings: {
                     autoShare: true;
-                    shareHighScores: true;
-                   , shareAchievements: true,
+                    shareHighScores: true,
+    shareAchievements: true,
                     shareProgress: true,
                     privacy: 'public' ,}
             }))
@@ -285,7 +285,7 @@ class FullSystemMock { gameEngine: GameEngine,
             updateSettings: (newSettings: Partial<PlayerSettings>) => { Object.assign(data.settings, newSettings); }
 
             },''
-            save: (') => localStorage.setItem('playerData', JSON.stringify(data);
+            save: () => localStorage.setItem('playerData', JSON.stringify(data);
         }
 
     createSettingsManager(): SettingsManager { return { ''
@@ -297,8 +297,8 @@ class FullSystemMock { gameEngine: GameEngine,
 
                     'ui.theme': 'modern',' };
 
-                    'ui.animations': true }
-                };
+                    'ui.animations': true 
+    };
                 return settings[key];
             },
 
@@ -318,19 +318,19 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
         global.window = window;
         global.localStorage = {
             getItem: jest.fn();
-            setItem: jest.fn();
-           , removeItem: jest.fn() ,}
-        clear: jest.fn(); }
-        } as any;
+            setItem: jest.fn(),
+    removeItem: jest.fn() ,}
+        clear: jest.fn(); 
+    } as any;
         // Web Share API のモック
         global.navigator = { share: jest.fn().mockResolvedValue(undefined,)'
-            canShare: jest.fn()';
-           , userAgent: 'Mozilla/5.0(iPhone; CPU, iPhone OS, 14_0 like, Mac OS, X) AppleWebKit/605.1.15' ,} as any;
+            canShare: jest.fn()',
+    userAgent: 'Mozilla/5.0(iPhone; CPU, iPhone OS, 14_0 like, Mac OS, X) AppleWebKit/605.1.15' ,} as any;
         // Performance API のモック
         global.performance = { now: jest.fn(() => Date.now(),
             memory: {
-                usedJSHeapSize: 10000000;
-       , totalJSHeapSize: 50000000 ,}
+                usedJSHeapSize: 10000000,
+    totalJSHeapSize: 50000000 ,}
     });
         } as any;
     });''
@@ -358,7 +358,7 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             challengeNotifications: document.getElementById('challengeNotifications'')!,
             modalContainer: document.getElementById('modalContainer'')!,' }
 
-            finalScore: document.getElementById('finalScore)! }'
+            finalScore: document.getElementById('finalScore'! }'
         };
         // フルシステムモックを初期化
         systemMock = new FullSystemMock()';
@@ -386,10 +386,10 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
                 playTime: 425000;
                 combo: 32;
                 accuracy: 0.89;
-                isHighScore: true;
-               , bubblesPopped: 845, }
-                perfectStreak: 12 }
-            };
+                isHighScore: true,
+    bubblesPopped: 845, }
+                perfectStreak: 12 
+    };
             // 1. ゲーム終了処理
             systemMock.statisticsManager.recordGameSession(gameResult);''
             const wasHighScore = systemMock.playerData.updateHighScore('normal', gameResult.score);
@@ -402,7 +402,7 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             // 3. 共有提案の生成
             const shareSuggestion = await socialManager.checkShareSuggestion(gameResult);
             expect(shareSuggestion.shouldSuggestShare).toBe(true);''
-            expect(shareSuggestion.reasons).toContain('high_score);''
+            expect(shareSuggestion.reasons).toContain('high_score';''
             expect(shareSuggestion.reasons).toContain('new_achievement'');
 
             // 4. ゲーム終了画面の表示と共有ボタンの挿入
@@ -412,7 +412,7 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             await socialManager.handleGameEnd(gameResult);
 
             // 共有ボタンが挿入されることを確認
-            const shareButton = domElements.actionButtons.querySelector('.share-button) as HTMLElement;''
+            const shareButton = domElements.actionButtons.querySelector('.share-button' as HTMLElement;''
             expect(shareButton).toBeTruthy()';
             expect(shareButton.classList.contains('highlight).toBe(true);
             // 5. スクリーンショット生成
@@ -420,8 +420,8 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
                 overlayData: {
                     score: gameResult.score;
                     stage: gameResult.stage);
-                    isHighScore: true);
-                   , combo: gameResult.combo ,});''
+                    isHighScore: true),
+    combo: gameResult.combo ,});''
             expect(screenshot).toBeTruthy()';
             expect(screenshot!.startsWith('data: image/).toBe(true),
             // 6. 共有ボタンクリックとダイアログ表示
@@ -440,12 +440,12 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             const messageEditor = shareDialog.querySelector('.message-editor) as HTMLTextAreaElement;
 
             expect(messageEditor).toBeTruthy();''
-            expect(messageEditor.value).toContain('78000);''
+            expect(messageEditor.value).toContain('78000';''
             expect(messageEditor.value).toContain('コンボマスター'');
 
             // カスタムメッセージを入力
-            messageEditor.value = 'BubblePopで新記録78000点！コンボマスターも解除したよ！ #BubblePop #NewRecord';''
-            messageEditor.dispatchEvent(new, Event('input));
+            messageEditor.value = 'BubblePopで新記録78000点！コンボマスターも解除したよ！ #BubblePop #NewRecord';
+            messageEditor.dispatchEvent(new, Event('input)';
 
             // 9. 最終的な共有実行
             const shareNowButton = shareDialog.querySelector('.share-now-button) as HTMLElement;
@@ -454,7 +454,7 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
 
             // Web Share API が呼ばれることを確認
             expect(navigator.share).toHaveBeenCalledWith({ ''
-                title: 'BubblePop - New High Score!',)';
+                title: 'BubblePop - New High Score!','';
                 text: 'BubblePopで新記録78000点！コンボマスターも解除したよ！ #BubblePop #NewRecord',')';
         url: expect.stringContaining('bubblePop ,}'
 
@@ -463,7 +463,7 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             const successMessage = document.querySelector('.share-success-message) as HTMLElement;
 
             expect(successMessage).toBeTruthy();''
-            expect(successMessage.textContent).toContain('共有完了);''
+            expect(successMessage.textContent).toContain('共有完了';''
         }');''
         test('実績解除時の即座共有フロー', async () => {  const rareAchievement: Achievement = {''
                 id: 'perfect_master',
@@ -471,9 +471,9 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
                 description: '10回連続でパーフェクトラウンド',
                 rare: true,
                 rarity: 'legendary',
-                unlockedAt: Date.now(''';
-               , category: 'skill', }
-                unlocked: true }))'
+                unlockedAt: Date.now(''',
+    category: 'skill', }
+                unlocked: true })''
             // 1. 実績解除通知の表示')'
             await socialManager.handleAchievementUnlocked(rareAchievement);
 
@@ -485,7 +485,7 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             expect(achievementNotification.classList.contains('legendary).toBe(true);
             // 2. 実績専用の共有ボタン確認
             const achievementShareButton = achievementNotification'';
-                .querySelector('.share-button[data-type="achievement"]) as HTMLElement;
+                .querySelector('.share-button[data-type="achievement"]" as HTMLElement;
             ';
 
             expect(achievementShareButton).toBeTruthy();''
@@ -493,24 +493,24 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             // 3. 実績共有データの生成
             const achievementShareData = await socialManager;
                 .generateAchievementShareData(rareAchievement);''
-            expect(achievementShareData.type).toBe('achievement);''
+            expect(achievementShareData.type).toBe('achievement';''
             expect(achievementShareData.achievement.id).toBe('perfect_master);
             expect(achievementShareData.shouldHighlight).toBe(true);
             // 4. 実績共有ボタンクリック
             achievementShareButton.click();''
             await new Promise(resolve => setTimeout(resolve, 100));''
-            const shareDialog = document.querySelector('.share-dialog) as HTMLElement;''
+            const shareDialog = document.querySelector('.share-dialog' as HTMLElement;''
             expect(shareDialog).toBeTruthy()';
-            const messagePreview = shareDialog.querySelector('.message-preview) as HTMLElement;''
-            expect(messagePreview.textContent).toContain('パーフェクトマスター);''
-            expect(messagePreview.textContent).toContain('10回連続);''
+            const messagePreview = shareDialog.querySelector('.message-preview' as HTMLElement;''
+            expect(messagePreview.textContent).toContain('パーフェクトマスター';''
+            expect(messagePreview.textContent).toContain('10回連続';''
             expect(messagePreview.textContent).toContain('#BubblePop'');
 
             // 6. 実績画像の生成確認
             const achievementImage = shareDialog.querySelector('.achievement-image) as HTMLImageElement;
 
             expect(achievementImage).toBeTruthy();''
-            expect(achievementImage.src).toContain('data: image/),
+            expect(achievementImage.src).toContain('data: image/',
         }');''
         test('チャレンジ完了時の共有フロー', async () => {  const completedChallenge: ChallengeData = {''
                 id: 'weekly_high_scorer',
@@ -521,7 +521,7 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
 
                 completedAt: Date.now('' }
 
-                reward: { ap: 1000, items: ['golden_bubble] ,};)'
+                reward: { ap: 1000, items: ['golden_bubble] ,};''
             // 1. チャレンジ完了処理)
             await socialManager.challengeSystem.completeChallenge(completedChallenge.id);
             // 2. 完了通知の表示
@@ -540,9 +540,9 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             challengeShareButton.click();''
             await new Promise(resolve => setTimeout(resolve, 100));''
             const shareDialog = document.querySelector('.share-dialog'') as HTMLElement;''
-            const messagePreview = shareDialog.querySelector('.message-preview) as HTMLElement;''
-            expect(messagePreview.textContent).toContain('週間ハイスコアチャレンジ);''
-            expect(messagePreview.textContent).toContain('500000点);''
+            const messagePreview = shareDialog.querySelector('.message-preview' as HTMLElement;''
+            expect(messagePreview.textContent).toContain('週間ハイスコアチャレンジ';''
+            expect(messagePreview.textContent).toContain('500000点';''
         }');
 
     }''
@@ -567,9 +567,9 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
                 expect.stringContaining('width=550,height=420);
 
             const callArgs = (window.open, as jest.Mock).mock.calls[0][0];''
-            expect(callArgs).toContain('text=);''
-            expect(callArgs).toContain('85000);''
-            expect(callArgs).toContain('hashtags=BubblePop);
+            expect(callArgs).toContain('text=';''
+            expect(callArgs).toContain('85000';''
+            expect(callArgs).toContain('hashtags=BubblePop';
 
             window.open = originalOpen;''
         }');''
@@ -578,9 +578,8 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
                 achievement: {''
                     name: 'スピードデーモン',' }
 
-                    description: '30秒以内でクリア' }
-
-                },''
+                    description: '30秒以内でクリア' 
+    },''
                 screenshot: 'data:image/png;base64,test...';
 
             // OGタグの動的更新をテスト
@@ -590,9 +589,9 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             const ogTitle = document.querySelector('meta[property="og: title"]'') as HTMLMetaElement,
             const ogDescription = document.querySelector('meta[property="og: description"]'') as HTMLMetaElement,
             const ogImage = document.querySelector('meta[property="og: image"]'') as HTMLMetaElement,
-            expect(ogTitle? .getAttribute('content)).toContain('スピードデーモン'');''
-            expect(ogDescription?.getAttribute('content)).toContain('30秒以内''); : undefined''
-            expect(ogImage?.getAttribute('content)).toContain('data: image/),
+            expect(ogTitle?.getAttribute('content)'.toContain('スピードデーモン'');''
+            expect(ogDescription?.getAttribute('content)'.toContain('30秒以内''); : undefined''
+            expect(ogImage?.getAttribute('content)'.toContain('data: image/',
         }');''
         test('Web Share API フォールバック機能', async () => {  // Web Share API を無効化
             global.navigator.canShare = jest.fn().mockReturnValue(false);
@@ -602,11 +601,11 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
                 type: 'score',
                 score: 62000,' }'
 
-                stage: 'normal' }
-            };
+                stage: 'normal' 
+    };
             // カスタム共有ダイアログが表示されることを確認
             await socialManager.share(shareData);''
-            const customShareDialog = document.querySelector('.custom-share-dialog) as HTMLElement;''
+            const customShareDialog = document.querySelector('.custom-share-dialog' as HTMLElement;''
             expect(customShareDialog).toBeTruthy()';
             const platformButtons = customShareDialog.querySelectorAll('.platform-button);
 
@@ -634,20 +633,20 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             // 新しい高得点で3位から1位に上昇
             const newScore = { score: 98000,''
                 playerName: 'TestPlayer',
-                stage: 'expert';
-               , timestamp: Date.now(, }
+                stage: 'expert',
+    timestamp: Date.now(, }
                 metadata: { combo: 35, accuracy: 0.92, playTime: 480000 ,})'
             };')'
             await socialManager.leaderboardManager.updateScore(newScore);
 
             // ランキング変動の検出
-            const currentRanking = await socialManager.leaderboardManager.getRanking('allTime', 'expert);''
+            const currentRanking = await socialManager.leaderboardManager.getRanking('allTime', 'expert';''
             const playerRank = currentRanking.findIndex((entry: any) => entry.playerName === 'TestPlayer') + 1;
             expect(playerRank).toBe(1); // 1位に上昇
             // ランキング上位達成の共有提案
             const rankShareData = await socialManager.generateRankingShareData({ rank: playerRank)
-                score: newScore.score);
-               , stage: newScore.stage,);
+                score: newScore.score),
+    stage: newScore.stage,);
                 previousRank: 3);''
             expect(rankShareData.type).toBe('ranking);
 
@@ -656,10 +655,10 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             // 共有メッセージの生成
             const shareMessage = await socialManager.shareContentGenerator';
 
-                .generateRankingMessage(rankShareData, 'twitter);''
-            expect(shareMessage).toContain('1位);''
-            expect(shareMessage).toContain('98000);''
-            expect(shareMessage).toContain('expert);' }
+                .generateRankingMessage(rankShareData, 'twitter';''
+            expect(shareMessage).toContain('1位';''
+            expect(shareMessage).toContain('98000';''
+            expect(shareMessage).toContain('expert';' }
 
         }');
 
@@ -669,15 +668,15 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             // Canvas.toDataURL を失敗させる
             const originalToDataURL = HTMLCanvasElement.prototype.toDataURL;''
             HTMLCanvasElement.prototype.toDataURL = jest.fn(() => {''
-                throw new Error('Canvas, tainted);''
-            )');
+                throw new Error('Canvas, tainted';''
+            '');
 
             const shareData = {''
                 type: 'score',
                 score: 45000,' }'
 
-                stage: 'normal' }
-            };
+                stage: 'normal' 
+    };
             // フォールバック画像が使用されることを確認
             const screenshot = await socialManager.captureGameScreen();
             expect(screenshot).toBeNull(); // または デフォルト画像
@@ -689,7 +688,7 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
         }');''
         test('ネットワークエラー時の再試行機能', async () => {  // Navigator.share を失敗させる
             global.navigator.share = jest.fn()';
-                .mockRejectedValueOnce(new, Error('Network, error)'';
+                .mockRejectedValueOnce(new, Error('Network, error''';
                 .mockResolvedValueOnce(undefined);
 
             const shareData = {''
@@ -697,8 +696,8 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
                 achievement: {''
                     name: 'ネットワークテスト',' }
 
-                    description: 'ネットワークエラーのテスト' }
-};
+                    description: 'ネットワークエラーのテスト' 
+    };
             // 最初の試行は失敗、再試行で成功することを確認
             const shareResult = await socialManager.shareWithRetry(shareData, { maxRetries: 2 ),
             expect(shareResult.success).toBe(true);
@@ -709,13 +708,13 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
         test('ストレージ容量不足時のクリーンアップ', async () => {  // LocalStorage を容量不足にシミュレート
             global.localStorage.setItem = jest.fn().mockImplementation(() => {' }'
 
-                throw new Error('QuotaExceededError); }'
+                throw new Error('QuotaExceededError'; }'
             });
             // 大量のリーダーボードデータを生成してストレージ不足を引き起こす
             const largeDataSet = Array.from({ length: 1000 }, (_, i) => ({ score: Math.floor(Math.random() * 100000, }
                 playerName: `Player${i}`;
-                timestamp: Date.now() - (i * 1000);
-               , metadata: { combo: i, accuracy: Math.random(), playTime: 300000 ,});
+                timestamp: Date.now() - (i * 1000),
+    metadata: { combo: i, accuracy: Math.random(), playTime: 300000 ,});
             // 自動クリーンアップが実行されることを確認
             const cleanupResult = await socialManager.leaderboardManager;
                 .handleStorageCleanup(largeDataSet);
@@ -726,7 +725,7 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
     }''
     describe('パフォーマンスとメモリ管理フロー', () => {  ''
         test('連続共有操作でのメモリリーク防止', async () => {
-            const initialMemory = (performance, as any).memory? .usedJSHeapSize || 0;
+            const initialMemory = (performance, as any).memory?.usedJSHeapSize || 0;
 
             // 50回の連続共有操作
             for(let, i = 0; i < 50; i++) {'
@@ -737,9 +736,9 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
                     score: Math.floor(Math.random('' }
 
                     stage: ['normal', 'hard', 'expert][i % 3] }
-                };)'
+                };''
                 await socialManager.captureGameScreen({ includeOverlay: true,)'
-                    overlayData: shareData)'),
+                    overlayData: shareData''),
                 await socialManager.shareContentGenerator';
 
                     .generateScoreMessage(shareData, 'twitter);
@@ -749,7 +748,7 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
                 }
                     await socialManager.cleanup(); }
 }
-            const finalMemory = (performance, as any).memory? .usedJSHeapSize || 0;
+            const finalMemory = (performance, as any).memory?.usedJSHeapSize || 0;
             const memoryIncrease = finalMemory - initialMemory;
             // メモリ増加量が5MB以下であることを確認
             expect(memoryIncrease).toBeLessThan(5 * 1024 * 1024);''
@@ -767,8 +766,8 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
                 ctx.beginPath();
                 ctx.arc();
                     Math.random() * 3840,
-                    Math.random(} * 2160,
-                    Math.random(} * 100 + 20,
+                    Math.random() * 2160,
+                    Math.random() * 100 + 20,
                     0,
             }
                     Math.PI * 2 }
@@ -779,8 +778,8 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             const startTime = performance.now();
             const screenshot = await socialManager.screenshotCapture;
                 .captureCanvas(largeCanvas, { : undefined)
-                    outputWidth: 1200);
-                   , outputHeight: 630,);
+                    outputWidth: 1200),
+    outputHeight: 630,);
                     quality: 0.8);
             const endTime = performance.now();
             const processingTime = endTime - startTime;

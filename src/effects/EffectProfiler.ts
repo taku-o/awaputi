@@ -8,50 +8,50 @@ interface FrameMetric { timestamp: number,
     fps: number;
     particleCount: number;
     effectCount: number;
-    memoryUsage: number;
-   , renderTime: number ,}
+    memoryUsage: number,
+    renderTime: number ,}
 
 interface MemorySnapshot { timestamp: number;
     used: number;
-    total: number;
-   , limit: number }
+    total: number,
+    limit: number }
 
 interface RenderingMetric { name: string;
     duration: number;
-    startTime: number;
-   , timestamp: number }
+    startTime: number,
+    timestamp: number }
 
 interface ParticlePerformanceMetric { effectType: string;
     particleCount: number;
     duration: number;
-    memoryDelta: number;
-   , timestamp: number }
+    memoryDelta: number,
+    timestamp: number }
 
 interface EffectPerformanceMetric { effectType: string;
     duration: number;
-    memoryDelta: number;
-   , timestamp: number }
+    memoryDelta: number,
+    timestamp: number }
 
 interface ProfilingData { particlePerformance: Map<string, ParticlePerformanceMetric[]>;
     effectPerformance: Map<string, EffectPerformanceMetric[]>;
     memorySnapshots: MemorySnapshot[];
-    frameMetrics: FrameMetric[];
-   , renderingMetrics: RenderingMetric[]
+    frameMetrics: FrameMetric[],
+    renderingMetrics: RenderingMetric[]
     ,}
 
 interface PerformanceThresholds { fps: {
         excellen;t: number;
         good: number;
-        acceptable: number;
-       , poor: number };
+        acceptable: number,
+    poor: number };
     memory: { low: number;
         medium: number;
-        high: number;
-       , critical: number };
+        high: number,
+    critical: number };
     renderTime: { excellent: number;
         good: number;
-        acceptable: number;
-       , poor: number }
+        acceptable: number,
+    poor: number }
 
 type PerformanceRating = 'excellent' | 'good' | 'acceptable' | 'poor';
 
@@ -62,8 +62,8 @@ interface FrameAnalysis { averageFPS: number,
     averageRenderTime: number;
     maxRenderTime: number;
     frameDrops: number;
-    fpsRating: PerformanceRating;
-   , renderTimeRating: PerformanceRating
+    fpsRating: PerformanceRating,
+    renderTimeRating: PerformanceRating
     ,}
 
 interface MemoryAnalysis { averageMemory: number;
@@ -71,48 +71,48 @@ interface MemoryAnalysis { averageMemory: number;
     maxMemory: number;
     memoryDelta: number;
     memoryGrowthRate: number;
-    memoryRating: PerformanceRating;
-   , hasMemoryLeak: boolean }
+    memoryRating: PerformanceRating,
+    hasMemoryLeak: boolean }
 
 interface ParticleEffectAnalysis { sampleCount: number;
     averageDuration: number;
     maxDuration: number;
-    averageMemoryImpact: number;
-   , rating: PerformanceRating
+    averageMemoryImpact: number,
+    rating: PerformanceRating
     }
 
 interface EffectAnalysis { sampleCount: number;
     averageDuration: number;
     maxDuration: number;
-    averageMemoryImpact: number;
-   , rating: PerformanceRating
+    averageMemoryImpact: number,
+    rating: PerformanceRating
     }
 
 interface ProfileAnalysis { overall: number;
     frame: FrameAnalysis | null;
-    memory: MemoryAnalysis | null;
-   , particles: Record<string, ParticleEffectAnalysis>;
+    memory: MemoryAnalysis | null,
+    particles: Record<string, ParticleEffectAnalysis>;
     effects: Record<string, EffectAnalysis> }
 
-type OptimizationType = 'performance' | 'memory' | 'memory_leak' | 'particle_optimization' | 'rendering';''
-type OptimizationPriority = 'critical' | 'high' | 'medium' | 'low';''
+type OptimizationType = 'performance' | 'memory' | 'memory_leak' | 'particle_optimization' | 'rendering';
+type OptimizationPriority = 'critical' | 'high' | 'medium' | 'low';
 type OptimizationAction = 'reduce_quality' | 'optimize_memory' | 'fix_memory_leak' | 'optimize_particles' | 'optimize_rendering';
 
 interface OptimizationSuggestion { type: OptimizationType,
     priority: OptimizationPriority;
-    message: string;
-   , action: OptimizationAction;
+    message: string,
+    action: OptimizationAction;
     effectType?: string ,}
 
 interface ProfilerExportData { timestamp: string;
     analysis: ProfileAnalysis;
-    suggestions: OptimizationSuggestion[];
-   , rawData: ProfilingData
+    suggestions: OptimizationSuggestion[],
+    rawData: ProfilingData
     }
 
 interface ProfilerResult { analysis: ProfileAnalysis;
-    suggestions: OptimizationSuggestion[];
-   , rawData: ProfilingData
+    suggestions: OptimizationSuggestion[],
+    rawData: ProfilingData
     }
 
 // Game engine interface (minimal, required interface);
@@ -124,8 +124,8 @@ interface GameEngineInterface { performanceOptimizer?: {
 
 // Browser performance memory interface
 interface PerformanceMemory { usedJSHeapSize: number,
-    totalJSHeapSize: number;
-   , jsHeapSizeLimit: number ,}
+    totalJSHeapSize: number,
+    jsHeapSizeLimit: number ,}
 
 // Extended Performance interface
 interface ExtendedPerformance extends Performance { memory?: PerformanceMemory;
@@ -142,12 +142,12 @@ export class EffectProfiler {
         fps: {
             excellent: 60;
             good: 45;
-            acceptable: 30;
-           , poor: 15 };
+            acceptable: 30,
+    poor: 15 };
         memory: { low: 50,    // MB
             medium: 100;
-            high: 200;
-           , critical: 500 ,};
+            high: 200,
+    critical: 500 ,};
         renderTime: { excellent: 16.67, // ~60fps
             good: 22.22,      // ~45fps;
             acceptable: 33.33, // ~30fps;
@@ -167,11 +167,11 @@ export class EffectProfiler {
         this.profilingData = {
             particlePerformance: new Map();
             effectPerformance: new Map();
-            memorySnapshots: [];
-           , frameMetrics: [];
+            memorySnapshots: [],
+    frameMetrics: [];
     }
-            renderingMetrics: [] }
-        };
+            renderingMetrics: [] 
+    };
         this.initialize();
     }
 
@@ -187,12 +187,12 @@ export class EffectProfiler {
 
         }
 
-                        if(entry.entryType === 'measure) { }'
+                        if(entry.entryType === 'measure' { }'
                             this.recordRenderingMetric(entry, as PerformanceMeasure); }
 });''
                 }');
 
-                this.performanceObserver.observe({ entryTypes: ['measure] ),' }
+                this.performanceObserver.observe({ entryTypes: ['measure] ',' }
 
             } catch (error) { console.warn('PerformanceObserver not supported:', error }
 }
@@ -210,7 +210,7 @@ export class EffectProfiler {
     }
 
     stopProfiling(): ProfilerResult { this.isActive = false;
-        this.stopFrameMetrics(');
+        this.stopFrameMetrics();
         ';
 
         const analysis = this.analyzeProfilingData();''
@@ -219,8 +219,8 @@ export class EffectProfiler {
         console.log('Effect, profiling stopped);
         return { analysis,
             suggestions: this.optimizationSuggestions, };
-            rawData: this.profilingData }
-        }
+            rawData: this.profilingData 
+    }
 
     private startFrameMetrics(): void { this.frameMetricsInterval = window.setInterval(() => { 
             if (this.isActive) { }
@@ -234,7 +234,7 @@ export class EffectProfiler {
     }
 
     private captureFrameMetric(): void { const timestamp = performance.now();
-        const fps = this.gameEngine? .performanceOptimizer?.getCurrentFPS() || 0;
+        const fps = this.gameEngine?.performanceOptimizer?.getCurrentFPS() || 0;
         const particleCount = this.getParticleCount();
         const effectCount = this.getEffectCount();
         const memoryUsage = this.getCurrentMemoryUsage();
@@ -266,10 +266,10 @@ export class EffectProfiler {
 }
 
     private recordRenderingMetric(entry: PerformanceMeasure): void { this.profilingData.renderingMetrics.push({)
-            name: entry.name);
-           , duration: entry.duration,);
-            startTime: entry.startTime);
-           , timestamp: performance.now( ,});
+            name: entry.name),
+    duration: entry.duration,);
+            startTime: entry.startTime),
+    timestamp: performance.now( ,});
 
         // データサイズ制限
         if (this.profilingData.renderingMetrics.length > 500) { this.profilingData.renderingMetrics.shift(); }
@@ -287,10 +287,10 @@ export class EffectProfiler {
                 const metric: ParticlePerformanceMetric = {
                     effectType,
                     particleCount,
-                    duration: endTime - startTime;
-                   , memoryDelta: endMemory - startMemory, }
-                    timestamp: endTime }
-                };
+                    duration: endTime - startTime,
+    memoryDelta: endMemory - startMemory, }
+                    timestamp: endTime 
+    };
                 if(!this.profilingData.particlePerformance.has(effectType) { this.profilingData.particlePerformance.set(effectType, []); }
                 this.profilingData.particlePerformance.get(effectType)!.push(metric);
 
@@ -309,10 +309,10 @@ export class EffectProfiler {
                 
                 const metric: EffectPerformanceMetric = {
                     effectType,
-                    duration: endTime - startTime;
-                   , memoryDelta: endMemory - startMemory, }
-                    timestamp: endTime }
-                };
+                    duration: endTime - startTime,
+    memoryDelta: endMemory - startMemory, }
+                    timestamp: endTime 
+    };
                 if(!this.profilingData.effectPerformance.has(effectType) { this.profilingData.effectPerformance.set(effectType, []); }
                 this.profilingData.effectPerformance.get(effectType)!.push(metric);
 
@@ -321,9 +321,9 @@ export class EffectProfiler {
         });
     }
 
-    private getParticleCount(): number { return this.gameEngine? .enhancedParticleManager?.getActiveParticleCount() || 0; }
+    private getParticleCount(): number { return this.gameEngine?.enhancedParticleManager?.getActiveParticleCount() || 0; }
  : undefined
-    private getEffectCount(): number { return this.gameEngine? .enhancedEffectManager?.getActiveEffectCount() || 0; }
+    private getEffectCount(): number { return this.gameEngine?.enhancedEffectManager?.getActiveEffectCount() || 0; }
  : undefined
     private getCurrentMemoryUsage(): number { if (performance.memory) {
             return performance.memory.usedJSHeapSize / 1024 / 1024; // MB }
@@ -332,13 +332,13 @@ export class EffectProfiler {
 
     private getDetailedMemoryInfo(): MemorySnapshot { if (performance.memory) {
             return { timestamp: 0, // Will be set by caller
-                used: performance.memory.usedJSHeapSize / 1024 / 1024;
-               , total: performance.memory.totalJSHeapSize / 1024 / 1024, };
-                limit: performance.memory.jsHeapSizeLimit / 1024 / 1024 }
-            }
+                used: performance.memory.usedJSHeapSize / 1024 / 1024,
+    total: performance.memory.totalJSHeapSize / 1024 / 1024, };
+                limit: performance.memory.jsHeapSizeLimit / 1024 / 1024 
+    }
         return { timestamp: 0, used: 0, total: 0, limit: 0 ,}
 
-    private getLastRenderTime(): number { return this.gameEngine? .performanceOptimizer?.getAverageRenderTime() || 0; }
+    private getLastRenderTime(): number { return this.gameEngine?.performanceOptimizer?.getAverageRenderTime() || 0; }
  : undefined
     private analyzeProfilingData(): ProfileAnalysis { const frameAnalysis = this.analyzeFrameMetrics();
         const memoryAnalysis = this.analyzeMemoryUsage();
@@ -347,10 +347,10 @@ export class EffectProfiler {
 
         return { overall: this.calculateOverallScore(frameAnalysis, memoryAnalysis),
             frame: frameAnalysis;
-            memory: memoryAnalysis;
-           , particles: particleAnalysis, };
-            effects: effectAnalysis }
-        }
+            memory: memoryAnalysis,
+    particles: particleAnalysis, };
+            effects: effectAnalysis 
+    }
 
     private analyzeFrameMetrics(): FrameAnalysis | null { const metrics = this.profilingData.frameMetrics;
         if (metrics.length === 0) return null;
@@ -366,8 +366,8 @@ export class EffectProfiler {
             maxRenderTime: Math.max(...renderTimeSamples);
             frameDrops: fpsSamples.filter(fps => fps < 30).length;
             fpsRating: this.rateFPS(this.calculateAverage(fpsSamples), };
-            renderTimeRating: this.rateRenderTime(this.calculateAverage(renderTimeSamples); }
-        }
+            renderTimeRating: this.rateRenderTime(this.calculateAverage(renderTimeSamples); 
+    }
 
     private analyzeMemoryUsage(): MemoryAnalysis | null { const snapshots = this.profilingData.memorySnapshots;
         if (snapshots.length === 0) return null;
@@ -378,11 +378,11 @@ export class EffectProfiler {
         return { averageMemory: this.calculateAverage(usedMemorySamples),
             minMemory: Math.min(...usedMemorySamples);
             maxMemory: Math.max(...usedMemorySamples);
-            memoryDelta: memoryDelta;
-           , memoryGrowthRate: memoryDelta / (snapshots.length * 1000), // MB/s;
+            memoryDelta: memoryDelta,
+    memoryGrowthRate: memoryDelta / (snapshots.length * 1000), // MB/s;
             memoryRating: this.rateMemoryUsage(this.calculateAverage(usedMemorySamples), };
-            hasMemoryLeak: this.detectMemoryLeak(usedMemorySamples); }
-        }
+            hasMemoryLeak: this.detectMemoryLeak(usedMemorySamples); 
+    }
 
     private analyzeParticlePerformance(): Record<string, ParticleEffectAnalysis> {
         const analysis: Record<string, ParticleEffectAnalysis> = {};
@@ -395,11 +395,11 @@ export class EffectProfiler {
             analysis[effectType] = {
                 sampleCount: metrics.length;
                 averageDuration: this.calculateAverage(durations);
-                maxDuration: Math.max(...durations);
-               , averageMemoryImpact: this.calculateAverage(memoryDeltas);
+                maxDuration: Math.max(...durations),
+    averageMemoryImpact: this.calculateAverage(memoryDeltas);
         }
-                rating: this.rateParticlePerformance(this.calculateAverage(durations); }
-            }
+                rating: this.rateParticlePerformance(this.calculateAverage(durations); 
+    }
         
         return analysis;
     }
@@ -407,7 +407,7 @@ export class EffectProfiler {
     private analyzeEffectPerformance(): Record<string, EffectAnalysis> {
         const analysis: Record<string, EffectAnalysis> = {};
         
-        for(const [effectType, metrics] of this.profilingData.effectPerformance) {
+        for(const [effectType metrics] of this.profilingData.effectPerformance) {
         
             const durations = metrics.map(m => m.duration);
             const memoryDeltas = metrics.map(m => m.memoryDelta);
@@ -415,11 +415,10 @@ export class EffectProfiler {
             analysis[effectType] = {
                 sampleCount: metrics.length;
                 averageDuration: this.calculateAverage(durations);
-                maxDuration: Math.max(...durations);
-               , averageMemoryImpact: this.calculateAverage(memoryDeltas);
+                maxDuration: Math.max(...durations) averageMemoryImpact: this.calculateAverage(memoryDeltas);
         }
-                rating: this.rateEffectPerformance(this.calculateAverage(durations); }
-            }
+                rating: this.rateEffectPerformance(this.calculateAverage(durations'); 
+    }
         
         return analysis;
     }
@@ -434,7 +433,7 @@ export class EffectProfiler {
 
                 message: `Average FPS(${analysis.frame.averageFPS.toFixed(1})) is below acceptable threshold. Consider reducing particle counts or effect quality.`,''
                 action: 'reduce_quality';
-            }),
+            }',
         }
 ';
         // メモリベースの提案
@@ -446,23 +445,23 @@ export class EffectProfiler {
 
                 message: `High memory usage (${analysis.memory.averageMemory.toFixed(1})MB'). Implement object pooling and cleanup unused effects.`,''
                 action: 'optimize_memory';
-            }),
+            }',
         }
 ';
         // メモリリーク検出
         if(analysis.memory && analysis.memory.hasMemoryLeak) { '
             this.optimizationSuggestions.push({''
                 type: 'memory_leak',
-                priority: 'critical',)';
+                priority: 'critical','';
                 message: 'Potential memory leak detected. Check for unreleased resources and event listeners.',' }
 
-                action: 'fix_memory_leak'); }
-        }
+                action: 'fix_memory_leak'); 
+    }
 ';
 
         // パーティクルパフォーマンス提案
         for(const [effectType, metrics] of Object.entries(analysis.particles ||) {'
-            )') {''
+            '') {''
             if (metrics.rating === 'poor'') {'
                 this.optimizationSuggestions.push({''
                     type: 'particle_optimization';
@@ -470,9 +469,9 @@ export class EffectProfiler {
 
                     priority: 'medium', }
 
-                    message: `${effectType} particle effect shows poor performance. Consider optimizing particle count or rendering method.`,)'
+                    message: `${effectType} particle effect shows poor performance. Consider optimizing particle count or rendering method.`,''
                     action: 'optimize_particles',);
-                    effectType);
+                    effectType';
             }
         }
 ';
@@ -499,37 +498,37 @@ export class EffectProfiler {
 ';
 
     private rateFPS(fps: number): PerformanceRating { ''
-        if(fps >= this.thresholds.fps.excellent) return 'excellent';''
-        if(fps >= this.thresholds.fps.good) return 'good';''
-        if(fps >= this.thresholds.fps.acceptable) return 'acceptable';''
+        if(fps >= this.thresholds.fps.excellent) return 'excellent';
+        if(fps >= this.thresholds.fps.good) return 'good';
+        if(fps >= this.thresholds.fps.acceptable) return 'acceptable';
         return 'poor'; ,}
 ';
 
     private rateRenderTime(renderTime: number): PerformanceRating { ''
-        if(renderTime <= this.thresholds.renderTime.excellent) return 'excellent';''
-        if(renderTime <= this.thresholds.renderTime.good) return 'good';''
-        if(renderTime <= this.thresholds.renderTime.acceptable) return 'acceptable';''
+        if(renderTime <= this.thresholds.renderTime.excellent) return 'excellent';
+        if(renderTime <= this.thresholds.renderTime.good) return 'good';
+        if(renderTime <= this.thresholds.renderTime.acceptable) return 'acceptable';
         return 'poor'; }
 ';
 
     private rateMemoryUsage(memory: number): PerformanceRating { ''
-        if(memory <= this.thresholds.memory.low) return 'excellent';''
-        if(memory <= this.thresholds.memory.medium) return 'good';''
-        if(memory <= this.thresholds.memory.high) return 'acceptable';''
+        if(memory <= this.thresholds.memory.low) return 'excellent';
+        if(memory <= this.thresholds.memory.medium) return 'good';
+        if(memory <= this.thresholds.memory.high) return 'acceptable';
         return 'poor'; }
 ';
 
     private rateParticlePerformance(duration: number): PerformanceRating { ''
-        if(duration <= 5) return 'excellent';''
-        if(duration <= 10) return 'good';''
-        if(duration <= 20) return 'acceptable';''
+        if(duration <= 5) return 'excellent';
+        if(duration <= 10) return 'good';
+        if(duration <= 20) return 'acceptable';
         return 'poor'; }
 ';
 
     private rateEffectPerformance(duration: number): PerformanceRating { ''
-        if(duration <= 2) return 'excellent';''
-        if(duration <= 5) return 'good';''
-        if(duration <= 10) return 'acceptable';''
+        if(duration <= 2) return 'excellent';
+        if(duration <= 5) return 'good';
+        if(duration <= 10) return 'acceptable';
         return 'poor'; }
 
     private detectMemoryLeak(memorySamples: number[]): boolean { if (memorySamples.length < 10) return false;
@@ -557,8 +556,8 @@ export class EffectProfiler {
 
         ,}
 
-                case 'good': score -= 10; break; }
-}
+                case 'good': score -= 10; break; 
+    }
         
         if(memoryAnalysis) {
         ';
@@ -569,8 +568,8 @@ export class EffectProfiler {
 
         }
 
-                case 'good': score -= 5; break; }
-            }
+                case 'good': score -= 5; break; 
+    }
             
             if (memoryAnalysis.hasMemoryLeak) { score -= 20; }
         }
@@ -579,10 +578,10 @@ export class EffectProfiler {
     }
 
     exportProfilingData(): ProfilerExportData { return { timestamp: new Date().toISOString(),
-            analysis: this.analyzeProfilingData();
-           , suggestions: this.optimizationSuggestions, };
-            rawData: this.profilingData }
-        }
+            analysis: this.analyzeProfilingData(),
+    suggestions: this.optimizationSuggestions, };
+            rawData: this.profilingData 
+    }
 
     destroy(): void { this.isActive = false;
         

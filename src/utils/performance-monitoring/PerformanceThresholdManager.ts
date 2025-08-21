@@ -7,17 +7,17 @@
 interface ThresholdValues { min?: number;
     target: number;
     max?: number;
-    critical: number;
-   , warning: number ,}
+    critical: number,
+    warning: number ,}
 
-interface ThresholdConfig { adaptiveThresholds: boolean;
-   , staticThresholds: Map<string, ThresholdValues>;
+interface ThresholdConfig { adaptiveThresholds: boolean,
+    staticThresholds: Map<string, ThresholdValues>;
     dynamicThresholds: Map<string, ThresholdValues>;
-    violationSensitivity: number;
-   , adaptationRate: number ,}
+    violationSensitivity: number,
+    adaptationRate: number ,}
 
-interface BaselinePoint { timestamp: number;
-   , value: number }
+interface BaselinePoint { timestamp: number,
+    value: number }
 
 interface BaselineStats { count: number;
     mean: number;
@@ -28,28 +28,28 @@ interface BaselineStats { count: number;
     p25: number;
     p75: number;
     p95: number;
-    p90?: number;
-   , updated: number }
+    p90?: number,
+    updated: number }
 
 interface ThresholdViolation { timestamp: number;
     metricId: string;
     value: number;
-    thresholds: ThresholdValues;
-   , type: 'critical_low' | 'warning_low' | 'critical_high' | 'warning_high',
-    severity: 'critical' | 'warning' | 'high' | 'medium' | 'low';
-   , deviation: number ,}
+    thresholds: ThresholdValues,
+    type: 'critical_low' | 'warning_low' | 'critical_high' | 'warning_high',
+    severity: 'critical' | 'warning' | 'high' | 'medium' | 'low',
+    deviation: number ,}
 
 interface ViolationStats { total: number;
-    recent: number;
-   , by_severity: Record<string, number>;
+    recent: number,
+    by_severity: Record<string, number>;
     by_metric: Record<string, number>;
     rate_per_minute: number ,}
 
 interface ExportedData { timestamp: number;
-    config: ThresholdConfig;
-   , baselineStats: Record<string, BaselineStats>;
-    violations: ThresholdViolation[];
-   , violationCounters: Record<string, number> }
+    config: ThresholdConfig,
+    baselineStats: Record<string, BaselineStats>;
+    violations: ThresholdViolation[],
+    violationCounters: Record<string, number> }
 
 interface ImportData { config?: Partial<ThresholdConfig>;
     baselineStats?: Record<string, BaselineStats>;
@@ -78,11 +78,11 @@ export class PerformanceThresholdManager {
         this.thresholdConfig = {
             adaptiveThresholds: true;
             staticThresholds: new Map();
-            dynamicThresholds: new Map();
-           , violationSensitivity: 0.8;
+            dynamicThresholds: new Map(),
+    violationSensitivity: 0.8;
     ,}
-            adaptationRate: 0.1 }
-        };
+            adaptationRate: 0.1 
+    };
         // Threshold violations tracking
         this.violations = [];
         this.violationCounters = new Map();
@@ -98,30 +98,30 @@ export class PerformanceThresholdManager {
     /**
      * Initialize default thresholds'
      */''
-    private initializeDefaultThresholds(''';
+    private initializeDefaultThresholds('''
         this.thresholdConfig.staticThresholds.set('fps', { min: 30,
             target: 60);
-            max: 120)';
-           , critical: 15,')';
-            warning: 45)'),
+            max: 120'',
+    critical: 15,')';
+            warning: 45''),
 
         this.thresholdConfig.staticThresholds.set('frame_time', {
             min: 8,      // ~120 FPS;
             target: 16.67, // 60 FPS;
-            max: 33.33,   // 30 FPS);
+            max: 33.33,   // 30 FPS';
             critical: 66.67, // 15 FPS')';
-            warning: 22.22   // 45 FPS)'),
+            warning: 22.22   // 45 FPS''),
 
         this.thresholdConfig.staticThresholds.set('memory_used', {
             min: 50,     // MB;
             target: 200,  // MB;
-            max: 1000,   // MB);
+            max: 1000,   // MB';
             critical: 2000, // MB')';
-            warning: 800    // MB)'),
+            warning: 800    // MB''),
 
         this.thresholdConfig.staticThresholds.set('network_latency', {)
-            min: 0);
-           , target: 50,   // ms;
+            min: 0),
+    target: 50,   // ms;
             max: 200,     // ms;
             critical: 1000, // ms);
             warning: 300    // ms);
@@ -174,8 +174,8 @@ export class PerformanceThresholdManager {
             median: this.calculateMedian(values);
             std: Math.sqrt(this.calculateVariance(values);
             min: Math.min(...values);
-            max: Math.max(...values);
-           , p25: this.calculatePercentile(values, 25),
+            max: Math.max(...values),
+    p25: this.calculatePercentile(values, 25),
             p75: this.calculatePercentile(values, 75),
             p90: this.calculatePercentile(values, 90),
             p95: this.calculatePercentile(values, 95),
@@ -227,7 +227,7 @@ export class PerformanceThresholdManager {
         ';
         // Apply exponential smoothing to threshold updates
         for(const [key, newValue] of Object.entries(newThresholds)) { ''
-            if(dynamicThresholds[key, as keyof, ThresholdValues] !== undefined && typeof, newValue === 'number) {'
+            if(dynamicThresholds[key, as keyof, ThresholdValues] !== undefined && typeof, newValue === 'number' {'
                 
             }
                 (dynamicThresholds, as any)[key] = adaptationRate * newValue + (1 - adaptationRate) * (dynamicThresholds, as any)[key]; }
@@ -290,8 +290,8 @@ export class PerformanceThresholdManager {
      */
     private calculateGenericThresholds(stats: BaselineStats, staticThresholds: ThresholdValues): Partial<ThresholdValues> { return { target: stats.median,
             warning: stats.p75 + stats.std, };
-            critical: stats.p95 + stats.std * 2 }
-        }
+            critical: stats.p95 + stats.std * 2 
+    }
     
     /**
      * Check for threshold violations
@@ -317,7 +317,7 @@ export class PerformanceThresholdManager {
                     violationSeverity = 'critical';' }
 
                 } else if(value < thresholds.warning) { ''
-                    violationType = 'warning_low';''
+                    violationType = 'warning_low';
                     violationSeverity = 'warning'; }
                 break;
 
@@ -333,7 +333,7 @@ export class PerformanceThresholdManager {
                     violationSeverity = 'critical';' }
 
                 } else if(value > thresholds.warning) { ''
-                    violationType = 'warning_high';''
+                    violationType = 'warning_high';
                     violationSeverity = 'warning'; }
                 break;
         }
@@ -348,8 +348,8 @@ export class PerformanceThresholdManager {
                 value, }
                 thresholds: { ...thresholds;
                 type: violationType;
-                severity: violationSeverity;
-               , deviation: this.calculateDeviation(value, thresholds, metricId);
+                severity: violationSeverity,
+    deviation: this.calculateDeviation(value, thresholds, metricId);
             };
             
             this.recordViolation(violation);
@@ -432,8 +432,8 @@ export class PerformanceThresholdManager {
      */
     getViolationStats(): ViolationStats { const recentViolations = this.getRecentViolations();
         const stats: ViolationStats = {
-            total: this.violations.length;
-           , recent: recentViolations.length, }
+            total: this.violations.length,
+    recent: recentViolations.length, }
             by_severity: {};
             by_metric: {};
             rate_per_minute: recentViolations.length / 5 // last 5 minutes;
@@ -470,10 +470,10 @@ export class PerformanceThresholdManager {
      */
     exportData(): ExportedData { return { timestamp: Date.now(),
             config: this.thresholdConfig;
-            baselineStats: Object.fromEntries(this.baselineStats);
-           , violations: this.violations.slice(-100), // Last 100 violations };
-            violationCounters: Object.fromEntries(this.violationCounters); }
-        }
+            baselineStats: Object.fromEntries(this.baselineStats),
+    violations: this.violations.slice(-100), // Last 100 violations };
+            violationCounters: Object.fromEntries(this.violationCounters); 
+    }
     
     /**
      * Import threshold data
@@ -501,7 +501,7 @@ export class PerformanceThresholdManager {
                 this.violationCounters = new Map(Object.entries(data.violationCounters)); }
             }
 
-            console.log('[PerformanceThresholdManager] Data, imported successfully);
+            console.log('[PerformanceThresholdManager] Data, imported successfully';
             return true;
 
         } catch (error') {

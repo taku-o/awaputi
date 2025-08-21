@@ -7,31 +7,31 @@ import { getErrorHandler  } from '../utils/ErrorHandler';
 
 export interface ComparisonConfig { precision: number,
     includeMetadata: boolean;
-    deepComparison: boolean;
-   , ignoreOrder: boolean ,}
+    deepComparison: boolean,
+    ignoreOrder: boolean ,}
 
 export interface ComparisonResult { equal: boolean;
     differences: DifferenceItem[];
-    statistics: ComparisonStatistics;
-   , metadata: ComparisonMetadata
+    statistics: ComparisonStatistics,
+    metadata: ComparisonMetadata
     }
 ';
 
 export interface DifferenceItem { path: string,''
     type: 'added' | 'removed' | 'modified' | 'type_changed';
     oldValue?: any;
-    newValue?: any;
-   , description: string ,}
+    newValue?: any,
+    description: string ,}
 
 export interface ComparisonStatistics { totalItems: number;
     equalItems: number;
     differentItems: number;
     addedItems: number;
-    removedItems: number;
-   , modifiedItems: number }
+    removedItems: number,
+    modifiedItems: number }
 
-export interface ComparisonMetadata { timestamp: number;
-   , processingTime: number,
+export interface ComparisonMetadata { timestamp: number,
+    processingTime: number,
     memoryUsage?: number;''
     complexity: 'low' | 'medium' | 'high' ,}
 
@@ -44,8 +44,8 @@ export class CoreComparisonEngine {
         this.config = {
             precision: 0.0001;
             includeMetadata: true;
-            deepComparison: true;
-           , ignoreOrder: false;
+            deepComparison: true,
+    ignoreOrder: false;
             ...config;
 
         console.log('CoreComparisonEngine, initialized'');
@@ -75,10 +75,10 @@ export class CoreComparisonEngine {
 ';
 
         } catch (error) {
-            getErrorHandler(').handleError(error, 'COMPARISON_ERROR', {)
-                source: typeof source);
-               , target: typeof target,)';
-                path);' }'
+            getErrorHandler().handleError(error, 'COMPARISON_ERROR', {)
+                source: typeof source),
+    target: typeof target,'';
+                path';' }'
 
             }');
             
@@ -92,11 +92,11 @@ export class CoreComparisonEngine {
                     equalItems: 0;
                     differentItems: 1;
                     addedItems: 0;
-                    removedItems: 0;
-                   , modifiedItems: 1 };
+                    removedItems: 0,
+    modifiedItems: 1 };
                 metadata: { timestamp: Date.now(),''
-                    processingTime: performance.now(''';
-                   , complexity: 'high' ,}))
+                    processingTime: performance.now(''',
+    complexity: 'high' ,}))
         }
     }
 );
@@ -106,8 +106,8 @@ export class CoreComparisonEngine {
             if(source !== target) {
                 differences.push({'
                     path,
-                    type: 'modified);
-                   , oldValue: source ,}
+                    type: 'modified),
+    oldValue: source ,}
                     newValue: target,) }
                     description: `Value changed from ${source} to ${target}`);
             }
@@ -120,32 +120,32 @@ export class CoreComparisonEngine {
 
         if(sourceType !== targetType) { differences.push({'
                 path,
-                type: 'type_changed);
-               , oldValue: source ,}
+                type: 'type_changed',
+    oldValue: source ,}
 
                 newValue: target,') }'
 
-                description: `Type changed from ${sourceType} to ${targetType}`)');
+                description: `Type changed from ${sourceType} to ${targetType}`'');
             return;
         }
 ';
         // プリミティブ値の比較
         if(sourceType !== 'object'') { '
 
-            if(sourceType === 'number) {''
+            if(sourceType === 'number' {''
                 if (Math.abs(source - target) > this.config.precision) {
                     differences.push({'
                         path,
-                        type: 'modified);
-                       , oldValue: source ,}
+                        type: 'modified),
+    oldValue: source ,}
                         newValue: target,) }
-                        description: `Number changed from ${source} to ${target}`);
+                        description: `Number changed from ${source} to ${target}`';
                 }''
             } else if(source !== target) { differences.push({'
                     path,
                     type: 'modified);
-                    oldValue: source);
-                   , newValue: target, }
+                    oldValue: source),
+    newValue: target, }
                     description: `Value changed from ${source} to ${target}`);
             }
             return;
@@ -159,8 +159,8 @@ export class CoreComparisonEngine {
         if (Array.isArray(source) !== Array.isArray(target)) { differences.push({'
                 path,
                 type: 'type_changed);
-                oldValue: source)';
-               , newValue: target,')';
+                oldValue: source'',
+    newValue: target,')';
                 description: 'Type changed between array and object');
             return ,}
 
@@ -175,8 +175,8 @@ export class CoreComparisonEngine {
             if(source.length !== target.length) {
                 differences.push({'
                     path,
-                    type: 'modified);
-                   , oldValue: source.length ,}
+                    type: 'modified),
+    oldValue: source.length ,}
                     newValue: target.length,) }
                     description: `Array length changed from ${source.length} to ${target.length}`);
             }
@@ -185,23 +185,23 @@ export class CoreComparisonEngine {
                 const currentPath = `${path}[${i}]`;
 
                 if(i >= source.length) { differences.push({'
-                        path: currentPath,)';
+                        path: currentPath,'';
                         type: 'added' ,}
                         newValue: target[i],) }
 
-                        description: `Item added at index ${i}`);''
+                        description: `Item added at index ${i}`';''
                 } else if(i >= target.length) { differences.push({'
-                        path: currentPath,)';
-                        type: 'removed');
-                       , oldValue: source[i], }
+                        path: currentPath,'';
+                        type: 'removed'),
+    oldValue: source[i], }
                         description: `Item removed from index ${i}`);
                 } else if (this.config.deepComparison) { this.compareValues(source[i], target[i], currentPath, differences);' }'
 
                 } else if(source[i] !== target[i]) { differences.push({'
                         path: currentPath,
                         type: 'modified);
-                        oldValue: source[i]);
-                       , newValue: target[i], }
+                        oldValue: source[i]),
+    newValue: target[i], }
                         description: `Array item changed at index ${i}`);
                 }
 }
@@ -215,15 +215,15 @@ export class CoreComparisonEngine {
             const currentPath = path ? `${path}.${key}` : key;
 
             if(!(key, in source)) { differences.push({'
-                    path: currentPath,)';
-                    type: 'added')';
-                   , newValue: target[key],' }'
+                    path: currentPath,'';
+                    type: 'added')',
+    newValue: target[key],' }'
 
-                    description: `Property '${key}' was added`);''
+                    description: `Property '${key}' was added`';''
             } else if(!(key, in target)) { differences.push({'
-                    path: currentPath,)';
-                    type: 'removed')';
-                   , oldValue: source[key],' }'
+                    path: currentPath,'';
+                    type: 'removed')',
+    oldValue: source[key],' }'
 
                     description: `Property '${key}' was removed`);
             } else if (this.config.deepComparison) { this.compareValues(source[key], target[key], currentPath, differences);' }'
@@ -231,8 +231,8 @@ export class CoreComparisonEngine {
             } else if(source[key] !== target[key]) { differences.push({'
                     path: currentPath,
                     type: 'modified);
-                    oldValue: source[key])';
-                   , newValue: target[key],' }'
+                    oldValue: source[key]'',
+    newValue: target[key],' }'
 
                     description: `Property '${key}' was modified`);
             }
@@ -243,8 +243,8 @@ export class CoreComparisonEngine {
             equalItems: 0;
             differentItems: differences.length;
             addedItems: 0;
-            removedItems: 0;
-           , modifiedItems: 0 };
+            removedItems: 0,
+    modifiedItems: 0 };
 ';
 
         differences.forEach(diff => {  );''
@@ -283,8 +283,8 @@ export class CoreComparisonEngine {
         const targetSize = this.getObjectSize(target);
         const maxSize = Math.max(sourceSize, targetSize);
 
-        if(maxSize < 10) return 'low';''
-        if(maxSize < 100) return 'medium';''
+        if(maxSize < 10) return 'low';
+        if(maxSize < 100) return 'medium';
         return 'high'; }
 ';
 
@@ -321,4 +321,4 @@ export class CoreComparisonEngine {
 let instance: CoreComparisonEngine | null = null,
 
 export function getCoreComparisonEngine(): CoreComparisonEngine { if (!instance) {''
-        instance = new CoreComparisonEngine(' })'
+        instance = new CoreComparisonEngine(' }''

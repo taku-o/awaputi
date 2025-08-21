@@ -4,20 +4,20 @@
  * Issue #104 のバックアップファイル削除作業のメインスクリプト
  */
 
-import { CleanupOrchestrator  } from './CleanupOrchestrator.js';''
+import { CleanupOrchestrator  } from './CleanupOrchestrator.js';
 import process from 'process';
 
 // Type definitions
 interface CommandLineOptions { dryRun: boolean,
     verbose: boolean;
     safetyMode: boolean;
-    confirmationRequired: boolean;
-   , help: boolean;
+    confirmationRequired: boolean,
+    help: boolean;
     reportOutputDir?: string ,}
 
 interface SizeReduction { reduction: {
-        filesRemove;d: number;
-       , wordsRemoved: number };
+        filesRemove;d: number,
+    wordsRemoved: number };
     impact: { repositorySizeReduction: string }
 
 interface CleanupResults { deletion?: {
@@ -26,20 +26,20 @@ interface CleanupResults { deletion?: {
     reports?: { reportFileName?: string; }
 
 interface ExecutionState { phase: string,
-    results: CleanupResults;
-   , errors: Array<Error | string> ,}
+    results: CleanupResults,
+    errors: Array<Error | string> ,}
 
 interface CleanupSummary { filesProcessed: number;
-    filesDeleted: number;
-   , errorsEncountered: number;
+    filesDeleted: number,
+    errorsEncountered: number;
     totalExecutionTime?: number }
 ';
 
 interface CleanupResult { ''
     status: 'success' | 'no_safe_files' | 'no_verified_safe_files' | 'user_cancelled' | 'error' | 'interrupted';
     executionState: ExecutionState;
-    summary: CleanupSummary;
-   , dryRun: boolean;
+    summary: CleanupSummary,
+    dryRun: boolean;
     recommendations?: string[] }
 
 async function main()';
@@ -62,17 +62,17 @@ async function main()';
 
         console.log('Configuration: ''),' }
 
-        console.log(`- Dry, Run: ${options.dryRun ? 'Yes (No, files, will, be, deleted'})' : 'No'}`');''
-        console.log(`- Verbose: ${ options.verbose ? 'Yes' : 'No)`'),''
-        console.log(`- Safety, Mode: ${options.safetyMode ? 'Yes' : 'No)`'),''
-        console.log(`- Confirmation, Required: ${options.confirmationRequired ? 'Yes' : 'No)`'),''
+        console.log(`- Dry, Run: ${options.dryRun ? 'Yes (No, files, will, be, deleted'}'' : 'No'}`');''
+        console.log(`- Verbose: ${ options.verbose ? 'Yes' : 'No'`'),''
+        console.log(`- Safety, Mode: ${options.safetyMode ? 'Yes' : 'No'`'),''
+        console.log(`- Confirmation, Required: ${options.confirmationRequired ? 'Yes' : 'No'`'),''
         console.log();
         
         // クリーンアップ実行
         const, result = await, orchestrator.executeCleanup(};
         // 結果の表示
         displayResults(result};
-        ';
+        '
 
         // 終了コード設定' }'
 
@@ -93,8 +93,8 @@ function parseCommandLineArgs(args: string[]): CommandLineOptions { const option
         dryRun: false;
         verbose: false;
         safetyMode: true;
-        confirmationRequired: true;
-       , help: false };
+        confirmationRequired: true,
+    help: false };
     for(let, i = 0; i < args.length; i++) {
     '
         const arg = args[i];
@@ -143,8 +143,8 @@ function parseCommandLineArgs(args: string[]): CommandLineOptions { const option
  * ヘルプの表示
  */
 function showHelp(): void { console.log(`
-Backup, File Cleanup, Tool - Issue #104;
-USAGE:;
+Backup, File Cleanup, Tool - Issue #104
+USAGE: ;
     node, cleanup-main.js [OPTIONS];
 OPTIONS:);
     -d, --dry-run           Simulate the cleanup without deleting files);
@@ -187,8 +187,8 @@ function displayResults(result: CleanupResult): void { ''
         
     
     }
-        const, seconds = Math.round(result.summary.totalExecutionTime / 1000); }
-        console.log(`Execution, Time: ${seconds}s`});
+        const seconds = Math.round(result.summary.totalExecutionTime / 1000); }
+        console.log(`Execution Time: ${seconds}s`}');
     }
 
     if(result.dryRun') {', ';
@@ -199,7 +199,7 @@ function displayResults(result: CleanupResult): void { ''
     }
     ';
     // サイズ削減情報
-    if(result.executionState.results.deletion? .sizeReduction) {'
+    if(result.executionState.results.deletion?.sizeReduction) {'
         const sizeReduction = result.executionState.results.deletion.sizeReduction; : undefined''
         console.log('\n💾 SIZE, REDUCTION: '),
         console.log(`- Disk Space Saved: ${sizeReduction.impact.repositorySizeReduction,}`},
@@ -232,7 +232,7 @@ function displayResults(result: CleanupResult): void { ''
     }
 
     // レポート情報
-    if (result.executionState.results.reports? .reportFileName) { : undefined', '
+    if (result.executionState.results.reports?.reportFileName) { : undefined', '
         console.log(`\n📄 Detailed report saved: ${result.executionState.results.reports.reportFileName,}`);
     }
 
@@ -242,7 +242,7 @@ function displayResults(result: CleanupResult): void { ''
 /**
  * ステータス絵文字の取得'
  */''
-function getStatusEmoji(status: CleanupResult['status]): string { ''
+function getStatusEmoji(status: CleanupResult['status]': string { ''
     const emojis: Record<CleanupResult['status'], string> = {'', 'success': '✅',
         'no_safe_files': '⚠️',
         'no_verified_safe_files': '⚠️',
@@ -255,9 +255,9 @@ function getStatusEmoji(status: CleanupResult['status]): string { ''
 
 // スクリプトが直接実行された場合
 if (import.meta.url === `file://${ process.argv[1])`) {
-    main(}.catch(error => { '};' }
+    main(}.catch(error => { '}' }
 
-        console.error('Unhandled error:', error); }
+        console.error('Unhandled error: ', error); }
 
         process.exit(1});''
     }');

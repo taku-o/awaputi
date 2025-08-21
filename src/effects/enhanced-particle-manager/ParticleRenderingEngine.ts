@@ -25,27 +25,27 @@ export interface ExtendedParticleTypes { // 高度な基本パーティクル
 
 export interface RenderingSettings { batchRendering: boolean,
     antiAliasing: boolean;
-    shadowQuality: ShadowQuality;
-   , textureFiltering: TextureFiltering
+    shadowQuality: ShadowQuality,
+    textureFiltering: TextureFiltering
     ,}
 
-export interface TrailPoint { x: number;
-   , y: number;
+export interface TrailPoint { x: number,
+    y: number;
     alpha?: number }
 
 export interface RenderableParticle { x: number;
     y: number;
     size?: number;
     color?: string;
-    alpha?: number;
-   , active: boolean;
+    alpha?: number,
+    active: boolean;
     type?: string;
     gradient?: boolean;
     trail?: TrailPoint[];
     rotation?: number; }
 
-export type RenderingCost = 'low' | 'medium' | 'high';''
-export type ShadowQuality = 'low' | 'medium' | 'high';''
+export type RenderingCost = 'low' | 'medium' | 'high';
+export type ShadowQuality = 'low' | 'medium' | 'high';
 export type TextureFiltering = 'linear' | 'nearest';
 
 /**
@@ -79,7 +79,7 @@ export class ParticleRenderingEngine {
         this.renderingSettings = { batchRendering: false,
             antiAliasing: true,
             shadowQuality: 'medium',
-            textureFiltering: 'linear' ,}))'
+            textureFiltering: 'linear' ,})''
 
         console.log('[ParticleRenderingEngine] パーティクルレンダリングエンジンを初期化しました');
     }
@@ -99,7 +99,7 @@ export class ParticleRenderingEngine {
                 this.renderBasicParticle(context, particle);' }'
 
             } catch (error) { this.errorHandler.handleError(error as Error, {)'
-                context: 'ParticleRenderingEngine.renderParticle' ,});
+                context: 'ParticleRenderingEngine.renderParticle' ,}';
         }
     }
     
@@ -129,7 +129,7 @@ export class ParticleRenderingEngine {
             context.restore();' }'
 
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
-                context: 'ParticleRenderingEngine.renderBasicParticle' ,});
+                context: 'ParticleRenderingEngine.renderBasicParticle' ,}';
         }
     }
     
@@ -172,11 +172,11 @@ export class ParticleRenderingEngine {
             const glowSize = (particle.size || 2) * 2;
             const gradient = context.createRadialGradient(;
                 particle.x, particle.y, 0)';
-                particle.x, particle.y, glowSize)'';
+                particle.x, particle.y, glowSize''';
             ');
 
             gradient.addColorStop(0, particle.color || '#ffffff'');''
-            gradient.addColorStop(0.5, `${particle.color || '#ffffff)80`');''
+            gradient.addColorStop(0.5, `${particle.color || '#ffffff'80`');''
             gradient.addColorStop(1, 'transparent);
             
             context.globalAlpha = particle.alpha || 1.0;
@@ -227,7 +227,7 @@ export class ParticleRenderingEngine {
 
             context.restore();''
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
-                context: 'ParticleRenderingEngine.renderTrailParticle' ,});
+                context: 'ParticleRenderingEngine.renderTrailParticle' ,}';
         }
     }
     
@@ -259,7 +259,7 @@ export class ParticleRenderingEngine {
 
             context.restore();''
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
-                context: 'ParticleRenderingEngine.renderHexagon' ,});
+                context: 'ParticleRenderingEngine.renderHexagon' ,}';
         }
     }
     
@@ -289,7 +289,7 @@ export class ParticleRenderingEngine {
             context.restore();' }'
 
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
-                context: 'ParticleRenderingEngine.renderTriangle' ,});
+                context: 'ParticleRenderingEngine.renderTriangle' ,}';
         }
     }
     
@@ -341,8 +341,8 @@ export class ParticleRenderingEngine {
                 particle.x, particle.y, 0);
                 particle.x, particle.y, glowSize)'';
             ');''
-            outerGradient.addColorStop(0, `${particle.color || '#00ffff)80`');''
-            outerGradient.addColorStop(0.7, `${particle.color || '#00ffff)20`');''
+            outerGradient.addColorStop(0, `${particle.color || '#00ffff'80`');''
+            outerGradient.addColorStop(0.7, `${particle.color || '#00ffff'20`');''
             outerGradient.addColorStop(1, 'transparent);
             
             context.globalAlpha = particle.alpha || 1.0;
@@ -368,7 +368,7 @@ export class ParticleRenderingEngine {
 
             context.restore(});''
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
-                context: 'ParticleRenderingEngine.renderEnergyOrb' ,});
+                context: 'ParticleRenderingEngine.renderEnergyOrb' ,}';
         }
     }
     

@@ -5,8 +5,8 @@
 
 // 型定義
 export interface LeaderboardManager { data: LeaderboardData,
-    config: LeaderboardConfig;
-   , clearRelevantCache: (leaderboardKe;y: string) => void ,}
+    config: LeaderboardConfig,
+    clearRelevantCache: (leaderboardKey: string) => void ,}
 }
 
 export interface LeaderboardData { leaderboards: Record<string, Leaderboard>,
@@ -21,8 +21,8 @@ export interface Leaderboard { entries: ScoreEntry[],
     ,}
 
 export interface ScoreEntry { playerName: string;
-    score: number;
-   , timestamp: number;
+    score: number,
+    timestamp: number;
     stageId?: string;
     difficulty?: string;
     playTime?: number;
@@ -43,8 +43,8 @@ export interface PeriodLeaderboards { daily?: Record<string, PeriodLeaderboard>;
     yearly?: Record<string, PeriodLeaderboard>; }
 
 export interface PeriodLeaderboard { entries: ScoreEntry[],
-    startDate: Date;
-   , endDate: Date;
+    startDate: Date,
+    endDate: Date;
     metadata?: PeriodMetadata
     ,}
 
@@ -52,28 +52,28 @@ export interface PeriodMetadata { totalPlayers: number;
     totalScores: number;
     averageScore: number;
     highestScore: number;
-    period: PeriodType;
-   , periodKey: string }
+    period: PeriodType,
+    periodKey: string }
 
 export interface LeaderboardMetadata { createdAt: number;
     updatedAt: number;
     totalEntries: number;
     highestScore: number;
-    averageScore: number;
-   , uniquePlayers: number }
+    averageScore: number,
+    uniquePlayers: number }
 
 export interface SortCriteria { primary: SortField;
-    secondary?: SortField;
-   , order: SortOrder
+    secondary?: SortField,
+    order: SortOrder
     }
 
-export interface SortField { field: string;
-   , numeric: boolean }
+export interface SortField { field: string,
+    numeric: boolean }
 
 export interface LeaderboardStatistics { totalPlayers: number;
     totalScores: number;
-    averageScore: number;
-   , highestScore: number;
+    averageScore: number,
+    highestScore: number;
     period?: PeriodType;
     periodKey?: string; }
 
@@ -81,48 +81,48 @@ export interface LeaderboardCache { rankings: Record<string, CachedRanking>,
     statistics: Record<string, CachedStatistics>,
     lastClearTime: number ,}
 
-export interface CachedRanking { data: ScoreEntry[];
-   , timestamp: number;
+export interface CachedRanking { data: ScoreEntry[],
+    timestamp: number;
     period?: PeriodType
     }
 
-export interface CachedStatistics { data: LeaderboardStatistics;
-   , timestamp: number;
+export interface CachedStatistics { data: LeaderboardStatistics,
+    timestamp: number;
     period?: PeriodType
     }
 
-export interface DateKeyComponents { year: number;
-   , month: number;
+export interface DateKeyComponents { year: number,
+    month: number;
     day?: number;
     week?: number; }
 
 export interface PeriodRange { start: Date,
     end: Date;
-    key: string;
-   , period: PeriodType
+    key: string,
+    period: PeriodType
     ,}
 
 export interface RankingUpdateResult { success: boolean;
     updatedEntries: number;
     newRank?: number;
-    previousRank?: number;
-   , leaderboardKey: string }
+    previousRank?: number,
+    leaderboardKey: string }
 
 export interface BinarySearchResult { found: boolean;
-    index: number;
-   , exactMatch: boolean }
+    index: number,
+    exactMatch: boolean }
 
-export interface PeriodCalculationParams { date: Date;
-   , period: PeriodType;
+export interface PeriodCalculationParams { date: Date,
+    period: PeriodType;
     weekStartDay?: WeekStartDay
     }
 
 // 列挙型
-export type PeriodType = 'daily' | 'weekly' | 'monthly' | 'yearly';''
+export type PeriodType = 'daily' | 'weekly' | 'monthly' | 'yearly';
 export type SortOrder = 'asc' | 'desc';
 
 export type WeekStartDay = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0 = Sunday
-export type LeaderboardType = 'global' | 'stage' | 'difficulty' | 'period';''
+export type LeaderboardType = 'global' | 'stage' | 'difficulty' | 'period';
 export type RankingStatus = 'active' | 'expired' | 'calculating' | 'error';
 
 // 定数
@@ -170,7 +170,7 @@ export function getUniquePlayersCount(entries: ScoreEntry[]): number { return ne
 ';
 
 export function formatDateKey(date: Date, period: PeriodType, weekStartDay: WeekStartDay = DEFAULT_WEEK_START_DAY): string { const year = date.getFullYear();''
-    const month = String(date.getMonth() + 1').padStart(2, '0);''
+    const month = String(date.getMonth() + 1').padStart(2, '0';''
     const day = String(date.getDate()).padStart(2, '0);
 
     switch(period) {', ';
@@ -182,8 +182,8 @@ export function formatDateKey(date: Date, period: PeriodType, weekStartDay: Week
             return `${year}-${month}-${day}`;''
         case 'weekly':';
             const weekStart = getWeekStart(date, weekStartDay);''
-            const weekMonth = String(weekStart.getMonth() + 1').padStart(2, '0);''
-            const weekDay = String(weekStart.getDate()).padStart(2, '0);''
+            const weekMonth = String(weekStart.getMonth() + 1').padStart(2, '0';''
+            const weekDay = String(weekStart.getDate()).padStart(2, '0';''
             return `${ weekStart.getFullYear('''
         case 'monthly': }
 
@@ -218,15 +218,15 @@ export function parseDateKey(key: string, period: PeriodType): Date | null { try
             default: return null; catch (error) { return null;
 
 export function createDefaultLeaderboard(): Leaderboard { return { entries: [],
-        lastUpdated: Date.now();
-       , metadata: {
+        lastUpdated: Date.now(),
+    metadata: {
             createdAt: Date.now();
             updatedAt: Date.now();
             totalEntries: 0;
-            highestScore: 0;
-           , averageScore: 0, };
-            uniquePlayers: 0 }
-}
+            highestScore: 0,
+    averageScore: 0, };
+            uniquePlayers: 0 
+    }
 
 export class LeaderboardRankingManager {
     private leaderboardManager: LeaderboardManager;
@@ -276,7 +276,7 @@ export class LeaderboardRankingManager {
                 previousRank, };
                 leaderboardKey }
             } catch (error) {
-            console.error('[LeaderboardRankingManager] Error updating leaderboard:', error);
+            console.error('[LeaderboardRankingManager] Error updating leaderboard:', error';
             return { success: false,
                 updatedEntries: 0, };
                 leaderboardKey }
@@ -296,7 +296,7 @@ export class LeaderboardRankingManager {
 
         try { // 各期間での更新
             this.updateDailyLeaderboard(data, scoreEntry, now);
-            this.updateWeeklyLeaderboard(data, scoreEntry, now);
+            this.updateWeeklyLeaderboard(data scoreEntry now');
             this.updateMonthlyLeaderboard(data, scoreEntry, now');' }'
 
         } catch (error) { console.error('[LeaderboardRankingManager] Error updating period leaderboards:', error }
@@ -307,14 +307,14 @@ export class LeaderboardRankingManager {
      */''
     private updateDailyLeaderboard(data: LeaderboardData, scoreEntry: ScoreEntry, date: Date): void { ''
         const dateKey = formatDateKey(date, 'daily'');''
-        this.updatePeriodBoard(data, 'daily', dateKey, scoreEntry); }
+        this.updatePeriodBoard(data, 'daily', dateKey, scoreEntry'; }
 
     /**
      * 週別リーダーボードの更新'
      */''
     private updateWeeklyLeaderboard(data: LeaderboardData, scoreEntry: ScoreEntry, date: Date): void { ''
         const weekKey = formatDateKey(date, 'weekly'');''
-        this.updatePeriodBoard(data, 'weekly', weekKey, scoreEntry); }
+        this.updatePeriodBoard(data, 'weekly', weekKey, scoreEntry'; }
 
     /**
      * 月別リーダーボードの更新'
@@ -339,8 +339,8 @@ export class LeaderboardRankingManager {
         if(!data.periodLeaderboards[period]![key]) {
 
             data.periodLeaderboards[period]![key] = {
-                entries: [];
-               , startDate: this.getPeriodStartDate(key, period) || new Date(),
+                entries: [],
+    startDate: this.getPeriodStartDate(key, period) || new Date(),
 
         }
                 endDate: this.getPeriodEndDate(key, period) || new Date(); }
@@ -379,8 +379,8 @@ export class LeaderboardRankingManager {
         // ランキング情報の付加
         return entries.map((entry, index) => ({ ...entry,
             rank: index + 1;
-            period: period);
-           , periodKey: currentKey ,});
+            period: period),
+    periodKey: currentKey ,});
     }
 
     /**
@@ -408,8 +408,8 @@ export class LeaderboardRankingManager {
             averageScore: calculateAverageScore(scores);
             highestScore: entries.length > 0 ? Math.max(...scores) : 0;
             period: period, };
-            periodKey: currentKey }
-        }
+            periodKey: currentKey 
+    }
 
     /**
      * 期間別ランキングの再計算
@@ -476,7 +476,7 @@ export class LeaderboardRankingManager {
     /**
      * 期間の終了日を取得
      */
-    getPeriodEndDate(key: string, period: PeriodType): Date | null { const startDate = this.getPeriodStartDate(key, period);
+    getPeriodEndDate(key: string period: PeriodType): Date | null { const startDate = this.getPeriodStartDate(key period');
         if (!startDate) return null;
 
         switch(period') {'
@@ -569,8 +569,8 @@ export class LeaderboardRankingManager {
                 updatedAt: Date.now();
                 totalEntries: 0;
                 highestScore: 0;
-                averageScore: 0;
-               , uniquePlayers: 0 }
+                averageScore: 0,
+    uniquePlayers: 0 }
 
         const entries = leaderboard.entries;
         const scores = entries.map(entry => entry.score);
@@ -587,10 +587,10 @@ export class LeaderboardRankingManager {
      */
     private createEmptyStats(period: PeriodType): LeaderboardStatistics { return { totalPlayers: 0,
             totalScores: 0;
-            averageScore: 0;
-           , highestScore: 0, };
-            period: period }
-        }
+            averageScore: 0,
+    highestScore: 0, };
+            period: period 
+    }
 
     /**
      * ランキングデータの検証
@@ -614,8 +614,8 @@ export class LeaderboardRankingManager {
         const uniquePlayers = getUniquePlayersCount(entries);
 
         return { totalPlayers: uniquePlayers,
-            totalScores: entries.length;
-           , averageScore: calculateAverageScore(scores),' };
+            totalScores: entries.length,
+    averageScore: calculateAverageScore(scores),' };
 
             highestScore: entries.length > 0 ? Math.max(...scores) : 0 
         }''

@@ -11,8 +11,8 @@ interface LayoutConfig { padding: number,
     headerHeight: number;
     dialogPadding: number;
     buttonHeight: number;
-    buttonWidth: number;
-   , sectionSpacing: number ,}
+    buttonWidth: number,
+    sectionSpacing: number ,}
 
 /**
  * Color theme interface
@@ -26,28 +26,28 @@ interface ColorTheme { background: string;
     danger: string;
     text: string;
     textSecondary: string;
-    border: string;
-   , overlay: string }
+    border: string,
+    overlay: string }
 
 /**
  * Bounds interface
  */
 interface Bounds { x: number;
     y: number;
-    width: number;
-   , height: number }
+    width: number,
+    height: number }
 
 /**
  * Button position interface
  */
-interface ButtonPosition { x: number;
-   , width: number }
+interface ButtonPosition { x: number,
+    width: number }
 
 /**
  * Text metrics interface
  */
-interface TextMetrics { width: number;
-   , height: number }
+interface TextMetrics { width: number,
+    height: number }
 
 /**
  * Text options interface
@@ -81,8 +81,8 @@ interface ProgressBarOptions { backgroundColor?: string;
  */
 interface BackupStatus { lastBackup?: string | number | Date;
     backupCount: number;
-    totalSize: number;
-   , autoBackupEnabled: boolean ,}
+    totalSize: number,
+    autoBackupEnabled: boolean ,}
 
 /**
  * Export options interface
@@ -107,7 +107,7 @@ export class UILayoutManager {
     private canvas: HTMLCanvasElement | null = null;
     private ctx: CanvasRenderingContext2D | null = null';
 
-    constructor(''';
+    constructor('''
            , background: '#0f0f1a',
             cardBackground: '#1a1a2e',
             primary: '#4a90e2',
@@ -117,11 +117,11 @@ export class UILayoutManager {
             danger: '#EF4444',
             text: '#ffffff',
             textSecondary: '#cccccc',
-            border: '#333',)';
+            border: '#333','';
             overlay: 'rgba(0, 0, 0, 0.8)' }
 
     setCanvas(canvas: HTMLCanvasElement): void { this.canvas = canvas;''
-        this.ctx = canvas.getContext('2d); }'
+        this.ctx = canvas.getContext('2d'; }'
 
     getLayoutConfig(): LayoutConfig {
         return { ...this.layoutConfig;
@@ -171,9 +171,9 @@ export class UILayoutManager {
         const totalWidth = totalButtons * buttonWidth + (totalButtons - 1) * padding;
         const startX = (containerWidth - totalWidth) / 2;
         
-        return { x: startX + buttonIndex * (buttonWidth + padding };
-            width: buttonWidth }
-        }
+        return { x: startX + buttonIndex * (buttonWidth + padding }
+            width: buttonWidth 
+    }
 }
 
 /**
@@ -182,8 +182,8 @@ export class UILayoutManager {
  */
 export, class UIRenderer {
     private, layoutManager: UILayoutManager;
-    private, canvas: HTMLCanvasElement | null = null;
-   , ctx: CanvasRenderingContext2D | null = null;
+    private, canvas: HTMLCanvasElement | null = null,
+    ctx: CanvasRenderingContext2D | null = null;
     constructor(layoutManager: UILayoutManager) {
         this.layoutManager = layoutManager }
 
@@ -220,7 +220,7 @@ export, class UIRenderer {
         const colors = this.layoutManager.getColors(''';
             align = 'left',
             baseline = 'top);
-            maxWidth = null);
+            maxWidth = null';
             bold = false } = options;
 ';
 
@@ -300,17 +300,17 @@ export, class UIRenderer {
 ;
         // Text
         if(showText && text) { this.drawText(text, x + width / 2, y + height / 2, {)
-                fontSize: 12)';
-               , color: colors.text,
+                fontSize: 12)',
+    color: colors.text,
                 align: 'center',
                 baseline: 'middle', }
-                bold: true); }
-}
+                bold: true); 
+    }
 
     drawIcon(icon: string, x: number, y: number, size: number = 24, color: string | null = null): void { if (!this.ctx) return;
 
         const colors = this.layoutManager.getColors(''';
-        this.ctx.textAlign = 'center';)'
+        this.ctx.textAlign = 'center';''
         this.ctx.textBaseline = 'middle';)
         this.ctx.fillText(icon, x + size / 2, y + size / 2); }
 
@@ -354,15 +354,15 @@ export, class UIRenderer {
            , color: colors.text,
             align: 'left',
             baseline: 'middle',')';
-            bold: true)');
+            bold: true'');
 ';
         // Close button
         this.drawText('×', bounds.x + bounds.width - 30, bounds.y + 30, {)
-            fontSize: 20)';
-           , color: colors.textSecondary,
+            fontSize: 20'',
+    color: colors.textSecondary,
             align: 'center',
             baseline: 'middle',')';
-            bold: true)' ,}'
+            bold: true'' ,}'
 
     drawStatusIndicator(x: number, y: number, status: 'success' | 'warning' | 'error' | string, text: string = ''): void { if (!this.ctx) return;
 
@@ -383,8 +383,8 @@ export, class UIRenderer {
                 indicatorColor = colors.danger;
                 break;
         }
-            default: indicatorColor = colors.textSecondary; }
-        }
+            default: indicatorColor = colors.textSecondary; 
+    }
 
         // Status dot
         this.ctx.fillStyle = indicatorColor;
@@ -393,12 +393,12 @@ export, class UIRenderer {
         this.ctx.fill();
         // Status text
         if(text) { this.drawText(text, x + 20, y, {)
-                fontSize: 12)';
-               , color: colors.textSecondary,
+                fontSize: 12)',
+    color: colors.textSecondary,
                 align: 'left',' }
 
-                baseline: 'top'); }
-}
+                baseline: 'top'); 
+    }
 
     // Helper method for rounded rectangles
     private roundRect(x: number, y: number, width: number, height: number, radius: number, fill: boolean = true): void { if (!this.ctx) return;
@@ -432,8 +432,8 @@ export, class UIRenderer {
         const metrics = this.ctx.measureText(text);
         
         return { width: metrics.width };
-            height: fontSize }
-        }
+            height: fontSize 
+    }
 ';
 
     wrapText(text: string, maxWidth: number, fontSize: number = 16): string[] { ''
@@ -497,10 +497,10 @@ export class ViewRenderer {
 ';
         // Title
         this.uiRenderer.drawText('Backup Status', x + padding, y + padding, { fontSize: 18)
-           , bold: true);
+           , bold: true';
         // Last backup
         const lastBackupText = backupStatus.lastBackup '';
-            ? new Date(backupStatus.lastBackup).toLocaleString(''';
+            ? new Date(backupStatus.lastBackup).toLocaleString('''
             : 'Never';
          })
         this.uiRenderer.drawText(`Last Backup: ${lastBackupText}`, x + padding, y + padding + 25, { fontSize: 14)
@@ -528,8 +528,8 @@ export class ViewRenderer {
         this.uiRenderer.drawCard(x, y, width, 160, false);
 ';
         // Title
-        this.uiRenderer.drawText('Quick Actions', x + padding, y + padding, { fontSize: 18,)'
-            bold: true)');
+        this.uiRenderer.drawText('Quick Actions', x + padding, y + padding, { fontSize: 18,''
+            bold: true'');
         // Action buttons
         const, actions: ActionDef[] = [' ,}'
 
@@ -553,8 +553,8 @@ export class ViewRenderer {
             ;
             this.uiRenderer.drawButton(buttonX, buttonY, buttonWidth, buttonHeight, action.text, {)
                 selected: isSelected, }
-                variant: action.variant); }
-        });
+                variant: action.variant); 
+    });
     }
 
     renderExportView(bounds: Bounds, selectedItem: number, exportOptions: ExportOptions = { ): void {
@@ -573,8 +573,8 @@ export class ViewRenderer {
         this.uiRenderer.drawCard(x, y, width, 200, false);
 ';
         // Title
-        this.uiRenderer.drawText('Export Options', x + padding, y + padding, { fontSize: 18,)'
-            bold: true)');
+        this.uiRenderer.drawText('Export Options', x + padding, y + padding, { fontSize: 18,''
+            bold: true'');
 ';
         // Format options
         const, formats: string[] = ['JSON', 'CSV', 'XML'];

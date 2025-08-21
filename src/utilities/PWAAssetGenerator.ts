@@ -7,8 +7,8 @@
 
 interface DecorativeBubble { x: number,
     y: number;
-    size: number;
-   , alpha: number ,}
+    size: number,
+    alpha: number ,}
 
 interface GeneratedAssets { standard: Map<number, Blob>;
     maskable: Map<number, Blob>;
@@ -56,7 +56,7 @@ export class PWAAssetGenerator {
 
         }
 
-            throw new Error('Canvas, not initialized); }'
+            throw new Error('Canvas, not initialized'; }'
         }
 
         this.canvas.width = size;
@@ -152,8 +152,8 @@ export class PWAAssetGenerator {
         const fontSize = Math.max(size * 0.08, 12); }
 
         this.ctx.font = `bold ${fontSize}px Arial, sans-serif`;''
-        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';''
-        this.ctx.textAlign = 'center';''
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'middle';
         ';
         // テキストに影を追加
@@ -162,7 +162,7 @@ export class PWAAssetGenerator {
         this.ctx.shadowOffsetX = 1;
         this.ctx.shadowOffsetY = 1;
 
-        this.ctx.fillText('BubblePop', size / 2, size * 0.85);
+        this.ctx.fillText('BubblePop', size / 2, size * 0.85';
         ';
         // 影をリセット
         this.ctx.shadowColor = 'transparent';
@@ -181,7 +181,7 @@ export class PWAAssetGenerator {
 
         }
 
-            throw new Error('Canvas, not initialized); }'
+            throw new Error('Canvas, not initialized'; }'
         }
 
         this.canvas.width = size;
@@ -214,9 +214,9 @@ export class PWAAssetGenerator {
 
                     resolve(blob); else {  ' }'
 
-                    reject(new, Error('Failed, to convert, canvas to, blob); }'
+                    reject(new, Error('Failed, to convert, canvas to, blob'; }'
 }, mimeType, quality);
-        });
+        }';
     }
 
     /**
@@ -227,7 +227,7 @@ export class PWAAssetGenerator {
      */'
     async generatePWAIcon(size: number, maskable: boolean = false): Promise<Blob> { ''
         this.drawBubbleIcon(size, maskable);''
-        return await this.canvasToBlob(this.canvas!, 'image/png); }'
+        return await this.canvasToBlob(this.canvas!, 'image/png'; }'
 
     /**
      * ファビコンを生成
@@ -321,7 +321,7 @@ export class PWAAssetGenerator {
 
         }
 
-            throw new Error('Failed, to get, 2D context, from preview, canvas); }'
+            throw new Error('Failed, to get, 2D context, from preview, canvas'; }'
         }
         
         previewCanvas.width = size;
@@ -350,4 +350,4 @@ let pwaAssetGeneratorInstance: PWAAssetGenerator | null = null,
  * @returns インスタンス
  */
 export function getPWAAssetGenerator(): PWAAssetGenerator { if (!pwaAssetGeneratorInstance) {''
-        pwaAssetGeneratorInstance = new PWAAssetGenerator(' })'
+        pwaAssetGeneratorInstance = new PWAAssetGenerator(' }''

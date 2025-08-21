@@ -1,4 +1,4 @@
-import { getErrorHandler  } from '../utils/ErrorHandler';''
+import { getErrorHandler  } from '../utils/ErrorHandler';
 import { getConfigurationManager  } from '../core/ConfigurationManager';
 
 /**
@@ -17,22 +17,22 @@ type VisualizationTypeKey = 'frequencyBars' | 'waveform' | 'spectrogram' | 'volu
  */
 interface ColorScheme { primary: string,
     secondary: string;
-    background: string;
-   , gradient: string[] ,}
+    background: string,
+    gradient: string[] ,}
 
 /**
  * 音響イベントインターフェース
  */'
 interface AudioEvent { ''
     type: 'increase' | 'decrease';
-    intensity: number;
-   , timestamp: number }
+    intensity: number,
+    timestamp: number }
 
 /**
  * 統計情報インターフェース
  */
-interface VisualizerStatistics { isRunning: boolean;
-   , currentVisualization: VisualizationTypeKey,
+interface VisualizerStatistics { isRunning: boolean,
+    currentVisualization: VisualizationTypeKey,
     colorScheme: string,
     performanceMode: 'low' | 'medium' | 'high';
     targetFPS: number;
@@ -40,8 +40,8 @@ interface VisualizerStatistics { isRunning: boolean;
     activeEvents: number;
     eventHistory: number;
     accessibilityMode: boolean;
-    highContrast: boolean;
-   , motionReduction: boolean ,}
+    highContrast: boolean,
+    motionReduction: boolean ,}
 
 /**
  * AudioManager インターフェース
@@ -52,7 +52,7 @@ interface AudioManager { audioContext: AudioContext | null;
 /**
  * ConfigurationManager インターフェース（型定義用）
  */
-interface ConfigurationManager { watch(category: string, path: string, callback: (valu;e: any) => void): void ,}
+interface ConfigurationManager { watch(category: string, path: string, callback: (value: any) => void): void ,}
 }
 
 /**
@@ -127,7 +127,7 @@ export class AudioVisualizer {
         // 色設定
         this.colorSchemes = { neon: {''
                 primary: '#00ffff',
-                secondary: '#ff00ff',)';
+                secondary: '#ff00ff','';
                 background: 'rgba(0, 0, 0, 0.1)',
                 gradient: ['#00ffff', '#0080ff', '#8000ff', '#ff00ff] },
 
@@ -189,9 +189,9 @@ export class AudioVisualizer {
             // Canvas要素を作成
             this.createCanvas();
             // 設定を監視
-            this.setupConfigWatchers(')';
+            this.setupConfigWatchers()';
             console.log('AudioVisualizer, initialized');''
-        } catch (error) { this.errorHandler.handleError(error, 'AUDIO_VISUALIZER_ERROR', {)'
+        } catch (error) { this.errorHandler.handleError(error, 'AUDIO_VISUALIZER_ERROR', {''
                 component: 'AudioVisualizer',')';
                 operation: 'initialize' ,});
         }
@@ -230,8 +230,8 @@ export class AudioVisualizer {
             display: none;
             position: fixed;
             top: 10px;
-            right: 10px;
-           , width: 300px,
+            right: 10px,
+    width: 300px,
             height: 200px,
             background-color: rgba(0, 0, 0, 0.8);
             border: 2px solid #00ffff;
@@ -240,7 +240,7 @@ export class AudioVisualizer {
             pointer-events: none,
         `;
 
-        this.ctx = this.canvas.getContext('2d);''
+        this.ctx = this.canvas.getContext('2d';''
         this.updateCanvasSize()';
         this.canvas.setAttribute('role', 'img'');''
         this.canvas.setAttribute('aria-label', '音響視覚化表示);
@@ -255,7 +255,7 @@ export class AudioVisualizer {
         ';
         // デフォルトサイズまたは親要素のサイズに合わせる
         const rect = this.canvas.getBoundingClientRect(''';
-        this.canvas.style.width = this.width + 'px';''
+        this.canvas.style.width = this.width + 'px';
         this.canvas.style.height = this.height + 'px';
         );
         // コンテキストのスケールを調整)
@@ -270,9 +270,8 @@ export class AudioVisualizer {
      * @private
      */''
     private setupConfigWatchers()';
-        this.configManager.watch('audio', 'accessibility.visualFeedback', (enabled: boolean) => { this.setEnabled(enabled);' }
-
-        }');
+        this.configManager.watch('audio', 'accessibility.visualFeedback', (enabled: boolean) => { this.setEnabled(enabled);' 
+    }');
 
         this.configManager.watch('audio', 'accessibility.highContrast', (enabled: boolean) => {  this.highContrast = enabled; }
 
@@ -374,7 +373,7 @@ export class AudioVisualizer {
         // 必要な要素の存在確認
         if(!this.ctx || !this.canvas') {'
 
-            console.warn('[AudioVisualizer] Canvas, context not, available for, rendering);
+            console.warn('[AudioVisualizer] Canvas, context not available for rendering);
         }
             return; }
         }
@@ -387,8 +386,8 @@ export class AudioVisualizer {
             switch(this.currentVisualization') {'
 
                 case 'frequencyBars':'';
-                    this.renderFrequencyBars(''';
-                case 'waveform':'';
+                    this.renderFrequencyBars('''
+                case 'waveform': '';
                     this.renderWaveform(''';
                 case 'spectrogram':'';
                     this.renderSpectrogram(''';
@@ -449,8 +448,8 @@ export class AudioVisualizer {
         
         }
 
-                this.ctx.fillStyle = barHeight > canvasHeight * 0.5 ? '#ffffff' : '#000000'; }
-            } else { this.ctx.fillStyle = gradient; }
+                this.ctx.fillStyle = barHeight > canvasHeight * 0.5 ? '#ffffff' : '#000000'; 
+    } else { this.ctx.fillStyle = gradient; }
             
             this.ctx.fillRect(x, canvasHeight - barHeight, barWidth, barHeight);
             
@@ -502,11 +501,11 @@ export class AudioVisualizer {
 ';
         // 複雑な実装のため、基本的な実装のみ
         this.renderFrequencyBars()';
-        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';''
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
         this.ctx.fillRect(0, canvasHeight - 20, canvasWidth, 20);
 
-        this.ctx.fillStyle = '#ffffff';''
-        this.ctx.font = '12px monospace';''
+        this.ctx.fillStyle = '#ffffff';
+        this.ctx.font = '12px monospace';
         this.ctx.fillText('Spectrogram Mode', 10, canvasHeight - 5); }
     
     /**
@@ -554,7 +553,7 @@ export class AudioVisualizer {
 
         } else { colorScheme.gradient.forEach((color, index) => { ' }'
 
-                gradient.addColorStop(index / (colorScheme.gradient.length - 1), color.replace()', ', 0.6)'').replace('#', 'rgba().replace('#', ''); }
+                gradient.addColorStop(index / (colorScheme.gradient.length - 1), color.replace()', ', 0.6''').replace('#', 'rgba().replace('#', ''); }
             });
         }
         
@@ -562,9 +561,9 @@ export class AudioVisualizer {
         this.ctx.beginPath();
 
         this.ctx.arc(centerX, centerY, currentRadius, 0, 2 * Math.PI);''
-        this.ctx.fill(''';
-        this.ctx.fillStyle = this.highContrast ? '#000000' : '#ffffff';''
-        this.ctx.font = 'bold, 16px monospace';)'
+        this.ctx.fill('''
+        this.ctx.fillStyle = this.highContrast ? '#000000' : '#ffffff';
+        this.ctx.font = 'bold, 16px monospace';''
         this.ctx.textAlign = 'center';)
         this.ctx.fillText(`${Math.round(volume * 100})%`, centerX, centerY + 5);
     }
@@ -577,12 +576,12 @@ export class AudioVisualizer {
 ';
         // 簡易実装：左右チャンネルの視覚化
         this.renderWaveform()';
-        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';''
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
         this.ctx.fillRect(0, 0, canvasWidth, 30);
 
-        this.ctx.fillStyle = '#ffffff';''
-        this.ctx.font = '12px monospace';''
-        this.ctx.fillText('L', 10, 20);''
+        this.ctx.fillStyle = '#ffffff';
+        this.ctx.font = '12px monospace';
+        this.ctx.fillText('L', 10, 20';''
         this.ctx.fillText('R', canvasWidth - 20, 20); }
     
     /**
@@ -608,8 +607,8 @@ export class AudioVisualizer {
                     type: change > 0 ? 'increase' : 'decrease');
                     intensity: Math.abs(change);
         }
-                    timestamp: performance.now(); }
-                });
+                    timestamp: performance.now(); 
+    });
             }
         }
         
@@ -659,12 +658,11 @@ export class AudioVisualizer {
             this.ctx!.save()';
             if (event.type === 'increase'') {' }
 
-                this.ctx!.fillStyle = this.highContrast ? '#ffffff' : '#00ff00'; }
+                this.ctx!.fillStyle = this.highContrast ? '#ffffff' : '#00ff00'; 
+    } else { }'
 
-            } else { }'
-
-                this.ctx!.fillStyle = this.highContrast ? '#000000' : '#ff0000'; }
-            }
+                this.ctx!.fillStyle = this.highContrast ? '#000000' : '#ff0000'; 
+    }
             
             this.ctx!.beginPath();
             this.ctx!.arc(x, y, size, 0, 2 * Math.PI);
@@ -685,10 +683,10 @@ export class AudioVisualizer {
         const canvasHeight = this.height / window.devicePixelRatio;
         ';
         // 情報パネル
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';''
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
         this.ctx.fillRect(0, canvasHeight - 80, canvasWidth, 80);
 
-        this.ctx.fillStyle = '#ffffff';''
+        this.ctx.fillStyle = '#ffffff';
         this.ctx.font = '12px monospace';
         
         // 現在の音響レベル
@@ -806,19 +804,19 @@ export class AudioVisualizer {
 
         if(enabled) {'
 
-            this.canvas.style.width = '400px';''
-            this.canvas.style.height = '300px';''
+            this.canvas.style.width = '400px';
+            this.canvas.style.height = '300px';
             this.updateCanvasSize(''';
-            this.canvas.style.width = '300px';''
-            this.canvas.style.height = '200px';)'
+            this.canvas.style.width = '300px';
+            this.canvas.style.height = '200px';''
             this.updateCanvasSize()';
     triggerAudioEvent(eventType: 'increase' | 'decrease', intensity: number = 50): void {
         this.addAudioEvent({)
             type: eventType,);
             intensity: intensity);
         ,}
-            timestamp: performance.now(); }
-        });
+            timestamp: performance.now(); 
+    });
     }
     
     /**
@@ -833,10 +831,10 @@ export class AudioVisualizer {
             bufferLength: this.bufferLength;
             activeEvents: this.audioEvents.length;
             eventHistory: this.eventHistory.length;
-            accessibilityMode: this.accessibilityMode;
-           , highContrast: this.highContrast, };
-            motionReduction: this.motionReduction }
-        }
+            accessibilityMode: this.accessibilityMode,
+    highContrast: this.highContrast, };
+            motionReduction: this.motionReduction 
+    }
     
     /**
      * Canvasを設定

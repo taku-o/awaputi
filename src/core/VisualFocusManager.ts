@@ -1,7 +1,7 @@
-import { getErrorHandler  } from '../utils/ErrorHandler.js';''
-import { FocusStateManager  } from './visual/focus/FocusStateManager.js';''
-import { FocusEffectRenderer  } from './visual/focus/FocusEffectRenderer.js';''
-import { FocusEventHandler  } from './visual/focus/FocusEventHandler.js';''
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
+import { FocusStateManager  } from './visual/focus/FocusStateManager.js';
+import { FocusEffectRenderer  } from './visual/focus/FocusEffectRenderer.js';
+import { FocusEventHandler  } from './visual/focus/FocusEventHandler.js';
 import { FocusAccessibilitySupport  } from './visual/focus/FocusAccessibilitySupport.js';
 
 /**
@@ -41,18 +41,18 @@ export class VisualFocusManager {'
         // 視覚フィードバック設定
         this.config = {
             focusRing: {
-                enabled: true;
-               , width: 3,
+                enabled: true,
+    width: 3,
                 color: '#4A90E2';
                 offset: 2;
                 borderRadius: 4;
-                animationDuration: 200;
-               , pulseAnimation: true;
+                animationDuration: 200,
+    pulseAnimation: true;
     ,}
-                customShadow: true }
-            };
-            highContrast: { enabled: false;
-               , width: 4,
+                customShadow: true 
+    };
+            highContrast: { enabled: false,
+    width: 4,
                 color: '#FFFF00',
                 backgroundColor: '#000000',
                 textColor: '#FFFFFF',
@@ -60,25 +60,25 @@ export class VisualFocusManager {'
             navigationFeedback: { enabled: true;
                 showDirection: true;
                 showPosition: true;
-                fadeTimeout: 2000;
-               , animationSpeed: 300 };
+                fadeTimeout: 2000,
+    animationSpeed: 300 };
             keyboardHints: { enabled: true;
-                showOnFocus: true;
-               , autoHide: true,
+                showOnFocus: true,
+    autoHide: true,
                 hideDelay: 3000,
                 position: 'bottom-right' ,};
             visualCues: { breadcrumbs: true;
                 pathHighlight: true;
-                groupIndicators: true;
-               , landmarkHighlight: true }
-        };
+                groupIndicators: true,
+    landmarkHighlight: true 
+    };
         // 状態管理
         this.state = { currentFocusElement: null,
             previousFocusElement: null;
-            navigationPath: [];
-           , activeVisualCues: new Set(),
-            animationTimers: new Map(''';
-           , focusVisible: 'visual-focus-visible',
+            navigationPath: [],
+    activeVisualCues: new Set(),
+            animationTimers: new Map(''',
+    focusVisible: 'visual-focus-visible',
             highContrast: 'visual-focus-high-contrast',
             navigationActive: 'visual-focus-navigation-active',
             keyboardMode: 'visual-focus-keyboard-mode',
@@ -89,7 +89,7 @@ export class VisualFocusManager {'
         this.focusEventHandler = new FocusEventHandler(this);''
         this.focusAccessibilitySupport = new FocusAccessibilitySupport(this);
 
-        console.log('VisualFocusManager, initialized with, component architecture);
+        console.log('VisualFocusManager initialized with component architecture);
         this.initialize();
     }
     
@@ -107,14 +107,14 @@ export class VisualFocusManager {'
             // イベントリスナーの設定
             this.focusEventHandler.setupEventListeners();
             // システム設定の検出と適用
-            this.focusStateManager.detectAndApplySystemSettings(');
+            this.focusStateManager.detectAndApplySystemSettings();
 
     }
 
             console.log('VisualFocusManager, initialized successfully'); }'
 
-        } catch (error) { getErrorHandler(').handleError(error, 'VISUAL_FOCUS_ERROR', {)'
-                operation: 'initialize' ,});
+        } catch (error) { getErrorHandler().handleError(error, 'VISUAL_FOCUS_ERROR', {''
+                operation: 'initialize' ,}';
         }
     }
     
@@ -155,7 +155,7 @@ export class VisualFocusManager {'
                 outline-offset: ${focusRing.offset}px !important;
 
                 border-radius: ${focusRing.borderRadius}px !important;''
-                ${focusRing.customShadow ? `box-shadow: 0, 0 0, 4px rgba(74, 144, 226, 0.3}, 0 0 8px rgba(74, 144, 226, 0.2'}) !important;` : ''}''
+                ${focusRing.customShadow ? `box-shadow: 0, 0 0, 4px rgba(74, 144, 226, 0.3}, 0 0 8px rgba(74, 144, 226, 0.2'}' !important;` : ''}''
                 ${focusRing.pulseAnimation ? `animation: focus-pulse ${focusRing.animationDuration * 2}ms ease-in-out infinite alternate;` : ''}
                 transition: all ${focusRing.animationDuration}ms ease-out !important;
                 z-index: 1000,
@@ -194,7 +194,7 @@ export class VisualFocusManager {'
                 border: ${focusRing.width}px solid ${focusRing.color}
 
                 border-radius: ${focusRing.borderRadius}px;''
-                ${focusRing.customShadow ? `box-shadow: 0, 0 8px, rgba(74, 144, 226, 0.3'});` : ''}
+                ${focusRing.customShadow ? `box-shadow: 0, 0 8px, rgba(74, 144, 226, 0.3'}';` : ''}
                 transition: all ${focusRing.animationDuration}ms ease-out;
                 opacity: 0;
             }
@@ -204,10 +204,10 @@ export class VisualFocusManager {'
             /* ナビゲーションインジケータ */
             .visual-focus-navigation { position: fixed,
                 top: 20px;
-                right: 20px;
-               , background: rgba(0, 0, 0, 0.8),
-                color: white;
-               , padding: 12px 16px;
+                right: 20px,
+    background: rgba(0, 0, 0, 0.8),
+                color: white,
+    padding: 12px 16px;
                 border-radius: 8px,
                 font-size: 14px,
                 font-weight: 500,
@@ -216,8 +216,8 @@ export class VisualFocusManager {'
                 opacity: 0, }
                 transform: translateY(-10px})
                 transition: all ${navigationFeedback.animationSpeed}ms ease-out)
-                backdrop-filter: blur(8px);
-               , border: 1px solid rgba(255, 255, 255, 0.1),
+                backdrop-filter: blur(8px),
+    border: 1px solid rgba(255, 255, 255, 0.1),
             }
             
             .visual-focus-navigation.visible { opacity: 1,
@@ -226,10 +226,10 @@ export class VisualFocusManager {'
             /* キーボードヒント */
             .visual-focus-keyboard-hint { position: fixed;
                 bottom: 20px;
-                right: 20px;
-               , background: linear-gradient(135deg, #667eea 0%, #764ba2 100%),
-                color: white;
-               , padding: 16px 20px;
+                right: 20px,
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%),
+                color: white,
+    padding: 16px 20px;
                 border-radius: 12px,
                 font-size: 13px,
                 line-height: 1.4,
@@ -248,10 +248,10 @@ export class VisualFocusManager {'
             /* パンくずリスト */
             .visual-focus-breadcrumb { position: fixed;
                 top: 20px;
-                left: 20px;
-               , background: rgba(255, 255, 255, 0.95),
-                color: #333;
-               , padding: 8px 12px;
+                left: 20px,
+    background: rgba(255, 255, 255, 0.95),
+                color: #333,
+    padding: 8px 12px;
                 border-radius: 6px,
                 font-size: 12px,
                 z-index: 10000,
@@ -259,8 +259,8 @@ export class VisualFocusManager {'
                 opacity: 0, }
                 transform: translateY(-10px})
                 transition: all ${navigationFeedback.animationSpeed}ms ease-out)
-                backdrop-filter: blur(4px);
-               , border: 1px solid rgba(0, 0, 0, 0.1),
+                backdrop-filter: blur(4px),
+    border: 1px solid rgba(0, 0, 0, 0.1),
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             }
             
@@ -284,13 +284,13 @@ export class VisualFocusManager {'
                     position: fixed;
                     bottom: 10px;
                     left: 10px;
-                    right: 10px;
-                   , top: auto;
+                    right: 10px,
+    top: auto;
                     max-width: none, }
                 
                 .visual-focus-breadcrumb { top: 10px,
-                    left: 10px;
-                   , right: 10px ,}
+                    left: 10px,
+    right: 10px ,}
             }
             
             /* Reduced motion 対応 */
@@ -311,13 +311,13 @@ export class VisualFocusManager {'
      */''
     createVisualElements()';
         this.elements.focusRing = document.createElement('div'');''
-        this.elements.focusRing.className = 'visual-focus-ring';''
-        this.elements.focusRing.setAttribute('aria-hidden', 'true);''
+        this.elements.focusRing.className = 'visual-focus-ring';
+        this.elements.focusRing.setAttribute('aria-hidden', 'true';''
         document.body.appendChild(this.elements.focusRing);
         ';
         // ナビゲーションインジケータ
         this.elements.navigationIndicator = document.createElement('div'');''
-        this.elements.navigationIndicator.className = 'visual-focus-navigation';''
+        this.elements.navigationIndicator.className = 'visual-focus-navigation';
         this.elements.navigationIndicator.setAttribute('aria-hidden', 'true'');
 
         this.elements.navigationIndicator.innerHTML = `'';
@@ -329,7 +329,7 @@ export class VisualFocusManager {'
         ";
         // キーボードヒント""
         this.elements.keyboardHint = document.createElement('div'');''
-        this.elements.keyboardHint.className = 'visual-focus-keyboard-hint';''
+        this.elements.keyboardHint.className = 'visual-focus-keyboard-hint';
         this.elements.keyboardHint.setAttribute('aria-hidden', 'true'');
 
         this.elements.keyboardHint.innerHTML = `'';
@@ -340,15 +340,15 @@ export class VisualFocusManager {'
         ";
         // パンくずリスト""
         this.elements.breadcrumbTrail = document.createElement('div'');''
-        this.elements.breadcrumbTrail.className = 'visual-focus-breadcrumb';''
+        this.elements.breadcrumbTrail.className = 'visual-focus-breadcrumb';
         this.elements.breadcrumbTrail.setAttribute('aria-hidden', 'true'');''
         this.elements.breadcrumbTrail.innerHTML = `<div class="path"></div>`;""
         document.body.appendChild(this.elements.breadcrumbTrail);
         ";
         // フォーカスオーバーレイ""
         this.elements.focusOverlay = document.createElement('div'');''
-        this.elements.focusOverlay.className = 'visual-focus-overlay';''
-        this.elements.focusOverlay.setAttribute('aria-hidden', 'true);''
+        this.elements.focusOverlay.className = 'visual-focus-overlay';
+        this.elements.focusOverlay.setAttribute('aria-hidden', 'true';''
         document.body.appendChild(this.elements.focusOverlay);
 
         console.log('Visual, focus elements, created);
@@ -372,10 +372,10 @@ export class VisualFocusManager {'
                 this.focusStateManager.setKeyboardMode(true);
                 
                 // 視覚的フォーカス表示の更新
-                this.focusStateManager.updateFocusVisuals(element, index);
+                this.focusStateManager.updateFocusVisuals(element index);
                 
                 // ナビゲーションフィードバックの表示
-                this.focusAccessibilitySupport.showNavigationFeedback(element, index);
+                this.focusAccessibilitySupport.showNavigationFeedback(element index);
                 
                 // キーボードヒントの表示（必要に応じて）
                 if (this.config.keyboardHints.showOnFocus) {
@@ -385,13 +385,13 @@ export class VisualFocusManager {'
                 
                 // パンくずリストの更新
                 if (this.config.visualCues.breadcrumbs) { this.focusAccessibilitySupport.updateBreadcrumbTrail(element); }
-            } else { this.focusStateManager.setKeyboardMode(false); }
+            } else { this.focusStateManager.setKeyboardMode(false'); }
             
             // ナビゲーションパスの更新
             this.focusStateManager.updateNavigationPath(element');
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'VISUAL_FOCUS_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'VISUAL_FOCUS_ERROR', {''
                 operation: 'handleFocusChange',);
                 element: element.tagName ,});
         }
@@ -414,11 +414,11 @@ export class VisualFocusManager {'
      */
     setFocusedElement(elementId, bounds) {
         this.currentFocusedElement = {
-            id: elementId;
-           , bounds: bounds;
+            id: elementId,
+    bounds: bounds;
     }
-            timestamp: Date.now(); }
-        };
+            timestamp: Date.now(); 
+    };
         this.handleFocusChange();
     }
 
@@ -432,7 +432,7 @@ export class VisualFocusManager {'
         const { bounds } = this.currentFocusedElement;
 
         context.save(''';
-        context.strokeStyle = this.config? .focusColor || '#0066cc';)
+        context.strokeStyle = this.config?.focusColor || '#0066cc';)
         context.lineWidth = 2;)
         context.setLineDash([5, 5]);
         
@@ -462,7 +462,7 @@ export class VisualFocusManager {'
 
                 } else { }'
 
-                    document.body.classList.remove('reduced-motion); }'
+                    document.body.classList.remove('reduced-motion'; }'
 }
         }
         
@@ -484,16 +484,16 @@ export class VisualFocusManager {'
     generateReport() {
         return { : undefined
             isActive: document.body.classList.contains(this.cssClasses.keyboardMode);
-            highContrastMode: this.state.isHighContrastMode;
-           , currentFocusElement: this.state.currentFocusElement? .tagName || null, : undefined
+            highContrastMode: this.state.isHighContrastMode,
+    currentFocusElement: this.state.currentFocusElement?.tagName || null, : undefined
             navigationPathLength: this.state.navigationPath.length;
             activeVisualCues: this.state.activeVisualCues.size;
-            keyboardHintVisible: this.state.keyboardHintVisible;
-           , activeTimers: this.state.animationTimers.size;
-    ,}
-            stateReport: this.focusStateManager.generateStateReport(), };
-            accessibilityReport: this.focusAccessibilitySupport.generateAccessibilityReport(); }
-        }
+            keyboardHintVisible: this.state.keyboardHintVisible,
+    activeTimers: this.state.animationTimers.size;
+     }
+            stateReport: this.focusStateManager.generateStateReport() };
+            accessibilityReport: this.focusAccessibilitySupport.generateAccessibilityReport(); 
+    }
     
     /**
      * 有効状態の設定
@@ -554,7 +554,7 @@ export class VisualFocusManager {'
             this.focusEventHandler.handleKeyPress(key); }
         }
 
-        console.log('Visual focus key press handled:', key);
+        console.log('Visual focus key press handled:', key';
     }
     
     /**
@@ -597,16 +597,16 @@ export class VisualFocusManager {'
             el.classList.remove(this.cssClasses.focusVisible});''
         }');
 
-        document.querySelectorAll('.visual-focus-landmark).forEach(el => {  ');' }
+        document.querySelectorAll('.visual-focus-landmark'.forEach(el => {  ');' }
 
-            el.classList.remove('visual-focus-landmark', 'highlighted);' }
+            el.classList.remove('visual-focus-landmark', 'highlighted';' }
 
         }');
 
-        document.querySelectorAll('.visual-focus-group).forEach(el => {  ');' }
+        document.querySelectorAll('.visual-focus-group'.forEach(el => {  ');' }
 
             el.classList.remove('visual-focus-group', 'active); }
-        });
+        }';
         
         // データのクリア
         this.state.navigationPath = [];''

@@ -11,8 +11,8 @@ export interface Item { id: string,
     name: string;
     type: ItemType;
     quantity: number;
-    maxQuantity: number;
-   , description: string;
+    maxQuantity: number,
+    description: string;
     effects?: ItemEffect[];
     cooldown?: number;
     lastUsed?: number; ,}
@@ -31,8 +31,8 @@ export interface ItemEffect { type: string,
 
 export interface ItemConfig { enableRevivalItems: boolean;
     maxRevivalsPerGame: number;
-    revivalHPPercentage: number;
-   , itemCooldowns: boolean }
+    revivalHPPercentage: number,
+    itemCooldowns: boolean }
 
 export class ItemManager {
     private gameEngine: GameEngine | null;
@@ -51,11 +51,11 @@ export class ItemManager {
         
         this.config = {
             enableRevivalItems: true;
-            maxRevivalsPerGame: 1;
-           , revivalHPPercentage: 50;
+            maxRevivalsPerGame: 1,
+    revivalHPPercentage: 50;
     }
-            itemCooldowns: true }
-        };
+            itemCooldowns: true 
+    };
         this.itemDefinitions = new Map();
         this.initializeDefaultItems();
     }
@@ -63,43 +63,43 @@ export class ItemManager {
     /**
      * デフォルトアイテムを初期化'
      */''
-    private initializeDefaultItems(''';
+    private initializeDefaultItems('''
         this.itemDefinitions.set('revival_heart', { ''
             id: 'revival_heart',
-            name: '復活のハート';
-           , type: ItemType.REVIVAL,
+            name: '復活のハート',
+    type: ItemType.REVIVAL,
             maxQuantity: 3,
             description: 'HPが0になった時に自動的に復活します',
-            effects: [{)'
-                type: 'revival')];
-               , value: 50 // HP回復率 ,}]
+            effects: [{''
+                type: 'revival')],
+    value: 50 // HP回復率 ,}]
             }],')'
-            cooldown: 0)');
+            cooldown: 0'');
 ';
         // パワーアップアイテムの定義
         this.itemDefinitions.set('power_boost', { ''
             id: 'power_boost',
-            name: 'パワーブースト';
-           , type: ItemType.POWER_UP,
+            name: 'パワーブースト',
+    type: ItemType.POWER_UP,
             maxQuantity: 5,
             description: 'スコア獲得量が一定時間2倍になります',
             effects: [{''
                 type: 'score_multiplier);
-                value: 2)];
-               , duration: 30000 // 30秒 ,}]
+                value: 2'],
+    duration: 30000 // 30秒 ,}]
             }],')'
-            cooldown: 60000 // 1分));
+            cooldown: 60000 // 1分)';
 ';
         // 時間延長アイテムの定義
         this.itemDefinitions.set('time_extend', { ''
             id: 'time_extend',
-            name: '時間延長';
-           , type: ItemType.CONSUMABLE,
+            name: '時間延長',
+    type: ItemType.CONSUMABLE,
             maxQuantity: 10,
             description: 'ゲーム時間を30秒延長します',
-            effects: [{)'
-                type: 'time_extend')];
-               , value: 30 ,}]
+            effects: [{''
+                type: 'time_extend')],
+    value: 30 ,}]
             }],)
             cooldown: 0);
     }
@@ -118,8 +118,8 @@ export class ItemManager {
             // 新しいアイテムを作成
             item = {
                 ...itemDef
-                quantity: 0 }
-            } as Item;
+                quantity: 0 
+    } as Item;
             this.inventory.set(itemId, item);
         }
 
@@ -185,8 +185,7 @@ export class ItemManager {
             return false;
 
         // 復活アイテムを探す
-        let revivalItem: Item | null = null,
-        for(const [_, item] of this.inventory) {
+        let revivalItem: Item | null = null for(const [_ item] of this.inventory) {
             if (item.type === ItemType.REVIVAL && item.quantity > 0) {
                 revivalItem = item;
         }
@@ -216,7 +215,7 @@ export class ItemManager {
 
         }
 
-            this.gameEngine.audioManager.playSound('revival); }'
+            this.gameEngine.audioManager.playSound('revival'; }'
         }
 
         console.log(`Revival, used! ${revivalItem.name} remaining: ${revivalItem.quantity}`});
@@ -231,7 +230,7 @@ export class ItemManager {
 
             case 'revival':'';
                 // 復活効果は useRevival(
-            case 'score_multiplier':)';
+            case 'score_multiplier':'';
                 if (this.gameEngine && this.gameEngine.scoreManager) {'
         }
 
@@ -249,7 +248,7 @@ export class ItemManager {
             case 'hp_restore':';
                 if (this.gameEngine && this.gameEngine.playerData} {' }'
 
-                    this.gameEngine.playerData.heal(effect.value'});
+                    this.gameEngine.playerData.heal(effect.value'}';
                 }
                 break;
 
@@ -338,18 +337,18 @@ export class ItemManager {
      * セーブデータを生成
      */
     getSaveData(): any { return { inventory: Array.from(this.inventory.entries(), };
-            config: this.config }
-        }
+            config: this.config 
+    }
 
     /**
      * セーブデータから復元
      */
     loadSaveData(data: any): void { if (data.inventory) {
             this.inventory.clear();
-            for(const [id, item] of data.inventory) {
+            for(const [id item] of data.inventory) {
                 
             }
-                this.inventory.set(id, item); }
+                this.inventory.set(id item'); }
 }
 
         if(data.config') {

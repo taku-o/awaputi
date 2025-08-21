@@ -10,11 +10,11 @@ interface LanguageAccessibilityConfig { enabled: boolean,
     autoDetectLanguage: boolean;
     adaptKeyboardLayouts: boolean;
     culturalMetaphors: boolean;
-    rtlSupport: boolean;
-   , bidirectionalText: boolean ,}
+    rtlSupport: boolean,
+    bidirectionalText: boolean ,}
 
-interface KeyboardLayout { name: string;
-   , shortcuts: Record<string, string>;
+interface KeyboardLayout { name: string,
+    shortcuts: Record<string, string>;
     navigationKeys: Record<string, string>;''
     direction?: 'ltr' | 'rtl'; }
 
@@ -24,8 +24,8 @@ interface KeyboardLayouts { [language: string]: KeyboardLayout,
 interface CulturalMetaphor { directions: {
         nex;t: string;
         previous: string;
-        forward: string;
-       , backward: string };
+        forward: string,
+    backward: string };
     gestures: Record<string, string>;
     colors: Record<string, string>;
 }
@@ -46,8 +46,8 @@ interface NavigationKeyMapping { [key: string]: string, }
 interface LanguageInfo { language: string,''
     direction: 'ltr' | 'rtl';
     isRTL: boolean;
-    keyboardLayout: string;
-   , culturalMetaphors: CulturalMetaphor | Record<string, never> }
+    keyboardLayout: string,
+    culturalMetaphors: CulturalMetaphor | Record<string, never> }
 
 interface ElementDescription { type?: string;
     text?: string;
@@ -59,7 +59,7 @@ interface ElementDescription { type?: string;
 interface AccessibilityManager { gameEngine?: any;
     localizationManager?: {
         getCurrentLanguag;e: () => string;
-        ta11y: (ke;y: string) => string | undefined ,}
+        ta11y: (key: string) => string | undefined ,}
     };
     keyboardAccessibilityManager?: any;
     gameContentDescriber?: { updateGestureDescriptions: (gestures: Record<string, string>) => void }
@@ -86,7 +86,7 @@ export class LanguageSpecificAccessibility {
 
     constructor(accessibilityManager: AccessibilityManager | null) {
         this.accessibilityManager = accessibilityManager;
-        this.gameEngine = accessibilityManager? .gameEngine;
+        this.gameEngine = accessibilityManager?.gameEngine;
         this.localizationManager = accessibilityManager?.localizationManager;
         
         // 言語固有設定
@@ -94,12 +94,11 @@ export class LanguageSpecificAccessibility {
             enabled: true;
             autoDetectLanguage: true;
             adaptKeyboardLayouts: true;
-            culturalMetaphors: true;
-           , rtlSupport: true;
+            culturalMetaphors: true,
+    rtlSupport: true;
     }
-    }
-            bidirectionalText: true }
-        };
+            bidirectionalText: true 
+    };
         ;
         // RTL言語サポート
         this.rtlLanguages = ['ar', 'he', 'fa', 'ur', 'yi', 'arc'];''
@@ -120,8 +119,8 @@ export class LanguageSpecificAccessibility {
                     'left': 'ArrowLeft',
                     'right': 'ArrowRight',
                     'select': 'Enter',
-                    'back': 'Escape' }
-            },
+                    'back': 'Escape' 
+    },
 
             // QWERTZ(ドイツ語)'', 'de': { ''
                 name: 'QWERTZ',
@@ -136,8 +135,8 @@ export class LanguageSpecificAccessibility {
                     'links': 'ArrowLeft',
                     'rechts': 'ArrowRight',
                     'auswahl': 'Enter',
-                    'zurueck': 'Escape' }
-            },
+                    'zurueck': 'Escape' 
+    },
 
             // AZERTY(フランス語)'', 'fr': { ''
                 name: 'AZERTY',
@@ -152,8 +151,8 @@ export class LanguageSpecificAccessibility {
                     'gauche': 'ArrowLeft',
                     'droite': 'ArrowRight',
                     'selection': 'Enter',
-                    'retour': 'Escape' }
-            },
+                    'retour': 'Escape' 
+    },
             // 日本語キーボード
             'ja': { ''
                 name: 'JIS',
@@ -168,8 +167,8 @@ export class LanguageSpecificAccessibility {
                     '左': 'ArrowLeft',
                     '右': 'ArrowRight',
                     '決定': 'Enter',
-                    '戻る': 'Escape' }
-            },
+                    '戻る': 'Escape' 
+    },
             // アラビア語キーボード
             'ar': { ''
                 name: 'Arabic',
@@ -185,9 +184,8 @@ export class LanguageSpecificAccessibility {
                     'يسار': 'ArrowLeft', // Note: في RTL، يسار يعني right;
                     'يمين': 'ArrowRight', // Note: في RTL، يمين يعني left;
                     'اختيار': 'Enter',
-                    'رجوع': 'Escape' }
-
-                },''
+                    'رجوع': 'Escape' 
+    },''
                 direction: 'rtl';
             },
             // ヘブライ語キーボード
@@ -204,12 +202,10 @@ export class LanguageSpecificAccessibility {
                     'שמאל': 'ArrowLeft',
                     'ימין': 'ArrowRight',
                     'בחירה': 'Enter',
-                    'חזור': 'Escape' }
-
-                },''
+                    'חזור': 'Escape' 
+    },''
                 direction: 'rtl';
-            }
-        },
+    },
         
         // 文化的アクセシビリティメタファー
         this.culturalMetaphors = {;
@@ -282,7 +278,7 @@ export class LanguageSpecificAccessibility {
             elements: new Set(),
             originalStyles: new Map()';
         console.log('LanguageSpecificAccessibility, initialized'),
-        this.initialize('); }'
+        this.initialize(); }'
     
     /**
      * 初期化
@@ -295,7 +291,7 @@ export class LanguageSpecificAccessibility {
             this.initializeCulturalMetaphors()';
             console.log('LanguageSpecificAccessibility, initialized successfully'); }'
 
-        } catch (error) { getErrorHandler(')? .handleError(error, 'LANGUAGE_ACCESSIBILITY_ERROR', { : undefined)'
+        } catch (error) { getErrorHandler()?.handleError(error, 'LANGUAGE_ACCESSIBILITY_ERROR', { : undefined''
                 operation: 'initialize' ,});
         }
     }
@@ -310,7 +306,7 @@ export class LanguageSpecificAccessibility {
                 this.currentLanguage = this.localizationManager.getCurrentLanguage();
             }
 
-                this.currentLanguage = navigator.language.split('-)[0]; }'
+                this.currentLanguage = navigator.language.split('-'[0]; }'
 }
         
         console.log(`Detected, language: ${this.currentLanguage}`});
@@ -360,7 +356,7 @@ export class LanguageSpecificAccessibility {
      * ゲーム要素のRTL適応'
      */''
     private applyRTLToGameElements()';
-        const canvas = document.querySelector('canvas);''
+        const canvas = document.querySelector('canvas';''
         if(canvas, instanceof HTMLCanvasElement) {'
             // CSS transformでRTL適応（必要に応じて）
             canvas.style.direction = 'rtl';
@@ -382,7 +378,7 @@ export class LanguageSpecificAccessibility {
 
                 }');
 
-                element.style.direction = 'rtl';''
+                element.style.direction = 'rtl';
                 element.style.textAlign = 'right';
                 this.rtlAdaptation.elements.add(element);
             }
@@ -392,7 +388,7 @@ export class LanguageSpecificAccessibility {
     /**
      * RTL用ナビゲーション適応'
      */''
-    private adaptNavigationForRTL(''';
+    private adaptNavigationForRTL('''
             'ArrowLeft': 'right',  // RTLでは左キーは右へ;
             'ArrowRight': 'left',  // RTLでは右キーは左へ  ;
             'ArrowUp': 'up',
@@ -409,7 +405,7 @@ export class LanguageSpecificAccessibility {
     private applyKeyboardLayout(language: string): void { ''
         this.currentLayout = this.keyboardLayouts[language] || this.keyboardLayouts['en'];
         
-        if(this.accessibilityManager? .keyboardAccessibilityManager) {
+        if(this.accessibilityManager?.keyboardAccessibilityManager) {
         
             // KeyboardAccessibilityManagerに言語固有のショートカットを適用
         
@@ -431,7 +427,7 @@ export class LanguageSpecificAccessibility {
         
         try {
             // KeyboardShortcutRouterまたはCoreKeyboardShortcutManagerを使用
-            const keyboardManager = this.gameEngine? .keyboardShortcutManager;
+            const keyboardManager = this.gameEngine?.keyboardShortcutManager;
             
             if(keyboardManager) {
             
@@ -445,16 +441,16 @@ export class LanguageSpecificAccessibility {
                         keyboardManager.updateShortcut(unifiedAction, key); }
 });
                  : undefined'';
-                console.log(`Keyboard, shortcuts updated, for language: ${this.currentLanguage}`'});
+                console.log(`Keyboard, shortcuts updated, for language: ${this.currentLanguage}`'}';
 
             } else { }'
 
                 console.warn('KeyboardShortcutManager, not available, for language-specific, updates');' }
 
-            } catch (error) { console.error('Failed to update keyboard shortcuts:', error);''
-            getErrorHandler(')? .handleError(error, 'LANGUAGE_ACCESSIBILITY_ERROR', { : undefined)'
+            } catch (error) { console.error('Failed to update keyboard shortcuts:', error';''
+            getErrorHandler()?.handleError(error, 'LANGUAGE_ACCESSIBILITY_ERROR', { : undefined''
                 operation: 'updateKeyboardShortcuts',);
-                language: this.currentLanguage ,});
+                language: this.currentLanguage ,}';
         }
     }
     
@@ -503,13 +499,13 @@ export class LanguageSpecificAccessibility {
      * 統一されたキーボードショートカットシステムとの統合'
      */''
     private setupKeyboardLayoutSupport()';
-            if(typeof, document !== 'undefined) {'
+            if(typeof, document !== 'undefined' {'
 
                 this.keyboardEventHandler = this.handleLanguageSpecificKeyboard.bind(this);
 
             }
 
-                document.addEventListener('keydown', this.keyboardEventHandler); }
+                document.addEventListener('keydown', this.keyboardEventHandler'; }
             }
             ';
             // GameEngineのキーボードマネージャーとの統合確認
@@ -521,8 +517,8 @@ export class LanguageSpecificAccessibility {
             }
 
             console.log('Keyboard, layout support, initialized');''
-        } catch (error) { console.error('Failed to setup keyboard layout support:', error);''
-            getErrorHandler(')? .handleError(error, 'LANGUAGE_ACCESSIBILITY_ERROR', { : undefined)'
+        } catch (error) { console.error('Failed to setup keyboard layout support:', error';''
+            getErrorHandler()?.handleError(error, 'LANGUAGE_ACCESSIBILITY_ERROR', { : undefined''
                 operation: 'setupKeyboardLayoutSupport' ,});
         }
     }
@@ -592,9 +588,9 @@ export class LanguageSpecificAccessibility {
         // 色の意味に基づく適応
         const colorMeanings = this.currentMetaphors.colors;
         // CSS カスタムプロパティで色の意味を設定
-        document.documentElement.style.setProperty('--error-color', this.getColorForMeaning('error));''
-        document.documentElement.style.setProperty('--success-color', this.getColorForMeaning('success));''
-        document.documentElement.style.setProperty('--warning-color', this.getColorForMeaning('warning));''
+        document.documentElement.style.setProperty('--error-color', this.getColorForMeaning('error)';''
+        document.documentElement.style.setProperty('--success-color', this.getColorForMeaning('success)';''
+        document.documentElement.style.setProperty('--warning-color', this.getColorForMeaning('warning)';''
         document.documentElement.style.setProperty('--info-color', this.getColorForMeaning('information);
         
         // ジェスチャーガイドラインの更新
@@ -619,7 +615,7 @@ export class LanguageSpecificAccessibility {
         const gestures = this.currentMetaphors.gestures;
         
         // スクリーンリーダー用の説明を更新
-        if(this.accessibilityManager? .gameContentDescriber) {
+        if(this.accessibilityManager?.gameContentDescriber) {
             
         }
             this.accessibilityManager.gameContentDescriber.updateGestureDescriptions(gestures); }
@@ -687,7 +683,7 @@ export class LanguageSpecificAccessibility {
         if (this.currentLanguage === 'ja'') { }
 
             return `${element.text}ボタン - ${action}を実行します`;''
-        } else if(this.currentLanguage === 'ar) {'
+        } else if(this.currentLanguage === 'ar' {'
             return `زر ${element.text} - لتنفيذ ${action}`;
         } else {  }
             return `${element.text} button - performs ${action}`;
@@ -700,7 +696,7 @@ export class LanguageSpecificAccessibility {
         if (this.currentLanguage === 'ja'') { }
 
             return `ナビゲーション: ${directions.next}は右矢印、${directions.previous}は左矢印`;''
-        } else if(this.currentLanguage === 'ar) {'
+        } else if(this.currentLanguage === 'ar' {'
             return `التنقل: ${directions.next} السهم الأيمن، ${directions.previous} السهم الأيسر`;
         } else {  }
             return `Navigation: ${directions.next} with right arrow, ${directions.previous} with left arrow`;
@@ -715,7 +711,7 @@ export class LanguageSpecificAccessibility {
 
         }
 
-            return this.localizationManager? .ta11y('accessibility.status.error'') || 'Error status';' }
+            return this.localizationManager?.ta11y('accessibility.status.error'') || 'Error status';' }
 
         } else if (status === 'success'') { ''
             return this.localizationManager?.ta11y('accessibility.status.success'') || 'Success status'; }
@@ -741,7 +737,7 @@ export class LanguageSpecificAccessibility {
         ;
         // 新しい言語設定の適用
         this.applyLanguageSpecificSettings()';
-        this.accessibilityManager? .eventSystem?.emit('languageChanged', { oldLanguage)
+        this.accessibilityManager?.eventSystem?.emit('languageChanged', { oldLanguage)
             newLanguage); : undefined
             isRTL: this.isRTLLanguage(newLanguage ,});
         
@@ -773,7 +769,7 @@ export class LanguageSpecificAccessibility {
         this.rtlAdaptation.applied = false;
         this.rtlAdaptation.elements.clear();''
         this.rtlAdaptation.originalStyles.clear(''';
-        this.currentDirection = 'ltr';)', ')';
+        this.currentDirection = 'ltr';'', ')';
         console.log('RTL, adaptation reset');
     }
     
@@ -807,7 +803,7 @@ export class LanguageSpecificAccessibility {
             direction: this.currentDirection,
             isRTL: this.isRTLLanguage(this.currentLanguage),' };
 
-            keyboardLayout: this.currentLayout? .name || 'Unknown', : undefined 
+            keyboardLayout: this.currentLayout?.name || 'Unknown', : undefined 
             culturalMetaphors: this.currentMetaphors || {}
     
     /**
@@ -834,13 +830,13 @@ export class LanguageSpecificAccessibility {
             
         
         }
-            this.resetRTLAdaptation('); }
+            this.resetRTLAdaptation(); }
 
         } else { }'
 
             this.applyLanguageSpecificSettings() }
 
-        console.log(`LanguageSpecificAccessibility ${enabled ? 'enabled' : 'disabled}`});
+        console.log(`LanguageSpecificAccessibility ${enabled ? 'enabled' : 'disabled}`}';
     }
     
     /**
@@ -855,7 +851,7 @@ export class LanguageSpecificAccessibility {
 
         }
 
-            document.removeEventListener('keydown', this.keyboardEventHandler); }
+            document.removeEventListener('keydown', this.keyboardEventHandler'; }
         }
 
         console.log('LanguageSpecificAccessibility, destroyed'');

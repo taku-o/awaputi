@@ -19,20 +19,20 @@ export class MobileSocialOptimizer {
             touch: {
                 minTouchTargetSize: 44, // iOS推奨最小サイズ (44x44, pt);
                 tapTimeout: 300;
-                longPressTimeout: 500;
-               , swipeThreshold: 50;
+                longPressTimeout: 500,
+    swipeThreshold: 50;
     ,}
-                preventDefaultOnTouch: true }
-            };
+                preventDefaultOnTouch: true 
+    };
             ui: { expandedShareDialog: true;
                 largerButtons: true;
-                bottomSheetLayout: true;
-               , hapticFeedback: true };
+                bottomSheetLayout: true,
+    hapticFeedback: true };
             performance: { throttleUpdates: true;
                 reduceAnimations: false;
-                optimizeImages: true;
-               , lazyLoadContent: true }
-        };
+                optimizeImages: true,
+    lazyLoadContent: true 
+    };
         // エラーハンドリング
         this.errorHandler = null;
     }
@@ -54,12 +54,12 @@ export class MobileSocialOptimizer {
             this.enableMobileOptimizations();
             
             this.isInitialized = true;
-            console.log('MobileSocialOptimizer initialized successfully', this.deviceInfo);
+            console.log('MobileSocialOptimizer initialized successfully', this.deviceInfo';
 
             ' }'
 
         } catch (error) {
-            console.error('Failed to initialize MobileSocialOptimizer:', error);''
+            console.error('Failed to initialize MobileSocialOptimizer:', error';''
             if(this.errorHandler) {', ';
 
             }
@@ -75,8 +75,8 @@ export class MobileSocialOptimizer {
      */
     async detectDeviceCapabilities() { const capabilities = {
             // 基本デバイス情報
-            isMobile: /iPhone|iPad|iPod|Android|BlackBerry|Opera Mini|IEMobile/i.test(navigator.userAgent);
-           , isTablet: /iPad|Android(? =.*Mobile)/i.test(navigator.userAgent), : undefined
+            isMobile: /iPhone|iPad|iPod|Android|BlackBerry|Opera Mini|IEMobile/i.test(navigator.userAgent),
+    isTablet: /iPad|Android(? =.*Mobile)/i.test(navigator.userAgent), : undefined
             isIOS: /iPhone|iPad|iPod/i.test(navigator.userAgent),
             isAndroid: /Android/i.test(navigator.userAgent);
             // 画面情報
@@ -90,16 +90,16 @@ export class MobileSocialOptimizer {
             ';
             // ブラウザ機能
             webShareSupport: 'share' in navigator && typeof navigator.share === 'function',
-            canShare: navigator.canShare ? navigator.canShare.bind(navigator) : (') => false,
+            canShare: navigator.canShare ? navigator.canShare.bind(navigator) : () => false,
             clipboardSupport: 'clipboard' in navigator && 'writeText' in navigator.clipboard;
             ';
             // パフォーマンス情報
-            connectionType: navigator.connection ? navigator.connection.effectiveType : 'unknown';
-           , memoryLimit: navigator.deviceMemory || 4, // GB;
+            connectionType: navigator.connection ? navigator.connection.effectiveType : 'unknown',
+    memoryLimit: navigator.deviceMemory || 4, // GB;
             // 追加機能
             vibrationSupport: 'vibrate' in navigator,
-            orientationSupport: 'orientation' in window || 'onorientationchange' in window;
-           , fullscreenSupport: document.fullscreenEnabled || document.webkitFullscreenEnabled ,}
+            orientationSupport: 'orientation' in window || 'onorientationchange' in window,
+    fullscreenSupport: document.fullscreenEnabled || document.webkitFullscreenEnabled ,}
         };
         // デバイス固有の最適化設定を調整
         this.adjustConfigForDevice(capabilities);
@@ -135,7 +135,7 @@ export class MobileSocialOptimizer {
         }
         ';
         // 低速回線用調整
-        if(capabilities.connectionType === '2g' || capabilities.connectionType === 'slow-2g) {
+        if(capabilities.connectionType === '2g' || capabilities.connectionType === 'slow-2g' {
             this.config.performance.optimizeImages = true;
             this.config.performance.lazyLoadContent = true;
         }
@@ -145,47 +145,47 @@ export class MobileSocialOptimizer {
     /**
      * タッチハンドラーの設定'
      */''
-    setupTouchHandlers(''';
+    setupTouchHandlers('''
         this.addTouchOptimization('shareButton', { ''
-            element: '.share-button';
-           , config: {
+            element: '.share-button',
+    config: {
                 minSize: this.config.touch.minTouchTargetSize);
-                hapticFeedback: this.config.ui.hapticFeedback)';
-               , preventDefaultTouch: true,')';
-                longPressAction: 'customizeShare');
-           , handlers: {
+                hapticFeedback: this.config.ui.hapticFeedback'',
+    preventDefaultTouch: true,')';
+                longPressAction: 'customizeShare'),
+    handlers: {
                 tap: this.handleShareButtonTap.bind(this);
-                longPress: this.handleShareButtonLongPress.bind(this);
-               , swipe: this.handleShareButtonSwipe.bind(this ,}
+                longPress: this.handleShareButtonLongPress.bind(this),
+    swipe: this.handleShareButtonSwipe.bind(this ,}
 
             }''
-        });
+        }';
 ';
         // 共有ダイアログ用タッチハンドラー
         this.addTouchOptimization('shareDialog', { ''
-            element: '.share-dialog';
-           , config: {)
-                swipeToClose: true);
-               , dragThreshold: 100,);
-                gestureSupport: true);
-           , handlers: {
+            element: '.share-dialog',
+    config: {)
+                swipeToClose: true),
+    dragThreshold: 100,);
+                gestureSupport: true),
+    handlers: {
                 swipeUp: this.handleDialogSwipeUp.bind(this);
-                swipeDown: this.handleDialogSwipeDown.bind(this);
-               , drag: this.handleDialogDrag.bind(this ,}
+                swipeDown: this.handleDialogSwipeDown.bind(this),
+    drag: this.handleDialogDrag.bind(this ,}
 
             }''
-        });
+        }';
 ';
         // プラットフォーム選択ボタン用タッチハンドラー
         this.addTouchOptimization('platformButton', { ')'
             element: '.platform-button',);
             config: {);
                 minSize: Math.max(this.config.touch.minTouchTargetSize, 56), // より大きなサイズ;
-                rippleEffect: true;
-               , hapticFeedback: true ,};
-            handlers: { tap: this.handlePlatformButtonTap.bind(this);
-               , hold: this.handlePlatformButtonHold.bind(this }
-        });
+                rippleEffect: true,
+    hapticFeedback: true ,};
+            handlers: { tap: this.handlePlatformButtonTap.bind(this),
+    hold: this.handlePlatformButtonHold.bind(this 
+    });
     }
 
     /**
@@ -252,7 +252,7 @@ export class MobileSocialOptimizer {
 
         }
 
-            element.classList.add('ripple-effect); }'
+            element.classList.add('ripple-effect'; }'
         }
 ';
         // タッチイベントハンドラーの設定
@@ -336,16 +336,16 @@ export class MobileSocialOptimizer {
 
                 isDragging = true;''
                 cleanup()';
-            if(eventType === 'drag' && isDragging) {'
+            if(eventType === 'drag' && isDragging' {'
                 handler(e, {'
 
             }
 
                     type: 'drag', }
                     element, })
-                    delta: { x: deltaX, y: deltaY ,})'
+                    delta: { x: deltaX, y: deltaY ,}''
                     distance'';
-                )');
+                '');
             }
 ';
             // スワイプ検出
@@ -369,7 +369,7 @@ export class MobileSocialOptimizer {
         // タッチ終了
         element.addEventListener('touchend', (e) => {  ''
             const touchDuration = Date.now()';
-            if(eventType === 'tap' && !isDragging && touchDuration < this.config.touch.tapTimeout) {' }
+            if(eventType === 'tap' && !isDragging && touchDuration < this.config.touch.tapTimeout' {' }
 
                 handler(e, { type: 'tap', element, duration: touchDuration ,}
 ';
@@ -397,7 +397,7 @@ export class MobileSocialOptimizer {
     /**
      * ハプティックフィードバックのトリガー'
      */''
-    triggerHapticFeedback(type = 'light) {'
+    triggerHapticFeedback(type = 'light' {'
         if (this.deviceInfo.vibrationSupport) {''
             switch(type) {''
                 case 'light':'';
@@ -518,11 +518,11 @@ export class MobileSocialOptimizer {
      */
     convertToWebShareData(shareData) {
         const webShareData = {
-            title: this.generateShareTitle(shareData);
-           , text: this.generateShareText(shareData);
+            title: this.generateShareTitle(shareData),
+    text: this.generateShareText(shareData);
     }
-            url: this.generateShareURL(shareData); }
-        };
+            url: this.generateShareURL(shareData); 
+    };
         
         // ファイル共有対応（スクリーンショット）
         if(shareData.screenshot && this.deviceInfo.canShare({ files: [] )) {
@@ -549,8 +549,8 @@ export class MobileSocialOptimizer {
             this.responsiveLayoutManager.addResponsiveHandler('social', {);
                 onBreakpointChange: this.handleBreakpointChange.bind(this);
         ,}
-                onOrientationChange: this.handleOrientationChange.bind(this); }
-            });
+                onOrientationChange: this.handleOrientationChange.bind(this); 
+    });
         }
     }
 
@@ -565,7 +565,7 @@ export class MobileSocialOptimizer {
 
     }
 
-            if(shareDialog && shareDialog.style.display !== 'none) { }'
+            if(shareDialog && shareDialog.style.display !== 'none' { }'
                 this.adjustDialogForOrientation(shareDialog); }
             }
             
@@ -594,10 +594,10 @@ export class MobileSocialOptimizer {
 
         }
 
-            document.body.classList.add('ios-social-optimized);' }
+            document.body.classList.add('ios-social-optimized';' }
 
         } else if(this.deviceInfo.isAndroid) { ''
-            document.body.classList.add('android-social-optimized); }'
+            document.body.classList.add('android-social-optimized'; }'
         
         // タッチ用スタイルの適用
         this.applyMobileTouchStyles();
@@ -637,8 +637,8 @@ export class MobileSocialOptimizer {
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                width: 0;
-               , height: 0;
+                width: 0,
+    height: 0;
                 border-radius: 50%,
                 background: rgba(255, 255, 255, 0.5),
                 transform: translate(-50%, -50%),

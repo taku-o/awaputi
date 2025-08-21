@@ -7,30 +7,30 @@
 export interface FontLoadingConfigData { enabledSources: string[],
     timeouts: {
         googl;e: number;
-        local: number;
-       , system: number 
+        local: number,
+    system: number 
 ,};
     fallbackBehavior: { useSystemFonts: boolean;
-        suppressErrors: boolean;
-       , maxRetries: number 
+        suppressErrors: boolean,
+    maxRetries: number 
 };
     logging: { level: string;
-        suppressRepeated: boolean;
-       , maxErrorsPerSource: number 
+        suppressRepeated: boolean,
+    maxErrorsPerSource: number 
 };
-    development: { disableExternalFonts: boolean;
-       , verboseLogging: boolean 
+    development: { disableExternalFonts: boolean,
+    verboseLogging: boolean 
 };
     fontSources: { google: {
             baseUrl: string;
-            weights: string[];
-           , display: string 
+            weights: string[],
+    display: string 
 };
-        local: { fontDirectory: string;
-           , formats: string[] };
+        local: { fontDirectory: string,
+    formats: string[] };
     performance: { preloadCommonFonts: boolean;
-        cacheFontResults: boolean;
-       , maxCacheSize: number }
+        cacheFontResults: boolean,
+    maxCacheSize: number }
 
 export type ConfigChangeListener = (config: FontLoadingConfigData) => void;
 
@@ -53,20 +53,20 @@ export class FontLoadingConfig {
             enabledSources: ['system', 'google', 'local'],
             timeouts: {
                 google: 3000;
-                local: 1000;
-               , system: 500 
+                local: 1000,
+    system: 500 
 ,};
             fallbackBehavior: { useSystemFonts: true;
-                suppressErrors: true;
-               , maxRetries: 1 
+                suppressErrors: true,
+    maxRetries: 1 
 };
             logging: { ''
                 level: 'warn';
-                suppressRepeated: true;
-               , maxErrorsPerSource: 3 
+                suppressRepeated: true,
+    maxErrorsPerSource: 3 
 };
-            development: { disableExternalFonts: false;
-               , verboseLogging: false 
+            development: { disableExternalFonts: false,
+    verboseLogging: false 
 };
             fontSources: { google: {''
                     baseUrl: 'https://fonts.googleapis.com/css2',
@@ -78,10 +78,9 @@ export class FontLoadingConfig {
                     formats: ['woff2', 'woff', 'ttf] }
             },
             performance: { preloadCommonFonts: true;
-                cacheFontResults: true;
-               , maxCacheSize: 50 
-}
-        },
+                cacheFontResults: true,
+    maxCacheSize: 50 
+    },
 
         return this._deepMerge(defaultConfig, customConfig);
     }
@@ -101,7 +100,7 @@ export class FontLoadingConfig {
         return result;
     }
 
-    private _initializeValidationRules(''';
+    private _initializeValidationRules('''
             ['enabledSources', { ]'
                 type: 'array',']';
                 allowedValues: ['system', 'google', 'local'],
@@ -124,8 +123,8 @@ export class FontLoadingConfig {
             }],''
             ['logging.maxErrorsPerSource', { ''
                 type: 'number);
-                min: 1)];
-               , max: 10];
+                min: 1)],
+    max: 10];
             )];
         ]), }
     get(path: string): any { return this._getNestedValue(this.config, path); }
@@ -161,8 +160,7 @@ export class FontLoadingConfig {
         return { success: Object.values(results).every(r => r),
             results: results, };
             errors: errors ;
-}
-        },
+    },
     }
 
     private _getNestedValue(obj: any, path: string): any { ''
@@ -190,7 +188,7 @@ export class FontLoadingConfig {
 
         }
 
-            if(!current[key] || typeof, current[key] !== 'object) { }'
+            if(!current[key] || typeof, current[key] !== 'object' { }'
                 current[key] = {}
             current = current[key];
         }
@@ -240,33 +238,33 @@ export class FontLoadingConfig {
         return { valid: true }
 
     enableSource(sourceName: string): void { ''
-        const enabledSources = this.get('enabledSources) || [];''
+        const enabledSources = this.get('enabledSources' || [];''
         if(!enabledSources.includes(sourceName)) {''
             this.set('enabledSources', [...enabledSources, sourceName]); }
     }
 
     disableSource(sourceName: string): void { ''
-        const enabledSources = this.get('enabledSources) || [];''
+        const enabledSources = this.get('enabledSources' || [];''
         const filtered = enabledSources.filter((source: string) => source !== sourceName');''
-        this.set('enabledSources', filtered); }
+        this.set('enabledSources', filtered'; }
     }
 
-    enableDevelopmentMode(''';
+    enableDevelopmentMode('''
             'development.verboseLogging': true,
-            'logging.level': 'debug',)';
-            'development.disableExternalFonts': false);
+            'logging.level': 'debug','';
+            'development.disableExternalFonts': false';
     }
 
-    enableProductionMode(''';
+    enableProductionMode('''
             'development.verboseLogging': false,
             'logging.level': 'warn',
-            'development.disableExternalFonts': false,)';
-            'fallbackBehavior.suppressErrors': true);
+            'development.disableExternalFonts': false,'';
+            'fallbackBehavior.suppressErrors': true';
     }
 
-    enableOfflineMode(''';
+    enableOfflineMode('''
             'enabledSources': ['system', 'local'],
-            'development.disableExternalFonts': true,)';
+            'development.disableExternalFonts': true,'';
             'fallbackBehavior.useSystemFonts': true);
     }
 
@@ -283,7 +281,7 @@ export class FontLoadingConfig {
     import(configData: string | FontLoadingConfigData): boolean { try {'
             const parsedConfig = typeof configData === 'string' ? JSON.parse(configData) : configData;''
             this.config = this._mergeWithDefaults(parsedConfig);''
-            this._notifyListeners('*', this.config, null);
+            this._notifyListeners('*', this.config, null';
 
             return true;' }'
 
@@ -299,15 +297,14 @@ export class FontLoadingConfig {
             
             if (!validation.valid) {
                 errors.push({)
-                    path: path);
-                   , value: value, }
-                    error: validation.error!); }
-        }
+                    path: path),
+    value: value, }
+                    error: validation.error!); 
+    }
 
         return { valid: errors.length = == 0 };
             errors: errors ;
-}
-        },
+    },
     }
 ';
 
@@ -317,13 +314,13 @@ export class FontLoadingConfig {
 
     getStats()';
             enabledSources: this.get('enabledSources'').length,
-            totalTimeouts: Object.keys(this.get('timeouts)).length,
+            totalTimeouts: Object.keys(this.get('timeouts)'.length,
             developmentMode: this.get('development.verboseLogging''),
             offlineMode: !this.get('enabledSources'').includes('google);
-            configSize: JSON.stringify(this.config).length;
-           , listeners: this.listeners.size;
+            configSize: JSON.stringify(this.config).length,
+    listeners: this.listeners.size;
         },
     }
 ';
 // デフォルト設定インスタンス
-export const defaultFontLoadingConfig = new FontLoadingConfig(');
+export const defaultFontLoadingConfig = new FontLoadingConfig();

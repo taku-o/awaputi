@@ -15,15 +15,15 @@ interface DataSample { timestamp: number,
     frameRate: number;
     memoryUsage: number;
     renderTime: number;
-    networkLatency: number;
-   , inputLag: number ,}
+    networkLatency: number,
+    inputLag: number ,}
 
 interface MetricData { values: number[];
     min: number;
     max: number;
     sum: number;
-    count: number;
-   , average: number }
+    count: number,
+    average: number }
 
 interface CollectionMetrics { [key: string]: MetricData;
     }
@@ -31,40 +31,40 @@ interface CollectionMetrics { [key: string]: MetricData;
 interface CollectedData { samples: DataSample[],
     metrics: CollectionMetrics;
     startTime: number;
-    endTime: number;
-   , collectionDuration: number ,}
+    endTime: number,
+    collectionDuration: number ,}
 
 interface DataSummary { duration: number;
     sampleCount: number;
-    metricsCollected: number;
-   , timeRange: {
-        star;t: number;
-       , end: number };
+    metricsCollected: number,
+    timeRange: {
+        start: number,
+    end: number };
     dataQuality: DataQuality;
     }
 
 interface DataQuality { completeness: number,
     consistency: number;
-    overall: number;
-   , issues: DataQualityIssue[]
+    overall: number,
+    issues: DataQualityIssue[]
     ,}
 
 interface DataQualityIssue { type: string;
     severity: 'low' | 'medium' | 'high';
-    description: string;
-   , impact: string }
+    description: string,
+    impact: string }
 
 interface TimeGap { start: number;
-    end: number;
-   , duration: number }
+    end: number,
+    duration: number }
 
 interface CollectionStatus { collecting: boolean;
     sampleCount: number;
-    collectionDuration: number;
-   , metricsCount: number }
+    collectionDuration: number,
+    metricsCount: number }
 
-interface DiagnosticDataResult { rawData: CollectedData;
-   , summary: DataSummary
+interface DiagnosticDataResult { rawData: CollectedData,
+    summary: DataSummary
     }
 
 interface MainController { // Define expected interface for main controller
@@ -94,7 +94,7 @@ export class DiagnosticDataCollector {
         this.collectionInterval = null;
         this.lastFrameTime = null;
 
-        console.log('[DiagnosticDataCollector] Data, collector component, initialized);
+        console.log('[DiagnosticDataCollector] Data collector component initialized);
     }
     
     /**
@@ -106,7 +106,7 @@ export class DiagnosticDataCollector {
         this.startTime = performance.now();
 
         // 定期的なデータ収集
-        this.collectionInterval = setInterval(() => { this.collectSample(');' }'
+        this.collectionInterval = setInterval(() => { this.collectSample();' }'
 
         }, 100'); // 100ms間隔'
 
@@ -131,10 +131,10 @@ export class DiagnosticDataCollector {
 
         return { samples: this.samples,
             metrics: this.metrics;
-            startTime: this.startTime!;
-           , endTime: this.endTime, };
-            collectionDuration: this.endTime - this.startTime! }
-        }
+            startTime: this.startTime!,
+    endTime: this.endTime, };
+            collectionDuration: this.endTime - this.startTime! 
+    }
 
     /**
      * Collect a single data sample
@@ -148,8 +148,7 @@ export class DiagnosticDataCollector {
             frameRate: this.getCurrentFrameRate();
             memoryUsage: this.getCurrentMemoryUsage();
             renderTime: this.getCurrentRenderTime();
-            networkLatency: this.getCurrentNetworkLatency();
-           , inputLag: this.getCurrentInputLag( ,};
+            networkLatency: this.getCurrentNetworkLatency() inputLag: this.getCurrentInputLag(  };
 
         this.samples.push(sample);
 
@@ -166,7 +165,7 @@ export class DiagnosticDataCollector {
             this.lastFrameTime = performance.now();
         }
             return frameTime > 0 ? 1000 / frameTime: 0;
-        this.lastFrameTime = performance.now(');
+        this.lastFrameTime = performance.now();
         return 60; // デフォルト値
     }
 
@@ -209,11 +208,11 @@ export class DiagnosticDataCollector {
                     values: [];
                     min: value as number;
                     max: value as number;
-                    sum: 0;
-                   , count: 0;
+                    sum: 0,
+    count: 0;
             ,}
-                    average: 0 }
-                }
+                    average: 0 
+    }
 
             const metric = this.metrics[key];
             metric.values.push(value, as number);
@@ -241,19 +240,19 @@ export class DiagnosticDataCollector {
         const collectedData = await this.stop();
         
         return { rawData: collectedData ,};
-            summary: this.summarizeCollectedData(collectedData); }
-        }
+            summary: this.summarizeCollectedData(collectedData); 
+    }
 
     /**
      * Summarize collected data
      */
     summarizeCollectedData(data: CollectedData): DataSummary { return { duration: data.collectionDuration,
             sampleCount: data.samples.length;
-            metricsCollected: Object.keys(data.metrics).length;
-           , timeRange: {
+            metricsCollected: Object.keys(data.metrics).length,
+    timeRange: {
                 start: data.startTime, };
-                end: data.endTime }
-            };
+                end: data.endTime 
+    };
             dataQuality: this.assessDataQuality(data);
         }
 
@@ -264,10 +263,10 @@ export class DiagnosticDataCollector {
         const consistency = this.calculateDataConsistency(data.samples);
         
         return { completeness: completeness,
-            consistency: consistency;
-           , overall: (completeness + consistency) / 2, };
-            issues: this.identifyDataQualityIssues(data); }
-        }
+            consistency: consistency,
+    overall: (completeness + consistency) / 2, };
+            issues: this.identifyDataQualityIssues(data); 
+    }
 
     /**
      * Calculate data consistency
@@ -278,16 +277,16 @@ export class DiagnosticDataCollector {
         let consistencyScore = 0;
         const expectedInterval = samples[1].timestamp - samples[0].timestamp;
         
-        for(let, i = 1; i < samples.length; i++) {
+        for(let i = 1; i < samples.length; i++) {
         
             const actualInterval = samples[i].timestamp - samples[i - 1].timestamp;
             const deviation = Math.abs(actualInterval - expectedInterval) / expectedInterval;
         
         }
-            consistencyScore += Math.max(0, 1 - deviation); }
+            consistencyScore += Math.max(0 1 - deviation); }
         }
         
-        return consistencyScore / (samples.length - 1);
+        return consistencyScore / (samples.length - 1');
     }
 
     /**
@@ -302,7 +301,7 @@ export class DiagnosticDataCollector {
                 type: 'missing_data';
         ,}
 
-                severity: 'medium', })'
+                severity: 'medium', }''
                 description: `${incompleteSamples.length} incomplete samples detected`,')'
                 impact: 'May affect analysis accuracy');
         }
@@ -314,7 +313,7 @@ export class DiagnosticDataCollector {
                 type: 'time_gaps';
         }
 
-                severity: 'low', })'
+                severity: 'low', }''
                 description: `${timeGaps.length} time gaps detected`,')'
                 impact: 'May indicate system overload during collection');
         }
@@ -333,10 +332,10 @@ export class DiagnosticDataCollector {
             const interval = samples[i].timestamp - samples[i - 1].timestamp;
             if (interval > expectedInterval * 2) {
                 gaps.push({)
-                    start: samples[i - 1].timestamp);
-                   , end: samples[i].timestamp, }
-                    duration: interval); }
-}
+                    start: samples[i - 1].timestamp),
+    end: samples[i].timestamp, }
+                    duration: interval); 
+    }
         
         return gaps;
     }
@@ -345,11 +344,11 @@ export class DiagnosticDataCollector {
      * Get collection status
      */
     getCollectionStatus(): CollectionStatus { return { collecting: this.collecting,
-            sampleCount: this.samples.length;
-           , collectionDuration: this.collecting && this.startTime ?   : undefined
+            sampleCount: this.samples.length,
+    collectionDuration: this.collecting && this.startTime ? undefined : undefined
                 performance.now() - this.startTime : 0, };
-            metricsCount: Object.keys(this.metrics).length }
-        }
+            metricsCount: Object.keys(this.metrics).length 
+    }
 
     /**
      * Clear collected data
@@ -363,7 +362,7 @@ export class DiagnosticDataCollector {
      */
     configure(config: DiagnosticDataCollectorConfig): void { if (config.collectionInterval !== undefined) {
             // Collection interval will be applied on next start }
-            console.log(`[DiagnosticDataCollector] Collection, interval updated: ${config.collectionInterval}ms`});
+            console.log(`[DiagnosticDataCollector] Collection interval updated: ${config.collectionInterval}ms`});
         }
         
         if(config.maxSamples !== undefined) {
@@ -372,7 +371,7 @@ export class DiagnosticDataCollector {
         
         }
             this.maxSamples = config.maxSamples; }
-            console.log(`[DiagnosticDataCollector] Max, samples updated: ${config.maxSamples}`});
+            console.log(`[DiagnosticDataCollector] Max samples updated: ${config.maxSamples}`});
         }
     }
 
@@ -382,7 +381,7 @@ export class DiagnosticDataCollector {
     destroy(): void { if (this.collecting) {
             this.stop(); }
 
-        this.clearData(')';
+        this.clearData()';
         console.log('[DiagnosticDataCollector] Data, collector destroyed'');
 
     }''

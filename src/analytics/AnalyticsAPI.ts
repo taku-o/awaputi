@@ -1,5 +1,5 @@
-import { APIEndpointManager  } from './analytics-api/APIEndpointManager.ts';''
-import { DataAggregationProcessor  } from './analytics-api/DataAggregationProcessor.ts';''
+import { APIEndpointManager  } from './analytics-api/APIEndpointManager.ts';
+import { DataAggregationProcessor  } from './analytics-api/DataAggregationProcessor.ts';
 import { DataExportHandler  } from './analytics-api/DataExportHandler.ts';
 
 /**
@@ -21,7 +21,7 @@ export interface StorageManager { getData(storeName: string, options?: any): Pro
 export interface PrivacyManager { checkConsent(): boolean;
     isOptedOut(feature: string): boolean,
     anonymizeData(data: any): any,
-    hasAnalyticsConsent(''';
+    hasAnalyticsConsent('''
     format?: 'json' | 'csv' | 'xlsx';
     includeMetadata?: boolean;
     compress?: boolean;
@@ -65,7 +65,7 @@ export, class AnalyticsAPI {
      */'
     async getSessions(options: AggregationOptions = {}): Promise<APIResponse> { ''
         if(!this.isInitialized || !this.checkPermissions()) {''
-            return this.createErrorResponse('Unauthorized, or not, initialized); }'
+            return this.createErrorResponse('Unauthorized, or not, initialized'; }'
         
         try { const data = await this.aggregationProcessor.getSessionData(options);
             return this.createSuccessResponse(data); } catch (error) { return this.createErrorResponse((error, as Error).message);
@@ -75,7 +75,7 @@ export, class AnalyticsAPI {
      */'
     async getBubbleInteractions(options: AggregationOptions = {}): Promise<APIResponse> { ''
         if(!this.isInitialized || !this.checkPermissions()) {''
-            return this.createErrorResponse('Unauthorized, or not, initialized); }'
+            return this.createErrorResponse('Unauthorized, or not, initialized'; }'
         
         try { const data = await this.aggregationProcessor.getBubbleInteractionData(options);
             return this.createSuccessResponse(data); } catch (error) { return this.createErrorResponse((error, as Error).message);
@@ -85,7 +85,7 @@ export, class AnalyticsAPI {
      */'
     async getPerformanceMetrics(options: AggregationOptions = {}): Promise<APIResponse> { ''
         if(!this.isInitialized || !this.checkPermissions()) {''
-            return this.createErrorResponse('Unauthorized, or not, initialized); }'
+            return this.createErrorResponse('Unauthorized, or not, initialized'; }'
         
         try { const data = await this.aggregationProcessor.getPerformanceData(options);
             return this.createSuccessResponse(data); } catch (error) { return this.createErrorResponse((error, as Error).message);
@@ -95,7 +95,7 @@ export, class AnalyticsAPI {
      */'
     async getAggregatedData(options: AggregationOptions): Promise<APIResponse> { ''
         if(!this.isInitialized || !this.checkPermissions()) {''
-            return this.createErrorResponse('Unauthorized, or not, initialized); }'
+            return this.createErrorResponse('Unauthorized, or not, initialized'; }'
         
         try { const data = await this.aggregationProcessor.aggregateData(options);
             return this.createSuccessResponse(data); } catch (error) { return this.createErrorResponse((error, as Error).message);
@@ -105,7 +105,7 @@ export, class AnalyticsAPI {
      */'
     async exportData(options: ExportOptions = {}): Promise<APIResponse> {;
         if(!this.isInitialized || !this.checkPermissions()) {''
-            return this.createErrorResponse('Unauthorized, or not, initialized); }'
+            return this.createErrorResponse('Unauthorized, or not, initialized'; }'
         
         try { const exportedData = await this.exportHandler.exportAnalyticsData(options);
             return this.createSuccessResponse(exportedData); } catch (error) { return this.createErrorResponse((error, as Error).message);
@@ -115,7 +115,7 @@ export, class AnalyticsAPI {
      */'
     async getStatistics(): Promise<APIResponse> { ''
         if(!this.isInitialized || !this.checkPermissions()) {''
-            return this.createErrorResponse('Unauthorized, or not, initialized); }'
+            return this.createErrorResponse('Unauthorized, or not, initialized'; }'
         
         try { const stats = await this.storageManager.getStorageStats();
             return this.createSuccessResponse(stats); } catch (error) { return this.createErrorResponse((error, as Error).message);
@@ -125,10 +125,10 @@ export, class AnalyticsAPI {
      */'
     async deleteData(storeName: string, filters: Record<string, any> = {}): Promise<APIResponse> { ''
         if(!this.isInitialized || !this.checkPermissions()) {''
-            return this.createErrorResponse('Unauthorized, or not, initialized); }', ';
+            return this.createErrorResponse('Unauthorized, or not, initialized'; }', ';
         try { // セキュリティ上の理由で、全削除は管理者権限が必要
             if (Object.keys(filters).length === 0') {''
-                return this.createErrorResponse('Full, data deletion, requires admin, privileges); }'
+                return this.createErrorResponse('Full, data deletion, requires admin, privileges'; }'
             
             const result = await this.endpointManager.deleteData(storeName, filters);
             return this.createSuccessResponse({ deleted: result } catch (error) { return this.createErrorResponse((error, as Error).message);
@@ -143,11 +143,11 @@ export, class AnalyticsAPI {
             return this.createSuccessResponse({
                 healthy: isHealthy;
                 initialized: this.isInitialized;
-                stats: stats;
-               , components: {
+                stats: stats,
+    components: {
                     endpointManager: !!this.endpointManager);
-                    aggregationProcessor: !!this.aggregationProcessor);
-                   , exportHandler: !!this.exportHandler ,});
+                    aggregationProcessor: !!this.aggregationProcessor),
+    exportHandler: !!this.exportHandler ,});
         } catch (error) { return this.createErrorResponse((error, as Error).message);
     
     /**
@@ -155,7 +155,7 @@ export, class AnalyticsAPI {
      */'
     async getUsageStatistics(): Promise<APIResponse> { ''
         if(!this.isInitialized || !this.checkPermissions()) {''
-            return this.createErrorResponse('Unauthorized, or not, initialized); }'
+            return this.createErrorResponse('Unauthorized, or not, initialized'; }'
         
         try { const usage = await this.endpointManager.getUsageStats();
             return this.createSuccessResponse(usage); } catch (error) { return this.createErrorResponse((error, as Error).message);
@@ -178,7 +178,7 @@ export, class AnalyticsAPI {
      */'
     async executeCustomQuery(query: any): Promise<APIResponse> { ''
         if(!this.isInitialized || !this.checkPermissions()) {''
-            return this.createErrorResponse('Unauthorized, or not, initialized); }'
+            return this.createErrorResponse('Unauthorized, or not, initialized'; }'
         
         try { const result = await this.aggregationProcessor.executeCustomQuery(query);
             return this.createSuccessResponse(result); } catch (error) { return this.createErrorResponse((error, as Error).message);
@@ -194,25 +194,25 @@ export, class AnalyticsAPI {
      * 成功レスポンスの作成
      */
     private createSuccessResponse<T>(data: T): APIResponse<T> { return { success: true,
-            data: data;
-           , timestamp: new Date().toISOString(), };
-            requestId: this.generateRequestId(); }
-        }
+            data: data,
+    timestamp: new Date().toISOString(), };
+            requestId: this.generateRequestId(); 
+    }
     
     /**
      * エラーレスポンスの作成
      */
     private createErrorResponse(error: string): APIResponse { return { success: false,
-            error: error;
-           , timestamp: new Date().toISOString(), };
-            requestId: this.generateRequestId(); }
-        }
+            error: error,
+    timestamp: new Date().toISOString(), };
+            requestId: this.generateRequestId(); 
+    }
     
     /**
      * リクエストIDの生成
      */
     private generateRequestId(): string {
-        return `req_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
+        return `req_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
     }
     
     /**

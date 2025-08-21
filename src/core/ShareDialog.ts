@@ -44,15 +44,14 @@ export class ShareDialog {'
             // アクセシビリティ設定
             accessibility: { enabled: options.accessibility !== false;
                 announcements: options.announcements !== false;
-                keyboardNavigation: options.keyboardNavigation !== false;
-               , focus: {
+                keyboardNavigation: options.keyboardNavigation !== false,
+    focus: {
                     trap: options.focusTrap !== false;
-                    returnElement: options.returnFocusElement || null;
-                   , initialElement: options.initialFocusElement || null };
-                highContrast: options.highContrast === true;
-               , reducedMotion: options.reducedMotion === true;
-            }
-        },
+                    returnElement: options.returnFocusElement || null,
+    initialElement: options.initialFocusElement || null };
+                highContrast: options.highContrast === true,
+    reducedMotion: options.reducedMotion === true;
+    },
         
         // 状態管理
         this.state = { visible: false,
@@ -61,8 +60,8 @@ export class ShareDialog {'
             shareData: null;
             screenshot: null;
             editedMessage: null;
-            focusedElement: null;
-           , previousFocus: null ,};
+            focusedElement: null,
+    previousFocus: null ,};
         // DOM要素
         this.elements = { backdrop: null,
             dialog: null;
@@ -73,25 +72,25 @@ export class ShareDialog {'
             closeButton: null;
             platforms: [];
             messageEditor: null;
-            screenshotPreview: null;
-           , announcer: null ,};
+            screenshotPreview: null,
+    announcer: null ,};
         // イベントハンドラー
         this.handlers = { backdropClick: this.handleBackdropClick.bind(this),
             keydown: this.handleKeydown.bind(this);
             close: this.handleClose.bind(this);
             platformClick: this.handlePlatformClick.bind(this);
-            messageChange: this.handleMessageChange.bind(this);
-           , resize: this.handleResize.bind(this ,};
+            messageChange: this.handleMessageChange.bind(this),
+    resize: this.handleResize.bind(this ,};
         
         // フォーカス管理
         this.focusableElements = [];
-        this.currentFocusIndex = 0;
+        this.currentFocusIndex = 0
         
         // 統計
         this.stats = { shows: 0,
             shares: 0;
-            cancellations: 0;
-           , messageEdits: 0, }
+            cancellations: 0,
+    messageEdits: 0, }
             platforms: {};
         this.initialize()';
         this.log('ShareDialog初期化完了);
@@ -117,7 +116,7 @@ export class ShareDialog {'
                 this.setupAccessibility();' }'
 
             } catch (error) {
-            this.handleError('SHARE_DIALOG_INITIALIZATION_FAILED', error); }
+            this.handleError('SHARE_DIALOG_INITIALIZATION_FAILED', error'; }
     }
     
     /**
@@ -125,12 +124,12 @@ export class ShareDialog {'
      */''
     createElements()';
         this.elements.backdrop = document.createElement('div'');''
-        this.elements.backdrop.className = 'share-dialog-backdrop';''
+        this.elements.backdrop.className = 'share-dialog-backdrop';
         this.elements.backdrop.style.display = 'none';
         ';
         // ダイアログコンテナ
         this.elements.dialog = document.createElement('div'');''
-        this.elements.dialog.className = 'share-dialog';''
+        this.elements.dialog.className = 'share-dialog';
         this.elements.dialog.setAttribute('role', 'dialog'');''
         this.elements.dialog.setAttribute('aria-modal', 'true'');''
         this.elements.dialog.setAttribute('aria-labelledby', 'share-dialog-title'');''
@@ -152,12 +151,12 @@ export class ShareDialog {'
         if(this.config.accessibility.enabled) {'
 
             this.elements.announcer = document.createElement('div'');''
-            this.elements.announcer.className = 'share-dialog-announcer';''
+            this.elements.announcer.className = 'share-dialog-announcer';
             this.elements.announcer.setAttribute('aria-live', 'polite'');''
             this.elements.announcer.setAttribute('aria-atomic', 'true'');''
-            this.elements.announcer.style.position = 'absolute';''
-            this.elements.announcer.style.left = '-10000px';''
-            this.elements.announcer.style.width = '1px';''
+            this.elements.announcer.style.position = 'absolute';
+            this.elements.announcer.style.left = '-10000px';
+            this.elements.announcer.style.width = '1px';
             this.elements.announcer.style.height = '1px';
 
         }
@@ -189,14 +188,14 @@ export class ShareDialog {'
         ';
         // タイトル
         const title = document.createElement('h2'');''
-        title.id = 'share-dialog-title';''
+        title.id = 'share-dialog-title';
         title.className = 'share-dialog-title';
         title.textContent = this.config.title;
         ';
         // 閉じるボタン
         this.elements.closeButton = document.createElement('button'');''
-        this.elements.closeButton.className = 'share-dialog-close';''
-        this.elements.closeButton.innerHTML = '✕';''
+        this.elements.closeButton.className = 'share-dialog-close';
+        this.elements.closeButton.innerHTML = '✕';
         this.elements.closeButton.setAttribute('aria-label', '閉じる'');''
         this.elements.closeButton.setAttribute('type', 'button);
         
@@ -211,14 +210,14 @@ export class ShareDialog {'
      */''
     createBody()';
         const body = document.createElement('div'');''
-        body.id = 'share-dialog-content';''
+        body.id = 'share-dialog-content';
         body.className = 'share-dialog-body';
         ';
         // スクリーンショットプレビュー
         if(this.config.showScreenshotPreview) {'
 
             this.elements.screenshotPreview = document.createElement('div'');''
-            this.elements.screenshotPreview.className = 'share-dialog-screenshot';''
+            this.elements.screenshotPreview.className = 'share-dialog-screenshot';
             this.elements.screenshotPreview.style.display = 'none';
         }
             body.appendChild(this.elements.screenshotPreview); }
@@ -231,13 +230,13 @@ export class ShareDialog {'
             messageContainer.className = 'share-dialog-message-container';
 
             const messageLabel = document.createElement('label'');''
-            messageLabel.className = 'share-dialog-message-label';''
-            messageLabel.textContent = 'メッセージ';''
+            messageLabel.className = 'share-dialog-message-label';
+            messageLabel.textContent = 'メッセージ';
             messageLabel.setAttribute('for', 'share-message-editor'');
 
             this.elements.messageEditor = document.createElement('textarea'');''
-            this.elements.messageEditor.id = 'share-message-editor';''
-            this.elements.messageEditor.className = 'share-dialog-message-editor';''
+            this.elements.messageEditor.id = 'share-message-editor';
+            this.elements.messageEditor.className = 'share-dialog-message-editor';
             this.elements.messageEditor.setAttribute('placeholder', '共有メッセージを入力...'');''
             this.elements.messageEditor.setAttribute('rows', '3'');''
             this.elements.messageEditor.setAttribute('maxlength', '280);
@@ -253,7 +252,7 @@ export class ShareDialog {'
         ';
         // プラットフォーム選択
         const platformsContainer = document.createElement('div'');''
-        platformsContainer.className = 'share-dialog-platforms';''
+        platformsContainer.className = 'share-dialog-platforms';
         platformsContainer.setAttribute('role', 'group'');''
         platformsContainer.setAttribute('aria-label', '共有プラットフォーム);
         
@@ -277,8 +276,8 @@ export class ShareDialog {'
         ';
         // キャンセルボタン
         const cancelButton = document.createElement('button'');''
-        cancelButton.className = 'share-dialog-cancel';''
-        cancelButton.textContent = 'キャンセル';''
+        cancelButton.className = 'share-dialog-cancel';
+        cancelButton.textContent = 'キャンセル';
         cancelButton.setAttribute('type', 'button);
         
         footer.appendChild(cancelButton);
@@ -296,7 +295,7 @@ export class ShareDialog {'
         const button = document.createElement('button''); }
 
         button.className = `share-dialog-platform share-dialog-platform-${platform}`;''
-        button.setAttribute('data-platform', platform);''
+        button.setAttribute('data-platform', platform';''
         button.setAttribute('type', 'button'');''
         button.setAttribute('data-index', index);
 
@@ -321,7 +320,7 @@ export class ShareDialog {'
         }
         ";
         button.innerHTML = content;""
-        button.setAttribute('aria-label', `${platformInfo.label}で共有`});
+        button.setAttribute('aria-label', `${platformInfo.label}で共有`}';
         
         return button;
     }
@@ -346,8 +345,8 @@ export class ShareDialog {'
             'email': '📧',
     }
 
-            'copy': '📋' }
-        };
+            'copy': '📋' 
+    };
 
         return icons[platform] || '📤';
     }
@@ -355,17 +354,17 @@ export class ShareDialog {'
     /**
      * スタイルの適用'
      */''
-    applyStyles(''';
+    applyStyles('''
             position: 'fixed',
             top: '0',
             left: '0',
             width: '100%',
             height: '100%);
-            backgroundColor: styles.backdropColor)';
-           , zIndex: styles.zIndex,
+            backgroundColor: styles.backdropColor'',
+    zIndex: styles.zIndex,
             display: 'flex'),
-            alignItems: this.getVerticalAlignment(''';
-           , justifyContent: 'center',
+            alignItems: this.getVerticalAlignment(''',
+    justifyContent: 'center',
             padding: '20px',
             boxSizing: 'border-box';
         },
@@ -374,11 +373,11 @@ export class ShareDialog {'
         Object.assign(dialog.style, { backgroundColor: styles.backgroundColor,
             color: styles.textColor;
             borderRadius: styles.borderRadius);
-            fontSize: styles.fontSize);
-           , fontFamily: styles.fontFamily,' }'
+            fontSize: styles.fontSize),
+    fontFamily: styles.fontFamily,' }'
 
             width: this.config.width === 'auto' ? 'auto' : `${this.config.width}px`');''
-            height: this.config.height === 'auto' ? 'auto' : `${ this.config.height)px`;
+            height: this.config.height === 'auto' ? 'auto' : `${ this.config.height'px`;
             maxHeight: this.config.maxHeight,
             maxWidth: '90vw',
             boxShadow: '0, 20px 60px, rgba(0, 0, 0, 0.3}',
@@ -386,7 +385,7 @@ export class ShareDialog {'
             display: 'flex',
             flexDirection: 'column',
             transition: this.config.animation ? 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1}' : 'none',' 
-            transform: 'scale(0.9'})',''
+            transform: 'scale(0.9'}'',''
             opacity: '0';
         },
         
@@ -407,9 +406,9 @@ export class ShareDialog {'
 
         switch(this.config.position) {''
             case 'top':'';
-                return 'flex-start';''
+                return 'flex-start';
             case 'bottom':'';
-                return 'flex-end';''
+                return 'flex-end';
             case 'center':';
     }
 
@@ -424,7 +423,7 @@ export class ShareDialog {'
         switch(this.config.theme) {''
             case 'minimal':';
                 Object.assign(dialog.style, {''
-                    backgroundColor: '#FAFAFA',)';
+                    backgroundColor: '#FAFAFA','';
                     color: '#333333',')';
                     border: '1px solid #E0E0E0'');
     ,}
@@ -443,7 +442,7 @@ export class ShareDialog {'
 
             case 'gaming':';
                 Object.assign(dialog.style, { ''
-                    backgroundColor: '#0A0A0F',)';
+                    backgroundColor: '#0A0A0F','';
                     color: '#00FF41',')';
                     border: '2px solid #00FF41''),
                     boxShadow: '0 0 30px rgba(0, 255, 65, 0.3)' };
@@ -463,11 +462,11 @@ export class ShareDialog {'
                 width: '100%',
                 maxWidth: '100vw',
                 height: 'auto',
-                maxHeight: '100vh',)';
+                maxHeight: '100vh','';
                 borderRadius: '0',' }
 
-                margin: '0'); }
-}
+                margin: '0'); 
+    }
     
     /**
      * アクセシビリティスタイルの適用
@@ -478,11 +477,11 @@ export class ShareDialog {'
             const dialog = this.elements.dialog;
 
             Object.assign(dialog.style, {''
-                backgroundColor: '#000000',)';
+                backgroundColor: '#000000','';
                 color: '#FFFFFF',' }
 
-                border: '3px solid #FFFFFF'); }
-        }
+                border: '3px solid #FFFFFF'); 
+    }
         ';
         // 動きの軽減
         if(this.config.accessibility.reducedMotion) {'
@@ -513,7 +512,7 @@ export class ShareDialog {'
         if(this.config.closeOnBackdrop) {'
     }
 
-            this.elements.backdrop.addEventListener('click', this.handlers.backdropClick); }
+            this.elements.backdrop.addEventListener('click', this.handlers.backdropClick'; }
         }
         ';
         // ESCキー
@@ -521,20 +520,20 @@ export class ShareDialog {'
 
         }
 
-            document.addEventListener('keydown', this.handlers.keydown); }
+            document.addEventListener('keydown', this.handlers.keydown'; }
         }
         ';
         // 閉じるボタン
-        this.elements.closeButton.addEventListener('click', this.handlers.close);
+        this.elements.closeButton.addEventListener('click', this.handlers.close';
         ';
         // キャンセルボタン
         const cancelButton = this.elements.footer.querySelector('.share-dialog-cancel'');''
-        cancelButton.addEventListener('click', this.handlers.close);
+        cancelButton.addEventListener('click', this.handlers.close';
         ';
         // プラットフォームボタン
         this.elements.platforms.forEach(button => {  ');' }
 
-            button.addEventListener('click', this.handlers.platformClick); }
+            button.addEventListener('click', this.handlers.platformClick'; }
         };
         ';
         // メッセージエディター
@@ -542,7 +541,7 @@ export class ShareDialog {'
 
         }
 
-            this.elements.messageEditor.addEventListener('input', this.handlers.messageChange); }
+            this.elements.messageEditor.addEventListener('input', this.handlers.messageChange'; }
         }
         ';
         // ウィンドウリサイズ
@@ -568,8 +567,8 @@ export class ShareDialog {'
     updateFocusableElements() {
         const selector = `;
             button:not([disabled]);
-            input:not([disabled]);
-           , textarea:not([disabled]),
+            input: not([disabled]),
+    textarea:not([disabled]),
             select:not([disabled]),
             [tabindex]:not([tabindex="-1"]);
         `;
@@ -582,12 +581,12 @@ export class ShareDialog {'
     /**
      * キーボードナビゲーションの設定"
      */""
-    setupKeyboardNavigation(") {"
+    setupKeyboardNavigation() {"
 
         this.elements.dialog.addEventListener('keydown', (event) => { '
     }
 
-            if(event.key === 'Tab) { }'
+            if(event.key === 'Tab' { }'
                 this.handleTabNavigation(event); }
 }
     
@@ -677,7 +676,7 @@ export class ShareDialog {'
             this.restorePreviousFocus();
             // 状態のリセット
             this.resetState()';
-            this.log('ShareDialog非表示);
+            this.log('ShareDialog非表示';
             }
 
             ' }'
@@ -693,7 +692,7 @@ export class ShareDialog {'
             const dialog = this.elements.dialog;
 
             requestAnimationFrame(() => {''
-                dialog.style.transform = 'scale(1)';''
+                dialog.style.transform = 'scale(1)';
                 dialog.style.opacity = '1';
                  }
                 setTimeout(resolve, 300); }
@@ -707,7 +706,7 @@ export class ShareDialog {'
         return new Promise((resolve) => { 
             const dialog = this.elements.dialog;
 
-            dialog.style.transform = 'scale(0.9)';''
+            dialog.style.transform = 'scale(0.9)';
             dialog.style.opacity = '0';
              }
             setTimeout(resolve, 300); }
@@ -723,12 +722,12 @@ export class ShareDialog {'
         const img = document.createElement('img'');
 
         img.src = screenshot.url;''
-        img.alt = 'スクリーンショットプレビュー';''
-        img.style.maxWidth = '100%';''
-        img.style.height = 'auto';''
+        img.alt = 'スクリーンショットプレビュー';
+        img.style.maxWidth = '100%';
+        img.style.height = 'auto';
         img.style.borderRadius = '8px';
 
-        this.elements.screenshotPreview.innerHTML = '';''
+        this.elements.screenshotPreview.innerHTML = '';
         this.elements.screenshotPreview.appendChild(img);
 
     }
@@ -768,7 +767,7 @@ export class ShareDialog {'
         const returnElement = this.config.accessibility.focus.returnElement || ;
                              this.state.previousFocus;
 
-        if(returnElement && typeof, returnElement.focus === 'function) {'
+        if(returnElement && typeof, returnElement.focus === 'function' {'
     }
             setTimeout(() => {  }
                 returnElement.focus(); }
@@ -881,7 +880,7 @@ export class ShareDialog {'
             
             // 共有データの準備
             const shareData = { ...this.state.shareData,
-                text: this.state.editedMessage || this.state.shareData? .text ,};
+                text: this.state.editedMessage || this.state.shareData?.text ,};
             // プラットフォーム別の共有処理
             let result;''
             switch(platform) {'
@@ -911,7 +910,7 @@ export class ShareDialog {'
                 await this.hide();
             }
 
-                this.handleShareError(platform, result? .error || 'Unknown error); }'
+                this.handleShareError(platform, result?.error || 'Unknown error'; }'
             } catch (error) { this.handleShareError(platform, error); }
     }
     
@@ -950,7 +949,7 @@ export class ShareDialog {'
 
                 document.body.appendChild(textArea);''
                 textArea.select()';
-                document.execCommand('copy);' }
+                document.execCommand('copy';' }
 
                 document.body.removeChild(textArea); }
             }
@@ -979,7 +978,7 @@ export class ShareDialog {'
      */''
     handleShareError(platform, error) {'
 
-        this.handleError('PLATFORM_SHARE_FAILED', error, { platform );
+        this.handleError('PLATFORM_SHARE_FAILED', error, { platform ';
         ';
         // アクセシビリティアナウンス
         if(this.config.accessibility.announcements && this.elements.announcer) {'
@@ -1017,7 +1016,7 @@ export class ShareDialog {'
         // 非表示
         if (this.state.visible) {''
             this.hide()';
-        document.removeEventListener('keydown', this.handlers.keydown);''
+        document.removeEventListener('keydown', this.handlers.keydown';''
         window.removeEventListener('resize', this.handlers.resize);
         
         // DOM要素の削除
@@ -1039,14 +1038,14 @@ export class ShareDialog {'
             error: error.message || error;
             context,
     }
-            timestamp: Date.now(); }
-        };
+            timestamp: Date.now(); 
+    };
 
         if(ErrorHandler) {', ';
 
         }
 
-            ErrorHandler.handleError(error, 'ShareDialog', context); }
+            ErrorHandler.handleError(error, 'ShareDialog', context'; }
         }
 
         this.log('エラー発生', errorInfo, 'error'');
@@ -1055,12 +1054,12 @@ export class ShareDialog {'
     /**
      * ログ記録'
      */''
-    log(message, data = null, level = 'info) {'
+    log(message, data = null, level = 'info' {'
         const logEntry = {''
-            timestamp: Date.now(''';
+            timestamp: Date.now('''
         const, consoleMethod = level === 'error' ? 'error' : ';
 
-    })'
+    }''
                             level === 'warn' ? 'warn' : 'log';') }
 
         console[consoleMethod](`[ShareDialog] ${message}`, data || ''');

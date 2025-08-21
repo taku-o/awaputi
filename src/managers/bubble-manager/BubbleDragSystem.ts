@@ -5,8 +5,8 @@ import type { BubbleDragSystem as IBubbleDragSystem,
     Vector2  } from '../../types/game';
 
 interface DragHistoryEntry { x: number,
-    y: number;
-   , time: number ,}
+    y: number,
+    time: number ,}
 
 /**
  * BubbleDragSystem - 泡ドラッグ操作システム
@@ -108,8 +108,8 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
         const timeDiff = Math.max(recent.time - previous.time, 1); // ゼロ除算防止
         
         return { x: (recent.x - previous.x) / timeDiff * 1000, // ピクセル/秒 };
-            y: (recent.y - previous.y) / timeDiff * 1000 }
-        }
+            y: (recent.y - previous.y) / timeDiff * 1000 
+    }
     
     /**
      * フリック強度を計算
@@ -128,8 +128,8 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
      */
     calculateForceDirection(dragVector: Vector2, velocity: Vector2): Vector2 { // ドラッグベクトルと速度ベクトルを合成
         const combinedVector: Vector2 = {
-            x: dragVector.x * 0.6 + velocity.x * 0.4;
-           , y: dragVector.y * 0.6 + velocity.y * 0.4 };
+            x: dragVector.x * 0.6 + velocity.x * 0.4,
+    y: dragVector.y * 0.6 + velocity.y * 0.4 };
         const magnitude = Math.sqrt(combinedVector.x * combinedVector.x + combinedVector.y * combinedVector.y);
         if(magnitude === 0) {
             
@@ -137,8 +137,8 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
             return { x: 0, y: 0 ,}
         
         return { x: combinedVector.x / magnitude, };
-            y: combinedVector.y / magnitude }
-        }
+            y: combinedVector.y / magnitude 
+    }
     
     /**
      * ドラッグ状態をリセット
@@ -183,4 +183,4 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
     /**
      * ドラッグ中の泡を取得'
      */''
-    getDraggedBubble(');
+    getDraggedBubble();

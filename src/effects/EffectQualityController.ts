@@ -1,10 +1,10 @@
-import { getConfigurationManager  } from '../core/ConfigurationManager.js';''
+import { getConfigurationManager  } from '../core/ConfigurationManager.js';
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Type definitions for quality control system
 interface ConfigurationManager { get<T = any>(key: string, defaultValue?: T): T;
     set<T = any>(key: string, value: T): void,
-    watch<T = any>(key: string, callback: (newValu;e: T) => void): ConfigWatchListener
+    watch<T = any>(key: string, callback: (newValue: T) => void): ConfigWatchListener
     ,}
 }
 
@@ -12,8 +12,8 @@ interface ErrorHandler { handleError(error: Error, context: string): void ,}
 
 type ConfigWatchListener = (newValue: any') => void;
 
-type QualityLevelType = 'low' | 'medium' | 'high' | 'ultra';''
-type EffectTypeType = 'particle' | 'effect' | 'screenEffect' | 'backgroundParticle';''
+type QualityLevelType = 'low' | 'medium' | 'high' | 'ultra';
+type EffectTypeType = 'particle' | 'effect' | 'screenEffect' | 'backgroundParticle';
 type EffectPriorityType = 'critical' | 'important' | 'normal' | 'decorative';
 
 interface QualitySettings { particleCountMultiplier: number,
@@ -24,8 +24,8 @@ interface QualitySettings { particleCountMultiplier: number,
     shadowEnabled: boolean;
     reflectionEnabled: boolean;
     blurEnabled: boolean;
-    backgroundParticles: boolean;
-   , frameRateTarget: number ,}
+    backgroundParticles: boolean,
+    frameRateTarget: number ,}
 
 interface EffectPriorities { critical: number;    // ゲームプレイに必須
     important: number;   // ユーザー体験に重要
@@ -34,20 +34,20 @@ interface EffectPriorities { critical: number;    // ゲームプレイに必須
 
 interface EffectLimits { maxActiveParticles: number,
     maxActiveEffects: number;
-    maxScreenEffects: number;
-   , maxBackgroundParticles: number ,}
+    maxScreenEffects: number,
+    maxBackgroundParticles: number ,}
 
 interface ActiveEffectCounts { particles: number;
     effects: number;
-    screenEffects: number;
-   , backgroundParticles: number }
+    screenEffects: number,
+    backgroundParticles: number }
 
 interface PerformanceStats { averageFrameRate: number;
     averageMemoryUsage: number;
     currentQuality: QualityLevelType;
     autoAdjustEnabled: boolean;
-    effectCounts: ActiveEffectCounts;
-   , effectLimits: EffectLimits
+    effectCounts: ActiveEffectCounts,
+    effectLimits: EffectLimits
     }
 
 interface DebugInfo { currentQuality: QualityLevelType;
@@ -56,8 +56,8 @@ interface DebugInfo { currentQuality: QualityLevelType;
     memoryUsageHistory: number[];
     activeEffectCounts: ActiveEffectCounts;
     effectLimits: EffectLimits;
-    autoAdjustEnabled: boolean;
-   , lastAdjustTime: number }
+    autoAdjustEnabled: boolean,
+    lastAdjustTime: number }
 
 /**
  * エフェクト品質制御クラス
@@ -79,8 +79,8 @@ export class EffectQualityController {
             shadowEnabled: false;
             reflectionEnabled: false;
             blurEnabled: false;
-            backgroundParticles: false;
-           , frameRateTarget: 30 ,};
+            backgroundParticles: false,
+    frameRateTarget: 30 ,};
         medium: { particleCountMultiplier: 0.5;
             particleSizeMultiplier: 0.9;
             particleComplexity: 2;
@@ -89,8 +89,8 @@ export class EffectQualityController {
             shadowEnabled: false;
             reflectionEnabled: false;
             blurEnabled: true;
-            backgroundParticles: true;
-           , frameRateTarget: 45 };
+            backgroundParticles: true,
+    frameRateTarget: 45 };
         high: { particleCountMultiplier: 1.0;
             particleSizeMultiplier: 1.0;
             particleComplexity: 3;
@@ -99,8 +99,8 @@ export class EffectQualityController {
             shadowEnabled: true;
             reflectionEnabled: true;
             blurEnabled: true;
-            backgroundParticles: true;
-           , frameRateTarget: 60 };
+            backgroundParticles: true,
+    frameRateTarget: 60 };
         ultra: { particleCountMultiplier: 1.5;
             particleSizeMultiplier: 1.2;
             particleComplexity: 4;
@@ -109,8 +109,8 @@ export class EffectQualityController {
             shadowEnabled: true;
             reflectionEnabled: true;
             blurEnabled: true;
-            backgroundParticles: true;
-           , frameRateTarget: 60 }
+            backgroundParticles: true,
+    frameRateTarget: 60 
     };
     ;
     // 現在の品質設定
@@ -132,13 +132,13 @@ export class EffectQualityController {
     // エフェクト制限
     private effectLimits: EffectLimits = { maxActiveParticles: 500
         maxActiveEffects: 20;
-        maxScreenEffects: 5;
-       , maxBackgroundParticles: 50 };
+        maxScreenEffects: 5,
+    maxBackgroundParticles: 50 };
     // 現在のエフェクトカウント
     private activeEffectCounts: ActiveEffectCounts = { particles: 0
         effects: 0;
-        screenEffects: 0;
-       , backgroundParticles: 0 };
+        screenEffects: 0,
+    backgroundParticles: 0 };
     constructor() {
 
         this.configManager = getConfigurationManager();
@@ -155,7 +155,7 @@ export class EffectQualityController {
      */''
     private _initializeQualitySettings()';
             const savedQuality = this.configManager.get<QualityLevelType>('effects.quality.level', 'high'');''
-            const autoAdjust = this.configManager.get<boolean>('effects.quality.autoAdjust', true);
+            const autoAdjust = this.configManager.get<boolean>('effects.quality.autoAdjust', true';
             ';
 
             this.setQualityLevel(savedQuality);''
@@ -169,7 +169,7 @@ export class EffectQualityController {
             this.configManager.watch<boolean>('effects.quality.autoAdjust', (newValue) => { this.setAutoAdjustment(newValue); });
 
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'EffectQualityController._initializeQualitySettings); }'
+            this.errorHandler.handleError(error as Error, 'EffectQualityController._initializeQualitySettings'; }'
     }
     
     /**
@@ -195,7 +195,7 @@ export class EffectQualityController {
         }
 
                 'EffectQualityController.setQualityLevel' }
-            });
+            }';
             return;
         }
         
@@ -229,7 +229,7 @@ export class EffectQualityController {
         this.effectLimits.maxActiveEffects = Math.floor(20 * quality.animationDetail / 4);
         this.effectLimits.maxScreenEffects = Math.floor(5 * quality.animationDetail / 4);
 
-        this.effectLimits.maxBackgroundParticles = quality.backgroundParticles ?   : undefined'';
+        this.effectLimits.maxBackgroundParticles = quality.backgroundParticles ? undefined : undefined'';
             Math.floor(50 * quality.particleCountMultiplier) : 0; }
     
     /**
@@ -410,8 +410,8 @@ export class EffectQualityController {
             this.memoryUsageHistory.reduce((sum, usage) => sum + usage, 0) / this.memoryUsageHistory.length: 0,
         
         return { averageFrameRate: avgFrameRate,
-            averageMemoryUsage: avgMemoryUsage;
-           , currentQuality: this.currentQuality, };
+            averageMemoryUsage: avgMemoryUsage,
+    currentQuality: this.currentQuality, };
             autoAdjustEnabled: this.autoAdjustEnabled, }
             effectCounts: { ...this.activeEffectCounts;
             effectLimits: { ...this.effectLimits;
@@ -422,13 +422,13 @@ export class EffectQualityController {
      * @returns デバッグ情報
      */
     public getDebugInfo(): DebugInfo { return { currentQuality: this.currentQuality,
-            qualitySettings: this.getCurrentQualitySettings();
-           , frameRateHistory: [...this.frameRateHistory], };
+            qualitySettings: this.getCurrentQualitySettings(),
+    frameRateHistory: [...this.frameRateHistory], };
             memoryUsageHistory: [...this.memoryUsageHistory], }
             activeEffectCounts: { ...this.activeEffectCounts;
             effectLimits: { ...this.effectLimits;
-            autoAdjustEnabled: this.autoAdjustEnabled;
-           , lastAdjustTime: this.lastAdjustTime;
+            autoAdjustEnabled: this.autoAdjustEnabled,
+    lastAdjustTime: this.lastAdjustTime;
         },
     }
     
@@ -440,9 +440,9 @@ export class EffectQualityController {
         this.activeEffectCounts = {
             particles: 0;
             effects: 0;
-            screenEffects: 0;
-           , backgroundParticles: 0 }
-}
+            screenEffects: 0,
+    backgroundParticles: 0 
+    }
 
 // シングルトンインスタンスの作成と管理
 let effectQualityControllerInstance: EffectQualityController | null = null,
@@ -452,4 +452,4 @@ let effectQualityControllerInstance: EffectQualityController | null = null,
  * @returns シングルトンインスタンス
  */
 export function getEffectQualityController(): EffectQualityController { if (!effectQualityControllerInstance) {''
-        effectQualityControllerInstance = new EffectQualityController(' })'
+        effectQualityControllerInstance = new EffectQualityController(' }''

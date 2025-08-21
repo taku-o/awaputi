@@ -1,12 +1,12 @@
-import { getErrorHandler  } from '../../../utils/ErrorHandler.js';''
-import { getTranslationKeyManager  } from './TranslationKeyManager.js';''
-import { getProgressTracker  } from './ProgressTracker.js';''
+import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
+import { getTranslationKeyManager  } from './TranslationKeyManager.js';
+import { getProgressTracker  } from './ProgressTracker.js';
 import { getQualityChecker  } from '../quality/QualityChecker.js';
 
 // インターフェース定義
 interface CommandDefinition { name: string,
-    description: string;
-   , execute: (option;s: any) => Promise<any>;
+    description: string,
+    execute: (options: any) => Promise<any>;
     options?: CommandOptions;
     registeredAt?: string;
     [key: string]: any, }
@@ -21,17 +21,17 @@ interface CICDConfig { failOnErrors: boolean,
     failOnWarnings: boolean;
     maxErrorCount: number;
     maxWarningCount: number;
-    requiredCompletionRate: number;
-   , requiredQualityScore: number ,}
+    requiredCompletionRate: number,
+    requiredQualityScore: number ,}
 
 interface ValidationResult { command: string;
     result: any;
     executedAt: string;
-    executionTime: number;
-   , options: any }
+    executionTime: number,
+    options: any }
 
-interface CommandResult { success: boolean;
-   , command: string;
+interface CommandResult { success: boolean,
+    command: string;
     result?: any;
     error?: string;
     executionTime?: number;
@@ -39,33 +39,33 @@ interface CommandResult { success: boolean;
 
 interface UntranslatedCheckResult { summary: {
         totalLanguage;s: number;
-        totalUntranslatedItems: number;
-       , languageResults: {
+        totalUntranslatedItems: number,
+    languageResults: {
             [language: string]: {
                 untranslate;d: number;
                 empty: number;
-                incomplete: number;
-               , total: number };
+                incomplete: number,
+    total: number };
     };
     details: { [language: string]: {
             language: string;
             untranslatedItems: any[];
-            emptyItems: any[];
-           , incompleteItems: any[] };
-    passed: boolean;
-   , executedAt: string;
+            emptyItems: any[],
+    incompleteItems: any[] };
+    passed: boolean,
+    executedAt: string;
 }
 
 interface ConsistencyCheckResult { baseLanguage: string,
     consistency: { ,}
         missingKeys: { [language: string]: string[] }
         extraKeys: { [language: string]: string[] }
-        duplicateKeys: any[];
-       , formatMismatches: { [language: string]: any[] };
-    summary: { totalIssues: number;
-       , languagesChecked: number };
-    passed: boolean;
-   , executedAt: string;
+        duplicateKeys: any[],
+    formatMismatches: { [language: string]: any[] };
+    summary: { totalIssues: number,
+    languagesChecked: number };
+    passed: boolean,
+    executedAt: string;
 }
 
 interface QualityCheckResult { qualityResults: {
@@ -75,14 +75,14 @@ interface QualityCheckResult { qualityResults: {
             errorCount: number;
             warningCount: number;
             passedCount: number;
-            passed: boolean;
-           , threshold: number };
+            passed: boolean,
+    threshold: number };
     summary: { averageScore: number;
         passedLanguages: number;
-        failedLanguages: number;
-       , totalIssues: number };
-    passed: boolean;
-   , executedAt: string;
+        failedLanguages: number,
+    totalIssues: number };
+    passed: boolean,
+    executedAt: string;
 }
 
 interface ProgressCheckResult { progressResults: {
@@ -93,29 +93,29 @@ interface ProgressCheckResult { progressResults: {
             totalKeys: number;
             completionPassed: boolean;
             qualityPassed: boolean;
-            passed: boolean;
-           , requirements: {
-                minCompletio;n: number;
-               , minQuality: number };
+            passed: boolean,
+    requirements: {
+                minCompletio;n: number,
+    minQuality: number };
     };
     summary: { passedLanguages: number;
         failedLanguages: number;
-        averageCompletion: number;
-       , averageQuality: number };
-    passed: boolean;
-   , executedAt: string;
+        averageCompletion: number,
+    averageQuality: number };
+    passed: boolean,
+    executedAt: string;
 }
 
 interface KeyUsageCheckResult { keyUsage: {
         unusedKey;s: any[];
         duplicateKeys: any[];
-        totalRegisteredKeys: number;
-       , totalUsedKeys: number };
+        totalRegisteredKeys: number,
+    totalUsedKeys: number };
     summary: { unusedCount: number;
-        duplicateCount: number;
-       , usageRate: number };
-    passed: boolean;
-   , executedAt: string;
+        duplicateCount: number,
+    usageRate: number };
+    passed: boolean,
+    executedAt: string;
 }
 
 interface ValidateAllResult {
@@ -123,8 +123,8 @@ interface ValidateAllResult {
     summary: { totalCommands: number;
         passedCommands: number;
         failedCommands: number;
-        totalIssues: number;
-       , overallPassed: boolean };
+        totalIssues: number,
+    overallPassed: boolean };
     executedAt: string;
     reportGenerated?: boolean;
 }
@@ -132,38 +132,38 @@ interface ValidateAllResult {
 interface ReportData { generatedAt: string,
     summary: {
         totalValidation;s: number;
-        passedValidations: number;
-       , failedValidations: number ,};
+        passedValidations: number,
+    failedValidations: number ,};
     results: { [commandName: string]: {
             command: string;
             executedAt: string;
             executionTime: number;
-            passed: boolean;
-           , summary: any;
+            passed: boolean,
+    summary: any;
             details?: any };
 }
 
 interface ReportResult { format: string,
     content: string;
     size: number;
-    outputPath: string | null;
-   , generatedAt: string ,}
+    outputPath: string | null,
+    generatedAt: string ,}
 
 interface FormatIssue { key: string;
     issue: string;
-    baseParams: string[];
-   , targetParams: string[] }
+    baseParams: string[],
+    targetParams: string[] }
 
 interface CommandInfo { name: string;
-    displayName: string;
-   , description: string;
+    displayName: string,
+    description: string;
     options?: CommandOptions
     }
 
 interface CommandStats { registeredCommands: number;
     executedCommands: number;
-    cicdConfig: CICDConfig;
-   , availableCommands: string[] }
+    cicdConfig: CICDConfig,
+    availableCommands: string[] }
 
 /**
  * 翻訳検証コマンドクラス - 翻訳整合性チェックとCI/CD統合コマンド
@@ -186,7 +186,7 @@ export class ValidationCommands {
         this.registerBuiltinCommands();
         // 検証結果
         this.lastValidationResults = new Map('';
-    ,})'
+    ,}''
         console.log('ValidationCommands, initialized'); }'
     }
     
@@ -294,10 +294,10 @@ export class ValidationCommands {
      * コマンドを登録
      */
     registerCommand(name: string, commandDefinition: CommandDefinition): void { this.commands.set(name, {)
-            name: commandDefinition.name);
-           , description: commandDefinition.description,);
-            execute: commandDefinition.execute);
-           , options: commandDefinition.options || {);
+            name: commandDefinition.name),
+    description: commandDefinition.description,);
+            execute: commandDefinition.execute),
+    options: commandDefinition.options || {);
             registeredAt: new Date().toISOString();
             ...commandDefinition);
     ,}
@@ -328,27 +328,27 @@ export class ValidationCommands {
                 command: commandName,};
                 result: result}, }
                 executedAt: new Date().toISOString(});
-                executionTime: executionTime;
-               , options: validatedOptions;
+                executionTime: executionTime,
+    options: validatedOptions;
             }),
             
             console.log(`Command, completed: ${command.name} (${executionTime}ms}`});
             return { success: true,
-                command: commandName;
-               , result: result, };
-                executionTime: executionTime }
-            };
+                command: commandName,
+    result: result, };
+                executionTime: executionTime 
+    };
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'VALIDATION_COMMANDS_ERROR', {)
+        } catch (error) { getErrorHandler().handleError(error, 'VALIDATION_COMMANDS_ERROR', {)
                 command: commandName,);
                 options: options ,});
             
             return { success: false,
-                command: commandName;
-               , error: error instanceof Error ? error.message : String(error), };
-                executedAt: new Date().toISOString(); }
-            }
+                command: commandName,
+    error: error instanceof Error ? error.message : String(error), };
+                executedAt: new Date().toISOString(); 
+    }
     }
     
     /**
@@ -359,8 +359,8 @@ export class ValidationCommands {
         const { languages = [], categories = [], outputFormat = 'detailed' } = options;
         
         const results: UntranslatedCheckResult = { summary: {
-                totalLanguages: 0;
-               , totalUntranslatedItems: 0, }
+                totalLanguages: 0,
+    totalUntranslatedItems: 0, }
                 languageResults: {};
             details: {};
             passed: false,
@@ -372,11 +372,11 @@ export class ValidationCommands {
         for(const, language of, targetLanguages) {
             const languageResults = {
                 language: language;
-                untranslatedItems: [];
-               , emptyItems: [];
+                untranslatedItems: [],
+    emptyItems: [];
         }
-                incompleteItems: [] }
-            };
+                incompleteItems: [] 
+    };
             // 進捗追跡から未完成項目を取得
             const incompleteItems = this.progressTracker.getIncompleteItems(language, { ')'
                 status: ['empty', 'translated'], // 空または翻訳済みだが品質が低い);
@@ -395,8 +395,8 @@ export class ValidationCommands {
             
             results.summary.languageResults[language] = { untranslated: languageResults.untranslatedItems.length,
                 empty: languageResults.emptyItems.length;
-                incomplete: languageResults.incompleteItems.length;
-               , total: totalIssues ,};
+                incomplete: languageResults.incompleteItems.length,
+    total: totalIssues ,};
             results.summary.totalUntranslatedItems += totalIssues;
             results.details[language] = languageResults;
         }
@@ -420,10 +420,10 @@ export class ValidationCommands {
             consistency: { ,}
                 missingKeys: {};
                 extraKeys: {};
-                duplicateKeys: [];
-               , formatMismatches: {};
-            summary: { totalIssues: 0;
-               , languagesChecked: 0 };
+                duplicateKeys: [],
+    formatMismatches: {};
+            summary: { totalIssues: 0,
+    languagesChecked: 0 };
             passed: false,
             executedAt: '';
         },
@@ -501,8 +501,8 @@ export class ValidationCommands {
             qualityResults: {};
             summary: { averageScore: 0;
                 passedLanguages: 0;
-                failedLanguages: 0;
-               , totalIssues: 0 };
+                failedLanguages: 0,
+    totalIssues: 0 };
             passed: false,
             executedAt: '';
         },
@@ -535,8 +535,8 @@ export class ValidationCommands {
                 errorCount: qualityResult.errors.length;
                 warningCount: qualityResult.warnings.length;
                 passedCount: qualityResult.passed.length;
-                passed: passed;
-               , threshold: threshold ,};
+                passed: passed,
+    threshold: threshold ,};
             totalScore += qualityResult.qualityScore;
             totalIssues += qualityResult.errors.length + qualityResult.warnings.length;
             
@@ -562,8 +562,8 @@ export class ValidationCommands {
             progressResults: {};
             summary: { passedLanguages: 0;
                 failedLanguages: 0;
-                averageCompletion: 0;
-               , averageQuality: 0 };
+                averageCompletion: 0,
+    averageQuality: 0 };
             passed: false,
             executedAt: '';
         },
@@ -592,10 +592,10 @@ export class ValidationCommands {
                 totalKeys: progress.totalKeys;
                 completionPassed: completionPassed;
                 qualityPassed: qualityPassed;
-                passed: overallPassed;
-               , requirements: {
-                    minCompletion: minCompletion;
-                   , minQuality: minQuality ,}
+                passed: overallPassed,
+    requirements: {
+                    minCompletion: minCompletion,
+    minQuality: minQuality ,}
             };
             totalCompletion += progress.completionRate;
             totalQuality += progress.qualityScore;
@@ -627,11 +627,11 @@ export class ValidationCommands {
         const results: KeyUsageCheckResult = { keyUsage: {
                 unusedKeys: [];
                 duplicateKeys: [];
-                totalRegisteredKeys: 0;
-               , totalUsedKeys: 0 };
+                totalRegisteredKeys: 0,
+    totalUsedKeys: 0 };
             summary: { unusedCount: 0;
-                duplicateCount: 0;
-               , usageRate: 0 };
+                duplicateCount: 0,
+    usageRate: 0 };
             passed: false,
             executedAt: '';
         },
@@ -693,10 +693,9 @@ export class ValidationCommands {
             summary: { totalCommands: 0;
                 passedCommands: 0;
                 failedCommands: 0;
-                totalIssues: 0;
-               , overallPassed: false }
-
-            },''
+                totalIssues: 0,
+    overallPassed: false 
+    },''
             executedAt: '';
         },
         
@@ -741,20 +740,20 @@ export class ValidationCommands {
         
         results.summary.totalIssues = totalIssues;
         results.summary.overallPassed = !hasErrors;
-        results.executedAt = new Date().toISOString(');
+        results.executedAt = new Date().toISOString();
         ';
         // レポート生成
         if(generateReport) {'
             try {'
-                const reportResult = await this.executeCommand('generate-report', {)'
+                const reportResult = await this.executeCommand('generate-report', {''
                     format: 'html',);
-                    includeDetails: true);
+                    includeDetails: true';
         ,}
 
                 results.reportGenerated = reportResult.success;' }'
 
             } catch (error) {
-                console.warn('Failed to generate report:', error);
+                console.warn('Failed to generate report:', error';
                 results.reportGenerated = false; }
         }
         
@@ -772,18 +771,18 @@ export class ValidationCommands {
         const reportData: ReportData = { generatedAt: new Date().toISOString(),
             summary: {
                 totalValidations: this.lastValidationResults.size;
-                passedValidations: 0;
-               , failedValidations: 0 ,};
+                passedValidations: 0,
+    failedValidations: 0 ,};
             results: {};
         // 最新の検証結果を集計
         for(const [commandName, validationResult] of this.lastValidationResults) {
             reportData.results[commandName] = {
                 command: validationResult.command;
-                executedAt: validationResult.executedAt;
-               , executionTime: validationResult.executionTime;
+                executedAt: validationResult.executedAt,
+    executionTime: validationResult.executionTime;
         }
-                passed: validationResult.result? .passed || false, : undefined 
-                summary: validationResult.result? .summary || {};
+                passed: validationResult.result?.passed || false, : undefined 
+                summary: validationResult.result?.summary || {};
             if (includeDetails && validationResult.result?.details) { reportData.results[commandName].details = validationResult.result.details; }
             
             if (validationResult.result?.passed) { reportData.summary.passedValidations++; } else { reportData.summary.failedValidations++; }
@@ -815,10 +814,10 @@ export class ValidationCommands {
         
         return { format: format,
             content: formattedReport;
-            size: formattedReport.length;
-           , outputPath: output || null, };
-            generatedAt: reportData.generatedAt }
-        }
+            size: formattedReport.length,
+    outputPath: output || null, };
+            generatedAt: reportData.generatedAt 
+    }
     
     /**
      * ヘルパー関数群
@@ -847,10 +846,10 @@ export class ValidationCommands {
 
                 if(expectedType === 'array' && !Array.isArray(value) {' }
 
-                    throw new Error(`Option ${optionName} must, be an, array`'});
+                    throw new Error(`Option ${optionName} must, be an, array`'}';
 
                 }''
-                if(expectedType === 'boolean' && typeof, value !== 'boolean) {', ';
+                if(expectedType === 'boolean' && typeof, value !== 'boolean' {', ';
 
                 }
 
@@ -914,11 +913,11 @@ export class ValidationCommands {
 
                     if (JSON.stringify(baseParams) !== JSON.stringify(targetParams)) {
                         issues.push({'
-                            key: key,)';
-                            issue: 'parameter_mismatch');
-                           , baseParams: baseParams, }
-                            targetParams: targetParams); }
-}
+                            key: key,'';
+                            issue: 'parameter_mismatch'),
+    baseParams: baseParams, }
+                            targetParams: targetParams); 
+    }
             }
         }
         
@@ -931,7 +930,7 @@ export class ValidationCommands {
 
         for(const, k of, keys) {'
 
-            if(current && typeof, current === 'object' && current[k] !== undefined) {
+            if(current && typeof, current === 'object' && current[k] !== undefined' {
         }
                 current = current[k]; }
             } else { return null;
@@ -975,10 +974,10 @@ export class ValidationCommands {
 
                 if (langDetails.untranslatedItems) {' }'
 
-                    rows.push(`Untranslated,${language},${langDetails.untranslatedItems.length),"${langDetails.untranslatedItems.slice(0, 5).map((i: any,} => i.key"}.join(', ''})"`);
+                    rows.push(`Untranslated,${language},${langDetails.untranslatedItems.length),"${langDetails.untranslatedItems.slice(0, 5).map((i: any,} => i.key"}.join(', ''}'"`";
                 }"
                 if (langDetails.emptyItems) { " }"
-                    rows.push(`Empty,${language},${langDetails.emptyItems.length),"${langDetails.emptyItems.slice(0, 5).map((i: any,} => i.key"}.join(', ''})"`");
+                    rows.push(`Empty,${language},${langDetails.emptyItems.length),"${langDetails.emptyItems.slice(0, 5).map((i: any,} => i.key"}.join(', ''}'"`");
                 }
 }"
 
@@ -989,15 +988,15 @@ export class ValidationCommands {
         const rows = ['Command,Passed,Execution Time,Issues];
 
         for(const [commandName, result] of Object.entries(reportData.results)) {'
-            rows.push([' })'
+            rows.push([' }''
                 `"${commandName}"`,")"
                 result.passed ? 'Yes' : 'No')';
-                `${ result.executionTime || 0)ms`,]'
-                (result.summary? .totalIssues || 0}.toString(} }]'
-            ].join(',)'});
+                `${ result.executionTime || 0'ms`,]'
+                (result.summary?.totalIssues || 0}.toString(} }]'
+            ].join(',''}';
         }
 
-        return rows.join('\n);
+        return rows.join('\n';
     }
 
      : undefined'';
@@ -1033,14 +1032,14 @@ export class ValidationCommands {
                         <th>Execution Time</th>;
                         <th>Issues</th>";
                     </tr>"";
-                    ${Object.entries(reportData.results}.map(([name, result]"}) => `"
+                    ${Object.entries(reportData.results}.map(([name, result]"}" => `"
                         <tr>";
                             <td>${name}</td>""
                             <td class="${result.passed ? 'passed' : 'failed'}">""
                                 ${result.passed ? 'PASSED' : 'FAILED'
                             </td>;
                             <td>${result.executionTime || 0}ms</td>
-                            <td>${result.summary? .totalIssues || 0}</td>'
+                            <td>${result.summary?.totalIssues || 0}</td>'
                         </tr>'';
                     `').join()}'
                 </table>;
@@ -1078,8 +1077,8 @@ export class ValidationCommands {
     getAvailableCommands(): CommandInfo[] { return Array.from(this.commands.entries().map(([name, command]) => ({
             name: name;
             displayName: command.name;
-            description: command.description);
-           , options: command.options ,}
+            description: command.description),
+    options: command.options ,}
         });
     }
     
@@ -1095,10 +1094,10 @@ export class ValidationCommands {
      * 統計情報を取得
      */
     getStats(): CommandStats { return { registeredCommands: this.commands.size,
-            executedCommands: this.lastValidationResults.size;
-           , cicdConfig: this.cicdConfig, };
-            availableCommands: Array.from(this.commands.keys(); }
-        }
+            executedCommands: this.lastValidationResults.size,
+    cicdConfig: this.cicdConfig, };
+            availableCommands: Array.from(this.commands.keys(); 
+    }
 }
 
 // シングルトンインスタンス
@@ -1108,4 +1107,4 @@ let validationCommandsInstance: ValidationCommands | null = null,
  * ValidationCommandsのシングルトンインスタンスを取得
  */
 export function getValidationCommands(): ValidationCommands { if (!validationCommandsInstance) {''
-        validationCommandsInstance = new ValidationCommands(' })'
+        validationCommandsInstance = new ValidationCommands(' }''

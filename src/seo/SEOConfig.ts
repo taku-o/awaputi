@@ -25,12 +25,12 @@ interface SocialImageConfig { default: string,
     portrait?: string;
     summary?: string;
     summaryLarge?: string;
-    width: number;
-   , height: number ,}
+    width: number,
+    height: number ,}
 
 // ソーシャルメディア画像設定インターフェース
-interface SocialImagesConfig { openGraph: SocialImageConfig;
-   , twitter: SocialImageConfig,
+interface SocialImagesConfig { openGraph: SocialImageConfig,
+    twitter: SocialImageConfig,
     linkedin: Omit<SocialImageConfig, 'landscape' | 'portrait' | 'summary' | 'summaryLarge'>;''
     pinterest: Omit<SocialImageConfig, 'landscape' | 'portrait' | 'summary' | 'summaryLarge'>;
     fallback: string ,}
@@ -38,8 +38,8 @@ interface SocialImagesConfig { openGraph: SocialImageConfig;
 // 組織構造化データインターフェース
 interface OrganizationStructuredData { name: string;
     url: string;
-    logo: string;
-   , sameAs: string[] }
+    logo: string,
+    sameAs: string[] }
 
 // ゲーム構造化データインターフェース
 interface GameStructuredData { name: string;
@@ -50,30 +50,30 @@ interface GameStructuredData { name: string;
     contentRating: string;
     inLanguage: string[];
     isAccessibleForFree: boolean;
-    applicationCategory: string;
-   , offers: {
-        pric;e: string;
-       , priceCurrency: string }
+    applicationCategory: string,
+    offers: {
+        pric;e: string,
+    priceCurrency: string }
 
 // Webアプリケーション構造化データインターフェース
 interface WebApplicationStructuredData { applicationCategory: string,
     permissions: string[];
     browserRequirements: string;
-    memoryRequirements: string;
-   , storageRequirements: string ,}
+    memoryRequirements: string,
+    storageRequirements: string ,}
 
 // 構造化データ設定インターフェース
 interface StructuredDataConfig { organization: OrganizationStructuredData;
-    game: GameStructuredData;
-   , webApplication: WebApplicationStructuredData
+    game: GameStructuredData,
+    webApplication: WebApplicationStructuredData
     }
 
 // robots.txt設定インターフェース
 interface RobotsConfig { userAgent: string;
     allow: string[];
     disallow: string[];
-    crawlDelay: number;
-   , sitemapUrl: string }
+    crawlDelay: number,
+    sitemapUrl: string }
 ;
 // サイトマップ頻度型
 type ChangeFrequency = 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
@@ -81,42 +81,42 @@ type ChangeFrequency = 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'y
 // サイトマップ設定インターフェース
 interface SitemapConfig { changeFrequency: {
         hom;e: ChangeFrequency;
-        help: ChangeFrequency;
-       , assets: ChangeFrequency };
+        help: ChangeFrequency,
+    assets: ChangeFrequency };
     priority: { home: number;
         help: number;
-        languageVariants: number;
-       , assets: number }
+        languageVariants: number,
+    assets: number }
 
 // ファビコン設定インターフェース
 interface FaviconConfig { sizes: number[],
     appleTouchIcon: number[];
-    msTile: number[];
-   , androidChrome: number[] ,}
+    msTile: number[],
+    androidChrome: number[] ,}
 
 // 画像最適化設定インターフェース
 interface ImageOptimizationConfig { quality: number;
-    formats: string[];
-   , lazyLoad: boolean }
+    formats: string[],
+    lazyLoad: boolean }
 
 // キャッシング設定インターフェース
 interface CachingConfig { socialImages: number;
-    structuredData: number;
-   , metaTags: number }
+    structuredData: number,
+    metaTags: number }
 
 // パフォーマンス設定インターフェース
-interface PerformanceConfig { imagOptimization: ImageOptimizationConfig;
-   , caching: CachingConfig
+interface PerformanceConfig { imagOptimization: ImageOptimizationConfig,
+    caching: CachingConfig
     }
 
 // エラーハンドリング設定インターフェース
 interface ErrorHandlingConfig { missingImage: {
-        useDefaul;t: boolean;
-       , logError: boolean };
-    invalidStructuredData: { useFallback: boolean;
-       , minimalSchema: boolean };
-    metaTagFailure: { ensureBasicTags: boolean;
-       , logToConsole: boolean }
+        useDefaul;t: boolean,
+    logError: boolean };
+    invalidStructuredData: { useFallback: boolean,
+    minimalSchema: boolean };
+    metaTagFailure: { ensureBasicTags: boolean,
+    logToConsole: boolean }
 
 // SEO設定インターフェース
 export interface SEOConfigType { baseUrl: string,
@@ -130,8 +130,8 @@ export interface SEOConfigType { baseUrl: string,
     robots: RobotsConfig;
     sitemap: SitemapConfig;
     favicon: FaviconConfig;
-    performance: PerformanceConfig;
-   , errorHandling: ErrorHandlingConfig
+    performance: PerformanceConfig,
+    errorHandling: ErrorHandlingConfig
     ,}
 ;
 export const SEOConfig: SEOConfigType = { // 基本設定
@@ -160,24 +160,23 @@ export const SEOConfig: SEOConfigType = { // 基本設定
             default: '/assets/social/og-image.png',
             landscape: '/assets/social/og-image-landscape.png',
             portrait: '/assets/social/og-image-portrait.png';
-            width: 1200;
-           , height: 630 ,};
+            width: 1200,
+    height: 630 ,};
         twitter: { ''
             default: '/assets/social/twitter-card.png',
             summary: '/assets/social/twitter-summary.png',
             summaryLarge: '/assets/social/twitter-summary-large.png';
-            width: 1200;
-           , height: 600 ,};
+            width: 1200,
+    height: 600 ,};
         linkedin: { ''
             default: '/assets/social/linkedin-share.png';
-            width: 1200;
-           , height: 627 };
+            width: 1200,
+    height: 627 };
         pinterest: { ''
             default: '/assets/social/pinterest-share.png';
-            width: 1000;
-           , height: 1500 }
-
-        },''
+            width: 1000,
+    height: 1500 
+    },''
         fallback: '/assets/screenshots/game-portrait.png';
     },
     
@@ -185,8 +184,8 @@ export const SEOConfig: SEOConfigType = { // 基本設定
     structuredData: { organization: {''
             name: 'BubblePop Game Team',
             url: 'https://bubblepop-game.com',
-            logo: 'https://bubblepop-game.com/assets/icons/icon-512x512.png;
-           , sameAs: [;
+            logo: 'https://bubblepop-game.com/assets/icons/icon-512x512.png,
+    sameAs: [;
                 // ソーシャルメディアプロファイルURLを追加]
             ] ,},
 
@@ -225,8 +224,8 @@ export const SEOConfig: SEOConfigType = { // 基本設定
             assets: 'yearly' ,};
         priority: { home: 1.0;
             help: 0.8;
-            languageVariants: 0.7;
-           , assets: 0.3 }
+            languageVariants: 0.7,
+    assets: 0.3 
     };
     // ファビコン設定
     favicon: { sizes: [16, 32, 48, 96, 144, 192, 256, 512],
@@ -245,13 +244,13 @@ export const SEOConfig: SEOConfigType = { // 基本設定
     };
     // エラーハンドリング設定
     errorHandling: { missingImage: {
-            useDefault: true;
-           , logError: true };
-        invalidStructuredData: { useFallback: true;
-           , minimalSchema: true };
-        metaTagFailure: { ensureBasicTags: true;
-           , logToConsole: true }
-};
+            useDefault: true,
+    logError: true };
+        invalidStructuredData: { useFallback: true,
+    minimalSchema: true };
+        metaTagFailure: { ensureBasicTags: true,
+    logToConsole: true 
+    };
 ;
 // 環境別URL設定
 export function getBaseUrl()';
@@ -267,7 +266,7 @@ export function getBaseUrl()';
     }
     ;
     // 開発環境
-    if (host.includes('localhost'') || host.includes('127.0.0.1)) {
+    if (host.includes('localhost'') || host.includes('127.0.0.1)' {
         return `${protocol}//${host}`;
     }
     
@@ -286,5 +285,5 @@ export function getLocalizedUrl(lang: LanguageCode = SEOConfig.defaultLanguage, 
 }
 ';
 // ソーシャルメディア画像URL生成
-export function getSocialImageUrl(platform: SocialPlatform = 'openGraph', variant: ImageVariant = 'default): string {;
-    const baseUrl = getBaseUrl(' })'
+export function getSocialImageUrl(platform: SocialPlatform = 'openGraph', variant: ImageVariant = 'default': string {;
+    const baseUrl = getBaseUrl(' }''

@@ -11,48 +11,48 @@ export class StatisticsVisualAccessibilityEnhancer {
         // 視覚アクセシビリティ設定
         this.config = {
             contrast: {
-                enabled: false;
-               , level: 'normal', // normal, high, maximum;
+                enabled: false,
+    level: 'normal', // normal, high, maximum;
                 ratio: {
-                    normal: 4.5;
-                   , high: 7.0;
+                    normal: 4.5,
+    high: 7.0;
     ,}
-                    maximum: 21.0 }
-                },''
+                    maximum: 21.0 
+    },''
                 backgroundColor: '#ffffff',
                 textColor: '#000000',
                 accentColor: '#0066cc';
             },
-            fontSize: { enabled: false;
-               , scale: 1.0, // 1.0 = 100%, 1.5 = 150%, 2.0 = 200%;
+            fontSize: { enabled: false,
+    scale: 1.0, // 1.0 = 100%, 1.5 = 150%, 2.0 = 200%;
                 minSize: 12;
                 maxSize: 48;
-                lineHeight: 1.4;
-               , letterSpacing: 0 ,};
+                lineHeight: 1.4,
+    letterSpacing: 0 ,};
             colorSupport: { enabled: true,''
                 colorBlindnessType: 'none', // none, protanopia, deuteranopia, tritanopia, monochrome;
                 patternSupport: true;
                 shapeSupport: true;
-                symbolSupport: true;
-               , textureSupport: true ,};
-            magnification: { enabled: false;
-               , level: 1.0, // 1.0-3.0;
-                followFocus: true;
-               , smoothTransition: true, }
+                symbolSupport: true,
+    textureSupport: true ,};
+            magnification: { enabled: false,
+    level: 1.0, // 1.0-3.0;
+                followFocus: true,
+    smoothTransition: true, }
                 zoomArea: { x: 0, y: 0, width: 200, height: 200 ,},
-            focus: { enabled: true;
-               , thickness: 3,
+            focus: { enabled: true,
+    thickness: 3,
                 color: '#4A90E2',
                 style: 'solid', // solid, dashed, dotted;
                 radius: 4;
-                offset: 2;
-               , animation: true ,};
+                offset: 2,
+    animation: true ,};
             motion: { reducedMotion: false;
                 animationDuration: 300;
                 transitionDuration: 200;
-                parallaxDisabled: false;
-               , autoplayDisabled: false }
-        };
+                parallaxDisabled: false,
+    autoplayDisabled: false 
+    };
         // カラーパレット管理
         this.colorPalettes = { normal: {''
                 primary: ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6],
@@ -160,7 +160,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         ';
         // 色彩の検出
         if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)).matches) { ''
-            this.config.contrast.backgroundColor = '#000000';''
+            this.config.contrast.backgroundColor = '#000000';
             this.config.contrast.textColor = '#ffffff'; }
     }
     
@@ -177,12 +177,12 @@ export class StatisticsVisualAccessibilityEnhancer {
      * CSS変数の設定'
      */''
     setupCSSVariables()';
-        this.cssVariables.set('--accessibility-font-scale', this.config.fontSize.scale);''
-        this.cssVariables.set('--accessibility-line-height', this.config.fontSize.lineHeight);''
-        this.cssVariables.set('--accessibility-letter-spacing', `${ this.config.fontSize.letterSpacing)px`');''
-        this.cssVariables.set('--accessibility-focus-color', this.config.focus.color);''
-        this.cssVariables.set('--accessibility-focus-thickness', `${this.config.focus.thickness)px`');''
-        this.cssVariables.set('--accessibility-animation-duration', `${this.config.motion.animationDuration)ms`');''
+        this.cssVariables.set('--accessibility-font-scale', this.config.fontSize.scale';''
+        this.cssVariables.set('--accessibility-line-height', this.config.fontSize.lineHeight';''
+        this.cssVariables.set('--accessibility-letter-spacing', `${ this.config.fontSize.letterSpacing'px`');''
+        this.cssVariables.set('--accessibility-focus-color', this.config.focus.color';''
+        this.cssVariables.set('--accessibility-focus-thickness', `${this.config.focus.thickness'px`');''
+        this.cssVariables.set('--accessibility-animation-duration', `${this.config.motion.animationDuration'ms`');''
         this.cssVariables.set('--accessibility-transition-duration', `${this.config.motion.transitionDuration)ms`};
         
         // CSS変数をDOMに適用
@@ -200,8 +200,8 @@ export class StatisticsVisualAccessibilityEnhancer {
         this.magnifierElement.style.cssText = `;
             position: fixed;
             width: 200px;
-            height: 200px;
-           , border: 2px solid #4A90E2;
+            height: 200px,
+    border: 2px solid #4A90E2;
             border-radius: 50%,
             background: white;
             pointer-events: none,
@@ -215,8 +215,8 @@ export class StatisticsVisualAccessibilityEnhancer {
         magnifierCanvas.width = 200;
         magnifierCanvas.height = 200;
         magnifierCanvas.style.cssText = `;
-            width: 100%;
-           , height: 100%;
+            width: 100%,
+    height: 100%;
             transform-origin: center,
         `;
         
@@ -234,8 +234,8 @@ export class StatisticsVisualAccessibilityEnhancer {
             position: absolute;
             pointer-events: none,
             z-index: 9999,
-            display: none;
-           , border: ${this.config.focus.thickness}px ${this.config.focus.style} ${this.config.focus.color}
+            display: none,
+    border: ${this.config.focus.thickness}px ${this.config.focus.style} ${this.config.focus.color}
             border-radius: ${this.config.focus.radius}px;
             box-shadow: 0 0 0 1px rgba(255,255,255,0.8), 0 0 8px rgba(74,144,226,0.4);
             transition: all var(--accessibility-transition-duration) ease;
@@ -262,8 +262,8 @@ export class StatisticsVisualAccessibilityEnhancer {
     updateContrastSettings() {'
 
         const palette = this.getCurrentColorPalette()';
-        this.cssVariables.set('--accessibility-bg-color', palette.background);''
-        this.cssVariables.set('--accessibility-text-color', palette.text);''
+        this.cssVariables.set('--accessibility-bg-color', palette.background';''
+        this.cssVariables.set('--accessibility-text-color', palette.text';''
         this.cssVariables.set('--accessibility-grid-color', palette.grid);
         
         // CSS変数の更新
@@ -275,40 +275,40 @@ export class StatisticsVisualAccessibilityEnhancer {
         };
         ';
         // body要素にクラス追加
-        document.body.classList.toggle('high-contrast', this.config.contrast.enabled);''
-        document.body.classList.toggle('maximum-contrast', this.config.contrast.level === 'maximum);
+        document.body.classList.toggle('high-contrast', this.config.contrast.enabled';''
+        document.body.classList.toggle('maximum-contrast', this.config.contrast.level === 'maximum';
     }
     
     /**
      * フォント設定の更新  '
      */''
     updateFontSettings()';
-        this.cssVariables.set('--accessibility-font-scale', this.config.fontSize.scale);''
-        this.cssVariables.set('--accessibility-line-height', this.config.fontSize.lineHeight);''
-        this.cssVariables.set('--accessibility-letter-spacing', `${ this.config.fontSize.letterSpacing)px`};
+        this.cssVariables.set('--accessibility-font-scale', this.config.fontSize.scale';''
+        this.cssVariables.set('--accessibility-line-height', this.config.fontSize.lineHeight';''
+        this.cssVariables.set('--accessibility-letter-spacing', `${ this.config.fontSize.letterSpacing'px`};
         
         const root = document.documentElement;
 
         this.cssVariables.forEach((value, key} => {' }'
 
-            root.style.setProperty(key, value'});
+            root.style.setProperty(key, value'}';
         };
 
-        document.body.classList.toggle('large-font', this.config.fontSize.enabled);''
-        document.body.classList.toggle('extra-large-font', this.config.fontSize.scale >= 1.5);
+        document.body.classList.toggle('large-font', this.config.fontSize.enabled';''
+        document.body.classList.toggle('extra-large-font', this.config.fontSize.scale >= 1.5';
     }
     
     /**
      * 色覚サポートの更新'
      */''
     updateColorSupport(''';
-        const colorBlindClasses = ['protanopia', 'deuteranopia', 'tritanopia', 'monochrome'];)'
+        const colorBlindClasses = ['protanopia', 'deuteranopia', 'tritanopia', 'monochrome'];''
         colorBlindClasses.forEach(cls => {  );' }'
 
             document.body.classList.remove(cls); }
         };
 
-        if(this.config.colorSupport.colorBlindnessType !== 'none) {', ';
+        if(this.config.colorSupport.colorBlindnessType !== 'none' {', ';
 
         }
 
@@ -316,29 +316,29 @@ export class StatisticsVisualAccessibilityEnhancer {
         }
         ';
         // パターンサポートの適用
-        document.body.classList.toggle('pattern-support', this.config.colorSupport.patternSupport);''
-        document.body.classList.toggle('shape-support', this.config.colorSupport.shapeSupport);''
-        document.body.classList.toggle('symbol-support', this.config.colorSupport.symbolSupport);''
-        document.body.classList.toggle('texture-support', this.config.colorSupport.textureSupport);
+        document.body.classList.toggle('pattern-support', this.config.colorSupport.patternSupport';''
+        document.body.classList.toggle('shape-support', this.config.colorSupport.shapeSupport';''
+        document.body.classList.toggle('symbol-support', this.config.colorSupport.symbolSupport';''
+        document.body.classList.toggle('texture-support', this.config.colorSupport.textureSupport';
     }
     
     /**
      * モーション設定の更新'
      */''
     updateMotionSettings()';
-        this.cssVariables.set('--accessibility-animation-duration', `${ this.config.motion.animationDuration)ms`');''
-        this.cssVariables.set('--accessibility-transition-duration', `${this.config.motion.transitionDuration)ms`};
+        this.cssVariables.set('--accessibility-animation-duration', `${ this.config.motion.animationDuration'ms`');''
+        this.cssVariables.set('--accessibility-transition-duration', `${this.config.motion.transitionDuration'ms`};
         
         const root = document.documentElement;
 
         this.cssVariables.forEach((value, key} => {' }'
 
-            root.style.setProperty(key, value'});
+            root.style.setProperty(key, value'}';
         };
 
-        document.body.classList.toggle('reduced-motion', this.config.motion.reducedMotion);''
-        document.body.classList.toggle('no-parallax', this.config.motion.parallaxDisabled);''
-        document.body.classList.toggle('no-autoplay', this.config.motion.autoplayDisabled);
+        document.body.classList.toggle('reduced-motion', this.config.motion.reducedMotion';''
+        document.body.classList.toggle('no-parallax', this.config.motion.parallaxDisabled';''
+        document.body.classList.toggle('no-autoplay', this.config.motion.autoplayDisabled';
     }
     
     /**
@@ -347,7 +347,7 @@ export class StatisticsVisualAccessibilityEnhancer {
     getCurrentColorPalette()';
         if (this.config.contrast.enabled && this.config.contrast.level === 'high'') { return this.colorPalettes.highContrast; }
 
-        if(this.config.colorSupport.colorBlindnessType !== 'none) { return this.colorPalettes[this.config.colorSupport.colorBlindnessType] || this.colorPalettes.normal; }'
+        if(this.config.colorSupport.colorBlindnessType !== 'none' { return this.colorPalettes[this.config.colorSupport.colorBlindnessType] || this.colorPalettes.normal; }'
         
         return this.colorPalettes.normal;
     }
@@ -445,10 +445,10 @@ export class StatisticsVisualAccessibilityEnhancer {
             .shape-support .chart-point:nth-child(3) { clip-path: polygon(50% 0%, 0% 100%, 100% 100% }
             .shape-support .chart-point:nth-child(4) { clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20% }
             .shape-support .chart-point:nth-child(5) { clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35% }
-            ';
+            '
 
             /* シンボルサポート */''
-            .symbol-support .chart-legend-item:nth-child(1)::before { content: '●'; margin-right: 8px, }''
+            .symbol-support .chart-legend-item: nth-child(1)::before { content: '●'; margin-right: 8px, }''
             .symbol-support .chart-legend-item:nth-child(2)::before { content: '■'; margin-right: 8px, }''
             .symbol-support .chart-legend-item:nth-child(3)::before { content: '▲'; margin-right: 8px, }''
             .symbol-support .chart-legend-item:nth-child(4)::before { content: '◆'; margin-right: 8px, }''
@@ -500,8 +500,8 @@ export class StatisticsVisualAccessibilityEnhancer {
             @media (max-width: 768px) { .large-font .statistics-container {
                     font-size: calc(0.9rem * var(--accessibility-font-scale), }
                 
-                .extra-large-font .statistics-container { padding: 16px }
-            }
+                .extra-large-font .statistics-container { padding: 16px 
+    }
             
             @media (max-width: 480px) { .large-font .statistics-value {
                     font-size: calc(1.5rem * var(--accessibility-font-scale), }
@@ -595,10 +595,10 @@ export class StatisticsVisualAccessibilityEnhancer {
                 case '=':';
                     event.preventDefault();''
                     this.increaseFontSize()';
-                case '-':)';
+                case '-':'';
                     event.preventDefault();''
                     this.decreaseFontSize()';
-                case '0':)';
+                case '0':'';
                     event.preventDefault();''
                     this.resetFontSize()';
                 case 'h':);
@@ -661,7 +661,7 @@ export class StatisticsVisualAccessibilityEnhancer {
      */''
     updateMagnifierContent(x, y) {'
 
-        const magnifierCanvas = this.magnifierElement.querySelector('canvas);''
+        const magnifierCanvas = this.magnifierElement.querySelector('canvas';''
         if(!magnifierCanvas) return;
 
         const ctx = magnifierCanvas.getContext('2d);
@@ -692,7 +692,7 @@ export class StatisticsVisualAccessibilityEnhancer {
             ctx.drawImage(;
                 tempCanvas);
                 0, 0, sourceWidth, sourceHeight,)';
-                0, 0, magnifierCanvas.width, magnifierCanvas.height)'';
+                0, 0, magnifierCanvas.width, magnifierCanvas.height''';
             ');
 
             ';
@@ -710,11 +710,11 @@ export class StatisticsVisualAccessibilityEnhancer {
             ' }'
 
         } catch (error) { // Canvas読み取りエラーの場合（CORS等）
-            ctx.fillStyle = '#f0f0f0';''
+            ctx.fillStyle = '#f0f0f0';
             ctx.fillRect(0, 0, magnifierCanvas.width, magnifierCanvas.height);''
-            ctx.fillStyle = '#666';''
-            ctx.font = '14px Arial';''
-            ctx.textAlign = 'center';''
+            ctx.fillStyle = '#666';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'center';
             ctx.fillText('拡大表示', magnifierCanvas.width / 2, magnifierCanvas.height / 2); }
     }
     
@@ -729,12 +729,12 @@ export class StatisticsVisualAccessibilityEnhancer {
             this.bindMagnificationEvents();
     }
 
-            document.body.classList.add('magnification-enabled); }'
+            document.body.classList.add('magnification-enabled'; }'
 
         } else {
             this.hideMagnifier( }
 
-            document.body.classList.remove('magnification-enabled); }'
+            document.body.classList.remove('magnification-enabled'; }'
 }
     
     /**
@@ -792,16 +792,16 @@ export class StatisticsVisualAccessibilityEnhancer {
      * ハイコントラストモードの有効化'
      */''
     enableHighContrast(''';
-        this.config.contrast.level = 'high';)'
+        this.config.contrast.level = 'high';''
         this.updateContrastSettings()';
-        this.announceChange('ハイコントラストモードを有効にしました);
+        this.announceChange('ハイコントラストモードを有効にしました';
     }
     
     /**
      * ハイコントラストモードの無効化'
      */''
     disableHighContrast(''';
-        this.config.contrast.level = 'normal';)'
+        this.config.contrast.level = 'normal';''
         this.updateContrastSettings()';
         this.announceChange('ハイコントラストモードを無効にしました);
     }
@@ -848,7 +848,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         this.updateFontSettings();
     }
 
-        this.announceChange('フォントサイズをリセットしました); }'
+        this.announceChange('フォントサイズをリセットしました'; }'
     }
     
     /**
@@ -856,15 +856,15 @@ export class StatisticsVisualAccessibilityEnhancer {
      */
     setColorBlindnessSupport(type) {'
         this.config.colorSupport.colorBlindnessType = type;''
-        this.updateColorSupport(''';
+        this.updateColorSupport('''
             'none': '通常',
             'protanopia': '第一色覚異常（プロタノピア）',
             'deuteranopia': '第二色覚異常（デューテラノピア）',
             'tritanopia': '第三色覚異常（トリタノピア）',
     }
 
-            'monochrome': 'モノクローム' }
-        };)
+            'monochrome': 'モノクローム' 
+    };)
         );
         this.announceChange(`色覚サポートを${typeNames[type]}に設定しました`});
     }
@@ -967,7 +967,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         this.generateAccessibilityStyles();
     }
 
-        this.announceChange('アクセシビリティ設定を更新しました); }'
+        this.announceChange('アクセシビリティ設定を更新しました'; }'
     }
     
     /**
@@ -979,12 +979,12 @@ export class StatisticsVisualAccessibilityEnhancer {
             fontScale: this.config.fontSize.scale;
             colorBlindnessSupport: this.config.colorSupport.colorBlindnessType;
             magnificationEnabled: this.config.magnification.enabled;
-            reducedMotion: this.config.motion.reducedMotion;
-           , focusIndicatorEnabled: this.config.focus.enabled;
+            reducedMotion: this.config.motion.reducedMotion,
+    focusIndicatorEnabled: this.config.focus.enabled;
     ,}
             patternSupportEnabled: this.config.colorSupport.patternSupport, };
-            symbolSupportEnabled: this.config.colorSupport.symbolSupport }
-        }
+            symbolSupportEnabled: this.config.colorSupport.symbolSupport 
+    }
     
     /**
      * リソースのクリーンアップ
@@ -992,17 +992,17 @@ export class StatisticsVisualAccessibilityEnhancer {
     destroy() {'
         // イベントリスナーの削除
         if(this.canvas) {''
-            this.canvas.removeEventListener('mousemove', this.handleMagnifierMove);''
-            this.canvas.removeEventListener('mouseenter', this.showMagnifier);''
-            this.canvas.removeEventListener('mouseleave', this.hideMagnifier);
+            this.canvas.removeEventListener('mousemove', this.handleMagnifierMove';''
+            this.canvas.removeEventListener('mouseenter', this.showMagnifier';''
+            this.canvas.removeEventListener('mouseleave', this.hideMagnifier';
 
     }
 
-            this.canvas.removeEventListener('click', this.toggleMagnification); }
+            this.canvas.removeEventListener('click', this.toggleMagnification'; }
         }
 
-        document.removeEventListener('focusin', this.handleFocusIn);''
-        document.removeEventListener('focusout', this.handleFocusOut);''
+        document.removeEventListener('focusin', this.handleFocusIn';''
+        document.removeEventListener('focusout', this.handleFocusOut';''
         document.removeEventListener('keydown', this.handleKeyDown);
         
         // DOM要素の削除
@@ -1014,4 +1014,4 @@ export class StatisticsVisualAccessibilityEnhancer {
         
         // CSS変数のクリア
         this.cssVariables.clear();''
-        this.styleSheets.clear(');
+        this.styleSheets.clear();

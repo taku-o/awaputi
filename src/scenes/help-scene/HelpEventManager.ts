@@ -3,22 +3,22 @@
  * ヘルプイベント管理 - キーボード・マウス入力の統合処理
  */
 
-import { GameEngine  } from '../../core/GameEngine';''
-import { HelpContentManager  } from './HelpContentManager';''
-import { HelpAccessibilityManager  } from './HelpAccessibilityManager';''
-import { HelpAnimationManager  } from './HelpAnimationManager';''
+import { GameEngine  } from '../../core/GameEngine';
+import { HelpContentManager  } from './HelpContentManager';
+import { HelpAccessibilityManager  } from './HelpAccessibilityManager';
+import { HelpAnimationManager  } from './HelpAnimationManager';
 import { HelpRenderer  } from './HelpRenderer';
 
 // コールバックインターフェース
 interface HelpEventCallbacks { onGoBack: (() => void) | null,
-    onFeedbackRequest: ((dat;a: FeedbackRequestData) => void) | null;
-    onEffectivenessReport: ((repor;t: any) => void) | null;
+    onFeedbackRequest: ((data: FeedbackRequestData) => void) | null;
+    onEffectivenessReport: ((report: any) => void) | null;
     onSearchFocus: (() => void) | null ,}
 }
 
 // フィードバックリクエストデータ
-interface FeedbackRequestData { topic: any;
-   , content: any; }
+interface FeedbackRequestData { topic: any,
+    content: any; }
     category: string, }
     position?: { x: number;, y: number }
     quickMode?: boolean;
@@ -26,8 +26,8 @@ interface FeedbackRequestData { topic: any;
 
 // イベント状態インターフェース
 interface EventState { searchFocused: boolean,
-    lastInputTime: number;
-   , hasActiveListeners: boolean ,}
+    lastInputTime: number,
+    hasActiveListeners: boolean ,}
 
 // レイアウト情報インターフェース
 interface HelpLayout {
@@ -79,8 +79,8 @@ export class HelpEventManager {
         gameEngine: GameEngine;
         contentManager: HelpContentManager)
     );
-        accessibilityManager: HelpAccessibilityManager);
-       , animationManager: HelpAnimationManager'';
+        accessibilityManager: HelpAccessibilityManager),
+    animationManager: HelpAnimationManager'';
     ') {'
         this.gameEngine = gameEngine,
         this.contentManager = contentManager;
@@ -99,20 +99,20 @@ export class HelpEventManager {
 
             'F': (event: KeyboardEvent) => { if (event.ctrlKey) { event.preventDefault(); this.showFeedbackDialog( }
 )
-            'E': (event: KeyboardEvent) => { if (event.ctrlKey && event.shiftKey) { event.preventDefault(); this.showEffectivenessReport(); }
-        };
+            'E': (event: KeyboardEvent) => { if (event.ctrlKey && event.shiftKey) { event.preventDefault(); this.showEffectivenessReport(); 
+    };
         
         // コールバック
         this.callbacks = { onGoBack: null,
             onFeedbackRequest: null;
-            onEffectivenessReport: null;
-           , onSearchFocus: null ,}
+            onEffectivenessReport: null,
+    onSearchFocus: null ,}
 
     /**
      * イベントリスナーの設定
      */''
     public setupEventListeners()';
-        console.log('HelpEventManager: setupEventListeners(') called'),'
+        console.log('HelpEventManager: setupEventListeners() called'),'
         this.boundKeyHandler = (event: KeyboardEvent) => this.handleKeyPress(event);
         this.boundClickHandler = (event: MouseEvent) => this.handleClick(event);
         this.boundContextMenuHandler = (event: MouseEvent) => this.handleContextMenu(event);
@@ -124,60 +124,60 @@ export class HelpEventManager {
         ';
         // IME対応の隠し入力フィールドを作成
         console.log('HelpEventManager: calling, createHiddenInput()),'
-        this.createHiddenInput(')';
-        document.addEventListener('keydown', this.boundKeyHandler);''
-        document.addEventListener('click', this.boundClickHandler);''
-        document.addEventListener('contextmenu', this.boundContextMenuHandler);''
-        document.addEventListener('wheel', this.boundWheelHandler, { passive: false )),''
-        document.addEventListener('mousemove', this.boundMouseMoveHandler);''
-        document.addEventListener('mouseup', this.boundMouseUpHandler);''
-        window.addEventListener('resize', this.boundResizeHandler);''
+        this.createHiddenInput()';
+        document.addEventListener('keydown', this.boundKeyHandler';''
+        document.addEventListener('click', this.boundClickHandler';''
+        document.addEventListener('contextmenu', this.boundContextMenuHandler';''
+        document.addEventListener('wheel', this.boundWheelHandler, { passive: false )',''
+        document.addEventListener('mousemove', this.boundMouseMoveHandler';''
+        document.addEventListener('mouseup', this.boundMouseUpHandler';''
+        window.addEventListener('resize', this.boundResizeHandler';''
         console.log('HelpEventManager: event, listeners setup, completed'), }''
     
     /**
      * IME対応の隠し入力フィールドを作成'
      */''
     private createHiddenInput()';
-        console.log('HelpEventManager: createHiddenInput(') called, hiddenInput exists:', !!this.hiddenInput);'
+        console.log('HelpEventManager: createHiddenInput() called, hiddenInput exists:', !!this.hiddenInput';'
 
         if(this.hiddenInput) { '
 
             console.log('HelpEventManager: hidden input already exists, skipping creation'' }'
             return; // 既に作成済み }
         }
-)
+'
         console.log('HelpEventManager: creating new hidden input element''),'
         this.hiddenInput = document.createElement('input'');''
-        this.hiddenInput.type = 'text';''
+        this.hiddenInput.type = 'text';
         this.hiddenInput.style.position = 'absolute';
         ';
         // Canvas要素の位置を基準に計算
         this.updateInputPosition(''';
-        this.hiddenInput.style.width = '720px';''
-        this.hiddenInput.style.height = '40px';''
-        this.hiddenInput.style.fontSize = '16px';''
+        this.hiddenInput.style.width = '720px';
+        this.hiddenInput.style.height = '40px';
+        this.hiddenInput.style.fontSize = '16px';
         this.hiddenInput.style.padding = '5px, 10px';'')
-        this.hiddenInput.style.border = '2px, solid #ccc';)'
+        this.hiddenInput.style.border = '2px, solid #ccc';''
         this.hiddenInput.style.borderRadius = '4px';')'
-        this.hiddenInput.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';''
-        this.hiddenInput.style.color = '#333';''
-        this.hiddenInput.style.zIndex = '1000';''
-        this.hiddenInput.style.fontFamily = 'Arial, sans-serif';''
-        this.hiddenInput.style.transition = 'border-color 0.3s, box-shadow 0.3s';''
-        this.hiddenInput.style.outline = 'none';''
-        this.hiddenInput.placeholder = 'ヘルプを検索... （/ キーまたはクリックで検索開始）';''
-        this.hiddenInput.autocomplete = 'off';''
-        this.hiddenInput.autocorrect = 'off';''
+        this.hiddenInput.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+        this.hiddenInput.style.color = '#333';
+        this.hiddenInput.style.zIndex = '1000';
+        this.hiddenInput.style.fontFamily = 'Arial, sans-serif';
+        this.hiddenInput.style.transition = 'border-color 0.3s, box-shadow 0.3s';
+        this.hiddenInput.style.outline = 'none';
+        this.hiddenInput.placeholder = 'ヘルプを検索... （/ キーまたはクリックで検索開始）';
+        this.hiddenInput.autocomplete = 'off';
+        this.hiddenInput.autocorrect = 'off';
         this.hiddenInput.autocapitalize = 'off';
         this.hiddenInput.spellcheck = false;
         ';
         // IME対応設定
-        this.hiddenInput.style.imeMode = 'active';''
+        this.hiddenInput.style.imeMode = 'active';
         this.hiddenInput.setAttribute('lang', 'ja'');''
         this.hiddenInput.setAttribute('inputmode', 'text'');
         ';
         // Placeholderスタイル（CSS）
-        const style = document.createElement('style);
+        const style = document.createElement('style';
         style.textContent = `;
             .help-search-input::placeholder { color: #999,
                 font-style: italic,
@@ -187,10 +187,10 @@ export class HelpEventManager {
         document.head.appendChild(style);''
         this.hiddenInput.className = 'help-search-input';
 
-        console.log('HelpEventManager: setting, up input, event listeners),'
+        console.log('HelpEventManager: setting, up input, event listeners','
         // 入力イベントハンドラーを設定
         this.boundInputHandler = (event: Event) => this.handleIMEInput(event');''
-        this.hiddenInput.addEventListener('input', this.boundInputHandler);''
+        this.hiddenInput.addEventListener('input', this.boundInputHandler';''
         this.hiddenInput.addEventListener('compositionstart', () => {  ''
             console.log('HelpEventManager: composition, started''), }'
             this.isComposing = true; }
@@ -207,7 +207,7 @@ export class HelpEventManager {
         ';
         // フォーカス・ブラーイベント
         this.hiddenInput.addEventListener('focus', () => {  ''
-            console.log('HelpEventManager: input, focused),'
+            console.log('HelpEventManager: input, focused','
             this.searchFocused = true;
 
             // フォーカス時のスタイル
@@ -220,7 +220,7 @@ export class HelpEventManager {
                 this.hiddenInput.style.boxShadow = '0 0 0 3px rgba(74, 144, 226, 0.3)'; }
 };''
         this.hiddenInput.addEventListener('blur', () => {  ''
-            console.log('HelpEventManager: input, blurred),'
+            console.log('HelpEventManager: input, blurred','
             this.searchFocused = false;
 
             // ブラー時のスタイル
@@ -236,9 +236,9 @@ export class HelpEventManager {
         // 常時表示（非検索時も表示してレイアウトを保持）
         this.hiddenInput.style.display = 'block';
 
-        console.log('HelpEventManager: appending, hidden input, to document.body),'
+        console.log('HelpEventManager: appending, hidden input, to document.body','
         document.body.appendChild(this.hiddenInput');''
-        console.log('HelpEventManager: hidden, input element, created and, added to, DOM),'
+        console.log('HelpEventManager: hidden, input element, created and, added to, DOM','
     }
     
     /**
@@ -248,7 +248,7 @@ export class HelpEventManager {
             return; }
         
         const canvas = this.gameEngine.canvas;
-        const canvasRect = canvas.getBoundingClientRect(');
+        const canvasRect = canvas.getBoundingClientRect();
         
         // HelpRendererから動的なレイアウト情報を取得
         let searchBarLayout;
@@ -286,7 +286,7 @@ export class HelpEventManager {
      * イベントリスナーの削除'
      */'')
     public removeEventListeners()';
-        console.log('HelpEventManager: removeEventListeners(') called'),'
+        console.log('HelpEventManager: removeEventListeners() called'),'
 
         if(this.boundKeyHandler) {'
 
@@ -332,7 +332,7 @@ export class HelpEventManager {
 
         if(this.boundMouseUpHandler) {'
 
-            document.removeEventListener('mouseup', this.boundMouseUpHandler);
+            document.removeEventListener('mouseup', this.boundMouseUpHandler';
         }
             this.boundMouseUpHandler = null; }
         }
@@ -340,7 +340,7 @@ export class HelpEventManager {
         // 隠し入力フィールドのクリーンアップ
         if(this.hiddenInput) {'
 
-            console.log('HelpEventManager: cleaning, up hidden, input),'
+            console.log('HelpEventManager: cleaning, up hidden, input','
 
             if(this.boundInputHandler') {''
                 this.hiddenInput.removeEventListener('input', this.boundInputHandler);
@@ -373,10 +373,10 @@ export class HelpEventManager {
             }
             ';
             // Enterキーで検索実行
-            if(event.key === 'Enter) {'
+            if(event.key === 'Enter' {'
                 event.preventDefault();''
                 this.executeSearch()';
-            if(event.key === 'Escape) {'
+            if(event.key === 'Escape' {'
                 event.preventDefault();
                 this.goBack();
             }
@@ -534,7 +534,7 @@ export class HelpEventManager {
 
             const result = await this.contentManager.selectSearchResult(state.selectedTopicIndex);''
             if(result) {''
-                console.log('HelpEventManager: search, result selected, successfully),'
+                console.log('HelpEventManager: search, result selected, successfully','
                 if(this.animationManager') {'
         }
 
@@ -542,7 +542,7 @@ export class HelpEventManager {
                 }
                 // 検索終了
                 this.searchFocused = false;''
-                this.currentSearchQuery = '';''
+                this.currentSearchQuery = '';
                 if(this.hiddenInput) {', ';
 
                 }
@@ -553,7 +553,7 @@ export class HelpEventManager {
             const result = await this.contentManager.selectTopic(state.selectedTopicIndex);''
             if(result && this.animationManager) {' }'
 
-                this.animationManager.startContentTransition(result.newContent, 'slide); }'
+                this.animationManager.startContentTransition(result.newContent, 'slide'; }'
 }
     }
 
@@ -569,7 +569,7 @@ export class HelpEventManager {
             ';
             // 隠し入力フィールドをクリア
             if(this.hiddenInput) {''
-                this.hiddenInput.value = '';''
+                this.hiddenInput.value = '';
                 this.hiddenInput.blur()';
             this.contentManager.performSearch();
             if (this.animationManager) {
@@ -585,16 +585,16 @@ export class HelpEventManager {
      * 検索バーフォーカス
      */''
     private focusSearchBar()';
-        console.log('HelpEventManager: focusSearchBar(') called'),'
+        console.log('HelpEventManager: focusSearchBar() called'),'
         this.searchFocused = true;
         this.accessibilityManager.setFocusIndex(0); // 検索バーのインデックス
         ;
         // 隠し入力フィールドにフォーカスを当ててIMEを有効化
         if(this.hiddenInput) {'
 
-            console.log('HelpEventManager: focusing, hidden input),'
+            console.log('HelpEventManager: focusing, hidden input','
             // 位置を更新
-            this.updateInputPosition(')';
+            this.updateInputPosition()';
             this.hiddenInput.value = this.currentSearchQuery || '';)
             this.hiddenInput.focus();
 
@@ -608,7 +608,7 @@ export class HelpEventManager {
             console.error('HelpEventManager: hiddenInput, not available, for focus'), }''
         }
         
-        if (this.callbacks.onSearchFocus) { this.callbacks.onSearchFocus('); }'
+        if (this.callbacks.onSearchFocus) { this.callbacks.onSearchFocus(); }'
         
         // 検索遷移アニメーション
         if (this.animationManager) { this.animationManager.startSearchTransition(true); }
@@ -635,8 +635,8 @@ export class HelpEventManager {
             const currentTopic = this.contentManager.getCurrentTopic();
             
             this.callbacks.onFeedbackRequest({)
-                topic: currentTopic);
-               , content: state.currentContent,);
+                topic: currentTopic),
+    content: state.currentContent,);
                 category: state.selectedCategory ,}
     }
 
@@ -665,7 +665,7 @@ export class HelpEventManager {
         if(this.searchFocused && event.target !== this.hiddenInput) {
             
         }
-            this.hiddenInput? .blur(); }
+            this.hiddenInput?.blur(); }
         }
 
         // スクロールバー処理（レンダラーが存在する場合）
@@ -851,7 +851,7 @@ export class HelpEventManager {
                         if(result && this.animationManager) {'
             }
 
-                            this.animationManager.startContentTransition(result.newContent, 'slide); }'
+                            this.animationManager.startContentTransition(result.newContent, 'slide'; }'
                         }
                         
                         // 選択項目にスクロール
@@ -889,7 +889,7 @@ export class HelpEventManager {
                     if(result && this.animationManager) {'
         }
 
-                        this.animationManager.startContentTransition(result.newContent, 'fade); }'
+                        this.animationManager.startContentTransition(result.newContent, 'fade'; }'
                     }
                     return;
                 }
@@ -931,7 +931,6 @@ export class HelpEventManager {
                 category: state.selectedCategory, }
                 position: { x, y },)
                 quickMode: true);
-        }
     }
 
     /**
@@ -961,7 +960,7 @@ export class HelpEventManager {
     private isPointInBackButton(x: number, y: number): boolean { const layout = this.getLayout();
         return this.isPointInRect(x, y, layout.backButton); }
 
-    private isPointInRect(x: number, y: number, rect: { x: number; y: number; width: number;, height: number ): boolean {
+    private isPointInRect(x: number, y: number, rect: { x: number; y: number; width: number,  height: number ): boolean {
         return x >= rect.x && x <= rect.x + rect.width &&; }
                y >= rect.y && y <= rect.y + rect.height; }
 
@@ -988,8 +987,8 @@ export class HelpEventManager {
      */
     public getEventState(): EventState { return { searchFocused: this.searchFocused,
             lastInputTime: this.lastInputTime, };
-            hasActiveListeners: Boolean(this.boundKeyHandler); }
-        }
+            hasActiveListeners: Boolean(this.boundKeyHandler); 
+    }
 
     /**
      * クリーンアップ
@@ -1005,7 +1004,7 @@ export class HelpEventManager {
         
         // コールバッククリア
         (Object.keys(this.callbacks) as Array<keyof HelpEventCallbacks>).forEach(key => {  ')'
-            this.callbacks[key] = null)');
+            this.callbacks[key] = null'');
 
         ' }'
 
@@ -1018,7 +1017,7 @@ export class HelpEventManager {
  */'
 export class HelpInputValidator { private maxSearchLength: number = 100' }'
 
-    private allowedSearchChars: RegExp = /^[a-zA-Z0-9\s\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u3400-\u4DBF\u20000-\u2A6DF\u2A700-\u2B73F\u2B740-\u2B81F\u2B820-\u2CEAF\uF900-\uFAFF\u2F800-\u2FA1F\-_.,!? (')[\]{}'"「」『』【】〔〕〈〉《》：；、。・]*$/;"
+    private allowedSearchChars: RegExp = /^[a-zA-Z0-9\s\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u3400-\u4DBF\u20000-\u2A6DF\u2A700-\u2B73F\u2B740-\u2B81F\u2B820-\u2CEAF\uF900-\uFAFF\u2F800-\u2FA1F\-_.,!? ()[\]{}'"「」『』【】〔〕〈〉《》：；、。・]*$/;"
 
     /**
      * 検索クエリの検証""
@@ -1086,8 +1085,8 @@ export class HelpInputValidator { private maxSearchLength: number = 100' }'
         if(!validCategories.includes(trimmedId)) { return { valid: false, ''
                 error: 'Invalid category ID',' };
 
-                sanitized: validCategories[0] || 'gameplay' }
-            }
+                sanitized: validCategories[0] || 'gameplay' 
+    }
 
         return { valid: true, sanitized: trimmedId ,}
 

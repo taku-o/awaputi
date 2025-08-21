@@ -1,13 +1,13 @@
-import { BaseComponent } from './BaseComponent.js';''
-import { TestExecutionManager } from './support/TestExecutionManager.js';''
-import { MockDataManager } from './support/MockDataManager.js';''
-import { BenchmarkManager } from './support/BenchmarkManager.js';''
+import { BaseComponent } from './BaseComponent.js';
+import { TestExecutionManager } from './support/TestExecutionManager.js';
+import { MockDataManager } from './support/MockDataManager.js';
+import { BenchmarkManager } from './support/BenchmarkManager.js';
 import { TestResultProcessor } from './support/TestResultProcessor.js';
 
 interface GameEngine { // Define based on usage }
 
-interface TestComponent { initialize?: () => Promise<void>; }
-}
+interface TestComponent { initialize?: () => Promise<void>; 
+    }
 
 interface TestEnvironment { // Define based on implementation }
 
@@ -65,4 +65,4 @@ export class TestSupportTools extends BaseComponent { private gameEngine: GameEn
 
     public getComponent(name: string): TestComponent | undefined { return this.components.get(name); }
 
-    public isInitialized(');
+    public isInitialized();

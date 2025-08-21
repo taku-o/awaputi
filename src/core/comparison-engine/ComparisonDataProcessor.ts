@@ -12,61 +12,61 @@
 export interface DataProcessorConfig { outlierThreshold: number,
     minimumSampleSize: number;
     maximumSampleSize: number;
-    defaultSamplingRate: number;
-   , maxProcessingTime: number ,}
+    defaultSamplingRate: number,
+    maxProcessingTime: number ,}
 
 export interface QualityMetrics { completeness: number;
     consistency: number;
-    accuracy: number;
-   , validity: number }
+    accuracy: number,
+    validity: number }
 
 export interface ProcessedComparisonData { timestamp: string;
     original?: ComparisonInputData;
-    processed: NormalizedComparisonData;
-   , metadata: ProcessingMetadata;
+    processed: NormalizedComparisonData,
+    metadata: ProcessingMetadata;
     error?: string }
 
-export interface ComparisonInputData { dataset1: number[];
-   , dataset2: number[];
+export interface ComparisonInputData { dataset1: number[],
+    dataset2: number[];
     metadata?: Record<string, any> }
 
 export interface NormalizedComparisonData { dataset1: number[],
-    dataset2: number[];
-   , metadata: NormalizationMetadata
+    dataset2: number[],
+    metadata: NormalizationMetadata
     ,}
 
-export interface NormalizationMetadata { normalizationType: NormalizationType;
-   , timestamp: string;
+export interface NormalizationMetadata { normalizationType: NormalizationType,
+    timestamp: string;
     outlierRemoval?: OutlierRemovalMetadata;
     sampling?: SamplingMetadata;
     [key: string]: any, }
 
 export interface ProcessingMetadata { processingTime: number,
     qualityScore: number;
-    warnings: string[];
-   , errors: string[] ,}
+    warnings: string[],
+    errors: string[] ,}
 
 export interface ValidationResult { valid: boolean;
-    errors: string[];
-   , warnings: string[];
+    errors: string[],
+    warnings: string[];
     quality?: number }
 
-export interface DatasetValidationResult { errors: string[];
-   , warnings: string[] }
+export interface DatasetValidationResult { errors: string[],
+    warnings: string[] }
 
 export interface OutlierRemovalMetadata { threshold: number;
     timestamp: string;
-    dataset1: OutlierStats;
-   , dataset2: OutlierStats
+    dataset1: OutlierStats,
+    dataset2: OutlierStats
     }
 
 export interface OutlierStats { original: number;
-    cleaned: number;
-   , removed: number }
+    cleaned: number,
+    removed: number }
 
 export interface SamplingMetadata { method: SamplingMethod;
-    rate: number;
-   , timestamp: string }
+    rate: number,
+    timestamp: string }
 
 export interface ProcessingOptions { removeOutliers?: boolean;
     normalizationType?: NormalizationType;
@@ -82,20 +82,20 @@ export interface SamplingOptions { method?: SamplingMethod;
 export interface StatisticalSummary { mean: number,
     median: number;
     stddev: number;
-    range: number;
-   , count: number ,}
+    range: number,
+    count: number ,}
 
 export interface DataQualityReport { overallQuality: number;
     dataset1Quality: number;
     dataset2Quality: number;
     completenessScore: number;
     varianceScore: number;
-    sizeScore: number;
-   , balanceScore: number }
+    sizeScore: number,
+    balanceScore: number }
 
 export interface NormalizationResult { data: number[];
-    method: NormalizationType;
-   , parameters: NormalizationParameters
+    method: NormalizationType,
+    parameters: NormalizationParameters
     }
 
 export interface NormalizationParameters { mean?: number;
@@ -108,41 +108,41 @@ export interface NormalizationParameters { mean?: number;
 export interface SamplingResult { originalSize: number,
     sampledSize: number;
     method: SamplingMethod;
-    rate: number;
-   , data: number[] ,}
+    rate: number,
+    data: number[] ,}
 
 export interface QuantileResult { value: number;
-    quantile: number;
-   , position: number }
+    quantile: number,
+    position: number }
 
 // 列挙型
-export type NormalizationType = 'none' | 'z-score' | 'min-max' | 'robust';''
-export type SamplingMethod = 'random' | 'systematic' | 'stratified';''
-export type MetricType = 'mean' | 'median' | 'stddev' | 'range' | 'count';''
+export type NormalizationType = 'none' | 'z-score' | 'min-max' | 'robust';
+export type SamplingMethod = 'random' | 'systematic' | 'stratified';
+export type MetricType = 'mean' | 'median' | 'stddev' | 'range' | 'count';
 export type QualityDimension = 'completeness' | 'consistency' | 'accuracy' | 'validity';
 
 // 定数
 export const DEFAULT_CONFIG: DataProcessorConfig = { outlierThreshold: 2.5, // Z-score閾値
     minimumSampleSize: 5;
     maximumSampleSize: 10000;
-    defaultSamplingRate: 0.1;
-   , maxProcessingTime: 5000 // 5秒 ,};
+    defaultSamplingRate: 0.1,
+    maxProcessingTime: 5000 // 5秒 ,};
 export const DEFAULT_QUALITY_METRICS: QualityMetrics = { completeness: 0,
     consistency: 0;
-    accuracy: 0;
-   , validity: 0 ,};
+    accuracy: 0,
+    validity: 0 ,};
 export const NORMALIZATION_TYPES: NormalizationType[] = ['none', 'z-score', 'min-max', 'robust'];''
 export const SAMPLING_METHODS: SamplingMethod[] = ['random', 'systematic', 'stratified'];''
 export const METRIC_TYPES: MetricType[] = ['mean', 'median', 'stddev', 'range', 'count'];
 
 export const QUALITY_THRESHOLDS = { excellent: 0.9,
     good: 0.7;
-    acceptable: 0.5;
-   , poor: 0.3 ,} as const;
+    acceptable: 0.5,
+    poor: 0.3 ,} as const;
 export const VALIDATION_THRESHOLDS = { minValidRatio: 0.5,
     warningValidRatio: 0.8;
-    maxOutlierRatio: 0.1;
-   , minBalanceRatio: 0.5 ,} as const;
+    maxOutlierRatio: 0.1,
+    minBalanceRatio: 0.5 ,} as const;
 ';
 // ユーティリティ関数
 export function isValidNumber(value: any): value is number {;
@@ -166,9 +166,9 @@ export function calculateBasicStats(data: number[]): StatisticalSummary { if (da
     
     return { mean,
         median: calculateMedianFromSorted(sorted);
-        stddev: Math.sqrt(variance);
-       , range: sorted[sorted.length - 1] - sorted[0], };
-        count: data.length }
+        stddev: Math.sqrt(variance),
+    range: sorted[sorted.length - 1] - sorted[0], };
+        count: data.length 
     }
 
 export function calculateMedianFromSorted(sortedData: number[]): number { const n = sortedData.length;
@@ -202,22 +202,22 @@ export function calculateQuantileFromSorted(sortedData: number[], quantile: numb
 ';
 
 export function interpretQualityScore(score: number): string {;
-    if(score >= QUALITY_THRESHOLDS.excellent) return 'excellent';''
-    if(score >= QUALITY_THRESHOLDS.good) return 'good';''
-    if(score >= QUALITY_THRESHOLDS.acceptable) return 'acceptable';''
-    if(score >= QUALITY_THRESHOLDS.poor) return 'poor';''
+    if(score >= QUALITY_THRESHOLDS.excellent) return 'excellent';
+    if(score >= QUALITY_THRESHOLDS.good) return 'good';
+    if(score >= QUALITY_THRESHOLDS.acceptable) return 'acceptable';
+    if(score >= QUALITY_THRESHOLDS.poor) return 'poor';
     return 'very_poor'; }
 ';
 
 export function createProcessingError(message: string, processingTime: number = 0): ProcessedComparisonData { return {;
-        timestamp: new Date().toISOString()';
-               , normalizationType: 'none', };
-                timestamp: new Date().toISOString(); }
-},
+        timestamp: new Date().toISOString()',
+    normalizationType: 'none', };
+                timestamp: new Date().toISOString(); 
+    },
         metadata: { processingTime;
             qualityScore: 0;
-            warnings: [];
-           , errors: [message] };
+            warnings: [],
+    errors: [message] };
         error: message;
     },
 }
@@ -238,15 +238,15 @@ export class ComparisonDataProcessor {
         
         try {
             const processedData: ProcessedComparisonData = {''
-                timestamp: new Date().toISOString()';
-                       , normalizationType: 'none',);
+                timestamp: new Date().toISOString()',
+    normalizationType: 'none',);
                         timestamp: new Date().toISOString( ,}
-                };
+                }
                 metadata: { processingTime: 0;
                     qualityScore: 0;
-                    warnings: [];
-                   , errors: [] }
-            };
+                    warnings: [],
+    errors: [] 
+    };
             // データ検証
             const validation = this.validateComparisonData(rawData);
             if(!validation.valid) {
@@ -397,8 +397,8 @@ export class ComparisonDataProcessor {
             dataset1: this.normalizeDataset(data.dataset1, options),
             dataset2: this.normalizeDataset(data.dataset2, options),
             metadata: {''
-                normalizationType: options.normalizationType || 'none';
-               , timestamp: new Date().toISOString( ,}
+                normalizationType: options.normalizationType || 'none',
+    timestamp: new Date().toISOString( ,}
         };
         
         // 追加のメタデータがあれば保持
@@ -435,7 +435,7 @@ export class ComparisonDataProcessor {
                 return this.minMaxNormalization(;
                     validNumbers);
                     options.targetMin || 0, )';
-                    options.targetMax || 1)'';
+                    options.targetMax || 1''';
                 ');
 
             case 'robust':'';
@@ -492,15 +492,15 @@ export class ComparisonDataProcessor {
                 ...data.metadata;
                 outlierRemoval: {
                     threshold;
-                    timestamp: new Date().toISOString();
-                   , dataset1: {
+                    timestamp: new Date().toISOString(),
+    dataset1: {
                         original: data.dataset1.length;
-                        cleaned: 0;
-                       , removed: 0 ,};
+                        cleaned: 0,
+    removed: 0 ,};
                     dataset2: { original: data.dataset2.length;
-                        cleaned: 0;
-                       , removed: 0 }
-}
+                        cleaned: 0,
+    removed: 0 
+    }
         };
         // 除去統計を更新
         cleanedData.metadata.outlierRemoval!.dataset1.cleaned = cleanedData.dataset1.length;
@@ -538,8 +538,8 @@ export class ComparisonDataProcessor {
                 sampling: {
                     method;
                     rate, };
-                    timestamp: new Date().toISOString(); }
-}
+                    timestamp: new Date().toISOString(); 
+    }
         }
 
     /**
@@ -697,7 +697,7 @@ export class ComparisonDataProcessor {
             if(ratio < VALIDATION_THRESHOLDS.minBalanceRatio) {'
         }
 
-                warnings.push('Significant, size imbalance, between datasets); }'
+                warnings.push('Significant, size imbalance, between datasets'; }'
 }
         
         // 品質警告
@@ -706,7 +706,7 @@ export class ComparisonDataProcessor {
 
         }
 
-            warnings.push('Data, quality score, is below, recommended threshold); }'
+            warnings.push('Data, quality score, is below, recommended threshold'; }'
         }
         
         return warnings;
@@ -828,8 +828,8 @@ export class ComparisonDataProcessor {
      */
     generateNormalizationResult(;
         data: number[] );
-        method: NormalizationType);
-       , parameters: Partial<NormalizationParameters> = { ): NormalizationResult {
+        method: NormalizationType),
+    parameters: Partial<NormalizationParameters> = { ): NormalizationResult {
         let normalizedData: number[], }
 
         let fullParameters: NormalizationParameters = {}''
@@ -852,7 +852,7 @@ export class ComparisonDataProcessor {
                 normalizedData = this.minMaxNormalization(;
                     data);
                     parameters.min || 0,)';
-                    parameters.max || 1)'';
+                    parameters.max || 1''';
                 ');
                 fullParameters = { 
                     min, ;
@@ -884,6 +884,6 @@ export class ComparisonDataProcessor {
 
         return { data: normalizedData,
             method, };
-            parameters: fullParameters }
-        }''
+            parameters: fullParameters 
+    }''
 }

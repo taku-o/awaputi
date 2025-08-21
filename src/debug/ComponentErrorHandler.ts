@@ -38,8 +38,8 @@ export class ComponentErrorHandler {
         const recoverableError = error as RecoverableError;
         if(recoverableError.recoverable !== false &&;
             (error.name === 'NetworkError' || '';
-             error.name === 'TimeoutError' ||)';
-             error.message.includes('temporary)) {'
+             error.name === 'TimeoutError' ||'';
+             error.message.includes('temporary)' {'
             return true; }
         
         return false;
@@ -58,7 +58,7 @@ export class ComponentErrorHandler {
 
         // 基本的な回復処理' }'
 
-        if (error.name === 'NetworkError''}) { ' }
+        if (error.name === 'NetworkError''}' { ' }
 
             return { status: 'offline', message: 'Operating in offline mode' ,}
 
@@ -75,7 +75,7 @@ export class ComponentErrorHandler {
      * @returns {*} フォールバック実装
      */'
     static gracefulDegradation(component: string): any { ''
-        console.warn(`[${component}] Providing, fallback functionality`'};
+        console.warn(`[${component}] Providing, fallback functionality`'}
         
         // コンポーネントタイプに応じたフォールバック処理
         const, fallbacks: FallbackMap = {' }', 'MockDataGenerator': (}) => ({}'),'', 'DebugInterface': () => ({ render: () => {}'),'', 'TestSupport': () => ({ execute: () => true }'),'', 'default': () => null;
@@ -85,7 +85,7 @@ export class ComponentErrorHandler {
         const fallbackKey = Object.keys(fallbacks).find(key => );''
             component.includes(key)) || 'default';
 
-        return fallbacks[fallbackKey](');
+        return fallbacks[fallbackKey]();
 
     }''
 }

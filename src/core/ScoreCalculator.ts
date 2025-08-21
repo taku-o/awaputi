@@ -22,16 +22,16 @@ export class ScoreCalculator {
                 poison: 8;
                 spiky: 85;
                 cracked: 30;
-                escaping: 50;
-               , boss: 800;
+                escaping: 50,
+    boss: 800;
     }
-                score: 250 }
-            };
+                score: 250 
+    };
             combo: { multiplierIncrement: 0.08;
                 maxMultiplier: 2.5;
                 bonusInterval: 5;
-                bonusMultiplier: 8;
-               , baseTimeout: 2000 };
+                bonusMultiplier: 8,
+    baseTimeout: 2000 };
             ageBonus: { earlyBonus: 2.0,    // 発生直後ボーナス（10%以内）
                 lateBonus: 3.0,     // 破裂直前ボーナス（90%以上）;
                 midBonus: 1.5       // 中盤ボーナス（50-70%） ,}
@@ -162,10 +162,10 @@ export class ScoreCalculator {
             multipliers: {
                 age: this.calculateAgeBonus(ageRatio);
                 combo: comboMultiplier;
-                special: specialMultiplier;
-               , item: itemMultiplier, };
-                total: totalMultiplier }
-            };
+                special: specialMultiplier,
+    item: itemMultiplier, };
+                total: totalMultiplier 
+    };
             breakdown: { bubbleType;
                 ageRatio,
                 comboCount }
@@ -211,12 +211,12 @@ export class ScoreCalculator {
         if (!Array.isArray(scoreHistory) || scoreHistory.length === 0) {
             return { total: 0,
                 average: 0;
-                highest: 0;
-               , lowest: 0;
+                highest: 0,
+    lowest: 0;
     ,}
                 comboCount: 0, };
-                bonusCount: 0 }
-            }
+                bonusCount: 0 
+    }
         
         const total = scoreHistory.reduce((sum, score) => sum + score.finalScore, 0);
         const average = Math.floor(total / scoreHistory.length);
@@ -231,8 +231,8 @@ export class ScoreCalculator {
             lowest,
             comboCount,
             bonusCount, };
-            totalEntries: scoreHistory.length }
-        }
+            totalEntries: scoreHistory.length 
+    }
     
     /**
      * スコア効率を計算（時間あたりのスコア）
@@ -264,8 +264,8 @@ export class ScoreCalculator {
 
         const strategy = { ''
             priority: 'normal';
-            targetBubbles: [];
-           , reasoning: [] };
+            targetBubbles: [],
+    reasoning: [] };
         ';
         // コンボが高い場合は継続を優先
         if(currentCombo >= 3) {'
@@ -274,7 +274,7 @@ export class ScoreCalculator {
 
         }
 
-            strategy.reasoning.push('高コンボ継続を優先); }'
+            strategy.reasoning.push('高コンボ継続を優先'; }'
         }
         ';
         // 時間が少ない場合は高得点泡を優先
@@ -284,7 +284,7 @@ export class ScoreCalculator {
 
         }
 
-            strategy.reasoning.push('時間切れ前の高得点狙い); }'
+            strategy.reasoning.push('時間切れ前の高得点狙い'; }'
         }
         
         // 利用可能な泡から推奨順を決定
@@ -309,7 +309,7 @@ export class ScoreCalculator {
 
     }
 
-            scoreConfig: this.getScoreConfig('' };
+            scoreConfig: this.getScoreConfig('' }
 
             version: '1.0.0' }))
     }
@@ -323,4 +323,4 @@ let scoreCalculatorInstance = null;
  * @returns {ScoreCalculator} ScoreCalculatorインスタンス
  */)
 export function getScoreCalculator() { if (!scoreCalculatorInstance) {''
-        scoreCalculatorInstance = new ScoreCalculator(' })'
+        scoreCalculatorInstance = new ScoreCalculator(' }''

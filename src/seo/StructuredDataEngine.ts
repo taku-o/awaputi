@@ -3,8 +3,8 @@
  * 
  * JSON-LD形式の構造化データを生成・管理
  */
-import { SEOConfig, getBaseUrl, getLocalizedUrl, getSocialImageUrl, LanguageCode  } from './SEOConfig';''
-import { seoLogger  } from './SEOLogger';''
+import { SEOConfig, getBaseUrl, getLocalizedUrl, getSocialImageUrl, LanguageCode  } from './SEOConfig';
+import { seoLogger  } from './SEOLogger';
 import { seoErrorHandler  } from './SEOErrorHandler';
 import { generateJsonLd, 
     normalizeLanguageCode,
@@ -26,8 +26,8 @@ interface VideoGameSchema extends BaseSchema { '', '@type': 'VideoGame';
     applicationCategory: string;
     operatingSystem: string[];
     genre: string[];
-    inLanguage: string[];
-   , isAccessibleForFree: boolean;
+    inLanguage: string[],
+    isAccessibleForFree: boolean;
     dateModified?: string;
     additionalProperty?: PropertyValue[];
     interactionStatistic?: InteractionCounter;
@@ -35,20 +35,20 @@ interface VideoGameSchema extends BaseSchema { '', '@type': 'VideoGame';
 
 // PropertyValueインターフェース
 interface PropertyValue { '', '@type': 'PropertyValue';
-    name: string;
-   , value: string | number ,}
+    name: string,
+    value: string | number ,}
 
 // InteractionCounterインターフェース
 interface InteractionCounter { '', '@type': 'InteractionCounter';
-    interactionType: string;
-   , userInteractionCount: number ,}
+    interactionType: string,
+    userInteractionCount: number ,}
 
 // Organizationスキーマインターフェース
 interface OrganizationSchema extends BaseSchema { '', '@type': 'Organization';
     name: string;
     url: string;
-    logo: string;
-   , sameAs: string[] ,}
+    logo: string,
+    sameAs: string[] ,}
 
 // WebApplicationスキーマインターフェース
 interface WebApplicationSchema extends BaseSchema { '', '@type': 'WebApplication';
@@ -56,8 +56,8 @@ interface WebApplicationSchema extends BaseSchema { '', '@type': 'WebApplication
     description: string;
     url: string;
     applicationCategory: string;
-    operatingSystem: string[];
-   , browserRequirements: string ,}
+    operatingSystem: string[],
+    browserRequirements: string ,}
 
 // BreadcrumbListスキーマインターフェース
 interface BreadcrumbListSchema extends BaseSchema { '', '@type': 'BreadcrumbList';
@@ -67,8 +67,8 @@ interface BreadcrumbListSchema extends BaseSchema { '', '@type': 'BreadcrumbList
 // ListItemインターフェース
 interface ListItem { '', '@type': 'ListItem';
     position: number;
-    name: string;
-   , item: string ,}
+    name: string,
+    item: string ,}
 
 // Eventスキーマインターフェース
 interface EventSchema extends BaseSchema { '', '@type': 'Event';
@@ -76,8 +76,8 @@ interface EventSchema extends BaseSchema { '', '@type': 'Event';
     description: string;
     startDate: string;
     endDate: string;
-    location: string;
-   , organizer: OrganizationSchema
+    location: string,
+    organizer: OrganizationSchema
     ,}
 
 // ゲームプレイデータインターフェース
@@ -94,18 +94,18 @@ interface StructuredDataContext {
     event?: { name: string;
         description: string;
         startDate: string;
-        endDate: string;
-       , location: string };
+        endDate: string,
+    location: string };
     pageType?: string;
     gameState?: any;
 }
 
 // LocalizationManager インターフェース
 interface LocalizationManager { getCurrentLanguage(): string;
-    addLanguageChangeListener(callback: (lan;g: string) => void): void;
+    addLanguageChangeListener(callback: (lang: string) => void): void;
     t(key: string, defaultValue?: string): string;
-    get(key: string, params?: Record<string, any>): string }
-}
+    get(key: string, params?: Record<string, any>): string 
+    }
 
 // GameConfig インターフェース
 interface GameConfig { [key: string]: any, }
@@ -155,9 +155,9 @@ export class StructuredDataEngine {
             ;
             // スキーマ生成関数の登録
             this._registerSchemaGenerators()';
-            seoLogger.info('StructuredDataEngine, initialized successfully);''
+            seoLogger.info('StructuredDataEngine, initialized successfully';''
         } catch (error) {
-            seoErrorHandler.handle(error as Error, 'structuredDataInit); }'
+            seoErrorHandler.handle(error as Error, 'structuredDataInit'; }'
     }
     
     /**
@@ -202,7 +202,7 @@ export class StructuredDataEngine {
             return schemas;''
         } catch (error) { }
 
-            return seoErrorHandler.handle(error as Error, 'structuredDataGeneration', { context });
+            return seoErrorHandler.handle(error as Error, 'structuredDataGeneration', { context }';
 
     /**
      * ゲームプレイデータに基づいて構造化データを更新
@@ -244,16 +244,16 @@ export class StructuredDataEngine {
             if(gameplayData.score && gameplayData.score > 0) {"
                 enhancedSchema.interactionStatistic = {"", "@type": "InteractionCounter",
                     "interactionType": "http://schema.org/PlayAction","
-            }", "userInteractionCount": gameplayData.bubblesPopped || 0 }
-                }
+            }", "userInteractionCount": gameplayData.bubblesPopped || 0 
+    }
 ";
             // 動的にスキーマを更新""
-            await this._updateSchemaInDOM('VideoGame', enhancedSchema);
+            await this._updateSchemaInDOM('VideoGame', enhancedSchema';
 
-            seoLogger.info('Gameplay data updated in structured data', gameplayData);''
+            seoLogger.info('Gameplay data updated in structured data', gameplayData';''
         } catch (error) { }
 
-            seoErrorHandler.handle(error as Error, 'updateGameplayData', { gameplayData });
+            seoErrorHandler.handle(error as Error, 'updateGameplayData', { gameplayData }';
         }
     }
 
@@ -262,7 +262,7 @@ export class StructuredDataEngine {
      */''
     private async _updateSchemaInDOM(schemaType: string, newSchema: BaseSchema): Promise<void> { try {
             // 既存のスクリプトタグを検索
-            const existingScript = document.querySelector(`script[type="application/ld+json"][data-schema="${schemaType)"]`};
+            const existingScript = document.querySelector(`script[type="application/ld+json"][data-schema="${schemaType""]`};
             
             if(existingScript} {
             
@@ -270,11 +270,11 @@ export class StructuredDataEngine {
             
             }"
                 existingScript.textContent = JSON.stringify(newSchema, null, 2);" }"
-                seoLogger.debug(`Updated ${schemaType} schema, in DOM`"});"
+                seoLogger.debug(`Updated ${schemaType} schema, in DOM`"}";"
             } else {  // 新しいスクリプトタグを作成""
                 const scriptTag = document.createElement('script'');''
-                scriptTag.type = 'application/ld+json';''
-                scriptTag.setAttribute('data-schema', schemaType);''
+                scriptTag.type = 'application/ld+json';
+                scriptTag.setAttribute('data-schema', schemaType';''
                 scriptTag.textContent = JSON.stringify(newSchema, null, 2);
                 ';
                 // 構造化データ注入ポイントに追加
@@ -310,20 +310,20 @@ export class StructuredDataEngine {
 
             const schema: VideoGameSchema = { '', '@context': 'https://schema.org',
                 '@type': 'VideoGame',
-                name: this._getLocalizedText('game.name', SEOConfig.structuredData.game.name),
+                name: this._getLocalizedText('game.name', SEOConfig.structuredData.game.name',
                 description: this._getLocalizedText('game.description', 'HTML5 Canvas を使用したバブルポップゲーム),
                 url: getLocalizedUrl(this.currentLang),
                 image: getSocialImageUrl('openGraph);
                 applicationCategory: SEOConfig.structuredData.game.applicationCategory;
                 operatingSystem: SEOConfig.structuredData.game.operatingSystem;
                 genre: SEOConfig.structuredData.game.genre;
-                inLanguage: SEOConfig.structuredData.game.inLanguage;
-               , isAccessibleForFree: SEOConfig.structuredData.game.isAccessibleForFree ,};
+                inLanguage: SEOConfig.structuredData.game.inLanguage,
+    isAccessibleForFree: SEOConfig.structuredData.game.isAccessibleForFree ,};
             this.schemaCache.set(cacheKey, schema);
 
             return schema;''
         } catch (error) {
-            seoErrorHandler.handle(error as Error, 'generateVideoGameSchema', context);
+            seoErrorHandler.handle(error as Error, 'generateVideoGameSchema', context';
             return null;
     
     /**
@@ -334,13 +334,13 @@ export class StructuredDataEngine {
                 '@type': 'Organization',
                 name: SEOConfig.structuredData.organization.name;
                 url: SEOConfig.structuredData.organization.url;
-                logo: SEOConfig.structuredData.organization.logo;
-               , sameAs: SEOConfig.structuredData.organization.sameAs ,};
+                logo: SEOConfig.structuredData.organization.logo,
+    sameAs: SEOConfig.structuredData.organization.sameAs ,};
             ';
 
             return schema;''
         } catch (error) {
-            seoErrorHandler.handle(error as Error, 'generateOrganizationSchema', context);
+            seoErrorHandler.handle(error as Error, 'generateOrganizationSchema', context';
             return null;
     
     /**
@@ -349,27 +349,27 @@ export class StructuredDataEngine {
     async generateWebApplicationSchema(context: StructuredDataContext = {,}): Promise<WebApplicationSchema | null> { try {
             const schema: WebApplicationSchema = {'', '@context': 'https://schema.org',
                 '@type': 'WebApplication',
-                name: this._getLocalizedText('app.name', SEOConfig.siteName),
+                name: this._getLocalizedText('app.name', SEOConfig.siteName',
                 description: this._getLocalizedText('app.description', 'BubblePop Web Application''),
                 url: this.baseUrl,
                 applicationCategory: SEOConfig.structuredData.webApplication.applicationCategory,
-                operatingSystem: ['Any'];
-               , browserRequirements: SEOConfig.structuredData.webApplication.browserRequirements ,};
+                operatingSystem: ['Any'],
+    browserRequirements: SEOConfig.structuredData.webApplication.browserRequirements ,};
             ';
 
             return schema;''
         } catch (error) {
-            seoErrorHandler.handle(error as Error, 'generateWebApplicationSchema', context);
+            seoErrorHandler.handle(error as Error, 'generateWebApplicationSchema', context';
             return null;
     
     /**
      * BreadcrumbListスキーマの生成
      */'
-    async generateBreadcrumbSchema(breadcrumbs: Array<{ name: string;, url: string ,}>): Promise<BreadcrumbListSchema | null> { try {'
+    async generateBreadcrumbSchema(breadcrumbs: Array<{ name: string,  url: string ,}>): Promise<BreadcrumbListSchema | null> { try {'
             const itemListElement: ListItem[] = breadcrumbs.map((crumb, index) => ({'', '@type': 'ListItem',
                 position: index + 1;
-                name: crumb.name)';
-               , item: crumb.url' ,}'
+                name: crumb.name'',
+    item: crumb.url' ,}'
 
             }');
             ';
@@ -390,8 +390,8 @@ export class StructuredDataEngine {
     async generateEventSchema(eventData: { name: string,
         description: string;
         startDate: string);
-        endDate: string);
-       , location: string ,}): Promise<EventSchema | null>;
+        endDate: string),
+    location: string ,}): Promise<EventSchema | null>;
 
         try { const organizer = await this.generateOrganizationSchema();''
             if(!organizer) return null;
@@ -403,13 +403,13 @@ export class StructuredDataEngine {
                 description: eventData.description;
                 startDate: eventData.startDate;
                 endDate: eventData.endDate;
-                location: eventData.location;
-               , organizer: organizer ,};
+                location: eventData.location,
+    organizer: organizer ,};
             ';
 
             return schema;''
         } catch (error) {
-            seoErrorHandler.handle(error as Error, 'generateEventSchema', eventData);
+            seoErrorHandler.handle(error as Error, 'generateEventSchema', eventData';
             return null;
     
     /**
@@ -434,7 +434,7 @@ export class StructuredDataEngine {
      */'
     clearCache(): void { ''
         this.schemaCache.clear()';
-        seoLogger.info('StructuredDataEngine, cache cleared); }'
+        seoLogger.info('StructuredDataEngine, cache cleared'; }'
     
     /**
      * リソースのクリーンアップ

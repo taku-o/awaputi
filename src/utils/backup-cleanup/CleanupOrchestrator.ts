@@ -1,8 +1,8 @@
-import { BackupFileInvestigator  } from './BackupFileInvestigator.js';''
-import { ReferenceAnalyzer  } from './ReferenceAnalyzer.js';''
-import { SafetyVerifier  } from './SafetyVerifier.js';''
-import { SequentialFileRemover  } from './SequentialFileRemover.js';''
-import { IntegrityValidator  } from './IntegrityValidator.js';''
+import { BackupFileInvestigator  } from './BackupFileInvestigator.js';
+import { ReferenceAnalyzer  } from './ReferenceAnalyzer.js';
+import { SafetyVerifier  } from './SafetyVerifier.js';
+import { SequentialFileRemover  } from './SequentialFileRemover.js';
+import { IntegrityValidator  } from './IntegrityValidator.js';
 import { CleanupReporter  } from './CleanupReporter.js';
 
 // Type definitions
@@ -15,11 +15,11 @@ interface CleanupOptions { dryRun?: boolean;
 
 interface FileInvestigationResult { filePath: string,
     exists: boolean;
-    currentFileExists: boolean;
-   , investigationFailed: boolean;
+    currentFileExists: boolean,
+    investigationFailed: boolean;
     sizeAnalysis?: {
-        byte;s: number;
-       , wordCount: number ,}
+        byte;s: number,
+    wordCount: number ,}
 
 interface ReferenceAnalysisResult { filePath: string,
     safetyAssessment: {
@@ -32,14 +32,14 @@ interface InvestigationPhaseResult { investigationResults: FileInvestigationResu
     referenceResults: ReferenceAnalysisResult[];
     investigationSummary: any;
     safeFiles: FileInvestigationResult[];
-    totalFiles: number;
-   , safeForDeletion: number }
+    totalFiles: number,
+    safeForDeletion: number }
 
 interface SafetyPhaseResult { verificationResults: SafetyVerificationResult[];
     safetyReport: any;
     verifiedSafeFiles: FileInvestigationResult[];
-    totalCandidates: number;
-   , verifiedSafe: number }
+    totalCandidates: number,
+    verifiedSafe: number }
 
 interface DeletionResult { status: string;
     filePath?: string }
@@ -48,30 +48,30 @@ interface DeletionPhaseResult { deletionResults: {
         deletion;s: DeletionResult[] };
     deletionSummary: any;
     sizeReduction: any;
-    successfulDeletions: DeletionResult[];
-   , failedDeletions: DeletionResult[];
+    successfulDeletions: DeletionResult[],
+    failedDeletions: DeletionResult[];
     }
 
 interface IntegrityValidationResult { buildIntegrity: any,
     basicTests: any;
-    importResolution: any;
-   , coreFeatures: any ,}
+    importResolution: any,
+    coreFeatures: any ,}
 
-interface IntegrityPhaseResult { validationResults: IntegrityValidationResult;
-   , integrityReport: {
+interface IntegrityPhaseResult { validationResults: IntegrityValidationResult,
+    integrityReport: {
         summary: {
             overallIntegrit;y: boolean };
     overallIntegrityStatus: boolean;
 }
 
 interface ReportingPhaseResult { finalReport: any,
-    recoveryInstructions: any;
-   , reportFileName: string ,}
+    recoveryInstructions: any,
+    reportFileName: string ,}
 
 interface ExecutionState { phase: string;
     startTime: string | null;
-    endTime: string | null;
-   , results: {
+    endTime: string | null,
+    results: {
         investigatio;n?: InvestigationPhaseResult;
         safety?: SafetyPhaseResult;
         deletion?: DeletionPhaseResult;
@@ -85,17 +85,17 @@ interface ErrorRecoveryResult { recovered: boolean,
     action: string ,}
 
 interface FinalResult { status: string;
-    executionState: ExecutionState;
-   , summary: {
+    executionState: ExecutionState,
+    summary: {
         totalExecutionTim;e: number | null;
         phase: string;
         filesProcessed: number;
-        filesDeleted: number;
-       , errorsEncountered: number };
-    recommendations: string[];
-   , dryRun: boolean;
-    error?: { message: string;
-       , phase: string }
+        filesDeleted: number,
+    errorsEncountered: number };
+    recommendations: string[],
+    dryRun: boolean;
+    error?: { message: string,
+    phase: string }
 
 /**
  * CleanupOrchestrator - バックアップファイルクリーンアップの総合調整クラス
@@ -114,8 +114,8 @@ export class CleanupOrchestrator {
     constructor(options: CleanupOptions = {)) {
         this.options = {
             dryRun: options.dryRun || false;
-            verbose: options.verbose || false;
-           , safetyMode: options.safetyMode !== false, // デフォルトは安全モード;
+            verbose: options.verbose || false,
+    safetyMode: options.safetyMode !== false, // デフォルトは安全モード;
             confirmationRequired: options.confirmationRequired !== false,
             reportOutputDir: options.reportOutputDir || './.kiro/reports';
             ...options;
@@ -126,27 +126,27 @@ export class CleanupOrchestrator {
         this.safetyVerifier = new SafetyVerifier();
         this.fileRemover = new SequentialFileRemover();
         this.integrityValidator = new IntegrityValidator();''
-        this.reporter = new CleanupReporter(''';
+        this.reporter = new CleanupReporter('''
             phase: 'initialized';
             startTime: null;
-            endTime: null;
-           , results: {,};
+            endTime: null,
+    results: {,};
             errors: []);
-        })'
+        }''
 
-        this.log('CleanupOrchestrator initialized', 'info);
+        this.log('CleanupOrchestrator initialized', 'info';
     }
 
     /**
      * メインクリーンアップ処理の実行'
      */''
     async executeCleanup()';
-        this.log('Starting backup file cleanup process...', 'info);''
+        this.log('Starting backup file cleanup process...', 'info';''
         this.executionState.startTime = new Date().toISOString(''';
         this.executionState.phase = 'starting';
-';
+'
 
-        try { // Phase, 1: 調査フェーズ)'
+        try { // Phase, 1: 調査フェーズ''
             this.executionState.phase = 'investigation';')'
             this.log('Phase, 1: Investigation - Starting file investigation...', 'info);
             const investigationResults = await this.runInvestigationPhase();
@@ -161,7 +161,7 @@ export class CleanupOrchestrator {
                 return this.generateFinalResult('no_safe_files'');
 ';
             // Phase 2: 安全性検証フェーズ
-            this.executionState.phase = 'safety_verification';''
+            this.executionState.phase = 'safety_verification';
             this.log('Phase, 2: Safety Verification - Verifying deletion safety...', 'info);
             const safetyResults = await this.runSafetyVerificationPhase(investigationResults.safeFiles);
             this.executionState.results.safety = safetyResults;
@@ -188,8 +188,8 @@ export class CleanupOrchestrator {
             let, deletionResults: DeletionPhaseResult | null = null,
             if(!this.options.dryRun) {'
 
-                this.executionState.phase = 'deletion';''
-                this.log('Phase 3: Deletion - Executing file deletion...', 'info);''
+                this.executionState.phase = 'deletion';
+                this.log('Phase 3: Deletion - Executing file deletion...', 'info';''
                 deletionResults = await this.runDeletionPhase(safetyResults.verifiedSafeFiles);
             }
                 this.executionState.results.deletion = deletionResults; }
@@ -203,21 +203,21 @@ export class CleanupOrchestrator {
             let, integrityResults: IntegrityPhaseResult | null = null,
             if(!this.options.dryRun && deletionResults) {'
 
-                this.executionState.phase = 'integrity_validation';''
-                this.log('Phase 4: Integrity Validation - Checking system integrity...', 'info);''
-                integrityResults = await this.runIntegrityValidationPhase('';)'
+                this.executionState.phase = 'integrity_validation';
+                this.log('Phase 4: Integrity Validation - Checking system integrity...', 'info';''
+                integrityResults = await this.runIntegrityValidationPhase('';''
             this.executionState.phase = 'reporting';')'
-            this.log('Phase 5: Reporting - Generating comprehensive report...', 'info);''
-            const reportResults = await this.runReportingPhase('';)'
+            this.log('Phase 5: Reporting - Generating comprehensive report...', 'info';''
+            const reportResults = await this.runReportingPhase('';''
             this.executionState.phase = 'completed';')'
             this.executionState.endTime = new Date().toISOString()';
             return this.generateFinalResult('success); catch (error) { }'
 
-            this.log(`Cleanup, process failed: ${(error, as, Error'}).message}`, 'error');''
+            this.log(`Cleanup, process failed: ${(error, as, Error'}'.message}`, 'error');''
             this.executionState.errors.push(error);''
-            this.executionState.phase = 'failed';''
+            this.executionState.phase = 'failed';
             this.executionState.endTime = new Date().toISOString()';
-            return this.generateFinalResult('error', error as Error);
+            return this.generateFinalResult('error', error as Error';
 
     /**
      * 調査フェーズの実行'
@@ -256,8 +256,8 @@ export class CleanupOrchestrator {
             investigationSummary,
             safeFiles,
             totalFiles: investigationResults.length, };
-            safeForDeletion: safeFiles.length }
-        }
+            safeForDeletion: safeFiles.length 
+    }
 
     /**
      * 安全性検証フェーズの実行
@@ -287,8 +287,8 @@ export class CleanupOrchestrator {
             safetyReport,
             verifiedSafeFiles,
             totalCandidates: candidateFiles.length, };
-            verifiedSafe: verifiedSafeFiles.length }
-        }
+            verifiedSafe: verifiedSafeFiles.length 
+    }
 
     /**
      * 削除実行フェーズの実行
@@ -300,10 +300,10 @@ export class CleanupOrchestrator {
         const, deletionResults = await, this.fileRemover.removeFilesSafely(verifiedFiles};
         
         // 削除サマリー生成
-        const deletionSummary = await this.reporter.generateDeletionSummary(deletionResults};
+        const deletionSummary = await this.reporter.generateDeletionSummary(deletionResults}
         
         // サイズ削減計算 }
-        const beforeSizes = { files: verifiedFiles.map(f => ({ bytes: f.sizeAnalysis?.bytes || 0, words: f.sizeAnalysis? .wordCount || 0 ),}) : undefined
+        const beforeSizes = { files: verifiedFiles.map(f => ({ bytes: f.sizeAnalysis?.bytes || 0, words: f.sizeAnalysis?.wordCount || 0 ),}) : undefined
         const afterSizes = { files: [] }; // 削除後はファイルが存在しない
         const sizeReduction = await this.reporter.calculateSizeReduction(beforeSizes, afterSizes);
 
@@ -312,7 +312,7 @@ export class CleanupOrchestrator {
             sizeReduction,
             successfulDeletions: deletionResults.deletions.filter(d => d.status === 'deleted''),' };
 
-            failedDeletions: deletionResults.deletions.filter(d => d.status !== 'deleted); }'
+            failedDeletions: deletionResults.deletions.filter(d => d.status !== 'deleted'; }'
         }
 
     /**
@@ -324,16 +324,16 @@ export class CleanupOrchestrator {
         // 包括的整合性検証
         const validationResults: IntegrityValidationResult = { buildIntegrity: await this.integrityValidator.validateBuildIntegrity(),
             basicTests: await this.integrityValidator.runBasicTests();
-            importResolution: await this.integrityValidator.checkImportResolution();
-           , coreFeatures: await this.integrityValidator.validateCoreFeatures(), };
+            importResolution: await this.integrityValidator.checkImportResolution(),
+    coreFeatures: await this.integrityValidator.validateCoreFeatures(), };
 
         // 整合性レポート生成
         const integrityReport = await this.integrityValidator.generateIntegrityReport(validationResults);
 
         return { validationResults,
             integrityReport, };
-            overallIntegrityStatus: integrityReport.summary.overallIntegrity }
-        }
+            overallIntegrityStatus: integrityReport.summary.overallIntegrity 
+    }
 
     /**
      * レポート生成フェーズの実行
@@ -342,18 +342,18 @@ export class CleanupOrchestrator {
         this.log('Generating comprehensive cleanup report...', 'info);
         
         // 復旧手順作成
-        const deletedFiles = this.executionState.results.deletion? .successfulDeletions || [];
+        const deletedFiles = this.executionState.results.deletion?.successfulDeletions || [];
         const recoveryInstructions = await this.reporter.createRecoveryInstructions(deletedFiles);
         
         // 最終包括レポート生成
         const finalReport = await this.reporter.generateFinalReport({ : undefined
-            investigationSummary: this.executionState.results.investigation? .investigationSummary, : undefined
-            deletionSummary: this.executionState.results.deletion? .deletionSummary, : undefined
-            integrityValidation: this.executionState.results.integrity? .integrityReport, : undefined);
-            sizeReduction: this.executionState.results.deletion? .sizeReduction,);
+            investigationSummary: this.executionState.results.investigation?.investigationSummary, : undefined
+            deletionSummary: this.executionState.results.deletion?.deletionSummary, : undefined
+            integrityValidation: this.executionState.results.integrity?.integrityReport, : undefined);
+            sizeReduction: this.executionState.results.deletion?.sizeReduction,);
             recoveryInstructions);
         // レポート保存 : undefined
-        const timestamp = new Date().toISOString(').replace(/[:.]/g, '-); }
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-); }
         const reportFileName = `backup-cleanup-report-${timestamp}.json`;
         await this.reporter.saveReportToFile(finalReport, reportFileName);
 
@@ -436,25 +436,25 @@ export class CleanupOrchestrator {
      */
     generateFinalResult(status: string, error: Error | null = null): FinalResult { const result: FinalResult = {
             status,
-            executionState: this.executionState;
-           , summary: {
-                totalExecutionTime: this.executionState.endTime ?   : undefined
+            executionState: this.executionState,
+    summary: {
+                totalExecutionTime: this.executionState.endTime ? undefined : undefined
                     new Date(this.executionState.endTime).getTime() - new Date(this.executionState.startTime!).getTime() : ;
                     null,
-                phase: this.executionState.phase;
-               , filesProcessed: this.executionState.results.investigation? .totalFiles || 0, : undefined
-                filesDeleted: this.executionState.results.deletion? .successfulDeletions?.length || 0, : undefined
+                phase: this.executionState.phase,
+    filesProcessed: this.executionState.results.investigation?.totalFiles || 0, : undefined
+                filesDeleted: this.executionState.results.deletion?.successfulDeletions?.length || 0, : undefined
                 errorsEncountered: this.executionState.errors.length ,};
-            recommendations: this.generateRecommendations(status);
-           , dryRun: this.options.dryRun;
+            recommendations: this.generateRecommendations(status),
+    dryRun: this.options.dryRun;
         },
 
         if(error) {
 
             result.error = {
                 message: error.message }
-                phase: this.executionState.phase }
-            }
+                phase: this.executionState.phase 
+    }
 
         this.log(`Cleanup process completed with status: ${status}`, status === 'success' ? 'info' : 'warn'});
         
@@ -524,4 +524,4 @@ export class CleanupOrchestrator {
     /**
      * 設定オプションの取得'
      */]'
-    getOptions(']);
+    getOptions(']';

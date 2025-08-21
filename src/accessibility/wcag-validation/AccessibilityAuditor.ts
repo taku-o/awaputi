@@ -8,63 +8,63 @@ interface AuditorConfig { enabled: boolean,
     auditCategories: string[];
     quickAuditTests: string[];
     autoAudit: boolean;
-    auditInterval: number;
-   , issueThreshold: IssueThreshold
+    auditInterval: number,
+    issueThreshold: IssueThreshold
     ,}
 
 interface IssueThreshold { critical: number;
     high: number;
-    medium: number;
-   , low: number }
+    medium: number,
+    low: number }
 
 interface AuditState { running: boolean;
     lastAudit: number | null;
-    currentCategory: string | null;
-   , results: Map<number, AuditResults>;
+    currentCategory: string | null,
+    results: Map<number, AuditResults>;
     history: AuditResults[]
     ,}
 
-interface GuidelineDefinition { name: string;
-   , tests: string[] }
+interface GuidelineDefinition { name: string,
+    tests: string[] }
 
 interface CategoryDefinition { name: string;
-    description: string;
-   , guidelines: Record<string, GuidelineDefinition> }
+    description: string,
+    guidelines: Record<string, GuidelineDefinition> }
 
 interface AuditSummary { totalIssues: number,
     criticalIssues: number;
     highIssues: number;
     mediumIssues: number;
-    lowIssues: number;
-   , overallScore: number ,}
+    lowIssues: number,
+    overallScore: number ,}
 
 interface AuditRecommendation { priority: 'critical' | 'high' | 'medium' | 'low';
-    message: string;
-   , action: string }
+    message: string,
+    action: string }
 
-interface AuditResults { timestamp: number;
-   , categories: Record<string, CategoryResult>;
-    summary: AuditSummary;
-   , recommendations: AuditRecommendation[]
+interface AuditResults { timestamp: number,
+    categories: Record<string, CategoryResult>;
+    summary: AuditSummary,
+    recommendations: AuditRecommendation[]
     ,}
 
 interface CategoryResult { id: string;
     name: string;
-    description: string;
-   , guidelines: Record<string, GuidelineResult>;
+    description: string,
+    guidelines: Record<string, GuidelineResult>;
     issues: ClassifiedIssue[];
     warnings: any[];
     score: number;
-    passed: number;
-   , failed: number ,}
+    passed: number,
+    failed: number ,}
 
 interface GuidelineResult { id: string;
-    name: string;
-   , tests: Record<string, TestResult>;
+    name: string,
+    tests: Record<string, TestResult>;
     issues: ClassifiedIssue[];
     warnings: any[];
-    passed: number;
-   , failed: number ,}
+    passed: number,
+    failed: number ,}
 
 interface TestResult { passed: boolean;
     issues?: Issue[];
@@ -78,20 +78,20 @@ interface Issue { element?: Element;
 ';
 
 interface ClassifiedIssue extends Issue { ''
-    severity: 'critical' | 'high' | 'medium' | 'low';
-   , classification: IssueClassification
+    severity: 'critical' | 'high' | 'medium' | 'low',
+    classification: IssueClassification
     }
 
 interface IssueClassification { category: string;
-    impact: string;
-   , effort: string }
+    impact: string,
+    effort: string }
 
 interface QuickAuditResult { timestamp: number;
     issues: ClassifiedIssue[];
     warnings: any[];
     passed: number;
-    failed: number;
-   , tests: Record<string, TestResult> }
+    failed: number,
+    tests: Record<string, TestResult> }
 
 // Minimal interface for WCAGRuleEngine
 interface WCAGRuleEngine { runTest(testName: string, options?: any): Promise<TestResult>
@@ -110,21 +110,21 @@ export class AccessibilityAuditor {
             enabled: true,
             auditCategories: ['perceivable', 'operable', 'understandable', 'robust'],
             quickAuditTests: ['altText', 'colorContrast', 'keyboardNavigation', 'nameRoleValue'],
-            autoAudit: false;
-           , auditInterval: 300000, // 5 minutes;
+            autoAudit: false,
+    auditInterval: 300000, // 5 minutes;
             issueThreshold: {
                 critical: 0;
                 high: 5;
-                medium: 10;
-               , low: 20 ,};
+                medium: 10,
+    low: 20 ,};
             ...config;
 
         // Audit state management
         this.auditState = { running: false,
-            lastAudit: null;
-           , currentCategory: null,
-            results: new Map(''';
-               , name: 'Perceivable',
+            lastAudit: null,
+    currentCategory: null,
+            results: new Map(''',
+    name: 'Perceivable',
                 description: 'Information must be presentable in ways users can perceive',
                 guidelines: {' ,}', '1.1': { name: 'Text Alternatives', tests: ['altText', 'imageLabels', 'decorativeImages] },'', '1.2': { name: 'Time-based Media', tests: ['audioControl] ,},'', '1.3': { name: 'Adaptable', tests: ['headingStructure', 'meaningfulSequence', 'sensoryCues] },'', '1.4': { name: 'Distinguishable', tests: ['colorContrast', 'textResize] }
             },
@@ -142,9 +142,9 @@ export class AccessibilityAuditor {
             },
 
             robust: { ''
-                name: 'Robust',)';
-                description: 'Content must be robust enough for various assistive technologies')';
-               , guidelines: {' ,}', '4.1': { name: 'Compatible', tests: ['parsing', 'nameRoleValue', 'statusMessages] }
+                name: 'Robust','';
+                description: 'Content must be robust enough for various assistive technologies')',
+    guidelines: {' ,}', '4.1': { name: 'Compatible', tests: ['parsing', 'nameRoleValue', 'statusMessages] }
 };
 
         // Issue classification system
@@ -190,8 +190,8 @@ export class AccessibilityAuditor {
                 criticalIssues: 0;
                 highIssues: 0;
                 mediumIssues: 0;
-                lowIssues: 0;
-               , overallScore: 0 };
+                lowIssues: 0,
+    overallScore: 0 };
             recommendations: [];
         },
 
@@ -231,8 +231,8 @@ export class AccessibilityAuditor {
             timestamp: Date.now();
             issues: [];
             warnings: [];
-            passed: 0;
-           , failed: 0, }
+            passed: 0,
+    failed: 0, }
             tests: {};
         for(const, testName of, this.config.quickAuditTests) {
 ';
@@ -274,24 +274,24 @@ export class AccessibilityAuditor {
         this.auditState.currentCategory = categoryId;
 
         const categoryResult: CategoryResult = { id: categoryId,
-            name: category.name;
-           , description: category.description, }
+            name: category.name,
+    description: category.description, }
             guidelines: {};
             issues: [];
             warnings: [];
             score: 0;
-            passed: 0;
-           , failed: 0;
+            passed: 0,
+    failed: 0;
         },
 
         // Audit each guideline in the category
         for(const [guidelineId, guideline] of Object.entries(category.guidelines) {
-            const guidelineResult = await this.auditGuideline(guidelineId, guideline, options);
+            const guidelineResult = await this.auditGuideline(guidelineId guideline options);
             categoryResult.guidelines[guidelineId] = guidelineResult;
 
             // Aggregate results
             categoryResult.issues.push(...guidelineResult.issues);
-            categoryResult.warnings.push(...guidelineResult.warnings);
+            categoryResult.warnings.push(...guidelineResult.warnings');
             categoryResult.passed += guidelineResult.passed;
         }
             categoryResult.failed += guidelineResult.failed; }
@@ -309,13 +309,13 @@ export class AccessibilityAuditor {
      */
     private async auditGuideline(guidelineId: string, guideline: GuidelineDefinition, options: any = {}): Promise<GuidelineResult> {
         const guidelineResult: GuidelineResult = {
-            id: guidelineId;
-           , name: guideline.name, }
+            id: guidelineId,
+    name: guideline.name, }
             tests: {};
             issues: [];
             warnings: [];
-            passed: 0;
-           , failed: 0;
+            passed: 0,
+    failed: 0;
         },
 
         // Run each test in the guideline
@@ -351,12 +351,11 @@ export class AccessibilityAuditor {
     private classifyIssues(issues: Issue[]): ClassifiedIssue[] { return issues.map(issue => { )
             const classified: ClassifiedIssue = {)
                 ...issue);
-                severity: issue.severity || this.determineSeverity(issue);
-               , classification: {
-                    category: this.getIssueCategory(issue);
-                   , impact: this.assessImpact(issue), }
-                    effort: this.estimateFixEffort(issue); }
-};
+                severity: issue.severity || this.determineSeverity(issue),
+    classification: {
+                    category: this.getIssueCategory(issue) impact: this.assessImpact(issue) }
+                    effort: this.estimateFixEffort(issue'); 
+    };
 
             return classified;
         }');
@@ -384,14 +383,14 @@ export class AccessibilityAuditor {
      */
     private getIssueType(issue: Issue): string { ''
         const issueText = issue.issue.toLowerCase()';
-        if(issueText.includes('missing, alt)) return 'missing-alt';''
-        if(issueText.includes('keyboard, trap)) return 'keyboard-trap';''
-        if(issueText.includes('no, accessible name)) return 'no-accessible-name';''
-        if(issueText.includes('insufficient, color contrast)) return 'low-contrast';''
-        if(issueText.includes('missing, keyboard)) return 'missing-keyboard-handler';''
-        if(issueText.includes('invalid, aria)) return 'invalid-aria';''
-        if(issueText.includes('missing, label)) return 'missing-label';''
-        if(issueText.includes('positive, tabindex)) return 'positive-tabindex';
+        if(issueText.includes('missing, alt)' return 'missing-alt';
+        if(issueText.includes('keyboard, trap)' return 'keyboard-trap';
+        if(issueText.includes('no, accessible name)' return 'no-accessible-name';
+        if(issueText.includes('insufficient, color contrast)' return 'low-contrast';
+        if(issueText.includes('missing, keyboard)' return 'missing-keyboard-handler';
+        if(issueText.includes('invalid, aria)' return 'invalid-aria';
+        if(issueText.includes('missing, label)' return 'missing-label';
+        if(issueText.includes('positive, tabindex)' return 'positive-tabindex';
 
         return 'general-issue'; }
 
@@ -401,10 +400,10 @@ export class AccessibilityAuditor {
     private getIssueCategory(issue: Issue): string { ''
         const guideline = issue.guideline || '';
 
-        if(guideline.startsWith('1.)) return 'perceivable';''
-        if(guideline.startsWith('2.)) return 'operable';''
-        if(guideline.startsWith('3.)) return 'understandable';''
-        if(guideline.startsWith('4.)) return 'robust';
+        if(guideline.startsWith('1.)' return 'perceivable';
+        if(guideline.startsWith('2.)' return 'operable';
+        if(guideline.startsWith('3.)' return 'understandable';
+        if(guideline.startsWith('4.)' return 'robust';
 
         return 'general'; }
 
@@ -476,7 +475,7 @@ export class AccessibilityAuditor {
         let categoryCount = 0;
 
         for(const, category of, Object.values(categories)) {''
-            if(category && typeof, category.score === 'number) {'
+            if(category && typeof, category.score === 'number' {'
                 totalScore += category.score;
             }
                 categoryCount++; }
@@ -491,17 +490,17 @@ export class AccessibilityAuditor {
         // Critical issues recommendations
         if(auditResults.summary.criticalIssues > 0) {'
             recommendations.push({''
-                priority: 'critical',)';
+                priority: 'critical','';
                 message: 'Address critical accessibility issues immediately',' }
 
-                action: 'Fix all issues blocking functionality for users with disabilities'); }
-        }
+                action: 'Fix all issues blocking functionality for users with disabilities'); 
+    }
         
         // Category-specific recommendations
         for(const [categoryId, category] of Object.entries(auditResults.categories) { if(category.score < 80) {'
                 recommendations.push({ }
 
-                    priority: 'high), }'
+                    priority: 'high', }'
                     message: `Improve ${category.name} accessibility (current, score: ${category.score.toFixed(1})%)`;
                     action: `Focus on ${categoryId} guidelines to enhance user experience`
                 });
@@ -511,11 +510,11 @@ export class AccessibilityAuditor {
         // General recommendations
         if(auditResults.summary.overallScore < 90) { '
             recommendations.push({''
-                priority: 'medium',)';
+                priority: 'medium','';
                 message: 'Schedule regular accessibility audits',' }
 
-                action: 'Set up automated testing and manual reviews'); }
-        }
+                action: 'Set up automated testing and manual reviews'); 
+    }
         
         return recommendations;
     }

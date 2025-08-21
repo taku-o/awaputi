@@ -12,4 +12,4 @@ export class SafetyValidator {
 
     public initialize(): void { // Implementation }
 
-    public destroy(');
+    public destroy();

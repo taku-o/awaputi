@@ -3,8 +3,8 @@
  * 
  * SEO関連アセットの最適化とパフォーマンス監視機能を提供
  */
-import { SEOConfig, getBaseUrl  } from './SEOConfig';''
-import { seoLogger  } from './SEOLogger';''
+import { SEOConfig, getBaseUrl  } from './SEOConfig';
+import { seoLogger  } from './SEOLogger';
 import { seoErrorHandler  } from './SEOErrorHandler';
 import { measurePerformance,
 
@@ -24,8 +24,8 @@ interface PerformanceMetrics { loadTime: number,
     firstContentfulPaint: number;
     largestContentfulPaint: number;
     firstInputDelay: number;
-    cumulativeLayoutShift: number;
-   , timestamp: number ,}
+    cumulativeLayoutShift: number,
+    timestamp: number ,}
 
 // 最適化結果インターフェース
 interface OptimizationResult { success: boolean;
@@ -37,8 +37,8 @@ interface OptimizationResult { success: boolean;
 
 // 読み込みタスクインターフェース
 interface LoadingTask { id: string,''
-    status: 'pending' | 'loading' | 'completed' | 'failed';
-   , startTime: number;
+    status: 'pending' | 'loading' | 'completed' | 'failed',
+    startTime: number;
     endTime?: number;
     result?: any;
     error?: Error;
@@ -72,10 +72,10 @@ export class SEOPerformanceOptimizer {
      */'
     private _initialize(): void { try {'
             this._setupPerformanceMonitoring()';
-            seoLogger.info('SEOPerformanceOptimizer, initialized successfully);' }
+            seoLogger.info('SEOPerformanceOptimizer, initialized successfully';' }
 
         } catch (error) {
-            seoErrorHandler.handle(error as Error, 'seoPerformanceOptimizerInit); }'
+            seoErrorHandler.handle(error as Error, 'seoPerformanceOptimizerInit'; }'
     }
     
     /**
@@ -91,7 +91,7 @@ export class SEOPerformanceOptimizer {
 
             }');
 
-            this.performanceObserver.observe({ entryTypes: ['paint', 'layout-shift', 'first-input] });
+            this.performanceObserver.observe({ entryTypes: ['paint', 'layout-shift', 'first-input] }';
         }
     }
     
@@ -100,11 +100,11 @@ export class SEOPerformanceOptimizer {
      */'
     private _processPerformanceEntries(entries: PerformanceEntry[]): void { ''
         entries.forEach(entry => { ');''
-            if(entry.entryType === 'paint) {' }
+            if(entry.entryType === 'paint' {' }
 
                 this._recordPaintMetric(entry);' }'
 
-            } else if(entry.entryType === 'layout-shift) { ''
+            } else if(entry.entryType === 'layout-shift' { ''
                 this._recordLayoutShift(entry);' }'
 
             } else if(entry.entryType === 'first-input) { this._recordFirstInputDelay(entry); }'
@@ -128,7 +128,7 @@ export class SEOPerformanceOptimizer {
      * 初回入力遅延の記録'
      */''
     private _recordFirstInputDelay(entry: PerformanceEntry): void { ''
-        seoLogger.performance('First Input Delay', entry.startTime); }
+        seoLogger.performance('First Input Delay', entry.startTime'; }
     
     /**
      * 画像の最適化'
@@ -166,8 +166,8 @@ export class SEOPerformanceOptimizer {
             
             return result;
         } catch (error) { const result: OptimizationResult = {
-                success: false;
-               , error: (error, as Error).message };
+                success: false,
+    error: (error, as Error).message };
             this.compressionCache.set(cacheKey, result);
             return result;
     
@@ -176,7 +176,7 @@ export class SEOPerformanceOptimizer {
      */
     private async _processImageWithCanvas(blob: Blob, options: ImageOptimizationOptions): Promise<Blob> { return new Promise((resolve, reject) => { '
             const img = new Image();''
-            img.onload = (') => {'
+            img.onload = () => {'
                 try {'
                     const canvas = document.createElement('canvas'');''
                     const ctx = canvas.getContext('2d)!;
@@ -194,14 +194,14 @@ export class SEOPerformanceOptimizer {
 
                         } else { }'
 
-                            reject(new, Error('Failed, to optimize, image)); }'
+                            reject(new, Error('Failed, to optimize, image)'; }'
 
                         }''
                     }, `image/${options.format || 'webp'}`, options.quality || 0.8);
                 } catch (error) { reject(error); }
             };
 
-            img.onerror = (') => reject(new, Error('Failed, to load, image);
+            img.onerror = () => reject(new, Error('Failed, to load, image);
             img.src = URL.createObjectURL(blob);
         });
     }
@@ -245,10 +245,10 @@ export class SEOPerformanceOptimizer {
             loadTime: performance.now();
             firstContentfulPaint: 0;
             largestContentfulPaint: 0;
-            firstInputDelay: 0;
-           , cumulativeLayoutShift: 0,
+            firstInputDelay: 0,
+    cumulativeLayoutShift: 0,
             timestamp: Date.now()';
-        if(typeof, window !== 'undefined' && window.performance) {'
+        if(typeof, window !== 'undefined' && window.performance' {'
 
             const paintEntries = performance.getEntriesByType('paint'');''
             const fcpEntry = paintEntries.find(entry => entry.name === 'first-contentful-paint);
@@ -266,20 +266,20 @@ export class SEOPerformanceOptimizer {
      */
     getPerformanceStats(): { averageLoadTime: number,
         averageFCP: number;
-        metricsCount: number;
-       , cacheHitRate: number ,} { if (this.metrics.length === 0) {
+        metricsCount: number,
+    cacheHitRate: number ,} { if (this.metrics.length === 0) {
             return { averageLoadTime: 0;
-                averageFCP: 0;
-               , metricsCount: 0, };
-                cacheHitRate: 0 }
-            }
+                averageFCP: 0,
+    metricsCount: 0, };
+                cacheHitRate: 0 
+    }
         
         const totalLoadTime = this.metrics.reduce((sum, m) => sum + m.loadTime, 0);
         const totalFCP = this.metrics.reduce((sum, m) => sum + m.firstContentfulPaint, 0);
         
         return { averageLoadTime: totalLoadTime / this.metrics.length,
-            averageFCP: totalFCP / this.metrics.length;
-           , metricsCount: this.metrics.length, };
+            averageFCP: totalFCP / this.metrics.length,
+    metricsCount: this.metrics.length, };
             cacheHitRate: this.imageCache.size > 0 ? 0.8 : 0 // 簡易計算 
         }
     

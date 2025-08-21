@@ -8,8 +8,8 @@
 import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 ';
 // サブコンポーネントのインポート
-import { MobileTestRunner  } from './mobile-test-suite/MobileTestRunner.js';''
-import { MobileDeviceSimulator  } from './mobile-test-suite/MobileDeviceSimulator.js';''
+import { MobileTestRunner  } from './mobile-test-suite/MobileTestRunner.js';
+import { MobileDeviceSimulator  } from './mobile-test-suite/MobileDeviceSimulator.js';
 import { MobileTestReporter  } from './mobile-test-suite/MobileTestReporter.js';
 
 // Type definitions
@@ -19,10 +19,10 @@ interface TestResult { passed: boolean,
     }
 
 interface TestFunction { name: string,
-    run: (contex;t?: any) => Promise<TestResult>;
-    setup?: (contex;t: any) => Promise<void>;
-    cleanup?: (contex;t: any) => Promise<void>;
-    errorCleanup?: (contex;t: any, error: Error) => Promise<void> ,}
+    run: (context?: any) => Promise<TestResult>;
+    setup?: (context: any) => Promise<void>;
+    cleanup?: (context: any) => Promise<void>;
+    errorCleanup?: (context: any, error: Error) => Promise<void> ,}
 }
 
 interface TestSuiteInterface { getTests(): TestFunction[];
@@ -31,55 +31,55 @@ interface TestSuiteInterface { getTests(): TestFunction[];
 interface TestResults { passed: number,
     failed: number;
     skipped: number;
-    errors: TestError[];
-   , performance: Map<string, PerformanceResult>;
+    errors: TestError[],
+    performance: Map<string, PerformanceResult>;
     compatibility: Map<string, CompatibilityResult> }
 
 interface TestError { suite: string,
     test: string;
     error: string;
-    stack?: string;
-   , timestamp: number ,}
+    stack?: string,
+    timestamp: number ,}
 
-interface PerformanceResult { duration: number;
-   , metrics: Record<string, any>;
+interface PerformanceResult { duration: number,
+    metrics: Record<string, any>;
     timestamp: number ,}
 
 interface CompatibilityResult { device: string;
-    browser: string;
-   , results: Record<string, any>;
+    browser: string,
+    results: Record<string, any>;
     timestamp: number ,}
 
-interface DeviceUtils { createTouchEvent: (typ;e: string, touches: any[]) => Event;
+interface DeviceUtils { createTouchEvent: (type: string, touches: any[]) => Event;
     createTouch: (;x: number, y: number, id?: number) => any;
-    createDeviceInfo: (devic;e: string) => any;
-    measurePerformance: (testFunctio;n: () => Promise<void>) => Promise<number>;
-    wait: (m;s: number) => Promise<void>;
-    randomDelay: (mi;n: number, max: number) => Promise<void> ,}
+    createDeviceInfo: (device: string) => any;
+    measurePerformance: (testFunction: () => Promise<void>) => Promise<number>;
+    wait: (ms: number) => Promise<void>;
+    randomDelay: (min: number, max: number) => Promise<void> ,}
 }
 
 interface DebugInfo { mainController: {
-        testSuite;s: string[];
-       , testResultsSummary: {
+        testSuite;s: string[],
+    testResultsSummary: {
             passe;d: number;
             failed: number;
             errors: number;
-            performance: number;
-           , compatibility: number };
+            performance: number,
+    compatibility: number };
     testRunner: any;
-    deviceSimulator: any;
-   , components: { testRunner: boolean;
-        deviceSimulator: boolean;
-       , testReporter: boolean }
+    deviceSimulator: any,
+    components: { testRunner: boolean;
+        deviceSimulator: boolean,
+    testReporter: boolean }
 
 interface HealthCheckResult { healthy: boolean,
-    issues: string[];
-   , componentStatus: {
+    issues: string[],
+    componentStatus: {
         testRunne;r: boolean;
         deviceSimulator: boolean;
         testReporter: boolean;
-        testSuites: number;
-       , testContainer: boolean ,}
+        testSuites: number,
+    testContainer: boolean ,}
 
 // 既存のテストスイートクラス（変更なし）
 class TouchTestSuite implements TestSuiteInterface { private mobileTestSuite: MobileTestSuite
@@ -243,8 +243,8 @@ export class MobileTestSuite {
             passed: 0;
             failed: 0;
             skipped: 0;
-            errors: [];
-           , performance: new Map<string, PerformanceResult>(),
+            errors: [],
+    performance: new Map<string, PerformanceResult>(),
     }
             compatibility: new Map<string, CompatibilityResult>(); }
         };
@@ -275,7 +275,7 @@ export class MobileTestSuite {
             console.log('[MobileTestSuite] モバイルテストスイート初期化完了');' }
 
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'MobileTestSuite.initialize); }'
+            this.errorHandler.handleError(error as Error, 'MobileTestSuite.initialize'; }'
     }
     
     /**
@@ -294,8 +294,8 @@ export class MobileTestSuite {
             top: -9999px;
             left: -9999px;
             width: 375px;
-            height: 667px;
-           , overflow: hidden;
+            height: 667px,
+    overflow: hidden;
         `;
         document.body.appendChild(this.testContainer);
     }
@@ -349,7 +349,7 @@ export class MobileTestSuite {
      */
     abortTests(): boolean { ''
         return this.testRunner.abortTests()';
-    async startDeviceSimulation(deviceName: string = 'iPhone, 12): Promise<void> {'
+    async startDeviceSimulation(deviceName: string = 'iPhone, 12': Promise<void> {'
         return await this.deviceSimulator.startSimulation(deviceName }
     
     /**
@@ -391,8 +391,8 @@ export class MobileTestSuite {
             passed: 0;
             failed: 0;
             skipped: 0;
-            errors: [];
-           , performance: new Map<string, PerformanceResult>(),
+            errors: [],
+    performance: new Map<string, PerformanceResult>(),
             compatibility: new Map<string, CompatibilityResult>( }
     
     /**
@@ -400,10 +400,10 @@ export class MobileTestSuite {
      */''
     recordTestError(suiteName: string, testName: string, error: Error | string): void { this.testResults.errors.push({'
             suite: suiteName,
-            test: testName || 'unknown',)';
+            test: testName || 'unknown','';
             error: typeof error === 'string' ? error : error.message,')';
-            stack: typeof error === 'object' && error.stack ? error.stack : undefined);
-           , timestamp: Date.now( ,});
+            stack: typeof error === 'object' && error.stack ? error.stack : undefined),
+    timestamp: Date.now( ,});
     }
     
     /**
@@ -502,20 +502,20 @@ export class MobileTestSuite {
      * 総合デバッグ情報取得
      */
     getDebugInfo(): DebugInfo { return { mainController: {
-                testSuites: Array.from(this.testSuites.keys();
-               , testResultsSummary: {
+                testSuites: Array.from(this.testSuites.keys(),
+    testResultsSummary: {
                     passed: this.testResults.passed;
                     failed: this.testResults.failed;
-                    errors: this.testResults.errors.length;
-                   , performance: this.testResults.performance.size, };
-                    compatibility: this.testResults.compatibility.size }
-};
+                    errors: this.testResults.errors.length,
+    performance: this.testResults.performance.size, };
+                    compatibility: this.testResults.compatibility.size 
+    };
             testRunner: this.testRunner.getDebugInfo();
-            deviceSimulator: this.deviceSimulator.getDebugInfo();
-           , components: { testRunner: !!this.testRunner;
-                deviceSimulator: !!this.deviceSimulator;
-               , testReporter: !!this.testReporter }
-        }
+            deviceSimulator: this.deviceSimulator.getDebugInfo(),
+    components: { testRunner: !!this.testRunner;
+                deviceSimulator: !!this.deviceSimulator,
+    testReporter: !!this.testReporter 
+    }
     
     /**
      * システム健全性チェック
@@ -523,19 +523,19 @@ export class MobileTestSuite {
     performHealthCheck(): HealthCheckResult { const issues: string[] = [],
         ;
         // サブコンポーネントの存在確認
-        if(!this.testRunner) issues.push('MobileTestRunner, not initialized);''
-        if(!this.deviceSimulator) issues.push('MobileDeviceSimulator, not initialized);''
-        if(!this.testReporter) issues.push('MobileTestReporter, not initialized);
+        if(!this.testRunner) issues.push('MobileTestRunner, not initialized';''
+        if(!this.deviceSimulator) issues.push('MobileDeviceSimulator, not initialized';''
+        if(!this.testReporter) issues.push('MobileTestReporter, not initialized';
         ';
         // テストスイートの確認
-        if(this.testSuites.size === 0) issues.push('No, test suites, registered);
+        if(this.testSuites.size === 0) issues.push('No, test suites, registered';
         ';
         // テストコンテナの確認
         if(!this.testContainer || !this.testContainer.parentNode) {', ';
 
         }
 
-            issues.push('Test, container not, properly mounted); }'
+            issues.push('Test, container not, properly mounted'; }'
         }
         
         return { healthy: issues.length === 0,
@@ -543,10 +543,10 @@ export class MobileTestSuite {
             componentStatus: {
                 testRunner: !!this.testRunner;
                 deviceSimulator: !!this.deviceSimulator;
-                testReporter: !!this.testReporter;
-               , testSuites: this.testSuites.size, };
-                testContainer: !!this.testContainer }
-}
+                testReporter: !!this.testReporter,
+    testSuites: this.testSuites.size, };
+                testContainer: !!this.testContainer 
+    }
     
     // ========================================
     // クリーンアップ
@@ -577,7 +577,7 @@ export class MobileTestSuite {
 
             console.log('[MobileTestSuite] クリーンアップ完了');''
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'MobileTestSuite.cleanup); }'
+            this.errorHandler.handleError(error as Error, 'MobileTestSuite.cleanup'; }'
 }
 
 // ========================================
@@ -590,4 +590,4 @@ let mobileTestSuiteInstance: MobileTestSuite | null = null,
  * MobileTestSuiteシングルトンインスタンス取得
  */
 export function getMobileTestSuite(): MobileTestSuite { if (!mobileTestSuiteInstance) {''
-        mobileTestSuiteInstance = new MobileTestSuite(' })'
+        mobileTestSuiteInstance = new MobileTestSuite(' }''

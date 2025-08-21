@@ -8,8 +8,8 @@ interface MainController { [key: string]: any, }
 
 interface DataCollection { duration: number,
     sampleCount: number;
-    metricsCollected: number;
-   , dataQuality: Record<string, any> }
+    metricsCollected: number,
+    dataQuality: Record<string, any> }
 
 interface Bottleneck { type: string,
     severity: string;
@@ -17,13 +17,13 @@ interface Bottleneck { type: string,
     [key: string]: any, }
 
 interface Anomaly { detectionType: string,
-    severity: string;
-   , metric: string;
+    severity: string,
+    metric: string;
     [key: string]: any, }
 
 interface OverallAssessment { healthScore: number,
-    performanceLevel: string;
-   , criticalIssues: any[];
+    performanceLevel: string,
+    criticalIssues: any[];
     [key: string]: any, }
 
 interface DiagnosticResults { dataCollection?: DataCollection;
@@ -35,8 +35,8 @@ interface DiagnosticResults { dataCollection?: DataCollection;
 
 interface DiagnosticSession { id: string,
     duration: number;
-    results: DiagnosticResults;
-   , options: {
+    results: DiagnosticResults,
+    options: {
         detailLeve;l?: string;
         [key: string]: any, };
     [key: string]: any,
@@ -49,20 +49,20 @@ interface ReportSummary { sessionId: string,
     performanceLevel: string;
     criticalIssues: number;
     bottlenecks: number;
-    anomalies: number;
-   , recommendations: number ,}
+    anomalies: number,
+    recommendations: number ,}
 
 interface TechnicalDetails { dataCollection: {
         duratio;n: number;
         sampleCount: number;
-        metricsCollected: number;
-       , dataQuality: Record<string, any> };
+        metricsCollected: number,
+    dataQuality: Record<string, any> };
     bottleneckAnalysis: { totalBottlenecks: number;
-        criticalBottlenecks: number;
-       , categories: Record<string, number> };
+        criticalBottlenecks: number,
+    categories: Record<string, number> };
     anomalyDetection: { totalAnomalies: number;
-        criticalAnomalies: number;
-       , detectionTypes: Record<string, number> };
+        criticalAnomalies: number,
+    detectionTypes: Record<string, number> };
     systemAssessment: OverallAssessment;
     }
 
@@ -70,8 +70,8 @@ interface Report { type: string,
     title: string;
     summary?: ReportSummary;
     technicalDetails?: TechnicalDetails;
-    rawResults?: DiagnosticResults;
-   , generatedAt: string ,}
+    rawResults?: DiagnosticResults,
+    generatedAt: string ,}
 
 interface Recommendation { type: string;
     priority: 'high' | 'medium' | 'low';
@@ -80,14 +80,14 @@ interface Recommendation { type: string;
     description: string;
     actions: string[];
     estimatedImpact: string;
-    implementationEffort: string;
-   , timeToImplement: string }
+    implementationEffort: string,
+    timeToImplement: string }
 
 interface ReportingCapabilities { reportTypes: string[];
     outputFormats: string[];
     recommendationTypes: string[];
-    customTemplates: boolean;
-   , realTimeReporting: boolean }
+    customTemplates: boolean,
+    realTimeReporting: boolean }
 
 interface ReportingConfig { reportTemplate?: string;
     recommendationSettings?: Record<string, any>;
@@ -107,7 +107,7 @@ export class DiagnosticReporter {
         // Reporting components
         this.reportGenerator = new DiagnosticReportGenerator();''
         this.recommendationEngine = new RecommendationEngine('';
-    })'
+    }''
         console.log('[DiagnosticReporter] Reporter, component initialized'); }'
     }
     
@@ -141,36 +141,36 @@ export class DiagnosticReporter {
     async generateSummaryReport(diagnosticSession: DiagnosticSession): Promise<Report> { const summary: ReportSummary = {
             sessionId: diagnosticSession.id,
             duration: diagnosticSession.duration,
-            timestamp: new Date().toISOString(''';
-           , performanceLevel: diagnosticSession.results.overallAssessment? .performanceLevel || 'unknown', : undefined
-            criticalIssues: diagnosticSession.results.overallAssessment? .criticalIssues?.length || 0, : undefined
-            bottlenecks: diagnosticSession.results.bottlenecks? .length || 0, : undefined
-            anomalies: diagnosticSession.results.anomalies? .length || 0, : undefined
-            recommendations: diagnosticSession.results.recommendations? .length || 0 ,};
+            timestamp: new Date().toISOString(''',
+    performanceLevel: diagnosticSession.results.overallAssessment?.performanceLevel || 'unknown', : undefined
+            criticalIssues: diagnosticSession.results.overallAssessment?.criticalIssues?.length || 0, : undefined
+            bottlenecks: diagnosticSession.results.bottlenecks?.length || 0, : undefined
+            anomalies: diagnosticSession.results.anomalies?.length || 0, : undefined
+            recommendations: diagnosticSession.results.recommendations?.length || 0 ,};
         ';
 
         return { : undefined''
-            type: 'summary',)';
-            title: 'Performance Diagnostic Summary');
-           , summary: summary, };
-            generatedAt: new Date().toISOString(); }
-        }
+            type: 'summary','';
+            title: 'Performance Diagnostic Summary'),
+    summary: summary, };
+            generatedAt: new Date().toISOString(); 
+    }
     
     /**
      * Generate detailed technical report'
      */''
     async generateTechnicalReport(diagnosticSession: DiagnosticSession): Promise<Report> { const technicalDetails: TechnicalDetails = {
             dataCollection: {
-                duration: diagnosticSession.results.dataCollection? .duration || 0, : undefined
-                sampleCount: diagnosticSession.results.dataCollection? .sampleCount || 0, : undefined
-                metricsCollected: diagnosticSession.results.dataCollection? .metricsCollected || 0, : undefined 
-                dataQuality: diagnosticSession.results.dataCollection? .dataQuality || {,}, : undefined'
-            bottleneckAnalysis: { totalBottlenecks: diagnosticSession.results.bottlenecks? .length || 0, : undefined''
-                criticalBottlenecks: diagnosticSession.results.bottlenecks? .filter(b => b.severity === 'critical).length || 0, : undefined'';
+                duration: diagnosticSession.results.dataCollection?.duration || 0, : undefined
+                sampleCount: diagnosticSession.results.dataCollection?.sampleCount || 0, : undefined
+                metricsCollected: diagnosticSession.results.dataCollection?.metricsCollected || 0, : undefined 
+                dataQuality: diagnosticSession.results.dataCollection?.dataQuality || {,}, : undefined'
+            bottleneckAnalysis: { totalBottlenecks: diagnosticSession.results.bottlenecks?.length || 0, : undefined''
+                criticalBottlenecks: diagnosticSession.results.bottlenecks?.filter(b => b.severity === 'critical'.length || 0, : undefined'';
                 categories: this.categorizeIssues(diagnosticSession.results.bottlenecks || []) ,}
             };
-            anomalyDetection: { totalAnomalies: diagnosticSession.results.anomalies? .length || 0, : undefined''
-                criticalAnomalies: diagnosticSession.results.anomalies? .filter(a => a.severity === 'critical).length || 0, : undefined'';
+            anomalyDetection: { totalAnomalies: diagnosticSession.results.anomalies?.length || 0, : undefined''
+                criticalAnomalies: diagnosticSession.results.anomalies?.filter(a => a.severity === 'critical'.length || 0, : undefined'';
                 detectionTypes: this.categorizeAnomalies(diagnosticSession.results.anomalies || []) ,}
             };
             systemAssessment: diagnosticSession.results.overallAssessment || {} as OverallAssessment
@@ -180,10 +180,10 @@ export class DiagnosticReporter {
         return { ''
             type: 'technical',
             title: 'Technical Performance Analysis Report';
-            technicalDetails: technicalDetails;
-           , rawResults: diagnosticSession.results, };
-            generatedAt: new Date().toISOString(); }
-        }
+            technicalDetails: technicalDetails,
+    rawResults: diagnosticSession.results, };
+            generatedAt: new Date().toISOString(); 
+    }
     
     /**
      * Categorize issues by type'
@@ -220,7 +220,7 @@ export class DiagnosticReporter {
     /**
      * Format report for display'
      */''
-    formatReport(report: Report, format: 'text' | 'html' | 'json' = 'text): string { ''
+    formatReport(report: Report, format: 'text' | 'html' | 'json' = 'text': string { ''
         switch(format) {'
 
             case 'html':'';
@@ -236,7 +236,7 @@ export class DiagnosticReporter {
      */''
     formatReportAsText(report: Report): string { const lines: string[] = [],
 
-        lines.push(`=== ${report.title || 'Diagnostic, Report) ===`);''
+        lines.push(`=== ${report.title || 'Diagnostic, Report) ===`';''
         lines.push(`Generated: ${report.generatedAt)`'),''
         lines.push();
 
@@ -269,10 +269,10 @@ export class DiagnosticReporter {
 
             lines.push(`  Metrics Collected: ${report.technicalDetails.dataCollection.metricsCollected}`'},' }
 
-            lines.push('''});
+            lines.push('''}';
         }
 
-        return lines.join('\n);
+        return lines.join('\n';
     }
     
     /**
@@ -305,13 +305,13 @@ export class DiagnosticReporter {
     /**
      * Get reporting capabilities"
      */""
-    getReportingCapabilities("): ReportingCapabilities { return { ""
+    getReportingCapabilities(): ReportingCapabilities { return { ""
             reportTypes: ['comprehensive', 'summary', 'technical'],
             outputFormats: ['text', 'html', 'json'],
             recommendationTypes: ['optimization', 'configuration', 'architecture', 'monitoring'],
             customTemplates: true, };
-            realTimeReporting: true }
-        }
+            realTimeReporting: true 
+    }
     
     /**
      * Configure reporting components
@@ -403,9 +403,9 @@ class RecommendationEngine { private generators: Map<string, any>;
                     type: 'optimization',
                     priority: 'high',
                     category: 'rendering',
-                    title: 'フレームレート最適化',)';
-                    description: 'レンダリングパイプラインの最適化によりフレームレートを改善')';
-                   , actions: ['';
+                    title: 'フレームレート最適化','';
+                    description: 'レンダリングパイプラインの最適化によりフレームレートを改善')',
+    actions: ['';
                         'AdaptiveQualityController の設定確認',
                         'レンダリング負荷の軽減',
                         'フレームペーシングの調整',]';
@@ -421,9 +421,9 @@ class RecommendationEngine { private generators: Map<string, any>;
                     type: 'memory',
                     priority: 'high',
                     category: 'memory_management',
-                    title: 'メモリ使用量最適化',)';
-                    description: 'メモリ管理の改善により安定性を向上')';
-                   , actions: ['';
+                    title: 'メモリ使用量最適化','';
+                    description: 'メモリ管理の改善により安定性を向上')',
+    actions: ['';
                         'MemoryManager の設定見直し',
                         'オブジェクトプールの効率化',
                         'メモリリークの修正',]';
@@ -439,9 +439,9 @@ class RecommendationEngine { private generators: Map<string, any>;
                     type: 'rendering',
                     priority: 'medium',
                     category: 'rendering_optimization',
-                    title: 'レンダリング効率改善',)';
-                    description: 'レンダリング処理の最適化')';
-                   , actions: ['';
+                    title: 'レンダリング効率改善','';
+                    description: 'レンダリング処理の最適化')',
+    actions: ['';
                         'ダーティリージョン管理の改善',
                         'バッチレンダリングの実装',
                         'レイヤー構成の最適化',]';
@@ -531,7 +531,7 @@ class DiagnosticReportGenerator { private templates: Map<string, ReportTemplate>
     }
 
     async generate(diagnosticSession: DiagnosticSession): Promise<Report> { ''
-        const templateName = diagnosticSession.options.detailLevel || 'comprehensive';''
+        const templateName = diagnosticSession.options.detailLevel || 'comprehensive';
         const template = this.templates.get(templateName) || this.templates.get('comprehensive)!;
 
         return await template.generate(diagnosticSession); }
@@ -558,8 +558,8 @@ class ComprehensiveReportTemplate implements ReportTemplate { ''
         return { ''
             type: 'comprehensive',
             title: 'Comprehensive Performance Diagnostic Report', };
-            generatedAt: new Date().toISOString(); }
-        }
+            generatedAt: new Date().toISOString(); 
+    }
 }
 ';
 
@@ -568,8 +568,8 @@ class SummaryReportTemplate implements ReportTemplate { ''
         return { ''
             type: 'summary',
             title: 'Performance Diagnostic Summary', };
-            generatedAt: new Date().toISOString(); }
-        }
+            generatedAt: new Date().toISOString(); 
+    }
 }
 ';
 
@@ -579,4 +579,4 @@ class TechnicalReportTemplate implements ReportTemplate { ''
             type: 'technical',
             title: 'Technical Performance Analysis Report',' };
 
-            generatedAt: new Date().toISOString(') }'
+            generatedAt: new Date().toISOString() }'

@@ -1,20 +1,20 @@
-import { getErrorHandler  } from '../../utils/ErrorHandler.js';''
-import { getLocalizationManager  } from '../../core/LocalizationManager.js';''
-import type { AudioManager } from '../../audio/AudioManager.js';''
-import type { ConfigurationManager } from '../../core/ConfigurationManager.js';''
-import type { ErrorHandler } from '../../utils/ErrorHandler.js';''
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
+import { getLocalizationManager  } from '../../core/LocalizationManager.js';
+import type { AudioManager } from '../../audio/AudioManager.js';
+import type { ConfigurationManager } from '../../core/ConfigurationManager.js';
+import type { ErrorHandler } from '../../utils/ErrorHandler.js';
 import type { LocalizationManager } from '../../core/LocalizationManager.js';
 
 /**
  * Audio settings file format interface
  */
 interface AudioSettingsFile { version: string,
-    timestamp: string;
-   , volumes: {
+    timestamp: string,
+    volumes: {
         maste;r: number;
         bgm: number;
-        sfx: number;
-       , muted: boolean ,};
+        sfx: number,
+    muted: boolean ,};
     quality?: { sampleRate?: number;
         bufferSize?: number;
         compression?: boolean; };
@@ -35,7 +35,7 @@ type NotificationCallback = (message: string, type: 'success' | 'error' | 'info'
 /**
  * Config change callback parameters'
  */''
-type ConfigChangeCategory = 'volume' | 'mute';''
+type ConfigChangeCategory = 'volume' | 'mute';
 type ConfigChangeType = 'master' | 'bgm' | 'sfx' | 'all';
 
 /**
@@ -67,35 +67,34 @@ export class AudioSettingsDataManager {
     /**
      * 設定をエクスポート
      */''
-    async exportSettings(''';
+    async exportSettings('''
                 version: '1.0',
-                timestamp: new Date(''';
-                   , master: this.audioManager.getVolume('master',
-                    bgm: this.audioManager.getVolume('bgm',)';
-                    sfx: this.audioManager.getVolume('sfx',)';
+                timestamp: new Date(''',
+    master: this.audioManager.getVolume('master',
+                    bgm: this.audioManager.getVolume('bgm','';
+                    sfx: this.audioManager.getVolume('sfx','';
                     muted: this.configManager.get('audio.volumes.muted'');
                 },
 
                 quality: { ''
-                    sampleRate: this.configManager.get('audio.quality.sampleRate',)';
-                    bufferSize: this.configManager.get('audio.quality.bufferSize',)';
-                    compression: this.configManager.get('audio.effects.compression'' ,};
+                    sampleRate: this.configManager.get('audio.quality.sampleRate','';
+                    bufferSize: this.configManager.get('audio.quality.bufferSize','';
+                    compression: this.configManager.get('audio.effects.compression'' ,}
                 effects: { ''
-                    reverb: this.configManager.get('audio.effects.reverb',)';
-                    compression: this.configManager.get('audio.effects.compression',)';
-                    environmentalAudio: this.configManager.get('audio.effects.environmentalAudio ,};
-                equalizer: (this.audioManager as any).audioController ?   : undefined'';
-                    (this.audioManager, as any).audioController.getEqualizerSettings(''';
+                    reverb: this.configManager.get('audio.effects.reverb','';
+                    compression: this.configManager.get('audio.effects.compression','';
+                    environmentalAudio: this.configManager.get('audio.effects.environmentalAudio ,}
+                equalizer: (this.audioManager as any).audioController ? undefined : undefined'';
+                    (this.audioManager, as any).audioController.getEqualizerSettings('''
                     visualFeedback: this.configManager.get('audio.accessibility.visualFeedback',
-                    hapticFeedback: this.configManager.get('audio.accessibility.hapticFeedback',)';
-                    captioning: this.configManager.get('audio.accessibility.captioning',)';
-                    audioDescriptions: this.configManager.get('audio.accessibility.audioDescriptions);
-                }
-            };
+                    hapticFeedback: this.configManager.get('audio.accessibility.hapticFeedback','';
+                    captioning: this.configManager.get('audio.accessibility.captioning','';
+                    audioDescriptions: this.configManager.get('audio.accessibility.audioDescriptions';
+    };
             ';
             // JSONファイルとしてダウンロード
             const json = JSON.stringify(settings, null, 2);''
-            const blob = new Blob([json], { type: 'application/json ),''
+            const blob = new Blob([json], { type: 'application/json ',''
             const url = URL.createObjectURL(blob);
 
             const a = document.createElement('a);
@@ -120,17 +119,17 @@ export class AudioSettingsDataManager {
             ' }'
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'UI_ERROR', {)'
+            this.errorHandler.handleError(error, 'UI_ERROR', {''
                 component: 'AudioSettingsDataManager',')';
                 operation: 'exportSettings'),' }
 
             }');
 
-            this.audioManager.playSound('error', { volume: 0.5 ),''
+            this.audioManager.playSound('error', { volume: 0.5 ',''
             this._showNotification()';
                 this.localizationManager.getText('audio.settings.export.error''),
                 'error';
-            ); }
+            '; }
     }
     
     /**
@@ -138,14 +137,14 @@ export class AudioSettingsDataManager {
      */''
     async importSettings()';
             const input = document.createElement('input'');''
-            input.type = 'file';''
-            input.accept = '.json';''
+            input.type = 'file';
+            input.accept = '.json';
             input.style.display = 'none';
 
             return new Promise((resolve, reject) => {  ''
                 input.addEventListener('change', async (e: Event) => {
                     const target = e.target as HTMLInputElement;
-                    const file = target.files? .[0];
+                    const file = target.files?.[0];
                     if(!file) {
                         
                     ,}
@@ -158,7 +157,7 @@ export class AudioSettingsDataManager {
                         ';
                         // 設定ファイルを検証
                         if(!this.validateSettingsFile(settings)) {''
-                            throw new Error('Invalid, settings file, format); }', ';
+                            throw new Error('Invalid, settings file, format'; }', ';
                         // 確認ダイアログ
                         const confirm = window.confirm()';
                             this.localizationManager.getText('audio.settings.import.confirm);
@@ -179,20 +178,20 @@ export class AudioSettingsDataManager {
                             'success''';
                         ');
 
-                        console.log('Audio, settings imported, successfully);
+                        console.log('Audio settings imported successfully');
                         resolve(settings');
 
                         ' }'
 
                     } catch (parseError) {
                         this.errorHandler.handleError(parseError, 'UI_ERROR', {''
-                            component: 'AudioSettingsDataManager',)';
+                            component: 'AudioSettingsDataManager','';
                             operation: 'importSettings',')';
                             phase: 'parsing'),' }
 
                         }');
 
-                        this.audioManager.playSound('error', { volume: 0.5 ),''
+                        this.audioManager.playSound('error', { volume: 0.5 ',''
                         this._showNotification()';
                             this.localizationManager.getText('audio.settings.import.parseError''),
                             'error';
@@ -207,9 +206,9 @@ export class AudioSettingsDataManager {
                 input.click();
             });
 
-        } catch (error) { this.errorHandler.handleError(error, 'UI_ERROR', {)'
+        } catch (error) { this.errorHandler.handleError(error, 'UI_ERROR', {''
                 component: 'AudioSettingsDataManager',')';
-                operation: 'importSettings' ,});
+                operation: 'importSettings' ,}';
             throw error;
         }
     }
@@ -219,29 +218,29 @@ export class AudioSettingsDataManager {
      */'
     async resetSettings(): Promise<boolean> { try {'
             const confirm = window.confirm()';
-                this.localizationManager.getText('audio.settings.confirmReset);''
+                this.localizationManager.getText('audio.settings.confirmReset';''
             if(!confirm) return false;
             ';
             // デフォルト値に戻す
-            await this.configManager.set('audio.volumes.master', 1.0);''
-            await this.configManager.set('audio.volumes.bgm', 0.7);''
-            await this.configManager.set('audio.volumes.sfx', 0.8);''
-            await this.configManager.set('audio.volumes.muted', false);''
-            await this.configManager.set('audio.effects.reverb', true);''
-            await this.configManager.set('audio.effects.compression', true);
+            await this.configManager.set('audio.volumes.master', 1.0';''
+            await this.configManager.set('audio.volumes.bgm', 0.7';''
+            await this.configManager.set('audio.volumes.sfx', 0.8';''
+            await this.configManager.set('audio.volumes.muted', false';''
+            await this.configManager.set('audio.effects.reverb', true';''
+            await this.configManager.set('audio.effects.compression', true';
             ';
             // AudioManagerの設定を同期
             this.audioManager.syncWithConfig()';
-            this.audioManager.playSound('success', { volume: 0.5 )),
+            this.audioManager.playSound('success', { volume: 0.5 )',
 
             console.log('Audio, settings reset, to defaults');
             return true;
 
             ' }'
 
-        } catch (error) { this.errorHandler.handleError(error, 'UI_ERROR', {)'
+        } catch (error) { this.errorHandler.handleError(error, 'UI_ERROR', {''
                 component: 'AudioSettingsDataManager',')';
-                operation: 'resetSettings' ,});
+                operation: 'resetSettings' ,}';
             return false;
     
     /**
@@ -286,10 +285,10 @@ export class AudioSettingsDataManager {
             // 音量設定を適用
             if(settings.volumes) {'
 
-                await this.configManager.set('audio.volumes.master', settings.volumes.master);''
-                await this.configManager.set('audio.volumes.bgm', settings.volumes.bgm);''
-                await this.configManager.set('audio.volumes.sfx', settings.volumes.sfx);''
-                if('muted' in, settings.volumes) {'
+                await this.configManager.set('audio.volumes.master', settings.volumes.master';''
+                await this.configManager.set('audio.volumes.bgm', settings.volumes.bgm';''
+                await this.configManager.set('audio.volumes.sfx', settings.volumes.sfx';''
+                if('muted' in, settings.volumes' {'
             }
 
                     await this.configManager.set('audio.volumes.muted', settings.volumes.muted); }
@@ -301,33 +300,33 @@ export class AudioSettingsDataManager {
                 if(settings.quality.sampleRate) {'
             }
 
-                    await this.configManager.set('audio.quality.sampleRate', settings.quality.sampleRate); }
+                    await this.configManager.set('audio.quality.sampleRate', settings.quality.sampleRate'; }
 
                 }''
                 if(settings.quality.bufferSize) {', ';
 
                 }
 
-                    await this.configManager.set('audio.quality.bufferSize', settings.quality.bufferSize); }
+                    await this.configManager.set('audio.quality.bufferSize', settings.quality.bufferSize'; }
 }
             ';
             // エフェクト設定を適用
             if(settings.effects) {'
 
-                if('reverb' in, settings.effects) {'
+                if('reverb' in, settings.effects' {'
             }
 
-                    await this.configManager.set('audio.effects.reverb', settings.effects.reverb); }
+                    await this.configManager.set('audio.effects.reverb', settings.effects.reverb'; }
 
                 }''
-                if('compression' in, settings.effects) {', ';
+                if('compression' in, settings.effects' {', ';
 
                 }
 
-                    await this.configManager.set('audio.effects.compression', settings.effects.compression); }
+                    await this.configManager.set('audio.effects.compression', settings.effects.compression'; }
 
                 }''
-                if('environmentalAudio' in, settings.effects) {', ';
+                if('environmentalAudio' in, settings.effects' {', ';
 
                 }
 
@@ -349,9 +348,9 @@ export class AudioSettingsDataManager {
             // AudioManagerの設定を同期
             this.audioManager.syncWithConfig();
 
-        } catch (error) { this.errorHandler.handleError(error, 'UI_ERROR', {)'
+        } catch (error) { this.errorHandler.handleError(error, 'UI_ERROR', {''
                 component: 'AudioSettingsDataManager',')';
-                operation: 'applyImportedSettings' ,});
+                operation: 'applyImportedSettings' ,}';
             throw error;
         }
     }
@@ -360,7 +359,7 @@ export class AudioSettingsDataManager {
      * 設定変更の監視を設定
      */'
     setupConfigWatchers(): Set<any> { ''
-        const configWatchers = new Set<any>(');
+        const configWatchers = new Set<any>();
         ';
         // 音量変更の監視
         const volumeWatchers = ['master', 'bgm', 'sfx].map(type => { ');''
@@ -371,7 +370,7 @@ export class AudioSettingsDataManager {
                 this._onConfigChange('volume', type as ConfigChangeType, newValue});
             });
 
-        });''
+        }';''
         volumeWatchers.forEach(w => w && configWatchers.add(w));
         ';
         // ミュート状態の監視
@@ -379,7 +378,7 @@ export class AudioSettingsDataManager {
 
             this._onConfigChange('mute', 'all', newValue); }
 
-        });''
+        }';''
         if (muteWatcher) configWatchers.add(muteWatcher);
         
         return configWatchers;
@@ -399,7 +398,7 @@ export class AudioSettingsDataManager {
      */'
     private _onConfigChange(category: ConfigChangeCategory, type: ConfigChangeType, value: number | boolean): void { ' }'
 
-        console.log(`Config, changed: ${category}.${type} = ${value}`'});
+        console.log(`Config, changed: ${category}.${type} = ${value}`'}';
         // UIの更新が必要な場合の処理
     }''
 }

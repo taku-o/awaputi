@@ -5,8 +5,8 @@
  * Requirements: 4.4, 7.1, 10.3
  */
 
-import { ConfigurationValidator  } from './performance-config/ConfigurationValidator.js';''
-import { ConfigurationApplier  } from './performance-config/ConfigurationApplier.js';''
+import { ConfigurationValidator  } from './performance-config/ConfigurationValidator.js';
+import { ConfigurationApplier  } from './performance-config/ConfigurationApplier.js';
 import { ConfigurationMonitor  } from './performance-config/ConfigurationMonitor.js';
 
 // Type definitions
@@ -20,13 +20,13 @@ interface ConfigStatus { initialized: boolean,
     pendingChanges: any[];
     errorCount: number;
     validator: any;
-    applier: any;
-   , monitor: any ,}
+    applier: any,
+    monitor: any ,}
 
 interface Components { validator: ConfigurationValidator;
     applier: ConfigurationApplier;
-    monitor: ConfigurationMonitor;
-   , errorHandler: ConfigErrorHandler
+    monitor: ConfigurationMonitor,
+    errorHandler: ConfigErrorHandler
     }
 
 interface ConfigurationOptions { validator?: any;
@@ -35,8 +35,8 @@ interface ConfigurationOptions { validator?: any;
 
 interface ErrorRecord { key: string,
     error: string;
-    timestamp: number;
-   , type: string;
+    timestamp: number,
+    type: string;
     recovery?: RecoveryResult;
     recoveryFailed?: string; ,}
 
@@ -127,8 +127,8 @@ export class PerformanceConfigurationIntegration {
      * Update multiple performance configurations
      */''
     async updatePerformanceConfig(configUpdates: Record<string, any>): Promise<any[]> { return await this.applier.applyConfigChanges(configUpdates, {)'
-            reason: 'manual_update');
-           , timestamp: Date.now(), });
+            reason: 'manual_update'),
+    timestamp: Date.now(), });
     }
 
     /**
@@ -170,10 +170,10 @@ export class PerformanceConfigurationIntegration {
             lastSyncTime: this.syncManager.getLastSyncTime();
             pendingChanges: this.syncManager.getPendingChanges();
             errorCount: this.errorHandler.getErrorCount();
-            validator: this.validator.getValidatorStatus();
-           , applier: this.applier.getApplierStatus(), };
-            monitor: this.monitor.getMonitorStatus(); }
-        }
+            validator: this.validator.getValidatorStatus(),
+    applier: this.applier.getApplierStatus(), };
+            monitor: this.monitor.getMonitorStatus(); 
+    }
 
     /**
      * Get active integrations - delegated to monitor
@@ -210,10 +210,9 @@ export class PerformanceConfigurationIntegration {
      * Get component references for advanced usage
      */
     getComponents(): Components { return { validator: this.validator,
-            applier: this.applier;
-           , monitor: this.monitor, };
-            errorHandler: this.errorHandler }
-        }
+            applier: this.applier monitor: this.monitor };
+            errorHandler: this.errorHandler 
+    }
 
     /**
      * Cleanup integration system
@@ -282,8 +281,8 @@ class ConfigErrorHandler { private errors: ErrorRecord[]
     async handleConfigError(key: string, error: Error): Promise<ErrorRecord> { const errorRecord: ErrorRecord = {
             key,
             error: error.message;
-            timestamp: Date.now();
-           , type: this.classifyError(error ,};
+            timestamp: Date.now(),
+    type: this.classifyError(error ,};
 
         this.errors.push(errorRecord);
         
@@ -307,9 +306,9 @@ class ConfigErrorHandler { private errors: ErrorRecord[]
     }
 
     classifyError(error: Error): string { ''
-        if(error.message.includes('Validation, failed)) return 'validation_error';''
-        if(error.message.includes('sync)) return 'sync_error';''
-        if(error.message.includes('network)) return 'network_error';''
+        if(error.message.includes('Validation, failed)' return 'validation_error';
+        if(error.message.includes('sync)' return 'sync_error';
+        if(error.message.includes('network)' return 'network_error';
         return 'unknown_error'; }
 
     getErrorCount(): number { return this.errors.length; }

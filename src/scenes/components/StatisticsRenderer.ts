@@ -4,7 +4,7 @@
  */
 
 interface GameEngine { errorHandler?: {
-        handleError(erro;r: Error, context: any): void ,};
+        handleError(error: Error, context: any): void ,};
     debugMode?: boolean;
 }
 
@@ -13,8 +13,8 @@ interface EventBus { on(event: string, callback: Function): void,
     emit(event: string, data?: any): void }
 
 interface AccessibilitySettings { highContrast: boolean,
-    largeText: boolean;
-   , reducedMotion: boolean ,}
+    largeText: boolean,
+    reducedMotion: boolean ,}
 
 interface ComponentState {
     accessibilitySettings: AccessibilitySettings;
@@ -24,13 +24,13 @@ interface ColorScheme { background: string;
     border: string;
     title: string;
     label: string;
-    value: string;
-   , accent: string }
+    value: string,
+    accent: string }
 
 interface FontScheme { title: string;
     subtitle: string;
-    normal: string;
-   , small: string }
+    normal: string,
+    small: string }
 
 interface StatisticsData { basic?: {
         totalGamesPlaye;d?: number;
@@ -61,8 +61,8 @@ interface StatisticsData { basic?: {
 interface StatItem { label: string,
     value: string ,}
 
-interface ResponsiveLayout { columns: number;
-   , fontSize: string }
+interface ResponsiveLayout { columns: number,
+    fontSize: string }
 
 export class StatisticsRenderer {
     private gameEngine: GameEngine;
@@ -94,11 +94,11 @@ export class StatisticsRenderer {
         
         // アクセシビリティ設定
         this.accessibilitySettings = state.accessibilitySettings || {
-            highContrast: false;
-           , largeText: false;
+            highContrast: false,
+    largeText: false;
     ,}
-            reducedMotion: false }
-        };
+            reducedMotion: false 
+    };
         // スタイル設定
         this.colors = this.getColorScheme();
         this.fonts = this.getFontScheme();
@@ -110,9 +110,8 @@ export class StatisticsRenderer {
      * イベントリスナーの設定
      */''
     private setupEventListeners()';
-        this.eventBus.on('statistics-data-updated', (data: StatisticsData) => { this.statisticsData = data;' }
-
-        }');
+        this.eventBus.on('statistics-data-updated', (data: StatisticsData) => { this.statisticsData = data;' 
+    }');
         ';
         // スクロール位置更新イベント
         this.eventBus.on('statistics-scroll-update', (position: number) => { this.scrollPosition = position; });
@@ -133,8 +132,8 @@ export class StatisticsRenderer {
 
                 value: '#FFFFFF',' };
 
-                accent: '#FFFF00' }
-            } else {  return { ''
+                accent: '#FFFF00' 
+    } else {  return { ''
                 background: '#1a1a2e',
                 border: '#333333',
                 title: '#4a90e2',
@@ -142,8 +141,8 @@ export class StatisticsRenderer {
 
                 value: '#ffffff',' };
 
-                accent: '#4a90e2' }
-            }
+                accent: '#4a90e2' 
+    }
     }
     
     /**
@@ -169,7 +168,7 @@ export class StatisticsRenderer {
     render(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { try {
             this.renderDetailedStatistics(context, x, y, width, height);' }'
 
-        } catch (error) { this.errorHandler? .handleError(error as Error, { : undefined)'
+        } catch (error) { this.errorHandler?.handleError(error as Error, { : undefined)'
                 context: 'StatisticsRenderer.render',')';
                 details: '統計レンダリングでエラーが発生しました' ,});
             this.renderErrorFallback(context, x, y, width, height, error as Error);
@@ -239,9 +238,9 @@ export class StatisticsRenderer {
         // セクションタイトル
         context.fillStyle = this.colors.title;
         context.font = this.fonts.title;''
-        context.textAlign = 'left';''
-        context.textBaseline = 'middle';''
-        context.fillText('基本統計', x + 15, y + 25);
+        context.textAlign = 'left';
+        context.textBaseline = 'middle';
+        context.fillText('基本統計', x + 15, y + 25';
         
         // 統計項目を描画
         const items: StatItem[] = ['';
@@ -284,18 +283,18 @@ export class StatisticsRenderer {
         // セクションタイトル
         context.fillStyle = this.colors.title;
         context.font = this.fonts.title;''
-        context.textAlign = 'left';''
-        context.textBaseline = 'middle';''
-        context.fillText('泡統計', x + 15, y + 25);
+        context.textAlign = 'left';
+        context.textBaseline = 'middle';
+        context.fillText('泡統計', x + 15, y + 25';
         
         // 基本泡統計
         const items: StatItem[] = ['';
             { label: '総破壊数', value: (bubbles.totalPopped || 0).toLocaleString()'
             { label: '総未破壊数', value: (bubbles.totalMissed || 0).toLocaleString('' ,}
 
-            { label: '精度', value: bubbles.accuracy || '0%' ,},)'
+            { label: '精度', value: bubbles.accuracy || '0%' ,},''
             { label: '平均反応時間', value: bubbles.averageReactionTime || '0ms' ,},')]'
-            { label: 'お気に入り泡', value: this.getBubbleTypeName(bubbles.favoriteType? .type) || 'なし' ,}]
+            { label: 'お気に入り泡', value: this.getBubbleTypeName(bubbles.favoriteType?.type) || 'なし' ,}]
         ];
         
         let itemY = y + 50; : undefined
@@ -306,8 +305,8 @@ export class StatisticsRenderer {
             // ラベル
             context.fillStyle = this.colors.label;
             context.font = this.fonts.normal;''
-            context.textAlign = 'left';''
-            context.textBaseline = 'middle';''
+            context.textAlign = 'left';
+            context.textBaseline = 'middle';
             context.fillText(item.label, x + 15, itemY);
             
             // 値
@@ -349,9 +348,9 @@ export class StatisticsRenderer {
         // セクションタイトル
         context.fillStyle = this.colors.title;
         context.font = this.fonts.title;''
-        context.textAlign = 'left';''
-        context.textBaseline = 'middle';''
-        context.fillText('コンボ統計', x + 15, y + 25);
+        context.textAlign = 'left';
+        context.textBaseline = 'middle';
+        context.fillText('コンボ統計', x + 15, y + 25';
         
         // コンボ統計項目
         const items: StatItem[] = ['';
@@ -393,9 +392,9 @@ export class StatisticsRenderer {
         // セクションタイトル
         context.fillStyle = this.colors.title;
         context.font = this.fonts.title;''
-        context.textAlign = 'left';''
-        context.textBaseline = 'middle';''
-        context.fillText('ステージ統計', x + 15, y + 25);
+        context.textAlign = 'left';
+        context.textBaseline = 'middle';
+        context.fillText('ステージ統計', x + 15, y + 25';
         
         // ステージ統計項目
         const items: StatItem[] = ['';
@@ -428,8 +427,8 @@ export class StatisticsRenderer {
         for(const, item of, items) {
             // ラベル
             context.fillStyle = this.colors.label;''
-            context.textAlign = 'left';''
-            context.textBaseline = 'middle';''
+            context.textAlign = 'left';
+            context.textBaseline = 'middle';
             context.fillText(item.label, x, itemY);
             
             // 値
@@ -453,8 +452,8 @@ export class StatisticsRenderer {
         // 小見出し
         context.fillStyle = this.colors.accent;
         context.font = this.fonts.subtitle;''
-        context.textAlign = 'left';''
-        context.textBaseline = 'middle';''
+        context.textAlign = 'left';
+        context.textBaseline = 'middle';
         context.fillText('上位泡タイプ', x, y);
         
         // 泡タイプをソート
@@ -473,7 +472,7 @@ export class StatisticsRenderer {
             ';
 
             context.fillStyle = this.colors.label;''
-            context.textAlign = 'left';''
+            context.textAlign = 'left';
             context.fillText(`${typeName}:`, x + 10, typeY'};
             ';
 
@@ -497,11 +496,11 @@ export class StatisticsRenderer {
      * @param height - 描画高さ'
      */''
     private renderNoDataMessage(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#888888' : '#9CA3AF';''
-        context.font = this.accessibilitySettings.largeText ? '20px system-ui, -apple-system, sans-serif' : '16px system-ui, -apple-system, sans-serif';''
-        context.textAlign = 'center';''
-        context.textBaseline = 'middle';''
-        context.fillText('統計データがありません', x + width / 2, y + height / 2); }
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#888888' : '#9CA3AF';
+        context.font = this.accessibilitySettings.largeText ? '20px system-ui, -apple-system, sans-serif' : '16px system-ui, -apple-system, sans-serif';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillText('統計データがありません', x + width / 2, y + height / 2'; }
     
     /**
      * エラーフォールバックの描画
@@ -513,12 +512,12 @@ export class StatisticsRenderer {
      * @param error - エラーオブジェクト'
      */''
     private renderErrorFallback(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, error: Error): void { ''
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#FF0000' : '#FF6B6B';''
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#FF0000' : '#FF6B6B';
         context.fillRect(x, y, width, height);
 
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#333333';''
-        context.font = this.accessibilitySettings.largeText ? '18px sans-serif' : '16px sans-serif';''
-        context.textAlign = 'center';''
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#333333';
+        context.font = this.accessibilitySettings.largeText ? '18px sans-serif' : '16px sans-serif';
+        context.textAlign = 'center';
         context.textBaseline = 'middle';
 
         const errorText = '統計表示でエラーが発生しました';

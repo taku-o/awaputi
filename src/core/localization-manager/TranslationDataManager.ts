@@ -19,8 +19,8 @@ export interface AccessibilityCategoryStats {
 }
 
 export interface TranslationStats { loadedLanguages: string[];
-    languageCount: number;
-   , translations: Record<string, TranslationCategoryStats>,
+    languageCount: number,
+    translations: Record<string, TranslationCategoryStats>,
     accessibilityTranslations: Record<string, AccessibilityCategoryStats>, }
 
 export interface TranslationSearchOptions { caseSensitive?: boolean;
@@ -29,36 +29,36 @@ export interface TranslationSearchOptions { caseSensitive?: boolean;
 
 export interface TranslationSearchResult { language: string,
     key: string;
-    value: string | string[];
-   , category: TranslationCategory
+    value: string | string[],
+    category: TranslationCategory
     ,}
 
 export interface TranslationValidationResult { isValid: boolean;
     missingKeys: string[];
-    extraKeys: string[];
-   , invalidValues: string[] }
+    extraKeys: string[],
+    invalidValues: string[] }
 
 export interface TranslationExportOptions { includeAccessibility?: boolean;
     format?: TranslationExportFormat;
     languages?: string[]; }
 
 export interface TranslationImportResult { success: boolean,
-    importedLanguages: string[];
-   , errors: string[] ,}
+    importedLanguages: string[],
+    errors: string[] ,}
 
 export interface BulkTranslationOperation { language: string;
     key: string;
-    value: string | string[];
-   , operation: TranslationOperation
+    value: string | string[],
+    operation: TranslationOperation
     }
 
 export interface TranslationMergeResult { mergedKeys: number;
-    conflictKeys: string[];
-   , newKeys: number }
+    conflictKeys: string[],
+    newKeys: number }
 
 // 列挙型
-export type TranslationCategory = 'main' | 'accessibility';''
-export type TranslationExportFormat = 'json' | 'csv' | 'yaml';''
+export type TranslationCategory = 'main' | 'accessibility';
+export type TranslationExportFormat = 'json' | 'csv' | 'yaml';
 export type TranslationOperation = 'add' | 'update' | 'delete';
 ';
 // 定数
@@ -88,7 +88,7 @@ export class TranslationDataManager {
     /**
      * 翻訳データを初期化
      */''
-    private initializeTranslations(''';
+    private initializeTranslations('''
         this.translations.set('ja', { // メニュー
             'menu.title': 'BubblePop',
             'menu.subtitle': '泡割りゲーム',
@@ -167,7 +167,7 @@ export class TranslationDataManager {
                 '開放済みステージ',]';
                 '所持アイテム']';
             ],
-            'dataClear.execute': '削除実行',)';
+            'dataClear.execute': '削除実行','';
             'dataClear.cancel': 'キャンセル')';
             // 操作説明
             'help.title': '操作説明',
@@ -230,9 +230,8 @@ export class TranslationDataManager {
             'confirm.yes': 'はい',
             'confirm.no': 'いいえ',
             'confirm.ok': 'OK',
-            'confirm.cancel': 'キャンセル'' }
-
-        }');
+            'confirm.cancel': 'キャンセル'' 
+    }');
         ';
         // 英語翻訳
         this.translations.set('en', { // Menu
@@ -293,7 +292,7 @@ export class TranslationDataManager {
             'userInfo.tap': 'Total TAP',
             'userInfo.unlockedStages': 'Unlocked Stages',
             'userInfo.ownedItems': 'Owned Items',
-            'userInfo.highScores': 'High Scores',)';
+            'userInfo.highScores': 'High Scores','';
             'userInfo.noRecords': 'No records yet')';
             // Username
             'username.register': 'Register Username',')';
@@ -376,18 +375,17 @@ export class TranslationDataManager {
             'confirm.yes': 'Yes',
             'confirm.no': 'No',
             'confirm.ok': 'OK',
-            'confirm.cancel': 'Cancel'' }
-
-        }');
+            'confirm.cancel': 'Cancel'' 
+    }');
 
         this.loadedLanguages.add('ja'');''
-        this.loadedLanguages.add('en);
+        this.loadedLanguages.add('en';
     }
     
     /**
      * アクセシビリティ専用翻訳データの初期化'
      */''
-    private initializeAccessibilityTranslations(''';
+    private initializeAccessibilityTranslations('''
         this.accessibilityTranslations.set('ja', { // アクセシビリティ専用翻訳
             'accessibility.manager.title': 'アクセシビリティ設定',
             'accessibility.manager.description': 'すべてのユーザーに優しいゲーム体験を提供します',
@@ -434,7 +432,7 @@ export class TranslationDataManager {
             'accessibility.audio.vibrationFeedback': '振動フィードバック',
             'accessibility.audio.flashAlerts': '点滅アラート',
             'accessibility.audio.captionStyle': 'キャプションスタイル',
-            'accessibility.audio.captionSize': 'キャプションサイズ',)';
+            'accessibility.audio.captionSize': 'キャプションサイズ','';
             'accessibility.audio.captionPosition': 'キャプション位置')';
             // 運動機能アクセシビリティ
             'accessibility.motor.title': '運動機能支援',
@@ -495,7 +493,7 @@ export class TranslationDataManager {
             'accessibility.audio.vibrationFeedback': 'Vibration Feedback',
             'accessibility.audio.flashAlerts': 'Flash Alerts',
             'accessibility.audio.captionStyle': 'Caption Style',
-            'accessibility.audio.captionSize': 'Caption Size',)';
+            'accessibility.audio.captionSize': 'Caption Size','';
             'accessibility.audio.captionPosition': 'Caption Position')';
             // Motor Accessibility
             'accessibility.motor.title': 'Motor Function Assistance',
@@ -590,8 +588,8 @@ export class TranslationDataManager {
      * @returns 統計情報
      */
     getTranslationStats(): TranslationStats { const stats: TranslationStats = {
-            loadedLanguages: Array.from(this.loadedLanguages);
-           , languageCount: this.loadedLanguages.size, }
+            loadedLanguages: Array.from(this.loadedLanguages),
+    languageCount: this.loadedLanguages.size, }
             translations: {};
             accessibilityTranslations: {};
         // メイン翻訳の統計
@@ -599,15 +597,15 @@ export class TranslationDataManager {
             stats.translations[lang] = {
                 keyCount: Object.keys(translations).length;
         }
-                arrayCount: Object.values(translations).filter(v => Array.isArray(v).length }
-            }
+                arrayCount: Object.values(translations).filter(v => Array.isArray(v).length 
+    }
         
         // アクセシビリティ翻訳の統計
         for(const [lang, translations] of this.accessibilityTranslations.entries() {
             stats.accessibilityTranslations[lang] = {
         }
-                keyCount: Object.keys(translations).length }
-            }
+                keyCount: Object.keys(translations).length 
+    }
         
         return stats;
     }
@@ -641,8 +639,8 @@ export class TranslationDataManager {
                         value,');
         }
 
-                        category: 'main'); }
-}
+                        category: 'main'); 
+    }
         }
         
         // アクセシビリティ翻訳を検索
@@ -661,8 +659,8 @@ export class TranslationDataManager {
                             value,');
         }
 
-                            category: 'accessibility'); }
-}
+                            category: 'accessibility'); 
+    }
             }
         }
         
@@ -678,8 +676,8 @@ export class TranslationDataManager {
     validateTranslations(language: string, referenceLanguage: string = DEFAULT_FALLBACK_LANGUAGE): TranslationValidationResult { const result: TranslationValidationResult = {
             isValid: true;
             missingKeys: [];
-            extraKeys: [];
-           , invalidValues: [] };
+            extraKeys: [],
+    invalidValues: [] };
         const targetTranslations = this.translations.get(language);
         const referenceTranslations = this.translations.get(referenceLanguage);
         
@@ -715,7 +713,7 @@ export class TranslationDataManager {
 
                 result.invalidValues.push(key);' }'
 
-            } else if(Array.isArray(value) && value.some(item => typeof, item !== 'string) { ''
+            } else if(Array.isArray(value) && value.some(item => typeof, item !== 'string' { ''
                 result.invalidValues.push(key);' }'
 
             } else if(typeof, value === 'string' && value.trim() === '') { result.invalidValues.push(key); }
@@ -774,10 +772,10 @@ export class TranslationDataManager {
      * @param format データフォーマット
      * @returns インポート結果'
      */''
-    importTranslations(data: string, format: TranslationExportFormat = 'json): TranslationImportResult { const result: TranslationImportResult = {'
+    importTranslations(data: string, format: TranslationExportFormat = 'json': TranslationImportResult { const result: TranslationImportResult = {'
             success: false;
-            importedLanguages: [];
-           , errors: [] };
+            importedLanguages: [],
+    errors: [] };
         try { let parsedData: Record<string, any>;
 
             switch(format) {'
@@ -872,8 +870,8 @@ export class TranslationDataManager {
      */
     mergeTranslationData(language: string, newData: TranslationData, overwrite: boolean = false): TranslationMergeResult { const result: TranslationMergeResult = {
             mergedKeys: 0;
-            conflictKeys: [];
-           , newKeys: 0 };
+            conflictKeys: [],
+    newKeys: 0 };
         const existingData = this.translations.get(language) || {};
         
         for(const [key, value] of Object.entries(newData) {
@@ -912,11 +910,11 @@ export class TranslationDataManager {
 
                     const valueStr = Array.isArray(value) ? value.join('|'') : value;' }
 
-                    rows.push(`${language},${category},${key},"${valueStr"}"`"});
+                    rows.push(`${language},${category},${key},"${valueStr"}"`"}";
                 }
 }"
 
-        return rows.join('\n);
+        return rows.join('\n';
     }
     
     /**
@@ -935,7 +933,7 @@ export class TranslationDataManager {
 
                 for(const [key, value] of Object.entries(categoryData) { ' }'
 
-                    const valueStr = Array.isArray(value) ? `[${value.join(', ''})]` : value;''
+                    const valueStr = Array.isArray(value) ? `[${value.join(', ''}']` : value;''
                     yaml += `    ${key}: "${valueStr}"\n`;
                 }
 }
@@ -948,7 +946,7 @@ export class TranslationDataManager {
      * @returns 解析されたデータ"
      */""
     private parseCSV(csv: string): Record<string, any> { ""
-        const lines = csv.split('\n); }'
+        const lines = csv.split('\n'; }'
         const data: Record<string, any> = {};
         
         for(let, i = 1; i < lines.length; i++) {
@@ -965,7 +963,7 @@ export class TranslationDataManager {
             if (!data[language]) data[language] = {};''
             if(!data[language][category]) data[language][category] = {};
 
-            data[language][category][key] = cleanValue.includes('|'') ? cleanValue.split('|) : cleanValue;
+            data[language][category][key] = cleanValue.includes('|'') ? cleanValue.split('|' : cleanValue;
         }
         
         return data;
@@ -980,7 +978,7 @@ export class TranslationDataManager {
         const data: Record<string, any> = {};''
         const lines = yaml.split('\n'');
 
-        let currentLang = '';''
+        let currentLang = '';
         let currentCategory = '';
         
         for(const, line of, lines) {
@@ -992,12 +990,12 @@ export class TranslationDataManager {
         
         }
 
-                currentLang = line.split(':)[0]; }'
+                currentLang = line.split(':'[0]; }'
                 data[currentLang] = {} else if(line.match(/^  [a-z]+:/) { ''
-                currentCategory = line.trim(').split(':)[0]; }
+                currentCategory = line.trim().split(':)[0]; }
                 data[currentLang][currentCategory] = {} else if(line.match(/^    /) { ''
-                const [key, ...valueParts] = line.trim(').split(':'');''
-                const value = valueParts.join(':).trim(').replace(/^"|"$/g, '');
+                const [key, ...valueParts] = line.trim().split(':'');''
+                const value = valueParts.join(':'.trim().replace(/^"|"$/g, '');
                 data[currentLang][currentCategory][key] = value; }
         }
         

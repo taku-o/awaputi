@@ -8,8 +8,8 @@ interface PanelConfig { id: string,
     order: number;
     icon: string;
     shortcut: string;
-    category: string;
-   , description: string;
+    category: string,
+    description: string;
     onActivate?: () => void;
     onDeactivate?: () => void;
     [key: string]: any, }
@@ -17,8 +17,8 @@ interface PanelConfig { id: string,
 
 interface PanelStatistics { totalPanels: number,
     activePanels: number;
-    switchCount: number;
-   , sessionStartTime: number ,}
+    switchCount: number,
+    sessionStartTime: number ,}
 
 interface MainController { container?: HTMLElement;
     }
@@ -41,11 +41,11 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
         this.panelElements = new Map<string, HTMLElement>();
         this.panelStatistics = {
             totalPanels: 0;
-            activePanels: 0;
-           , switchCount: 0;
+            activePanels: 0,
+    switchCount: 0;
     ,}
-            sessionStartTime: Date.now(); }
-        }
+            sessionStartTime: Date.now(); 
+    }
 
     async _doInitialize(): Promise<void> { this.registerDefaultPanels();
         this.setupPanelEventHandlers(); }
@@ -58,8 +58,8 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
     registerPanel(id: string, config: Partial<PanelConfig>): void { const panelConfig: PanelConfig = {
             id: id,
             name: config.name || id,
-            content: config.content || '';
-           , visible: config.visible !== false,
+            content: config.content || '',
+    visible: config.visible !== false,
             order: config.order || this.panels.size,
             icon: config.icon || '',
             shortcut: config.shortcut || '',
@@ -83,7 +83,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      * @param config - パネル設定
      */''
     addPanelTab(id: string, config: PanelConfig): void { const controller = this.mainController as MainController;''
-        const tabsContainer = controller.container? .querySelector('.debug-tabs);''
+        const tabsContainer = controller.container?.querySelector('.debug-tabs';''
         if(!tabsContainer) return;
 
         const tab = document.createElement('div''); : undefined' 
@@ -119,7 +119,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      * @param config - パネル設定'
      */''
     addPanelContent(id: string, config: PanelConfig): void { const controller = this.mainController as MainController;''
-        const contentContainer = controller.container? .querySelector('.debug-content);''
+        const contentContainer = controller.container?.querySelector('.debug-content';''
         if(!contentContainer) return;
 
         const content = document.createElement('div''); : undefined' 
@@ -189,7 +189,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
 
         // パネル固有の初期化処理
         const panel = this.panels.get(panelId);
-        if (panel? .onActivate) { panel.onActivate(); }
+        if (panel?.onActivate) { panel.onActivate(); }
     }
 
     /**
@@ -219,7 +219,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
 
         // パネル固有のクリーンアップ処理
         const panel = this.panels.get(panelId);
-        if (panel? .onDeactivate) { panel.onDeactivate(); }
+        if (panel?.onDeactivate) { panel.onDeactivate(); }
     }
 
     /**
@@ -256,9 +256,9 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      * パネルUIを更新'
      */''
     updatePanelUI()';
-        const statusElement = controller.container? .querySelector('.debug-status);
+        const statusElement = controller.container?.querySelector('.debug-status);
         if (statusElement && this.activePanel) { const panel = this.panels.get(this.activePanel); : undefined 
-            statusElement.textContent = `Active: ${panel? .name,}`;
+            statusElement.textContent = `Active: ${panel?.name,}`;
         }
 
         // パネル統計の更新
@@ -273,7 +273,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
         ';
 
         const controller = this.mainController as MainController;''
-        const statsElement = controller.container? .querySelector('.panel-statistics);
+        const statsElement = controller.container?.querySelector('.panel-statistics);
         if(statsElement) {
             
         }
@@ -288,25 +288,25 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
     /**
      * デフォルトパネルを登録'
      */''
-    registerDefaultPanels(''';
+    registerDefaultPanels('''
         this.registerPanel('console', { ''
             name: 'Console',
             icon: '💻',
-            shortcut: 'Ctrl+1',)';
+            shortcut: 'Ctrl+1','';
             category: 'development',')';
             content: '<div class="console-output"></div><input type="text" class="console-input" placeholder="Enter command...">'),
-            onActivate: () => this.focusConsoleInput(''';
+            onActivate: () => this.focusConsoleInput('''
         this.registerPanel('performance', {''
             name: 'Performance',
             icon: '📊',
-            shortcut: 'Ctrl+2',)';
+            shortcut: 'Ctrl+2','';
             category: 'monitoring',')';
             content: '<div class="performance-charts"></div>'),
-            onActivate: () => this.updatePerformanceData(''';
+            onActivate: () => this.updatePerformanceData('''
         this.registerPanel('memory', {''
             name: 'Memory',
             icon: '🧠',
-            shortcut: 'Ctrl+3',)';
+            shortcut: 'Ctrl+3','';
             category: 'monitoring',')';
             content: '<div class="memory-usage"></div>')');
 ';
@@ -314,7 +314,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
         this.registerPanel('network', {''
             name: 'Network',
             icon: '🌐',
-            shortcut: 'Ctrl+4',)';
+            shortcut: 'Ctrl+4','';
             category: 'monitoring',')';
             content: '<div class="network-requests"></div>')');
 ';
@@ -322,7 +322,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
         this.registerPanel('settings', {''
             name: 'Settings',
             icon: '⚙️',
-            shortcut: 'Ctrl+5',)';
+            shortcut: 'Ctrl+5','';
             category: 'configuration',')';
             content: '<div class="debug-settings"></div>') ,}
     }
@@ -337,7 +337,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      * コンソール入力にフォーカス
      */''
     focusConsoleInput()';
-        const input = this.panelElements.get('console-content'')? .querySelector('.console-input) as HTMLInputElement;
+        const input = this.panelElements.get('console-content'')?.querySelector('.console-input) as HTMLInputElement;
         if (input) { setTimeout(() => input.focus(), 100); }
 }
 
@@ -345,11 +345,11 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      * パフォーマンスデータを更新'
      */ : undefined''
     updatePerformanceData()';
-        const chartsContainer = this.panelElements.get('performance-content'')? .querySelector('.performance-charts);''
+        const chartsContainer = this.panelElements.get('performance-content'')?.querySelector('.performance-charts';''
         if(chartsContainer) { chartsContainer.innerHTML = ` : undefined' '
-                <div class="chart">FPS: ${Math.floor(Math.random(,} * 60 + 30"})</div>""
-                <div class="chart">Memory: ${Math.floor(Math.random(} * 100 + 50"})MB</div>""
-                <div class="chart">CPU: ${Math.floor(Math.random(} * 50 + 20})%</div>
+                <div class="chart">FPS: ${Math.floor(Math.random(,} * 60 + 30"}"</div>""
+                <div class="chart">Memory: ${Math.floor(Math.random() * 100 + 50"}"MB</div>""
+                <div class="chart">CPU: ${Math.floor(Math.random() * 50 + 20})%</div>
             `;
         }
     }
@@ -412,17 +412,16 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
             const tab = this.panelElements.get(`${panelId)-tab`);
             const, content = this.panelElements.get(`${panelId}-content`}"
             " }"
-            if(tab"}) {", ";
+            if(tab"}" {", ";
             }"
-                tab.style.display = visible ? 'block' : 'none'; }
-
-            }''
+                tab.style.display = visible ? 'block' : 'none'; 
+    }''
             if(content) {', ';
 
             }
 
-                content.style.display = visible ? 'block' : 'none'; }
-            }
+                content.style.display = visible ? 'block' : 'none'; 
+    }
             
             this.updatePanelStatistics();
         }
@@ -488,4 +487,4 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
         this.panelHistory = [];
         this.activePanel = null;
 
-        super.cleanup(');
+        super.cleanup();

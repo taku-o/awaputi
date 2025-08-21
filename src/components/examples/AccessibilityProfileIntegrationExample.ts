@@ -15,14 +15,14 @@ interface SettingItem { key: string,
     label: string;
     type: string;
     component: string;
-    description: string;
-   , category: string ,}
+    description: string,
+    category: string ,}
 
-interface ProfileInfo { name: string;
-   , description: string }
+interface ProfileInfo { name: string,
+    description: string }
 
-interface ProfileChangeDetail { profileId: string;
-   , timestamp: number }
+interface ProfileChangeDetail { profileId: string,
+    timestamp: number }
 
 /**
  * SettingsSceneでAccessibilityProfileComponentを統合する例
@@ -41,7 +41,7 @@ export class AccessibilityProfileIntegrationExample {
     /**
      * SettingsSceneのinitializeSettingItems()メソッドに追加する設定項目の例
      */''
-    getAccessibilityProfileSettingItem(''';
+    getAccessibilityProfileSettingItem('''
             key: 'accessibility.profile',
             label: 'アクセシビリティプロファイル',
             type: 'custom', // カスタムコンポーネントとして実装;
@@ -61,8 +61,8 @@ export class AccessibilityProfileIntegrationExample {
             const profile = this.getCurrentProfileInfo();
 
             ctx.save(''';
-            ctx.fillStyle = '#333';''
-            ctx.font = '14px, Arial';)'
+            ctx.fillStyle = '#333';
+            ctx.font = '14px, Arial';''
             ctx.textAlign = 'left';)
             ctx.fillText(`現在のプロファイル: ${profile.name)`, x, y + 20);
             ctx.fillText(profile.description, x, y + 40};
@@ -100,7 +100,7 @@ export class AccessibilityProfileIntegrationExample {
             return componentElement;
 
         } catch (error) {
-            console.error('[AccessibilityProfileIntegration] Component creation error:', error);
+            console.error('[AccessibilityProfileIntegration] Component creation error:', error';
             return null;
     
     /**
@@ -131,16 +131,16 @@ export class AccessibilityProfileIntegrationExample {
                 
             }
                 return { name: profile.name, };
-                    description: profile.description }
-                }
+                    description: profile.description 
+    }
         }
         ';
 
         return { ''
             name: 'デフォルト',' };
 
-            description: '標準設定' }
-        }
+            description: '標準設定' 
+    }
     
     /**
      * アクセシビリティプロファイルコンポーネントの位置を調整

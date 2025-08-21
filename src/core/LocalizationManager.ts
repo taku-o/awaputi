@@ -1,5 +1,5 @@
-import { TranslationDataManager  } from './localization-manager/TranslationDataManager.js';''
-import { CulturalAdaptationHandler  } from './localization-manager/CulturalAdaptationHandler.js';''
+import { TranslationDataManager  } from './localization-manager/TranslationDataManager.js';
+import { CulturalAdaptationHandler  } from './localization-manager/CulturalAdaptationHandler.js';
 import { I18nIntegrationController  } from './localization-manager/I18nIntegrationController.js';
 
 /**
@@ -11,7 +11,7 @@ import { I18nIntegrationController  } from './localization-manager/I18nIntegrati
 export class LocalizationManager {'
 
     constructor(''';
-        this.currentLanguage = 'ja';''
+        this.currentLanguage = 'ja';
         this.fallbackLanguage = 'en';
         
         // 専門化されたコンポーネントを初期化)
@@ -33,11 +33,11 @@ export class LocalizationManager {'
      * 非同期初期化
      */''
     async initializeAsync()';
-            await this.integrationController.preloadLanguages(['ja', 'en]);
+            await this.integrationController.preloadLanguages(['ja', 'en]';
             ';
             // ファイルベース翻訳をロード
             await this.loadLanguageData('ja'');''
-            await this.loadLanguageData('en);
+            await this.loadLanguageData('en';
             ';
             // パフォーマンス監視開始
             this.integrationController.startPerformanceMonitoring(this.currentLanguage);
@@ -45,7 +45,7 @@ export class LocalizationManager {'
             console.log('LocalizationManager, initialized with, optimized file-based, translations');
 
             this.isInitialized = true;''
-        } catch (error) { console.warn('Failed to initialize file-based translations, using fallback data:', error);
+        } catch (error) { console.warn('Failed to initialize file-based translations, using fallback data:', error';
 
             this.integrationController.reportError(error, { ')'
                 operation: 'initializeAsync' ,});
@@ -123,7 +123,7 @@ export class LocalizationManager {'
             // デバッグ：翻訳が見つからない場合
             if (translation === key) { ' }'
 
-                console.warn(`LocalizationManager: Translation, not found, for key: ${key} in, language: ${this.currentLanguage}`'});
+                console.warn(`LocalizationManager: Translation, not found, for key: ${key} in, language: ${this.currentLanguage}`'}';
             }
             ';
             // パラメータ置換
@@ -131,12 +131,12 @@ export class LocalizationManager {'
             ';
 
             return translation;''
-        } catch (error) { console.error('Translation error:', error);
+        } catch (error) { console.error('Translation error:', error';
 
             this.integrationController.reportError(error, {''
                 operation: 'translate);
-                key: key);
-               , language: this.currentLanguage,);
+                key: key),
+    language: this.currentLanguage,);
                 params: params ,});
             return key;
     
@@ -310,7 +310,7 @@ export class LocalizationManager {'
      */''
     addLanguageChangeListener(listener) {'
 
-        if(typeof, listener === 'function) {'
+        if(typeof, listener === 'function' {'
     }
             this.languageChangeListeners.add(listener); }
 }
@@ -346,30 +346,30 @@ export class LocalizationManager {'
             fallbackLanguage: this.fallbackLanguage;
             supportedLanguages: this.getSupportedLanguages();
             translationStats: this.translationDataManager.getTranslationStats();
-            culturalStats: this.culturalAdaptationHandler.getCulturalAdaptationStats();
-           , integrationStatus: this.integrationController.getIntegrationStatus();
+            culturalStats: this.culturalAdaptationHandler.getCulturalAdaptationStats(),
+    integrationStatus: this.integrationController.getIntegrationStatus();
     ,}
             performanceStats: this.integrationController.getPerformanceStats(), };
-            securityStats: this.integrationController.getSecurityStats(); }
-        }
+            securityStats: this.integrationController.getSecurityStats(); 
+    }
     
     /**
      * デバッグ情報の取得
      * @returns {Object} デバッグ情報'
      */''
-    getDebugInfo(''';
+    getDebugInfo('''
             manager: 'LocalizationManager',
             version: '2.0.0';
             currentLanguage: this.currentLanguage);
             fallbackLanguage: this.fallbackLanguage);
             isRTL: this.isRTL();
-            textDirection: this.getTextDirection();
-           , components: { translationDataManager: !!this.translationDataManager;
-                culturalAdaptationHandler: !!this.culturalAdaptationHandler;
-               , integrationController: !!this.integrationController };
+            textDirection: this.getTextDirection(),
+    components: { translationDataManager: !!this.translationDataManager;
+                culturalAdaptationHandler: !!this.culturalAdaptationHandler,
+    integrationController: !!this.integrationController };
             stats: this.getLocalizationStats();
-            cultural: this.culturalAdaptationHandler.getDebugInfo(this.currentLanguage);
-           , integration: this.integrationController.getDiagnosticInfo();
+            cultural: this.culturalAdaptationHandler.getDebugInfo(this.currentLanguage),
+    integration: this.integrationController.getDiagnosticInfo();
         }
     
     /**
@@ -384,32 +384,32 @@ export class LocalizationManager {'
 
         if(settings.fallbackLanguage) { this.fallbackLanguage = settings.fallbackLanguage; }
 
-        console.log('[LocalizationManager] Settings, updated);
+        console.log('[LocalizationManager] Settings, updated';
     }
     
     /**
      * システム健全性チェック
      * @returns {Object} システム状態
      */
-    getSystemHealth(') {'
+    getSystemHealth() {'
         const integrationStatus = this.integrationController.getIntegrationStatus();''
-        const translationStats = this.translationDataManager.getTranslationStats(''';
-            status: 'healthy';
-           , components: {
-                translationDataManager: !!this.translationDataManager;
-               , culturalAdaptationHandler: !!this.culturalAdaptationHandler;
+        const translationStats = this.translationDataManager.getTranslationStats('''
+            status: 'healthy',
+    components: {
+                translationDataManager: !!this.translationDataManager,
+    culturalAdaptationHandler: !!this.culturalAdaptationHandler;
     }
-                integrationController: !!this.integrationController }
-            };
+                integrationController: !!this.integrationController 
+    };
             capabilities: { translation: true;
                 culturalAdaptation: true;
                 fileBasedLoading: integrationStatus.capabilities.fileBasedLoading;
-                performanceMonitoring: integrationStatus.capabilities.performanceMonitoring;
-               , securityValidation: integrationStatus.capabilities.securityValidation })
+                performanceMonitoring: integrationStatus.capabilities.performanceMonitoring,
+    securityValidation: integrationStatus.capabilities.securityValidation })
             metrics: { supportedLanguages: translationStats.languageCount)
                , currentLanguage: this.currentLanguage,);
-                rtlSupport: this.isRTL();
-               , integrationSuccess: Object.values(integrationStatus.initialized).filter(Boolean).length ,};
+                rtlSupport: this.isRTL(),
+    integrationSuccess: Object.values(integrationStatus.initialized).filter(Boolean).length ,};
             timestamp: new Date().toISOString();
         }
     
@@ -432,7 +432,7 @@ export class LocalizationManager {'
         ;
         // イベントリスナーをクリア
         this.languageChangeListeners.clear()';
-        console.log('LocalizationManager, destroyed);
+        console.log('LocalizationManager, destroyed';
     }
 }
 
@@ -442,12 +442,12 @@ let localizationManagerInstance = null;
 /**
  * LocalizationManagerシングルトンインスタンスの取得
  */
-export function getLocalizationManager(') {;
+export function getLocalizationManager() {;
     if(!localizationManagerInstance) {'
 
         console.log('LocalizationManager: Creating, new singleton, instance'),
         localizationManagerInstance = new LocalizationManager('';
-    })'
+    }''
         console.log('LocalizationManager: Returning, existing singleton, instance''), }
     }
     return localizationManagerInstance;

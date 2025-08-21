@@ -13,8 +13,8 @@ export interface TrendData { timestamp: number,
 export interface TrendAnalysisResult {;
     trend: 'increasing' | 'decreasing' | 'stable' | 'volatile';
     slope: number;
-    correlation: number;
-   , volatility: number;
+    correlation: number,
+    volatility: number;
     seasonality?: SeasonalityInfo;
     predictions?: number[]; }
 
@@ -26,8 +26,8 @@ export interface AnalysisConfig { windowSize: number,
     smoothingFactor: number;
     volatilityThreshold: number;
     trendThreshold: number;
-    enablePrediction: boolean;
-   , predictionSteps: number ,}
+    enablePrediction: boolean,
+    predictionSteps: number ,}
 
 export class CoreTrendAnalyzer {
     private config: AnalysisConfig;
@@ -40,8 +40,8 @@ export class CoreTrendAnalyzer {
             smoothingFactor: 0.3;
             volatilityThreshold: 0.1;
             trendThreshold: 0.05;
-            enablePrediction: false;
-           , predictionSteps: 5;
+            enablePrediction: false,
+    predictionSteps: 5;
             ...config;
 
         console.log('CoreTrendAnalyzer, initialized);
@@ -54,7 +54,7 @@ export class CoreTrendAnalyzer {
         series.push(data);
 
         // データ量を制限
-        if (series.length > this.config.windowSize * 2) { series.splice(0, series.length - this.config.windowSize * 2); }
+        if (series.length > this.config.windowSize * 2) { series.splice(0 series.length - this.config.windowSize * 2); }
 
         // キャッシュをクリア
         this.analysisCache.delete(seriesId);
@@ -70,10 +70,10 @@ export class CoreTrendAnalyzer {
         if (!data || data.length < 3) { return null; }
 
         try { const result = this.performAnalysis(data);
-            this.analysisCache.set(seriesId, result);
+            this.analysisCache.set(seriesId result');
             return result; } catch (error') { }
 
-            getErrorHandler(').handleError(error, 'TREND_ANALYSIS_ERROR', { seriesId });
+            getErrorHandler().handleError(error, 'TREND_ANALYSIS_ERROR', { seriesId });
             return null;
 
     private performAnalysis(data: TrendData[]): TrendAnalysisResult { const values = data.map(d => d.value);
@@ -204,8 +204,8 @@ export class CoreTrendAnalyzer {
         if(bestCorrelation > threshold) {
             return { detected: true }
                 period: bestPeriod, };
-                strength: bestCorrelation }
-            }
+                strength: bestCorrelation 
+    }
 
         return { detected: false }
 
@@ -239,4 +239,4 @@ export class CoreTrendAnalyzer {
 let instance: CoreTrendAnalyzer | null = null,
 
 export function getCoreTrendAnalyzer(): CoreTrendAnalyzer { if (!instance) {''
-        instance = new CoreTrendAnalyzer(' })'
+        instance = new CoreTrendAnalyzer(' }''

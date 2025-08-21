@@ -7,12 +7,12 @@
 export interface LocalizationManager { getCurrentLanguage(): string; }
 
 export interface HitRatio { hits: number,
-    misses: number ,}
+    misses: number }
 
-export interface LoadQueueItem { category: string;
-   , priority: number;
-    callback?: () => void }
-}
+export interface LoadQueueItem { category: string,
+    priority: number;
+    callback?: () => void 
+    }
 
 export class ContentLoader {
     private localizationManager: LocalizationManager;
@@ -51,8 +51,8 @@ export class ContentLoader {
 
     }
 
-        this.loadTimes = new Map<string, number>('); }'
-        this.hitRatio = { hits: 0, misses: 0 ,}
+        this.loadTimes = new Map<string, number>(); }'
+        this.hitRatio = { hits: 0, misses: 0 }
 
         // バージョン管理
         this.contentVersion = '1.0.0';
@@ -144,7 +144,7 @@ export class ContentLoader {
 
         } finally { this.isLoading = false;''
             this.processLoadingQueue()';
-    async loadTutorialData(language = 'ja) {'
+    async loadTutorialData(language = 'ja' {'
         const startTime = performance.now(); }
         const cacheKey = `tutorial_${language}`;
         
@@ -164,9 +164,9 @@ export class ContentLoader {
             return data;
 
         } catch (error) {
-            console.error('Failed to load tutorial data:', error);''
+            console.error('Failed to load tutorial data:', error';''
             return this.getDefaultTutorialData()';
-    async loadFAQData(language = 'ja) { }'
+    async loadFAQData(language = 'ja' { }'
         const cacheKey = `faq_${language}`;
         
         try { const cachedData = this.getCachedContent(cacheKey);
@@ -273,8 +273,8 @@ export class ContentLoader {
 
             if(versionData.version !== this.contentVersion) {'
 
-                console.log('Content version updated, clearing cache);
-                this.clearCache(');
+                console.log('Content version updated, clearing cache');
+                this.clearCache();
             }
 
                 this.contentVersion = versionData.version;' }'
@@ -298,8 +298,8 @@ export class ContentLoader {
                 resolve,);
     }
                 reject); }
-                timestamp: Date.now(); }
-            });
+                timestamp: Date.now(); 
+    });
         });
     }
     
@@ -356,12 +356,12 @@ export class ContentLoader {
         }
         
         return { cacheHitRate: Math.round(hitRate * 100) / 100,
-            cacheSize: this.contentCache.size;
-            imageCacheSize: this.imageCache.size;
-            queueLength: this.loadingQueue.length;
-           , averageLoadTimes: avgLoadTimes, };
-            isLoading: this.isLoading }
-        }
+            cacheSize: this.contentCache.size,
+            imageCacheSize: this.imageCache.size,
+            queueLength: this.loadingQueue.length,
+    averageLoadTimes: avgLoadTimes };
+            isLoading: this.isLoading 
+    }
     
     /**
      * 実際のヘルプコンテンツを取得（実装固有）
@@ -369,9 +369,9 @@ export class ContentLoader {
      */''
     async fetchHelpContent(category, language) { // 実際の実装では外部ファイルまたはAPIから読み込み
         const mockContent = [{ }
-                id: `${category}-help-1`;
-                category: category;
-               , title: `${category}ヘルプ`;
+                id: `${category}-help-1`,
+                category: category,
+    title: `${category}ヘルプ`;
                 content: `${category}に関するヘルプコンテンツです。`]
                 language: language,']';
                 searchKeywords: [category, 'help', 'ヘルプ],
@@ -392,15 +392,15 @@ export class ContentLoader {
     async fetchTutorialData(language) { const mockData = [{''
                 id: 'basic-tutorial',
                 title: '基本チュートリアル',
-                description: 'ゲームの基本操作を学習します';
-                language: language;
-               , steps: [';
+                description: 'ゲームの基本操作を学習します',
+                language: language,
+    steps: [';
                     {''
                         id: 'step1',
                         title: 'ステップ1',
                         instructions: '最初のステップです',
                         targetElement: '.bubble',
-                        waitForAction: 'click' ,}]
+                        waitForAction: 'click' }]
                     }]
                 ];
             }
@@ -418,9 +418,9 @@ export class ContentLoader {
                 id: 'faq-1',
                 question: 'よくある質問1',
                 answer: '回答1',
-                category: 'basic';
-                language: language;
-               , lastUpdated: new Date().toISOString( ,}]
+                category: 'basic',
+                language: language,
+    lastUpdated: new Date().toISOString( }]
             }]
         ];
         
@@ -440,7 +440,7 @@ export class ContentLoader {
         if(cached) { return cached; }
         ';
         // デフォルト言語のコンテンツを試す
-        if(language !== 'ja) {'
+        if(language !== 'ja' {'
             
         }
             const jaKey = `help_${category}_ja`;
@@ -454,11 +454,11 @@ export class ContentLoader {
      * デフォルトチュートリアルデータを取得
      * @private'
      */''
-    getDefaultTutorialData(''';
+    getDefaultTutorialData('''
                 id: 'default-tutorial',
                 title: 'デフォルトチュートリアル',
-                description: 'オフライン用基本チュートリアル';
-               , steps: [];
+                description: 'オフライン用基本チュートリアル',
+    steps: [];
             })
         ]);
     }
@@ -522,4 +522,4 @@ export class ContentLoader {
 
     }
 
-        this.loadTimes.clear(') }'
+        this.loadTimes.clear() }'

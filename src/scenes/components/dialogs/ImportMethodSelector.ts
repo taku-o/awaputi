@@ -6,23 +6,23 @@
  */
 
 export interface ImportMethod { id: string,
-    name: string;
-   , icon: string ,}
+    name: string,
+    icon: string ,}
 
 export interface Layout { contentX: number;
     contentY: number;
     contentWidth: number;
     buttonY: number;
-    x: number;
-   , width: number }
+    x: number,
+    width: number }
 
 export interface MainController { data: {
-        importMetho;d: string;
-       , importData: string;
+        importMetho;d: string,
+    importData: string;
         error?: string };
     selectedMethod?: string;
-    textSettings: { contentFont: string;
-       , contentColor: string };
+    textSettings: { contentFont: string,
+    contentColor: string };
     roundRect(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void,
 }
 
@@ -31,8 +31,8 @@ export interface FileSelectionEvent extends Event {
 
 export interface ComponentStatus { componentType: string,
     supportedMethods: string[];
-    textAreaActive: boolean;
-   , dragDropSupport: boolean ,}
+    textAreaActive: boolean,
+    dragDropSupport: boolean ,}
 
 export class ImportMethodSelector {
     private mainController: MainController;
@@ -58,7 +58,7 @@ export class ImportMethodSelector {
     renderSelectStep(context: CanvasRenderingContext2D, layout: Layout, y: number): void { context.font = this.mainController.textSettings.contentFont;
 
         context.fillStyle = this.mainController.textSettings.contentColor;''
-        context.textAlign = 'left';''
+        context.textAlign = 'left';
         context.textBaseline = 'top';
 
         context.fillText('インポート方法を選択してください:', layout.contentX, y);
@@ -76,7 +76,7 @@ export class ImportMethodSelector {
         }
         ';
         // ファイル選択またはテキスト入力エリア
-        if(this.mainController.data.importMethod === 'file) {', ';
+        if(this.mainController.data.importMethod === 'file' {', ';
 
         }
 
@@ -95,15 +95,15 @@ export class ImportMethodSelector {
         context.fillStyle = selected ? '#E3F2FD' : '#F8F9FA';
 
         this.mainController.roundRect(context, layout.contentX, y, optionWidth, optionHeight, 4);''
-        context.fill(''';
+        context.fill('''
         context.strokeStyle = selected ? '#2196F3' : '#DEE2E6';)
-        context.lineWidth = selected ? 2 : 1;)'
+        context.lineWidth = selected ? 2 : 1;''
         this.mainController.roundRect(context, layout.contentX, y, optionWidth, optionHeight, 4);''
         context.stroke(''';
         context.font = '24px, sans-serif';
 
         context.fillStyle = this.mainController.textSettings.contentColor;''
-        context.textAlign = 'left';)'
+        context.textAlign = 'left';''
         context.textBaseline = 'middle';)
         context.fillText(method.icon, layout.contentX + 15, y + optionHeight / 2);
         
@@ -124,16 +124,16 @@ export class ImportMethodSelector {
         context.font = this.mainController.textSettings.contentFont;
 
         context.fillStyle = this.mainController.textSettings.contentColor;''
-        context.textAlign = 'left';''
-        context.textBaseline = 'top';''
-        context.fillText('ファイルを選択:', layout.contentX, y);
+        context.textAlign = 'left';
+        context.textBaseline = 'top';
+        context.fillText('ファイルを選択:', layout.contentX, y';
         
         // ファイルドロップエリア
         const dropY = y + 25;''
         context.fillStyle = this.mainController.data.importData ? '#E8F5E8' : '#F8F9FA';
 
         this.mainController.roundRect(context, layout.contentX, dropY, layout.contentWidth, fileAreaHeight, 4);''
-        context.fill(''';
+        context.fill('''
         context.strokeStyle = this.mainController.data.importData ? '#28A745' : '#6C757D';)
         context.lineWidth = 1;)
         context.setLineDash([5, 5]);
@@ -143,22 +143,22 @@ export class ImportMethodSelector {
         context.setLineDash([]);
         ';
         // ドロップエリアテキスト
-        context.fillStyle = this.mainController.data.importData ? '#28A745' : '#6C757D';''
-        context.textAlign = 'center';''
+        context.fillStyle = this.mainController.data.importData ? '#28A745' : '#6C757D';
+        context.textAlign = 'center';
         context.textBaseline = 'middle';
 
         if(this.mainController.data.importData) {'
 
-            context.fillText('✓ ファイルが選択されました', layout.x + layout.width / 2, dropY + fileAreaHeight / 2 - 10);''
+            context.fillText('✓ ファイルが選択されました', layout.x + layout.width / 2, dropY + fileAreaHeight / 2 - 10';''
             context.font = '12px sans-serif';
 
         }
 
-            context.fillText('クリックして別のファイルを選択', layout.x + layout.width / 2, dropY + fileAreaHeight / 2 + 10); }
+            context.fillText('クリックして別のファイルを選択', layout.x + layout.width / 2, dropY + fileAreaHeight / 2 + 10'; }
 
         } else { }'
 
-            context.fillText('📁 ファイルをドロップまたはクリックして選択', layout.x + layout.width / 2, dropY + fileAreaHeight / 2); }
+            context.fillText('📁 ファイルをドロップまたはクリックして選択', layout.x + layout.width / 2, dropY + fileAreaHeight / 2'; }
 }
 
     /**
@@ -169,13 +169,13 @@ export class ImportMethodSelector {
         context.font = this.mainController.textSettings.contentFont;
 
         context.fillStyle = this.mainController.textSettings.contentColor;''
-        context.textAlign = 'left';''
-        context.textBaseline = 'top';''
-        context.fillText('JSONデータを貼り付け:', layout.contentX, y);
+        context.textAlign = 'left';
+        context.textBaseline = 'top';
+        context.fillText('JSONデータを貼り付け:', layout.contentX, y';
         
         // テキストエリア
         const textAreaY = y + 25;''
-        context.fillStyle = this.textAreaActive ? '#FFFFFF' : '#F8F9FA';''
+        context.fillStyle = this.textAreaActive ? '#FFFFFF' : '#F8F9FA';
         context.fillRect(layout.contentX, textAreaY, layout.contentWidth, textAreaHeight);
 
         context.strokeStyle = this.textAreaActive ? '#007BFF' : '#DEE2E6';
@@ -184,10 +184,10 @@ export class ImportMethodSelector {
         context.strokeRect(layout.contentX, textAreaY, layout.contentWidth, textAreaHeight);
         ';
         // テキスト内容
-        const displayText = this.mainController.data.importData || 'JSONデータを貼り付けてください...';''
+        const displayText = this.mainController.data.importData || 'JSONデータを貼り付けてください...';
         context.fillStyle = this.mainController.data.importData ? this.mainController.textSettings.contentColor: '#999999',
-        context.font = '12px monospace';''
-        context.textAlign = 'left';''
+        context.font = '12px monospace';
+        context.textAlign = 'left';
         context.textBaseline = 'top';
         
         // テキストを複数行で描画
@@ -254,12 +254,12 @@ export class ImportMethodSelector {
                 return true;
         ';
         // ファイル選択エリア
-        if(this.mainController.data.importMethod === 'file) {'
+        if(this.mainController.data.importMethod === 'file' {'
             const fileAreaY = contentY + 225;
 
             if (y >= fileAreaY && y <= fileAreaY + 80) {''
                 this.handleFileSelection()';
-        if(this.mainController.data.importMethod === 'text) {'
+        if(this.mainController.data.importMethod === 'text' {'
             const textAreaY = contentY + 225;
             if (y >= textAreaY && y <= textAreaY + 100) {
                 this.textAreaActive = true;
@@ -275,7 +275,7 @@ export class ImportMethodSelector {
      */''
     handleFileSelection()';
         const input = document.createElement('input'');''
-        input.type = 'file';''
+        input.type = 'file';
         input.accept = '.json,.txt';
         
         input.onchange = (event: Event) => {  const fileEvent = event as FileSelectionEvent;
@@ -283,12 +283,12 @@ export class ImportMethodSelector {
             if(file) {'
                 const reader = new FileReader();''
                 reader.onload = (e: ProgressEvent<FileReader>') => {''
-                    if(e.target? .result && typeof, e.target.result === 'string) {'
+                    if(e.target?.result && typeof, e.target.result === 'string' {'
             }
                         this.mainController.data.importData = e.target.result; }
                         this.mainController.data.error = undefined; }
 };''
-                reader.onerror = (') => {  ' }
+                reader.onerror = () => {  ' }
 
                     this.mainController.data.error = 'ファイルの読み込みに失敗しました'; }
                 };
@@ -333,7 +333,7 @@ export class ImportMethodSelector {
      * 選択ステップから進めるかチェック'
      */''
     canProceedFromSelect()';
-        if(this.mainController.data.importMethod === 'file' && this.mainController.data.importData) { return true;''
+        if(this.mainController.data.importMethod === 'file' && this.mainController.data.importData' { return true;''
         if (this.mainController.data.importMethod === 'text' && this.mainController.data.importData.trim().length > 0) { return true; }
         return false;
     }
@@ -368,7 +368,7 @@ export class ImportMethodSelector {
      */''
     validateFileExtension(filename: string): boolean { ''
         const allowedExtensions = ['.json', '.txt];''
-        const extension = filename.toLowerCase(').substring(filename.lastIndexOf('.);
+        const extension = filename.toLowerCase().substring(filename.lastIndexOf('.);
         return allowedExtensions.includes(extension); }
 
     /**
@@ -382,7 +382,7 @@ export class ImportMethodSelector {
      * ステータス取得'
      */''
     getStatus()';
-            componentType: 'ImportMethodSelector');
-           , supportedMethods: this.importMethods.map(method => method.id),
+            componentType: 'ImportMethodSelector'),
+    supportedMethods: this.importMethods.map(method => method.id),
             textAreaActive: this.textAreaActive,
-            dragDropSupport: this.supportsDragAndDrop('));
+            dragDropSupport: this.supportsDragAndDrop()';

@@ -3,8 +3,8 @@ import { FontErrorHandler, FontErrorContext  } from './FontErrorHandler.js';
 // 型定義
 export interface ErrorCategory {;
     severity: 'LOW' | 'MEDIUM' | 'HIGH';
-    recovery: string;
-   , userNotify: boolean }
+    recovery: string,
+    userNotify: boolean }
 
 export interface FontErrorMetadata { fontFamily?: string;
     language?: string;
@@ -22,8 +22,8 @@ export interface IErrorHandler { handleError(error: Error, context?: string, met
 export interface IntegrationStats { initialized: boolean,
     hasErrorHandler: boolean;
     hasFontErrorHandler: boolean;
-    errorHandlerType: string;
-   , fontErrorHandlerType: string ,}
+    errorHandlerType: string,
+    fontErrorHandlerType: string ,}
 
 export class FontErrorIntegration {
     private errorHandler: IErrorHandler;
@@ -50,32 +50,32 @@ export class FontErrorIntegration {
         this._registerFontErrorCategories();
         
         // カスタムエラーハンドラーを設定
-        this._setupCustomErrorHandling(');
+        this._setupCustomErrorHandling();
         
         this.initialized = true;
         return true;
     }
 
-    private _registerFontErrorCategories(''';
+    private _registerFontErrorCategories('''
             'FONT_LOADING': { ''
                 severity: 'MEDIUM',
-                recovery: 'USE_FALLBACK';
-               , userNotify: false ,}
+                recovery: 'USE_FALLBACK',
+    userNotify: false ,}
 
             },'', 'FONT_TIMEOUT': { ''
                 severity: 'LOW',
-                recovery: 'USE_SYSTEM_FONT';
-               , userNotify: false ,}
+                recovery: 'USE_SYSTEM_FONT',
+    userNotify: false ,}
 
             },'', 'FONT_NETWORK': { ''
                 severity: 'LOW',
-                recovery: 'USE_FALLBACK';
-               , userNotify: false ,}
+                recovery: 'USE_FALLBACK',
+    userNotify: false ,}
 
             },'', 'FONT_FILE_NOT_FOUND': { ''
                 severity: 'LOW',
-                recovery: 'DISABLE_SOURCE';
-               , userNotify: false ,}))'
+                recovery: 'DISABLE_SOURCE',
+    userNotify: false ,})''
         // ErrorHandlerがカテゴリ登録をサポートしている場合のみ登録
         if(typeof, this.errorHandler.registerErrorCategories === 'function) { this.errorHandler.registerErrorCategories(fontErrorCategories); }'
     }
@@ -97,7 +97,7 @@ export class FontErrorIntegration {
         const errorMessage = (error.message || error.toString().toLowerCase()';
         if (contextString.includes('font'') || '';
             contextString.includes('i18n'') || '';
-            contextString.includes('render)) {'
+            contextString.includes('render)' {'
             return true; }
 ';
         // エラーメッセージでチェック
@@ -105,13 +105,13 @@ export class FontErrorIntegration {
             errorMessage.includes('typeface'') ||'';
             errorMessage.includes('woff'') ||'';
             errorMessage.includes('ttf'') ||'';
-            errorMessage.includes('css'') && errorMessage.includes('load)) { return true; }
+            errorMessage.includes('css'') && errorMessage.includes('load)' { return true; }
 ';
         // メタデータでチェック
         if(metadata.source === 'font' ||'';
             metadata.type === 'font' ||'';
             metadata.component === 'FontLoadingManager' ||'';
-            metadata.component === 'I18nRenderOptimizer) { return true; }'
+            metadata.component === 'I18nRenderOptimizer' { return true; }'
 
         return false;
     }
@@ -119,8 +119,8 @@ export class FontErrorIntegration {
     private _handleFontError(;
         error: Error;
         context: string );
-        metadata: FontErrorMetadata)';
-       , originalHandleError: (error: Error, context?: string, metadata?: FontErrorMetadata) => any'';
+        metadata: FontErrorMetadata)',
+    originalHandleError: (error: Error, context?: string, metadata?: FontErrorMetadata) => any'';
     '): any { try {'
             // FontErrorHandlerで処理
             const fontContext: FontErrorContext = {''
@@ -134,8 +134,8 @@ export class FontErrorIntegration {
 
             // 通常のErrorHandlerも実行（重複ログを避けるため、ログレベルを調整）
             const adjustedMetadata: FontErrorMetadata = { ...metadata,
-                suppressConsoleLog: true;
-               , handledByFontErrorHandler: true ,};
+                suppressConsoleLog: true,
+    handledByFontErrorHandler: true ,};
             return originalHandleError(error, context, adjustedMetadata);
 
         } catch (fontHandlerError) {
@@ -154,16 +154,16 @@ export class FontErrorIntegration {
             type: 'font_loading',
             component: 'FontLoadingManager',
             timestamp: Date.now()';
-        return this.errorHandler.handleError(error, 'FONT_LOADING', enhancedMetadata); }
+        return this.errorHandler.handleError(error, 'FONT_LOADING', enhancedMetadata'; }
 ';
 
     handleFontTimeoutError(fontFamily: string, language: string, source: string, timeout: number): any { ' }'
 
-        const timeoutError = new Error(`Font, loading timeout, after ${timeout}ms`'});
+        const timeoutError = new Error(`Font, loading timeout, after ${timeout}ms`'}';
         
         const enhancedMetadata: FontErrorMetadata = { fontFamily: fontFamily,
-            language: language;
-           , source: source,
+            language: language,
+    source: source,
             timeout: timeout,
             type: 'font_timeout',
             component: 'FontLoadingManager' ,};
@@ -176,13 +176,13 @@ export class FontErrorIntegration {
             source: 'google',
             type: 'font_network',
             component: 'GoogleFontSource' ,};
-        return this.errorHandler.handleError(error, 'FONT_NETWORK', enhancedMetadata);
+        return this.errorHandler.handleError(error, 'FONT_NETWORK', enhancedMetadata';
     }
 ';
 
     handleFontFileNotFoundError(fontFamily: string, language: string, filePath: string): any { ' }'
 
-        const fileError = new Error(`Font, file not, found: ${filePath}`'});
+        const fileError = new Error(`Font, file not, found: ${filePath}`'}';
         
         const enhancedMetadata: FontErrorMetadata = { fontFamily: fontFamily,
 
@@ -201,8 +201,8 @@ export class FontErrorIntegration {
         if(this.fontErrorHandler}) {
             const fontContext: FontErrorContext = {
                 source: source as any }
-                fontFamily: fontFamily; }
-            };
+                fontFamily: fontFamily; 
+    };
             return this.fontErrorHandler.handleFontError(error, fontContext);
         }
 
@@ -210,12 +210,12 @@ export class FontErrorIntegration {
     }
 
     getIntegrationStats(): IntegrationStats { return { initialized: this.initialized,
-            hasErrorHandler: !!this.errorHandler;
-           , hasFontErrorHandler: !!this.fontErrorHandler,
-            errorHandlerType: (this.errorHandler, as any')? .constructor?.name || 'unknown', : undefined' };
+            hasErrorHandler: !!this.errorHandler,
+    hasFontErrorHandler: !!this.fontErrorHandler,
+            errorHandlerType: (this.errorHandler, as any')?.constructor?.name || 'unknown', : undefined' };
 
-            fontErrorHandlerType: (this.fontErrorHandler, as any')? .constructor?.name || 'unknown' }
+            fontErrorHandlerType: (this.fontErrorHandler, as any')?.constructor?.name || 'unknown' }
         }
 
  : undefined'';
-    dispose(');
+    dispose();

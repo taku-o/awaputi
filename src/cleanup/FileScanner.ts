@@ -1,12 +1,12 @@
-import fs from 'fs';''
-import path from 'path';''
+import fs from 'fs';
+import path from 'path';
 import { glob  } from 'glob';
 
 export interface FileInfo { filePath: string,
     fileName: string;
     fileSize: number;
-    lastModified: Date;
-   , fileType: string ,}
+    lastModified: Date,
+    fileType: string ,}
 
 export class FileScanner {
     private defaultPatterns: string[];
@@ -49,17 +49,17 @@ export class FileScanner {
             const stats = await fs.promises.stat(filePath);
             return { filePath,
                 fileName: path.basename(filePath);
-                fileSize: stats.size;
-               , lastModified: stats.mtime, };
-                fileType: path.extname(filePath); }
-            } catch (error) {
+                fileSize: stats.size,
+    lastModified: stats.mtime, };
+                fileType: path.extname(filePath); 
+    } catch (error) {
             console.error(`Error getting file info for ${filePath}:`, error);
             return null;
 
     async scanWithInfo(;
         patterns: string[] = this.defaultPatterns );
-        extensions: string[] = this.defaultExtensions);
-       , rootPath: string = process.cwd(): Promise<FileInfo[]>;
+        extensions: string[] = this.defaultExtensions),
+    rootPath: string = process.cwd(): Promise<FileInfo[]>;
         const allFiles = await this.scanForOldFiles(patterns, rootPath);
         const filteredFiles = this.filterByFileType(allFiles, extensions);
         

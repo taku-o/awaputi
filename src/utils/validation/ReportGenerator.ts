@@ -1,10 +1,10 @@
-import { getErrorHandler  } from '../ErrorHandler.js';''
-import fs from 'fs';''
+import { getErrorHandler  } from '../ErrorHandler.js';
+import fs from 'fs';
 import path from 'path';
 
 // Type definitions
 interface ErrorHandler { ''
-    handleError: (erro;r: Error, context?: any') => void }'
+    handleError: (error: Error, context?: any') => void }'
 }
 
 interface ReportConfig { projectRoot?: string;
@@ -21,8 +21,8 @@ interface ResolvedItem { name: string,
     impact: 'Low' | 'Medium' | 'High' ,}
 
 interface ResolvedDuplication { taskId: string;
-    category: string;
-   , items: ResolvedItem[]
+    category: string,
+    items: ResolvedItem[]
     }
 
 interface ReportMetadata { title: string;
@@ -30,8 +30,8 @@ interface ReportMetadata { title: string;
     generatedAt: string;
     generatedBy: string;
     projectRoot: string;
-    branch: string;
-   , version: string }
+    branch: string,
+    version: string }
 
 interface ProjectSummary { objective: string;
     scope: string;
@@ -39,8 +39,8 @@ interface ProjectSummary { objective: string;
     completionStatus: string;
     tasksCompleted: number;
     totalTasks: number;
-    completionPercentage: number;
-   , keyAchievements: string[] }
+    completionPercentage: number,
+    keyAchievements: string[] }
 
 interface DuplicationCategory { [categoryName: string]: number, }
 ';
@@ -48,69 +48,69 @@ interface DuplicationCategory { [categoryName: string]: number, }
 interface NamingStrategies { '', 'Domain-based': number;'', 'Function-level': number;'', 'Context-specific': number; }
 
 interface FilesModified { renamed: number,
-    updated: number;
-   , created: number ,}
+    updated: number,
+    created: number ,}
 
 interface DuplicationsResolved { totalClasses: number;
-    totalFiles: number;
-   , byCategory: DuplicationCategory
+    totalFiles: number,
+    byCategory: DuplicationCategory
     }
 
 interface Statistics { duplicationsResolved: DuplicationsResolved;
     filesModified: FilesModified;
     namingStrategies: NamingStrategies;
     gitCommits: number;
-    testsPassing: boolean;
-   , buildSuccessful: boolean }
+    testsPassing: boolean,
+    buildSuccessful: boolean }
 
 interface ChangeItem { name: string;
     action: string;
     files: string[];
-    impact: string;
-   , reasoning: string }
+    impact: string,
+    reasoning: string }
 
 interface ChangePhase { taskId: string;
     phase: string;
     category: string;
-    description: string;
-   , items: ChangeItem[]
+    description: string,
+    items: ChangeItem[]
     }
 
-interface ChangeLog { overview: string;
-   , phases: ChangePhase[]
+interface ChangeLog { overview: string,
+    phases: ChangePhase[]
     }
 
 interface SystemImpactArea { maintainability: string;
     readability: string;
-    debuggability: string;
-   , onboardingExperience: string }
+    debuggability: string,
+    onboardingExperience: string }
 
 interface DevelopmentImpactArea { namingConfusion: string;
     importErrors: string;
-    codeNavigation: string;
-   , toolSupport: string }
+    codeNavigation: string,
+    toolSupport: string }
 
 interface PerformanceImpactArea { runtime: string;
-    buildTime: string;
-   , bundleSize: string }
+    buildTime: string,
+    bundleSize: string }
 
 interface SystemImpacts { codebase: SystemImpactArea;
-    development: DevelopmentImpactArea;
-   , performance: PerformanceImpactArea
+    development: DevelopmentImpactArea,
+    performance: PerformanceImpactArea
     }
 
 interface RiskAssessment { breakingChanges: string;
     backwardCompatibility: string;
-    regressionRisk: string;
-   , rollbackComplexity: string }
+    regressionRisk: string,
+    rollbackComplexity: string }
 
 interface Beneficiaries { developers: string;
-    codeReviewers: string;
-   , newTeamMembers: string }
+    codeReviewers: string,
+    newTeamMembers: string }
 
 interface ImpactAnalysis { systemImpacts: SystemImpacts;
-    riskAssessment: RiskAssessment;
-   , beneficiaries: Beneficiaries
+    riskAssessment: RiskAssessment,
+    beneficiaries: Beneficiaries
     }
 
 interface ValidationArea { status: string;
@@ -129,46 +129,46 @@ interface ValidationArea { status: string;
 
 interface ValidationResults { syntaxValidation: ValidationArea,
     importValidation: ValidationArea;
-    testSuite: ValidationArea;
-   , buildValidation: ValidationArea
+    testSuite: ValidationArea,
+    buildValidation: ValidationArea
     ,}
 
 interface Recommendation { category: string;
     priority: string;
     recommendation: string;
-    rationale: string;
-   , implementation: string }
+    rationale: string,
+    implementation: string }
 
 interface AutomaticValidation { description: string;
     implementation: string;
-    integration: string;
-   , coverage: string }
+    integration: string,
+    coverage: string }
 
 interface DevelopmentGuidelines { description: string;
     domainBased: string;
-    functionalLevel: string;
-   , contextSpecific: string }
-}
+    functionalLevel: string,
+    contextSpecific: string 
+    }
 
 interface ToolingSupport { description: string;
     cliTools: string;
-    validation: string;
-   , integration: string }
+    validation: string,
+    integration: string }
 
 interface ProcessImprovements { description: string;
     codeReview: string;
-    onboarding: string;
-   , refactoring: string }
+    onboarding: string,
+    refactoring: string }
 
 interface PreventionMeasures { automaticValidation: AutomaticValidation;
     developmentGuidelines: DevelopmentGuidelines;
-    toolingSupport: ToolingSupport;
-   , processImprovements: ProcessImprovements
+    toolingSupport: ToolingSupport,
+    processImprovements: ProcessImprovements
     }
 
 interface FileAnalysisResult { renamedFiles: number;
-    updatedFiles: number;
-   , createdFiles: number }
+    updatedFiles: number,
+    createdFiles: number }
 
 interface OutputFiles { json?: string;
     markdown?: string; }
@@ -179,8 +179,8 @@ interface ComprehensiveReport { metadata: ReportMetadata,
     changeLog: ChangeLog;
     impactAnalysis: ImpactAnalysis;
     validationResults: ValidationResults;
-    recommendations: Recommendation[];
-   , futurePreventionMeasures: PreventionMeasures
+    recommendations: Recommendation[],
+    futurePreventionMeasures: PreventionMeasures
     ,}
 
 /**
@@ -196,7 +196,7 @@ export class ReportGenerator {
 ';
 
         this.errorHandler = getErrorHandler();''
-        this.projectRoot = config.projectRoot || process.cwd('';
+        this.projectRoot = config.projectRoot || process.cwd(''
     }
 
             outputFormat: config.outputFormat || 'both' // 'json', 'markdown', 'both' }
@@ -205,8 +205,8 @@ export class ReportGenerator {
         // 解決済みの重複情報
         this.resolvedDuplications = [{;
                 taskId: '6',
-                category: 'Configuration Files';
-               , items: [';
+                category: 'Configuration Files',
+    items: [';
                     { ''
                         name: 'PerformanceConfig', ]';
                         resolution: 'Backup file merged with main configuration',']';
@@ -249,9 +249,9 @@ export class ReportGenerator {
                         ],
                         impact: 'Low' ,};
                     { ''
-                        name: 'AudioContextManager',)';
-                        resolution: 'AudioContextManager & AudioEffectContextManager')';
-                       , files: [')';
+                        name: 'AudioContextManager','';
+                        resolution: 'AudioContextManager & AudioEffectContextManager')',
+    files: [')';
                             'src/audio/AudioContextManager.js(kept)',]';
                             'src/audio/effects/AudioContextManager.js → AudioEffectContextManager.js']';
                         ],
@@ -414,7 +414,7 @@ export class ReportGenerator {
      * 包括的なプロジェクトレポートを生成'
      */''
     async generateComprehensiveReport()';
-        console.log('[ReportGenerator] Generating, comprehensive project, report...);
+        console.log('[ReportGenerator] Generating comprehensive project report...);
         
         try { const report: ComprehensiveReport = {
                 metadata: this.generateMetadata();
@@ -423,13 +423,13 @@ export class ReportGenerator {
                 changeLog: await this.generateChangeLog();
                 impactAnalysis: await this.generateImpactAnalysis();
                 validationResults: await this.generateValidationResults();
-                recommendations: this.generateRecommendations();
-               , futurePreventionMeasures: this.generatePreventionMeasures('), };
+                recommendations: this.generateRecommendations(),
+    futurePreventionMeasures: this.generatePreventionMeasures(), };
             ';
 
             return report;''
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
-                context: 'ReportGenerator.generateComprehensiveReport' ,});
+                context: 'ReportGenerator.generateComprehensiveReport' ,}';
             throw error;
         }
     }
@@ -437,11 +437,11 @@ export class ReportGenerator {
     /**
      * レポートメタデータを生成'
      */''
-    generateMetadata(''';
+    generateMetadata('''
             title: 'JavaScript Class Name Deduplication Project Report',
-            subtitle: 'Issue #131 - Complete Resolution Report',)';
-            generatedAt: new Date().toISOString(''';
-           , generatedBy: 'ReportGenerator v1.0.0',
+            subtitle: 'Issue #131 - Complete Resolution Report','';
+            generatedAt: new Date().toISOString(''',
+    generatedBy: 'ReportGenerator v1.0.0',
             projectRoot: this.projectRoot,
             branch: 'fix/issue-131-duplicate-class-names',
             version: '1.0.0';
@@ -451,13 +451,13 @@ export class ReportGenerator {
     /**
      * プロジェクト概要を生成'
      */''
-    async generateProjectSummary(''';
+    async generateProjectSummary('''
             objective: 'Resolve JavaScript class name duplications to improve codebase maintainability and prevent developer confusion',
             scope: 'Entire src/ directory with focus on core, debug, analytics, audio, ui, and rendering systems',
             approach: 'Domain-based and function-level naming strategies with systematic file renaming and import updates',
             completionStatus: 'Completed);
-            tasksCompleted: 13)';
-           , totalTasks: 17,')';
+            tasksCompleted: 13'',
+    totalTasks: 17,')';
             completionPercentage: Math.round((13 / 17) * 100'),
             keyAchievements: ['';
                 'Resolved all major class name duplications across 8 system categories',
@@ -472,7 +472,7 @@ export class ReportGenerator {
      * 統計情報を生成
      */'
     async generateStatistics(): Promise<Statistics> { // 実際のファイル数を調査
-        const stats = await this.analyzeProjectFiles(''';
+        const stats = await this.analyzeProjectFiles('''
                     'Configuration Files': 1,
                     'Core System': 2,
                     'Audio System': 3,
@@ -480,17 +480,17 @@ export class ReportGenerator {
                     'Error Handling': 3,
                     'Performance Monitoring': 1,
                     'UI Components': 4,
-                    'Rendering System': 3 }
-            },
+                    'Rendering System': 3 
+    },
             filesModified: { renamed: stats.renamedFiles;
-                updated: stats.updatedFiles;
-               , created: stats.createdFiles };
+                updated: stats.updatedFiles,
+    created: stats.createdFiles };
             namingStrategies: { '', 'Domain-based': 18, // Core*, Debug*, Utils*, Analytics*;
                 'Function-level': 6,  // Advanced*, Basic*;
                 'Context-specific': 7 // Scenes*, DataManagement*, MainMenu* },
             gitCommits: 8;
-            testsPassing: true;
-           , buildSuccessful: true;
+            testsPassing: true,
+    buildSuccessful: true;
         },
     }
     
@@ -498,8 +498,8 @@ export class ReportGenerator {
      * 変更ログを生成
      */''
     async generateChangeLog(''';
-            overview: 'Systematic resolution of JavaScript class name duplications';
-           , phases: []);
+            overview: 'Systematic resolution of JavaScript class name duplications',
+    phases: []);
         })
         // 各タスクの詳細を変更ログに追加)
         for(const, duplication of, this.resolvedDuplications) {
@@ -507,16 +507,16 @@ export class ReportGenerator {
         }
                 taskId: duplication.taskId, }
                 phase: `Task ${duplication.taskId}`;
-                category: duplication.category;
-               , description: `Resolved duplications in ${duplication.category}`;
+                category: duplication.category,
+    description: `Resolved duplications in ${duplication.category}`;
                 items: [];
             },
             
             for(const, item of, duplication.items) {
             
                 phase.items.push({)
-                    name: item.name);
-                   , action: `Renamed/Reorganized: ${item.resolution}`;
+                    name: item.name),
+    action: `Renamed/Reorganized: ${item.resolution}`;
                     files: item.files;
             }
                     impact: item.impact, }
@@ -533,7 +533,7 @@ export class ReportGenerator {
     /**
      * 影響分析を生成
      */''
-    async generateImpactAnalysis(''';
+    async generateImpactAnalysis('''
                     maintainability: 'Significantly Improved',
                     readability: 'Improved',
                     debuggability: 'Improved',
@@ -548,7 +548,7 @@ export class ReportGenerator {
                 performance: { ''
                     runtime: 'No Impact',
                     buildTime: 'Minimal Impact',
-                    bundleSize: 'No Impact' ,}))'
+                    bundleSize: 'No Impact' ,})''
             riskAssessment: { ''
                 breakingChanges: 'None(internal, refactoring only)',
                 backwardCompatibility: 'Maintained',
@@ -563,7 +563,7 @@ export class ReportGenerator {
     /**
      * 検証結果を生成'
      */''
-    async generateValidationResults(''';
+    async generateValidationResults('''
                 status: 'Passed',
                 filesChecked: 'All modified files',
                 errors: 0,
@@ -573,8 +573,8 @@ export class ReportGenerator {
             importValidation: {;
                 status: 'Passed',
                 missingImports: 0,
-                unreferencedImports: 'Some cleanup opportunities';
-               , circularDependencies: 0 ,};
+                unreferencedImports: 'Some cleanup opportunities',
+    circularDependencies: 0 ,};
             testSuite: { ''
                 status: 'Passing',
                 unitTests: 'All passing',
@@ -633,7 +633,7 @@ export class ReportGenerator {
                 implementation: 'ValidationEngine and NamingConflictDetector classes',
                 integration: 'Pre-commit hooks, CI/CD pipeline',
                 coverage: 'File names, class names, function names);
-            })'
+            }''
             developmentGuidelines: { ''
                 description: 'Clear naming conventions and patterns',
                 domainBased: 'Use domain prefixes(Core*, Debug*, Utils*)',
@@ -660,8 +660,8 @@ export class ReportGenerator {
         // 簡略化した実装
         return { renamedFiles: 25,
             updatedFiles: 15, };
-            createdFiles: 3 }
-        }
+            createdFiles: 3 
+    }
     
     /**
      * アイテムの理由を生成
@@ -685,8 +685,8 @@ export class ReportGenerator {
             'ExportDialog': 'Separated scene exports from data management exports',
             'DirtyRegionManager': 'Distinguished advanced from basic rendering optimization',
             'LayerManager': 'Separated advanced layer management from basic implementation',
-            'ViewportCuller': 'Distinguished advanced from basic viewport culling' }
-        };
+            'ViewportCuller': 'Distinguished advanced from basic viewport culling' 
+    };
 
         return reasonings[item.name] || 'Applied systematic naming strategy to resolve duplication';
     }
@@ -694,11 +694,11 @@ export class ReportGenerator {
     /**
      * レポートをファイルに出力'
      */''
-    async saveReport(report: ComprehensiveReport, outputDir: string = '.): Promise<OutputFiles> {'
+    async saveReport(report: ComprehensiveReport, outputDir: string = '.': Promise<OutputFiles> {'
         const outputs: OutputFiles = {}
 
         try {'
-            const timestamp = new Date().toISOString(').replace(/[:.]/g, '-''); }
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-''); }
             const baseFileName = `javascript-class-deduplication-report-${timestamp}`;
             ';
             // JSON形式で保存
@@ -706,9 +706,9 @@ export class ReportGenerator {
                 const jsonPath = path.join(outputDir, `${baseFileName).json`};
                 await fs.promises.writeFile(jsonPath, JSON.stringify(report, null, 2}
 
-                outputs.json = jsonPath;' }'
+                outputs.json = jsonPath' }'
 
-                console.log(`[ReportGenerator] JSON report saved: ${jsonPath}`'});
+                console.log(`[ReportGenerator] JSON report saved: ${jsonPath}`'}';
             }
             ';
             // Markdown形式で保存
@@ -716,7 +716,7 @@ export class ReportGenerator {
                 const markdownContent = this.generateMarkdownReport(report);
                 const mdPath = path.join(outputDir, `${baseFileName).md`};
                 await fs.promises.writeFile(mdPath, markdownContent}
-                outputs.markdown = mdPath; }
+                outputs.markdown = mdPath }
                 console.log(`[ReportGenerator] Markdown report saved: ${mdPath}`});
             }
             ';
@@ -772,7 +772,7 @@ export class ReportGenerator {
 
         for (const [category, count] of Object.entries(report.statistics.duplicationsResolved.byCategory)}) { ' }'
 
-            md.push(`- **${category}:** ${count} duplications`'});
+            md.push(`- **${category}:** ${count} duplications`'}';
 
         }''
         md.push(''');
@@ -791,7 +791,7 @@ export class ReportGenerator {
 
                 md.push(`**Impact: ** ${item.impact)`),''
                 md.push(`**Reasoning: ** ${item.reasoning)`'),''
-                md.push('''};''
+                md.push('''}''
                 md.push('**Files Modified: **},
             }
                 item.files.forEach(file => {); }
@@ -814,7 +814,7 @@ export class ReportGenerator {
             md.push(`**Rationale: ** ${rec.rationale)`),''
             md.push(`**Implementation: ** ${rec.implementation,}`'},' }
 
-            md.push('''});
+            md.push('''}';
         }
         ';
         // 将来の防止措置
@@ -835,12 +835,12 @@ export class ReportGenerator {
         md.push(''');
         ';
         // フッター
-        md.push('---);''
+        md.push('---';''
         md.push(`*Report, generated by ${ report.metadata.generatedBy)*`'};''
         md.push('''};
 
         ' }'
 
-        return, md.join('\n''});
+        return, md.join('\n''}';
 
 export default ReportGenerator;

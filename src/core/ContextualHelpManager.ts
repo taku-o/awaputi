@@ -18,8 +18,8 @@ export interface HelpContent { title: string,
 }
 
 export interface HelpManagerConfig { enabled: boolean,
-    showTips: boolean;
-   , autoShow: boolean,
+    showTips: boolean,
+    autoShow: boolean,
     delay: number,
     position: 'top' | 'bottom' | 'left' | 'right' ,}
 
@@ -33,8 +33,8 @@ export class ContextualHelpManager {
     constructor(config: Partial<HelpManagerConfig> = {)) {
         this.config = {
             enabled: true;
-            showTips: true;
-           , autoShow: false,
+            showTips: true,
+    autoShow: false,
             delay: 1000,
             position: 'bottom';
             ...config;
@@ -47,14 +47,14 @@ export class ContextualHelpManager {
         this.setupEventListeners()';
         console.log('ContextualHelpManager, initialized'); }'
 
-    private loadHelpContent(''';
+    private loadHelpContent('''
         this.helpContent.set('game.bubble', { ''
-            title: 'バブル操作',)';
+            title: 'バブル操作','';
             description: 'バブルをクリックして割ります',')';
-            tips: ['同じ色のバブルを連続で割るとボーナス', 'スペシャルバブルは特別な効果があります])');
+            tips: ['同じ色のバブルを連続で割るとボーナス', 'スペシャルバブルは特別な効果があります]'');
 
         this.helpContent.set('game.settings', {''
-            title: '設定画面',)';
+            title: '設定画面','';
             description: 'ゲームの設定を変更できます',')';
             tips: ['音量や画質を調整できます', 'アクセシビリティ設定も利用可能] }
 
@@ -107,7 +107,7 @@ export class ContextualHelpManager {
             <div class="help-description">${content.description}</div>"
             ${ content.tips ? `""
                 <ul, class="help-tips">" }"
-                    ${content.tips.map(tip => `<li>${tip}</li>`"}.join('''})'
+                    ${content.tips.map(tip => `<li>${tip}</li>`"}.join('''}''
                 </ul> : undefined'';
             ` : ''}
         `;
@@ -191,4 +191,4 @@ export class ContextualHelpManager {
 let instance: ContextualHelpManager | null = null,
 
 export function getContextualHelpManager(): ContextualHelpManager { if (!instance) {''
-        instance = new ContextualHelpManager(' })'
+        instance = new ContextualHelpManager(' }''

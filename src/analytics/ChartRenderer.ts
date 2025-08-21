@@ -15,8 +15,8 @@ export interface ChartRendererOptions { enableResponsive?: boolean;
 
 export interface ThemeConfig { backgroundColor: string,
     borderColor: string;
-    textColor: string;
-   , gridColor: string ,}
+    textColor: string,
+    gridColor: string ,}
 
 export interface ChartConfig { label?: string;
     xAxisLabel?: string;
@@ -34,13 +34,13 @@ export interface ChartDataUpdate { labels?: string[];
     datasets?: any[]; }
 
 export interface ChartStatistics { totalCharts: number,
-    activeRealtimeCharts: number;
-   , chartTypes: Record<string, number>,
+    activeRealtimeCharts: number,
+    chartTypes: Record<string, number>,
     memoryUsage: MemoryUsage
     ,}
 
-export interface MemoryUsage { estimatedDataPoints: number;
-   , estimatedMemoryKB: number }
+export interface MemoryUsage { estimatedDataPoints: number,
+    estimatedMemoryKB: number }
 
 export type DataSourceCallback = () => ChartDataUpdate | null;
 
@@ -66,8 +66,8 @@ export class AnalyticsChartRenderer {
             enableResponsive: true;
             defaultWidth: 400;
             defaultHeight: 300;
-            animationDuration: 750;
-           , updateInterval: 1000, // リアルタイム更新間隔（1秒）;
+            animationDuration: 750,
+    updateInterval: 1000, // リアルタイム更新間隔（1秒）;
             maxDataPoints: 50, // 表示する最大データポイント数;
             theme: 'default', // default, dark, light;
             locale: 'ja-JP';
@@ -108,7 +108,7 @@ export class AnalyticsChartRenderer {
      */'
     private async loadChartJS(): Promise<void> { // CDNからChart.jsを読み込み
         return new Promise((resolve, reject) => { ''
-            if(typeof, Chart !== 'undefined) {'
+            if(typeof, Chart !== 'undefined' {'
                 this.Chart = Chart;''
                 resolve()';
             const script = document.createElement('script'');''
@@ -145,7 +145,7 @@ export class AnalyticsChartRenderer {
     /**
      * テーマの適用'
      */''
-    private applyTheme(theme: 'default' | 'dark' | 'light): void { ''
+    private applyTheme(theme: 'default' | 'dark' | 'light': void { ''
         if(!this.Chart) return;
 
         const themes: Record<string, ThemeConfig> = {'
@@ -183,8 +183,8 @@ export class AnalyticsChartRenderer {
 ';
 
         const defaultConfig = {''
-            type: 'line';
-           , data: {
+            type: 'line',
+    data: {
                 labels: [],
                 datasets: [{]'
                     label: config.label || 'データ',];
@@ -192,32 +192,32 @@ export class AnalyticsChartRenderer {
                     backgroundColor: this.currentTheme.backgroundColor;
                     borderColor: this.currentTheme.borderColor;
                     borderWidth: 2;
-                    fill: false;
-                   , tension: 0.1 ,}]
+                    fill: false,
+    tension: 0.1 ,}]
             };
-            options: { responsive: this.options.enableResponsive;
-               , scales: {
+            options: { responsive: this.options.enableResponsive,
+    scales: {
                     x: {
-                        display: true;
-                       , title: {'
+                        display: true,
+    title: {'
                             display: true,
                             text: config.xAxisLabel || 'X軸' ,};
-                        grid: { color: this.currentTheme.gridColor }
-                    };
-                    y: { display: true;
-                       , title: {'
+                        grid: { color: this.currentTheme.gridColor 
+    };
+                    y: { display: true,
+    title: {'
                             display: true,
                             text: config.yAxisLabel || 'Y軸' ,};
-                        grid: { color: this.currentTheme.gridColor }
-};
+                        grid: { color: this.currentTheme.gridColor 
+    };
                 plugins: { legend: {
                         display: config.showLegend !== false };
-                    tooltip: { enabled: config.showTooltip !== false }
-                };
+                    tooltip: { enabled: config.showTooltip !== false 
+    };
                 ...config.chartOptions;
         };
 
-        const chart = new this.Chart(canvas.getContext('2d), defaultConfig);''
+        const chart = new this.Chart(canvas.getContext('2d), defaultConfig';''
         this.charts.set(canvasId, chart);''
         this.chartConfigs.set(canvasId, { ...config, type: 'line ),
 
@@ -232,8 +232,8 @@ export class AnalyticsChartRenderer {
 ';
 
         const defaultConfig = {''
-            type: 'bar';
-           , data: {
+            type: 'bar',
+    data: {
                 labels: [],
                 datasets: [{]'
                     label: config.label || 'データ',];
@@ -242,30 +242,30 @@ export class AnalyticsChartRenderer {
                     borderColor: this.generateColorPalette(config.dataCount || 10, 1),
                     borderWidth: 1 ,}]
             };
-            options: { responsive: this.options.enableResponsive;
-               , scales: {
+            options: { responsive: this.options.enableResponsive,
+    scales: {
                     x: {
-                        display: true;
-                       , title: {'
+                        display: true,
+    title: {'
                             display: true,
                             text: config.xAxisLabel || 'カテゴリ' ,};
-                        grid: { color: this.currentTheme.gridColor }
-                    };
+                        grid: { color: this.currentTheme.gridColor 
+    };
                     y: { display: true;
-                        beginAtZero: true;
-                       , title: {'
+                        beginAtZero: true,
+    title: {'
                             display: true,
                             text: config.yAxisLabel || '値' ,};
-                        grid: { color: this.currentTheme.gridColor }
-};
+                        grid: { color: this.currentTheme.gridColor 
+    };
                 plugins: { legend: {
                         display: config.showLegend !== false };
-                    tooltip: { enabled: config.showTooltip !== false }
-                };
+                    tooltip: { enabled: config.showTooltip !== false 
+    };
                 ...config.chartOptions;
         };
 
-        const chart = new this.Chart(canvas.getContext('2d), defaultConfig);''
+        const chart = new this.Chart(canvas.getContext('2d), defaultConfig';''
         this.charts.set(canvasId, chart);''
         this.chartConfigs.set(canvasId, { ...config, type: 'bar ),
 
@@ -280,8 +280,8 @@ export class AnalyticsChartRenderer {
 ';
 
         const defaultConfig = {''
-            type: 'pie';
-           , data: {
+            type: 'pie',
+    data: {
                 labels: [],
                 datasets: [{]'
                     label: config.label || 'データ',];
@@ -290,13 +290,13 @@ export class AnalyticsChartRenderer {
                     borderColor: this.generateColorPalette(config.dataCount || 8, 1),
                     borderWidth: 2 ,}]
             };
-            options: { responsive: this.options.enableResponsive;
-               , plugins: {
+            options: { responsive: this.options.enableResponsive,
+    plugins: {
                     legend: {'
                         display: config.showLegend !== false,
                         position: config.legendPosition || 'right' ,};
-                    tooltip: { enabled: config.showTooltip !== false;
-                       , callbacks: {''
+                    tooltip: { enabled: config.showTooltip !== false,
+    callbacks: {''
                             label(context: any) {''
                                 const label = context.label || '';
                                 const value = context.parsed;
@@ -309,9 +309,9 @@ export class AnalyticsChartRenderer {
                 ...config.chartOptions;
         };
 
-        const chart = new this.Chart(canvas.getContext('2d), defaultConfig);''
+        const chart = new this.Chart(canvas.getContext('2d), defaultConfig';''
         this.charts.set(canvasId, chart);''
-        this.chartConfigs.set(canvasId, { ...config, type: 'pie ),
+        this.chartConfigs.set(canvasId, { ...config, type: 'pie ',
 
         return chart }
 
@@ -366,7 +366,7 @@ export class AnalyticsChartRenderer {
             // データポイント数制限
             this.limitDataPoints(chart);
 
-            chart.update('none); // アニメーションなしで更新'
+            chart.update('none'; // アニメーションなしで更新'
             return true;''
         } catch (error) {
             console.error('Chart update failed:', error);
@@ -570,8 +570,8 @@ export class AnalyticsChartRenderer {
      * チャート統計の取得
      */
     getChartStatistics(): ChartStatistics { return { totalCharts: this.charts.size,
-            activeRealtimeCharts: this.updateTimers.size;
-           , chartTypes: [...this.chartConfigs.values()].reduce((acc: Record<string, number>, config) => {  }
+            activeRealtimeCharts: this.updateTimers.size,
+    chartTypes: [...this.chartConfigs.values()].reduce((acc: Record<string, number>, config) => {  }
                 acc[config.type] = (acc[config.type] || 0) + 1; }
                 return acc;, {}),
             memoryUsage: this.estimateMemoryUsage();
@@ -593,8 +593,8 @@ export class AnalyticsChartRenderer {
         });
 
         return { estimatedDataPoints: totalDataPoints, };
-            estimatedMemoryKB: Math.round(totalDataPoints * 0.1) // 1データポイント約100バイトと仮定 }
-        }
+            estimatedMemoryKB: Math.round(totalDataPoints * 0.1) // 1データポイント約100バイトと仮定 
+    }
 
     /**
      * リソースの解放

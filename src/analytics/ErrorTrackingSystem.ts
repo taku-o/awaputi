@@ -15,8 +15,8 @@ export interface ErrorTrackingOptions { enableContextCapture?: boolean;
     enableAutoReporting?: boolean; }
 
 export interface ErrorContext { timestamp: number,
-    url: string;
-   , userAgent: string;
+    url: string,
+    userAgent: string;
     gameState?: any;
     localStorage?: Record<string, any>;
     sessionStorage?: Record<string, any>; }
@@ -33,20 +33,19 @@ export interface ErrorReport { id: string,
     source?: string;
     line?: number;
     column?: number;
-    stack?: string;
-
-   , context: ErrorContext,
+    stack?: string,
+    context: ErrorContext,
     severity: 'low' | 'medium' | 'high' | 'critical';
     groupId?: string;
     occurrenceCount: number;
     firstSeen: number;
-    lastSeen: number;
-   , resolved: boolean ,}
+    lastSeen: number,
+    resolved: boolean ,}
 
 export interface ErrorGroup { id: string;
     signature: string;
-    errors: ErrorReport[];
-   , totalCount: number,
+    errors: ErrorReport[],
+    totalCount: number,
     lastOccurrence: number,
     severity: 'low' | 'medium' | 'high' | 'critical' ,}
 
@@ -63,14 +62,14 @@ export class ErrorTrackingSystem {
 
         this.options = {
             enableContextCapture: true;
-            enableStackTrace: true;
-           , enableScreenshot: false, // パフォーマンス上の理由でデフォルトはfalse;
+            enableStackTrace: true,
+    enableScreenshot: false, // パフォーマンス上の理由でデフォルトはfalse;
             enableLocalStorage: true;
             maxErrors: 100;
-            maxContextDepth: 3;
-           , contextCaptureTimeout: 1000, // コンテキスト収集のタイムアウト;
-            enableErrorGrouping: true;
-           , enableAutoReporting: false;
+            maxContextDepth: 3,
+    contextCaptureTimeout: 1000, // コンテキスト収集のタイムアウト;
+            enableErrorGrouping: true,
+    enableAutoReporting: false;
     ,}
     }
             ...options
@@ -107,9 +106,9 @@ export class ErrorTrackingSystem {
                 type: 'javascript'),
                 message: String(message);
                 source: source;
-                line: line;
-               , column: column,
-                stack: error? .stack, : undefined', '
+                line: line,
+    column: column,
+                stack: error?.stack, : undefined', '
                 severity: 'high' ,}
             });
             // 元のハンドラーを呼び出し
@@ -121,8 +120,8 @@ export class ErrorTrackingSystem {
         window.onunhandledrejection = (event') => {  this.captureError({' }
 
                 type: 'unhandled', })
-                message: `Unhandled Promise, Rejection: ${event.reason}`)'
-                stack: event.reason? .stack, : undefined')';
+                message: `Unhandled Promise, Rejection: ${event.reason}`''
+                stack: event.reason?.stack, : undefined')';
                 severity: 'high');
             });
 
@@ -135,19 +134,19 @@ export class ErrorTrackingSystem {
      */
     async captureError(errorData: Partial<ErrorReport>): Promise<string> { try {
             const errorId = this.generateErrorId();
-            const context = await this.captureContext(''';
+            const context = await this.captureContext('''
                 type: errorData.type || 'custom',
                 message: errorData.message || 'Unknown error';
                 source: errorData.source;
                 line: errorData.line;
-                column: errorData.column;
-               , stack: errorData.stack,
-                context: context,)';
-                severity: errorData.severity || 'medium');
-               , occurrenceCount: 1,);
+                column: errorData.column,
+    stack: errorData.stack,
+                context: context,'';
+                severity: errorData.severity || 'medium'),
+    occurrenceCount: 1,);
                 firstSeen: Date.now();
-                lastSeen: Date.now();
-               , resolved: false ,};
+                lastSeen: Date.now(),
+    resolved: false ,};
             // エラーグルーピング;
             if(this.options.enableErrorGrouping) {
                 const groupId = this.getErrorGroupId(errorReport);
@@ -175,11 +174,11 @@ export class ErrorTrackingSystem {
                 await this.reportError(errorReport); }
             }
 
-            console.error('Error captured:', errorReport);
+            console.error('Error captured:', errorReport';
 
             return errorId;''
         } catch (error) {
-            console.error('Failed to capture error:', error);''
+            console.error('Failed to capture error:', error';''
             return '';
 
     /**
@@ -187,12 +186,12 @@ export class ErrorTrackingSystem {
      */
     private async captureContext(): Promise<ErrorContext> { const context: ErrorContext = {
             timestamp: Date.now();
-            url: window.location.href;
-           , userAgent: navigator.userAgent ,};
+            url: window.location.href,
+    userAgent: navigator.userAgent ,};
         try { // 基本的な画面情報
             context.screenResolution = {
-                width: window.screen.width;
-               , height: window.screen.height };
+                width: window.screen.width,
+    height: window.screen.height };
             context.viewportSize = { width: window.innerWidth,
                 height: window.innerHeight ,};
             // ゲーム状態の取得（可能な場合）
@@ -225,12 +224,12 @@ export class ErrorTrackingSystem {
                 this.getGameStateFromGlobalObjects(),;
                 new Promise((_, reject) => '';
                     setTimeout(() => reject(new, Error('Timeout), this.options.contextCaptureTimeout)];
-                )]';
-            ]);' }'
+                ']';
+            ]';' }'
 
         } catch (error) { }
 
-            return { error: 'Failed to capture game state' }
+            return { error: 'Failed to capture game state' 
     }
 
     /**
@@ -240,16 +239,16 @@ export class ErrorTrackingSystem {
         const gameObjects = ['game', 'gameManager', 'scene', 'player', 'score'];
         );
         gameObjects.forEach(objName => {  )'
-            try {);''
+            try {';''
                 const obj = (window, as any')[objName];''
-                if(obj && typeof, obj === 'object) { }'
+                if(obj && typeof, obj === 'object' { }'
 
                     gameState[objName] = this.extractSafeProperties(obj, this.options.maxContextDepth);' }'
 
                 } catch (error) { }
 
-                gameState[objName] = { error: 'Failed to extract' }
-        });
+                gameState[objName] = { error: 'Failed to extract' 
+    }';
 
         return gameState;
     }
@@ -258,7 +257,7 @@ export class ErrorTrackingSystem {
      * オブジェクトから安全なプロパティを抽出'
      */''
     private extractSafeProperties(obj: any, depth: number): any { ''
-        if(depth <= 0 || !obj || typeof, obj !== 'object) {'
+        if(depth <= 0 || !obj || typeof, obj !== 'object' {'
             
         }
             return obj;
@@ -276,7 +275,7 @@ export class ErrorTrackingSystem {
                 const value = obj[key];
                 ';
                 // 関数やDOM要素は除外
-                if(typeof, value === 'function' || value, instanceof Element) {
+                if(typeof, value === 'function' || value, instanceof Element' {
 
         }
                     continue; }
@@ -349,7 +348,7 @@ export class ErrorTrackingSystem {
      * パフォーマンス指標の取得'
      */''
     private capturePerformanceMetrics()';
-            if('performance' in, window) {'
+            if('performance' in, window' {'
 
                 const navigation = performance.getEntriesByType('navigation)[0] as PerformanceNavigationTiming;
                 const memory = (performance, as any).memory;
@@ -357,12 +356,12 @@ export class ErrorTrackingSystem {
                 return { timing: {
                         loadTime: navigation ? navigation.loadEventEnd - navigation.loadEventStart : null 
                        , domContentLoaded: navigation ? navigation.domContentLoadedEventEnd - navigation.navigationStart : null, };
-                        firstPaint: this.getFirstPaintTime(); }
-                    },
+                        firstPaint: this.getFirstPaintTime(); 
+    },
                     memory: memory ? { : undefined
                         usedJSHeapSize: memory.usedJSHeapSize;
-                        totalJSHeapSize: memory.totalJSHeapSize;
-                       , jsHeapSizeLimit: memory.jsHeapSizeLimit ,} : null;
+                        totalJSHeapSize: memory.totalJSHeapSize,
+    jsHeapSizeLimit: memory.jsHeapSizeLimit ,} : null;
                     connection: (navigator, as any).connection ? { : undefined
                         effectiveType: (navigator, as any).connection.effectiveType;
                         downlink: (navigator, as any).connection.downlink ,} : null'
@@ -394,7 +393,7 @@ export class ErrorTrackingSystem {
                     useCORS: true' ,}'
 
                 }');''
-                return canvas.toDataURL('image/jpeg', 0.5);''
+                return canvas.toDataURL('image/jpeg', 0.5';''
             } catch (error) { console.error('Screenshot capture failed:', error }
 
         return null;
@@ -420,11 +419,11 @@ export class ErrorTrackingSystem {
                 id: groupId;
                 signature: this.getErrorSignature(error);
                 errors: [];
-                totalCount: 0;
-               , lastOccurrence: error.lastSeen;
+                totalCount: 0,
+    lastOccurrence: error.lastSeen;
         }
-                severity: error.severity }
-            };
+                severity: error.severity 
+    };
             this.errorGroups.set(groupId, group);
         }
 
@@ -468,7 +467,7 @@ export class ErrorTrackingSystem {
      * エラーIDの生成
      */
     private generateErrorId(): string {
-        return `err_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
+        return `err_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
     }
 
     /**
@@ -531,7 +530,7 @@ export class ErrorTrackingSystem {
      */''
     private async reportError(error: ErrorReport): Promise<boolean> { try {
             // ここで実際のレポート送信ロジックを実装
-            console.log('Auto-reporting error:', error);
+            console.log('Auto-reporting error:', error';
 
             return true;' }'
 
@@ -604,8 +603,8 @@ export class ErrorTrackingSystem {
             errorsByType: this.groupBy(errors, 'type''),
             errorsBySeverity: this.groupBy(errors, 'severity),
             errorGroups: this.errorGroups.size, };
-            recentErrors: errors.filter(e => Date.now() - e.lastSeen < 24 * 60 * 60 * 1000).length }
-        }
+            recentErrors: errors.filter(e => Date.now() - e.lastSeen < 24 * 60 * 60 * 1000).length 
+    }
 
     /**
      * 配列のグループ化ヘルパー
@@ -621,7 +620,7 @@ export class ErrorTrackingSystem {
      */'
     clearErrors(): void { this.errors.clear();''
         this.errorGroups.clear()';
-            localStorage.removeItem('errorTrackingData);' }
+            localStorage.removeItem('errorTrackingData';' }
 
         } catch (error) { console.error('Failed to clear error storage:', error }
     }

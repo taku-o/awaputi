@@ -19,18 +19,18 @@ export interface PreventionConfig { doubleClickPrevention: number,
     confirmCriticalActions: boolean;
     safetyDelays: SafetyDelayConfig;
     warningThresholds: WarningThresholdConfig;
-    rapidClickThreshold: number;
-   , maxClickHistorySize: number ,}
+    rapidClickThreshold: number,
+    maxClickHistorySize: number ,}
 
 export interface SafetyDelayConfig { gameReset: number;
     destructiveAction: number;
-    criticalAction: number;
-   , settingsChange: number }
+    criticalAction: number,
+    settingsChange: number }
 
 export interface WarningThresholdConfig { lowHP: number;
     lowScore: number;
-    timeRunningOut: number;
-   , highErrorRate: number }
+    timeRunningOut: number,
+    highErrorRate: number }
 
 export interface PreventionState { lastClickTimes: Map<string, number>,
     clickHistories: Map<string, number[]>,
@@ -40,8 +40,8 @@ export interface PreventionState { lastClickTimes: Map<string, number>,
 
 export interface CriticalActionDefinition { classes: string[];
     attributes: string[];
-    patterns: string[];
-   , selectors: string[] }
+    patterns: string[],
+    selectors: string[] }
 
 export interface UIComponents { confirmDialog: HTMLElement;
     warningBanner?: HTMLElement;
@@ -63,8 +63,8 @@ export interface GameStateWarning { type: WarningType;
     severity: WarningSeverity;
     message: string;
     suggestion?: string;
-    timestamp: number;
-   , acknowledged: boolean }
+    timestamp: number,
+    acknowledged: boolean }
 
 export interface GameState { hp: number;
     maxHp: number;
@@ -72,15 +72,15 @@ export interface GameState { hp: number;
     timeRemaining: number;
     combo: number;
     level: number;
-    errors: number;
-   , totalActions: number }
+    errors: number,
+    totalActions: number }
 
 export interface PreventionActionInfo { type: PreventionType;
     subtype: string;
     severity: WarningSeverity;
     element: HTMLElement;
-    message: string;
-   , timestamp: number;
+    message: string,
+    timestamp: number;
     preventionTime?: number;
     metadata?: Record<string, any>; }
 
@@ -100,8 +100,8 @@ export interface PreventionStatistics { preventedDoubleClicks: number,
     pendingConfirmations: number;
     warningsGenerated: number;
     actionsConfirmed: number;
-    actionsCancelled: number;
-   , averageConfirmationTime: number ,}
+    actionsCancelled: number,
+    averageConfirmationTime: number ,}
 
 export interface ElementIdentifier { id?: string;
     className?: string;
@@ -113,37 +113,37 @@ export interface ElementIdentifier { id?: string;
 export interface ClickAnalysis { isDoubleClick: boolean,
     isRapidClick: boolean;
     timeSinceLastClick: number;
-    clickFrequency: number;
-   , pattern: ClickPattern
+    clickFrequency: number,
+    pattern: ClickPattern
     ,}
 
 export interface ConfirmationResult { confirmed: boolean;
     timestamp: number;
-    responseTime: number;
-   , element: HTMLElement
+    responseTime: number,
+    element: HTMLElement
     }
 
 // 列挙型
-export type PreventionType = 'input' | 'interface' | 'gameplay' | 'system';''
-export type WarningSeverity = 'low' | 'medium' | 'high' | 'critical';''
-export type WarningType = 'gameplay' | 'system' | 'performance' | 'data';''
-export type ConfirmationPriority = 'low' | 'normal' | 'high' | 'critical';''
+export type PreventionType = 'input' | 'interface' | 'gameplay' | 'system';
+export type WarningSeverity = 'low' | 'medium' | 'high' | 'critical';
+export type WarningType = 'gameplay' | 'system' | 'performance' | 'data';
+export type ConfirmationPriority = 'low' | 'normal' | 'high' | 'critical';
 export type ClickPattern = 'normal' | 'double' | 'rapid' | 'spam' | 'accidental';
 
 // 定数
 export const DEFAULT_PREVENTION_CONFIG: PreventionConfig = { doubleClickPrevention: 300,
-    confirmCriticalActions: true;
-   , safetyDelays: {
+    confirmCriticalActions: true,
+    safetyDelays: {
         gameReset: 1000;
         destructiveAction: 500;
-        criticalAction: 200;
-       , settingsChange: 100 ,};
+        criticalAction: 200,
+    settingsChange: 100 ,};
     warningThresholds: { lowHP: 20;
         lowScore: 100;
-        timeRunningOut: 10000;
-       , highErrorRate: 0.3 };
-    rapidClickThreshold: 5;
-   , maxClickHistorySize: 10;
+        timeRunningOut: 10000,
+    highErrorRate: 0.3 };
+    rapidClickThreshold: 5,
+    maxClickHistorySize: 10;
 } as const,
 
 export const CRITICAL_ACTIONS: CriticalActionDefinition = {;
@@ -170,8 +170,8 @@ export const DIALOG_TEXTS = {;
 export const CLICK_THRESHOLDS = { DOUBLE_CLICK_MAX: 500,
     RAPID_CLICK_WINDOW: 1000;
     RAPID_CLICK_COUNT: 5;
-    SPAM_CLICK_COUNT: 10;
-   , ACCIDENTAL_CLICK_THRESHOLD: 50 ,} as const;
+    SPAM_CLICK_COUNT: 10,
+    ACCIDENTAL_CLICK_THRESHOLD: 50 ,} as const;
 // ユーティリティ関数
 export function generateElementId(element: HTMLElement): string {;
     if(element.id) return element.id;
@@ -194,14 +194,14 @@ export function generateElementId(element: HTMLElement): string {;
 export function analyzeClickPattern(clickHistory: number[], currentTime: number): ClickAnalysis {;
     if(clickHistory.length === 0) {
         return { isDoubleClick: false,
-            isRapidClick: false;
-           , timeSinceLastClick: 0;
+            isRapidClick: false,
+    timeSinceLastClick: 0;
     ,}
 
             clickFrequency: 0,' };
 
-            pattern: 'normal' }
-        }
+            pattern: 'normal' 
+    }
     
     const lastClickTime = clickHistory[clickHistory.length - 1];
     const timeSinceLastClick = currentTime - lastClickTime;
@@ -257,7 +257,7 @@ export function isCriticalElement(element: HTMLElement): boolean { // クラス�
     if(matchesCriticalSelector) return true;
     ';
     // テキストパターンチェック
-    const elementText = (element.textContent || '').toLowerCase(').replace(/\s/g, '');
+    const elementText = (element.textContent || '').toLowerCase().replace(/\s/g, '');
     const hasPattern = CRITICAL_ACTIONS.patterns.some(pattern => );
         elementText.includes(pattern.toLowerCase();
     );
@@ -268,7 +268,7 @@ export function isCriticalElement(element: HTMLElement): boolean { // クラス�
 export function getActionWarningMessage(element: HTMLElement): string | null { for(const [action, message] of Object.entries(WARNING_MESSAGES) { }
 
         if (element.classList.contains(`${action}-btn`) ||;
-            element.textContent? .toLowerCase().includes(action.toLowerCase()) { return message;
+            element.textContent?.toLowerCase().includes(action.toLowerCase()) { return message;
     ';
     // データ属性から警告メッセージを取得
     const customWarning = element.getAttribute('data-warning);
@@ -283,9 +283,9 @@ export function createConfirmationEvent(element: HTMLElement, confirmed: boolean
         detail: {
             element);
             confirmed);
-            timestamp: Date.now( ,};
-        bubbles: true;
-       , cancelable: false;
+            timestamp: Date.now( ,}
+        bubbles: true,
+    cancelable: false;
     }),
 }
 
@@ -315,7 +315,7 @@ export class ErrorPreventionHandler {
      * クリック防止処理
      */
     handleClickPrevention(event: MouseEvent): boolean { const element = event.target as HTMLElement;
-        const now = Date.now(');
+        const now = Date.now();
         const elementId = generateElementId(element);
         
         // クリック履歴を取得・更新
@@ -335,13 +335,13 @@ export class ErrorPreventionHandler {
         
         // ダブルクリック防止
         if(this.config.doubleClickPrevention > 0 && analysis.isDoubleClick) { event.preventDefault();''
-            event.stopPropagation(''';
+            event.stopPropagation('''
                 type: 'input',
                 subtype: 'doubleClick',
                 severity: 'low',
                 element,
-                message: '同じ要素を短時間で複数回クリックしました);
-               , timestamp: now ,}
+                message: '同じ要素を短時間で複数回クリックしました),
+    timestamp: now ,}
                 preventionTime: analysis.timeSinceLastClick,) }
                 metadata: { pattern: analysis.pattern });
             return false;
@@ -349,17 +349,17 @@ export class ErrorPreventionHandler {
         
         // 連続クリック防止
         if(analysis.isRapidClick) { event.preventDefault();''
-            event.stopPropagation(''';
+            event.stopPropagation('''
                 type: 'input',
                 subtype: 'rapidClicks',
                 severity: analysis.pattern === 'spam' ? 'high' : 'medium',
                 element,
                 message: analysis.pattern === 'spam' ? 'スパムクリックが検出されました' : 'クリックが速すぎます';
-                timestamp: now;
-               , metadata: { )
+                timestamp: now,
+    metadata: { )
                     pattern: analysis.pattern ,}
-                    frequency: analysis.clickFrequency) }
-                });
+                    frequency: analysis.clickFrequency) 
+    });
             return false;
         }
         
@@ -383,7 +383,7 @@ export class ErrorPreventionHandler {
     private shouldConfirmAction(element: HTMLElement): boolean { if (!this.config.confirmCriticalActions) return false;
         
         // 確認済みイベントの場合はスキップ
-        if ((event, as any)? ._confirmed) return false;
+        if ((event, as any)?._confirmed) return false;
         
         // 既に確認待ちの場合はスキップ
         const elementId = generateElementId(element);
@@ -395,7 +395,7 @@ export class ErrorPreventionHandler {
      * アクション確認を要求
      */ : undefined
     private requestActionConfirmation(element: HTMLElement): void { ''
-        const actionName = element.textContent? .trim()';
+        const actionName = element.textContent?.trim()';
                           element.getAttribute('aria-label'') || '';
                           element.getAttribute('title'') || '';
                           '操作';
@@ -421,11 +421,11 @@ export class ErrorPreventionHandler {
      */''
     private getActionPriority(element: HTMLElement): ConfirmationPriority { ''
         if (element.classList.contains('reset-btn'') || '';
-            element.classList.contains('delete-btn)) {''
+            element.classList.contains('delete-btn)' {''
             return 'critical'; }
 
         if (element.classList.contains('clear-btn'') || '';
-            element.classList.contains('new-game-btn)) { ''
+            element.classList.contains('new-game-btn)' { ''
             return 'high'; }
 
         return 'normal';
@@ -454,7 +454,7 @@ export class ErrorPreventionHandler {
         if(warningElement) {
 
             if(context.warning) {''
-                warningElement.style.display = 'block';''
+                warningElement.style.display = 'block';
                 const warningText = warningElement.querySelector('.confirm-warning-text);
 
         }
@@ -517,10 +517,10 @@ export class ErrorPreventionHandler {
         const newCancelBtn = cancelBtn.cloneNode(true) as HTMLButtonElement;
         const newProceedBtn = proceedBtn.cloneNode(true) as HTMLButtonElement;
         
-        cancelBtn.parentNode? .replaceChild(newCancelBtn, cancelBtn);
-        proceedBtn.parentNode?.replaceChild(newProceedBtn, proceedBtn);
+        cancelBtn.parentNode?.replaceChild(newCancelBtn cancelBtn);
+        proceedBtn.parentNode?.replaceChild(newProceedBtn proceedBtn');
         // イベントリスナー設定
-        const startTime = Date.now(')';
+        const startTime = Date.now()';
         newCancelBtn.addEventListener('click', () => {  this.hideConfirmDialog();
 
             this.recordConfirmationResult(context, false, Date.now() - startTime);''
@@ -541,7 +541,7 @@ export class ErrorPreventionHandler {
 
                     this.recordConfirmationResult(context, false, Date.now() - startTime);''
                     context.onCancel()';
-                    document.removeEventListener('keydown', keyHandler);
+                    document.removeEventListener('keydown', keyHandler';
                     break;
 
                 case 'Enter':;
@@ -560,7 +560,7 @@ export class ErrorPreventionHandler {
 
                 context.onCancel() }
 
-                document.removeEventListener('click', outsideClickHandler); }
+                document.removeEventListener('click', outsideClickHandler'; }
 };
         ';
         // 少し遅れて設定（現在のクリックイベントを避けるため）
@@ -613,10 +613,10 @@ export class ErrorPreventionHandler {
         setTimeout(() => { '
             // 確認済みクリックイベントを作成
             const clickEvent = new MouseEvent('click', {
-                bubbles: true);
-               , cancelable: true) ,}
-                view: window }
-            });
+                bubbles: true),
+    cancelable: true) ,}
+                view: window 
+    });
             // 確認済みフラグを設定
             (clickEvent, as any)._confirmed = true;
             
@@ -641,23 +641,23 @@ export class ErrorPreventionHandler {
 
         this.reportPreventionAction({''
             type: 'interface',
-            subtype: 'actionCancelled',)';
+            subtype: 'actionCancelled','';
             severity: 'low')';
             element,')';
-            message: 'ユーザーがアクションをキャンセルしました');
-           , timestamp: Date.now( ,});
+            message: 'ユーザーがアクションをキャンセルしました'),
+    timestamp: Date.now( ,});
     }
 
     /**
      * セーフティ遅延時間を取得'
      */''
     private getSafetyDelay(element: HTMLElement): number { ''
-        if(element.classList.contains('reset-btn)) {'
+        if(element.classList.contains('reset-btn)' {'
             return this.config.safetyDelays.gameReset; }
 
-        if(element.classList.contains('delete-btn)) { return this.config.safetyDelays.destructiveAction; }'
+        if(element.classList.contains('delete-btn)' { return this.config.safetyDelays.destructiveAction; }'
 
-        if(element.hasAttribute('data-settings) { return this.config.safetyDelays.settingsChange; }'
+        if(element.hasAttribute('data-settings' { return this.config.safetyDelays.settingsChange; }'
         
         return this.config.safetyDelays.criticalAction;
     }
@@ -673,22 +673,22 @@ export class ErrorPreventionHandler {
             warnings.push({''
                 type: 'gameplay',
                 severity: gameState.hp <= this.state.warningThresholds.lowHP / 2 ? 'critical' : 'high',
-                message: 'HPが危険レベルです',)';
-                suggestion: 'ピンクバブルでHP回復を推奨');
-               , timestamp: now, }
-                acknowledged: false); }
-        }
+                message: 'HPが危険レベルです','';
+                suggestion: 'ピンクバブルでHP回復を推奨'),
+    timestamp: now, }
+                acknowledged: false'; 
+    }
         ';
         // スコア警告
         if(gameState.score <= this.state.warningThresholds.lowScore) { '
             warnings.push({''
                 type: 'gameplay',
                 severity: 'medium',
-                message: 'スコアが低めです',)';
-                suggestion: 'コンボを狙ってスコアアップ');
-               , timestamp: now, }
-                acknowledged: false); }
-        }
+                message: 'スコアが低めです','';
+                suggestion: 'コンボを狙ってスコアアップ'),
+    timestamp: now, }
+                acknowledged: false'; 
+    }
         ';
         // 時間警告
         if(gameState.timeRemaining <= this.state.warningThresholds.timeRunningOut) { '
@@ -697,11 +697,11 @@ export class ErrorPreventionHandler {
             warnings.push({''
                 type: 'gameplay',
                 severity,
-                message: '残り時間が少なくなっています',)';
-                suggestion: '集中してプレイしてください');
-               , timestamp: now, }
-                acknowledged: false); }
-        }
+                message: '残り時間が少なくなっています','';
+                suggestion: '集中してプレイしてください'),
+    timestamp: now, }
+                acknowledged: false); 
+    }
         
         // エラー率警告
         const errorRate = gameState.totalActions > 0 ? gameState.errors / gameState.totalActions: 0,
@@ -709,11 +709,11 @@ export class ErrorPreventionHandler {
             warnings.push({''
                 type: 'gameplay',
                 severity: errorRate >= 0.5 ? 'high' : 'medium',
-                message: 'エラー率が高くなっています',)';
-                suggestion: 'ゆっくりと正確な操作を心がけてください');
-               , timestamp: now, }
-                acknowledged: false); }
-        }
+                message: 'エラー率が高くなっています','';
+                suggestion: 'ゆっくりと正確な操作を心がけてください'),
+    timestamp: now, }
+                acknowledged: false); 
+    }
         
         // 統計更新
         this.statistics.warningsGenerated += warnings.length;

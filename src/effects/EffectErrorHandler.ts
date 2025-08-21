@@ -73,21 +73,21 @@ interface EffectDebugInterface { ''
 
 interface ErrorInfo { error: Error,
     source: string;
-    timestamp: number;
-   , context: ErrorContextInfo
+    timestamp: number,
+    context: ErrorContextInfo
     ,}
 
 interface ErrorContextInfo { fallbackMode: boolean;
     fps: number;
     particleCount: number;
     effectCount: number;
-    memoryUsage: number;
-   , qualityLevel: string }
+    memoryUsage: number,
+    qualityLevel: string }
 
 interface ErrorStats { totalErrors: number;
     fallbackMode: boolean;
-    recentErrors: ErrorInfo[];
-   , healthStatus: HealthStatus
+    recentErrors: ErrorInfo[],
+    healthStatus: HealthStatus
     }
 
 type HealthStatus = 'healthy' | 'caution' | 'warning' | 'fallback';
@@ -126,7 +126,7 @@ export class EffectErrorHandler {
         window.addEventListener('error', (event) => {  ''
             if(this.isEffectRelatedError(event.error)) {' }'
 
-                this.handleEffectError(event.error, 'global); }'
+                this.handleEffectError(event.error, 'global'; }'
 
             }''
         }');
@@ -134,7 +134,7 @@ export class EffectErrorHandler {
         // Promise リジェクションのハンドリング
         window.addEventListener('unhandledrejection', (event) => {  ''
             if(this.isEffectRelatedError(event.reason)) {''
-                this.handleEffectError(event.reason, 'promise); }'
+                this.handleEffectError(event.reason, 'promise'; }'
                 event.preventDefault(); }
 });
     }
@@ -148,7 +148,7 @@ export class EffectErrorHandler {
             console.warn('Canvas, context lost);
             event.preventDefault(); }
 
-            this.handleContextLoss(');' }'
+            this.handleContextLoss();' }'
 
         }');
 ';
@@ -182,8 +182,8 @@ export class EffectErrorHandler {
         const errorInfo: ErrorInfo = {
             error: error;
             source: source;
-            timestamp: Date.now();
-           , context: this.getErrorContext( };
+            timestamp: Date.now(),
+    context: this.getErrorContext( };
         
         this.errorHistory.push(errorInfo);
         
@@ -202,13 +202,13 @@ export class EffectErrorHandler {
     }
 
     private getErrorContext(): ErrorContextInfo { return { fallbackMode: this.fallbackMode,
-            fps: this.gameEngine.performanceOptimizer? .getCurrentFPS() || 0, : undefined
-            particleCount: this.gameEngine.enhancedParticleManager? .getActiveParticleCount() || 0, : undefined
-            effectCount: this.gameEngine.enhancedEffectManager? .getActiveEffectCount() || 0, : undefined
+            fps: this.gameEngine.performanceOptimizer?.getCurrentFPS() || 0, : undefined
+            particleCount: this.gameEngine.enhancedParticleManager?.getActiveParticleCount() || 0, : undefined
+            effectCount: this.gameEngine.enhancedEffectManager?.getActiveEffectCount() || 0, : undefined
             memoryUsage: performance.memory ? performance.memory.usedJSHeapSize / 1024 / 1024 : 0,' };
 
-            qualityLevel: this.gameEngine.effectQualityController? .getCurrentQualityLevel(') || 'unknown' }
-        }
+            qualityLevel: this.gameEngine.effectQualityController?.getCurrentQualityLevel() || 'unknown' 
+    }
 
  : undefined'';
     private attemptRecovery(errorInfo: ErrorInfo): void { ''
@@ -220,7 +220,7 @@ export class EffectErrorHandler {
                 
             }
                 this.recoverFromMemoryError(); }
-            } else if(this.isRenderingError(errorInfo.error) { this.recoverFromRenderingError(); } else if(this.isParticleError(errorInfo.error) { this.recoverFromParticleError('); } else {
+            } else if(this.isRenderingError(errorInfo.error) { this.recoverFromRenderingError(); } else if(this.isParticleError(errorInfo.error) { this.recoverFromParticleError(); } else {
                 this.genericRecovery( }
 
             console.log('Error, recovery completed');' }
@@ -233,13 +233,13 @@ export class EffectErrorHandler {
 
     private isMemoryError(error: Error): boolean { ''
         const message = error.message || error.toString()';
-        return message.includes('memory'') || message.includes('heap); }
+        return message.includes('memory'') || message.includes('heap'; }
 ';
 
     private isRenderingError(error: Error): boolean { ''
         const message = error.message || error.toString()';
         return message.includes('render'') || message.includes('canvas'') || '';
-               message.includes('context'') || message.includes('WebGL); }
+               message.includes('context'') || message.includes('WebGL'; }
 ';
 
     private isParticleError(error: Error): boolean { ''
@@ -301,11 +301,11 @@ export class EffectErrorHandler {
         
         // パーティクル数制限を厳しくする
         if(this.gameEngine.effectPerformanceOptimizer) { this.gameEngine.effectPerformanceOptimizer.updateSettings({ }
-                maxParticlesPerFrame: 100); }
-}
+                maxParticlesPerFrame: 100); 
+    }
 
     private genericRecovery()';
-        console.log('Applying, generic recovery, measures);
+        console.log('Applying generic recovery measures';
         
         // 全エフェクトをクリア
         this.clearAllEffects();
@@ -314,7 +314,7 @@ export class EffectErrorHandler {
 
         }
 
-            this.gameEngine.effectQualityController.setQualityLevel('low); }'
+            this.gameEngine.effectQualityController.setQualityLevel('low'; }'
         }
         
         // パフォーマンス最適化を強制実行
@@ -325,7 +325,7 @@ export class EffectErrorHandler {
     private enableFallbackMode(): void { ''
         if(this.fallbackMode) return;
 
-        console.warn('Enabling, effect fallback, mode due, to repeated, errors);
+        console.warn('Enabling, effect fallback, mode due to repeated errors);
         this.fallbackMode = true;
         
         // 全エフェクトを無効化
@@ -344,7 +344,7 @@ export class EffectErrorHandler {
                 this.gameEngine.enhancedParticleManager.setEnabled(false); }
             }
             
-            if (this.gameEngine.enhancedEffectManager) { this.gameEngine.enhancedEffectManager.setEnabled(false); }
+            if (this.gameEngine.enhancedEffectManager) { this.gameEngine.enhancedEffectManager.setEnabled(false'); }
             
             if (this.gameEngine.seasonalEffectManager) { this.gameEngine.seasonalEffectManager.setEnabled(false'); }
             ';
@@ -375,7 +375,7 @@ export class EffectErrorHandler {
     private notifyFallbackMode(): void { // デバッグインターフェースが利用可能な場合、警告を表示
         if(this.gameEngine.effectDebugInterface) {
             try {
-                this.gameEngine.effectDebugInterface.showWarning(');
+                this.gameEngine.effectDebugInterface.showWarning();
         }
 
                     'エフェクトシステムがフォールバックモードで動作しています。');' }
@@ -384,7 +384,7 @@ export class EffectErrorHandler {
 }
 
     private handleContextLoss()';
-        console.warn('Handling, canvas context, loss);
+        console.warn('Handling canvas context loss);
         
         // エフェクトを一時停止
         this.pauseAllEffects();
@@ -393,8 +393,8 @@ export class EffectErrorHandler {
         this.releaseResources();
     }
 
-    private handleContextRestore(')';
-        console.log('Handling, canvas context, restore);
+    private handleContextRestore()';
+        console.log('Handling canvas context restore);
         
         // エフェクトシステムを再初期化
         this.reinitializeEffects();
@@ -407,7 +407,7 @@ export class EffectErrorHandler {
             if(this.gameEngine.enhancedParticleManager) {
                 
             }
-                this.gameEngine.enhancedParticleManager.pause('); }
+                this.gameEngine.enhancedParticleManager.pause(); }
             }
             ';
 
@@ -461,7 +461,7 @@ export class EffectErrorHandler {
             } catch (clearError) { console.error('Error clearing effects:', clearError }
     }
 
-    private checkPerformanceHealth(): void { const fps = this.gameEngine.performanceOptimizer? .getCurrentFPS() || 60; : undefined
+    private checkPerformanceHealth(): void { const fps = this.gameEngine.performanceOptimizer?.getCurrentFPS() || 60; : undefined
         const memoryUsage = performance.memory ? performance.memory.usedJSHeapSize / 1024 / 1024 : 0;
         ';
         // 危険なパフォーマンス状態の検出
@@ -479,7 +479,7 @@ export class EffectErrorHandler {
 
         }
 
-            this.gameEngine.effectQualityController.setQualityLevel('low); }'
+            this.gameEngine.effectQualityController.setQualityLevel('low'; }'
         }
         
         if (this.gameEngine.effectPerformanceOptimizer) { this.gameEngine.effectPerformanceOptimizer.emergencyOptimization(); }
@@ -488,22 +488,22 @@ export class EffectErrorHandler {
     private reportError(errorInfo: ErrorInfo): void { // エラーの統計とレポート
         this.errorHandler.logError(errorInfo.error, {)'
             component: 'EffectSystem',);
-            source: errorInfo.source);
-           , context: JSON.stringify(errorInfo.context ,});
+            source: errorInfo.source),
+    context: JSON.stringify(errorInfo.context ,});
     }
 
     // API メソッド
     public getErrorStats(): ErrorStats { return { totalErrors: this.errorCount,
-            fallbackMode: this.fallbackMode;
-           , recentErrors: this.errorHistory.slice(-10 ,};
-            healthStatus: this.getHealthStatus(); }
-        }
+            fallbackMode: this.fallbackMode,
+    recentErrors: this.errorHistory.slice(-10 ,}
+            healthStatus: this.getHealthStatus(); 
+    }
 ';
 
     private getHealthStatus(): HealthStatus { ''
-        if(this.fallbackMode) return 'fallback';''
-        if(this.errorCount > this.maxErrors * 0.7) return 'warning';''
-        if(this.errorCount > 0) return 'caution';''
+        if(this.fallbackMode) return 'fallback';
+        if(this.errorCount > this.maxErrors * 0.7) return 'warning';
+        if(this.errorCount > 0) return 'caution';
         return 'healthy'; }
 
     public resetErrorCount()';
@@ -514,9 +514,9 @@ export class EffectErrorHandler {
     public exitFallbackMode(): void { ''
         if(!this.fallbackMode) return;
 
-        console.log('Attempting, to exit, fallback mode...);
+        console.log('Attempting to exit fallback mode...');
         this.fallbackMode = false;
-        this.resetErrorCount(');
+        this.resetErrorCount();
         
         // エフェクトシステムを再有効化
         try {'
@@ -544,7 +544,7 @@ export class EffectErrorHandler {
 
 // グローバルアクセス用
 declare global { interface Window {
-        EffectErrorHandler: typeof EffectErrorHandler }
-}
+        EffectErrorHandler: typeof EffectErrorHandler 
+    }
 
 window.EffectErrorHandler = EffectErrorHandler;

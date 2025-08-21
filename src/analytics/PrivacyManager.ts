@@ -6,8 +6,8 @@
 // Privacy Manager interfaces and types
 export interface ConsentStatus { hasConsented: boolean,
     consentDate: string;
-    version: string;
-   , features: Record<string, boolean>, }
+    version: string,
+    features: Record<string, boolean>, }
 
 export interface AnonymizationRule { (value: any): any, }
 
@@ -55,7 +55,7 @@ export class PrivacyManager {
 
             // バージョン番号を除去' }'
 
-            return value.replace(/\d+\.\d+[\.\d]*/g, 'X.X);' }
+            return value.replace(/\d+\.\d+[\.\d]*/g, 'X.X';' }
 
         }');
         ';
@@ -74,12 +74,12 @@ export class PrivacyManager {
         }');
         ';
         // 座標の曖昧化
-        this.anonymizationRules.set('coordinates', (value: { x: number;, y: number }): { x: number;, y: number } | null => {  ''
+        this.anonymizationRules.set('coordinates', (value: { x: number,  y: number }): { x: number;, y: number } | null => {  ''
             if(!value || typeof, value.x !== 'number' || typeof, value.y !== 'number) return null;
             // 10ピクセル単位に丸める }
             return { x: Math.round(value.x / 10) * 10, };
-                y: Math.round(value.y / 10) * 10 }
-            });
+                y: Math.round(value.y / 10) * 10 
+    });
     }
     
     /**
@@ -100,8 +100,8 @@ export class PrivacyManager {
         this.consentStatus = {
             hasConsented: consent;
             consentDate: new Date().toISOString();
-            version: this.consentVersion;
-           , features: features ,};
+            version: this.consentVersion,
+    features: features ,};
         // オプトアウト機能の更新
         this.optOutFeatures.clear();
         Object.entries(features).forEach(([feature, enabled]) => {  if (!enabled) { }
@@ -133,11 +133,11 @@ export class PrivacyManager {
         }
             return obj.map((item, index) =>  }
 
-                this.applyAnonymizationRules(item, `${path}[${ index}]`}' }', '});
+                this.applyAnonymizationRules(item, `${path}[${ index}]`}' }', '}';
 
         }
 
-        if(typeof, obj === 'object) {'
+        if(typeof, obj === 'object' {'
             
         }
             const result: any = {}
@@ -151,7 +151,7 @@ export class PrivacyManager {
                 }
                     const, rule = this.anonymizationRules.get(key)!;' }'
 
-                    value = rule(value'});
+                    value = rule(value'}';
                 }
                 ';
                 // 再帰的に匿名化ルールを適用
@@ -245,7 +245,7 @@ export class PrivacyManager {
                 for(let i = 0; i < localStorage.length; i++) {
 
                     const key = localStorage.key(i);''
-                    if (key && (key.startsWith('analytics_'') || key.startsWith('game_data_)) {'
+                    if (key && (key.startsWith('analytics_'') || key.startsWith('game_data_)' {'
                         try {
                 }
 
@@ -269,10 +269,10 @@ export class PrivacyManager {
      * プライバシー設定の取得
      */
     getPrivacySettings(): any { return { consentStatus: this.consentStatus,
-            optOutFeatures: Array.from(this.optOutFeatures);
-           , anonymizationRules: Array.from(this.anonymizationRules.keys(), };
-            consentVersion: this.consentVersion }
-        }
+            optOutFeatures: Array.from(this.optOutFeatures),
+    anonymizationRules: Array.from(this.anonymizationRules.keys(), };
+            consentVersion: this.consentVersion 
+    }
     
     /**
      * 同意状態の保存'
@@ -291,7 +291,7 @@ export class PrivacyManager {
                 this.consentStatus = JSON.parse(saved);
                 
                 // オプトアウト機能の復元
-                if (this.consentStatus? .features) {
+                if (this.consentStatus?.features) {
                     Object.entries(this.consentStatus.features).forEach(([feature, enabled]) => { 
             }
                         if (!enabled) { }
@@ -332,7 +332,7 @@ export class PrivacyManager {
                 };
 
                 await deleteDB('gameAnalytics'');''
-                await deleteDB('bubblePopData);''
+                await deleteDB('bubblePopData';''
             } catch (error) {
             console.error('IndexedDB cleanup failed:', error);
             throw error; }
@@ -356,13 +356,13 @@ export class PrivacyManager {
      * Cookie同意の確認
      */'
     hasCookieConsent(): boolean { ''
-        return this.checkConsent(') && !this.isOptedOut('cookies); }
+        return this.checkConsent() && !this.isOptedOut('cookies'; }
     
     /**
      * アナリティクス同意の確認
      */'
     hasAnalyticsConsent(): boolean { ''
-        return this.checkConsent(') && !this.isOptedOut('analytics); }
+        return this.checkConsent() && !this.isOptedOut('analytics'; }
     
     /**
      * リソースの解放

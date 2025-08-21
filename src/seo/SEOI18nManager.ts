@@ -3,8 +3,8 @@
  * 
  * hreflangタグ生成とLocalizationManagerとの統合機能を提供
  */
-import { SEOConfig, getBaseUrl, getLocalizedUrl, LanguageCode  } from './SEOConfig';''
-import { seoLogger  } from './SEOLogger';''
+import { SEOConfig, getBaseUrl, getLocalizedUrl, LanguageCode  } from './SEOConfig';
+import { seoLogger  } from './SEOLogger';
 import { seoErrorHandler  } from './SEOErrorHandler';
 import { normalizeUrl, 
     measurePerformance,
@@ -14,10 +14,10 @@ import { normalizeUrl,
 
 // LocalizationManager インターフェース
 interface LocalizationManager { getCurrentLanguage(): string;
-    addLanguageChangeListener(callback: (lan;g: string) => void): void;
+    addLanguageChangeListener(callback: (lang: string) => void): void;
     t(key: string, defaultValue?: string): string;
-    getSupportedLanguages(): string[]; }
-}
+    getSupportedLanguages(): string[]; 
+    }
 
 // SEOMetaManager インターフェース
 interface SEOMetaManager { updateMetaTags(context: any): Promise<void>,''
@@ -69,7 +69,7 @@ export class SEOI18nManager {
             ';
 
             this.initialized = true;''
-            seoLogger.info('SEOI18nManager, initialized successfully);''
+            seoLogger.info('SEOI18nManager, initialized successfully';''
         } catch (error) {
             seoErrorHandler.handle(error as Error, 'seoi18nManagerInit''); }
     }
@@ -96,9 +96,9 @@ export class SEOI18nManager {
                 hreflang: lang),
                 href: normalizeUrl(localizedUrl),' }'
 
-                rel: 'alternate' }
-            });
-        });
+                rel: 'alternate' 
+    });
+        }';
         ';
         // x-default タグの追加
         const defaultUrl = getLocalizedUrl(SEOConfig.defaultLanguage, path);

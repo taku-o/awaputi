@@ -8,8 +8,8 @@
 // Type definitions
 interface Bounds { x: number,
     y: number;
-    width: number;
-   , height: number ,}
+    width: number,
+    height: number ,}
 
 interface QuadTreeObject { bounds: Bounds;
     [key: string]: any, }
@@ -44,29 +44,29 @@ export class QuadTree {
         this.nodes[0] = new QuadTree({
             x: x + subWidth;
             y: y);
-            width: subWidth);
-           , height: subHeight;
+            width: subWidth),
+    height: subHeight;
         ), this.maxObjects, this.maxLevels, this.level + 1);
         
         this.nodes[1] = new QuadTree({
             x: x;
             y: y);
-            width: subWidth);
-           , height: subHeight;
+            width: subWidth),
+    height: subHeight;
         ), this.maxObjects, this.maxLevels, this.level + 1);
         
         this.nodes[2] = new QuadTree({
             x: x;
             y: y + subHeight);
-            width: subWidth);
-           , height: subHeight;
+            width: subWidth),
+    height: subHeight;
         ), this.maxObjects, this.maxLevels, this.level + 1);
         
         this.nodes[3] = new QuadTree({
             x: x + subWidth;
             y: y + subHeight);
-            width: subWidth);
-           , height: subHeight;
+            width: subWidth),
+    height: subHeight;
         ), this.maxObjects, this.maxLevels, this.level + 1); }
     
     getIndex(bounds: Bounds): number { let index = -1;

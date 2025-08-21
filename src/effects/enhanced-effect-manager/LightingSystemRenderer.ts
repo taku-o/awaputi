@@ -4,8 +4,8 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
  * RGBカラーインターフェース
  */
 interface RGBColor { r: number,
-    g: number;
-   , b: number ,}
+    g: number,
+    b: number ,}
 
 /**
  * 光源インターフェース
@@ -15,15 +15,15 @@ interface LightSource { x: number;
     radius: number;
     intensity: number;
     currentIntensity?: number;
-    color: RGBColor;
-   , enabled: boolean;
+    color: RGBColor,
+    enabled: boolean;
     castShadows?: boolean }
 
 /**
  * 影を投影するオブジェクトインターフェース
  */
-interface ShadowObject { x: number;
-   , y: number;
+interface ShadowObject { x: number,
+    y: number;
     size?: number;
     type?: string; }
 
@@ -33,14 +33,14 @@ interface ShadowObject { x: number;
 interface ShadowCaster { object: ShadowObject,
     enabled: boolean,
     opacity: number,
-    shadowType: 'hard' | 'soft';
-   , blur: number ,}
+    shadowType: 'hard' | 'soft',
+    blur: number ,}
 
 /**
  * バブルオブジェクトインターフェース
  */
-interface BubbleObject { x: number;
-   , y: number;
+interface BubbleObject { x: number,
+    y: number;
     size?: number;
     type?: string; }
 
@@ -126,12 +126,12 @@ export class LightingSystemRenderer {
 
                     // 影のソフトネス' }'
 
-                    if(caster.shadowType === 'soft) {' }
+                    if(caster.shadowType === 'soft' {' }
 
-                        context.filter = `blur(${caster.blur}px'})`;
+                        context.filter = `blur(${caster.blur}px'}'`;
                     }
 
-                    context.fillStyle = '#000000';''
+                    context.fillStyle = '#000000';
                     context.globalCompositeOperation = 'multiply';
                     
                     // 対象オブジェクトの形状に基づいた影
@@ -167,7 +167,7 @@ export class LightingSystemRenderer {
                 });
             });''
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'LightingSystemRenderer.renderAdvancedShadows' ,});
+                context: 'LightingSystemRenderer.renderAdvancedShadows' ,}';
         }
     }
     
@@ -175,7 +175,7 @@ export class LightingSystemRenderer {
      * オブジェクトの形状に基づいた影を描画'
      */''
     renderObjectShadow(context: CanvasRenderingContext2D, object: ShadowObject, shadowX: number, shadowY: number, dirX: number, dirY: number): void { try {'
-            if(object.type === 'bubble) {'
+            if(object.type === 'bubble' {'
                 // バブル用の楕円影
                 const radius = object.size || 20;
                 const scaleX = 1 + Math.abs(dirX) * 0.5;
@@ -244,7 +244,7 @@ export class LightingSystemRenderer {
             context.restore();' }'
 
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'LightingSystemRenderer.renderBubbleShadow),' }
+                context: 'LightingSystemRenderer.renderBubbleShadow',' }
 
             }');
         }

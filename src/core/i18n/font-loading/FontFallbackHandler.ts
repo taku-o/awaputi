@@ -4,13 +4,13 @@ export interface FontFallbackConfig { development?: {
 
 export interface FallbackInfo { language: string,
     originalFont: string | null;
-    fallbackChain: string[];
-   , appliedAt: number ,}
+    fallbackChain: string[],
+    appliedAt: number ,}
 
-export interface FallbackStats { totalApplied: number;
-   , byLanguage: Record<string, number>,
-    systemFontsCount: number;
-   , availableSystemFonts: string[] ,}
+export interface FallbackStats { totalApplied: number,
+    byLanguage: Record<string, number>,
+    systemFontsCount: number,
+    availableSystemFonts: string[] ,}
 
 export class FontFallbackHandler {
     private config: FontFallbackConfig;
@@ -41,7 +41,7 @@ export class FontFallbackHandler {
 ';
 
     private _detectSystemFonts(): Set<string> { ''
-        const systemFonts = new Set<string>(');
+        const systemFonts = new Set<string>();
 
         const testFonts = ['';
             'Arial', 'Helvetica', 'Times New Roman', 'Georgia', 'Verdana',
@@ -62,7 +62,7 @@ export class FontFallbackHandler {
 
     private _isFontAvailable(fontName: string): boolean { ''
         const canvas = document.createElement('canvas'');''
-        const context = canvas.getContext('2d);''
+        const context = canvas.getContext('2d';''
         if(!context) {
             
         }
@@ -70,7 +70,7 @@ export class FontFallbackHandler {
 
         const text = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
-        context.font = '72px monospace';''
+        context.font = '72px monospace';
         const baseline = context.measureText(text).width;
 
         context.font = `72px '${fontName}', monospace`;
@@ -101,10 +101,10 @@ export class FontFallbackHandler {
         
         this.appliedFallbacks.set(element, { language: language)
            , originalFont: originalFont,);
-            fallbackChain: fallbackChain);
-           , appliedAt: Date.now( ,});
+            fallbackChain: fallbackChain),
+    appliedAt: Date.now( ,});
 
-        if (this.config.development? .verboseLogging) { : undefined 
+        if (this.config.development?.verboseLogging) { : undefined 
             console.log(`[FontFallbackHandler] Applied, fallback for ${language}: ${fontFamily}`});
         }
 
@@ -126,7 +126,7 @@ export class FontFallbackHandler {
 
         for(const, font of, fallbackChain) {'
 
-            if(font === 'sans-serif' || font === 'serif' || font === 'monospace) {
+            if(font === 'sans-serif' || font === 'serif' || font === 'monospace' {
         }
                 return font;''
             if(this.systemFonts.has(font)) { return font;
@@ -173,8 +173,8 @@ export class FontFallbackHandler {
     getStats(): FallbackStats { const stats: FallbackStats = {
             totalApplied: this.appliedFallbacks.size }
             byLanguage: {};
-            systemFontsCount: this.systemFonts.size;
-           , availableSystemFonts: Array.from(this.systemFonts);
+            systemFontsCount: this.systemFonts.size,
+    availableSystemFonts: Array.from(this.systemFonts);
         };
 
         for(const [element, info] of this.appliedFallbacks.entries() {
@@ -193,7 +193,7 @@ export class FontFallbackHandler {
 
     refreshSystemFonts(): number { this.systemFonts = this._detectSystemFonts();
 
-        if(this.config.development? .verboseLogging) {'
+        if(this.config.development?.verboseLogging) {'
             : undefined';
         }
 

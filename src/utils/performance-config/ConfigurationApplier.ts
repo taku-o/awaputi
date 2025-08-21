@@ -13,8 +13,8 @@ interface ConfigMetadata { reason?: string;
     [key: string]: any, }
 
 interface ConfigBackup { value: any,
-    timestamp: number;
-   , metadata: ConfigMetadata
+    timestamp: number,
+    metadata: ConfigMetadata
     ,}
 
 interface ConfigProfile { created: number;
@@ -22,16 +22,16 @@ interface ConfigProfile { created: number;
 
 interface ConfigChangeNotification { key: string,
     newValue: any;
-    oldValue: any;
-   , metadata: ConfigMetadata
+    oldValue: any,
+    metadata: ConfigMetadata
     ,}
 
 interface SetResult { success: boolean;
-    oldValue: any;
-   , newValue: any }
+    oldValue: any,
+    newValue: any }
 
-interface ApplyResult { key: string;
-   , status: 'success' | 'error';
+interface ApplyResult { key: string,
+    status: 'success' | 'error';
     result?: SetResult;
     error?: string; }
 
@@ -52,32 +52,32 @@ interface ProfileResult { name: string,''
 interface RollbackResult { key: string,
     value: any;
     oldValue: any;
-    originalTimestamp: number;
-   , rollbackTimestamp: number ,}
+    originalTimestamp: number,
+    rollbackTimestamp: number ,}
 ';
 
 interface UpdateItem { id: string,''
-    handler: (dat;a: any') => Promise<void>,
+    handler: (data: any') => Promise<void>,
     data: any,
     priority: 'high' | 'normal' | 'low',
     queuedAt: number,
     status?: 'completed' | 'failed';
     completedAt?: number;
     failedAt?: number;
-    error?: string; }
-}
+    error?: string; 
+    }
 
 interface UpdateStatus { queueLength: number,
-    updating: boolean;
-   , recentUpdates: UpdateItem[]
+    updating: boolean,
+    recentUpdates: UpdateItem[]
     ,}
 
 interface ApplierStatus { configCount: number;
     profileCount: number;
     listenerCount: number;
     updateQueueLength: number;
-    updating: boolean;
-   , backupCount: number }
+    updating: boolean,
+    backupCount: number }
 
 interface ApplierConfiguration { maxBackupsPerKey?: number;
     updateInterval?: number; }
@@ -113,7 +113,7 @@ export class ConfigurationApplier {
         this.updateQueue = [];
         this.updating = false;
         this.updateHistory = [];''
-        this.backups = new Map<string, ConfigBackup[]>(');
+        this.backups = new Map<string, ConfigBackup[]>();
         this.maxBackupsPerKey = 10;
 
         ';
@@ -137,7 +137,7 @@ export class ConfigurationApplier {
     /**
      * Setup default configuration values'
      */''
-    private setupDefaults(''';
+    private setupDefaults('''
             'frameStabilization.enabled': true,
             'frameStabilization.targetFPS': 60,
             'frameStabilization.minFPS': 30,
@@ -159,8 +159,8 @@ export class ConfigurationApplier {
             'rendering.enableOptimization': true,
             'rendering.dirtyRegions': true,
             'rendering.viewportCulling': true,
-            'rendering.batchRendering': true,)';
-            'rendering.layerCaching': true)';
+            'rendering.batchRendering': true,'';
+            'rendering.layerCaching': true'';
             // モバイル最適化設定
             'mobile.enableOptimization': true,
             'mobile.deviceDetection': true,
@@ -240,16 +240,16 @@ export class ConfigurationApplier {
             
             const completedUpdate: UpdateItem = {'
                 ...update,
-                status: 'completed';
-               , completedAt: Date.now( ,};
+                status: 'completed',
+    completedAt: Date.now( ,};
             
             this.updateHistory.push(completedUpdate);
 
         } catch (error) { const failedUpdate: UpdateItem = {'
                 ...update,
                 status: 'failed';
-                error: error instanceof Error ? error.message : String(error);
-               , failedAt: Date.now( ,};
+                error: error instanceof Error ? error.message : String(error),
+    failedAt: Date.now( ,};
             
             this.updateHistory.push(failedUpdate);
         }
@@ -301,12 +301,12 @@ export class ConfigurationApplier {
                     ...metadata,')';
                     reason: metadata.reason || 'batch_update'),
                     timestamp: Date.now(),' }');''
-                results.push({ key, status: 'success', result );' }
+                results.push({ key, status: 'success', result ';' }
 
             } catch (error) { results.push({ )'
                     key, ')';
-                    status: 'error' );
-                   , error: error instanceof Error ? error.message : String(error ,});
+                    status: 'error' ),
+    error: error instanceof Error ? error.message : String(error ,});
             }
         }
         
@@ -369,7 +369,7 @@ export class ConfigurationApplier {
             this.listeners.set(category, new Set<ConfigChangeCallback>(); }
         this.listeners.get(category)!.add(callback);
         
-        return () => { this.listeners.get(category)? .delete(callback); }
+        return () => { this.listeners.get(category)?.delete(callback); }
     
     /**
      * Notify configuration change listeners
@@ -400,11 +400,11 @@ export class ConfigurationApplier {
      * @returns Category name'
      */''
     private categorizeKey(key: string): ConfigCategory { ''
-        if(key.startsWith('frameStabilization)) return 'frameStabilization';''
-        if(key.startsWith('memoryManagement)) return 'memoryManagement';''
-        if(key.startsWith('qualityControl)) return 'qualityControl';''
-        if(key.startsWith('rendering)) return 'rendering';''
-        if(key.startsWith('mobile)) return 'mobile';''
+        if(key.startsWith('frameStabilization)' return 'frameStabilization';
+        if(key.startsWith('memoryManagement)' return 'memoryManagement';
+        if(key.startsWith('qualityControl)' return 'qualityControl';
+        if(key.startsWith('rendering)' return 'rendering';
+        if(key.startsWith('mobile)' return 'mobile';
         return 'general'; }
     
     /**
@@ -432,8 +432,8 @@ export class ConfigurationApplier {
                     reason: 'category_reset',);
                     category);
         }
-                    timestamp: Date.now(); }
-                });
+                    timestamp: Date.now(); 
+    });
                 resetKeys.push(key);
             }
         }
@@ -453,12 +453,12 @@ export class ConfigurationApplier {
             this.notifyChange(key, value, oldValue, {)'
                 reason: 'all_reset');
         ,}
-                timestamp: Date.now(); }
-            });
+                timestamp: Date.now(); 
+    });
             resetKeys.push(key);
         }
 
-        await this.saveConfig(''';
+        await this.saveConfig('''
             status: 'success', ')';
             message: 'All configurations reset to defaults');
             resetKeys ;
@@ -478,7 +478,7 @@ export class ConfigurationApplier {
             localStorage.setItem('performance_config_profiles', JSON.stringify(profiles);' }
 
         } catch (error) {
-            console.error('[ConfigurationApplier] Failed to save profile:', error);
+            console.error('[ConfigurationApplier] Failed to save profile:', error';
             throw error; }
 
         return { name, status: 'created' ,}
@@ -491,13 +491,13 @@ export class ConfigurationApplier {
     async loadProfile(name: string): Promise<ProfileResult> { const profile = this.profiles.get(name);''
         if(!profile) {' }'
 
-            throw new Error(`Profile '${name}' not, found`});
+            throw new Error(`Profile '${name}' not, found`}';
         }
         ';
 
         const changes: Record<string, { oldValue: any;, newValue: any }> = {}''
         for(const [key, value] of Object.entries(profile)) { ''
-            if(key !== 'created) {'
+            if(key !== 'created' {'
                 const oldValue = this.config.get(key);''
                 this.config.set(key, value);
 
@@ -505,12 +505,12 @@ export class ConfigurationApplier {
                     reason: 'profile_load',);
                     profile: name);
             ,}
-                    timestamp: Date.now(); }
-                });
+                    timestamp: Date.now(); 
+    });
                 changes[key] = { oldValue, newValue: value ,}
         }
 
-        await this.saveConfig('';
+        await this.saveConfig(''
 
         return { name, status: 'loaded', changes }
     
@@ -540,15 +540,15 @@ export class ConfigurationApplier {
 
         await this.set(key, backup.value, { ')'
             reason: 'rollback',);
-            originalTimestamp: backup.timestamp);
-           , rollbackTimestamp: Date.now(), });
+            originalTimestamp: backup.timestamp),
+    rollbackTimestamp: Date.now(), });
 
         return { key,
             value: backup.value;
             oldValue,
             originalTimestamp: backup.timestamp, };
-            rollbackTimestamp: Date.now(); }
-        }
+            rollbackTimestamp: Date.now(); 
+    }
     
     /**
      * Queue configuration update
@@ -576,8 +576,8 @@ export class ConfigurationApplier {
      */
     getUpdateStatus(): UpdateStatus { return { queueLength: this.updateQueue.length,
             updating: this.updating, };
-            recentUpdates: this.updateHistory.slice(-10); }
-        }
+            recentUpdates: this.updateHistory.slice(-10); 
+    }
     
     /**
      * Reload configuration from file
@@ -609,10 +609,10 @@ export class ConfigurationApplier {
      * @returns Applier status
      */
     getApplierStatus(): ApplierStatus { return { configCount: this.config.size,
-            profileCount: this.profiles.size;
-           , listenerCount: Array.from(this.listeners.values().reduce((sum, set) => sum + set.size, 0),
-            updateQueueLength: this.updateQueue.length;
-           , updating: this.updating, };
+            profileCount: this.profiles.size,
+    listenerCount: Array.from(this.listeners.values().reduce((sum, set) => sum + set.size, 0),
+            updateQueueLength: this.updateQueue.length,
+    updating: this.updating, };
             backupCount: Array.from(this.backups.values().reduce((sum, arr) => sum + arr.length, 0); }
         }
     

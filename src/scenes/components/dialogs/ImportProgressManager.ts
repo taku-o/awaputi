@@ -6,39 +6,39 @@
  */
 
 export interface ProgressStep { id: string,
-    label: string;
-   , duration: number ,}
+    label: string,
+    duration: number ,}
 
 export interface Layout { contentX: number;
     contentY: number;
     contentWidth: number;
     buttonY: number;
-    x: number;
-   , width: number }
+    x: number,
+    width: number }
 
 export interface ProgressStatus { currentStep: number;
     stepProgress: number;
     overallProgress: number;
-    currentStepLabel: string;
-   , cancelled: boolean }
+    currentStepLabel: string,
+    cancelled: boolean }
 
 export interface ComponentStatus { componentType: string;
     totalSteps: number;
     currentStep: number;
     stepProgress: number;
     overallProgress: number;
-    cancelled: boolean;
-   , estimatedTimeRemaining: number }
+    cancelled: boolean,
+    estimatedTimeRemaining: number }
 
 export interface MainController { data: {
-        ste;p: string;
-       , importProgress: number;
+        ste;p: string,
+    importProgress: number;
         error?: string;
         processingText?: string;
         success?: boolean;
         parsedData?: any; };
-    textSettings: { contentFont: string;
-       , contentColor: string };
+    textSettings: { contentFont: string,
+    contentColor: string };
     importDataProcessor: {
         validateImportData(data: any): Promise<{ valid: boolean; error?: string }>;
         checkDataIntegrity(data: any): { valid: boolean;, issues: string[] }
@@ -75,7 +75,7 @@ export class ImportProgressManager {
     renderProcessingStep(context: CanvasRenderingContext2D, layout: Layout, y: number): void { context.font = this.mainController.textSettings.contentFont;
 
         context.fillStyle = this.mainController.textSettings.contentColor;''
-        context.textAlign = 'center';''
+        context.textAlign = 'center';
         context.textBaseline = 'top';
 
         context.fillText('データをインポート中...', layout.x + layout.width / 2, y);
@@ -89,8 +89,8 @@ export class ImportProgressManager {
         this.renderProgressBar(context, barX, barY, barWidth, barHeight);
         ';
         // 処理内容を表示
-        const processingText = this.mainController.data.processingText || 'データを処理中...';''
-        context.font = '12px sans-serif';''
+        const processingText = this.mainController.data.processingText || 'データを処理中...';
+        context.font = '12px sans-serif';
         context.fillStyle = '#6C757D';
         context.fillText(processingText, layout.x + layout.width / 2, barY + 35);
         
@@ -101,7 +101,7 @@ export class ImportProgressManager {
      * プログレスバーを描画
      */''
     renderProgressBar(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { // 背景
-        context.fillStyle = '#E9ECEF';''
+        context.fillStyle = '#E9ECEF';
         context.fillRect(x, y, width, height);
         ';
         // 進捗
@@ -117,9 +117,9 @@ export class ImportProgressManager {
         context.strokeRect(x, y, width, height);
         ';
         // パーセンテージ表示
-        context.fillStyle = '#FFFFFF';''
-        context.font = '11px sans-serif';''
-        context.textAlign = 'center';''
+        context.fillStyle = '#FFFFFF';
+        context.font = '11px sans-serif';
+        context.textAlign = 'center';
         context.textBaseline = 'middle';
         const percentage = Math.round(progress * 100); }
         context.fillText(`${percentage}%`, x + width / 2, y + height / 2});
@@ -143,9 +143,9 @@ export class ImportProgressManager {
             this.renderStepIcon(context, iconX, stepY + 10, isCompleted, isCurrentStep);
             ';
             // ステップテキスト
-            context.font = '12px sans-serif';''
+            context.font = '12px sans-serif';
             context.fillStyle = isCompleted ? '#28A745' : isCurrentStep ? this.mainController.textSettings.contentColor: '#6C757D',
-            context.textAlign = 'left';''
+            context.textAlign = 'left';
             context.textBaseline = 'middle';
             context.fillText(step.label, iconX + 25, stepY + 10);
             ';
@@ -156,7 +156,7 @@ export class ImportProgressManager {
                 const miniBarX = iconX + 25;
                 const miniBarY = stepY + 18;
 
-                context.fillStyle = '#E9ECEF';''
+                context.fillStyle = '#E9ECEF';
                 context.fillRect(miniBarX, miniBarY, miniBarWidth, miniBarHeight);
 
                 context.fillStyle = '#007BFF';
@@ -232,7 +232,7 @@ export class ImportProgressManager {
                 if(this.cancelled) {'
             }
 
-                    throw new Error('インポートがキャンセルされました); }'
+                    throw new Error('インポートがキャンセルされました'; }'
                 }
                 
                 this.currentStepIndex = i;
@@ -402,10 +402,10 @@ export class ImportProgressManager {
     /**
      * 現在の進捗状況を取得'
      */''
-    getProgress(''';
-            currentStepLabel: this.progressSteps[this.currentStepIndex]? .label || '', : undefined
+    getProgress('''
+            currentStepLabel: this.progressSteps[this.currentStepIndex]?.label || '', : undefined
             cancelled: this.cancelled);
-        })
+        }'
 
     /**
      * 進捗をリセット'
@@ -427,7 +427,7 @@ export class ImportProgressManager {
     /**
      * 進捗ステップの削除
      */
-    removeProgressStep(id: string): void { this.progressSteps = this.progressSteps.filter(step => step.id !== id); }
+    removeProgressStep(id: string): void { this.progressSteps = this.progressSteps.filter(step => step.id !== id); 
     }
 
     /**
@@ -449,11 +449,11 @@ export class ImportProgressManager {
     /**
      * ステータス取得
      */''
-    getStatus(''';
+    getStatus('''
             componentType: 'ImportProgressManager';
             totalSteps: this.progressSteps.length;
             currentStep: this.currentStepIndex;
             stepProgress: this.stepProgress);
-            overallProgress: this.mainController.data.importProgress || 0)';
-           , cancelled: this.cancelled,
-            estimatedTimeRemaining: this.getEstimatedTimeRemaining('));
+            overallProgress: this.mainController.data.importProgress || 0'',
+    cancelled: this.cancelled,
+            estimatedTimeRemaining: this.getEstimatedTimeRemaining()';

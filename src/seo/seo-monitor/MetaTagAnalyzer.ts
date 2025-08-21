@@ -6,10 +6,10 @@
 
 interface MetaTagThresholds { metaTags: {
         titleLength: {
-            mi;n: number;
-           , max: number };
-        descriptionLength: { min: number;
-           , max: number };
+            mi;n: number,
+    max: number };
+        descriptionLength: { min: number,
+    max: number };
 }
 
 interface MetaTagAlert { type: string,
@@ -17,13 +17,13 @@ interface MetaTagAlert { type: string,
     metric: string;
     current?: number;
     threshold?: string;
-    message: string;
-   , timestamp: string ,}
+    message: string,
+    timestamp: string ,}
 
 interface MetaTags { title: string | null;
     description: string | null;
-    keywords: string | null;
-   , ogTags: Record<string, string>;
+    keywords: string | null,
+    ogTags: Record<string, string>;
     twitterTags: Record<string, string>;
     timestamp: string ,}
 
@@ -41,8 +41,8 @@ export class MetaTagAnalyzer {
                 description: this.extractDescriptionTag();
                 keywords: this.extractKeywordsTag();
                 ogTags: this.extractOGTags();
-                twitterTags: this.extractTwitterTags();
-               , timestamp: new Date().toISOString( };
+                twitterTags: this.extractTwitterTags(),
+    timestamp: new Date().toISOString( };
             
             return, metaTags;
 
@@ -65,7 +65,7 @@ export class MetaTagAnalyzer {
             if(titleLength < min || titleLength > max) { '
                 alerts.push({''
                     type: 'metaTags',
-                    severity: 'warning',)';
+                    severity: 'warning','';
                     metric: 'title_length' ,}
                     current: titleLength,) }
                     threshold: `${min}-${max}`);
@@ -77,11 +77,11 @@ export class MetaTagAnalyzer {
 
         } else {  alerts.push({''
                 type: 'metaTags',
-                severity: 'critical',)';
+                severity: 'critical','';
                 metric: 'title_missing',')';
                 message: 'Title tag is missing'), }
-                timestamp: new Date().toISOString(); }
-            });
+                timestamp: new Date().toISOString(); 
+    });
         }
         
         // 説明文長のチェック
@@ -91,7 +91,7 @@ export class MetaTagAnalyzer {
             if(descLength < min || descLength > max) { '
                 alerts.push({''
                     type: 'metaTags',
-                    severity: 'warning',)';
+                    severity: 'warning','';
                     metric: 'description_length' ,}
                     current: descLength,) }
                     threshold: `${min}-${max}`);
@@ -103,11 +103,11 @@ export class MetaTagAnalyzer {
 
         } else {  alerts.push({''
                 type: 'metaTags',
-                severity: 'critical',)';
+                severity: 'critical','';
                 metric: 'description_missing',')';
                 message: 'Description meta tag is missing'), }
-                timestamp: new Date().toISOString(); }
-            });
+                timestamp: new Date().toISOString(); 
+    });
         }
     }
     
@@ -153,7 +153,7 @@ export class MetaTagAnalyzer {
     private extractOGTags()';
         if(typeof, document !== 'undefined'') {'
 
-            const ogMetas = document.querySelectorAll('meta[property^="og: "]),
+            const ogMetas = document.querySelectorAll('meta[property^="og: "]",
             ogMetas.forEach(meta => { ');''
                 const property = meta.getAttribute('property'');''
                 const content = meta.getAttribute('content);
@@ -173,7 +173,7 @@ export class MetaTagAnalyzer {
     private extractTwitterTags()';
         if(typeof, document !== 'undefined'') {'
 
-            const twitterMetas = document.querySelectorAll('meta[name^="twitter: "]),
+            const twitterMetas = document.querySelectorAll('meta[name^="twitter: "]",
             twitterMetas.forEach(meta => { ');''
                 const name = meta.getAttribute('name'');''
                 const content = meta.getAttribute('content);

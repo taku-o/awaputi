@@ -27,27 +27,27 @@ export interface CacheEntry<T = any> { value: T,
     lastAccessed: number;
     expiresAt: number;
     accessCount: number;
-    priority: CachePriority;
-   , dataSize: number ,}
+    priority: CachePriority,
+    dataSize: number ,}
 
 export interface CacheMetadata { priority: CachePriority;
-    tags: string[];
-   , dependencies: string[] }
+    tags: string[],
+    dependencies: string[] }
 
 export interface CacheStatistics { hits: number;
     misses: number;
     evictions: number;
     sets: number;
     deletes: number;
-    memoryPeakUsage: number;
-   , lastCleanup: number }
+    memoryPeakUsage: number,
+    lastCleanup: number }
 
 export interface CacheStatsReport extends CacheStatistics { hitRate: string;
     size: number;
     maxSize: number;
     memoryUsage: number;
-    maxMemory: number;
-   , memoryUsagePercent: string }
+    maxMemory: number,
+    memoryUsagePercent: string }
 ';
 
 export type CacheEventType = '';
@@ -114,11 +114,11 @@ export class DataCache {
             misses: 0;
             evictions: 0;
             sets: 0;
-            deletes: 0;
-           , memoryPeakUsage: 0;
+            deletes: 0,
+    memoryPeakUsage: 0;
     ,}
-            lastCleanup: Date.now(); }
-        };
+            lastCleanup: Date.now(); 
+    };
         
         this.initialize();
     }
@@ -157,8 +157,8 @@ export class DataCache {
             const cacheEntry: CacheEntry<T> = { value,
                 createdAt: now;
                 lastAccessed: now;
-                expiresAt: now + ttl;
-               , accessCount: 0;
+                expiresAt: now + ttl,
+    accessCount: 0;
                 priority,
                 dataSize };
             
@@ -182,7 +182,7 @@ export class DataCache {
              }
 
         } catch (error) {
-            getErrorHandler(').handleError(error, 'CACHE_SET_ERROR', {)
+            getErrorHandler().handleError(error, 'CACHE_SET_ERROR', {)
                 key);
                 dataSize: this.estimateSize(value);
                 options ,});
@@ -227,15 +227,15 @@ export class DataCache {
 
         } catch (error) { }
 
-            getErrorHandler(').handleError(error, 'CACHE_GET_ERROR', { key });
+            getErrorHandler().handleError(error, 'CACHE_GET_ERROR', { key });
             return undefined;
     
     /**
      * 非同期でデータを取得（キャッシュミス時に値を生成）
      */
     async getOrSet<T>(;
-        key: string);
-       , valueProvider: () => Promise<T> | T, ;
+        key: string),
+    valueProvider: () => Promise<T> | T, ;
         options: CacheSetOptions = {}
     ): Promise<T> { try {
             // キャッシュヒットチェック
@@ -255,7 +255,7 @@ export class DataCache {
             this.emit('cacheGenerated', { key, generationTime );
             
             return value; catch (error) {
-            getErrorHandler(').handleError(error, 'CACHE_GET_OR_SET_ERROR', {)
+            getErrorHandler().handleError(error, 'CACHE_GET_OR_SET_ERROR', {)
                 key,);
                 options); });
             throw error;
@@ -288,7 +288,7 @@ export class DataCache {
             
             return true; catch (error) { }
 
-            getErrorHandler(').handleError(error, 'CACHE_DELETE_ERROR', { key });
+            getErrorHandler().handleError(error, 'CACHE_DELETE_ERROR', { key });
             return false;
     
     /**
@@ -370,7 +370,7 @@ export class DataCache {
         for(const [key] of, sortedEntries) {
 
             const metadata = this.keyMetadata.get(key);''
-            if(metadata && metadata.priority === 'low) {'
+            if(metadata && metadata.priority === 'low' {'
                 keyToEvict = key;
         }
                 break; }
@@ -488,10 +488,10 @@ export class DataCache {
             hitRate: hitRate.toFixed(2);
             size: this.cache.size;
             maxSize: this.maxSize;
-            memoryUsage: this.currentMemoryUsage;
-           , maxMemory: this.maxMemory, };
-            memoryUsagePercent: ((this.currentMemoryUsage / this.maxMemory) * 100).toFixed(2); }
-        }
+            memoryUsage: this.currentMemoryUsage,
+    maxMemory: this.maxMemory, };
+            memoryUsagePercent: ((this.currentMemoryUsage / this.maxMemory) * 100).toFixed(2); 
+    }
     
     /**
      * キーの存在チェック
@@ -569,4 +569,4 @@ let cacheInstance: DataCache | null = null,
  * DataCacheシングルトンインスタンスの取得
  */
 export function getDataCache(): DataCache { if (!cacheInstance) {''
-        cacheInstance = new DataCache(' })'
+        cacheInstance = new DataCache(' }''

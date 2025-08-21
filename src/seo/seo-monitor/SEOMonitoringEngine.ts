@@ -10,26 +10,26 @@ interface CoreWebVitals { timestamp: number,
     lcp: number | null;
     fid: number | null;
     cls: number | null;
-    fcp: number | null;
-   , ttfb: number | null;
+    fcp: number | null,
+    ttfb: number | null;
     LCP?: number;
     FID?: number;
     CLS?: number; ,}
 
 interface LighthouseScore { timestamp: number,
-    score: number;
-   , details: SEOScoreDetails
+    score: number,
+    details: SEOScoreDetails
     ,}
 
 interface MonitoringData { coreWebVitals: CoreWebVitals[];
-    lighthouseScores: LighthouseScore[];
-   , searchConsoleMetrics: any[] }
+    lighthouseScores: LighthouseScore[],
+    searchConsoleMetrics: any[] }
 
 interface SEOScoreDetails { metaTags: Record<string, string>;
     structuredData: StructuredDataResult[];
     images: ImageAnalysis;
-    performance: PerformanceMetrics;
-   , timestamp: number ,}
+    performance: PerformanceMetrics,
+    timestamp: number ,}
 
 interface StructuredDataResult { valid: boolean;
     type?: string;
@@ -37,8 +37,8 @@ interface StructuredDataResult { valid: boolean;
     error?: string; }
 
 interface ImageAnalysis { total: number,
-    withAlt: number;
-   , withoutAlt: number ,}
+    withAlt: number,
+    withoutAlt: number ,}
 
 interface PerformanceMetrics { domContentLoaded?: number;
     loadComplete?: number;
@@ -48,8 +48,8 @@ interface NavigationEntry extends PerformanceEntry { domContentLoadedEventStart:
     domContentLoadedEventEnd: number;
     loadEventStart: number;
     loadEventEnd: number;
-    requestStart: number;
-   , responseStart: number ,}
+    requestStart: number,
+    responseStart: number ,}
 
 export class SEOMonitoringEngine {
     private config: SEOConfig;
@@ -78,7 +78,7 @@ export class SEOMonitoringEngine {
                 this.recordLCP(lastEntry.startTime);' }'
 
             }');''
-            lcpObserver.observe({ entryTypes: ['largest-contentful-paint] });
+            lcpObserver.observe({ entryTypes: ['largest-contentful-paint]});
             this.observerInstances.push(lcpObserver);
             
             // First Input Delay
@@ -87,7 +87,7 @@ export class SEOMonitoringEngine {
                     this.recordFID((entry, as any).processingStart - entry.startTime); }
                 });''
             }');''
-            fidObserver.observe({ entryTypes: ['first-input] });
+            fidObserver.observe({ entryTypes: ['first-input]});
             this.observerInstances.push(fidObserver);
             
             // Cumulative Layout Shift
@@ -132,13 +132,13 @@ export class SEOMonitoringEngine {
      * LCPの記録'
      */''
     private recordLCP(value: number): void { ''
-        console.log('LCP recorded', value); }
+        console.log('LCP recorded', value'; }
     
     /**
      * FIDの記録'
      */''
     private recordFID(value: number): void { ''
-        console.log('FID recorded', value); }
+        console.log('FID recorded', value'; }
     
     /**
      * CLSの記録'
@@ -187,7 +187,7 @@ export class SEOMonitoringEngine {
             return vitals;
 
         } catch (error) {
-            console.error('Failed to check Core Web Vitals', error);
+            console.error('Failed to check Core Web Vitals', error';
             return null;
     
     /**
@@ -201,7 +201,7 @@ export class SEOMonitoringEngine {
 
             }
 
-                        if(entry.entryType === 'navigation) { }'
+                        if(entry.entryType === 'navigation' { }'
                             this.recordNavigationMetrics(entry, as NavigationEntry); }
 });''
                 }');
@@ -213,20 +213,19 @@ export class SEOMonitoringEngine {
             
             this.monitoringData.lighthouseScores.push({ );
                 timestamp: Date.now();
-                score: seoScore;
-               , details: await this.getSEOScoreDetails(), });
+                score: seoScore,
+    details: await this.getSEOScoreDetails(), });
 
             if (this.monitoringData.lighthouseScores.length > 100) { this.monitoringData.lighthouseScores = this.monitoringData.lighthouseScores.slice(-100); }
 ';
 
             return { seo: seoScore }''
         } catch (error) {
-            console.error('Failed to monitor Lighthouse score', error);
+            console.error('Failed to monitor Lighthouse score', error';
 
             return { seo: 0, ' };
 
                 error: error instanceof Error ? error.message : 'Unknown error'  
-            }
     }
     
     /**
@@ -242,18 +241,18 @@ export class SEOMonitoringEngine {
             const requiredMetaTags = ['title', 'description', 'og:title', 'og: description],
             for(const, tagName of, requiredMetaTags) {' }'
 
-                const tag = document.querySelector(`meta[${tagName.includes(':''}) ? 'property' : 'name'}="${tagName}"]`") ""
-                    || (tagName === 'title' ? document.querySelector('title) : null);
+                const tag = document.querySelector(`meta[${tagName.includes(':''}' ? 'property' : 'name'}="${tagName}"]`") ""
+                    || (tagName === 'title' ? document.querySelector('title) : null';
                 ';
 
                 if (!tag || !(tag, as HTMLMetaElement).content) { score -= 10;' }'
 
-                    penalties.push(`Missing ${tagName}`'});
+                    penalties.push(`Missing ${tagName}`'}';
                 }
             }
 ';
             // 構造化データチェック
-            const structuredDataScripts = document.querySelectorAll('script[type="application/ld+json"]);''
+            const structuredDataScripts = document.querySelectorAll('script[type="application/ld+json"]";''
             if(structuredDataScripts.length === 0) {'
                 score -= 15;
 
@@ -275,12 +274,12 @@ export class SEOMonitoringEngine {
             }
 ';
             // リンクチェック
-            const links = document.querySelectorAll('a[href]);
+            const links = document.querySelectorAll('a[href]';
 
             let externalLinksWithoutNofollow = 0;''
             links.forEach(link => {  ');''
                 const href = link.getAttribute('href'');''
-                if (href && href.startsWith('http'') && !link.rel.includes('nofollow) { }
+                if (href && href.startsWith('http'') && !link.rel.includes('nofollow' { }
                     externalLinksWithoutNofollow++; }
 
                 }''
@@ -320,7 +319,7 @@ export class SEOMonitoringEngine {
             return vitals;
 
         } catch (error) {
-            console.error('Failed to track Core Web Vitals', error);
+            console.error('Failed to track Core Web Vitals', error';
             return null;
     
     /**
@@ -336,10 +335,10 @@ export class SEOMonitoringEngine {
      */
     private async getSEOScoreDetails(): Promise<SEOScoreDetails> { return { metaTags: this.analyzeMetaTags();
             structuredData: this.validateStructuredData();
-            images: this.analyzeImages();
-           , performance: await this.getPerformanceMetrics(), };
-            timestamp: Date.now(); }
-        }
+            images: this.analyzeImages(),
+    performance: await this.getPerformanceMetrics(), };
+            timestamp: Date.now(); 
+    }
     
     /**
      * メタタグの分析'
@@ -352,13 +351,13 @@ export class SEOMonitoringEngine {
         ';
 
         const tags: Record<string, string> = {};''
-        const metaTags = document.querySelectorAll('meta);''
+        const metaTags = document.querySelectorAll('meta';''
         metaTags.forEach(tag => {  ');''
-            const name = tag.getAttribute('name'') || tag.getAttribute('property);''
+            const name = tag.getAttribute('name'') || tag.getAttribute('property';''
             if(name) {' }'
 
                 tags[name] = tag.getAttribute('content'') || ''; }
-});
+}';
         return tags;
     }
     
@@ -368,20 +367,20 @@ export class SEOMonitoringEngine {
     private validateStructuredData()';
         if (typeof, document === 'undefined'') { return []; }
 
-        const scripts = document.querySelectorAll('script[type="application/ld+json"]);
+        const scripts = document.querySelectorAll('script[type="application/ld+json"]";
         const results: StructuredDataResult[] = [],
 
         scripts.forEach(script => {  ')'
-            try {);' }'
+            try {';' }'
 
                 const data = JSON.parse(script.textContent || ''');' }
 
-                results.push({ valid: true, type: data['@type], data });''
+                results.push({ valid: true, type: data['@type], data }';''
             } catch (error) { results.push({ )'
                     valid: false, ')';
                     error: error instanceof Error ? error.message : 'Unknown error' ,});
             }
-        });
+        }';
         
         return results;
     }
@@ -398,14 +397,14 @@ export class SEOMonitoringEngine {
         const images = document.querySelectorAll('img);
         return { total: images.length,
             withAlt: Array.from(images).filter(img = > img.alt).length ,};
-            withoutAlt: Array.from(images).filter(img => !img.alt).length }
-        }
+            withoutAlt: Array.from(images).filter(img => !img.alt).length 
+    }
     
     /**
      * パフォーマンスメトリクスの取得'
      */''
     private async getPerformanceMetrics()';
-        if(typeof, performance === 'undefined' || !performance.getEntriesByType) {
+        if(typeof, performance === 'undefined' || !performance.getEntriesByType' {
             
         }
             return {}
@@ -418,8 +417,8 @@ export class SEOMonitoringEngine {
         
         return { domContentLoaded: navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart,
             loadComplete: navigation.loadEventEnd - navigation.loadEventStart, };
-            ttfb: navigation.responseStart - navigation.requestStart }
-        }
+            ttfb: navigation.responseStart - navigation.requestStart 
+    }
     
     /**
      * 現実的なスコアの生成
@@ -442,7 +441,7 @@ export class SEOMonitoringEngine {
                 observer.disconnect();' }'
 
             } catch (error) {
-                console.warn('Failed to disconnect observer', error); }
+                console.warn('Failed to disconnect observer', error'; }
 
             }''
         }');

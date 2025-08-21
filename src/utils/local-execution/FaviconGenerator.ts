@@ -9,9 +9,9 @@
  * @version 1.0.0
  */
 
-import FaviconCanvasRenderer from './favicon/FaviconCanvasRenderer.js';''
-import FaviconCacheManager from './favicon/FaviconCacheManager.js';''
-import FaviconPerformanceManager from './favicon/FaviconPerformanceManager.js';''
+import FaviconCanvasRenderer from './favicon/FaviconCanvasRenderer.js';
+import FaviconCacheManager from './favicon/FaviconCacheManager.js';
+import FaviconPerformanceManager from './favicon/FaviconPerformanceManager.js';
 import FaviconDOMManager from './favicon/FaviconDOMManager.js';
 
 // Type definitions
@@ -28,14 +28,14 @@ interface FaviconDefaultConfig { sizes: number[],
     textColor: string;
     fontFamily: string;
     text: string;
-    cacheEnabled: boolean;
-   , enablePerformanceOptimizations: boolean ,}
+    cacheEnabled: boolean,
+    enablePerformanceOptimizations: boolean ,}
 
 interface GenerationResult { success: boolean;
     generated: number;
     cached: number;
-    failed: number;
-   , details: FaviconDetail[];
+    failed: number,
+    details: FaviconDetail[];
     error?: string }
 ';
 
@@ -46,11 +46,11 @@ interface FaviconDetail { ''
     error?: string; }
 
 interface GenerationRequest { size: number,
-    config: FaviconDefaultConfig;
-   , configHash: string ,}
+    config: FaviconDefaultConfig,
+    configHash: string ,}
 
-interface CanvasInfo { canvas: HTMLCanvasElement;
-   , ctx: CanvasRenderingContext2D;
+interface CanvasInfo { canvas: HTMLCanvasElement,
+    ctx: CanvasRenderingContext2D;
     fromPool?: boolean;
     poolIndex?: number; }
 ';
@@ -68,10 +68,10 @@ interface FaviconData { ''
     type: 'ico' | 'png' ,}
 
 interface Stats { cache: any;
-    performance: any;
-   , memoryCache: {
-        siz;e: number;
-       , keys: string[] }
+    performance: any,
+    memoryCache: {
+        siz;e: number,
+    keys: string[] }
 
 class FaviconGenerator { /**
      * デフォルト設定
@@ -82,8 +82,8 @@ class FaviconGenerator { /**
         textColor: '#FFFFFF',
         fontFamily: 'Arial, sans-serif',
         text: 'B';
-        cacheEnabled: true;
-       , enablePerformanceOptimizations: true ,};
+        cacheEnabled: true,
+    enablePerformanceOptimizations: true ,};
     /**
      * 生成キャッシュ（メモリキャッシュ）
      */
@@ -101,8 +101,8 @@ class FaviconGenerator { /**
                 success: false;
                 generated: 0;
                 cached: 0;
-                failed: 0;
-               , details: [] ,};
+                failed: 0,
+    details: [] ,};
             // 既存favicon検証
             const validation = FaviconDOMManager.validateExistingFavicons();
             
@@ -141,8 +141,8 @@ class FaviconGenerator { /**
                 const faviconData: FaviconData[] = result.details'';
                     .filter(detail => detail.dataURL);
                     .map(detail => ({)
-                        size: detail.size!)';
-                       , dataURL: detail.dataURL!,')';
+                        size: detail.size!)',
+    dataURL: detail.dataURL!,')';
                         type: detail.size === 'ico' ? 'ico' : 'png')));
                 FaviconDOMManager.removeExistingFavicons()
             ,}
@@ -161,8 +161,8 @@ class FaviconGenerator { /**
             return { success: false,
                 generated: 0;
                 cached: 0;
-                failed: 1;
-               , details: [], };
+                failed: 1,
+    details: [], };
                 error: (error, as Error).message }
             }
     }
@@ -192,11 +192,11 @@ class FaviconGenerator { /**
         const performanceStats = FaviconPerformanceManager.getPerformanceStats();
         
         return { cache: cacheStats,
-            performance: performanceStats;
-           , memoryCache: {
+            performance: performanceStats,
+    memoryCache: {
                 size: this.generationCache.size, };
-                keys: Array.from(this.generationCache.keys(); }
-}
+                keys: Array.from(this.generationCache.keys(); 
+    }
     
     /**
      * 設定更新
@@ -255,7 +255,7 @@ class FaviconGenerator { /**
      */
     private static _processBatchResults(batchResults: BatchResult[], result: GenerationResult): void { ''
         batchResults.forEach(batchResult => { ');''
-            if(batchResult.status === 'fulfilled) {'
+            if(batchResult.status === 'fulfilled' {'
                 const detail = batchResult.value!;
             }
                 if (detail.cached) { }
@@ -268,7 +268,7 @@ class FaviconGenerator { /**
 
                 result.details.push({ ' }'
 
-                    error: batchResult.reason? .message || 'Unknown, error); }'
+                    error: batchResult.reason?.message || 'Unknown, error'; }'
 
             }''
         }');

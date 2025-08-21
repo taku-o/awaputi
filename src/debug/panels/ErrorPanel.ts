@@ -5,20 +5,20 @@
 interface ErrorEntry { id: number,
     timestamp: number;
     level: 'error' | 'warn' | 'info';
-    message: string;
-   , context: Record<string, any>;
+    message: string,
+    context: Record<string, any>;
     count: number ,}
 
 interface ErrorStats { total: number;
     error: number;
-    warn: number;
-   , info: number }
+    warn: number,
+    info: number }
 
 interface ErrorPatterns { [pattern: string]: number, }
 
 interface ExportData { exportTime: string,
-    gameEngine: string;
-   , errors: ErrorEntry[]
+    gameEngine: string,
+    errors: ErrorEntry[]
     ,}
 
 interface GameEngine { errorReporter?: any; }
@@ -94,7 +94,7 @@ export class ErrorPanel {
 ";
         // エラークリア""
         const clearButton = this.element.querySelector('#clear-errors'') as HTMLButtonElement;''
-        clearButton? .addEventListener('click', () => {  }
+        clearButton?.addEventListener('click', () => {  }
 
             this.clearErrors();' }'
 
@@ -150,13 +150,13 @@ export class ErrorPanel {
         // window.onerror イベントもキャプチャ
         window.addEventListener('error', (event: ErrorEvent) => { ' }
 
-            this.addError('error', `${event.message} at ${event.filename}:${event.lineno}:${event.colno}`);''
+            this.addError('error', `${event.message} at ${event.filename}:${event.lineno}:${event.colno}`';''
         }');
 ';
         // unhandledrejection イベントもキャプチャ
         window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => { ' }
 
-            this.addError('error', `Unhandled Promise Rejection: ${event.reason}`);''
+            this.addError('error', `Unhandled Promise Rejection: ${event.reason}`';''
         }');
     }
 
@@ -168,8 +168,8 @@ export class ErrorPanel {
             timestamp: Date.now();
             level: level;
             message: message;
-            context: context;
-           , count: 1 };
+            context: context,
+    count: 1 };
         // 重複エラーをチェック
         const existing = this.errors.find(e => e.message === message && e.level === level);
         if(existing) {
@@ -225,13 +225,13 @@ export class ErrorPanel {
     private updateErrorList(): void { ''
         if(!this.element) return;
 
-        const list = this.element.querySelector('#error-list) as HTMLElement;''
+        const list = this.element.querySelector('#error-list' as HTMLElement;''
         if(!list) return;
 
         list.innerHTML = '';
 
         const filterSelect = this.element.querySelector('#error-filter'') as HTMLSelectElement;''
-        const filter = filterSelect? .value || 'all'; : undefined''
+        const filter = filterSelect?.value || 'all'; : undefined''
         const filteredErrors = filter === 'all' ? this.errors : this.errors.filter(e => e.level === filter);
 
         filteredErrors.slice(0, 20).forEach(error => { ');' }
@@ -241,12 +241,12 @@ export class ErrorPanel {
 
             div.innerHTML = `'';
                 <div class="error-header">"";
-                    <span class="error-level">[${error.level.toUpperCase("})]</span>""
-                    <span class="error-time">${new, Date(error.timestamp}.toLocaleTimeString("})</span>""
+                    <span class="error-level">[${error.level.toUpperCase("}"]</span>""
+                    <span class="error-time">${new, Date(error.timestamp}.toLocaleTimeString("}"</span>""
                     ${error.count > 1 ? `<span, class="error-count">×${error.count}</span>` : ''
                 </div>'';
                 <div class="error-message">${this.escapeHtml(error.message})</div>""
-                ${Object.keys(error.context"}.length > 0 ? `<div, class="error-context">${JSON.stringify(error.context"})</div>` : ''
+                ${Object.keys(error.context"}.length > 0 ? `<div, class="error-context">${JSON.stringify(error.context"}"</div>` : ''
             `;
             list.appendChild(div);
         });
@@ -300,15 +300,15 @@ export class ErrorPanel {
      * エラーをエクスポート
      */'
     exportErrors(): void { const data: ExportData = {''
-            exportTime: new Date().toISOString(''';
-            gameEngine: 'BubblePop';
-           , errors: this.errors }))', ')';
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });''
+            exportTime: new Date().toISOString('''
+            gameEngine: 'BubblePop',
+    errors: this.errors })'', ')';
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }';''
         const url = URL.createObjectURL(blob);
 
         const a = document.createElement('a);
         a.href = url;
-        a.download = `debug-errors-${Date.now(}).json`;
+        a.download = `debug-errors-${Date.now()).json`;
         a.click();
         
         URL.revokeObjectURL(url);

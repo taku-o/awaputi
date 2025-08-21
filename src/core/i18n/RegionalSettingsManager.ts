@@ -8,27 +8,27 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 // 型定義
 export interface FormatSettings { dateTime: {
         dateForma;t: string;
-        timeFormat: string;
-       , timestampFormat: string 
+        timeFormat: string,
+    timestampFormat: string 
 };
     numbers: { decimalSeparator: string;
-        thousandsSeparator: string;
-       , currencyFormat: string 
+        thousandsSeparator: string,
+    currencyFormat: string 
 };
     currency: { symbol: string,''
-        position: 'before' | 'after';
-       , code: string ,}
+        position: 'before' | 'after',
+    code: string ,}
 
 export interface RegionSettings { timezone: string,
     locale: string;
     country: string;
-    region: string;
-   , rtl: boolean ,}
+    region: string,
+    rtl: boolean ,}
 export interface LanguageSettings { code: string,
     name: string,
     nativeName: string,
-    direction: 'ltr' | 'rtl';
-   , pluralRules: string ,}
+    direction: 'ltr' | 'rtl',
+    pluralRules: string ,}
 /**
  * 地域設定管理クラス
  */
@@ -68,8 +68,8 @@ export class RegionalSettingsManager {
             this.initialized = true;''
             console.log('RegionalSettingsManager, initialized successfully'); }'
 
-        } catch (error) { getErrorHandler(').handleError(error, 'REGIONAL_SETTINGS_ERROR', {)'
-                operation: 'initialize' ,});
+        } catch (error) { getErrorHandler().handleError(error, 'REGIONAL_SETTINGS_ERROR', {''
+                operation: 'initialize' ,}';
         }
     /**
      * フォーマット設定を読み込み'
@@ -129,7 +129,7 @@ export class RegionalSettingsManager {
     }
         if (region) { }
             const regionKey = `${language}-${region}`;
-            if (this.formatSettings? .number?.[regionKey]) { return this.formatSettings.number[regionKey];
+            if (this.formatSettings?.number?.[regionKey]) { return this.formatSettings.number[regionKey];
         
         // 言語のみの設定
         if (this.formatSettings?.number?.[language]) { return this.formatSettings.number[language]; }
@@ -217,16 +217,16 @@ export class RegionalSettingsManager {
         
         return { : undefined
             language: language;
-            region: regionCode;
-           , locale: this.getLocale(language, regionCode),
+            region: regionCode,
+    locale: this.getLocale(language, regionCode),
             numberFormat: this.getNumberFormatSettings(language, regionCode),
             dateFormat: this.getDateFormatSettings(language, regionCode),
             currencyFormat: this.getCurrencyFormatSettings(language, regionCode),
             timeFormat: this.getTimeFormatSettings(language, regionCode),
     }
             regionInfo: this.getRegionInfo(regionCode), };
-            languageInfo: this.getLanguageInfo(language); }
-        }
+            languageInfo: this.getLanguageInfo(language); 
+    }
     
     /**
      * 言語から地域コードを推測
@@ -263,7 +263,7 @@ export class RegionalSettingsManager {
 
     }
 
-        return regionInfo? .timezone || 'UTC';
+        return regionInfo?.timezone || 'UTC';
     /**
      * 週の開始日を取得
      */
@@ -296,7 +296,7 @@ export class RegionalSettingsManager {
     /**
      * デフォルトフォーマット設定'
      */''
-    getDefaultFormatSettings(''';
+    getDefaultFormatSettings('''
                 'en': { ''
                     decimal: '.',
                     thousands: ',',
@@ -316,8 +316,8 @@ export class RegionalSettingsManager {
             currency: { '', 'en': {''
                     symbol: '$',
                     code: 'USD',
-                    position: 'before';
-                   , space: false 
+                    position: 'before',
+    space: false 
 ,}
             },
 
@@ -337,8 +337,8 @@ export class RegionalSettingsManager {
             'US': { ''
                 currency: 'USD',
                 timezone: 'America/New_York';
-                firstDayOfWeek: 0;
-               , numberFormat: {'
+                firstDayOfWeek: 0,
+    numberFormat: {'
                     groupSize: 3,
                     groupSeparator: ',',
                     decimalSeparator: '.' 
@@ -387,8 +387,8 @@ export class RegionalSettingsManager {
     getDefaultCurrencyFormat(''';
             symbol: '$',
             code: 'USD',
-            position: 'before';
-           , space: false;
+            position: 'before',
+    space: false;
         },
     }
     
@@ -408,8 +408,8 @@ export class RegionalSettingsManager {
      */''
     getDefaultRegionInfo(''';
             currency: 'USD',
-            timezone: 'UTC';
-           , firstDayOfWeek: 0,
+            timezone: 'UTC',
+    firstDayOfWeek: 0,
             numberFormat: { groupSize: 3,''
                 groupSeparator: ',',
                 decimalSeparator: '.' 
@@ -425,7 +425,7 @@ export class RegionalSettingsManager {
             nativeName: 'English',
             direction: 'ltr',
             pluralRules: 'english);
-        })
+        }'
     
     /**
      * 設定の再読み込み'
@@ -447,8 +447,7 @@ export class RegionalSettingsManager {
 
             supportedRegions: this.regionSettings ? Object.keys(this.regionSettings) : [], };
             formatCategories: this.formatSettings ? Object.keys(this.formatSettings) : [] ;
-}
-        },
+    },
     }
 // シングルトンインスタンス
 let regionalSettingsManagerInstance = null;
@@ -457,4 +456,4 @@ let regionalSettingsManagerInstance = null;
  * RegionalSettingsManagerのシングルトンインスタンスを取得
  */
 export function getRegionalSettingsManager() { if (!regionalSettingsManagerInstance') {''
-        regionalSettingsManagerInstance = new RegionalSettingsManager(' })'
+        regionalSettingsManagerInstance = new RegionalSettingsManager(' }''

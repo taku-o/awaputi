@@ -4,11 +4,11 @@
  * UserInfoSceneから分離された統計表示機能を提供
  */
 
-import { CoreChartRenderer  } from '../../../core/ChartRenderer';''
-import { StatisticsDashboard  } from '../../../core/StatisticsDashboard';''
-import { StatisticsFilterManager  } from '../../../core/StatisticsFilterManager';''
-import { StatisticsExporter  } from '../../../core/StatisticsExporter';''
-import { GameEngine  } from '../../../types/gameEngine';''
+import { CoreChartRenderer  } from '../../../core/ChartRenderer';
+import { StatisticsDashboard  } from '../../../core/StatisticsDashboard';
+import { StatisticsFilterManager  } from '../../../core/StatisticsFilterManager';
+import { StatisticsExporter  } from '../../../core/StatisticsExporter';
+import { GameEngine  } from '../../../types/gameEngine';
 import { EventBus  } from '../../../types/eventBus';
 
 // 統計データ関連の型定義
@@ -30,18 +30,18 @@ interface StatisticsData { totalPlayTime?: number;
 interface StatisticsDisplaySettings { showDashboard: boolean,
     showCharts: boolean;
     showDetailedStats: boolean;
-    enableAnimations: boolean;
-   , compactMode: boolean ,}
+    enableAnimations: boolean,
+    compactMode: boolean ,}
 ';
 
 interface ResponsiveLayout { ''
     layout: 'mobile' | 'tablet' | 'desktop';
     columnCount: number;
-    compactMode: boolean;
-   , showCharts: boolean }
+    compactMode: boolean,
+    showCharts: boolean }
 
-interface StatItem { label: string;
-   , value: string }
+interface StatItem { label: string,
+    value: string }
 
 // シーン状態のインターフェース
 interface SceneState { get(key: string): any;
@@ -54,9 +54,9 @@ interface StatisticsTabComponent { isActive: boolean,
 // 統計マネージャーのインターフェース
 interface StatisticsManager { ''
     getDetailedStatistics(''';
-type, StatisticsViewMode = 'dashboard' | 'charts' | 'details';''
-type, PeriodFilter = 'all' | 'last7days' | 'last30days' | 'thisMonth' | 'thisYear';''
-type, ExportFormat = 'json' | 'csv' | 'pdf';
+type, StatisticsViewMode = 'dashboard' | 'charts' | 'details';
+type, PeriodFilter = 'all' | 'last7days' | 'last30days' | 'thisMonth' | 'thisYear';
+type, ExportFormat = 'json' | 'csv' | 'pdf'
 
 export, class UserStatisticsRenderer {
     private, gameEngine: ExtendedGameEngine;
@@ -76,8 +76,8 @@ export, class UserStatisticsRenderer {
         showDashboar;d: true;
         showCharts: true;
         showDetailedStats: true;
-        enableAnimations: true;
-       , compactMode: false }
+        enableAnimations: true,
+    compactMode: false }
     );
     private readonly contentPadding: number = 20);
     constructor(gameEngine: ExtendedGameEngine, eventBus: EventBus | null, sceneState: SceneState) {
@@ -108,9 +108,8 @@ export, class UserStatisticsRenderer {
 
         }');
 
-        this.eventBus.on('statisticsViewModeChanged', (mode: StatisticsViewMode) => { this.statisticsViewMode = mode;' }
-
-        }');
+        this.eventBus.on('statisticsViewModeChanged', (mode: StatisticsViewMode) => { this.statisticsViewMode = mode;' 
+    }');
 
         this.eventBus.on('statisticsPeriodChanged', (period: PeriodFilter) => {  this.currentPeriodFilter = period; }
             this.loadStatisticsData(); }
@@ -142,7 +141,7 @@ export, class UserStatisticsRenderer {
                 this.statisticsExporter = new StatisticsExporter(this.gameEngine.statisticsManager); }
             }
 
-            console.log('Extended, statistics system, initialized);
+            console.log('Extended statistics system initialized');
 
         } catch (error') {
             console.error('Failed to initialize extended statistics:', error);
@@ -158,7 +157,7 @@ export, class UserStatisticsRenderer {
             if(this.gameEngine.statisticsManager) {
 
                 this.statisticsData = this.gameEngine.statisticsManager.getDetailedStatistics()';
-                if(this.statisticsFilterManager && this.currentPeriodFilter !== 'all) {'
+                if(this.statisticsFilterManager && this.currentPeriodFilter !== 'all' {'
                     this.statisticsData = this.statisticsFilterManager.filterByPeriod(;
                         this.statisticsData );
             }
@@ -170,7 +169,7 @@ export, class UserStatisticsRenderer {
 
                 }
 
-                    this.eventBus.emit('statisticsDataLoaded', this.statisticsData); }
+                    this.eventBus.emit('statisticsDataLoaded', this.statisticsData'; }
 
                 }''
             } catch (error) { console.error('UserStatisticsRenderer: loadStatisticsData, error:', error }
@@ -181,8 +180,8 @@ export, class UserStatisticsRenderer {
      */
     public renderStatisticsWithComponent(;
         context: CanvasRenderingContext2D;
-        y: number );
-       , height: number);
+        y: number ),
+    height: number);
         statisticsTabComponent?: StatisticsTabComponent;
     ): void { try {
             if(statisticsTabComponent && statisticsTabComponent.isActive) {
@@ -201,11 +200,11 @@ export, class UserStatisticsRenderer {
      * 統計データのフォールバック描画'
      */''
     private renderStatisticsFallback(context: CanvasRenderingContext2D, y: number, height: number): void { const canvas = this.gameEngine.canvas;''
-        context.fillStyle = '#cccccc';''
-        context.font = '20px Arial';''
-        context.textAlign = 'center';''
-        context.textBaseline = 'middle';''
-        context.fillText('統計データを読み込み中...', canvas.width / 2, y + height / 2); }
+        context.fillStyle = '#cccccc';
+        context.font = '20px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillText('統計データを読み込み中...', canvas.width / 2, y + height / 2'; }
     
     /**
      * 統計ダッシュボードの描画
@@ -220,7 +219,7 @@ export, class UserStatisticsRenderer {
         
         try { // ダッシュボード用のサブキャンバス作成
             const canvas = this.gameEngine.canvas;''
-            const dashboardCanvas = document.createElement('canvas);''
+            const dashboardCanvas = document.createElement('canvas';''
             dashboardCanvas.width = canvas.width - (this.contentPadding * 2');
 
             dashboardCanvas.height = height;''
@@ -230,7 +229,7 @@ export, class UserStatisticsRenderer {
 
             }
 
-                throw new Error('Could, not get, dashboard canvas, context); }'
+                throw new Error('Could, not get, dashboard canvas, context'; }'
             }
             
             // ダッシュボードを描画
@@ -240,8 +239,8 @@ export, class UserStatisticsRenderer {
             context.drawImage(dashboardCanvas, this.contentPadding, y);
 
         } catch (error) {
-            console.error('Dashboard render error:', error);''
-            this.renderNoDataMessage(context, y, height, 'ダッシュボードの描画に失敗しました); }'
+            console.error('Dashboard render error:', error';''
+            this.renderNoDataMessage(context, y, height, 'ダッシュボードの描画に失敗しました'; }'
     }
     
     /**
@@ -250,7 +249,7 @@ export, class UserStatisticsRenderer {
     public async renderStatisticsCharts(context: CanvasRenderingContext2D, y: number, height: number): Promise<void> { ''
         if(!this.chartRenderer || !this.statisticsData) {'
 
-            this.renderNoDataMessage(context, y, height, 'グラフデータがありません);
+            this.renderNoDataMessage(context, y, height, 'グラフデータがありません';
         }
             return; }
         }
@@ -288,8 +287,8 @@ export, class UserStatisticsRenderer {
             ' }'
 
         } catch (error) {
-            console.error('Charts render error:', error);''
-            this.renderNoDataMessage(context, y, height, 'グラフの描画に失敗しました); }'
+            console.error('Charts render error:', error';''
+            this.renderNoDataMessage(context, y, height, 'グラフの描画に失敗しました'; }'
     }
     
     /**
@@ -329,13 +328,13 @@ export, class UserStatisticsRenderer {
      * 基本統計の描画
      */
     private renderBasicStatistics(;
-        context: CanvasRenderingContext2D;
-       , x: number, ;
+        context: CanvasRenderingContext2D,
+    x: number, ;
         y: number );
-        width: number);
-       , data: StatisticsData'';
+        width: number),
+    data: StatisticsData'';
     '): void { // セクション背景'
-        context.fillStyle = '#1a1a2e';''
+        context.fillStyle = '#1a1a2e';
         context.fillRect(x, y, width, 160);
         ';
         // セクション枠線
@@ -345,10 +344,10 @@ export, class UserStatisticsRenderer {
         context.strokeRect(x, y, width, 160);
         ';
         // セクション見出し
-        context.fillStyle = '#ffffff';''
-        context.font = 'bold 16px Arial';''
-        context.textAlign = 'left';''
-        context.fillText('基本統計', x + 15, y + 25);
+        context.fillStyle = '#ffffff';
+        context.font = 'bold 16px Arial';
+        context.textAlign = 'left';
+        context.fillText('基本統計', x + 15, y + 25';
         ';
         // 統計項目
         context.font = '14px Arial';
@@ -361,11 +360,11 @@ export, class UserStatisticsRenderer {
             { label: '平均スコア', value: (data.averageScore || 0).toLocaleString('' ,}]'
             { label: '勝率', value: `${data.winRate || 0,}%` }]
         ];)
-        )';
+        '';
         stats.forEach((stat, index) => {  ''
             const itemY = y + 50 + (index * 20');''
-            context.fillStyle = '#cccccc';''
-            context.fillText(stat.label + ':', x + 15, itemY);''
+            context.fillStyle = '#cccccc';
+            context.fillText(stat.label + ':', x + 15, itemY';''
             context.fillStyle = '#88ccff'; }
             context.fillText(stat.value, x + 130, itemY); }
         });
@@ -375,13 +374,13 @@ export, class UserStatisticsRenderer {
      * 詳細統計の描画
      */
     private renderAdvancedStatistics(;
-        context: CanvasRenderingContext2D;
-       , x: number, ;
+        context: CanvasRenderingContext2D,
+    x: number, ;
         y: number );
-        width: number)';
-       , data: StatisticsData'';
+        width: number)',
+    data: StatisticsData'';
     '): void { // セクション背景'
-        context.fillStyle = '#1a1a2e';''
+        context.fillStyle = '#1a1a2e';
         context.fillRect(x, y, width, 160);
         ';
         // セクション枠線
@@ -391,10 +390,10 @@ export, class UserStatisticsRenderer {
         context.strokeRect(x, y, width, 160);
         ';
         // セクション見出し
-        context.fillStyle = '#ffffff';''
-        context.font = 'bold 16px Arial';''
-        context.textAlign = 'left';''
-        context.fillText('詳細統計', x + 15, y + 25);
+        context.fillStyle = '#ffffff';
+        context.font = 'bold 16px Arial';
+        context.textAlign = 'left';
+        context.fillText('詳細統計', x + 15, y + 25';
         ';
         // 詳細統計項目
         context.font = '14px Arial';
@@ -411,8 +410,8 @@ export, class UserStatisticsRenderer {
 
         advancedStats.forEach((stat, index) => {  ''
             const itemY = y + 50 + (index * 20');''
-            context.fillStyle = '#cccccc';''
-            context.fillText(stat.label + ':', x + 15, itemY);''
+            context.fillStyle = '#cccccc';
+            context.fillText(stat.label + ':', x + 15, itemY';''
             context.fillStyle = '#88ccff'; }
             context.fillText(stat.value, x + 130, itemY); }
         });
@@ -422,8 +421,8 @@ export, class UserStatisticsRenderer {
      * データなしメッセージの描画'
      */''
     private renderNoDataMessage(context: CanvasRenderingContext2D, y: number, height: number, message: string): void { ''
-        context.fillStyle = '#9CA3AF';''
-        context.font = '16px system-ui, -apple-system, sans-serif';''
+        context.fillStyle = '#9CA3AF';
+        context.font = '16px system-ui, -apple-system, sans-serif';
         context.textAlign = 'center';
         context.fillText(message, this.gameEngine.canvas.width / 2, y + height / 2); }
     
@@ -450,14 +449,14 @@ export, class UserStatisticsRenderer {
 
         }
 
-            throw new Error('Statistics, exporter not, initialized); }'
+            throw new Error('Statistics, exporter not, initialized'; }'
         }
         ';
 
         try { return await this.statisticsExporter.export(format, this.statisticsData);' }'
 
         } catch (error) {
-            console.error('UserStatisticsRenderer: exportStatistics, error:', error);
+            console.error('UserStatisticsRenderer: exportStatistics, error:', error';
             throw error; }
     }
     
@@ -467,24 +466,23 @@ export, class UserStatisticsRenderer {
     public getResponsiveLayout(screenWidth: number): ResponsiveLayout { ''
         if(screenWidth < 600) {'
             return { ''
-                layout: 'mobile';
-               , columnCount: 1;
+                layout: 'mobile',
+    columnCount: 1;
         }
                 compactMode: true, };
-                showCharts: false }
-
-            };''
+                showCharts: false 
+    };''
         } else if(screenWidth < 1024) { return { ''
                 layout: 'tablet';
-                columnCount: 1;
-               , compactMode: false, };
-                showCharts: true }
-            } else {  return { ''
-                layout: 'desktop';
-               , columnCount: 2, }
+                columnCount: 1,
+    compactMode: false, };
+                showCharts: true 
+    } else {  return { ''
+                layout: 'desktop',
+    columnCount: 2, }
                 compactMode: false, };
-                showCharts: true }
-            }
+                showCharts: true 
+    }
     }
     
     /**

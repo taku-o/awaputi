@@ -4,12 +4,12 @@ import { BaseComponent  } from '../BaseComponent.js';
 interface Suggestion { action: string,
     code?: string;
     description: string,
-    priority: 'low' | 'medium' | 'high';
-   , category: string;
+    priority: 'low' | 'medium' | 'high',
+    category: string;
     score?: number ,}
 
-interface Pattern { id: string;
-   , name: string,
+interface Pattern { id: string,
+    name: string,
     category: string,
     severity: 'low' | 'medium' | 'high' | 'critical' ,}
 
@@ -18,15 +18,15 @@ interface Test { name: string;
     [key: string]: any, }
 
 interface ContextualSuggestion { action: string,
-    code: string;
-   , description: string ,}
+    code: string,
+    description: string ,}
 
-interface ComponentPattern { pattern: RegExp;
-   , name: string }
+interface ComponentPattern { pattern: RegExp,
+    name: string }
 
 interface SuggestionStatistics { totalPatterns: number;
-    totalSuggestions: number;
-   , suggestionsByCategory: Record<string, number>;
+    totalSuggestions: number,
+    suggestionsByCategory: Record<string, number>;
     suggestionsByPriority: Record<string, number> }
 
 interface MainController { [key: string]: any, }
@@ -63,7 +63,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
 
             { ''
                 action: 'Use optional chaining',
-                code: 'object? .property?.method?.(')', : undefined'';
+                code: 'object?.property?.method?.()', : undefined'';
                 description: 'オプショナルチェーニングで安全にアクセス',
                 priority: 'high',
                 category: 'modern' ,};
@@ -84,7 +84,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
 
         this.debugSuggestions.set('assertion_failure', [{ ')'
                 action: 'Add debug logging''),
-                code: 'console.log("Expected:", expected, "Actual:", actual)',
+                code: 'console.log("Expected:", expected, "Actual:", actual"',
                 description: '期待値と実際の値をログ出力して比較',
                 priority: 'high',
                 category: 'debugging' ,};
@@ -111,7 +111,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
 
         this.debugSuggestions.set('async_error', [{ ')'
                 action: 'Add await''),
-                code: 'const result = await asyncFunction(')',
+                code: 'const result = await asyncFunction()',
                 description: '非同期関数の完了を待つ',
                 priority: 'high',
                 category: 'async' ,};
@@ -198,7 +198,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
                 category: 'performance' ,};
             { ''
                 action: 'Clean up resources',
-                code: 'window.addEventListener("beforeunload", cleanup)',
+                code: 'window.addEventListener("beforeunload", cleanup"',
                 description: 'リソースのクリーンアップ処理を追加',
                 priority: 'high',
                 category: 'memory' ,};
@@ -230,14 +230,14 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
                 priority: 'medium',
                 category: 'debugging' ,}]
             }]
-        ]);
+        ]';
     }
 
     /**
      * コンテキスト特化の提案を設定'
      */''
     setupContextualSuggestions()';
-        this.contextualSuggestions.set('BubbleManager', { null_reference: [{)'
+        this.contextualSuggestions.set('BubbleManager', { null_reference: [{''
                     action: 'Check GameEngine initialization''),
                     code: 'await gameEngine.initialize(); console.log(gameEngine.bubbleManager)',''
                     description: 'GameEngineが初期化されBubbleManagerが作成されているか確認' ,}]
@@ -245,7 +245,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
             ],
             assertion_failure: [{ ''
                     action: 'Verify bubble properties',
-                    code: 'console.log("Bubble:", bubble.type, bubble.x, bubble.y)',
+                    code: 'console.log("Bubble:", bubble.type, bubble.x, bubble.y"',
                     description: 'バブルのプロパティを確認' ,}]
                 }]'
             ]'';
@@ -255,9 +255,9 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
                     action: 'Check GameBalance values',' }
 
                     code: 'import { BUBBLE_CONFIGS  } from "./config/GameBalance.js"',''
-                    description: 'GameBalance.jsの設定値を確認])';
+                    description: 'GameBalance.jsの設定値を確認]'';
                 }')]'
-            ])'),
+            ]''),
 
         this.contextualSuggestions.set('Canvas', { null_reference: [{''
                     action: 'Mock Canvas for tests',
@@ -312,12 +312,12 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
             const contextSuggestions = this.contextualSuggestions.get(componentName)!;''
             if(contextSuggestions[pattern.id]) {
                 suggestions.push(...contextSuggestions[pattern.id].map(s => ({'
-                    ...s,)';
+                    ...s,'';
                     category: 'contextual',')
         }
 
-                    priority: 'high' as const))); }
-}
+                    priority: 'high' as const))); 
+    }
 
         return suggestions;
     }
@@ -355,10 +355,10 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
 
         if (testName.includes('render'') || testName.includes('canvas)) { suggestions.push({)'
                 action: 'Setup Canvas mock''),
-                code: 'Object.defineProperty(HTMLCanvasElement.prototype, "getContext", {...))',''
+                code: 'Object.defineProperty(HTMLCanvasElement.prototype, "getContext", {...)"',''
                 description: 'Canvas関連テストにモックを設定',
                 priority: 'high',
-                category: 'test_setup' ,});
+                category: 'test_setup' ,}';
         }
 ;
         return suggestions;
@@ -409,7 +409,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
         if (suggestion.category === 'debugging'') score += 2;
 ';
         // パターン適合度
-        if(pattern && pattern.severity === 'high) score += 3;
+        if(pattern && pattern.severity === 'high' score += 3;
 
         return score;
     }
@@ -456,8 +456,8 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
      * @returns 統計情報
      */
     getSuggestionStatistics(): SuggestionStatistics { const stats: SuggestionStatistics = {
-            totalPatterns: this.debugSuggestions.size;
-           , totalSuggestions: 0, }
+            totalPatterns: this.debugSuggestions.size,
+    totalSuggestions: 0, }
             suggestionsByCategory: {};
             suggestionsByPriority: {};
         for(const, suggestions of, this.debugSuggestions.values() {
@@ -466,7 +466,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
 
             for(const, suggestion of, suggestions) {'
                 // カテゴリ別統計
-                const category = suggestion.category || 'general';''
+                const category = suggestion.category || 'general';
                 stats.suggestionsByCategory[category] = (stats.suggestionsByCategory[category] || 0') + 1;
 ';
                 // 優先度別統計

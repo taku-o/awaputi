@@ -41,8 +41,8 @@ interface MockCanvasRenderingContext2D { fillRect: jest.Mock,
     arc: jest.Mock;
     fill: jest.Mock;
     stroke: jest.Mock;
-    fillText: jest.Mock;
-   , strokeText: jest.Mock, }
+    fillText: jest.Mock,
+    strokeText: jest.Mock, }
     measureText: jest.Mock<{ width: number }>;
     drawImage: jest.Mock;
     save: jest.Mock;
@@ -61,8 +61,8 @@ interface MockCanvasRenderingContext2D { fillRect: jest.Mock,
     font: string;
     textAlign: string;
     textBaseline: string;
-    globalAlpha: number;
-   , globalCompositeOperation: string;
+    globalAlpha: number,
+    globalCompositeOperation: string;
 }
 
 interface MockImage { onload: (() => void) | null,
@@ -73,19 +73,19 @@ interface MockImage { onload: (() => void) | null,
     _src?: string ,}
 }
 
-interface MockFileReader { onload: ((even;t: any) => void) | null;
+interface MockFileReader { onload: ((event: any) => void) | null;
     onerror: (() => void) | null;
     onprogress: (() => void) | null;
     result: string | null;
     readyState: number;
-    readAsDataURL: (fil;e: File) => void;
-    readAsText: (fil;e: File) => void }
-}
+    readAsDataURL: (file: File) => void;
+    readAsText: (file: File) => void 
+    }
 
 interface MockBlob { size: number;
     type: string;
-    parts: any[];
-   , slice: (star;t?: number, end?: number, contentType?: string) => MockBlob;
+    parts: any[],
+    slice: (start?: number, end?: number, contentType?: string) => MockBlob;
     stream: () => ReadableStream;
     text: () => Promise<string>;
     arrayBuffer: () => Promise<ArrayBuffer> ,}
@@ -97,14 +97,14 @@ interface MockURL { createObjectURL: jest.Mock<string>;
 interface MockResizeObserver { callback: ResizeObserverCallback;
     observe: () => void;
     unobserve: () => void;
-    disconnect: () => void }
-}
+    disconnect: () => void 
+    }
 
 interface MockIntersectionObserver { callback: IntersectionObserverCallback;
     observe: () => void;
     unobserve: () => void;
-    disconnect: () => void }
-}
+    disconnect: () => void 
+    }
 
 interface MockStorage { getItem: jest.Mock<string | null>;
     setItem: jest.Mock;
@@ -113,12 +113,12 @@ interface MockStorage { getItem: jest.Mock<string | null>;
     length: number;
     key: jest.Mock<string | null> }
 
-interface MockIndexedDB { open: jest.Mock;
-   , deleteDatabase: jest.Mock }
+interface MockIndexedDB { open: jest.Mock,
+    deleteDatabase: jest.Mock }
 
-interface TestUtils { waitForElement: (selecto;r: string, timeout?: number) => Promise<Element>;
-    fireEvent: (elemen;t: Element, eventType: string, eventData?: any) => Event;''
-    waitFor: (conditionF;n: () => boolean, timeout?: number') => Promise<void> }'
+interface TestUtils { waitForElement: (selector: string, timeout?: number) => Promise<Element>;
+    fireEvent: (element: Element, eventType: string, eventData?: any) => Event;''
+    waitFor: (conditionFn: () => boolean, timeout?: number') => Promise<void> }'
 }
 ';
 // DOM環境の強化
@@ -128,7 +128,7 @@ global.TextDecoder = TextDecoder;
 ';
 // Canvas API モック
 global.HTMLCanvasElement.prototype.getContext = jest.fn((contextType: string): MockCanvasRenderingContext2D | null => {  ''
-    if(contextType === '2d) {'
+    if(contextType === '2d' {'
         return { // 描画メソッド
             fillRect: jest.fn();
             clearRect: jest.fn();
@@ -138,8 +138,8 @@ global.HTMLCanvasElement.prototype.getContext = jest.fn((contextType: string): M
             moveTo: jest.fn();
             lineTo: jest.fn();
             arc: jest.fn();
-            fill: jest.fn();
-           , stroke: jest.fn();
+            fill: jest.fn(),
+    stroke: jest.fn();
     }
             // テキスト描画 }
             fillText: jest.fn(), };
@@ -152,24 +152,24 @@ global.HTMLCanvasElement.prototype.getContext = jest.fn((contextType: string): M
             restore: jest.fn();
             translate: jest.fn();
             rotate: jest.fn();
-            scale: jest.fn();
-           , transform: jest.fn(),
-            setTransform: jest.fn(''';
-           , fillStyle: '#000000',
+            scale: jest.fn(),
+    transform: jest.fn(),
+            setTransform: jest.fn(''',
+    fillStyle: '#000000',
             strokeStyle: '#000000',
             lineWidth: 1,
             font: '12px Arial',
             textAlign: 'start',
             textBaseline: 'alphabetic',
-            globalAlpha: 1,)';
+            globalAlpha: 1,'';
             globalCompositeOperation: 'source-over');
             // イメージデータ)
            , createImageData: jest.fn(() => ({ data: new, Uint8ClampedArray(4);
-                width: 1;
-               , height: 1 });
+                width: 1,
+    height: 1 });
             getImageData: jest.fn(() => ({ data: new, Uint8ClampedArray(4);
-                width: 1;
-               , height: 1 });
+                width: 1,
+    height: 1 });
             putImageData: jest.fn();
         }
     return null;
@@ -204,20 +204,20 @@ global.Image = class MockImageClass implements MockImage { onload: (() => void) 
     set src(value: string) { this._src = value;
         // 非同期でonloadを呼び出し
         setTimeout(() => { ''
-            if(this.onload && typeof, this.onload === 'function) { }'
+            if(this.onload && typeof, this.onload === 'function' { }'
                 this.onload(); }
 }, 10);
     }
 
     get src(''';
-        return this._src || ''; as any;
+        return this._src || ''; as any
 
 // File API モック
 global.File = class MockFileClass { bits: any[],
     name: string;
     type: string;
-    size: number);
-   , lastModified: number);
+    size: number),
+    lastModified: number);
 
     constructor(bits: any[], name: string, options: FilePropertyBag = {)) {
         this.bits = bits;
@@ -258,8 +258,8 @@ global.FileReader = class MockFileReaderClass implements MockFileReader { onload
 
 // Blob API モック
 global.Blob = class MockBlobClass implements MockBlob { size: number,
-    type: string;
-   , parts: any[];
+    type: string,
+    parts: any[];
     constructor(parts: any[] = [], options: BlobPropertyBag = {) {
     ';
 
@@ -292,7 +292,7 @@ global.Blob = class MockBlobClass implements MockBlob { size: number,
 
 // URL API モック
 global.URL = { ''
-    createObjectURL: jest.fn<string>((') => 'blob:http://localhost/test'),
+    createObjectURL: jest.fn<string>(() => 'blob:http://localhost/test'),
     revokeObjectURL: jest.fn()';
 Object.defineProperty(global.navigator, 'share', {);
     value: jest.fn().mockResolvedValue(undefined),
@@ -311,31 +311,31 @@ Object.defineProperty(global.navigator, 'userAgent', { ');''
 }');
 Object.defineProperty(global.navigator, 'platform', { ')'
     value: 'Test',')';
-    writable: true)'),
+    writable: true''),
 
-Object.defineProperty(global.navigator, 'language', {)'
+Object.defineProperty(global.navigator, 'language', {''
     value: 'ja-JP',')';
-    writable: true)'),
+    writable: true''),
 
-Object.defineProperty(global.navigator, 'languages', {)'
+Object.defineProperty(global.navigator, 'languages', {''
     value: ['ja-JP', 'ja', 'en-US', 'en'],')';
-    writable: true)');
+    writable: true'');
 ';
 // Clipboard API モック
 Object.defineProperty(global.navigator, 'clipboard', {)
     value: {);
         writeText: jest.fn().mockResolvedValue(undefined),
-        readText: jest.fn(').mockResolvedValue('test, text);
-        write: jest.fn().mockResolvedValue(undefined);
-       , read: jest.fn().mockResolvedValue([] ,};
+        readText: jest.fn().mockResolvedValue('test, text);
+        write: jest.fn().mockResolvedValue(undefined),
+    read: jest.fn().mockResolvedValue([] ,}
     writable: true'';
-}),
+}',
 // Permissions API モック
-Object.defineProperty(global.navigator, 'permissions', { )'
-    value: {),''
-        query: jest.fn(').mockResolvedValue({ state: 'granted ,};
+Object.defineProperty(global.navigator, 'permissions', { ''
+    value: {',''
+        query: jest.fn().mockResolvedValue({ state: 'granted ,};
     writable: true'';
-}),
+}',
 // Performance API 強化
 Object.defineProperty(global.performance, 'now', { );
     value: jest.fn(() => Date.now(),
@@ -374,8 +374,8 @@ Object.defineProperty(global.performance, 'clearMeasures', { );
 }');
 Object.defineProperty(global.performance, 'memory', { value: {
         usedJSHeapSize: 10000000);
-        totalJSHeapSize: 50000000);
-       , jsHeapSizeLimit: 2000000000 },)
+        totalJSHeapSize: 50000000),
+    jsHeapSizeLimit: 2000000000 },)
     writable: true);
 // ResizeObserver モック
 global.ResizeObserver = class MockResizeObserverClass implements MockResizeObserver { callback: ResizeObserverCallback,
@@ -401,8 +401,8 @@ global.IntersectionObserver = class MockIntersectionObserverClass implements Moc
     
     observe(): void { setTimeout(() => { 
             this.callback([{)
-                target: document.body);
-               , isIntersecting: true,) }]
+                target: document.body),
+    isIntersecting: true,) }]
                 intersectionRatio: 1), }]
             } as IntersectionObserverEntry], this as IntersectionObserver);
         }, 0);
@@ -435,16 +435,16 @@ global.indexedDB = { open: jest.fn(() => {
         const request = {
             onsuccess: null;
             onerror: null;
-            onupgradeneeded: null;
-           , result: {
+            onupgradeneeded: null,
+    result: {
                 transaction: jest.fn(() => ({
                     objectStore: jest.fn(() => ({
                         add: jest.fn();
                         put: jest.fn();
-                        get: jest.fn();
-                       , delete: jest.fn(), }
-                        clear: jest.fn(); }
-                    });
+                        get: jest.fn(),
+    delete: jest.fn(), }
+                        clear: jest.fn(); 
+    });
                 });
             }
         };
@@ -481,15 +481,15 @@ global.Element.prototype.animate = jest.fn(() => ({ play: jest.fn(),
     pause: jest.fn();
     cancel: jest.fn();
     finish: jest.fn();
-    addEventListener: jest.fn();
-   , removeEventListener: jest.fn( ,} as Animation);
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn( ,} as Animation);
 
 // Fetch API モック
 global.fetch = jest.fn(() =>;
     Promise.resolve({ ok: true)
-        status: 200);
-       , json: () => Promise.resolve({),''
-        text: (') => Promise.resolve();
+        status: 200),
+    json: () => Promise.resolve({),''
+        text: () => Promise.resolve();
         blob: () => Promise.resolve(new, Blob() ,}
     } as Response)
 );
@@ -500,11 +500,11 @@ global.console = { ...originalConsole,
     log: jest.fn();
     warn: jest.fn();
     error: jest.fn();
-    info: jest.fn();
-   , debug: jest.fn( ,};
+    info: jest.fn(),
+    debug: jest.fn( ,};
 // テスト後のクリーンアップ
 afterEach(() => {  // DOM をクリーンアップ
-    document.body.innerHTML = '';''
+    document.body.innerHTML = '';
     document.head.innerHTML = '';
     
     // LocalStorage をクリア

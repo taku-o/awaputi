@@ -15,8 +15,8 @@ export class AnomalyDetector {
             behavioral: 0.8,       // 行動パターン異常値（0-1）;
             performance: 3.0,      // パフォーマンス異常値（標準偏差倍数）
     }
-            temporal: 0.9          // 時間的異常値（0-1） }
-        };
+            temporal: 0.9          // 時間的異常値（0-1） 
+    };
         // 異常パターンタイプ
         this.anomalyTypes = { SCORE_OUTLIER: 'score_outlier',''
             ACCURACY_DROP: 'accuracy_drop',
@@ -39,8 +39,8 @@ export class AnomalyDetector {
             severity: 'medium';
     ,}
 
-            description: 'スコアに異常な変動が検出されました' }
-        });
+            description: 'スコアに異常な変動が検出されました' 
+    });
         // 精度急降下検出
         this.detectionRules.set(this.anomalyTypes.ACCURACY_DROP, { );''
             detect: (data) => this.detectAccuracyDrop(data),
@@ -92,20 +92,20 @@ export class AnomalyDetector {
      * @param {Object} options - 検出オプション
      * @returns {Promise<Object>} 検出結果'
      */''
-    async detectAnomalies(dataType = 'all', options: any = {}) {
+    async detectAnomalies(dataType = 'all', options: any = {}' {
         try {
             const {'
                 startDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
                 endDate = new Date(''';
-            const sessionData = await this.storageManager.getData('sessions', {)'
+            const sessionData = await this.storageManager.getData('sessions', {''
                 startDate,');
 
-                endDate)');
+                endDate'');
 
-            const interactionData = await this.storageManager.getData('interactions', {)'
+            const interactionData = await this.storageManager.getData('interactions', {''
                 startDate,');
 
-                endDate)');
+                endDate'');
 
             const performanceData = await this.storageManager.getData('performance', {)
                 startDate,);
@@ -118,8 +118,8 @@ export class AnomalyDetector {
             ,}
 
                     summary: '分析対象データが不足しています', };
-                    recommendations: [] }
-                }
+                    recommendations: [] 
+    }
 
             // 異常検出実行
             const detectionResults = [];
@@ -128,14 +128,14 @@ export class AnomalyDetector {
             
                 try {
                     const anomalies = await rule.detect({)
-                        sessions: sessionData);
-                       , interactions: interactionData,);
+                        sessions: sessionData),
+    interactions: interactionData,);
                         performance: performanceData);
                     if (anomalies && anomalies.length > 0) {
                         detectionResults.push({
                             type: type);
-                            severity: rule.severity);
-                           , description: rule.description,);
+                            severity: rule.severity),
+    description: rule.description,);
                             anomalies: anomalies);
             ,}
                             detectedAt: new Date(), });
@@ -166,16 +166,16 @@ export class AnomalyDetector {
                 totalAnomalies: filteredResults.length;
                 severityBreakdown: this.calculateSeverityBreakdown(filteredResults);
                 summary: summary;
-                recommendations: recommendations;
-               , detectionPeriod: {
+                recommendations: recommendations,
+    detectionPeriod: {
                     start: startDate, };
-                    end: endDate }
-} catch (error) {
+                    end: endDate 
+    } catch (error) {
             console.error('異常パターン検出エラー:', error);
             return { success: false,
                 error: error.message, };
-                anomalies: [] }
-            }
+                anomalies: [] 
+    }
     }
 
     /**
@@ -198,12 +198,12 @@ export class AnomalyDetector {
                 outliers.push({
                     sessionId: session.sessionId;
                     timestamp: session.startTime;
-                    value: session.finalScore);
-                   , expectedRange: [mean - 2 * stdDev, mean + 2 * stdDev])
+                    value: session.finalScore),
+    expectedRange: [mean - 2 * stdDev, mean + 2 * stdDev])
     }
                     zScore: zScore,) }
-                    deviation: session.finalScore - mean); }
-                });
+                    deviation: session.finalScore - mean); 
+    });
             }
         });
 
@@ -229,12 +229,12 @@ export class AnomalyDetector {
             if (recentAvg > 0.5 && currentAccuracy < recentAvg * this.thresholds.behavioral) {
                 drops.push({
                     sessionId: data.sessions[i].sessionId);
-                    timestamp: data.sessions[i].startTime);
-                   , currentAccuracy: currentAccuracy,);
+                    timestamp: data.sessions[i].startTime),
+    currentAccuracy: currentAccuracy,);
                     previousAccuracy: recentAvg);
         ,}
-                    dropPercentage: ((recentAvg - currentAccuracy) / recentAvg) * 100 }
-                });
+                    dropPercentage: ((recentAvg - currentAccuracy) / recentAvg) * 100 
+    });
             }
         }
 
@@ -268,13 +268,13 @@ export class AnomalyDetector {
                 anomalies.push({
                     sessionId: session.sessionId;
                     timestamp: session.startTime;
-                    playTime: playTime);
-                   , expectedRange: [mean - 2 * stdDev, mean + 2 * stdDev] }
+                    playTime: playTime),
+    expectedRange: [mean - 2 * stdDev, mean + 2 * stdDev] }
 
                     zScore: zScore,') }'
 
-                    anomalyType: playTime > mean ? 'unusually_long' : 'unusually_short'); }
-                });
+                    anomalyType: playTime > mean ? 'unusually_long' : 'unusually_short'); 
+    });
             }
         });
 
@@ -300,7 +300,7 @@ export class AnomalyDetector {
             );
 
             const currentCombo = combos[i];
-            const consistency = windowStdDev > 0 ?   : undefined
+            const consistency = windowStdDev > 0 ? undefined : undefined
                 1 - Math.abs(currentCombo - windowMean) / (windowStdDev * 3) : 1;
 
             if (consistency < this.thresholds.behavioral) {
@@ -308,11 +308,11 @@ export class AnomalyDetector {
                     sessionId: data.sessions[i].sessionId;
                     timestamp: data.sessions[i].startTime;
                     currentCombo: currentCombo);
-                    expectedCombo: windowMean);
-                   , consistencyScore: consistency,)
+                    expectedCombo: windowMean),
+    consistencyScore: consistency,)
     }
-                    variability: windowStdDev); }
-}
+                    variability: windowStdDev); 
+    }
 
         return inconsistencies;
     }
@@ -355,12 +355,12 @@ export class AnomalyDetector {
                     sessionId: sessionId,
                     timestamp: interactions[0].timestamp,
                     anomalyType: 'slow_reactions';
-                    averageReactionTime: mean);
-                   , slowReactionCount: slowReactions.length)
+                    averageReactionTime: mean),
+    slowReactionCount: slowReactions.length)
             ,}
                     totalReactions: reactionTimes.length,) }
-                    slowReactionRatio: slowReactions.length / reactionTimes.length); }
-});
+                    slowReactionRatio: slowReactions.length / reactionTimes.length); 
+    });
 
         return anomalies;
     }
@@ -392,13 +392,13 @@ export class AnomalyDetector {
             if(zScore > this.thresholds.statistical) {
                 anomalies.push({
                     date: date;
-                    sessionCount: count);
-                   , expectedRange: [mean - 2 * stdDev, mean + 2 * stdDev] }
+                    sessionCount: count),
+    expectedRange: [mean - 2 * stdDev, mean + 2 * stdDev] }
 
                     zScore: zScore,') }'
 
-                    anomalyType: count > mean ? 'excessive_sessions' : 'insufficient_sessions'); }
-                });
+                    anomalyType: count > mean ? 'excessive_sessions' : 'insufficient_sessions'); 
+    });
             }
         });
 
@@ -423,7 +423,7 @@ export class AnomalyDetector {
                 timestamp: Date.now(''
     ,}]'
                 severity: degradationRatio > 0.5 ? 'critical' : 'warning' }])
-            }])
+            }]'
         }
 
         return [];
@@ -453,8 +453,8 @@ export class AnomalyDetector {
 ';
 
             return [{ ''
-                timestamp: Date.now(']';
-               , pattern: averageQuitTime < 60 ? 'early_quit' : 'mid_game_quit' }])
+                timestamp: Date.now(']',
+    pattern: averageQuitTime < 60 ? 'early_quit' : 'mid_game_quit' }])
             }])
         }
 
@@ -552,8 +552,8 @@ export class AnomalyDetector {
             [this.anomalyTypes.PERFORMANCE_DEGRADATION]: 'システム性能に問題があります。デバイスの最適化を検討してください。',
     }
 
-            [this.anomalyTypes.UNUSUAL_QUIT_PATTERN]: '途中終了が多くなっています。ゲーム体験の改善を検討してください。' }
-        };
+            [this.anomalyTypes.UNUSUAL_QUIT_PATTERN]: '途中終了が多くなっています。ゲーム体験の改善を検討してください。' 
+    };
 
         return recommendations[type] || null;
     }
@@ -572,8 +572,8 @@ export class AnomalyDetector {
             [this.anomalyTypes.PERFORMANCE_DEGRADATION]: '性能劣化',
     }
 
-            [this.anomalyTypes.UNUSUAL_QUIT_PATTERN]: '異常終了' }
-        };
+            [this.anomalyTypes.UNUSUAL_QUIT_PATTERN]: '異常終了' 
+    };
 
         return displayNames[type] || type;
     }
@@ -587,7 +587,7 @@ export class AnomalyDetector {
     })
             this.alertHistory.push({) }
                 ...result);
-                id: `alert_${timestamp)_${Math.random(}.toString(36}.substr(2, 9})`,
+                id: `alert_${timestamp)_${Math.random().toString(36).substr(2, 9})`,
                 timestamp: timestamp;
             }),
         });
@@ -618,4 +618,4 @@ export class AnomalyDetector {
     /**
      * キャッシュをクリア
      */''
-    clearCache(');
+    clearCache();

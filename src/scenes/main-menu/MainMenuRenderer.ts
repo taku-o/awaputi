@@ -1,5 +1,5 @@
-import { getErrorHandler  } from '../../utils/ErrorHandler.js';''
-import { CoordinateCalculator  } from '../../utils/CoordinateCalculator.js';''
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
+import { CoordinateCalculator  } from '../../utils/CoordinateCalculator.js';
 import type { MenuItem } from '../../types/game';
 
 // インターフェース定義
@@ -90,8 +90,8 @@ export class MainMenuRenderer {
                 context.font = `bold ${titleFontSize}px sans-serif`;
             }
 
-            context.fillStyle = '#FFFFFF';''
-            context.textAlign = 'center';''
+            context.fillStyle = '#FFFFFF';
+            context.textAlign = 'center';
             context.textBaseline = 'middle';
 
             const titleY = calc.toCanvasCoordinates(0, 80).y;''
@@ -111,7 +111,7 @@ export class MainMenuRenderer {
             const subtitleFontSize = calc.scaleFontSize(22);
 
             context.font = `${subtitleFontSize}px Arial`;''
-            context.fillStyle = '#CCCCCC';''
+            context.fillStyle = '#CCCCCC';
             const subtitleY = calc.toCanvasCoordinates(0, 120).y;''
             const subtitleX = calc.getTextCenterX(context, '泡割りゲーム'');''
             context.fillText('泡割りゲーム', subtitleX, subtitleY);
@@ -148,9 +148,9 @@ export class MainMenuRenderer {
             } catch (restoreError) { // 復元エラーは無視 }
 
             this.errorHandler.handleError(error, 'RENDER_ERROR', { ')'
-                context: 'MainMenuRenderer.renderMainMenu);
-               , canvasWidth: this.gameEngine.canvas? .width, : undefined);
-                canvasHeight: this.gameEngine.canvas? .height ,});
+                context: 'MainMenuRenderer.renderMainMenu),
+    canvasWidth: this.gameEngine.canvas?.width, : undefined);
+                canvasHeight: this.gameEngine.canvas?.height ,});
         }
     }
     
@@ -191,7 +191,7 @@ export class MainMenuRenderer {
                 const menuFontSize = calc.scaleFontSize(20); }
 
                 context.font = `bold ${menuFontSize}px Arial`;''
-                context.textAlign = 'center';''
+                context.textAlign = 'center';
                 context.textBaseline = 'middle';
                 context.fillText(;
                     item.label);
@@ -201,7 +201,7 @@ export class MainMenuRenderer {
                 context.restore();
 
             });''
-        } catch (error) { this.errorHandler.handleError(error, 'RENDER_ERROR', {)'
+        } catch (error) { this.errorHandler.handleError(error, 'RENDER_ERROR', {''
                 context: 'MainMenuRenderer.renderMenuItems' ,});
         }
     }
@@ -218,7 +218,7 @@ export class MainMenuRenderer {
             const controlFontSize = calc.scaleFontSize(16); }
 
             context.font = `${controlFontSize}px Arial`;''
-            context.textAlign = 'center';''
+            context.textAlign = 'center';
             context.textBaseline = 'bottom';
             
             // 画面下部からの固定マージン
@@ -236,8 +236,8 @@ export class MainMenuRenderer {
 
             context.restore();''
         } catch (error) {
-            this.errorHandler.handleError(error, 'RENDER_ERROR', {)'
-                context: 'MainMenuRenderer.renderControls),' }
+            this.errorHandler.handleError(error, 'RENDER_ERROR', {''
+                context: 'MainMenuRenderer.renderControls',' }
 
             }');
         }

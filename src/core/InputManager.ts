@@ -28,8 +28,8 @@ export class InputManager {
         // ジェスチャー認識
         this.gestureState = { isPinching: false,
             isRotating: false;
-            lastPinchDistance: 0;
-           , lastRotationAngle: 0 ,};
+            lastPinchDistance: 0,
+    lastRotationAngle: 0 ,};
         // イベント処理の最適化
         this.eventQueue = [];
         this.isProcessingEvents = false;
@@ -254,8 +254,8 @@ export class InputManager {
     endDrag(endPosition) {
         const dragVector = {
             x: endPosition.x - this.dragStartPosition.x }
-            y: endPosition.y - this.dragStartPosition.y }
-        };
+            y: endPosition.y - this.dragStartPosition.y 
+    };
         this.notifyDragEnd(this.dragStartPosition, endPosition, dragVector);
     }
     
@@ -265,13 +265,13 @@ export class InputManager {
     getPointerPosition(event) {
 
         const rect = this.canvas.getBoundingClientRect()';
-        if (event.type.startsWith('mouse'') || event.type.startsWith('pointer)) {
+        if (event.type.startsWith('mouse'') || event.type.startsWith('pointer)' {
             x = event.clientX - rect.left;
     }
 
             y = event.clientY - rect.top;' }'
 
-        } else if(event.type.startsWith('touch) { // タッチイベントの安全な処理'
+        } else if(event.type.startsWith('touch' { // タッチイベントの安全な処理'
             const touches = event.touches || event.changedTouches || [];
             if(touches.length > 0) {
                 const touch = touches[0];
@@ -289,8 +289,8 @@ export class InputManager {
         // 座標変換システムで使用できるよう元のイベントも含める
         return { x, 
             y,  };
-            originalEvent: event  }
-        }
+            originalEvent: event  
+    }
     
     /**
      * 距離を計算
@@ -307,8 +307,8 @@ export class InputManager {
     normalizeDragVector(vector) { const magnitude = Math.sqrt(vector.x * vector.x + vector.y * vector.y); }
         if (magnitude === 0) return { x: 0, y: 0 ,}
         return { x: vector.x / magnitude, };
-            y: vector.y / magnitude }
-        }
+            y: vector.y / magnitude 
+    }
     
     /**
      * ドラッグ力を計算（距離に基づく）
@@ -343,11 +343,11 @@ export class InputManager {
         // マルチタッチ対応
         this.activeTouches.set(event.pointerId, {)
             id: event.pointerId,);
-            position: position);
-           , startTime: Date.now();
+            position: position),
+    startTime: Date.now();
     ,}
-            type: event.pointerType }
-        };
+            type: event.pointerType 
+    };
         // 最初のタッチの場合は通常の処理
         if (this.activeTouches.size === 1) { this.handlePointerDown(event); } else if (this.activeTouches.size === 2) { // 2点タッチの場合はジェスチャー開始
             this.startMultiTouchGesture(); }
@@ -418,11 +418,11 @@ export class InputManager {
             // シングルタッチ
             const firstTouch = Array.from(this.activeTouches.values())[0];
             this.handlePointerDown({ )
-                clientX: firstTouch.position.x)';
-               , clientY: firstTouch.position.y,' }'
+                clientX: firstTouch.position.x)',
+    clientY: firstTouch.position.y,' }'
 
-                type: 'touchstart'); }
-        } else if (this.activeTouches.size === 2) { // マルチタッチジェスチャー開始
+                type: 'touchstart'); 
+    } else if (this.activeTouches.size === 2) { // マルチタッチジェスチャー開始
             this.startMultiTouchGesture(); }
     }
     
@@ -443,11 +443,11 @@ export class InputManager {
 
             const firstTouch = Array.from(this.activeTouches.values())[0];
             this.handlePointerMove({)
-                clientX: firstTouch.position.x)';
-               , clientY: firstTouch.position.y,' }'
+                clientX: firstTouch.position.x)',
+    clientY: firstTouch.position.y,' }'
 
-                type: 'touchmove'); }
-        } else if (this.activeTouches.size === 2) { this.handleMultiTouchMove(); }
+                type: 'touchmove'); 
+    } else if (this.activeTouches.size === 2) { this.handleMultiTouchMove(); }
     }
     
     /**
@@ -472,11 +472,11 @@ export class InputManager {
         }
 
         if(this.activeTouches.size === 0) { this.handlePointerUp({)
-                clientX: 0)';
-               , clientY: 0,' }'
+                clientX: 0)',
+    clientY: 0,' }'
 
-                type: 'touchend'); }
-        } else if (this.activeTouches.size === 1) { this.endMultiTouchGesture(); }
+                type: 'touchend'); 
+    } else if (this.activeTouches.size === 1) { this.endMultiTouchGesture(); }
     }
     
     /**
@@ -507,7 +507,7 @@ export class InputManager {
                 if (getBrowserCompatibility().deviceInfo.isDesktop) {'
     }
 
-                    this.notifyKeyAction('fullscreen); }'
+                    this.notifyKeyAction('fullscreen'; }'
                 }
                 break;
         }
@@ -622,12 +622,12 @@ export class InputManager {
     getEnhancedPointerPosition(event) {
         const rect = this.canvas.getBoundingClientRect();
         return { x: event.clientX - rect.left,
-            y: event.clientY - rect.top;
-           , pressure: event.pressure || 1;
+            y: event.clientY - rect.top,
+    pressure: event.pressure || 1;
     ,}
             tiltX: event.tiltX || 0, };
-            tiltY: event.tiltY || 0 }
-        }
+            tiltY: event.tiltY || 0 
+    }
     
     /**
      * タッチ位置取得
@@ -636,8 +636,8 @@ export class InputManager {
         const rect = this.canvas.getBoundingClientRect();
     }
         return { x: touch.clientX - rect.left, };
-            y: touch.clientY - rect.top }
-        }
+            y: touch.clientY - rect.top 
+    }
     
     /**
      * 入力状態をリセット
@@ -657,12 +657,12 @@ export class InputManager {
      */
     getDeviceInfo() {
         return { ...getBrowserCompatibility().deviceInfo,
-            activeTouches: this.activeTouches.size;
-           , maxTouches: this.maxTouches;
+            activeTouches: this.activeTouches.size,
+    maxTouches: this.maxTouches;
     ,}
             dragThreshold: this.dragThreshold, };
-            clickThreshold: this.clickThreshold }
-        }
+            clickThreshold: this.clickThreshold 
+    }
     
     // 拡張通知メソッド
     notifyDoubleTap(position) { // サブクラスでオーバーライド }
@@ -679,8 +679,8 @@ export class InputManager {
             startPosition: { ...this.dragStartPosition;
             currentPosition: { ...this.dragCurrentPosition;
             draggedBubble: this.draggedBubble;
-            activeTouches: this.activeTouches.size;
-           , gestureState: { ...this.gestureState;
+            activeTouches: this.activeTouches.size,
+    gestureState: { ...this.gestureState;
     }
     
     /**
@@ -691,4 +691,4 @@ export class InputManager {
 
     }
 
-        this.resetInputState(') }')
+        this.resetInputState() }')

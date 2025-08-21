@@ -2,8 +2,8 @@ import type { Achievement,
     AchievementManager as IAchievementManager,
     AchievementConfig,
     AchievementProgressResult,
-    AchievementStatistics } from '../types/game';''
-import { ProgressTracker  } from './achievement/ProgressTracker.js';''
+    AchievementStatistics } from '../types/game';
+import { ProgressTracker  } from './achievement/ProgressTracker.js';
 import { PerformanceOptimizer  } from './achievement/PerformanceOptimizer.js';
 
 /**
@@ -23,11 +23,11 @@ export class AchievementManager implements IAchievementManager { public gameEngi
         // 統合設定
         this.config = {
             enableNotifications: true;
-            enablePerformanceOptimization: true;
-           , autoSave: true;
+            enablePerformanceOptimization: true,
+    autoSave: true;
     ,}
-            debugMode: false }
-        };
+            debugMode: false 
+    };
         this.initializeAchievementManager();
     }
     
@@ -80,10 +80,10 @@ export class AchievementManager implements IAchievementManager { public gameEngi
             getAllAchievements: () => ({}),''
             getAchievementsByCategory: (category: string') => { ''
                 console.log('Mock getAchievementsByCategory called with:', category }
-                return [];,''
+                return [], ''
             getAchievement: (id: string) => { ''
                 console.log('Mock getAchievement called with:', id }
-                return null;,
+                return null, 
             getStatistics: () => ({ total: 0, byCategory: {,});
         }
     
@@ -93,17 +93,17 @@ export class AchievementManager implements IAchievementManager { public gameEngi
     private createMockNotificationSystem(): any { return { ''
             updateConfig: (config: any') => {' };
 
-                console.log('Mock updateConfig called with:', config); }
+                console.log('Mock updateConfig called with:', config'; }
 
             },''
             createAchievementNotification: (achievement: Achievement') => {  ' }
 
-                console.log('Mock createAchievementNotification called with:', achievement); }
+                console.log('Mock createAchievementNotification called with:', achievement'; }
 
             },''
             getNotificationHistory: (limit: number') => { ''
                 console.log('Mock getNotificationHistory called with limit:', limit }
-                return [];,
+                return [], 
             clearAllNotifications: () => {};
             loadHistory: () => {};
             destroy: () => {}
@@ -113,8 +113,8 @@ export class AchievementManager implements IAchievementManager { public gameEngi
      * モックProgressTrackerオブジェクトを作成'
      */''
     private createMockProgressTracker()';
-        console.warn('[AchievementManager] createMockProgressTracker, is deprecated. Use, ProgressTracker class, instead.);
-        return new ProgressTracker(');
+        console.warn('[AchievementManager] createMockProgressTracker, is deprecated. Use ProgressTracker class instead.');
+        return new ProgressTracker();
     }
     
     /**
@@ -122,8 +122,8 @@ export class AchievementManager implements IAchievementManager { public gameEngi
      * モックPerformanceOptimizerオブジェクトを作成'
      */''
     private createMockPerformanceOptimizer()';
-        console.warn('[AchievementManager] createMockPerformanceOptimizer, is deprecated. Use, PerformanceOptimizer class, instead.);
-        return new PerformanceOptimizer(');
+        console.warn('[AchievementManager] createMockPerformanceOptimizer, is deprecated. Use PerformanceOptimizer class instead.');
+        return new PerformanceOptimizer();
     }
     
     /**
@@ -152,8 +152,8 @@ export class AchievementManager implements IAchievementManager { public gameEngi
 
         this.notificationSystem.updateConfig({''
             position: 'top-right);
-            fadeIn: true);
-           , slideIn: true,);
+            fadeIn: true),
+    slideIn: true,);
             sound: true ,}
     
     /**
@@ -245,7 +245,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
 
         }
 
-            console.log('[AchievementManager] Achievement unlocked event:', data); }
+            console.log('[AchievementManager] Achievement unlocked event:', data'; }
 }
     
     /**
@@ -325,8 +325,8 @@ export class AchievementManager implements IAchievementManager { public gameEngi
      */
     getStatistics(): AchievementStatistics { const defaultStats = {
             total: 0;
-            unlocked: 0;
-           , unlockedPercentage: 0, }
+            unlocked: 0,
+    unlockedPercentage: 0, }
             categories: {};
             performance: {};
             byCategory: {};
@@ -338,8 +338,8 @@ export class AchievementManager implements IAchievementManager { public gameEngi
         
         return { total: definitions.total,
             unlocked: unlocked.length;
-            unlockedPercentage: (unlocked.length / definitions.total) * 100;
-           , categories: definitions.byCategory;
+            unlockedPercentage: (unlocked.length / definitions.total) * 100,
+    categories: definitions.byCategory;
             performance,
             byCategory: definitions.byCategory, };
             ...definitions
@@ -380,8 +380,8 @@ export class AchievementManager implements IAchievementManager { public gameEngi
             statistics: this.getStatistics(), };
             progressData: this.getProgressData(), }
             performance: this.performanceOptimizer ? this.performanceOptimizer.getPerformanceStats() : {};
-            notificationHistory: this.getNotificationHistory(5);
-           , progressHistory: this.progressTracker ? this.progressTracker.getProgressHistory(10) : [];
+            notificationHistory: this.getNotificationHistory(5),
+    progressHistory: this.progressTracker ? this.progressTracker.getProgressHistory(10) : [];
         },
     }
     
@@ -406,12 +406,12 @@ export class AchievementManager implements IAchievementManager { public gameEngi
             console.log('[AchievementManager] Loading, achievement data...'');
             ';
             // 進捗データを読み込み
-            if(this.progressTracker && typeof, this.progressTracker.loadProgress === 'function) {'
+            if(this.progressTracker && typeof, this.progressTracker.loadProgress === 'function' {'
 
                 this.progressTracker.loadProgress()';
-            if(this.notificationSystem && typeof, this.notificationSystem.loadHistory === 'function) {''
+            if(this.notificationSystem && typeof, this.notificationSystem.loadHistory === 'function' {''
                 this.notificationSystem.loadHistory()';
-            if(this.performanceOptimizer && typeof, this.performanceOptimizer.loadStats === 'function) {''
+            if(this.performanceOptimizer && typeof, this.performanceOptimizer.loadStats === 'function' {''
                 this.performanceOptimizer.loadStats();
             }
 

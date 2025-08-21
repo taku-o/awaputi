@@ -3,9 +3,9 @@
  * Issue #131 対応
  */
 
-import { promises, as fs  } from 'fs';''
-import path from 'path';''
-import { execSync, exec  } from 'child_process';''
+import { promises, as fs  } from 'fs';
+import path from 'path';
+import { execSync, exec  } from 'child_process';
 import { promisify  } from 'util';
 
 const execAsync = promisify(exec);
@@ -13,20 +13,20 @@ const execAsync = promisify(exec);
 // 型定義インターフェース
 interface RenameOperation { id: string,''
     type: 'file_rename';
-    oldPath: string;
-   , newPath: string,
+    oldPath: string,
+    newPath: string,
     timestamp: Date,
     status: 'pending' | 'backup_created' | 'completed' | 'failed' | 'rolled_back' | 'rollback_failed';
-    backupPath: string | null;
-   , error: string | null;
+    backupPath: string | null,
+    error: string | null;
     backupId?: string ,}
 
-interface RenameInfo { oldPath: string;
-   , newPath: string;
+interface RenameInfo { oldPath: string,
+    newPath: string;
     critical?: boolean }
 
-interface RenameResult { oldPath: string;
-   , newPath: string,
+interface RenameResult { oldPath: string,
+    newPath: string,
     result?: RenameOperation;''
     status: 'success' | 'failed';
     error?: string;
@@ -42,17 +42,17 @@ interface OperationHistoryItem { id: string;
     oldPath: string;
     newPath: string;
     status: string;
-    timestamp: Date;
-   , error: string | null }
+    timestamp: Date,
+    error: string | null }
 
 interface Stats { total: number;
     completed: number;
     failed: number;
-    rolledBack: number;
-   , successRate: string }
+    rolledBack: number,
+    successRate: string }
 
-interface ExecResult { stdout: string;
-   , stderr: string }
+interface ExecResult { stdout: string,
+    stderr: string }
 
 export class FileRenamer {
     private operations: RenameOperation[];
@@ -71,7 +71,7 @@ export class FileRenamer {
      * Gitが利用可能かチェック'
      */''
     checkGitAvailability()';
-            execSync('git --version', { stdio: 'ignore ),
+            execSync('git --version', { stdio: 'ignore ',
 
             return true;' }'
 
@@ -83,14 +83,14 @@ export class FileRenamer {
      * ファイルの安全なリネーム
      */'
     async renameFile(oldPath: string, newPath: string): Promise<RenameOperation> { const operation: RenameOperation = {''
-            id: this.generateOperationId(''';
-            type: 'file_rename';
-           , oldPath: oldPath,
+            id: this.generateOperationId('''
+            type: 'file_rename',
+    oldPath: oldPath,
             newPath: newPath,
             timestamp: new Date(''';
             status: 'pending';
-            backupPath: null;
-           , error: null ,}))
+            backupPath: null,
+    error: null ,}))
         try { // 1. 事前チェック)
             await this.validateRenameOperation(oldPath, newPath);
             // 2. バックアップ作成
@@ -151,7 +151,7 @@ export class FileRenamer {
 ';
         // パスの正当性チェック
         if (path.resolve(oldPath) === path.resolve(newPath)) { ''
-            throw new Error('Source, and destination, paths are, identical); }'
+            throw new Error('Source, and destination, paths are, identical'; }'
 
         // ファイル拡張子が変わっていないかチェック
         const oldExt = path.extname(oldPath);
@@ -185,7 +185,7 @@ export class FileRenamer {
      * バックアップ作成
      */"
     async createBackup(filePath: string): Promise<string> { ""
-        const timestamp = new Date().toISOString(").replace(/[:.]/g, '-);''
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-';''
         const backupDir = path.join(process.cwd(), '.backup', 'file-rename');
         await fs.mkdir(backupDir, { recursive: true ),
  };
@@ -214,9 +214,9 @@ export class FileRenamer {
 }
 ;
             // コミット前の状態確認
-            const { stdout }: ExecResult = await execAsync('git, status --porcelain);''
+            const { stdout }: ExecResult = await execAsync('git, status --porcelain';''
             if(stdout.trim()) { ''
-                console.log('Staged changes for file renames:', stdout);' }
+                console.log('Staged changes for file renames:', stdout';' }
 
             } catch (error) { console.error('Failed to update git history:', (error as Error).message }
     }
@@ -262,12 +262,12 @@ export class FileRenamer {
 
         }
 
-                results.push({ operation: operation.id, status: 'success ),' }
+                results.push({ operation: operation.id, status: 'success ',' }
 
             } catch (error) { results.push({ )'
                     operation: operation.id, ')';
-                    status: 'failed' );
-                   , error: (error, as Error).message  ,});
+                    status: 'failed' ),
+    error: (error, as Error).message  ,});
             }
         }
 
@@ -296,8 +296,8 @@ export class FileRenamer {
 
             } catch (error) { results.push({ )'
                     ...renameInfo, ')';
-                    status: 'failed' );
-                   , error: (error, as Error).message  ,});
+                    status: 'failed' ),
+    error: (error, as Error).message  ,});
                 console.error(`✗ Failed, to rename: ${renameInfo.oldPath} → ${ renameInfo.newPath}`}
                 console.error(`  Error: ${(error, as, Error}).message}`);
                 ';
@@ -321,7 +321,7 @@ export class FileRenamer {
         return renameList.sort((a, b') => { '
             // ディレクトリの浅い順にソート（依存関係の影響を最小化）
             const aDepth = a.oldPath.split('/'').length;''
-            const bDepth = b.oldPath.split('/).length; }'
+            const bDepth = b.oldPath.split('/'.length; }'
             return aDepth - bDepth;);
     }
 
@@ -333,8 +333,8 @@ export class FileRenamer {
             type: op.type;
             oldPath: op.oldPath;
             newPath: op.newPath);
-            status: op.status);
-           , timestamp: op.timestamp,);
+            status: op.status),
+    timestamp: op.timestamp,);
             error: op.error))) ,}
     }
 
@@ -369,7 +369,7 @@ export class FileRenamer {
      * 操作IDの生成
      */
     generateOperationId(): string {
-        return `rename_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
+        return `rename_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
     }
 
     /**
@@ -378,7 +378,7 @@ export class FileRenamer {
     getStats()';
         const completed = this.operations.filter(op => op.status === 'completed'').length;''
         const failed = this.operations.filter(op => op.status === 'failed'').length;''
-        const rolledBack = this.operations.filter(op => op.status === 'rolled_back).length;
+        const rolledBack = this.operations.filter(op => op.status === 'rolled_back'.length;
 
         return { total,
             completed,

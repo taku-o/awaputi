@@ -5,25 +5,25 @@
  * SEOTester のサブコンポーネント
  */
 
-import { seoLogger  } from '../SEOLogger.js';''
+import { seoLogger  } from '../SEOLogger.js';
 import { seoErrorHandler  } from '../SEOErrorHandler.js';
 
 interface MainController { baseUrl: string,
     validationRules: Map<string, ValidationRules> }
 
 interface ValidationRules { required: string[],
-    allowedContexts: string[];
-   , videoGameProperties: string[] ,}
+    allowedContexts: string[],
+    videoGameProperties: string[] ,}
 
 interface TestResult { name: string;
-    passed: boolean;
-   , message: string }
+    passed: boolean,
+    message: string }
 
 interface ValidationResults { category: string;
     tests: TestResult[];
     passed: number;
-    failed: number;
-   , warnings: number }
+    failed: number,
+    warnings: number }
 ';
 
 interface StructuredDataObject { '', '@context': string;'', '@type': string;
@@ -33,8 +33,8 @@ interface StructuredDataObject { '', '@context': string;'', '@type': string;
     gamePlatform?: string[];
     operatingSystem?: string[];
     applicationCategory?: string;
-    url: string;
-   , image: string,
+    url: string,
+    image: string,
     author?: {'', '@type': string;
         name: string ,};
     datePublished?: string;
@@ -58,13 +58,13 @@ export class StructuredDataValidator {
      * 構造化データの検証
      * @returns Promise<ValidationResults>'
      */''
-    async validateStructuredData(''';
+    async validateStructuredData('''
                 category: 'Structured, Data';
                 tests: [];
                 passed: 0;
-                failed: 0;
-               , warnings: 0);
-            })'
+                failed: 0,
+    warnings: 0);
+            }''
 
             const structuredData = await this._extractStructuredData();
 
@@ -74,12 +74,12 @@ export class StructuredDataValidator {
 
             }
 
-                throw new Error('Structured, data validation, rules not, found); }'
+                throw new Error('Structured, data validation, rules not, found'; }'
             }
 
             if (!structuredData || Object.keys(structuredData).length === 0') { results.tests.push({)'
-                    name: 'Structured data presence')';
-                   , passed: false,')';
+                    name: 'Structured data presence')',
+    passed: false,')';
                     message: '❌ No structured data found');
                 results.failed++;
                 return results; ,}
@@ -103,14 +103,14 @@ export class StructuredDataValidator {
             }
             ';
             // @contextの検証
-            if(structuredData['@context]) {'
+            if(structuredData['@context]' {'
                 const contextTest: TestResult = {''
                     name: 'Schema.org context validation',
                     passed: false;
             ,}
 
-                    message: '' }
-                };
+                    message: '' 
+    };
                 const context = structuredData['@context];
                 if(rules.allowedContexts.includes(context) { contextTest.passed = true; }
                     contextTest.message = `✅ Valid schema context: ${context}`;
@@ -124,7 +124,7 @@ export class StructuredDataValidator {
             }
             ';
             // VideoGame特有のプロパティ検証
-            if(structuredData['@type] === 'VideoGame) {'
+            if(structuredData['@type] === 'VideoGame' {'
 
                 for(const, prop of, rules.videoGameProperties) {
             }
@@ -159,25 +159,25 @@ export class StructuredDataValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'validateStructuredData);
+            return seoErrorHandler.handle(error, 'validateStructuredData';
 
     /**
      * JSON-LD検証とschema.org準拠チェック
      * @returns Promise<ValidationResults>'
      */''
-    async validateJsonLdCompliance(''';
+    async validateJsonLdCompliance('''
                 category: 'JSON-LD Compliance';
                 tests: [];
                 passed: 0;
-                failed: 0;
-               , warnings: 0;
+                failed: 0,
+    warnings: 0;
             ,},
 
             const structuredData = await this._extractStructuredData(''';
                 name: 'JSON-LD format validation',
                 passed: false,
                 message: '');
-            })', ');
+            }'', ');
 
             if(this._isValidJsonLd(structuredData)) { formatTest.passed = true;''
                 formatTest.message = '✅ Valid JSON-LD format';
@@ -214,23 +214,23 @@ export class StructuredDataValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'validateJsonLdCompliance);
+            return seoErrorHandler.handle(error, 'validateJsonLdCompliance';
 
     /**
      * Rich Snippetテスト実行
      * @returns Promise<ValidationResults>'
      */''
-    async testRichSnippets(''';
+    async testRichSnippets('''
                 category: 'Rich, Snippet Testing';
                 tests: [];
                 passed: 0;
-                failed: 0;
-               , warnings: 0);
-            ,})'
+                failed: 0,
+    warnings: 0);
+            ,}''
 
             const structuredData = await this._extractStructuredData('';
 
-            const snippetTypes = ['Game', 'SoftwareApplication', 'WebApplication'];)', ')';
+            const snippetTypes = ['Game', 'SoftwareApplication', 'WebApplication'];'', ')';
             for(const, snippetType of, snippetTypes) { const test: TestResult = { }
                     name: `${snippetType} rich snippet compatibility`;
                     passed: false,
@@ -273,7 +273,7 @@ export class StructuredDataValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'testRichSnippets);
+            return seoErrorHandler.handle(error, 'testRichSnippets';
 
     // プライベートメソッド
     
@@ -281,7 +281,7 @@ export class StructuredDataValidator {
      * 構造化データの抽出
      * @private
      */''
-    private async _extractStructuredData(''';
+    private async _extractStructuredData('''
             '@context': 'https://schema.org',
             '@type': 'VideoGame',
             'name': 'BubblePop',
@@ -292,9 +292,8 @@ export class StructuredDataValidator {
             'applicationCategory': 'Game',
             'url': this.baseUrl,
             'image': `${this.baseUrl}/assets/images/game-screenshot.png`,'', 'author': { '', '@type': 'Organization',
-                'name': 'BubblePop Games' }
-
-            },'', 'datePublished': '2024-01-01',
+                'name': 'BubblePop Games' 
+    },'', 'datePublished': '2024-01-01',
             'inLanguage': ['ja', 'en'],
             'isAccessibleForFree': true;
         }
@@ -302,7 +301,7 @@ export class StructuredDataValidator {
     /**
      * JSON-LD形式の検証
      * @private'
-     */)'
+     */''
     private async _validateJsonLdFormat(structuredData: StructuredDataObject): Promise<TestResult> { const test: TestResult = {''
             name: 'JSON-LD format validation',
             passed: false,
@@ -417,15 +416,15 @@ export class StructuredDataValidator {
         const issues: string[] = [],
         ;
         // 画像URLの形式チェック
-        if(structuredData.image && !structuredData.image.startsWith('http)) {''
+        if(structuredData.image && !structuredData.image.startsWith('http)' {''
             issues.push('Image, URL should, be absolute''); }
         ';
         // URLの形式チェック
-        if(structuredData.url && !structuredData.url.startsWith('http)) { ''
-            issues.push('URL, should be, absolute); }', ';
+        if(structuredData.url && !structuredData.url.startsWith('http)' { ''
+            issues.push('URL, should be, absolute'; }', ';
         // 日付形式チェック
         if(structuredData.datePublished && !this._isValidISODate(structuredData.datePublished)) { ''
-            issues.push('Date, should be, in ISO, format); }'
+            issues.push('Date, should be, in ISO, format'; }'
         
         return issues.length === 0;
     }

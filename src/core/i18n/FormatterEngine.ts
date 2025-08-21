@@ -1,4 +1,4 @@
-import { getErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 import { getRegionalSettingsManager  } from './RegionalSettingsManager.js';
 
 /**
@@ -71,14 +71,14 @@ export interface RegionalSettings { language: string,
     numberFormat: NumberFormatSettings;
     dateFormat: DateFormatSettings;
     timeFormat: TimeFormatSettings;
-    currencyFormat: CurrencyFormatSettings;
-   , regionInfo: RegionInfo
+    currencyFormat: CurrencyFormatSettings,
+    regionInfo: RegionInfo
     ,}
 
 export interface FormatterStats { availableFormatters: string[];
     regionalSettings: any;
-    supportedLanguages: string[];
-   , supportedRegions: string[] }
+    supportedLanguages: string[],
+    supportedRegions: string[] }
 
 export interface PluralObject { zero?: string;
     one?: string;
@@ -94,20 +94,20 @@ export interface PluralRuleFallback {;
 ';
 
 export interface DateTimeFormatOptions {;
-    year?: 'numeric' | '2-digit';''
-    month?: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow';''
-    day?: 'numeric' | '2-digit';''
-    hour?: 'numeric' | '2-digit';''
-    minute?: 'numeric' | '2-digit';''
-    second?: 'numeric' | '2-digit';''
-    weekday?: 'long' | 'short' | 'narrow';''
-    era?: 'long' | 'short' | 'narrow';''
+    year?: 'numeric' | '2-digit';
+    month?: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow';
+    day?: 'numeric' | '2-digit';
+    hour?: 'numeric' | '2-digit';
+    minute?: 'numeric' | '2-digit';
+    second?: 'numeric' | '2-digit';
+    weekday?: 'long' | 'short' | 'narrow';
+    era?: 'long' | 'short' | 'narrow';
     timeZoneName?: 'long' | 'short';
     [key: string]: any, }
 ';
 
 export interface ListFormatOptions {;
-    style?: 'long' | 'short' | 'narrow';''
+    style?: 'long' | 'short' | 'narrow';
     type?: 'conjunction' | 'disjunction' | 'unit'; }
 
 export interface FormatterConfiguration { enabled?: boolean;
@@ -117,7 +117,7 @@ export interface FormatterConfiguration { enabled?: boolean;
     cacheResults?: boolean; }
 
 export interface AdvancedFormatPattern { pattern: RegExp,
-    replacement: (matc;h: string, ...groups: string[]) => string,
+    replacement: (match: string, ...groups: string[]) => string,
     priority: number ,}
 }
 
@@ -134,16 +134,16 @@ export class FormatterEngine {
             ['date', new DateFormatter(''';
             ['currency', new CurrencyFormatter(''';
             ['relative', new RelativeTimeFormatter(']';
-            ['list', new ListFormatter('])';
+            ['list', new ListFormatter(']'';
             ['plural', new PluralFormatter()];
         ]);
         ';
         // 地域設定マネージャーの参照
-        this.regionalSettingsManager = getRegionalSettingsManager(''';
+        this.regionalSettingsManager = getRegionalSettingsManager('''
             defaultLanguage: 'en';
             defaultRegion: null;
-            fallbackFormats: true;
-           , cacheResults: false ,}))
+            fallbackFormats: true,
+    cacheResults: false ,})'
     }
     
     /**
@@ -151,7 +151,7 @@ export class FormatterEngine {
      */''
     format(text: any, params: FormatParams = { ), language: string, region: string | null = null'): string {'
         try {'
-            if(typeof, text !== 'string) {'
+            if(typeof, text !== 'string' {'
                 
             ,}
                 return String(text);
@@ -168,10 +168,10 @@ export class FormatterEngine {
             formatted = this.processSpecialFormats(formatted, params, language);
             
             return formatted;
-        } catch (error) { getErrorHandler(').handleError(error as Error, 'FORMATTER_ERROR', {''
+        } catch (error) { getErrorHandler().handleError(error as Error, 'FORMATTER_ERROR', {''
                 operation: 'format);
-                text: text);
-               , language: language,);
+                text: text),
+    language: language,);
                 region: region ,});
             return String(text);
     
@@ -195,7 +195,7 @@ export class FormatterEngine {
 
             }
 
-                const formatter = this.formatters.get('number) as NumberFormatterInterface; }'
+                const formatter = this.formatters.get('number' as NumberFormatterInterface; }'
                 return formatter.format(value, language, region);
             return match;
         });
@@ -206,7 +206,7 @@ export class FormatterEngine {
 
             }
 
-                const formatter = this.formatters.get('date) as DateFormatterInterface; }'
+                const formatter = this.formatters.get('date' as DateFormatterInterface; }'
                 return formatter.format(value, language, region);
             return match;
         });
@@ -217,7 +217,7 @@ export class FormatterEngine {
 
             }
 
-                const formatter = this.formatters.get('currency) as CurrencyFormatterInterface; }'
+                const formatter = this.formatters.get('currency' as CurrencyFormatterInterface; }'
                 return formatter.format(value, language, region);
             return match;
         });
@@ -228,7 +228,7 @@ export class FormatterEngine {
 
             }
 
-                const formatter = this.formatters.get('relative) as RelativeTimeFormatterInterface; }'
+                const formatter = this.formatters.get('relative' as RelativeTimeFormatterInterface; }'
                 return formatter.format(value, language, region);
             return match;
         });
@@ -236,7 +236,7 @@ export class FormatterEngine {
         // リストフォーマット: {{list:key}
         formatted = formatted.replace(/\{\{list:(\w+)\}\}/g, (match, key) => {  const value = params[key];''
             if(value !== undefined && Array.isArray(value)) {''
-                const formatter = this.formatters.get('list) as ListFormatterInterface; }'
+                const formatter = this.formatters.get('list' as ListFormatterInterface; }'
                 return formatter.format(value, language, region);
             return match;
         });
@@ -256,7 +256,7 @@ export class FormatterEngine {
 
             }
 
-                const formatter = this.formatters.get('plural) as PluralFormatterInterface; }'
+                const formatter = this.formatters.get('plural' as PluralFormatterInterface; }'
                 return formatter.format(baseText, count, language);
             return match;
         });
@@ -272,14 +272,14 @@ export class FormatterEngine {
 
             }
 
-                throw new Error('Formatter, must have, a format, method); }'
+                throw new Error('Formatter, must have, a format, method'; }'
             }
             
             this.formatters.set(name, formatter);
             console.log(`Added, formatter: ${name}`);
             return true;
 
-        } catch (error) { getErrorHandler(').handleError(error as Error, 'FORMATTER_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error as Error, 'FORMATTER_ERROR', {''
                 operation: 'addFormatter',);
                 name: name ,});
             return false;
@@ -299,7 +299,7 @@ export class FormatterEngine {
      */''
     formatWithRegionalSettings(text: any, params: FormatParams = { ), language: string, region: string | null = null'): string {'
         try {'
-            if(typeof, text !== 'string) {'
+            if(typeof, text !== 'string' {'
                 
             ,}
                 return String(text);
@@ -319,10 +319,10 @@ export class FormatterEngine {
             formatted = this.processSpecialFormats(formatted, params, language);
             
             return formatted;
-        } catch (error) { getErrorHandler(').handleError(error as Error, 'FORMATTER_ERROR', {''
+        } catch (error) { getErrorHandler().handleError(error as Error, 'FORMATTER_ERROR', {''
                 operation: 'formatWithRegionalSettings);
-                text: text);
-               , language: language,);
+                text: text),
+    language: language,);
                 region: region ,});
             return String(text);
     
@@ -337,7 +337,7 @@ export class FormatterEngine {
 
             }
 
-                const formatter = this.formatters.get('number) as NumberFormatterInterface; }'
+                const formatter = this.formatters.get('number' as NumberFormatterInterface; }'
                 return formatter.formatWithSettings(value, settings.numberFormat, format);
             return match;
         });
@@ -348,7 +348,7 @@ export class FormatterEngine {
 
             }
 
-                const formatter = this.formatters.get('date) as DateFormatterInterface; }'
+                const formatter = this.formatters.get('date' as DateFormatterInterface; }'
                 return formatter.formatWithSettings(value, settings.dateFormat, format, settings.regionInfo);
             return match;
         });
@@ -359,7 +359,7 @@ export class FormatterEngine {
 
             }
 
-                const formatter = this.formatters.get('currency) as CurrencyFormatterInterface; }'
+                const formatter = this.formatters.get('currency' as CurrencyFormatterInterface; }'
                 return formatter.formatWithSettings(value, settings.currencyFormat, format);
             return match;
         });
@@ -370,7 +370,7 @@ export class FormatterEngine {
 
             }
 
-                const formatter = this.formatters.get('date) as DateFormatterInterface; }'
+                const formatter = this.formatters.get('date' as DateFormatterInterface; }'
                 return formatter.formatTimeWithSettings(value, settings.timeFormat, format, settings.regionInfo);
             return match;
         });
@@ -389,10 +389,10 @@ export class FormatterEngine {
     getFormatterStats(): FormatterStats { const regionalStats = this.regionalSettingsManager.getStats();
         
         return { availableFormatters: this.getAvailableFormatters(),
-            regionalSettings: regionalStats;
-           , supportedLanguages: regionalStats.supportedLanguages, };
-            supportedRegions: regionalStats.supportedRegions }
-        }
+            regionalSettings: regionalStats,
+    supportedLanguages: regionalStats.supportedLanguages, };
+            supportedRegions: regionalStats.supportedRegions 
+    }
     
     /**
      * 設定を更新'
@@ -428,7 +428,7 @@ export class NumberFormatter implements NumberFormatterInterface { format(value:
     /**
      * 地域設定を使用した数値フォーマット'
      */''
-    formatWithSettings(value: any, numberFormatSettings: NumberFormatSettings | null, format: string = 'default): string { try {'
+    formatWithSettings(value: any, numberFormatSettings: NumberFormatSettings | null, format: string = 'default': string { try {'
             const number = Number(value);
             if(isNaN(number) {', ';
 
@@ -437,7 +437,7 @@ export class NumberFormatter implements NumberFormatterInterface { format(value:
                 return String(value);
             ';
             // カスタム数値フォーマット設定を適用
-            const decimalSeparator = numberFormatSettings? .decimal || '.';''
+            const decimalSeparator = numberFormatSettings?.decimal || '.';
             const thousandsSeparator = numberFormatSettings?.thousands || ',
 
             let formatted = number.toString()';
@@ -501,11 +501,11 @@ export class DateFormatter implements DateFormatterInterface { format(value: any
                 return String(value); }
             ';
             // フォーマット設定から適切なパターンを取得
-            const formatPattern = dateFormatSettings? .[format] || dateFormatSettings?.medium || 'YYYY/MM/DD';
+            const formatPattern = dateFormatSettings?.[format] || dateFormatSettings?.medium || 'YYYY/MM/DD';
             
             // 基本的な日付フォーマット置換
             const year = date.getFullYear();''
-            const month = String(date.getMonth() + 1').padStart(2, '0);''
+            const month = String(date.getMonth() + 1').padStart(2, '0';''
             const day = String(date.getDate()).padStart(2, '0''); : undefined''
             const weekday = date.toLocaleDateString('ja-JP', { weekday: 'short ),
             
@@ -516,7 +516,7 @@ export class DateFormatter implements DateFormatterInterface { format(value: any
                 .replace(/ddd/g, weekday);
             ';
             // 言語固有の月名処理
-            if(formatted.includes('MMM) {'
+            if(formatted.includes('MMM' {'
                 const monthNames = this.getMonthNames(regionInfo);
                 const monthName = monthNames[date.getMonth()];
             }
@@ -543,7 +543,7 @@ export class DateFormatter implements DateFormatterInterface { format(value: any
             // 基本的な時刻要素
             const hours24 = date.getHours();
             const hours12 = hours24 % 12 || 12;''
-            const minutes = String(date.getMinutes()).padStart(2, '0);''
+            const minutes = String(date.getMinutes()).padStart(2, '0';''
             const seconds = String(date.getSeconds()).padStart(2, '0'');''
             const ampm = hours24 < 12 ? 'AM' : 'PM';
             ';
@@ -625,7 +625,7 @@ export class CurrencyFormatter implements CurrencyFormatterInterface { format(va
     /**
      * 地域設定を使用した通貨フォーマット'
      */''
-    formatWithSettings(value: any, currencyFormatSettings: CurrencyFormatSettings | null, format: string = 'default): string { try {'
+    formatWithSettings(value: any, currencyFormatSettings: CurrencyFormatSettings | null, format: string = 'default': string { try {'
             const number = Number(value);
             if(isNaN(number) {', ';
 
@@ -633,8 +633,8 @@ export class CurrencyFormatter implements CurrencyFormatterInterface { format(va
 
                 return String(value);
 
-            const symbol = currencyFormatSettings? .symbol || '$';''
-            const code = currencyFormatSettings?.code || 'USD';''
+            const symbol = currencyFormatSettings?.symbol || '$';
+            const code = currencyFormatSettings?.code || 'USD';
             const position = currencyFormatSettings?.position || 'before';
             const space = currencyFormatSettings?.space || false;
             ';
@@ -657,7 +657,7 @@ export class CurrencyFormatter implements CurrencyFormatterInterface { format(va
 
         } catch (error) {
             console.warn(`Currency formatting with settings failed:`, error);''
-            const code = currencyFormatSettings? .code || 'USD'; }
+            const code = currencyFormatSettings?.code || 'USD'; }
             return `${code} ${value}`;
 
      : undefined'';
@@ -701,7 +701,7 @@ export class RelativeTimeFormatter implements RelativeTimeFormatterInterface { f
                 const minutes = Math.round(diffMs / 60000);''
                 return rtf.format(minutes, 'minute); else if (absDiff < 86400000) { // 1日未満'
                 const hours = Math.round(diffMs / 3600000);''
-                return rtf.format(hours, 'hour); else {  // 1日以上'
+                return rtf.format(hours, 'hour'; else {  // 1日以上'
                 const days = Math.round(diffMs / 86400000);' }'
 
                 return rtf.format(days, 'day); catch (error) {'
@@ -779,7 +779,7 @@ export class PluralFormatter implements PluralFormatterInterface { format(text: 
             const rule = rules.select(number);
             ';
             // テキストが複数形ルールを含む場合
-            if(typeof, text === 'object' && text !== null) {'
+            if(typeof, text === 'object' && text !== null' {'
                 const pluralObj = text as PluralObject;
 
             }
@@ -801,19 +801,18 @@ export class PluralFormatter implements PluralFormatterInterface { format(text: 
             return { ' };
 
                 select: (n: number') => n === 1 ? 'one' : 'other' 
-            }
     }
 
     makeEnglishPlural(text: string): string { // 簡単な英語複数形ルール
-        if(text.endsWith('y) {', ';
+        if(text.endsWith('y' {', ';
 
         }
 
             return text.slice(0, -1) + 'ies';' }
 
         } else if (text.endsWith('s'') || text.endsWith('x'') || text.endsWith('z'') || ''
-                   text.endsWith('ch'') || text.endsWith('sh)) { ''
+                   text.endsWith('ch'') || text.endsWith('sh)' { ''
             return text + 'es'; else {  ' }
 
-            return text + 's';''
+            return text + 's';
 }

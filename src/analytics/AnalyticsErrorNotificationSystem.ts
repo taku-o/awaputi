@@ -13,8 +13,8 @@ export class AnalyticsErrorNotificationSystem {
             errorReportingEndpoint: null;
             enableContextCollection: true;
             enableStackTrace: true;
-            enableUserFeedback: true;
-           , notificationTimeout: 8000, // 8秒;
+            enableUserFeedback: true,
+    notificationTimeout: 8000, // 8秒;
             criticalErrorTimeout: 15000, // 15秒
     }
             ...options
@@ -46,59 +46,59 @@ export class AnalyticsErrorNotificationSystem {
     setupErrorTypes() { this.errorTypes.set('javascript', {''
             name: 'JavaScript エラー',
             icon: '💥',
-            color: '#f44336',)';
-            severity: 'error')';
-           , recoverable: false,')';
-            actions: ['詳細表示', 'レポート送信', '再読み込み])');
+            color: '#f44336','';
+            severity: 'error')',
+    recoverable: false,')';
+            actions: ['詳細表示', 'レポート送信', '再読み込み]'');
 
         this.errorTypes.set('network', {''
             name: 'ネットワークエラー',
             icon: '🌐',
-            color: '#ff9800',)';
-            severity: 'warning')';
-           , recoverable: true,')';
-            actions: ['再試行', '詳細表示', 'オフラインモード])');
+            color: '#ff9800','';
+            severity: 'warning')',
+    recoverable: true,')';
+            actions: ['再試行', '詳細表示', 'オフラインモード]'');
 
         this.errorTypes.set('resource', {''
             name: 'リソースエラー',
             icon: '📁',
-            color: '#2196f3',)';
-            severity: 'warning')';
-           , recoverable: true,')';
-            actions: ['再読み込み', '詳細表示', 'キャッシュクリア])');
+            color: '#2196f3','';
+            severity: 'warning')',
+    recoverable: true,')';
+            actions: ['再読み込み', '詳細表示', 'キャッシュクリア]'');
 
         this.errorTypes.set('permission', {''
             name: '権限エラー',
             icon: '🔒',
-            color: '#9c27b0',)';
-            severity: 'warning')';
-           , recoverable: false,')';
-            actions: ['権限設定', '詳細表示', 'ヘルプ])');
+            color: '#9c27b0','';
+            severity: 'warning')',
+    recoverable: false,')';
+            actions: ['権限設定', '詳細表示', 'ヘルプ]'');
 
         this.errorTypes.set('storage', {''
             name: 'ストレージエラー',
             icon: '💾',
-            color: '#607d8b',)';
-            severity: 'error')';
-           , recoverable: true,')';
-            actions: ['ストレージクリア', '詳細表示', 'データエクスポート])');
+            color: '#607d8b','';
+            severity: 'error')',
+    recoverable: true,')';
+            actions: ['ストレージクリア', '詳細表示', 'データエクスポート]'');
 
         this.errorTypes.set('performance', {''
             name: 'パフォーマンスエラー',
             icon: '⚡',
-            color: '#ff5722',)';
-            severity: 'warning')';
-           , recoverable: true,')';
-            actions: ['品質設定', '詳細表示', '最適化])');
+            color: '#ff5722','';
+            severity: 'warning')',
+    recoverable: true,')';
+            actions: ['品質設定', '詳細表示', '最適化]'');
 
         this.errorTypes.set('security', {''
             name: 'セキュリティエラー',
             icon: '🛡️',
-            color: '#d32f2f',)';
-            severity: 'critical')';
-           , recoverable: false,' }'
+            color: '#d32f2f','';
+            severity: 'critical')',
+    recoverable: false,' }'
 
-            actions: ['詳細表示', 'レポート送信', 'セキュリティヘルプ]); }
+            actions: ['詳細表示', 'レポート送信', 'セキュリティヘルプ]'; }
     }
 
     /**
@@ -106,7 +106,7 @@ export class AnalyticsErrorNotificationSystem {
      */''
     createNotificationContainer()';
         this.notificationContainer = document.createElement('div'');''
-        this.notificationContainer.id = 'error-notification-container';''
+        this.notificationContainer.id = 'error-notification-container';
         this.notificationContainer.className = 'error-notification-container';
         ';
 
@@ -117,7 +117,7 @@ export class AnalyticsErrorNotificationSystem {
             width: '400px',
             maxWidth: '90vw',
             zIndex: '10002',
-            fontFamily: 'Arial, sans-serif',)';
+            fontFamily: 'Arial, sans-serif','';
             fontSize: '14px',')';
             pointerEvents: 'none');
         document.body.appendChild(this.notificationContainer);
@@ -138,8 +138,8 @@ export class AnalyticsErrorNotificationSystem {
                 box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
                 border-left: 4px solid,
                 pointer-events: auto,
-                transform: translateX(100%);
-               , animation: slideInError 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards,
+                transform: translateX(100%),
+    animation: slideInError 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards,
                 transition: all 0.3s ease;
                 backdrop-filter: blur(10px), }
             .error-notification.critical { animation: slideInError 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards,
@@ -199,8 +199,8 @@ export class AnalyticsErrorNotificationSystem {
                 margin-bottom: 8px, }
             .error-action { background: rgba(255, 255, 255, 0.15),
                 color: white;
-                border: none;
-               , padding: 8px 12px;
+                border: none,
+    padding: 8px 12px;
                 border-radius: 6px,
                 cursor: pointer;
                 font-size: 12px,
@@ -212,12 +212,12 @@ export class AnalyticsErrorNotificationSystem {
             .error-action.danger { background: linear-gradient(135deg, #f44336, #d32f2f), }
             .error-close { background: none,
                 border: none;
-                color: #999;
-               , cursor: pointer;
+                color: #999,
+    cursor: pointer;
                 font-size: 20px,
                 padding: 4px;
-                width: 28px;
-               , height: 28px;
+                width: 28px,
+    height: 28px;
                 border-radius: 50%,
                 display: flex;
                 align-items: center,
@@ -228,8 +228,8 @@ export class AnalyticsErrorNotificationSystem {
             .error-progress { position: absolute;
                 bottom: 0;
                 left: 0;
-                height: 3px;
-               , background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent),
+                height: 3px,
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent),
                 transition: width 0.1s linear;
                 border-radius: 0 0 12px 12px, }
             .error-timestamp { font-size: 10px,
@@ -243,8 +243,8 @@ export class AnalyticsErrorNotificationSystem {
                 color: #4caf50;
                 margin-top: 8px, }
             .recovery-spinner { width: 12px,
-                height: 12px;
-               , border: 2px solid rgba(76, 175, 80, 0.3),
+                height: 12px,
+    border: 2px solid rgba(76, 175, 80, 0.3),
                 border-top-color: #4caf50,
                 border-radius: 50%,
                 animation: spin 1s linear infinite ,}
@@ -255,8 +255,7 @@ export class AnalyticsErrorNotificationSystem {
                 to { 
                     transform: translateX(0}
                     opacity: 1; 
-                }
-            }
+    }
             @keyframes slideOutError { from {  }
                     transform: translateX(0}
                     opacity: 1, ;
@@ -284,16 +283,16 @@ export class AnalyticsErrorNotificationSystem {
                 message: event.message;
                 filename: event.filename;
                 lineno: event.lineno);
-                colno: event.colno);
-               , error: event.error,)';
-                stack: event.error? .stack), : undefined'';
+                colno: event.colno),
+    error: event.error,'';
+                stack: event.error?.stack', : undefined'';
                 timestamp: Date.now()';
         window.addEventListener('unhandledrejection', (event) => {'
             this.handleError({''
                 type: 'javascript',
-                message: event.reason? .message || 'Unhandled Promise Rejection', : undefined);
-                error: event.reason,)';
-                stack: event.reason? .stack), : undefined'';
+                message: event.reason?.message || 'Unhandled Promise Rejection', : undefined);
+                error: event.reason,'';
+                stack: event.reason?.stack', : undefined'';
                 timestamp: Date.now()';
         window.addEventListener('error', (event) => {''
             if(event.target !== window && event.target.tagName) {
@@ -305,10 +304,9 @@ export class AnalyticsErrorNotificationSystem {
                     type: 'resource'), }
                     message: `Failed to load ${event.target.tagName.toLowerCase(}): ${event.target.src || event.target.href}`;
                     element: event.target.tagName;
-                    src: event.target.src || event.target.href;
-                   , timestamp: Date.now();
-                }
-        }, true);
+                    src: event.target.src || event.target.href,
+    timestamp: Date.now();
+    }, true);
     }
 
     /**
@@ -350,11 +348,11 @@ export class AnalyticsErrorNotificationSystem {
             details: this.extractErrorDetails(errorData);
             context: this.options.enableContextCollection ? this.collectContext() : null;
             stack: this.options.enableStackTrace ? errorData.stack : null;
-            recoverable: errorType.recoverable;
-           , actions: errorType.actions;
+            recoverable: errorType.recoverable,
+    actions: errorType.actions;
     }
-            attempts: 0 }
-        };
+            attempts: 0 
+    };
         return processedError;
     }
 
@@ -371,7 +369,7 @@ export class AnalyticsErrorNotificationSystem {
         if (errorData.colno) details.column = errorData.colno;
         if (errorData.element) details.element = errorData.element;
         if (errorData.src) details.source = errorData.src;
-        if (errorData.error? .name) details.errorName = errorData.error.name;
+        if (errorData.error?.name) details.errorName = errorData.error.name;
         
         return details;
     }
@@ -388,15 +386,15 @@ export class AnalyticsErrorNotificationSystem {
                 timestamp: new Date().toISOString(), }
                 viewport: `${window.innerWidth}x${window.innerHeight}`;
                 language: navigator.language;
-                online: navigator.onLine;
-               , memory: performance.memory ? { : undefined
-                    used: Math.round(performance.memory.usedJSHeapSize / 1024 / 1024);
-                   , total: Math.round(performance.memory.totalJSHeapSize / 1024 / 1024 ,} : null;
+                online: navigator.onLine,
+    memory: performance.memory ? { : undefined
+                    used: Math.round(performance.memory.usedJSHeapSize / 1024 / 1024),
+    total: Math.round(performance.memory.totalJSHeapSize / 1024 / 1024 ,} : null;
                 storage: this.getStorageInfo(),
             };''
         } catch (e) { }
 
-            return { error: 'Failed to collect context' }
+            return { error: 'Failed to collect context' 
     }
 
     /**
@@ -405,11 +403,11 @@ export class AnalyticsErrorNotificationSystem {
     getStorageInfo() {
         try {
             const localStorage = {
-                available: !!window.localStorage;
-               , quota: null;
+                available: !!window.localStorage,
+    quota: null;
     }
-                usage: null }
-            };
+                usage: null 
+    };
             if(navigator.storage && navigator.storage.estimate) {
 
                 navigator.storage.estimate().then(estimate => { );
@@ -423,7 +421,7 @@ export class AnalyticsErrorNotificationSystem {
             return localStorage;''
         } catch (e) { }
 
-            return { error: 'Storage info unavailable' }
+            return { error: 'Storage info unavailable' 
     }
 
     /**
@@ -453,7 +451,7 @@ export class AnalyticsErrorNotificationSystem {
         notification.dataset.errorId = errorData.id;
         notification.style.borderLeftColor = errorType.color;
 
-        const timeout = errorData.severity === 'critical' ?   : undefined
+        const timeout = errorData.severity === 'critical' ? undefined : undefined
             this.options.criticalErrorTimeout: this.options.notificationTimeout,
 
         notification.innerHTML = `'';
@@ -465,13 +463,13 @@ export class AnalyticsErrorNotificationSystem {
                 </div>"";
                 <div style="display: flex; align-items: center;, gap: 8px;">""
                     <span class="error-severity">${errorData.severity}</span>""
-                    <button class="error-close" onclick="window.errorNotificationSystem? .dismissError('${errorData.id}''})">&times;</button>
+                    <button class="error-close" onclick="window.errorNotificationSystem?.dismissError('${errorData.id}''}'">&times;</button>
                 </div>";
             </div>"";
             <div class="error-message">${errorData.message}</div>""
             ${ Object.keys(errorData.details"}.length > 0 ? `""
                 <div, class="error-details">" }"
-                    ${this.formatErrorDetails(errorData.details"})"
+                    ${this.formatErrorDetails(errorData.details"}""
                 </div> : undefined"";
             ` : ''}
 
@@ -479,11 +477,11 @@ export class AnalyticsErrorNotificationSystem {
                 <div, class="error-context">"";
                     <div, class="context-item"> : undefined";
                         <span>URL:</span>" ,}"
-                        <span>${errorData.context.url? .split('/}.pop('}) || 'Unknown'}</span>'
+                        <span>${errorData.context.url?.split('/}.pop('}' || 'Unknown'}</span>'
                     </div>'';
                     <div class="context-item"> : undefined";
                         <span>Time:</span>"";
-                        <span>${new, Date(errorData.timestamp}.toLocaleTimeString("})</span>"
+                        <span>${new, Date(errorData.timestamp}.toLocaleTimeString("}"</span>"
                     </div>";
                     ${ errorData.context.memory ? `""
                         <div, class="context-item"> : undefined
@@ -500,7 +498,7 @@ export class AnalyticsErrorNotificationSystem {
             <div class="error-actions">";
                 ${ errorData.actions.map(action => `"} }"
                     <button, class="error-action ${action === '再読み込み' || action === 'レポート送信' ? 'primary' : ''}" ");""
-                            onclick="window.errorNotificationSystem? .handleErrorAction('${errorData.id}', '${action}''})">
+                            onclick="window.errorNotificationSystem?.handleErrorAction('${errorData.id}', '${action}''}'">
                         ${action}"
                     </button>"";
                 `").join(''')}
@@ -508,7 +506,7 @@ export class AnalyticsErrorNotificationSystem {
             </div>'';
             <div id="recovery-status-${errorData.id}"></div>""
             <div class="error-timestamp">"";
-                ${new, Date(errorData.timestamp}.toLocaleString("})"
+                ${new, Date(errorData.timestamp}.toLocaleString("}""
             </div>;
         `;
 ";
@@ -593,10 +591,10 @@ export class AnalyticsErrorNotificationSystem {
 
             } else { }'
 
-                this.showRecoveryStatus(errorData.id, 'failed);' }
+                this.showRecoveryStatus(errorData.id, 'failed';' }
 
             } catch (e) {
-            this.showRecoveryStatus(errorData.id, 'failed); }'
+            this.showRecoveryStatus(errorData.id, 'failed'; }'
     }
 
     /**
@@ -643,7 +641,7 @@ export class AnalyticsErrorNotificationSystem {
      */''
     async recoverFromStorageError(errorData) { try {
             // ストレージテスト
-            const testKey = '__storage_test__';''
+            const testKey = '__storage_test__';
             localStorage.setItem(testKey, 'test);
             localStorage.removeItem(testKey);
             return true; } catch (e) { return false;
@@ -668,13 +666,13 @@ export class AnalyticsErrorNotificationSystem {
 
         try {
             await fetch(this.options.errorReportingEndpoint, {)'
-                method: 'POST')';
-               , headers: {'', 'Content-Type': 'application/json';
+                method: 'POST')',
+    headers: {'', 'Content-Type': 'application/json';
                 ),
                 body: JSON.stringify({)
                     error: errorData,);
-                    userAgent: navigator.userAgent);
-                   , timestamp: Date.now( ,};''
+                    userAgent: navigator.userAgent),
+    timestamp: Date.now( ,};''
         } catch (e) { console.warn('Failed to send error report:', e }
     }
 
@@ -702,8 +700,8 @@ export class AnalyticsErrorNotificationSystem {
 
                 break;''
             case 'オフラインモード':'';
-                this.enableOfflineMode(''';
-            case 'キャッシュクリア':'';
+                this.enableOfflineMode('''
+            case 'キャッシュクリア': '';
                 this.clearCache(''';
             case '権限設定':'';
                 this.showPermissionGuide(''';
@@ -734,7 +732,7 @@ export class AnalyticsErrorNotificationSystem {
 
             `重要度: ${errorData.severity}`,''
             `時刻: ${ new, Date(errorData.timestamp).toLocaleString(']', ''];
-        ];)'
+        ];''
 ')';
         if(errorData.stack) {'
 
@@ -778,7 +776,7 @@ export class AnalyticsErrorNotificationSystem {
      */''
     dismissError(errorId) {'
 
-        const notification = document.querySelector(`[data-error-id="${errorId)"]`);""
+        const notification = document.querySelector(`[data-error-id="${errorId""]`";""
         if (notification"} {""
             notification.classList.add('dismissing}
             setTimeout(() => {  }
@@ -795,7 +793,7 @@ export class AnalyticsErrorNotificationSystem {
     generateErrorId() {
         
     }
-        return `error_${Date.now(})_${Math.random(}.toString(36}.substr(2, 6})`;
+        return `error_${Date.now())_${Math.random().toString(36).substr(2, 6})`;
     }
 
     /**

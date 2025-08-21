@@ -5,13 +5,13 @@ type ErrorHandler = ReturnType<typeof getErrorHandler>;
 
 // Export interfaces
 export interface QualitySettings { countMultiplier: number,
-    sizeMultiplier: number;
-   , complexityLevel: number ,}
+    sizeMultiplier: number,
+    complexityLevel: number ,}
 
 export interface QualityLevels { low: QualitySettings;
     medium: QualitySettings;
-    high: QualitySettings;
-   , ultra: QualitySettings;
+    high: QualitySettings,
+    ultra: QualitySettings;
     [key: string]: QualitySettings,
     }
 
@@ -20,19 +20,19 @@ export interface OptimizationSettings { batchRendering: boolean,
     smoothTransitions: boolean;
     interpolation: boolean;
     easingEnabled: boolean;
-    colorPalettes: string[];
-   , physicsEnhancements: boolean ,}
+    colorPalettes: string[],
+    physicsEnhancements: boolean ,}
 
 export interface ColorPalettes { default: string[];
     warm: string[];
     cool: string[];
     nature: string[];
-    fire: string[];
-   , ocean: string[];
+    fire: string[],
+    ocean: string[];
     [key: string]: string[], }
 
-export type QualityLevel = 'low' | 'medium' | 'high' | 'ultra';''
-export type PaletteName = 'default' | 'warm' | 'cool' | 'nature' | 'fire' | 'ocean';''
+export type QualityLevel = 'low' | 'medium' | 'high' | 'ultra';
+export type PaletteName = 'default' | 'warm' | 'cool' | 'nature' | 'fire' | 'ocean';
 export type EffectType = 'basic' | 'glow' | 'trail' | 'energy' | 'plasma';
 
 /**
@@ -52,7 +52,7 @@ export class ParticleQualityManager {
     constructor() {
 
         this.errorHandler = getErrorHandler(''';
-        this.currentQualityLevel = 'high';
+        this.currentQualityLevel = 'high'
         
         // パフォーマンス最適化設定
         this.optimizationSettings = {
@@ -60,10 +60,10 @@ export class ParticleQualityManager {
             aggressiveCulling: false;
             smoothTransitions: false;
             interpolation: false;
-            easingEnabled: false;
-           , colorPalettes: [];
+            easingEnabled: false,
+    colorPalettes: [];
     ,}
-            physicsEnhancements: false }))
+            physicsEnhancements: false })'
         // 色パレット
         this.colorPalettes = {;
             default: ['#ffffff', '#ffff00', '#ff00ff', '#00ffff],
@@ -137,7 +137,7 @@ export class ParticleQualityManager {
             return settings.complexityLevel;' }'
 
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
-                context: 'ParticleQualityManager.getComplexityLevel' ,});
+                context: 'ParticleQualityManager.getComplexityLevel' ,}';
             return 2; // デフォルト値
         }
     }
@@ -184,7 +184,7 @@ export class ParticleQualityManager {
 
                 this.optimizationSettings.colorPalettes = this.colorPalettes.default;''
             } catch (error) { this.errorHandler.handleError(error as Error, {)'
-                context: 'ParticleQualityManager.setColorPalettes' ,});
+                context: 'ParticleQualityManager.setColorPalettes' ,}';
         }
     }
     
@@ -194,7 +194,7 @@ export class ParticleQualityManager {
     setPhysicsEnhancements(enabled: boolean): void { try {
             this.optimizationSettings.physicsEnhancements = enabled;' }'
 
-            console.log(`[ParticleQualityManager] 物理演算強化: ${enabled ? '有効' : '無効}`});''
+            console.log(`[ParticleQualityManager] 物理演算強化: ${enabled ? '有効' : '無効}`}';''
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticleQualityManager.setPhysicsEnhancements' ,});
         }
@@ -211,16 +211,16 @@ export class ParticleQualityManager {
      * 品質に基づいてパーティクル効果を決定
      */'
     shouldUseAdvancedEffect(effectType: EffectType): boolean { try {'
-            const complexityLevel = this.getComplexityLevel(''';
+            const complexityLevel = this.getComplexityLevel('''
                 'basic': 1,
                 'glow': 2,
                 'trail': 2,
                 'energy': 3,
                 'plasma': 4 };)
-            )';
+            '';
             return complexityLevel >= (effectComplexity[effectType] || 1);''
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
-                context: 'ParticleQualityManager.shouldUseAdvancedEffect' ,});
+                context: 'ParticleQualityManager.shouldUseAdvancedEffect' ,}';
             return false;
     
     /**
@@ -265,13 +265,13 @@ export class ParticleQualityManager {
     registerCustomQualitySettings(name: string, settings: Partial<QualitySettings>): void { try {
             this.qualitySettings[name] = {
                 countMultiplier: settings.countMultiplier || 1.0;
-                sizeMultiplier: settings.sizeMultiplier || 1.0;
-               , complexityLevel: settings.complexityLevel || 2 };
+                sizeMultiplier: settings.sizeMultiplier || 1.0,
+    complexityLevel: settings.complexityLevel || 2 };
             ';
 
             console.log(`[ParticleQualityManager] カスタム品質設定「${name}」を登録しました`});''
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
-                context: 'ParticleQualityManager.registerCustomQualitySettings),' }
+                context: 'ParticleQualityManager.registerCustomQualitySettings',' }
 
             }');
         }

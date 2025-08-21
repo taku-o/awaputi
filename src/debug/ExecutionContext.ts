@@ -37,8 +37,8 @@ interface ContextInfo { startTime: number,
     hasGameEngine: boolean;
     hasCurrentScene: boolean;
     hasBubbleManager: boolean;
-    hasScoreManager: boolean;
-   , hasPlayerData: boolean ,}
+    hasScoreManager: boolean,
+    hasPlayerData: boolean ,}
 
 interface SafeContext { game?: GameEngine;
     scene?: Scene | null;
@@ -51,8 +51,8 @@ interface SafeContext { game?: GameEngine;
     warn: typeof console.warn;
     error: typeof console.error;
     Math: typeof Math;
-    Date: typeof Date;
-   , JSON: typeof JSON ,}
+    Date: typeof Date,
+    JSON: typeof JSON ,}
 
 type PermissionLevel = 'user' | 'admin' | 'system';
 
@@ -109,7 +109,7 @@ export class ExecutionContext {
      */''
     public setVariable(name: string, value: any): any { ''
         if(typeof, name !== 'string' || name.trim() === ''') {''
-            throw new Error('Variable, name must, be a, non-empty, string); }'
+            throw new Error('Variable, name must, be a, non-empty, string'; }'
         
         const normalizedName = name.trim();
         const oldValue = this.variables.get(normalizedName);
@@ -118,11 +118,11 @@ export class ExecutionContext {
         
         // 履歴に記録
         this.history.push({ ''
-            action: 'setVariable);
-           , name: normalizedName);
+            action: 'setVariable),
+    name: normalizedName);
             oldValue,);
-            newValue: value);
-           , timestamp: Date.now( ,});
+            newValue: value),
+    timestamp: Date.now( ,});
         
         return oldValue;
     }
@@ -131,7 +131,7 @@ export class ExecutionContext {
      * 変数を取得'
      */''
     public getVariable(name: string): any { ''
-        if(typeof, name !== 'string) {'
+        if(typeof, name !== 'string' {'
             
         }
             return undefined;
@@ -144,7 +144,7 @@ export class ExecutionContext {
      * 変数を削除'
      */''
     public deleteVariable(name: string): boolean { ''
-        if(typeof, name !== 'string) {'
+        if(typeof, name !== 'string' {'
             
         }
             return false;
@@ -155,12 +155,12 @@ export class ExecutionContext {
 
         if(deleted) {'
             this.history.push({)'
-                action: 'deleteVariable');
-               , name: normalizedName,);
+                action: 'deleteVariable'),
+    name: normalizedName,);
                 oldValue);
         }
-                timestamp: Date.now(); }
-            });
+                timestamp: Date.now(); 
+    });
         }
         
         return deleted;
@@ -195,7 +195,7 @@ export class ExecutionContext {
 
         if(!validPermissions.includes(permissions) {' }'
 
-            throw new Error(`Invalid permissions: ${permissions}. Must be one of: ${validPermissions.join(', '})`');
+            throw new Error(`Invalid permissions: ${permissions}. Must be one of: ${validPermissions.join(', '}'`');
         }
         
         const oldPermissions = this.permissions;
@@ -205,8 +205,8 @@ export class ExecutionContext {
         this.history.push({ ')'
             action: 'setPermissions');
             oldPermissions,);
-            newPermissions: permissions);
-           , timestamp: Date.now( ,});
+            newPermissions: permissions),
+    timestamp: Date.now( ,});
         
         return oldPermissions;
     }
@@ -228,14 +228,14 @@ export class ExecutionContext {
      * JavaScript コードを安全に実行'
      */''
     public executeJS(code: string): any { ''
-        if(!this.hasPermission('admin)) {''
+        if(!this.hasPermission('admin)' {''
             throw new Error('JavaScript, execution requires, admin permissions''); }
 
         if(typeof, code !== 'string'') {', ';
 
         }
 
-            throw new Error('Code, must be, a string); }'
+            throw new Error('Code, must be, a string'; }'
         }
         
         try { // 安全な実行環境を作成
@@ -251,8 +251,8 @@ export class ExecutionContext {
                 // ユーティリティ関数
                 log: console.log.bind(console);
                 info: console.info.bind(console);
-                warn: console.warn.bind(console);
-               , error: console.error.bind(console);
+                warn: console.warn.bind(console),
+    error: console.error.bind(console);
                 // 数学関数
                 Math,
                 Date,
@@ -268,7 +268,7 @@ export class ExecutionContext {
                 action: 'executeJS'},
                 code: code.length > 100 ? code.substring(0, 100} + '...' : code,
                 success: true, 
-                timestamp: Date.now(});
+                timestamp: Date.now());
             });
             
             return result;
@@ -276,8 +276,8 @@ export class ExecutionContext {
         } catch (error) { this.history.push({)'
                 action: 'executeJS'),
                 code: code.length > 100 ? code.substring(0, 100) + '...' : code,
-                success: false;
-               , error: (error, as Error).message;
+                success: false,
+    error: (error, as Error).message;
                 timestamp: Date.now( ,});
             
             throw error;
@@ -294,10 +294,10 @@ export class ExecutionContext {
             historyCount: this.history.length;
             hasGameEngine: !!this.gameEngine;
             hasCurrentScene: !!this.scene;
-            hasBubbleManager: !!this.bubbleManager;
-           , hasScoreManager: !!this.scoreManager, };
-            hasPlayerData: !!this.playerData }
-        }
+            hasBubbleManager: !!this.bubbleManager,
+    hasScoreManager: !!this.scoreManager, };
+            hasPlayerData: !!this.playerData 
+    }
 
     /**
      * 履歴を取得
@@ -325,4 +325,4 @@ export class ExecutionContext {
      * リソースの解放
      */'
     public destroy(): void { this.clearVariables();''
-        this.clearHistory(' })'
+        this.clearHistory(' }''

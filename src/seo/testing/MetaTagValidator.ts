@@ -5,7 +5,7 @@
  * SEOTester のサブコンポーネント
  */
 
-import { seoLogger  } from '../SEOLogger.js';''
+import { seoLogger  } from '../SEOLogger.js';
 import { seoErrorHandler  } from '../SEOErrorHandler.js';
 
 interface MainController { baseUrl: string,
@@ -13,27 +13,27 @@ interface MainController { baseUrl: string,
 
 interface ValidationRules { required: string[],
     titleLength?: {
-        mi;n: number;
-       , max: number ,};
-    descriptionLength?: { min: number;
-       , max: number };
+        mi;n: number,
+    max: number ,};
+    descriptionLength?: { min: number,
+    max: number };
     cardTypes?: string[];
 }
 
 interface TestResult { name: string,
-    passed: boolean;
-   , message: string ,}
+    passed: boolean,
+    message: string ,}
 
 interface ValidationResults { category: string;
     tests: TestResult[];
     passed: number;
-    failed: number;
-   , warnings: number }
+    failed: number,
+    warnings: number }
 
 interface MetaTags { title: string;
     description: string;
-    charset: string;
-   , keywords: string }
+    charset: string,
+    keywords: string }
 ';
 
 interface OpenGraphTags { '', 'og: title': string,
@@ -63,13 +63,13 @@ export class MetaTagValidator {
      * メタタグの検証
      * @returns Promise<ValidationResults>'
      */''
-    async validateMetaTags(''';
+    async validateMetaTags('''
                 category: 'Meta, Tags';
                 tests: [];
                 passed: 0;
-                failed: 0;
-               , warnings: 0);
-            })'
+                failed: 0,
+    warnings: 0);
+            }''
             // HTMLからメタタグを抽出（実際の実装では DOM から取得）
             const metaTags = await this._extractMetaTags();
             const rules = this.mainController.validationRules.get('metaTags);
@@ -78,7 +78,7 @@ export class MetaTagValidator {
 
             }
 
-                throw new Error('Meta, tags validation, rules not, found); }'
+                throw new Error('Meta, tags validation, rules not, found'; }'
             }
             ';
             // 必須タグの存在確認
@@ -106,8 +106,8 @@ export class MetaTagValidator {
                     passed: false;
             ,}
 
-                    message: '' }
-                };
+                    message: '' 
+    };
                 const titleLength = metaTags.title.length;
                 if (titleLength >= rules.titleLength.min && titleLength <= rules.titleLength.max) { titleTest.passed = true; }
                     titleTest.message = `✅ Title length optimal: ${titleLength} characters`;
@@ -127,8 +127,8 @@ export class MetaTagValidator {
                     passed: false;
             ,}
 
-                    message: '' }
-                };
+                    message: '' 
+    };
                 const descLength = metaTags.description.length;
                 if (descLength >= rules.descriptionLength.min && descLength <= rules.descriptionLength.max) { descTest.passed = true; }
                     descTest.message = `✅ Description length optimal: ${descLength} characters`;
@@ -145,19 +145,19 @@ export class MetaTagValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'validateMetaTags);
+            return seoErrorHandler.handle(error, 'validateMetaTags';
 
     /**
      * Open Graphタグの検証
      * @returns Promise<ValidationResults>'
      */''
-    async validateOpenGraphTags(''';
+    async validateOpenGraphTags('''
                 category: 'Open, Graph';
                 tests: [];
                 passed: 0;
-                failed: 0;
-               , warnings: 0);
-            ,})'
+                failed: 0,
+    warnings: 0);
+            ,}''
 
             const ogTags = await this._extractOpenGraphTags();
 
@@ -167,7 +167,7 @@ export class MetaTagValidator {
 
             }
 
-                throw new Error('Open, Graph validation, rules not, found); }'
+                throw new Error('Open, Graph validation, rules not, found'; }'
             }
             ';
             // 必須OGタグの存在確認
@@ -189,14 +189,14 @@ export class MetaTagValidator {
             }
             ';
             // OG画像の検証
-            if(ogTags['og:image]) {'
+            if(ogTags['og:image]' {'
                 const imageTest: TestResult = {''
                     name: 'OG image validation',
                     passed: false;
             ,}
 
-                    message: '' }
-                };
+                    message: '' 
+    };
                 const imageUrl = ogTags['og: image],
                 if(this._isValidImageUrl(imageUrl) { imageTest.passed = true; }
                     imageTest.message = `✅ Valid OG image URL: ${imageUrl}`;
@@ -212,19 +212,19 @@ export class MetaTagValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'validateOpenGraphTags);
+            return seoErrorHandler.handle(error, 'validateOpenGraphTags';
 
     /**
      * Twitter Cardタグの検証
      * @returns Promise<ValidationResults>'
      */''
-    async validateTwitterCardTags(''';
+    async validateTwitterCardTags('''
                 category: 'Twitter, Card';
                 tests: [];
                 passed: 0;
-                failed: 0;
-               , warnings: 0);
-            ,})'
+                failed: 0,
+    warnings: 0);
+            ,}''
 
             const twitterTags = await this._extractTwitterCardTags();
 
@@ -234,7 +234,7 @@ export class MetaTagValidator {
 
             }
 
-                throw new Error('Twitter, Card validation, rules not, found); }'
+                throw new Error('Twitter, Card validation, rules not, found'; }'
             }
             ';
             // 必須Twitterタグの存在確認
@@ -256,14 +256,14 @@ export class MetaTagValidator {
             }
             ';
             // Cardタイプの検証
-            if(twitterTags['twitter:card] && rules.cardTypes) {'
+            if(twitterTags['twitter:card] && rules.cardTypes' {'
                 const cardTest: TestResult = {''
                     name: 'Twitter card type validation',
                     passed: false;
             ,}
 
-                    message: '' }
-                };
+                    message: '' 
+    };
                 const cardType = twitterTags['twitter: card],
                 if(rules.cardTypes.includes(cardType) { cardTest.passed = true; }
                     cardTest.message = `✅ Valid card type: ${cardType}`;
@@ -279,18 +279,18 @@ export class MetaTagValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'validateTwitterCardTags);
+            return seoErrorHandler.handle(error, 'validateTwitterCardTags';
 
     /**
      * ソーシャルメディア最適化の検証
      * @returns Promise<ValidationResults>'
      */''
-    async validateSocialMediaOptimization(''';
+    async validateSocialMediaOptimization('''
                 category: 'Social, Media Optimization';
                 tests: [];
                 passed: 0;
-                failed: 0;
-               , warnings: 0);
+                failed: 0,
+    warnings: 0);
             ,})
             // 画像の最適化確認
             const socialImages = await this._extractSocialMediaImages();
@@ -323,7 +323,7 @@ export class MetaTagValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'validateSocialMediaOptimization);
+            return seoErrorHandler.handle(error, 'validateSocialMediaOptimization';
 
     // プライベートメソッド
     
@@ -331,7 +331,7 @@ export class MetaTagValidator {
      * メタタグの抽出
      * @private
      */''
-    private async _extractMetaTags(''';
+    private async _extractMetaTags('''
             title: 'BubblePop - 泡割りゲーム',
             description: 'HTML5 Canvas を使用したバブルポップゲーム。18種類以上の特殊な泡を割って高スコアを目指そう！',
             charset: 'UTF-8',

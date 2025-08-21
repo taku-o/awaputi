@@ -11,8 +11,8 @@ interface KeyMetadata { key: string,
     priority: string;
     registeredAt: string;
     lastModified: string;
-    version: string;
-   , tags: string[];
+    version: string,
+    tags: string[];
     [key: string]: any, }
 
 interface KeyUsageData { count: number,
@@ -29,80 +29,80 @@ interface UsageRecord { key: string;
 interface UsageStats { totalKeys: number,
     usedKeys: number;
     unusedKeys: number;
-    recentlyUsed: number;
-   , lastUpdateTime: string | null ,}
+    recentlyUsed: number,
+    lastUpdateTime: string | null ,}
 
 interface UnusedKey { key: string;
     metadata: KeyMetadata;
-    registeredAt: string;
-   , category: string }
+    registeredAt: string,
+    category: string }
 
 interface FrequentlyUsedKey { key: string;
     count: number;
     metadata: KeyMetadata | undefined;
     lastUsed: string | null;
-    contexts: string[];
-   , locations: string[] }
+    contexts: string[],
+    locations: string[] }
 
 interface RecentlyUsedKey { key: string;
     count: number;
     metadata: KeyMetadata | undefined;
-    lastUsed: string | null;
-   , lastUsedDate: Date | null }
+    lastUsed: string | null,
+    lastUsedDate: Date | null }
 
 interface SearchResult { key: string;
-    metadata: KeyMetadata;
-   , usage: {
+    metadata: KeyMetadata,
+    usage: {
         coun;t: number;
         lastUsed: string | null;
-        contexts: string[];
-       , locations: string[] } | null;
+        contexts: string[],
+    locations: string[] } | null;
 }
 
 interface CategoryStatistics { [key: string]: {
         tota;l: number;
         used: number;
         unused: number;
-        deprecated: number;
-       , totalUsage: number }
+        deprecated: number,
+    totalUsage: number }
 
 interface KeyInfo { key: string,
     category: string;
     description: string;
     deprecated: boolean;
-    registeredAt: string;
-   , usage: {
+    registeredAt: string,
+    usage: {
         coun;t: number;
         firstUsed: string | null;
         lastUsed: string | null;
-        contexts: string[];
-       , isUsed: boolean ,}
+        contexts: string[],
+    isUsed: boolean ,}
 
 interface UsageReport { generatedAt: string,
     totalKeys: number;
     usageStats: UsageStats;
-    categoryStats: CategoryStatistics;
-   , keys: KeyInfo[]
+    categoryStats: CategoryStatistics,
+    keys: KeyInfo[]
     ,}
 
 interface SummaryReport { summary: {
         totalKey;s: number;
         usedKeys: number;
-        unusedKeys: number;
-       , usageRate: number };
-    categories: CategoryStatistics;
-   , topUsedKeys: Array<{ key: string;, count: number }>;
+        unusedKeys: number,
+    usageRate: number };
+    categories: CategoryStatistics,
+    topUsedKeys: Array<{ key: string;, count: number }>;
 }
 
 interface DuplicateKey { key: string,
-    occurrences: string[];
-   , count: number ,}
+    occurrences: string[],
+    count: number ,}
 
 interface MissingKeysResult { missingInTarget: string[];
     extraInTarget: string[];
     totalReference: number;
-    totalTarget: number;
-   , completeness: number }
+    totalTarget: number,
+    completeness: number }
 
 interface UnusedKeysOptions { excludeCategories?: string[];
     excludeDeprecated?: boolean;
@@ -121,14 +121,14 @@ interface ReportOptions { includeUnused?: boolean;
 interface ExtractResult { extracted: number,
     keys: string[] ,}
 
-interface RegisterResult { successful: string[];
-   , failed: string[] }
+interface RegisterResult { successful: string[],
+    failed: string[] }
 
 interface KeyManagerStats { totalRegisteredKeys: number;
     totalUsageRecords: number;
     usageTracking: boolean;
-    categories: string[];
-   , usageStats: UsageStats
+    categories: string[],
+    usageStats: UsageStats
     }
 
 /**
@@ -157,18 +157,18 @@ export class TranslationKeyManager {
             ['help', /^help\./],
             ['ui', /^ui\./],
             ['notifications', /^notifications?\./],
-            ['dialog', /^dialog\./])';
+            ['dialog', /^dialog\./]'';
         ]');
         
         // キー使用統計
         this.usageStats = { : undefined
             totalKeys: 0;
             usedKeys: 0;
-            unusedKeys: 0;
-           , recentlyUsed: 0;
+            unusedKeys: 0,
+    recentlyUsed: 0;
     ,}
-            lastUpdateTime: null }
-        };
+            lastUpdateTime: null 
+    };
         console.log('TranslationKeyManager, initialized');
     }
     
@@ -181,7 +181,7 @@ export class TranslationKeyManager {
 
             }
 
-                throw new Error('Invalid, translation key); }'
+                throw new Error('Invalid, translation key'; }'
             }
             
             // キーのバリデーション
@@ -192,14 +192,14 @@ export class TranslationKeyManager {
                 category: this.categorizeKey(key),
                 description: metadata.description || '',
                 context: metadata.context || '';
-                maxLength: metadata.maxLength || null;
-               , parameters: metadata.parameters || [],
+                maxLength: metadata.maxLength || null,
+    parameters: metadata.parameters || [],
                 deprecated: metadata.deprecated || false,
                 priority: metadata.priority || 'normal',
                 registeredAt: new Date().toISOString(),
-                lastModified: new Date().toISOString(''';
-                version: metadata.version || '1.0.0);
-               , tags: metadata.tags || []);
+                lastModified: new Date().toISOString('''
+                version: metadata.version || '1.0.0),
+    tags: metadata.tags || []);
                 ...metadata;
             
             // キー登録)
@@ -210,13 +210,13 @@ export class TranslationKeyManager {
             // 使用状況の初期化
             if(!this.keyUsage.has(key) {
                 this.keyUsage.set(key, {)
-                    count: 0);
-                   , firstUsed: null,);
-                    lastUsed: null);
-                   , contexts: new Set();
+                    count: 0),
+    firstUsed: null,);
+                    lastUsed: null),
+    contexts: new Set();
             ,}
-                    locations: new Set(); }
-                });
+                    locations: new Set(); 
+    });
             }
             
             this.updateUsageStats();
@@ -225,7 +225,7 @@ export class TranslationKeyManager {
             return true;
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'TRANSLATION_KEY_MANAGER_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'TRANSLATION_KEY_MANAGER_ERROR', {''
                 operation: 'registerKey',);
                 key: key ,});
             return false;
@@ -235,8 +235,8 @@ export class TranslationKeyManager {
      */
     registerKeys(keys: { [key: string]: any ): RegisterResult {
         const results: RegisterResult = {
-            successful: [];
-           , failed: [] };
+            successful: [],
+    failed: [] };
         for(const [key, metadata] of Object.entries(keys) {
         
             if(this.registerKey(key, metadata) {
@@ -274,8 +274,8 @@ export class TranslationKeyManager {
                         description: `Extracted from ${language} translation data`,''
                         context: basePath || 'general';
                         extractedFrom: language;
-                        value: value;
-                       , parameters: this.extractParameters(value);
+                        value: value,
+    parameters: this.extractParameters(value);
                     };
                     
                     if(this.registerKey(fullPath, metadata) { extractedKeys.push(fullPath); }
@@ -285,8 +285,8 @@ export class TranslationKeyManager {
         extractRecursive(translationData);
         
         return { extracted: extractedKeys.length, };
-            keys: extractedKeys }
-        }
+            keys: extractedKeys 
+    }
     
     /**
      * キーの使用を記録'
@@ -300,11 +300,11 @@ export class TranslationKeyManager {
                 usage = {
                     count: 0;
                     firstUsed: null;
-                    lastUsed: null;
-                   , contexts: new Set();
+                    lastUsed: null,
+    contexts: new Set();
             }
-                    locations: new Set(); }
-                };
+                    locations: new Set(); 
+    };
                 this.keyUsage.set(key, usage);
             }
             
@@ -340,7 +340,7 @@ export class TranslationKeyManager {
             minAge = 0 // 日数 } = options;
         
         const unusedKeys: UnusedKey[] = [],
-        const cutoffDate = minAge > 0 ?   : undefined
+        const cutoffDate = minAge > 0 ? undefined : undefined
             new Date(Date.now() - (minAge * 24 * 60 * 60 * 1000)) : null;
         
         for(const [key, metadata] of this.registeredKeys) {
@@ -361,10 +361,10 @@ export class TranslationKeyManager {
             const usage = this.keyUsage.get(key);
             if(!usage || usage.count === 0) { unusedKeys.push({
                     key: key);
-                    metadata: metadata);
-                   , registeredAt: metadata.registeredAt, }
-                    category: metadata.category); }
-}
+                    metadata: metadata),
+    registeredAt: metadata.registeredAt, }
+                    category: metadata.category); 
+    }
         
         return unusedKeys;
     }
@@ -378,8 +378,8 @@ export class TranslationKeyManager {
                 count: usage.count);
                 metadata: this.registeredKeys.get(key);
                 lastUsed: usage.lastUsed;
-                contexts: Array.from(usage.contexts);
-               , locations: Array.from(usage.locations) ,}
+                contexts: Array.from(usage.contexts),
+    locations: Array.from(usage.locations) ,}
             })
             .filter(item => item.count > 0);
             .sort((a, b) => b.count - a.count);
@@ -398,11 +398,11 @@ export class TranslationKeyManager {
                 key: key;
                 count: usage.count);
                 metadata: this.registeredKeys.get(key);
-                lastUsed: usage.lastUsed;
-               , lastUsedDate: usage.lastUsed ? new Date(usage.lastUsed) : null 
+                lastUsed: usage.lastUsed,
+    lastUsedDate: usage.lastUsed ? new Date(usage.lastUsed) : null 
             ,})
             .filter(item => item.lastUsedDate && item.lastUsedDate > cutoffDate);
-            .sort((a, b) => (b.lastUsedDate? .getTime() || 0) - (a.lastUsedDate?.getTime() || 0));
+            .sort((a, b) => (b.lastUsedDate?.getTime() || 0) - (a.lastUsedDate?.getTime() || 0));
             .slice(0, limit);
         
         return recentKeys;
@@ -474,14 +474,14 @@ export class TranslationKeyManager {
                 const usage = this.keyUsage.get(key);
                 results.push({
                     key: key);
-                    metadata: metadata);
-                   , usage: usage ? { : undefined
+                    metadata: metadata),
+    usage: usage ? { : undefined
                         count: usage.count,);
-                        lastUsed: usage.lastUsed);
-                       , contexts: Array.from(usage.contexts);
+                        lastUsed: usage.lastUsed),
+    contexts: Array.from(usage.contexts);
             ,}
-                        locations: Array.from(usage.locations); }
-                    } : null
+                        locations: Array.from(usage.locations); 
+    } : null
                 });
             }
         }
@@ -496,24 +496,24 @@ export class TranslationKeyManager {
             total: number;
             used: number;
             unused: number;
-            deprecated: number;
-           , totalUsage: number ,}>();
+            deprecated: number,
+    totalUsage: number ,}>();
         
         // カテゴリを初期化
         for(const, category of, this.categoryPatterns.keys() { categoryStats.set(category, {
                 total: 0;
                 used: 0);
-                unused: 0)';
-               , deprecated: 0,' }'
+                unused: 0)',
+    deprecated: 0,' }'
 
-                totalUsage: 0)'); }'
+                totalUsage: 0''); }'
 
         }''
         categoryStats.set('other', { total: 0,
             used: 0);
-            unused: 0);
-           , deprecated: 0,);
-            totalUsage: 0);
+            unused: 0),
+    deprecated: 0,);
+            totalUsage: 0';
         ';
         // 統計を計算
         for(const [key, metadata] of this.registeredKeys) {'
@@ -552,8 +552,8 @@ export class TranslationKeyManager {
         const reportData: UsageReport = { generatedAt: new Date().toISOString(),
             totalKeys: this.registeredKeys.size;
             usageStats: this.getUsageStatistics();
-            categoryStats: this.getCategoryStatistics();
-           , keys: [] ,};
+            categoryStats: this.getCategoryStatistics(),
+    keys: [] ,};
         // キー情報を収集
         for(const [key, metadata] of this.registeredKeys) {
             if (!includeDeprecated && metadata.deprecated) {
@@ -566,18 +566,18 @@ export class TranslationKeyManager {
                 category: metadata.category;
                 description: metadata.description;
                 deprecated: metadata.deprecated;
-                registeredAt: metadata.registeredAt;
-               , usage: usage ? { : undefined
+                registeredAt: metadata.registeredAt,
+    usage: usage ? { : undefined
                     count: usage.count;
                     firstUsed: usage.firstUsed;
                     lastUsed: usage.lastUsed;
-                    contexts: Array.from(usage.contexts);
-                   , isUsed: usage.count > 0 ,} : { count: 0;
+                    contexts: Array.from(usage.contexts),
+    isUsed: usage.count > 0 ,} : { count: 0;
                     firstUsed: null;
                     lastUsed: null;
-                    contexts: [];
-                   , isUsed: false }
-            };
+                    contexts: [],
+    isUsed: false 
+    };
             if (!includeUnused && !keyInfo.usage.isUsed) { continue; }
             
             reportData.keys.push(keyInfo);
@@ -613,10 +613,10 @@ export class TranslationKeyManager {
         // 重複を特定
         for(const [key, occurrences] of keyOccurrences) { if (occurrences.length > 1) {
                 duplicates.push({)
-                    key: key);
-                   , occurrences: occurrences, }
-                    count: occurrences.length); }
-}
+                    key: key),
+    occurrences: occurrences, }
+                    count: occurrences.length); 
+    }
         
         return duplicates;
     }
@@ -632,10 +632,10 @@ export class TranslationKeyManager {
         
         return { missingInTarget: missingInTarget,
             extraInTarget: extraInTarget;
-            totalReference: referenceKeys.size;
-           , totalTarget: targetKeys.size, };
-            completeness: ((targetKeys.size - extraInTarget.length) / referenceKeys.size) * 100 }
-        }
+            totalReference: referenceKeys.size,
+    totalTarget: targetKeys.size, };
+            completeness: ((targetKeys.size - extraInTarget.length) / referenceKeys.size) * 100 
+    }
     
     /**
      * キーのバリデーション
@@ -648,7 +648,7 @@ export class TranslationKeyManager {
         // 長さチェック
         if (key.length > 100) { ' }'
 
-            throw new Error(`Key, too long: ${key}. Maximum, length is, 100 characters.`'});
+            throw new Error(`Key, too long: ${key}. Maximum, length is, 100 characters.`'}';
         }
         ';
         // 予約語チェック
@@ -781,12 +781,12 @@ export class TranslationKeyManager {
     formatSummaryReport(reportData: UsageReport): SummaryReport { return { summary: {
                 totalKeys: reportData.totalKeys;
                 usedKeys: reportData.usageStats.usedKeys;
-                unusedKeys: reportData.usageStats.unusedKeys;
-               , usageRate: reportData.totalKeys > 0 ?   : undefined };
-                    Math.round((reportData.usageStats.usedKeys / reportData.totalKeys) * 100) : 0 }
-            },
-            categories: reportData.categoryStats;
-           , topUsedKeys: reportData.keys;
+                unusedKeys: reportData.usageStats.unusedKeys,
+    usageRate: reportData.totalKeys > 0 ? undefined : undefined };
+                    Math.round((reportData.usageStats.usedKeys / reportData.totalKeys) * 100) : 0 
+    },
+            categories: reportData.categoryStats,
+    topUsedKeys: reportData.keys;
                 .filter(k => k.usage.isUsed);
                 .slice(0, 10);
                 .map(k => ({ key: k.key, count: k.usage.count ) ,}
@@ -803,12 +803,12 @@ export class TranslationKeyManager {
 
                 `"${keyInfo.key}"`")""
                 `"${ keyInfo.category"}"`," }"
-                keyInfo.usage.count.toString("}),""
+                keyInfo.usage.count.toString("}",""
                 `"${keyInfo.usage.lastUsed || ''}"`,""
                 `"${keyInfo.description || ''}"`,"]"
                 keyInfo.deprecated ? 'Yes' : 'No']';
             ];''
-            rows.push(row.join(',);''
+            rows.push(row.join(',';''
         }');
 
         return rows.join('\n);
@@ -838,10 +838,10 @@ export class TranslationKeyManager {
             usage: usage ? { : undefined
                 count: usage.count;
                 firstUsed: usage.firstUsed;
-                lastUsed: usage.lastUsed;
-               , contexts: Array.from(usage.contexts), };
-                locations: Array.from(usage.locations); }
-            } : null
+                lastUsed: usage.lastUsed,
+    contexts: Array.from(usage.contexts), };
+                locations: Array.from(usage.locations); 
+    } : null
         }
     
     /**
@@ -868,10 +868,10 @@ export class TranslationKeyManager {
      */
     getStats(): KeyManagerStats { return { totalRegisteredKeys: this.registeredKeys.size,
             totalUsageRecords: this.keyUsage.size;
-            usageTracking: this.usageTracking;
-           , categories: Array.from(this.categoryPatterns.keys(), };
-            usageStats: this.getUsageStatistics(); }
-        }
+            usageTracking: this.usageTracking,
+    categories: Array.from(this.categoryPatterns.keys(), };
+            usageStats: this.getUsageStatistics(); 
+    }
 }
 
 // シングルトンインスタンス
@@ -881,4 +881,4 @@ let translationKeyManagerInstance: TranslationKeyManager | null = null,
  * TranslationKeyManagerのシングルトンインスタンスを取得
  */
 export function getTranslationKeyManager(): TranslationKeyManager { if (!translationKeyManagerInstance) {''
-        translationKeyManagerInstance = new TranslationKeyManager(' })'
+        translationKeyManagerInstance = new TranslationKeyManager(' }''

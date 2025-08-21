@@ -6,32 +6,32 @@
 interface TestResult { id: string,
     name: string;
     status: 'passed' | 'failed' | 'skipped';
-    duration: number;
-   , timestamp: number ,}
+    duration: number,
+    timestamp: number ,}
 
-interface ChartData { labels: string[];
-   , datasets: ChartDataset[]
+interface ChartData { labels: string[],
+    datasets: ChartDataset[]
     }
 
-interface ChartDataset { label: string;
-   , data: number[];
+interface ChartDataset { label: string,
+    data: number[];
     backgroundColor?: string | string[];
     borderColor?: string;
     borderWidth?: number; }
 
 interface ChartOptions { responsive: boolean,
-    maintainAspectRatio: boolean;
-   , plugins: {
+    maintainAspectRatio: boolean,
+    plugins: {
         legend: {
             displa;y: boolean;
             position?: string ,};
-        title: { display: boolean;
-           , text: string };
+        title: { display: boolean,
+    text: string };
     scales?: { [axis: string]: {
             beginAtZero: boolean;
             title?: {
-                display: boolean;
-               , text: string };
+                display: boolean,
+    text: string };
     }
 
 export class TestChartGenerator {
@@ -74,8 +74,8 @@ export class TestChartGenerator {
         };
 
         const options: ChartOptions = { responsive: true,
-            maintainAspectRatio: false;
-           , plugins: {
+            maintainAspectRatio: false,
+    plugins: {
                 legend: {'
                     display: true,
                     position: 'bottom' ,};
@@ -99,14 +99,14 @@ export class TestChartGenerator {
                 label: 'Duration(ms)',
                 data: sortedResults.map(r => r.duration),
                 backgroundColor: sortedResults.map(r = > ')';
-                    r.status === 'failed' ? this.defaultColors.failed : this.defaultColors.primary)]';
+                    r.status === 'failed' ? this.defaultColors.failed : this.defaultColors.primary']';
                 ') ,}]'
             }]
         };
 
         const options: ChartOptions = { responsive: true,
-            maintainAspectRatio: false;
-           , plugins: {
+            maintainAspectRatio: false,
+    plugins: {
                 legend: {
                     display: false ,}
 
@@ -115,8 +115,8 @@ export class TestChartGenerator {
                     text: 'Slowest Tests' ,}
             };
             scales: { y: {
-                    beginAtZero: true;
-                   , title: {'
+                    beginAtZero: true,
+    title: {'
                         display: true,
                         text: 'Duration(ms)' ,}
 }
@@ -132,24 +132,24 @@ export class TestChartGenerator {
         const chartData: ChartData = {
             labels: timelineData.labels,
             datasets: [{''
-                    label: 'Passed';
-                   , data: timelineData.passed,
+                    label: 'Passed',
+    data: timelineData.passed,
                     borderColor: this.defaultColors.passed,
-                    backgroundColor: this.defaultColors.passed + '20';
-                   , borderWidth: 2 ,};
+                    backgroundColor: this.defaultColors.passed + '20',
+    borderWidth: 2 ,};
                 { ''
-                    label: 'Failed';
-                   , data: timelineData.failed,
+                    label: 'Failed',
+    data: timelineData.failed,
                     borderColor: this.defaultColors.failed,
-                    backgroundColor: this.defaultColors.failed + '20';
-                   , borderWidth: 2 ,}]
+                    backgroundColor: this.defaultColors.failed + '20',
+    borderWidth: 2 ,}]
                 }]
             ];
         },
 
         const options: ChartOptions = { responsive: true,
-            maintainAspectRatio: false;
-           , plugins: {
+            maintainAspectRatio: false,
+    plugins: {
                 legend: {'
                     display: true,
                     position: 'top' ,};
@@ -157,8 +157,8 @@ export class TestChartGenerator {
                     text: 'Test Results Timeline' ,}
             };
             scales: { y: {
-                    beginAtZero: true;
-                   , title: {'
+                    beginAtZero: true,
+    title: {'
                         display: true,
                         text: 'Number of Tests' ,}
 }
@@ -181,21 +181,21 @@ export class TestChartGenerator {
             labels: distribution.labels,
             datasets: [{''
                 label: 'Number of Tests';
-                data: distribution.counts];
-               , backgroundColor: this.defaultColors.primary ,}]
+                data: distribution.counts],
+    backgroundColor: this.defaultColors.primary ,}]
             }]
         };
         const options: ChartOptions = { responsive: true,
-            maintainAspectRatio: false;
-           , plugins: {
+            maintainAspectRatio: false,
+    plugins: {
                 legend: {
                     display: false ,};
                 title: { display: true,''
                     text: 'Test Duration Distribution' ,}
             };
             scales: { y: {
-                    beginAtZero: true;
-                   , title: {'
+                    beginAtZero: true,
+    title: {'
                         display: true,
                         text: 'Number of Tests' ,}
                 };
@@ -227,25 +227,25 @@ export class TestChartGenerator {
         return this.visualizer.currentTestResults || []; }
 
     private calculateStatusCounts(results: TestResult[]): { passed: number,
-        failed: number;
-       , skipped: number ,} { return results.reduce((counts, result) => { 
+        failed: number,
+    skipped: number ,} { return results.reduce((counts, result) => { 
             counts[result.status]++; }
             return counts;, { passed: 0, failed: 0, skipped: 0 ,});
     }
 
     private generateTimelineData(results: TestResult[]): { labels: string[],
-        passed: number[];
-       , failed: number[] ,} { // Group results by time intervals
+        passed: number[],
+    failed: number[] ,} { // Group results by time intervals
         const intervals = this.createTimeIntervals(results);
         
         return { labels: intervals.map(i => i.label),
             passed: intervals.map(i = > i.passed) ,};
-            failed: intervals.map(i => i.failed); }
-        }
+            failed: intervals.map(i => i.failed); 
+    }
 
     private createTimeIntervals(results: TestResult[]): Array<{ label: string,
-        passed: number;
-       , failed: number ,}> { // Simplified implementation - would be more sophisticated in real usage
+        passed: number,
+    failed: number ,}> { // Simplified implementation - would be more sophisticated in real usage
         return [' }'
 
             { label: '0-5 min', passed: 10, failed: 2 ,},''

@@ -1,8 +1,8 @@
 /**
  * ShareContentGenerator テスト
  */
-import { describe, test, expect, jest, beforeEach, afterEach  } from '@jest/globals';''
-import type { ShareContentGenerator } from '../core/ShareContentGenerator';''
+import { describe, test, expect, jest, beforeEach, afterEach  } from '@jest/globals';
+import type { ShareContentGenerator } from '../core/ShareContentGenerator';
 import type { LocalizationManager } from '../core/LocalizationManager';
 // Mock interfaces
 interface MockLocalizationManager extends Partial<LocalizationManager> { getCurrentLanguage: jest.Mock,
@@ -24,8 +24,8 @@ interface ChallengeData { name: string,
     id?: string; }
 interface GeneratedMessage { message: string,
     platform: string;
-    language: string;
-   , metadata: {
+    language: string,
+    metadata: {
         originalScor;e?: number;
         achievementId?: string;
         challengeType?: string;
@@ -38,21 +38,21 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
     beforeEach(async () => {
         // LocalizationManagerのモック
         mockLocalizationManager = {''
-            getCurrentLanguage: jest.fn(').mockReturnValue('ja),' }
+            getCurrentLanguage: jest.fn().mockReturnValue('ja',' }
 
             translate: jest.fn().mockImplementation((key: string) => key'); }'
         };
         ';
         // Navigatorのモック
-        Object.defineProperty(navigator, 'language', { writable: true,)'
+        Object.defineProperty(navigator, 'language', { writable: true,''
             value: 'ja-JP')'),
         // Windowのモック
         Object.defineProperty(window, 'location', {'
             value: {''
                 origin: 'https://test.example.com',
-                pathname: '/game' ,})'
+                pathname: '/game' ,}''
             },')'
-            writable: true)');''
+            writable: true'');''
         const { ShareContentGenerator } = await import('../core/ShareContentGenerator.js);
         shareContentGenerator = new ShareContentGenerator(mockLocalizationManager, as any);
     });
@@ -74,9 +74,9 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
             expect(shareContentGenerator.templates.challenge).toBeDefined();
 
             // 日本語テンプレートの確認
-            expect(shareContentGenerator.templates.score.twitter.ja).toContain('{score));' }
+            expect(shareContentGenerator.templates.score.twitter.ja).toContain('{score)';' }
 
-            expect(shareContentGenerator.templates.achievement.facebook.ja).toContain('実績);' }
+            expect(shareContentGenerator.templates.achievement.facebook.ja).toContain('実績';' }
 
         }');''
         test('プラットフォーム制限が設定される', () => {  expect(shareContentGenerator.platformLimits.twitter.maxLength).toBe(280);
@@ -94,8 +94,8 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
             const scoreData: ShareData = { score: 1500, stage: 'normal' ,}
 
             const result = shareContentGenerator.generateScoreMessage(scoreData);''
-            expect(result.message).toContain('1,500);''
-            expect(result.platform).toBe('generic);''
+            expect(result.message).toContain('1,500';''
+            expect(result.platform).toBe('generic';''
             expect(result.language).toBe('ja);
 
             expect(result.metadata.originalScore).toBe(1500);''
@@ -103,27 +103,27 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
         test('Twitter向けメッセージが生成される', () => { ' }
 
             const scoreData: ShareData = { score: 2000, stage: 'hard' ,}''
-            const result = shareContentGenerator.generateScoreMessage(scoreData, 'twitter);''
-            expect(result.message).toContain('2,000);''
-            expect(result.message).toContain('#BubblePop);''
-            expect(result.platform).toBe('twitter);''
+            const result = shareContentGenerator.generateScoreMessage(scoreData, 'twitter';''
+            expect(result.message).toContain('2,000';''
+            expect(result.message).toContain('#BubblePop';''
+            expect(result.platform).toBe('twitter';''
         }');''
         test('Facebook向けメッセージが生成される', () => { ' }
 
             const scoreData: ShareData = { score: 3000, stage: 'expert' ,}''
-            const result = shareContentGenerator.generateScoreMessage(scoreData, 'facebook);''
-            expect(result.message).toContain('3,000);''
-            expect(result.platform).toBe('facebook);''
+            const result = shareContentGenerator.generateScoreMessage(scoreData, 'facebook';''
+            expect(result.message).toContain('3,000';''
+            expect(result.platform).toBe('facebook';''
         }');''
         test('英語メッセージが生成される', () => {  ' }
 
             mockLocalizationManager.getCurrentLanguage.mockReturnValue('en''); }
 
             const scoreData: ShareData = { score: 1200 }''
-            const result = shareContentGenerator.generateScoreMessage(scoreData, 'twitter);''
-            expect(result.message).toContain('scored);''
-            expect(result.message).toContain('1,200);''
-            expect(result.language).toBe('en);''
+            const result = shareContentGenerator.generateScoreMessage(scoreData, 'twitter';''
+            expect(result.message).toContain('scored';''
+            expect(result.message).toContain('1,200';''
+            expect(result.language).toBe('en';''
         }');''
         test('不正なスコアデータでエラーハンドリングされる', () => {  const result = shareContentGenerator.generateScoreMessage(null, as any);
             expect(result.metadata.isFallback).toBe(true); }
@@ -146,20 +146,19 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
                 name: 'スコアマスター',
                 description: '累計スコア10万点達成',' }
 
-                id: 'score_master' }
-            };
+                id: 'score_master' 
+    };
             const result = shareContentGenerator.generateAchievementMessage(achievementData);''
-            expect(result.message).toContain('スコアマスター);''
-            expect(result.platform).toBe('generic);''
-            expect(result.metadata.achievementId).toBe('score_master);''
+            expect(result.message).toContain('スコアマスター';''
+            expect(result.platform).toBe('generic';''
+            expect(result.metadata.achievementId).toBe('score_master';''
         }');''
         test('レジェンダリー実績に絵文字が追加される', () => {  const achievementData: AchievementData = { ''
                 name: 'レジェンド',
                 rarity: 'legendary',' }
 
-                id: 'legend' }
-
-            };''
+                id: 'legend' 
+    };''
             const result = shareContentGenerator.generateAchievementMessage(achievementData, 'twitter);
             expect(result.message).toMatch(/[✨🎉👑🏆⭐]/);
 
@@ -170,9 +169,9 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
             mockLocalizationManager.getCurrentLanguage.mockReturnValue('zh-CN'');' }
 
             const achievementData: AchievementData = { name: '成就大师', id: 'master' ,}''
-            const result = shareContentGenerator.generateAchievementMessage(achievementData, 'twitter);''
-            expect(result.message).toContain('成就大师);''
-            expect(result.language).toBe('zh-CN);''
+            const result = shareContentGenerator.generateAchievementMessage(achievementData, 'twitter';''
+            expect(result.message).toContain('成就大师';''
+            expect(result.language).toBe('zh-CN';''
         }');''
         test('不正な実績データでフォールバックされる', () => {  }
             const result = shareContentGenerator.generateAchievementMessage({} as, any);
@@ -189,20 +188,20 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
                 description: '連続5日プレイ',
                 type: 'daily',' }
 
-                id: 'daily_master' }
-            };
+                id: 'daily_master' 
+    };
             const result = shareContentGenerator.generateChallengeMessage(challengeData);''
-            expect(result.message).toContain('デイリーマスター);''
-            expect(result.metadata.challengeType).toBe('daily);''
+            expect(result.message).toContain('デイリーマスター';''
+            expect(result.metadata.challengeType).toBe('daily';''
         }');''
         test('韓国語チャレンジメッセージが生成される', () => {  ' }
 
             mockLocalizationManager.getCurrentLanguage.mockReturnValue('ko'');' }
 
             const challengeData: ChallengeData = { name: '챌린지 마스터', type: 'weekly' ,}''
-            const result = shareContentGenerator.generateChallengeMessage(challengeData, 'twitter);''
-            expect(result.message).toContain('챌린지 마스터);''
-            expect(result.language).toBe('ko);''
+            const result = shareContentGenerator.generateChallengeMessage(challengeData, 'twitter';''
+            expect(result.message).toContain('챌린지 마스터';''
+            expect(result.language).toBe('ko';''
         }');
 
     }''
@@ -210,10 +209,10 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
 
         test('カスタムテンプレートでメッセージが生成される', () => {' }
 
-            const customTemplate = '{name}さんが{score}点を達成！{url}';''
+            const customTemplate = '{name}さんが{score}点を達成！{url}';
             const data = { name: 'テストユーザー', score: 1000 ,}''
-            const result = shareContentGenerator.generateCustomMessage('custom', data, customTemplate);''
-            expect(result.message).toContain('テストユーザー);''
+            const result = shareContentGenerator.generateCustomMessage('custom', data, customTemplate';''
+            expect(result.message).toContain('テストユーザー';''
             expect(result.message).toContain('1000);
 
             expect(result.metadata.isCustom).toBe(true);''
@@ -234,11 +233,11 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
 
         test('基本的な変数置換が動作する', () => {' }
 
-            const template = 'Hello {name}, your score is {score}!';''
+            const template = 'Hello {name}, your score is {score}!';
             const data = { name: 'Player', score: 1500 ,}
 
             const result = shareContentGenerator.interpolateTemplate(template, data);''
-            expect(result).toBe('Hello Player, your score is 1500!);''
+            expect(result).toBe('Hello Player, your score is 1500!';''
         }');''
         test('未定義変数が削除される', () => { ' }
 
@@ -254,7 +253,7 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
             const data = { score: 1000 }
 
             const result = shareContentGenerator.interpolateTemplate(template, data);''
-            expect(result).toBe('Score: 1000, points !),
+            expect(result).toBe('Score: 1000, points !',
         }');
 
     }''
@@ -270,14 +269,14 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
         }');''
         test('Facebook向け最適化が動作する', () => {  ''
             const longMessage = 'A'.repeat(100000);''
-            const result = shareContentGenerator.optimizeForPlatform(longMessage, 'facebook); }'
+            const result = shareContentGenerator.optimizeForPlatform(longMessage, 'facebook'; }'
 
             expect(result.length).toBeLessThanOrEqual(63206);' }'
 
         }');''
         test('汎用最適化が動作する', () => {  ''
             const longMessage = 'A'.repeat(2000);''
-            const result = shareContentGenerator.optimizeForPlatform(longMessage, 'generic); }'
+            const result = shareContentGenerator.optimizeForPlatform(longMessage, 'generic'; }'
 
             expect(result.length).toBeLessThanOrEqual(1000);' }'
 
@@ -286,17 +285,17 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
     }''
     describe('ユーティリティ機能', () => {  ''
         test('プラットフォーム名が正規化される', () => {''
-            expect(shareContentGenerator.normalizePlatform('X)).toBe('twitter'');''
-            expect(shareContentGenerator.normalizePlatform('twitter-x)).toBe('twitter'');''
-            expect(shareContentGenerator.normalizePlatform('FB)).toBe('facebook'');' }
+            expect(shareContentGenerator.normalizePlatform('X)'.toBe('twitter'');''
+            expect(shareContentGenerator.normalizePlatform('twitter-x)'.toBe('twitter'');''
+            expect(shareContentGenerator.normalizePlatform('FB)'.toBe('facebook'');' }
 
-            expect(shareContentGenerator.normalizePlatform('web-share)).toBe('generic);' }
+            expect(shareContentGenerator.normalizePlatform('web-share)'.toBe('generic';' }
 
         }');''
         test('スコアが適切にフォーマットされる', () => {  ''
-            expect(shareContentGenerator.formatScore(1000)).toBe('1,000);' }
+            expect(shareContentGenerator.formatScore(1000)).toBe('1,000';' }
 
-            expect(shareContentGenerator.formatScore(1234567)).toBe('1,234,567);' }
+            expect(shareContentGenerator.formatScore(1234567)).toBe('1,234,567';' }
 
         }');''
         test('現在の言語が取得される', () => {  const language = shareContentGenerator.getCurrentLanguage();''
@@ -305,12 +304,12 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
             shareContentGenerator.localizationManager = null as any;
             const fallbackLanguage = shareContentGenerator.getCurrentLanguage();' }'
 
-            expect(fallbackLanguage).toBe('ja); // navigator.languageからの抽出' }
+            expect(fallbackLanguage).toBe('ja'; // navigator.languageからの抽出' }
 
         }');''
         test('ゲームURLが取得される', () => {  const url = shareContentGenerator.getGameUrl();' }
 
-            expect(url).toBe('https: //test.example.com/game),' }
+            expect(url).toBe('https: //test.example.com/game',' }
 
         }');''
         test('メッセージが適切に短縮される', () => {  ''
@@ -379,17 +378,17 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
             mockLocalizationManager.getCurrentLanguage.mockReturnValue('ja);
 
             const jaRarity = shareContentGenerator.getAchievementRarity(achievementData);''
-            expect(jaRarity).toBe('レジェンダリー);''
+            expect(jaRarity).toBe('レジェンダリー';''
         }');
 
     }''
     describe('デバッグ機能', () => {  ''
         test('デバッグ情報が取得される', () => {'
             const debugInfo = shareContentGenerator.getDebugInfo();''
-            expect(debugInfo).toHaveProperty('templates);''
-            expect(debugInfo).toHaveProperty('platforms);''
-            expect(debugInfo).toHaveProperty('currentLanguage);''
-            expect(debugInfo).toHaveProperty('stats); }'
+            expect(debugInfo).toHaveProperty('templates';''
+            expect(debugInfo).toHaveProperty('platforms';''
+            expect(debugInfo).toHaveProperty('currentLanguage';''
+            expect(debugInfo).toHaveProperty('stats'; }'
             expect(debugInfo.localizationManager).toBe(true); }
         });
 

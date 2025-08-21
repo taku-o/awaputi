@@ -29,17 +29,17 @@ interface TestTemplates { [testType: string]: TemplateFunction,
 
 interface CacheEntry { testType: string,
     expectations: TestExpectations;
-    testCode: string;
-   , generatedAt: number ,}
+    testCode: string,
+    generatedAt: number ,}
 
 interface ValidationResult { valid: boolean;
-    issues: string[];
-   , warnings: string[] }
+    issues: string[],
+    warnings: string[] }
 
 interface GenerationStatistics { totalGenerated: number;
     templates: string[];
-    cacheSize: number;
-   , lastOptimized: number | null }
+    cacheSize: number,
+    lastOptimized: number | null }
 
 /**
  * ExpectationGenerator - テスト期待値生成・テンプレート処理コンポーネント
@@ -64,8 +64,8 @@ export class ExpectationGenerator extends BaseComponent { private expectationCac
      */
     private setupTestTemplates(): void { this.testTemplates = {
             bubble: this.getBubbleTestTemplate();
-            gameBalance: this.getGameBalanceTestTemplate();
-           , bubbleManager: this.getBubbleManagerTestTemplate( }
+            gameBalance: this.getGameBalanceTestTemplate(),
+    bubbleManager: this.getBubbleManagerTestTemplate( }
 
     /**
      * Bubbleテストテンプレートを取得
@@ -82,23 +82,23 @@ export class ExpectationGenerator extends BaseComponent { private expectationCac
 
  * 生成日時: ${new, Date(}.toISOString('' }
 
- * 生成器バージョン: ${expectations.metadata? .generatorVersion || '1.0.0'}
+ * 生成器バージョン: ${expectations.metadata?.generatorVersion || '1.0.0'}
  */'
 
-import { jest  } from '@jest/globals';''
+import { jest  } from '@jest/globals';
 import { Bubble  } from '../../src/bubbles/Bubble.js';
-)';
+'';
 // Mock dependencies')'
 jest.mock('../../src/core/ConfigurationManager.js', () => ({ : undefined, getConfigurationManager: jest.fn(() => ({
         get: jest.fn();
-        watch: jest.fn();
-       , set: jest.fn() ,}
+        watch: jest.fn(),
+    set: jest.fn() ,}
 
     });''
 }');
 
 jest.mock('../../src/utils/ErrorHandler.js', () => ({ getErrorHandler: jest.fn(() => ({
-        handleError: jest.fn() }
+        handleError: jest.fn() 
     });
 });
 
@@ -110,14 +110,14 @@ const createMockGameEngine = () => ({
         stroke: jest.fn();
         fillText: jest.fn();
         save: jest.fn();
-        restore: jest.fn();
-       , translate: jest.fn(),
-        scale: jest.fn(''';
-       , fillStyle: '',
-        strokeStyle: '';
-       , lineWidth: 1 ,}))
-    particleManager: { )
-        createParticle: jest.fn( };
+        restore: jest.fn(),
+    translate: jest.fn(),
+        scale: jest.fn(''',
+    fillStyle: '',
+        strokeStyle: '',
+    lineWidth: 1 ,}))
+    particleManager: { '
+        createParticle: jest.fn( }
     soundManager: { ''
         playSound: jest.fn()';
 describe('Bubble Class Configuration Tests', () => { 
@@ -140,11 +140,11 @@ ${Object.entries(expectations.bubbleTypes || {}).map(([bubbleType, config]) => `
             // Test configuration values
             const bubbleConfig = bubble.getTypeConfig();
             expect(bubbleConfig).toBeDefined();''
-            ${config.health ? `expect(bubbleConfig.health}.toBe(${config.health}'});` : ''}''
-            ${config.score ? `expect(bubbleConfig.score}.toBe(${config.score}'});` : ''}''
-            ${config.size ? `expect(bubbleConfig.size}.toBe(${config.size}'});` : ''}''
-            ${config.maxAge ? `expect(bubbleConfig.maxAge}.toBe(${config.maxAge}'});` : ''}''
-        });`').join('\n        \n'')}
+            ${config.health ? `expect(bubbleConfig.health}.toBe(${config.health}'}';` : ''}''
+            ${config.score ? `expect(bubbleConfig.score}.toBe(${config.score}'}';` : ''}''
+            ${config.size ? `expect(bubbleConfig.size}.toBe(${config.size}'}';` : ''}''
+            ${config.maxAge ? `expect(bubbleConfig.maxAge}.toBe(${config.maxAge}'}';` : ''}''
+        }';`').join('\n        \n'')}
     };
 
     describe('Expected Configuration Values', () => { ' }
@@ -185,8 +185,8 @@ ${Object.entries(expectations.bubbleTypes || {}).map(([bubbleType, config]) => `
         test('should have valid test generation metadata', () => { }
             const metadata = ${JSON.stringify(expectations.metadata || {}, null, 12)};
 
-            expect(metadata).toHaveProperty('extractedAt);''
-            expect(metadata).toHaveProperty('sourceFiles);''
+            expect(metadata).toHaveProperty('extractedAt';''
+            expect(metadata).toHaveProperty('sourceFiles';''
             expect(metadata).toHaveProperty('generatorVersion);
             
             expect(Array.isArray(metadata.sourceFiles).toBe(true);
@@ -211,11 +211,11 @@ ${Object.entries(expectations.bubbleTypes || {}).map(([bubbleType, config]) => `
 
  * 生成日時: ${new, Date(}.toISOString('' }
 
- * 生成器バージョン: ${expectations.metadata? .generatorVersion || '1.0.0'}
+ * 生成器バージョン: ${expectations.metadata?.generatorVersion || '1.0.0'}
  */'
 
-import { jest  } from '@jest/globals';''
-import, GameBalance from '../../src/config/GameBalance.js';)', ')';
+import { jest  } from '@jest/globals';
+import, GameBalance from '../../src/config/GameBalance.js';'', ')';
 describe('GameBalance Configuration Tests', () => {  ''
     describe('Base Scores Configuration', () => {' }
 
@@ -228,7 +228,7 @@ describe('GameBalance Configuration Tests', () => {  ''
         }');
 
         test('should have valid score values', () => {  for(const [bubbleType, score] of Object.entries(GameBalance.baseScores) {''
-                expect(typeof, score).toBe('number);' }
+                expect(typeof, score).toBe('number';' }
 
                 expect(score).toBeGreaterThanOrEqual(0); }
 };
@@ -259,11 +259,11 @@ describe('GameBalance Configuration Tests', () => {  ''
 
     describe('Configuration Integrity', () => {  ''
         test('should have consistent configuration structure', () => {''
-            expect(GameBalance).toHaveProperty('baseScores);''
-            expect(GameBalance).toHaveProperty('bubbles);''
-            expect(typeof, GameBalance.baseScores).toBe('object);' }
+            expect(GameBalance).toHaveProperty('baseScores';''
+            expect(GameBalance).toHaveProperty('bubbles';''
+            expect(typeof, GameBalance.baseScores).toBe('object';' }
 
-            expect(typeof, GameBalance.bubbles).toBe('object);' }
+            expect(typeof, GameBalance.bubbles).toBe('object';' }
 
         }');
 
@@ -280,8 +280,8 @@ describe('GameBalance Configuration Tests', () => {  ''
         test('should have valid test generation metadata', () => { }
             const metadata = ${JSON.stringify(expectations.metadata || {}, null, 12)};
 
-            expect(metadata).toHaveProperty('extractedAt);''
-            expect(metadata).toHaveProperty('sourceFiles);''
+            expect(metadata).toHaveProperty('extractedAt';''
+            expect(metadata).toHaveProperty('sourceFiles';''
             expect(metadata).toHaveProperty('generatorVersion);
         };
 };
@@ -303,24 +303,23 @@ describe('GameBalance Configuration Tests', () => {  ''
 
  * 生成日時: ${new, Date(}.toISOString('' }
 
- * 生成器バージョン: ${expectations.metadata? .generatorVersion || '1.0.0'}
+ * 生成器バージョン: ${expectations.metadata?.generatorVersion || '1.0.0'}
  */'
 
-import { jest  } from '@jest/globals';''
+import { jest  } from '@jest/globals';
 import { BubbleManager  } from '../../src/managers/BubbleManager.js';
-)';
+'';
 // Mock dependencies')'
 jest.mock('../../src/core/ConfigurationManager.js', () => ({ : undefined, getConfigurationManager: jest.fn(() => ({
         get: jest.fn();
-        watch: jest.fn();
-       , set: jest.fn() ,}
+        watch: jest.fn(),
+    set: jest.fn() ,}
 
     });''
 }');
 
 jest.mock('../../src/utils/ErrorHandler.js', () => ({ getErrorHandler: jest.fn(() => ({
-        handleError: jest.fn() }
-
+        handleError: jest.fn() 
     });''
 }');
 
@@ -334,8 +333,8 @@ describe('BubbleManager Configuration Tests', () => {  let bubbleManager;
                 fill: jest.fn();
                 stroke: jest.fn();
                 fillText: jest.fn();
-                save: jest.fn();
-               , restore: jest.fn( };
+                save: jest.fn(),
+    restore: jest.fn( }
             particleManager: { createParticle: jest.fn( };
             soundManager: { playSound: jest.fn( };
             inputManager: {
@@ -350,7 +349,7 @@ describe('BubbleManager Configuration Tests', () => {  let bubbleManager;
 
 ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('should create ${bubbleType} bubble with correct configuration', () => { ' }
 
-            const bubble = bubbleManager.createBubble(100, 100, '${bubbleType});
+            const bubble = bubbleManager.createBubble(100, 100, '${bubbleType}';
             ';
 
             expect(bubble).toBeDefined();''
@@ -359,11 +358,11 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
             const config = bubble.getTypeConfig();
 
             expect(config).toBeDefined();''
-            expect(typeof, config.health).toBe('number);''
-            expect(typeof, config.score).toBe('number);''
-            expect(typeof, config.size).toBe('number);''
-            expect(typeof, config.maxAge).toBe('number);''
-        });`').join('\n        \n'')}
+            expect(typeof, config.health).toBe('number';''
+            expect(typeof, config.score).toBe('number';''
+            expect(typeof, config.size).toBe('number';''
+            expect(typeof, config.maxAge).toBe('number';''
+        }';`').join('\n        \n'')}
     };
 
     describe('Configuration-Based Bubble Behavior', () => {  ''
@@ -422,8 +421,8 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
         test('should have valid test generation metadata', () => { }
             const metadata = ${JSON.stringify(expectations.metadata || {}, null, 12)};
 
-            expect(metadata).toHaveProperty('extractedAt);''
-            expect(metadata).toHaveProperty('sourceFiles);''
+            expect(metadata).toHaveProperty('extractedAt';''
+            expect(metadata).toHaveProperty('sourceFiles';''
             expect(metadata).toHaveProperty('generatorVersion);
             
             expect(Array.isArray(metadata.sourceFiles).toBe(true);
@@ -448,7 +447,7 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
             const testCode = template(expectations);
             
             // キャッシュに保存
-            const cacheKey = `${testType}_${Date.now(})`;
+            const cacheKey = `${testType}_${Date.now())`;
             this.expectationCache.set(cacheKey, { testType)
                 expectations,);
                 testCode);
@@ -494,11 +493,11 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
      */''
     validateExpectations(expectations: TestExpectations): ValidationResult { const validation: ValidationResult = {
             valid: true;
-            issues: [];
-           , warnings: [] };
+            issues: [],
+    warnings: [] };
         if(!expectations || typeof, expectations !== 'object'') {'
             validation.valid = false;''
-            validation.issues.push('Expectations, must be, an object);
+            validation.issues.push('Expectations, must be, an object';
         }
             return validation;
 ';
@@ -507,16 +506,16 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
 
         }
 
-            validation.warnings.push('Missing, metadata); }'
+            validation.warnings.push('Missing, metadata'; }'
 
         } else {
             if(!expectations.metadata.generatorVersion) {' }'
 
-                validation.warnings.push('Missing, generator version, in metadata); }'
+                validation.warnings.push('Missing, generator version, in metadata'; }'
 
             }''
             if(!expectations.metadata.sourceFiles || !Array.isArray(expectations.metadata.sourceFiles)) { ''
-                validation.warnings.push('Missing, or invalid, source files, in metadata); }'
+                validation.warnings.push('Missing, or invalid, source files, in metadata'; }'
         }
 
         // バブルタイプ検証
@@ -525,9 +524,9 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
             for(const [bubbleType, config] of Object.entries(expectations.bubbleTypes)) {'
         }
 
-                if(!config || typeof, config !== 'object) {' }
+                if(!config || typeof, config !== 'object' {' }
 
-                    validation.issues.push(`Invalid, configuration for, bubble type: ${bubbleType}`'});
+                    validation.issues.push(`Invalid, configuration for, bubble type: ${bubbleType}`'}';
                     validation.valid = false;
                     continue;
                 }
@@ -537,8 +536,8 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
 
                 for (const, prop of, requiredProps) { if (config[prop] === undefined || config[prop] === null) {' }'
 
-                        validation.warnings.push(`Missing ${prop} for, bubble type: ${bubbleType}`'});''
-                    } else if(typeof, config[prop] !== 'number) {'
+                        validation.warnings.push(`Missing ${prop} for, bubble type: ${bubbleType}`'}';''
+                    } else if(typeof, config[prop] !== 'number' {'
                         validation.issues.push(`Invalid ${prop} type, for bubble, type: ${bubbleType}`});
                         validation.valid = false;
                     }
@@ -553,10 +552,10 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
      * @returns 生成統計
      */
     getGenerationStatistics(): GenerationStatistics { return { totalGenerated: this.expectationCache.size,
-            templates: Object.keys(this.testTemplates);
-           , cacheSize: this.expectationCache.size, };
-            lastOptimized: this.lastOptimized || null }
-        }
+            templates: Object.keys(this.testTemplates),
+    cacheSize: this.expectationCache.size, };
+            lastOptimized: this.lastOptimized || null 
+    }
 
     /**
      * キャッシュをクリア

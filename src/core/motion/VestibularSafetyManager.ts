@@ -8,12 +8,12 @@ export interface MotionManager { visualAccessibilityManager: VisualAccessibility
     accessibilityManager: AccessibilityManager;
     gameEngine: GameEngine;
     config: MotionConfig;
-    userPreferences: UserPreferences;
-   , hazardPatterns: Record<string, HazardPattern>,
-    stats: MotionStats;
-   , activeAnimations: Map<string, AnimationData>,
-    animationController: AnimationController;
-   , configManager: ConfigManager
+    userPreferences: UserPreferences,
+    hazardPatterns: Record<string, HazardPattern>,
+    stats: MotionStats,
+    activeAnimations: Map<string, AnimationData>,
+    animationController: AnimationController,
+    configManager: ConfigManager
     ,}
 
 export interface VisualAccessibilityManager { [key: string]: any, }
@@ -28,8 +28,8 @@ export interface MotionConfig { vestibularSafety: boolean,
 
 export interface VestibularGuidelines { maxRotationSpeed: number;
     maxScaleChange: number;
-    maxParallaxDistance: number;
-   , flashingThreshold: number }
+    maxParallaxDistance: number,
+    flashingThreshold: number }
 
 export interface UserPreferences { [key: string]: any, }
 
@@ -49,8 +49,8 @@ export interface AnimationData { id: string,
     options: AnimationOptions;
     startTime: number;
     duration: number | null;
-    isActive: boolean;
-   , isPaused: boolean ,}
+    isActive: boolean,
+    isPaused: boolean ,}
 
 export interface AnimationOptions { duration?: number;
     intensity?: number;
@@ -59,28 +59,28 @@ export interface AnimationOptions { duration?: number;
     vestibularSafe?: boolean;
     [key: string]: any, }
 
-export interface AnimationController { pauseAnimation: (animationI;d: string) => boolean,
-    adjustAnimationIntensity: (animationI;d: string, multiplier: number) => boolean,
+export interface AnimationController { pauseAnimation: (animationId: string) => boolean,
+    adjustAnimationIntensity: (animationId: string, multiplier: number) => boolean,
     pauseAllAnimations: () => number ,}
 }
 
-export interface ConfigManager { setMotionLevel: (leve;l: MotionLevel) => boolean }
-}
+export interface ConfigManager { setMotionLevel: (level: MotionLevel) => boolean 
+    }
 
 export interface SafetyMonitor { enabled: boolean;
     checkInterval: number;
     lastCheck: number;
-    violationCount: number;
-   , interventionCount: number }
+    violationCount: number,
+    interventionCount: number }
 
 export interface SafetyThresholds extends VestibularGuidelines { maxVelocity: number;
     maxAcceleration: number;
     maxJerk: number;
-    dangerZoneSize: number;
-   , emergencyStopTrigger: number }
+    dangerZoneSize: number,
+    emergencyStopTrigger: number }
 
-export interface SafetyViolation { type: ViolationType[];
-   , severity: ViolationSeverity;
+export interface SafetyViolation { type: ViolationType[],
+    severity: ViolationSeverity;
     element?: HTMLElement;
     animationId?: string;
     frequency?: number;
@@ -92,39 +92,39 @@ export interface SafetyViolation { type: ViolationType[];
 export interface ElementSize { width: number,
     height: number ,}
 
-export interface SafetyEventListener { event: string;
-   , handler: EventListener
+export interface SafetyEventListener { event: string,
+    handler: EventListener
     }
 
 export interface SafetyStats { monitoring: boolean;
     violations: number;
-    interventions: number;
-   , hazardPatterns: Record<string, boolean>,
-    thresholds: SafetyThresholds;
-   , totalWarnings: number ,}
+    interventions: number,
+    hazardPatterns: Record<string, boolean>,
+    thresholds: SafetyThresholds,
+    totalWarnings: number ,}
 
 export interface SafetyAlert { message: string;
-    severity: ViolationSeverity;
-   , timestamp: number;
+    severity: ViolationSeverity,
+    timestamp: number;
     autoRemove?: boolean;
     duration?: number; }
 
 export interface WarningOverlay { element: HTMLElement,
     severity: ViolationSeverity;
-    content: string;
-   , timestamp: number ,}
+    content: string,
+    timestamp: number ,}
 
 export interface EmergencyStopInfo { triggered: boolean;
     timestamp: number;
-    reason: string;
-   , violationCount: number }
+    reason: string,
+    violationCount: number }
 
 export interface SafetyInterventionLog { timestamp: number;
     type: InterventionType;
     target: string;
     severity: ViolationSeverity;
-    action: string;
-   , success: boolean }
+    action: string,
+    success: boolean }
 
 // 列挙型
 export type MotionLevel = 'none' | 'essential' | 'reduced' | 'normal' | 'enhanced';
@@ -156,8 +156,8 @@ export const DEFAULT_WARNING_DURATION = 5000; // ms
 export const DEFAULT_ALERT_DURATION = 10000; // ms
 
 export const SAFETY_THRESHOLDS: SafetyThresholds = { maxRotationSpeed: 45, // degrees per second
-    maxScaleChange: 1.5;
-   , maxParallaxDistance: 100, // pixels;
+    maxScaleChange: 1.5,
+    maxParallaxDistance: 100, // pixels;
     flashingThreshold: 3, // flashes per second;
     maxVelocity: 500, // pixels per second;
     maxAcceleration: 1000, // pixels per second²;
@@ -220,11 +220,11 @@ export function createSafetyWarningCSS(severity: ViolationSeverity): string { co
         .motion-warning-${severity}::before { ''
             content: '⚠️ 激しいアニメーション';
             position: absolute;
-            top: -25px;
-           , left: 0, }
+            top: -25px,
+    left: 0, }
             background: ${colors[severity]};
-            color: white;
-           , padding: 2px 6px;
+            color: white,
+    padding: 2px 6px;
             border-radius: 3px,
             font-size: 11px,
             z-index: 1000,
@@ -233,7 +233,7 @@ export function createSafetyWarningCSS(severity: ViolationSeverity): string { co
 }
 
 export function generateSafetyId(): string {
-    return `safety_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
+    return `safety_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
 }
 
 export class VestibularSafetyManager {
@@ -279,11 +279,11 @@ export class VestibularSafetyManager {
         this.safetyMonitor = {
             enabled: true;
             checkInterval: DEFAULT_SAFETY_CHECK_INTERVAL;
-            lastCheck: 0;
-           , violationCount: 0;
+            lastCheck: 0,
+    violationCount: 0;
     ,}
-            interventionCount: 0 }
-        };
+            interventionCount: 0 
+    };
         // 安全性閾値の初期化
         this.safetyThresholds = { ...this.config.vestibularGuidelines,
             ...SAFETY_THRESHOLDS;
@@ -296,10 +296,10 @@ export class VestibularSafetyManager {
      */'
     setupEventListeners(): void { // キーボードショートカット（緊急停止）
         const emergencyStopHandler = (e: KeyboardEvent') => { ''
-            if(e.ctrlKey && e.shiftKey && e.key === 'M) {'
+            if(e.ctrlKey && e.shiftKey && e.key === 'M' {'
                 this.emergencyStop();''
                 e.preventDefault()';
-        document.addEventListener('keydown', emergencyStopHandler);''
+        document.addEventListener('keydown', emergencyStopHandler';''
         this.eventListeners.add({ event: 'keydown', handler: emergencyStopHandler ),
         
         // デバイス向きの変更
@@ -309,18 +309,18 @@ export class VestibularSafetyManager {
             setTimeout(() => this.checkVestibularSafety(), 500'); }'
         };
 
-        window.addEventListener('orientationchange', orientationHandler);''
-        this.eventListeners.add({ event: 'orientationchange', handler: orientationHandler ,});
+        window.addEventListener('orientationchange', orientationHandler';''
+        this.eventListeners.add({ event: 'orientationchange', handler: orientationHandler ,}';
         ';
         // ページ可視性の変更
-        const visibilityHandler = (') => {  ''
-            if(document.visibilityState === 'visible) { }'
+        const visibilityHandler = () => {  ''
+            if(document.visibilityState === 'visible' { }'
                 this.resumeSafetyMonitoring(); }
 
             } else {
                 this.pauseSafetyMonitoring()';
-        document.addEventListener('visibilitychange', visibilityHandler);''
-        this.eventListeners.add({ event: 'visibilitychange', handler: visibilityHandler )),
+        document.addEventListener('visibilitychange', visibilityHandler';''
+        this.eventListeners.add({ event: 'visibilitychange', handler: visibilityHandler )',
 
         ' }'
 
@@ -422,7 +422,7 @@ export class VestibularSafetyManager {
             const violation: Partial<SafetyViolation> = { type: [], severity: 'low' ,}
             // Transform 検証
             const transform = computedStyle.transform;''
-            if(transform && transform !== 'none) {', ';
+            if(transform && transform !== 'none' {', ';
 
             }
 
@@ -437,8 +437,8 @@ export class VestibularSafetyManager {
 
             }
 
-                violation.severity = violation.severity === 'high' ? 'high' : 'medium'; }
-            }
+                violation.severity = violation.severity === 'high' ? 'high' : 'medium'; 
+    }
             
             return violation.type!.length > 0 ? violation as SafetyViolation: null,
 
@@ -451,8 +451,8 @@ export class VestibularSafetyManager {
      */
     private checkTransformSafety(;
         transform: string );
-        computedStyle: CSSStyleDeclaration);
-       , violation: Partial<SafetyViolation>;
+        computedStyle: CSSStyleDeclaration),
+    violation: Partial<SafetyViolation>;
     ): void { // 回転速度の検証
         const rotation = parseTransformRotation(transform),
         if(rotation !== null) {
@@ -470,7 +470,7 @@ export class VestibularSafetyManager {
         const scale = parseTransformScale(transform);
         if(scale !== null) {
             if(scale > this.safetyThresholds.maxScaleChange || '';
-                scale < 1 / this.safetyThresholds.maxScaleChange) {''
+                scale < 1 / this.safetyThresholds.maxScaleChange' {''
                 violation.type!.push('excessive_scaling'');''
                 violation.severity = violation.severity === 'high' ? 'high' : 'medium';
         }
@@ -513,7 +513,7 @@ export class VestibularSafetyManager {
 
             try {'
                 const animationName = getComputedStyle(element).animationName;''
-                if(animationName && animationName.includes('blink) {'
+                if(animationName && animationName.includes('blink' {'
                     const duration = parseFloat(getComputedStyle(element).animationDuration) || 1;
                     const frequency = 1 / duration;
 
@@ -521,13 +521,13 @@ export class VestibularSafetyManager {
                         violations.push({'
                             element,
                             type: ['excessive_flashing'];
-                ,})'
+                ,}''
                             severity: 'critical',) }
-                            frequency); }
+                            frequency'; }
 
                     }''
                 } catch (error) { console.warn('[VestibularSafetyManager] Error checking blinking element:', error }
-        });
+        }';
     }
     
     /**
@@ -553,20 +553,20 @@ export class VestibularSafetyManager {
                             element,
                 }
 
-                            type: ['large_element_motion'],' })'
+                            type: ['large_element_motion'],' }''
                             severity: 'medium',) }
-                            size: { width: rect.width, height: rect.height ,});
+                            size: { width: rect.width, height: rect.height ,}';
 
                     }''
                 } catch (error) { console.warn('[VestibularSafetyManager] Error checking large element:', error }
-        });
+        }';
     }
     
     /**
      * 危険パターンの検出'
      */''
     private detectHazardousPatterns(violations: SafetyViolation[]): void { // 急激な点滅パターン
-        const rapidFlashing = violations.filter(v => v.type.includes('excessive_flashing).length;''
+        const rapidFlashing = violations.filter(v => v.type.includes('excessive_flashing'.length;''
         if(rapidFlashing > 0) {
             
         }
@@ -574,7 +574,7 @@ export class VestibularSafetyManager {
         }
         ';
         // 急激な回転パターン
-        const rapidRotation = violations.filter(v => v.type.includes('excessive_rotation).length;''
+        const rapidRotation = violations.filter(v => v.type.includes('excessive_rotation'.length;''
         if(rapidRotation > 0) { this.hazardPatterns.rapidRotation.detected = true; }
         ';
         // 極端なズームパターン
@@ -635,7 +635,7 @@ export class VestibularSafetyManager {
 
         }
 
-            this.addWarningOverlay(violation.element, 'critical); }'
+            this.addWarningOverlay(violation.element, 'critical'; }'
         }
         
         if(violation.animationId) {
@@ -651,7 +651,7 @@ export class VestibularSafetyManager {
         this.showSafetyAlert('重大なモーション違反が検出されました。該当するアニメーションを停止しました。'');
         this.stats.vestibularWarnings++;
 
-        this.logIntervention('immediate_stop', violation);
+        this.logIntervention('immediate_stop', violation';
     }
     
     /**
@@ -667,7 +667,7 @@ export class VestibularSafetyManager {
 
         }
 
-            this.addWarningOverlay(violation.element, 'high); }'
+            this.addWarningOverlay(violation.element, 'high'; }'
         }
         
         if(violation.animationId) {
@@ -682,7 +682,7 @@ export class VestibularSafetyManager {
         ';
 
         this.stats.vestibularWarnings++;''
-        this.logIntervention('reduce_intensity', violation);
+        this.logIntervention('reduce_intensity', violation';
     }
     
     /**
@@ -709,7 +709,7 @@ export class VestibularSafetyManager {
             this.motionManager.animationController.adjustAnimationIntensity(violation.animationId, 0.7); }
         }
 
-        this.logIntervention('reduce_intensity', violation);
+        this.logIntervention('reduce_intensity', violation';
     }
     
     /**
@@ -728,15 +728,15 @@ export class VestibularSafetyManager {
             this.reduceIntensity(violation.element, 0.85); }
         }
 
-        this.logIntervention('reduce_intensity', violation);
+        this.logIntervention('reduce_intensity', violation';
     }
     
     /**
      * 即座停止'
      */''
     private immediateStop(element: HTMLElement): void { try {'
-            element.style.animationPlayState = 'paused';''
-            element.style.transition = 'none';''
+            element.style.animationPlayState = 'paused';
+            element.style.transition = 'none';
             element.style.transform = 'none';
             ';
 
@@ -764,7 +764,7 @@ export class VestibularSafetyManager {
      * 警告オーバーレイの追加'
      */''
     private addWarningOverlay(element: HTMLElement, severity: ViolationSeverity): void { ''
-        if(element.classList.contains('motion-warning)) {'
+        if(element.classList.contains('motion-warning)' {'
             return; }
         ';
 
@@ -778,7 +778,7 @@ export class VestibularSafetyManager {
                 <div class="warning-content">"";
                     <span class="warning-icon">⚠️</span>"";
                     <span class="warning-text">激しいモーション</span>"";
-                    <button class="warning-dismiss" onclick="this.parentElement.parentElement.remove(")">×</button>;
+                    <button class="warning-dismiss" onclick="this.parentElement.parentElement.remove()">×</button>;
                 </div>;
             `;
             ";
@@ -790,10 +790,10 @@ export class VestibularSafetyManager {
             overlay.style.cssText = `;
                 position: absolute;
                 top: -30px;
-                left: 0;
-               , background: ${colors[severity]};
-                color: white;
-               , padding: 5px 10px;
+                left: 0,
+    background: ${colors[severity]};
+                color: white,
+    padding: 5px 10px;
                 border-radius: 4px,
                 font-size: 12px,
                 z-index: 9999,
@@ -822,7 +822,7 @@ export class VestibularSafetyManager {
                 <div class="alert-content">;
                     <h3>前庭安全性警告</h3> }"
                     <p>${message}</p>""
-                    <button onclick="this.parentElement.parentElement.remove(")">閉じる</button>;
+                    <button onclick="this.parentElement.parentElement.remove()">閉じる</button>;
                 </div>;
             `;
             
@@ -831,8 +831,8 @@ export class VestibularSafetyManager {
                 top: 20px;
                 right: 20px;
                 background: #ff4757;
-                color: white;
-               , padding: 15px;
+                color: white,
+    padding: 15px;
                 border-radius: 8px,
                 max-width: 300px,
                 z-index: 10000,
@@ -853,14 +853,14 @@ export class VestibularSafetyManager {
      * 緊急停止'
      */''
     emergencyStop()';
-        console.warn('[VestibularSafetyManager] EMERGENCY, STOP: Vestibular, safety violation, threshold exceeded),
+        console.warn('[VestibularSafetyManager] EMERGENCY, STOP: Vestibular, safety violation, threshold exceeded',
         try { // すべてのアニメーションを停止
-            this.motionManager.animationController.pauseAllAnimations(')';
+            this.motionManager.animationController.pauseAllAnimations()';
             this.motionManager.configManager.setMotionLevel('none);
             
             // 危険パターンをリセット
             Object.values(this.hazardPatterns).forEach(pattern => { ')'
-                pattern.detected = false)');
+                pattern.detected = false'');
             ';
             // 緊急停止通知
             this.showSafetyAlert('緊急停止：安全性違反が閾値を超えました。すべてのモーションを停止しました。'');
@@ -869,7 +869,7 @@ export class VestibularSafetyManager {
             this.stats.vestibularWarnings++;
             ';
             // 緊急停止をログに記録
-            this.logIntervention('emergency_stop', {)'
+            this.logIntervention('emergency_stop', {''
                 type: ['multiple_violations'],')';
                 severity: 'critical'), }
 
@@ -882,11 +882,11 @@ export class VestibularSafetyManager {
      * 介入ログの記録
      */'
     private logIntervention(type: InterventionType, violation: Partial<SafetyViolation>): void { const log: SafetyInterventionLog = {''
-            timestamp: Date.now(''';
-           , target: violation.element? .tagName || violation.animationId || 'unknown', : undefined)';
+            timestamp: Date.now(''',
+    target: violation.element?.tagName || violation.animationId || 'unknown', : undefined'';
             severity: violation.severity || 'low',);
-            action: this.getInterventionDescription(type);
-           , success: true ,};
+            action: this.getInterventionDescription(type),
+    success: true ,};
         this.interventionLog.push(log);
         
         // ログサイズの制限
@@ -911,8 +911,8 @@ export class VestibularSafetyManager {
      */
     getSafetyStats(): SafetyStats { return { monitoring: this.safetyMonitor.enabled,
             violations: this.safetyMonitor.violationCount;
-            interventions: this.safetyMonitor.interventionCount;
-           , hazardPatterns: Object.entries(this.hazardPatterns).reduce((acc, [key, value]) => {  }
+            interventions: this.safetyMonitor.interventionCount,
+    hazardPatterns: Object.entries(this.hazardPatterns).reduce((acc, [key, value]) => {  }
                 acc[key] = value.detected; }
                 return acc;, {} as Record<string, boolean>),
             thresholds: { ...this.safetyThresholds;
@@ -931,7 +931,7 @@ export class VestibularSafetyManager {
                 }''
             }');
 
-            console.log('[VestibularSafetyManager] Safety thresholds updated:', this.safetyThresholds);
+            console.log('[VestibularSafetyManager] Safety thresholds updated:', this.safetyThresholds';
 
             return true;''
         } catch (error) {
@@ -969,7 +969,7 @@ export class VestibularSafetyManager {
 
             });''
             this.eventListeners.clear()';
-            document.querySelectorAll('.motion-warning).forEach(element => {  ');''
+            document.querySelectorAll('.motion-warning'.forEach(element => {  ');''
                 element.classList.remove('motion-warning'');''
                 element.querySelectorAll('.motion-safety-overlay).forEach(overlay => {); }'
                     overlay.remove(); }
@@ -978,7 +978,7 @@ export class VestibularSafetyManager {
             ';
             // アクティブアラートのクリア
             this.activeAlerts.clear()';
-            console.log('[VestibularSafetyManager] Component, destroyed);
+            console.log('[VestibularSafetyManager] Component, destroyed';
 
         } catch (error') { console.error('[VestibularSafetyManager] Error during cleanup:', error }
 

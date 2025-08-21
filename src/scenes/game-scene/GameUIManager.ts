@@ -4,16 +4,16 @@
  * UI状態、フィードバック、アニメーション、フローティングテキストなどの専門的な管理を行います
  */
 
-import { GameControlButtons  } from './GameControlButtons.js';''
-import { ConfirmationDialog  } from './ConfirmationDialog.js';''
-import { ScaledCoordinateManager  } from '../../utils/ScaledCoordinateManager.js';''
-import { UIPositionCalculator  } from '../../utils/UIPositionCalculator.js';''
-import { ScaledRenderingContext  } from '../../utils/ScaledRenderingContext.js';''
-import { CoordinateSystemDebugger  } from '../../utils/CoordinateSystemDebugger.js';''
-import { FloatingTextManager  } from '../../managers/FloatingTextManager.js';''
-import { ResponsiveCanvasManager  } from '../../managers/ResponsiveCanvasManager.js';''
-import { SceneManager  } from '../../managers/SceneManager.js';''
-import { GameScene  } from '../GameScene.js';''
+import { GameControlButtons  } from './GameControlButtons.js';
+import { ConfirmationDialog  } from './ConfirmationDialog.js';
+import { ScaledCoordinateManager  } from '../../utils/ScaledCoordinateManager.js';
+import { UIPositionCalculator  } from '../../utils/UIPositionCalculator.js';
+import { ScaledRenderingContext  } from '../../utils/ScaledRenderingContext.js';
+import { CoordinateSystemDebugger  } from '../../utils/CoordinateSystemDebugger.js';
+import { FloatingTextManager  } from '../../managers/FloatingTextManager.js';
+import { ResponsiveCanvasManager  } from '../../managers/ResponsiveCanvasManager.js';
+import { SceneManager  } from '../../managers/SceneManager.js';
+import { GameScene  } from '../GameScene.js';
 import { GameStateManager  } from './GameStateManager.js';
 
 // Type definitions
@@ -22,20 +22,20 @@ interface UIState { showingDetailedInfo: boolean,
     comboFlashTimer: number;
     hpFlashTimer: number;
     timeWarningActive: boolean;
-    scoreAnimationTimer: number;
-   , lastScore: number ,}
+    scoreAnimationTimer: number,
+    lastScore: number ,}
 
 interface GameState { isGameStarted: boolean;
-    isGameOver: boolean;
-   , isPaused: boolean; }
+    isGameOver: boolean,
+    isPaused: boolean; }
     isPreGame: boolean }
 
-interface PlayerData { currentHP: number;
-   , maxHP: number; }
+interface PlayerData { currentHP: number,
+    maxHP: number; }
     currentScore: number }
 
-interface TimeWarnings { timeWarning: boolean;
-   , urgentWarning: boolean; }
+interface TimeWarnings { timeWarning: boolean,
+    urgentWarning: boolean; }
     message: string | null }
 
 interface Item { effect: {
@@ -46,8 +46,8 @@ interface Item { effect: {
 interface GameEngine { canvas: HTMLCanvasElement,
     responsiveCanvasManager?: ResponsiveCanvasManager;
     sceneManager?: SceneManager;
-    playerData: PlayerData;
-   , scoreManager: {
+    playerData: PlayerData,
+    scoreManager: {
         getCombo(): number, };
     bubbleManager: { getBubbleCount(): number, };
     gameStateManager?: GameStateManager;
@@ -56,8 +56,8 @@ interface GameEngine { canvas: HTMLCanvasElement,
     bonusTimeRemaining: number;
     timeStopRemaining: number;
     scoreMultiplier: number;
-    screenShakeRemaining: number;
-   , screenShakeIntensity: number;
+    screenShakeRemaining: number,
+    screenShakeIntensity: number;
     handleGiveUp?(): void;
     handleRestart?(): void;
 }
@@ -89,16 +89,16 @@ export class GameUIManager {
             lastComboDisplayTime: 0;
             comboFlashTimer: 0;
             hpFlashTimer: 0;
-            timeWarningActive: false;
-           , scoreAnimationTimer: 0; }
+            timeWarningActive: false,
+    scoreAnimationTimer: 0; }
     ,}
-            lastScore: 0 }
-        };
+            lastScore: 0 
+    };
         // ゲーム状態監視（ボタン表示制御用）
         this.lastGameState = { isGameStarted: false,
             isGameOver: false;
-            isPaused: false;
-           , isPreGame: true ,};
+            isPaused: false,
+    isPreGame: true ,};
         // ゲームコントロールボタンとダイアログを初期化
         this.initializeControlButtons();
     }
@@ -108,7 +108,7 @@ export class GameUIManager {
      */
     private initializeCoordinateSystem(): void { try {
             // ResponsiveCanvasManagerから座標システムを取得
-            const responsiveCanvasManager = this.gameEngine? .responsiveCanvasManager;
+            const responsiveCanvasManager = this.gameEngine?.responsiveCanvasManager;
 
             if(responsiveCanvasManager) {
                 // 既存のScaledCoordinateManagerを使用
@@ -224,7 +224,7 @@ export class GameUIManager {
      * @returns イベントが処理されたかどうか
      */''
     public handleKeyboard(event: KeyboardEvent | string): boolean { // 文字列の場合は下位互換性のための処理
-        if(typeof, event === 'string) {'
+        if(typeof, event === 'string' {'
             
         }
             return this.confirmationDialog.handleKeyboard(event);
@@ -282,12 +282,12 @@ export class GameUIManager {
      * タッチキャンセル処理
      */
     public handleTouchCancel(): void { ''
-        this.gameControlButtons.handleTouchCancel(''';)
-     * @param, type - ダイアログタイプ（'giveUp' または 'restart'）)'
+        this.gameControlButtons.handleTouchCancel(''';'
+     * @param, type - ダイアログタイプ（'giveUp' または 'restart'）''
      */')'
     public showConfirmationDialog(type: 'giveUp' | 'restart''): void {''
         if(type === 'giveUp'') {'
-            this.confirmationDialog.show(')';
+            this.confirmationDialog.show()';
                 'giveUp');
                 () => this.executeGiveUp(),
                 () => this.cancelAction()';
@@ -295,7 +295,7 @@ export class GameUIManager {
 
             ');' }
 
-        } else if (type === 'restart'') { this.confirmationDialog.show(')', 'restart');
+        } else if (type === 'restart'') { this.confirmationDialog.show()', 'restart');
                 () => this.executeRestart(),
                 () => this.cancelAction(); }
 }
@@ -309,14 +309,14 @@ export class GameUIManager {
      * Give Up機能の実行'
      */''
     private executeGiveUp()';
-        if(this.gameEngine && typeof, this.gameEngine.handleGiveUp === 'function) {'
+        if(this.gameEngine && typeof, this.gameEngine.handleGiveUp === 'function' {'
 
             this.gameEngine.handleGiveUp()';
             console.log('Give, Up executed - returning, to main, menu');''
             if(this.gameEngine.sceneManager) {'
         }
 
-                this.gameEngine.sceneManager.switchScene('menu); }'
+                this.gameEngine.sceneManager.switchScene('menu'; }'
 }
     }
     
@@ -324,13 +324,13 @@ export class GameUIManager {
      * Restart機能の実行'
      */''
     private executeRestart()';
-        if(this.gameEngine && typeof, this.gameEngine.handleRestart === 'function) {'
+        if(this.gameEngine && typeof, this.gameEngine.handleRestart === 'function' {'
 
             this.gameEngine.handleRestart()';
-            console.log('Restart, executed - resetting, game state);'
+            console.log('Restart executed - resetting game state');'
             if (this.gameEngine.gameStateManager) {
         }
-                this.gameEngine.gameStateManager.resetGame('); }
+                this.gameEngine.gameStateManager.resetGame(); }
 }
     }
     
@@ -338,7 +338,7 @@ export class GameUIManager {
      * アクションのキャンセル'
      */''
     private cancelAction()';
-        console.log('Action, cancelled);'
+        console.log('Action, cancelled';'
     }
     
     /**
@@ -348,8 +348,8 @@ export class GameUIManager {
             lastComboDisplayTime: 0;
             comboFlashTimer: 0;
             hpFlashTimer: 0;
-            timeWarningActive: false;
-           , scoreAnimationTimer: 0; }
+            timeWarningActive: false,
+    scoreAnimationTimer: 0; }
             lastScore: 0 };
         this.floatingTextManager.clear();
     }
@@ -398,18 +398,18 @@ export class GameUIManager {
      * @returns ゲーム状態オブジェクト
      */
     private getCurrentGameState(): GameState { // GameSceneから状態を取得
-        const scene = this.gameEngine.sceneManager? .getCurrentScene() as GameScene;
+        const scene = this.gameEngine.sceneManager?.getCurrentScene() as GameScene;
         
         // GameStateManagerから正しい状態を取得
         const stateManager = scene?.stateManager;
         const gameStats = stateManager?.getGameStats();
         
         return { : undefined
-            isGameStarted: gameStats? .isGameStarted || false, : undefined
-            isGameOver: this.gameEngine.isGameOver || false;
-           , isPaused: scene? .isPaused || false, : undefined };
-            isPreGame: !(gameStats? .isGameStarted || false); }
-        }
+            isGameStarted: gameStats?.isGameStarted || false, : undefined
+            isGameOver: this.gameEngine.isGameOver || false,
+    isPaused: scene?.isPaused || false, : undefined };
+            isPreGame: !(gameStats?.isGameStarted || false); 
+    }
     
     /**
      * ゲーム状態が変化したかどうかを確認
@@ -426,7 +426,7 @@ export class GameUIManager {
     /**
      * ゲーム開始メッセージの表示
      */''
-    public showGameStartMessage(''';)
+    public showGameStartMessage(''';'
             'GAME START!', ')';
             'explosive');
     }
@@ -436,11 +436,11 @@ export class GameUIManager {
      * @param item - アイテム情報'
      */''
     public showItemEffectNotification(item: Item): void { ''
-        if(item.effect.type === 'scoreMultiplier) {'
+        if(item.effect.type === 'scoreMultiplier' {'
             const canvas = this.gameEngine.canvas;
             this.floatingTextManager.addEffectText(;)
                 canvas.width / 2)';
-                100)'';
+                100''';
                 `Score x${item.effect.value'}`,
 
         }
@@ -508,7 +508,7 @@ export class GameUIManager {
             spiky: 'CHAIN REACTION!',
             poison: 'POISONED!',
             pink: 'HEALED!' ,};
-        const message = effectMessages[effectType] || 'SPECIAL EFFECT!';''
+        const message = effectMessages[effectType] || 'SPECIAL EFFECT!';
         const type = effectType === 'rainbow' ? 'bonus' : '';
                     effectType === 'clock' ? 'timeStop' :'';
                     effectType === 'electric' ? 'shock' :'';
@@ -597,16 +597,16 @@ export class GameUIManager {
      */
     private renderAnimatedScore(context: CanvasRenderingContext2D, playerData: PlayerData): void { try {'
             const scaledContext = this.getScaledRenderingContext(context);''
-            const scorePosition = this.uiPositionCalculator.getStatusPosition('score);
+            const scorePosition = this.uiPositionCalculator.getStatusPosition('score';
             
             const scoreScale = this.uiState.scoreAnimationTimer > 0 ? 1.2 : 1;
             ';
 
             scaledContext.save();''
             context.scale(scoreScale, scoreScale);''
-            context.fillStyle = '#FFFFFF';''
-            context.textAlign = 'left';''
-            context.textBaseline = 'top';''
+            context.fillStyle = '#FFFFFF';
+            context.textAlign = 'left';
+            context.textBaseline = 'top';
             context.shadowColor = 'rgba(0, 0, 0, 0.8)';
             context.shadowOffsetX = 2;
             context.shadowOffsetY = 2;
@@ -624,7 +624,7 @@ export class GameUIManager {
 
             }
 
-                this.coordinateDebugger.trackElement('score', scorePosition.x, scorePosition.y, 150, 30, '#4CAF50); }
+                this.coordinateDebugger.trackElement('score', scorePosition.x, scorePosition.y, 150, 30, '#4CAF50'; }
             }
             ';
 
@@ -635,10 +635,10 @@ export class GameUIManager {
             const scoreScale = this.uiState.scoreAnimationTimer > 0 ? 1.2 : 1;
             context.save();''
             context.scale(scoreScale, scoreScale);''
-            context.fillStyle = '#FFFFFF';''
-            context.font = 'bold 28px Arial';''
-            context.textAlign = 'left';''
-            context.textBaseline = 'top';''
+            context.fillStyle = '#FFFFFF';
+            context.font = 'bold 28px Arial';
+            context.textAlign = 'left';
+            context.textBaseline = 'top';
             context.shadowColor = 'rgba(0, 0, 0, 0.8)';
             context.shadowOffsetX = 2;
             context.shadowOffsetY = 2;
@@ -654,7 +654,7 @@ export class GameUIManager {
      */'
     private renderTimeDisplay(context: CanvasRenderingContext2D): void { try {'
             const scaledContext = this.getScaledRenderingContext(context);''
-            const timePosition = this.uiPositionCalculator.getStatusPosition('time);
+            const timePosition = this.uiPositionCalculator.getStatusPosition('time';
             ';
 
             const minutes = Math.floor(this.gameEngine.timeRemaining / 60000);''
@@ -664,15 +664,15 @@ export class GameUIManager {
             ';
 
             context.fillStyle = timeColor;''
-            context.textAlign = 'left';''
-            context.textBaseline = 'top';''
+            context.textAlign = 'left';
+            context.textBaseline = 'top';
             context.shadowColor = 'rgba(0, 0, 0, 0.8)';
             context.shadowOffsetX = 2;
             context.shadowOffsetY = 2;
             context.shadowBlur = 4;
             ';
             // スケーリング対応フォント設定
-            scaledContext.setScaledFont(24, 'bold Arial);
+            scaledContext.setScaledFont(24, 'bold Arial';
 
             ' }'
 
@@ -712,12 +712,12 @@ export class GameUIManager {
 
                 if (flash) {' }'
 
-                    context.fillText(`時間: ${minutes}:${seconds.toString('}.padStart(2, '0'})`, 20, 60);
+                    context.fillText(`時間: ${minutes}:${seconds.toString('}.padStart(2, '0'})`, 20, 60';
                 }
 
             } else { }'
 
-                context.fillText(`時間: ${minutes}:${seconds.toString('}.padStart(2, '0'})`, 20, 60);
+                context.fillText(`時間: ${minutes}:${seconds.toString('}.padStart(2, '0'})`, 20, 60';
             }
 }
     
@@ -739,8 +739,8 @@ export class GameUIManager {
             ';
 
             context.fillStyle = hpColor;''
-            context.textAlign = 'left';''
-            context.textBaseline = 'top';''
+            context.textAlign = 'left';
+            context.textBaseline = 'top';
             context.shadowColor = 'rgba(0, 0, 0, 0.8)';
             context.shadowOffsetX = 2;
             context.shadowOffsetY = 2;
@@ -756,7 +756,7 @@ export class GameUIManager {
             // HPバー（グラデーション） })
             this.renderHPBar(context, hpRatio});''
         } catch (error) {
-            console.warn('GameUIManager: renderHPDisplay failed, using fallback', error);
+            console.warn('GameUIManager: renderHPDisplay failed, using fallback', error';
             // フォールバック: 元の実装
             const hpRatio = playerData.currentHP / playerData.maxHP;
             const hpFlash = this.uiState.hpFlashTimer > 0;''
@@ -805,7 +805,7 @@ export class GameUIManager {
 
             }
 
-                hpGradient.addColorStop(1, '#88FF88);' }
+                hpGradient.addColorStop(1, '#88FF88';' }
 
             } else if(hpRatio > 0.25) { ''
                 hpGradient.addColorStop(0, '#FFFF00'');''
@@ -814,7 +814,7 @@ export class GameUIManager {
             } else {
                 hpGradient.addColorStop(0, '#FF0000'');' }
 
-                hpGradient.addColorStop(1, '#FF4444); }'
+                hpGradient.addColorStop(1, '#FF4444'; }'
             }
             ';
 
@@ -827,7 +827,7 @@ export class GameUIManager {
 
             scaledContext.strokeRect(baseBarX, baseBarY, baseBarWidth, baseBarHeight);''
         } catch (error) {
-            console.warn('GameUIManager: renderHPBar failed, using fallback', error);
+            console.warn('GameUIManager: renderHPBar failed, using fallback', error';
             // フォールバック: 元の実装
             const hpBarX = 20;
             const hpBarY = 130;
@@ -845,7 +845,7 @@ export class GameUIManager {
 
             }
 
-                hpGradient.addColorStop(1, '#88FF88);' }
+                hpGradient.addColorStop(1, '#88FF88';' }
 
             } else if(hpRatio > 0.25) { ''
                 hpGradient.addColorStop(0, '#FFFF00'');''
@@ -854,7 +854,7 @@ export class GameUIManager {
             } else {
                 hpGradient.addColorStop(0, '#FF0000'');' }
 
-                hpGradient.addColorStop(1, '#FF4444); }'
+                hpGradient.addColorStop(1, '#FF4444'; }'
             }
             ';
 
@@ -877,9 +877,9 @@ export class GameUIManager {
                 const scaledContext = this.getScaledRenderingContext(context);
 
                 const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();''
-                const margins = this.uiPositionCalculator.getResponsiveMargins(''';
+                const margins = this.uiPositionCalculator.getResponsiveMargins('''
                 context.fillStyle = comboFlash ? '#FFFF00' : '#FFFFFF';'')
-                context.textAlign = 'right';)'
+                context.textAlign = 'right';''
                 context.textBaseline = 'top';')'
                 context.shadowColor = 'rgba(0, 0, 0, 0.8)';
                 context.shadowOffsetX = 2;
@@ -897,7 +897,7 @@ export class GameUIManager {
             const combo = this.gameEngine.scoreManager.getCombo();''
             if(combo > 1) {'
                 const comboFlash = this.uiState.comboFlashTimer > 0;''
-                context.fillStyle = comboFlash ? '#FFFF00' : '#FFFFFF';''
+                context.fillStyle = comboFlash ? '#FFFF00' : '#FFFFFF';
                 context.font = 'bold 20px Arial';
 
             }
@@ -914,20 +914,20 @@ export class GameUIManager {
     private renderSpecialEffectsStatus(context: CanvasRenderingContext2D): void { try {
             const scaledContext = this.getScaledRenderingContext(context);''
             const margins = this.uiPositionCalculator.getResponsiveMargins()';
-            const hpPosition = this.uiPositionCalculator.getStatusPosition('hp);''
+            const hpPosition = this.uiPositionCalculator.getStatusPosition('hp';''
             let baseY = (hpPosition.y / this.scaledCoordinateManager.getScaleFactor()) + 60; // HPバーの下
             const baseX = margins.left;
             const lineSpacing = 25;
 
-            context.textAlign = 'left';''
-            context.textBaseline = 'top';''
+            context.textAlign = 'left';
+            context.textBaseline = 'top';
             context.shadowColor = 'rgba(0, 0, 0, 0.8)';
             context.shadowOffsetX = 1;
             context.shadowOffsetY = 1;
             context.shadowBlur = 2;
             ';
             // スケーリング対応フォント設定
-            scaledContext.setScaledFont(18, 'bold Arial);
+            scaledContext.setScaledFont(18, 'bold Arial';
             ';
             // ボーナスタイム表示
             if(this.gameEngine.bonusTimeRemaining > 0) {'
@@ -964,8 +964,8 @@ export class GameUIManager {
 
             if(this.gameEngine.bonusTimeRemaining > 0) {'
 
-                context.fillStyle = '#FFD700';''
-                context.font = 'bold 18px Arial';''
+                context.fillStyle = '#FFD700';
+                context.font = 'bold 18px Arial';
                 context.textAlign = 'left';
             }
                 const bonusSeconds = Math.ceil(this.gameEngine.bonusTimeRemaining / 1000); }
@@ -975,7 +975,7 @@ export class GameUIManager {
 
             if(this.gameEngine.timeStopRemaining > 0) {'
 
-                context.fillStyle = '#00BFFF';''
+                context.fillStyle = '#00BFFF';
                 context.font = 'bold 18px Arial';
             }
                 const stopSeconds = Math.ceil(this.gameEngine.timeStopRemaining / 1000); }
@@ -1001,12 +1001,12 @@ export class GameUIManager {
     private renderDetailedInfo(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas;
         ';
         // 半透明背景
-        context.fillStyle = 'rgba(0, 0, 0, 0.7)';''
+        context.fillStyle = 'rgba(0, 0, 0, 0.7)';
         context.fillRect(canvas.width - 300, 0, 300, 200);
         ';
         // 詳細情報テキスト
-        context.fillStyle = '#FFFFFF';''
-        context.font = '14px Arial';''
+        context.fillStyle = '#FFFFFF';
+        context.font = '14px Arial';
         context.textAlign = 'left';
         
         const info = [ }
@@ -1034,4 +1034,4 @@ export class GameUIManager {
      * UI状態の取得
      * @returns UI状態'
      */''
-    public getUIState(');
+    public getUIState();

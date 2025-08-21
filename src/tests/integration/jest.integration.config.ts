@@ -33,8 +33,8 @@ const config: Config = { // テスト環境
     ],
     
     // カバレッジ設定
-    collectCoverage: true;
-   , collectCoverageFrom: ['';
+    collectCoverage: true,
+    collectCoverageFrom: ['';
         'src/core/SocialSharingManager.ts',
         'src/core/ShareContentGenerator.ts',
         'src/core/ShareButton.ts',
@@ -58,9 +58,9 @@ const config: Config = { // テスト環境
     coverageThreshold: { global: {
             branches: 80;
             functions: 85;
-            lines: 85;
-           , statements: 85 }
-};
+            lines: 85,
+    statements: 85 
+    };
     // テストタイムアウト
     testTimeout: 30000;
     ;
@@ -90,8 +90,8 @@ const config: Config = { // テスト環境
             pageTitle: 'ソーシャル機能統合テスト結果',
             logoImgPath: './assets/logo.png';
             hideIcon: false;
-            expand: true;
-           , customInfos: [';
+            expand: true,
+    customInfos: [';
                 {''
                     title: 'プロジェクト',
                     value: 'BubblePop ソーシャル機能' ,};

@@ -4,13 +4,13 @@
  */
 
 // Import types
-import type { GameEngine } from '../../core/GameEngine';''
+import type { GameEngine } from '../../core/GameEngine';
 import type { EventBus } from '../../core/EventBus';
 
 // Tab interface
 interface Tab { id: TabId,
-    label: string;
-   , icon: string ,}
+    label: string,
+    icon: string ,}
 ;
 // Tab ID type
 type TabId = 'profile' | 'statistics' | 'achievements' | 'data' | 'help';
@@ -22,26 +22,26 @@ type DialogType = 'username' | 'export' | 'import' | null;
 interface UIState { currentTab: TabId,
     isDialogOpen: boolean;
     activeDialog: DialogType;
-    lastUpdateTime: number;
-   , needsUpdate: boolean ,}
+    lastUpdateTime: number,
+    needsUpdate: boolean ,}
 
 // Layout configuration interface
 interface LayoutConfig { tabHeight: number;
     contentPadding: number;
     buttonHeight: number;
-    buttonSpacing: number;
-   , dialogOverlayAlpha: number }
+    buttonSpacing: number,
+    dialogOverlayAlpha: number }
 
 // Click event data interface
 interface ContentClickEventData { tab: TabId;
     x: number;
-    y: number;
-   , canvas: HTMLCanvasElement
+    y: number,
+    canvas: HTMLCanvasElement
     }
 
 // Dialog click event data interface
-interface DialogClickEventData { x: number;
-   , y: number }
+interface DialogClickEventData { x: number,
+    y: number }
 
 // Scene state interface
 interface SceneState { // Add scene state properties as needed
@@ -75,17 +75,17 @@ export class UserInterfaceController {
         this.uiState = {''
             currentTab: 'profile';
             isDialogOpen: false;
-            activeDialog: null;
-           , lastUpdateTime: Date.now();
+            activeDialog: null,
+    lastUpdateTime: Date.now();
     }
-            needsUpdate: true }
-        };
+            needsUpdate: true 
+    };
         // レイアウト設定
         this.layout = { tabHeight: 60,
             contentPadding: 20;
             buttonHeight: 40;
-            buttonSpacing: 10;
-           , dialogOverlayAlpha: 0.7 ,};
+            buttonSpacing: 10,
+    dialogOverlayAlpha: 0.7 ,};
         ;
         // イベントリスナーの設定
         this.setupEventListeners()';
@@ -96,14 +96,12 @@ export class UserInterfaceController {
      * イベントリスナーの設定'
      */''
     private setupEventListeners()';
-        this.eventBus.on('tabChanged', (tabId: TabId) => { this.switchTab(tabId);' }
-
-        }');
+        this.eventBus.on('tabChanged', (tabId: TabId) => { this.switchTab(tabId);' 
+    }');
         ';
         // ダイアログイベント
-        this.eventBus.on('dialogOpened', (dialogType: DialogType) => { this.handleDialogOpen(dialogType);' }
-
-        }');
+        this.eventBus.on('dialogOpened', (dialogType: DialogType) => { this.handleDialogOpen(dialogType);' 
+    }');
 
         this.eventBus.on('dialogClosed', () => { this.handleDialogClose();' }
 
@@ -166,7 +164,7 @@ export class UserInterfaceController {
     /**
      * タブクリック判定
      */
-    private checkTabClick(x: number, y: number, canvas: HTMLCanvasElement): boolean { if (y > this.layout.tabHeight) return false;
+    private checkTabClick(x: number y: number canvas: HTMLCanvasElement): boolean { if (y > this.layout.tabHeight) return false;
         
         const tabWidth = canvas.width / this.tabs.length;
         const tabIndex = Math.floor(x / tabWidth);
@@ -174,7 +172,7 @@ export class UserInterfaceController {
         if(tabIndex >= 0 && tabIndex < this.tabs.length) {
         
             const clickedTab = this.tabs[tabIndex];
-            this.switchTab(clickedTab.id);
+            this.switchTab(clickedTab.id');
         
         }
             return true;
@@ -242,7 +240,7 @@ export class UserInterfaceController {
             y >= exportButtonY && ')';
             y <= exportButtonY + buttonHeight') {'
 
-            this.eventBus.emit('openDialog', 'export);
+            this.eventBus.emit('openDialog', 'export';
         }
             return true;
         
@@ -253,7 +251,7 @@ export class UserInterfaceController {
             y >= importButtonY && ')';
             y <= importButtonY + buttonHeight') {'
 
-            this.eventBus.emit('openDialog', 'import);
+            this.eventBus.emit('openDialog', 'import';
         }
             return true;
         
@@ -265,7 +263,7 @@ export class UserInterfaceController {
      */''
     private handleDialogClick(x: number, y: number): boolean { // ダイアログマネージャーに処理を委譲 }
         const eventData: DialogClickEventData = { x, y };''
-        this.eventBus.emit('dialogClick', eventData);
+        this.eventBus.emit('dialogClick', eventData';
         return true;
     }
     
@@ -275,7 +273,7 @@ export class UserInterfaceController {
     public handleKeyDown(key: string): boolean { // ダイアログが開いている場合はダイアログのキー処理を優先
         if(this.uiState.isDialogOpen) {'
 
-            this.eventBus.emit('dialogKeyDown', key);
+            this.eventBus.emit('dialogKeyDown', key';
         }
             return true;
         ';

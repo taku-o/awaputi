@@ -4,13 +4,13 @@
  */
 
 interface ValidationResult { isValid: boolean,
-    errors: string[];
-   , warnings: string[] ,}
+    errors: string[],
+    warnings: string[] ,}
 
 interface ValidationRule { field: string;
     type: 'required' | 'type' | 'range' | 'format' | 'custom';
-    constraint: any;
-   , message: string }
+    constraint: any,
+    message: string }
 ';
 
 export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
@@ -84,7 +84,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
                     break;
 
                 case 'range':'';
-                    if(typeof, value === 'number) {'
+                    if(typeof, value === 'number' {'
                         
                     }
                         const { min, max } = rule.constraint;
@@ -109,7 +109,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
                     const customResult = rule.constraint(value, data);''
                     if(!customResult.valid) {'
 
-                        if(customResult.severity === 'error) {'
+                        if(customResult.severity === 'error' {'
                     }
                             errors.push(customResult.message); }
                         } else { warnings.push(customResult.message); }
@@ -128,16 +128,16 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
 
         return { isValid: allErrors.length === 0,
             errors: allErrors, };
-            warnings: allWarnings }
-        }
+            warnings: allWarnings 
+    }
 
     private validateStructureRecursive(;
         data: any;
         structure: any;
         path: string);
-        errors: string[]);
-       , warnings: string[]';
-    ): void { ''
+        errors: string[]),
+    warnings: string[]';
+    ': void { ''
         if(structure === null || structure === undefined) return,
 
         if(typeof, structure === 'object' && !Array.isArray(structure) {
@@ -187,11 +187,11 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
              }
             if (actualType !== expectedType) {' }'
 
-                errors.push(`Type mismatch at ${path}: expected ${expectedType}, got ${actualType}`'});
+                errors.push(`Type mismatch at ${path}: expected ${expectedType}, got ${actualType}`'}';
             }
 }
 
-    public addCustomRule(dataType: 'bubble' | 'gameState' | 'user', rule: ValidationRule): void { ''
+    public addCustomRule(dataType: 'bubble' | 'gameState' | 'user', rule: ValidationRule': void { ''
         switch(dataType) {'
 
             case 'bubble':'';
@@ -211,8 +211,8 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
     public getValidationSummary(results: ValidationResult[]): { totalValidated: number,
         validCount: number;
         invalidCount: number;
-        totalErrors: number;
-       , totalWarnings: number ,} { return { totalValidated: results.length;
+        totalErrors: number,
+    totalWarnings: number ,} { return { totalValidated: results.length;
             validCount: results.filter(r => r.isValid).length;
             invalidCount: results.filter(r => !r.isValid).length,
             totalErrors: results.reduce((sum, r) => sum + r.errors.length, 0),' };

@@ -6,15 +6,15 @@
  * @version 1.0.0
  */
 
-import LocalExecutionErrorHandler from '../LocalExecutionErrorHandler.js';''
+import LocalExecutionErrorHandler from '../LocalExecutionErrorHandler.js';
 import DeveloperGuidanceSystem from '../DeveloperGuidanceSystem.js';
 
 // Type definitions
 interface ErrorStats { totalErrors: number,
     errorsByType: Map<string, number>;
     errorsByComponent: Map<string, number>;
-    recoveredErrors: number;
-   , unrecoverableErrors: number ,}
+    recoveredErrors: number,
+    unrecoverableErrors: number ,}
 
 interface ErrorMetadata { [key: string]: any;
     feature?: string;
@@ -26,36 +26,36 @@ interface ErrorMetadata { [key: string]: any;
     timestamp?: string; }
 
 interface ErrorStatsOutput { mainErrorHandler: any,
-    localErrorHandler: any;
-   , localMode: {
-        totalError;s: number;
-       , errorsByType: Record<string, number>;
+    localErrorHandler: any,
+    localMode: {
+        totalError;s: number,
+    errorsByType: Record<string, number>;
         errorsByComponent: Record<string, number>;
         recoveredErrors: number;
-        unrecoverableErrors: number;
-       , recoveryRate: number ,}
+        unrecoverableErrors: number,
+    recoveryRate: number ,}
 
 interface InitializationErrorConfig { enableDeveloperGuidance?: boolean;
     [key: string]: any, }
 
 interface InitializationGuidanceOptions { component: string,
-    error: string;
-   , suggestions: string[] ,}
+    error: string,
+    suggestions: string[] ,}
 
 interface ErrorInfo { error: string;
     stack?: string;
     context: string;
-    metadata: ErrorMetadata;
-   , timestamp: string }
+    metadata: ErrorMetadata,
+    timestamp: string }
 
 export default class LocalModeErrorHandler { /**
      * エラー統計
      */
     private static _errorStats: ErrorStats = {
-        totalErrors: 0;
-       , errorsByType: new Map(),
+        totalErrors: 0,
+    errorsByType: new Map(),
         errorsByComponent: new Map()';
-    static handleError(error: Error, context: string = 'GENERAL', metadata: ErrorMetadata = {)): void {'
+    static handleError(error: Error, context: string = 'GENERAL', metadata: ErrorMetadata = {)': void {'
         this._errorStats.totalErrors++;''
         this._updateErrorStats('type', error.name || 'UnknownError'');''
         this._updateErrorStats('component', context);
@@ -69,7 +69,7 @@ export default class LocalModeErrorHandler { /**
             if(this._isRecoverableError(error) { this._errorStats.recoveredErrors++; } else { this._errorStats.unrecoverableErrors++;' }'
 
             } catch (handlingError) {
-            console.error('Error in error handling:', handlingError);
+            console.error('Error in error handling:', handlingError';
             this._errorStats.unrecoverableErrors++; }
     }
     
@@ -136,7 +136,7 @@ export default class LocalModeErrorHandler { /**
                     suggestions: this._getInitializationSuggestions(component, error); }
                 };
                 
-                (DeveloperGuidanceSystem, as any).showInitializationError? .(guidanceOptions);
+                (DeveloperGuidanceSystem, as any).showInitializationError?.(guidanceOptions);
             } catch (fallbackError) { : undefined 
             console.error(`Initialization error handling failed for ${component}:`, fallbackError);
         }
@@ -147,15 +147,15 @@ export default class LocalModeErrorHandler { /**
      * @returns エラー統計
      */
     static getErrorStats(): ErrorStatsOutput { return { mainErrorHandler: this._getMainErrorHandlerStats(),
-            localErrorHandler: this._getLocalErrorHandlerStats();
-           , localMode: {
+            localErrorHandler: this._getLocalErrorHandlerStats(),
+    localMode: {
                 totalErrors: this._errorStats.totalErrors;
                 errorsByType: Object.fromEntries(this._errorStats.errorsByType);
                 errorsByComponent: Object.fromEntries(this._errorStats.errorsByComponent);
-                recoveredErrors: this._errorStats.recoveredErrors;
-               , unrecoverableErrors: this._errorStats.unrecoverableErrors, };
-                recoveryRate: this._calculateRecoveryRate(); }
-}
+                recoveredErrors: this._errorStats.recoveredErrors,
+    unrecoverableErrors: this._errorStats.unrecoverableErrors, };
+                recoveryRate: this._calculateRecoveryRate(); 
+    }
     
     /**
      * エラー履歴クリア
@@ -164,8 +164,8 @@ export default class LocalModeErrorHandler { /**
             totalErrors: 0;
             errorsByType: new Map();
             errorsByComponent: new Map();
-            recoveredErrors: 0;
-           , unrecoverableErrors: 0 }
+            recoveredErrors: 0,
+    unrecoverableErrors: 0 }
     
     /**
      * LocalExecutionErrorHandlerに委譲
@@ -175,16 +175,16 @@ export default class LocalModeErrorHandler { /**
             ...metadata,
             localModeContext: true,
             timestamp: new Date().toISOString()';
-        if(context.includes('RESOURCE) {', ';
+        if(context.includes('RESOURCE' {', ';
 
         ,}
 
             (LocalExecutionErrorHandler, as any').handleResourceError(error, metadata.resource || 'unknown'');' }
 
-        } else if(context.includes('COMPATIBILITY) { ''
+        } else if(context.includes('COMPATIBILITY' { ''
             (LocalExecutionErrorHandler, as any').handleCompatibilityError(error, metadata.feature || 'unknown'');' }
 
-        } else if(context.includes('SECURITY) { ''
+        } else if(context.includes('SECURITY' { ''
             (LocalExecutionErrorHandler, as any').handleSecurityError(error, metadata.policy || 'unknown); } else {  // 汎用エラー処理 }
             (LocalExecutionErrorHandler, as any).handleResourceError(error, context, enhancedMetadata); }
 }
@@ -194,23 +194,23 @@ export default class LocalModeErrorHandler { /**
      * @private
      */
     private static _handleErrorLocally(error: Error, context: string, metadata: ErrorMetadata): void { const errorInfo: ErrorInfo = {
-            error: error.message;
-           , stack: error.stack;
+            error: error.message,
+    stack: error.stack;
             context,
             metadata,
             timestamp: new Date().toISOString( ,};
 
         console.group(`🚨 LocalMode Error (${ context)`');''
-        console.error('Error:', error.message);''
-        console.error('Context:', context);''
+        console.error('Error:', error.message';''
+        console.error('Context:', context';''
         console.error('Metadata:', metadata};''
         if(error.stack} {' }'
 
-            console.error('Stack:', error.stack});
+            console.error('Stack:', error.stack}';
 
         }''
         console.groupEnd()';
-    private static _updateErrorStats(category: 'type' | 'component', key: string): void { ''
+    private static _updateErrorStats(category: 'type' | 'component', key: string': void { ''
         const statsMap = category === 'type' ? this._errorStats.errorsByType: this._errorStats.errorsByComponent,
         statsMap.set(key, (statsMap.get(key) || 0) + 1 
     /**
@@ -225,20 +225,20 @@ export default class LocalModeErrorHandler { /**
 
         return recoverableTypes.includes(error.name) || '';
                error.message.includes('CORS'') ||'';
-               error.message.includes('loading); }'
+               error.message.includes('loading'; }'
     
     /**
      * 互換性フォールバック適用
      * @private
      */'
     private static _applyCompatibilityFallback(feature: string): void { const fallbacks: Record<string, () => void> = {''
-            canvas: (') => console.warn('Canvas API not available, using SVG fallback'),
-            localStorage: (') => console.warn('localStorage not available, using memory storage'),
-            modules: (') => console.warn('ES6 modules not supported, using legacy loading) }
+            canvas: () => console.warn('Canvas API not available, using SVG fallback'),
+            localStorage: () => console.warn('localStorage not available, using memory storage'),
+            modules: () => console.warn('ES6 modules not supported, using legacy loading' }
         };
         
         const fallback = fallbacks[feature];
-        if (fallback') { fallback('); }'
+        if (fallback') { fallback(); }'
     }
     
     /**
@@ -246,11 +246,11 @@ export default class LocalModeErrorHandler { /**
      * @private
      */'
     private static _mitigateSecurityIssue(policy: string): void { ''
-        const mitigations: Record<string, (') => void> = {'', 'X-Frame-Options': (') => { ' }
+        const mitigations: Record<string, () => void> = {'', 'X-Frame-Options': () => { ' }
 
                 console.warn('X-Frame-Options policy detected, optimizing for local execution''); }
 
-            },'', 'Content-Security-Policy': (') => {  ' }
+            },'', 'Content-Security-Policy': () => {  ' }
 
                 console.warn('CSP policy detected, applying local execution adjustments'); }'
 };
@@ -264,15 +264,15 @@ export default class LocalModeErrorHandler { /**
      * @private
      */'
     private static _applyInitializationFallback(component: string, error: Error): void { ''
-        const fallbacks: Record<string, (') => void> = {'', 'faviconGenerator': (') => { ' }
+        const fallbacks: Record<string, () => void> = {'', 'faviconGenerator': () => { ' }
 
                 console.warn('Favicon generation failed, continuing without favicons''); }
 
-            },'', 'metaTagOptimizer': (') => {  ' }
+            },'', 'metaTagOptimizer': () => {  ' }
 
                 console.warn('Meta tag optimization failed, using default tags''); }
 
-            },'', 'developerGuidance': (') => {  ' }
+            },'', 'developerGuidance': () => {  ' }
 
                 console.warn('Developer guidance system failed, continuing silently'); }'
 };
@@ -305,7 +305,7 @@ export default class LocalModeErrorHandler { /**
      */
     private static _getMainErrorHandlerStats(): any { try { }
 
-            return (LocalExecutionErrorHandler, as any).errorHandlerInstance? .getErrorStats?.() || {};''
+            return (LocalExecutionErrorHandler, as any).errorHandlerInstance?.getErrorStats?.() || {};''
         } catch (error) { : undefined', '
             return { error: 'Stats unavailable' ,}
     }
@@ -316,7 +316,7 @@ export default class LocalModeErrorHandler { /**
      */
     private static _getLocalErrorHandlerStats(): any { try { }
 
-            return (LocalExecutionErrorHandler, as any).getDebugInfo? .() || {};''
+            return (LocalExecutionErrorHandler, as any).getDebugInfo?.() || {};''
         } catch (error) { : undefined', '
             return { error: 'Debug info unavailable' ,}
     }

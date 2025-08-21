@@ -3,8 +3,8 @@ import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 // インターフェース定義
 interface RTLLanguageInfo { name: string,
     script: string,
-    direction: 'rtl' | 'ltr';
-   , family: string ,}
+    direction: 'rtl' | 'ltr',
+    family: string ,}
 
 interface BidiControlCharacters { LRM: string;  // Left-to-Right Mark
     RLM: string;  // Right-to-Left Mark
@@ -22,17 +22,17 @@ interface RTLSettings { fontFamily: string,
     fontSize: string;
     lineHeight: string;
     textAlign: string;
-    wordSpacing: string;
-   , letterSpacing: string ,}
+    wordSpacing: string,
+    letterSpacing: string ,}
 ';
 
 interface TextDirectionResult { ''
     direction: 'rtl' | 'ltr';
-    confidence: number;
-   , details: {
+    confidence: number,
+    details: {
         rtlChar;s: number;
-        ltrChars: number;
-       , neutralChars: number;
+        ltrChars: number,
+    neutralChars: number;
         rtlRatio?: number }
 
 interface BidiTextSegment { text: string,
@@ -48,8 +48,8 @@ interface RTLCSSOptions { includeLayout?: boolean;
     includeSpacing?: boolean; }
     customProperties?: { [key: string]: string }
 
-interface RTLCSSResult { css: string;
-   , isRTL: boolean;
+interface RTLCSSResult { css: string,
+    isRTL: boolean;
     language?: string;
     settings?: RTLSettings;
     }
@@ -57,13 +57,13 @@ interface RTLCSSResult { css: string;
 interface RTLLanguageData { code: string,
     name: string,
     script: string,
-    direction: 'rtl' | 'ltr';
-   , family: string ,}
+    direction: 'rtl' | 'ltr',
+    family: string ,}
 
 interface RTLStats { supportedRTLLanguages: number;
     rtlCharacterRanges: number;
-    bidiControlChars: number;
-   , languageFamilies: string[] }
+    bidiControlChars: number,
+    languageFamilies: string[] }
 
 /**
  * RTL言語検出システム - Right-to-Left言語の識別と方向制御
@@ -129,7 +129,7 @@ export class RTLLanguageDetector {
             FSI: '\u2068', // First Strong Isolate;
             PDI: '\u2069'  // Pop Directional Isolate ,};
         // RTL言語特有の設定
-        this.rtlSettings = new Map(['';
+        this.rtlSettings = new Map([''
             ['ar', { ''
                 fontFamily: 'Arial, "Arabic UI", "Tahoma", sans-serif',
                 fontSize: '1.1em',
@@ -152,8 +152,8 @@ export class RTLLanguageDetector {
                 lineHeight: '1.6',
                 textAlign: 'right',
                 wordSpacing: '0.15em',]';
-                letterSpacing: 'normal'])';
-            )]'';
+                letterSpacing: 'normal']'';
+            ']'';
         ]'),
 
         console.log('RTLLanguageDetector, initialized'); }'
@@ -238,10 +238,10 @@ export class RTLLanguageDetector {
             confidence: confidence;
             details: {
                 rtlChars: rtlCharCount;
-                ltrChars: ltrCharCount;
-               , neutralChars: neutralCharCount, };
-                rtlRatio: rtlRatio }
-}
+                ltrChars: ltrCharCount,
+    neutralChars: neutralCharCount, };
+                rtlRatio: rtlRatio 
+    }
     
     /**
      * 複数言語混在テキストの方向制御
@@ -262,7 +262,7 @@ export class RTLLanguageDetector {
             const { text, language, direction } = segment;''
             const segmentDirection = direction || (language && this.isRTLLanguage(language) ? 'rtl' : 'ltr'');
 
-            if(segmentDirection === 'rtl) {'
+            if(segmentDirection === 'rtl' {'
                 hasRTL = true;
             }
                 result += this.bidiControlChars.RLI + text + this.bidiControlChars.PDI; }
@@ -285,7 +285,7 @@ export class RTLLanguageDetector {
 
             return { css: '', isRTL: false ,}
 
-        const settings = this.rtlSettings.get(language.split('-)[0]') || this.rtlSettings.get('ar);
+        const settings = this.rtlSettings.get(language.split('-'[0]') || this.rtlSettings.get('ar);
         const css: string[] = [],
         // 基本方向設定
         if(includeLayout) {'
@@ -294,7 +294,7 @@ export class RTLLanguageDetector {
 
         }
 
-            css.push('text-align: right;); }'
+            css.push('text-align: right;'; }'
         }
         
         // タイポグラフィ設定
@@ -307,12 +307,12 @@ export class RTLLanguageDetector {
 
         }
 
-            if(settings.wordSpacing !== 'normal) {' }
+            if(settings.wordSpacing !== 'normal' {' }
 
-                css.push(`word-spacing: ${settings.wordSpacing};`'});
+                css.push(`word-spacing: ${settings.wordSpacing};`'}';
 
             }''
-            if(settings.letterSpacing !== 'normal) {'
+            if(settings.letterSpacing !== 'normal' {'
                 
             }
                 css.push(`letter-spacing: ${settings.letterSpacing};`});
@@ -328,7 +328,7 @@ export class RTLLanguageDetector {
 
         }
 
-            css.push('padding-left: 0;); }'
+            css.push('padding-left: 0;'; }'
         }
         
         // カスタムプロパティ
@@ -339,10 +339,10 @@ export class RTLLanguageDetector {
 
         return { ''
             css: css.join(', ');
-            isRTL: true;
-           , language: language, };
-            settings: settings }
-        }
+            isRTL: true,
+    language: language, };
+            settings: settings 
+    }
     
     /**
      * DOM要素にRTL設定を適用
@@ -359,10 +359,10 @@ export class RTLLanguageDetector {
             const rtlCSS = this.generateRTLCSS(language, options);
             ';
             // CSS プロパティを適用
-            element.style.direction = 'rtl';''
-            element.style.textAlign = 'right';''
+            element.style.direction = 'rtl';
+            element.style.textAlign = 'right';
             element.setAttribute('dir', 'rtl'');''
-            element.setAttribute('lang', language);
+            element.setAttribute('lang', language';
             ';
             // 追加のスタイル適用
             if(rtlCSS.settings) {
@@ -374,14 +374,14 @@ export class RTLLanguageDetector {
             ';
             // RTLクラスを追加
             element.classList.add('rtl-content'');''
-            element.classList.add(`rtl-${language.split('-'})[0]}`);
+            element.classList.add(`rtl-${language.split('-'})[0]}`';
             
             return true;
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'RTL_APPLICATION_ERROR', {)
+        } catch (error) { getErrorHandler().handleError(error, 'RTL_APPLICATION_ERROR', {)
                 element: element.tagName,);
-                language: language ,});
+                language: language ,}';
             return false;
     
     /**
@@ -392,8 +392,8 @@ export class RTLLanguageDetector {
             return; }
         ';
         // 入力方向設定
-        inputElement.style.direction = 'rtl';''
-        inputElement.style.textAlign = 'right';''
+        inputElement.style.direction = 'rtl';
+        inputElement.style.textAlign = 'right';
         inputElement.setAttribute('dir', 'rtl);
         
         // 入力イベントリスナー
@@ -407,15 +407,15 @@ export class RTLLanguageDetector {
 
                 target.style.direction = direction.direction;' }'
 
-                target.style.textAlign = direction.direction === 'rtl' ? 'right' : 'left'; }
-};
+                target.style.textAlign = direction.direction === 'rtl' ? 'right' : 'left'; 
+    };
 
-        inputElement.addEventListener('input', handleInput);''
-        inputElement.addEventListener('paste', handleInput);
+        inputElement.addEventListener('input', handleInput';''
+        inputElement.addEventListener('paste', handleInput';
         ';
         // クリーンアップ関数を返す
-        return (') => {  ''
-            inputElement.removeEventListener('input', handleInput);' }
+        return () => {  ''
+            inputElement.removeEventListener('input', handleInput';' }
 
             inputElement.removeEventListener('paste', handleInput); }
         }
@@ -469,8 +469,8 @@ export class RTLLanguageDetector {
             code: code;
             name: info.name;
             script: info.script;
-            direction: info.direction);
-           , family: info.family ,}
+            direction: info.direction),
+    family: info.family ,}
         });
     }
     
@@ -493,8 +493,8 @@ export class RTLLanguageDetector {
      */
     getStats(): RTLStats { return { supportedRTLLanguages: this.rtlLanguages.size,
             rtlCharacterRanges: this.rtlCharacterRanges.length;
-            bidiControlChars: Object.keys(this.bidiControlChars).length;
-           , languageFamilies: Array.from(new, Set(), };
+            bidiControlChars: Object.keys(this.bidiControlChars).length,
+    languageFamilies: Array.from(new, Set(), };
                 Array.from(this.rtlLanguages.values().map(info => info.family); }
         }
 }
@@ -506,4 +506,4 @@ let rtlLanguageDetectorInstance: RTLLanguageDetector | null = null,
  * RTLLanguageDetectorのシングルトンインスタンスを取得
  */
 export function getRTLLanguageDetector(): RTLLanguageDetector { if (!rtlLanguageDetectorInstance) {''
-        rtlLanguageDetectorInstance = new RTLLanguageDetector(' })'
+        rtlLanguageDetectorInstance = new RTLLanguageDetector(' }''

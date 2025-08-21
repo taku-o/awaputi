@@ -9,23 +9,23 @@
 interface Coordinates { x: number,
     y: number ,}
 
-interface Size { width: number;
-   , height: number }
+interface Size { width: number,
+    height: number }
 
 interface SafeArea { x: number;
     y: number;
-    width: number;
-   , height: number }
+    width: number,
+    height: number }
 
-interface VerticalPosition { y: number;
-   , height: number }
+interface VerticalPosition { y: number,
+    height: number }
 
 interface DebugInfo { canvasSize: Size;
-    baseSize: Size;
-   , scale: {
+    baseSize: Size,
+    scale: {
         ;x: number;
-        y: number;
-       , uniform: number }
+        y: number,
+    uniform: number }
 
 export class CoordinateCalculator {
     private canvasWidth: number;
@@ -66,15 +66,15 @@ export class CoordinateCalculator {
      * ベース座標系から実際のCanvas座標系への変換
      */
     toCanvasCoordinates(baseX: number, baseY: number): Coordinates { return { x: baseX * this.scaleX, };
-            y: baseY * this.scaleY }
-        }
+            y: baseY * this.scaleY 
+    }
     
     /**
      * ベース座標系のサイズを実際のCanvasサイズに変換
      */
     toCanvasSize(baseWidth: number, baseHeight: number): Size { return { width: baseWidth * this.scaleX, };
-            height: baseHeight * this.scaleY }
-        }
+            height: baseHeight * this.scaleY 
+    }
     
     /**
      * 要素を水平中央に配置するためのX座標を計算
@@ -152,10 +152,10 @@ export class CoordinateCalculator {
      */
     getSafeArea(margin: number = 20): SafeArea { const scaledMargin = margin * this.uniformScale;
         return { x: scaledMargin,
-            y: scaledMargin;
-           , width: this.canvasWidth - (scaledMargin * 2), };
-            height: this.canvasHeight - (scaledMargin * 2); }
-        }
+            y: scaledMargin,
+    width: this.canvasWidth - (scaledMargin * 2), };
+            height: this.canvasHeight - (scaledMargin * 2); 
+    }
     
     /**
      * 複数要素を垂直方向に均等配置するための位置を計算
@@ -198,4 +198,4 @@ export class CoordinateCalculator {
 
     getScaleY(): number { return this.scaleY; }
 
-    getUniformScale(');
+    getUniformScale();

@@ -4,21 +4,21 @@
 
 // 型定義
 interface BrowserInfo { name: string,
-    version: string;
-   , engine: string ,}
+    version: string,
+    engine: string ,}
 
 interface ScreenInfo { width: number;
     height: number;
     availWidth: number;
-    availHeight: number;
-   , pixelRatio: number }
+    availHeight: number,
+    pixelRatio: number }
 
 interface DeviceInfo { isMobile: boolean;
     isTablet: boolean;
     isDesktop: boolean;
     isTouchDevice: boolean;
-    screenInfo: ScreenInfo;
-   , orientation: string }
+    screenInfo: ScreenInfo,
+    orientation: string }
 
 interface Features { canvas: boolean;
     webAudio: boolean;
@@ -28,30 +28,30 @@ interface Features { canvas: boolean;
     pointerEvents: boolean;
     webGL: boolean;
     offscreenCanvas: boolean;
-    intersectionObserver: boolean;
-   , performanceObserver: boolean }
+    intersectionObserver: boolean,
+    performanceObserver: boolean }
 
 interface CanvasSize { displayWidth: number;
     displayHeight: number;
     actualWidth: number;
-    actualHeight: number;
-   , pixelRatio: number }
+    actualHeight: number,
+    pixelRatio: number }
 
 interface CompatibilityReport { browser: BrowserInfo;
     device: DeviceInfo;
     features: Features;
-    recommendations: string[];
-   , warnings: string[] }
+    recommendations: string[],
+    warnings: string[] }
 
 // グローバルオブジェクトの型拡張
 declare global { interface Window {
         webkitAudioContext?: typeof AudioContext;
-        webkitRequestAnimationFrame?: (callbac;k: FrameRequestCallback) => number;
-        mozRequestAnimationFrame?: (callbac;k: FrameRequestCallback) => number;
-        msRequestAnimationFrame?: (callbac;k: FrameRequestCallback) => number;
-        webkitCancelAnimationFrame?: (handl;e: number) => void;
-        mozCancelAnimationFrame?: (handl;e: number) => void;
-        msCancelAnimationFrame?: (handl;e: number) => void;
+        webkitRequestAnimationFrame?: (callback: FrameRequestCallback) => number;
+        mozRequestAnimationFrame?: (callback: FrameRequestCallback) => number;
+        msRequestAnimationFrame?: (callback: FrameRequestCallback) => number;
+        webkitCancelAnimationFrame?: (handle: number) => void;
+        mozCancelAnimationFrame?: (handle: number) => void;
+        msCancelAnimationFrame?: (handle: number) => void;
         orientation?: number;
         msMaxTouchPoints?: number; ,}
     }
@@ -83,55 +83,55 @@ export class BrowserCompatibility {
     private detectBrowser(): BrowserInfo { const ua = this.userAgent;
         
         // Edge (Chromium-based);
-        if(ua.includes('Edg/)) {'
+        if(ua.includes('Edg/)' {'
             return { ''
                 name: 'edge',
                 version: this.extractVersion(ua, 'Edg/''),' };
 
-                engine: 'blink' }
-            }
+                engine: 'blink' 
+    }
         ';
         // Chrome
-        if (ua.includes('Chrome/'') && !ua.includes('Edg/)) { return { ''
+        if (ua.includes('Chrome/'') && !ua.includes('Edg/)' { return { ''
                 name: 'chrome',
                 version: this.extractVersion(ua, 'Chrome/''),' };
 
-                engine: 'blink' }
-            }
+                engine: 'blink' 
+    }
         ';
         // Firefox
-        if(ua.includes('Firefox/)) { return { ''
+        if(ua.includes('Firefox/)' { return { ''
                 name: 'firefox',
                 version: this.extractVersion(ua, 'Firefox/''),' };
 
-                engine: 'gecko' }
-            }
+                engine: 'gecko' 
+    }
         ';
         // Safari
-        if (ua.includes('Safari/'') && !ua.includes('Chrome/)) { return { ''
+        if (ua.includes('Safari/'') && !ua.includes('Chrome/)' { return { ''
                 name: 'safari',
                 version: this.extractVersion(ua, 'Version/''),' };
 
-                engine: 'webkit' }
-            }
+                engine: 'webkit' 
+    }
         ';
         // Internet Explorer
-        if (ua.includes('MSIE'') || ua.includes('Trident/)) { return { ''
+        if (ua.includes('MSIE'') || ua.includes('Trident/)' { return { ''
                 name: 'ie',
-                version: ua.includes('MSIE'') ?   : undefined'';
+                version: ua.includes('MSIE'') ? undefined : undefined'';
                     this.extractVersion(ua, 'MSIE '') : '';
                     this.extractVersion(ua, 'rv:''),' };
 
-                engine: 'trident' }
-            }
+                engine: 'trident' 
+    }
         ';
 
         return { ''
             name: 'unknown',
             version: '0',' };
 
-            engine: 'unknown' }
-        }
+            engine: 'unknown' 
+    }
     
     /**
      * デバイスタイプを検出
@@ -155,15 +155,15 @@ export class BrowserCompatibility {
             width: window.screen.width;
             height: window.screen.height;
             availWidth: window.screen.availWidth;
-            availHeight: window.screen.availHeight;
-           , pixelRatio: window.devicePixelRatio || 1 ,};
+            availHeight: window.screen.availHeight,
+    pixelRatio: window.devicePixelRatio || 1 ,};
         return { isMobile,
             isTablet,
             isDesktop: !isMobile && !isTablet;
             isTouchDevice,
             screenInfo, };
-            orientation: this.getOrientation(); }
-        }
+            orientation: this.getOrientation(); 
+    }
     
     /**
      * 画面の向きを取得
@@ -184,10 +184,10 @@ export class BrowserCompatibility {
             touchEvents: this.supportsTouchEvents();
             pointerEvents: this.supportsPointerEvents();
             webGL: this.supportsWebGL();
-            offscreenCanvas: this.supportsOffscreenCanvas();
-           , intersectionObserver: this.supportsIntersectionObserver(), };
-            performanceObserver: this.supportsPerformanceObserver(); }
-        }
+            offscreenCanvas: this.supportsOffscreenCanvas(),
+    intersectionObserver: this.supportsIntersectionObserver(), };
+            performanceObserver: this.supportsPerformanceObserver(); 
+    }
     
     /**
      * Canvas サポート確認'
@@ -265,7 +265,7 @@ export class BrowserCompatibility {
     
     /**
      * バージョン番号を抽出
-     */)'
+     */''
     private extractVersion(ua: string, prefix: string): string { const index = ua.indexOf(prefix);''
         if(index === -1) return '0';
         ';
@@ -337,7 +337,7 @@ export class BrowserCompatibility {
      * タッチイベント修正'
      */''
     private setupTouchEventFixes()';
-        if(this.browserInfo.name === 'safari' && this.deviceInfo.isMobile) {'
+        if(this.browserInfo.name === 'safari' && this.deviceInfo.isMobile' {'
             // パッシブリスナーの設定
             this.setupPassiveEventListeners()';
         if (this.browserInfo.name === 'chrome' && this.deviceInfo.isMobile) {
@@ -367,7 +367,7 @@ export class BrowserCompatibility {
      */''
     private setupTouchDelayFix()';
         const meta = document.createElement('meta'');''
-        meta.name = 'viewport';''
+        meta.name = 'viewport';
         meta.content = 'width=device-width, initial-scale=1.0, user-scalable=no';
 
         const existingMeta = document.querySelector('meta[name="viewport"]);
@@ -378,8 +378,8 @@ export class BrowserCompatibility {
      * 最適なCanvas サイズを計算
      */
     calculateOptimalCanvasSize(): CanvasSize { const viewport = {
-            width: window.innerWidth;
-           , height: window.innerHeight };
+            width: window.innerWidth,
+    height: window.innerHeight };
         const devicePixelRatio = this.deviceInfo.screenInfo.pixelRatio;
         
         // デバイスタイプに応じたサイズ調整
@@ -405,10 +405,10 @@ export class BrowserCompatibility {
         
         return { displayWidth: Math.floor(canvasSize.width),
             displayHeight: Math.floor(canvasSize.height);
-            actualWidth: Math.floor(canvasSize.width * devicePixelRatio);
-           , actualHeight: Math.floor(canvasSize.height * devicePixelRatio), };
-            pixelRatio: devicePixelRatio }
-        }
+            actualWidth: Math.floor(canvasSize.width * devicePixelRatio),
+    actualHeight: Math.floor(canvasSize.height * devicePixelRatio), };
+            pixelRatio: devicePixelRatio 
+    }
     
     /**
      * フォールバック UI を表示
@@ -420,12 +420,12 @@ export class BrowserCompatibility {
         fallbackDiv.innerHTML = `'';
             <div style=";
                 position: fixed;
-                top: 50%;
-               , left: 50%,
+                top: 50%,
+    left: 50%,
                 transform: translate(-50%, -50%),
                 background: rgba(0,0,0,0.9),
-                color: white;
-               , padding: 20px;
+                color: white,
+    padding: 20px;
                 border-radius: 10px,
                 text-align: center,
                 font-family: Arial, sans-serif;"
@@ -440,7 +440,7 @@ export class BrowserCompatibility {
                     <li>Microsoft Edge</li>"";
                     <li>Safari (iOS/macOS")</li>";
                 </ul>"";
-                <button onclick="this.parentElement.parentElement.remove(")", "";
+                <button onclick="this.parentElement.parentElement.remove()", "";
                         style="margin-top: 10px; padding: 10px 20px; font-size: 16px;">
                     閉じる;
                 </button>;
@@ -455,10 +455,10 @@ export class BrowserCompatibility {
      */
     generateCompatibilityReport(): CompatibilityReport { return { browser: this.browserInfo,
             device: this.deviceInfo;
-            features: this.features;
-           , recommendations: this.getRecommendations(), };
-            warnings: this.getWarnings(); }
-        }
+            features: this.features,
+    recommendations: this.getRecommendations(), };
+            warnings: this.getWarnings(); 
+    }
     
     /**
      * 推奨事項を取得
@@ -467,14 +467,14 @@ export class BrowserCompatibility {
 
         if(!this.features.canvas) {", ";
         }"
-            recommendations.push('Canvas, API が利用できません。ブラウザを更新してください。); }'
+            recommendations.push('Canvas, API が利用できません。ブラウザを更新してください。'; }'
         }
 
         if(!this.features.webAudio) {', ';
 
         }
 
-            recommendations.push('Web, Audio API が利用できません。音声機能が制限されます。); }'
+            recommendations.push('Web, Audio API が利用できません。音声機能が制限されます。'; }'
         }
 
         if(!this.features.localStorage) {', ';
@@ -488,14 +488,14 @@ export class BrowserCompatibility {
 
         }
 
-            recommendations.push('Internet, Explorer は非推奨です。モダンブラウザの使用を推奨します。); }'
+            recommendations.push('Internet, Explorer は非推奨です。モダンブラウザの使用を推奨します。'; }'
         }
 
         if(this.deviceInfo.isMobile && this.deviceInfo.screenInfo.width < 375) {', ';
 
         }
 
-            recommendations.push('画面が小さすぎる可能性があります。横向きでのプレイを推奨します。); }'
+            recommendations.push('画面が小さすぎる可能性があります。横向きでのプレイを推奨します。'; }'
         }
         
         return recommendations;
@@ -510,21 +510,21 @@ export class BrowserCompatibility {
 
         }
 
-            warnings.push('高解像度ディスプレイが検出されました。パフォーマンスに影響する可能性があります。); }'
+            warnings.push('高解像度ディスプレイが検出されました。パフォーマンスに影響する可能性があります。'; }'
         }
 
         if(this.deviceInfo.isMobile && !this.features.touchEvents) {', ';
 
         }
 
-            warnings.push('タッチイベントが利用できません。操作に問題が生じる可能性があります。); }'
+            warnings.push('タッチイベントが利用できません。操作に問題が生じる可能性があります。'; }'
         }
 
         if(!this.features.requestAnimationFrame) {', ';
 
         }
 
-            warnings.push('requestAnimationFrame が利用できません。アニメーションが滑らかでない可能性があります。); }'
+            warnings.push('requestAnimationFrame が利用できません。アニメーションが滑らかでない可能性があります。'; }'
         }
         
         return warnings;
@@ -536,10 +536,10 @@ export class BrowserCompatibility {
     logDebugInfo(): void { ''
         const report = this.generateCompatibilityReport()';
         console.group('Browser, Compatibility Report'');''
-        console.log('Browser:', report.browser);''
-        console.log('Device:', report.device);''
-        console.log('Features:', report.features);''
-        console.log('Recommendations:', report.recommendations);''
+        console.log('Browser:', report.browser';''
+        console.log('Device:', report.device';''
+        console.log('Features:', report.features';''
+        console.log('Recommendations:', report.recommendations';''
         console.log('Warnings:', report.warnings);
         console.groupEnd(); }
 
@@ -554,4 +554,4 @@ export class BrowserCompatibility {
 let _browserCompatibility: BrowserCompatibility | null = null,
 
 export function getBrowserCompatibility(): BrowserCompatibility { if (!_browserCompatibility) {''
-        _browserCompatibility = new BrowserCompatibility(' })'
+        _browserCompatibility = new BrowserCompatibility(' }''

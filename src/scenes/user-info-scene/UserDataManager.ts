@@ -4,7 +4,7 @@
  */
 
 // Import types
-import type { GameEngine } from '../../core/GameEngine';''
+import type { GameEngine } from '../../core/GameEngine';
 import type { EventBus } from '../../core/EventBus';
 
 // User profile interface
@@ -13,57 +13,57 @@ interface UserProfile { username: string,
     experience: number;
     joinDate: Date;
     totalPlaytime: number;
-    gamesPlayed: number;
-   , lastActive: Date
+    gamesPlayed: number,
+    lastActive: Date
     ,}
 
 // Basic statistics interface
 interface BasicStatistics { totalScore: number;
     averageScore: number;
     bestScore: number;
-    totalPlaytime: number;
-   , gamesPlayed: number }
+    totalPlaytime: number,
+    gamesPlayed: number }
 
 // Bubble statistics interface
 interface BubbleStatistics { totalPopped: number;
     normalPopped: number;
     specialPopped: number;
     bossDefeated: number;
-    electricActivated: number;
-   , favoriteType: string }
+    electricActivated: number,
+    favoriteType: string }
 
 // Combo statistics interface
 interface ComboStatistics { maxCombo: number;
     averageCombo: number;
-    totalCombos: number;
-   , perfectCombos: number }
+    totalCombos: number,
+    perfectCombos: number }
 
 // Stage statistics interface
 interface StageStatistics { stagesCleared: number;
-    currentStage: number;
-   , bestStageScore: Record<string, number>;
+    currentStage: number,
+    bestStageScore: Record<string, number>;
     stageCompletionTimes: Record<string, number> }
 
 // Performance statistics interface
 interface PerformanceStatistics { averageFPS: number,
     averageResponseTime: number;
-    optimalSettings: string;
-   , recommendedQuality: string ,}
+    optimalSettings: string,
+    recommendedQuality: string ,}
 
 // Complete user statistics interface
 interface UserStatistics { basic: BasicStatistics;
     bubble: BubbleStatistics;
     combo: ComboStatistics;
-    stage: StageStatistics;
-   , performance: PerformanceStatistics
+    stage: StageStatistics,
+    performance: PerformanceStatistics
     }
 
 // Achievement interfaces
 interface Achievement { id: string;
     name: string;
     description: string;
-    icon: string;
-   , unlocked: boolean;
+    icon: string,
+    unlocked: boolean;
     unlockedAt?: Date;
     progress?: number;
     maxProgress?: number;
@@ -72,28 +72,28 @@ interface Achievement { id: string;
 interface AchievementProgress { id: string,
     name: string;
     progress: number;
-    maxProgress: number;
-   , percentage: number ,}
+    maxProgress: number,
+    percentage: number ,}
 
 interface UserAchievements { unlocked: Achievement[];
     total: number;
     progress: AchievementProgress[];
-    recent: Achievement[];
-   , categories: Record<string, Achievement[]> }
+    recent: Achievement[],
+    categories: Record<string, Achievement[]> }
 
 // Data cache interface
 interface DataCache { statistics: UserStatistics | null,
     achievements: UserAchievements | null;
-    profile: UserProfile | null;
-   , lastUpdate: number ,}
+    profile: UserProfile | null,
+    lastUpdate: number ,}
 
 // Export data interface
 interface ExportData { version: string;
     exportedAt: string;
     profile: UserProfile;
     statistics: UserStatistics;
-    achievements: Achievement[];
-   , settings: Record<string, any> }
+    achievements: Achievement[],
+    settings: Record<string, any> }
 
 // Import data interface
 interface ImportData { version: string, }
@@ -108,8 +108,8 @@ interface StatisticsManager { getStatistics(): Partial<{
         totalScore: number;
         averageScore: number;
         bestScore: number;
-        totalPlaytime: number;
-       , gamesPlayed: number ,}>;
+        totalPlaytime: number,
+    gamesPlayed: number ,}>;
     getBubbleStatistics(): Partial<BubbleStatistics>;
     getComboStatistics(): Partial<ComboStatistics>;
     getStageStatistics(): Partial<StageStatistics>;
@@ -149,11 +149,11 @@ export class UserDataManager {
         // データキャッシュ
         this.dataCache = {
             statistics: null;
-            achievements: null;
-           , profile: null;
+            achievements: null,
+    profile: null;
     ,}
-            lastUpdate: 0 }
-        };
+            lastUpdate: 0 
+    };
         // データアクセス用のマネージャー
         this.statisticsManager = gameEngine.statisticsManager || null;
         this.achievementManager = gameEngine.achievementManager || null;
@@ -189,17 +189,17 @@ export class UserDataManager {
      * ユーザープロフィール情報を取得'
      */''
     public async getUserProfile()';
-        if(this.isCacheValid('profile)) { return this.dataCache.profile!; }', ';
+        if(this.isCacheValid('profile)' { return this.dataCache.profile!; }', ';
 
         try { const profile: UserProfile = {''
-                username: this.playerData? .username || 'プレイヤー', : undefined
+                username: this.playerData?.username || 'プレイヤー', : undefined
                 level: this.calculatePlayerLevel();
-                experience: this.calculateTotalExperience();
-               , joinDate: this.playerData? .joinDate || new Date(), : undefined
+                experience: this.calculateTotalExperience(),
+    joinDate: this.playerData?.joinDate || new Date(), : undefined
                 totalPlaytime: this.getTotalPlaytime(),
                 gamesPlayed: this.getTotalGamesPlayed(),
                 lastActive: new Date()';
-            this.updateCacheTime('profile),
+            this.updateCacheTime('profile',
             
             return profile;
 
@@ -213,15 +213,15 @@ export class UserDataManager {
      * 統計情報を取得'
      */''
     public async getUserStatistics()';
-        if(this.isCacheValid('statistics) { return this.dataCache.statistics!; }'
+        if(this.isCacheValid('statistics' { return this.dataCache.statistics!; }'
         
         try { const statistics: UserStatistics = {
                 basic: this.getBasicStatistics();
-                bubble: this.getBubbleStatistics();
-               , combo: this.getComboStatistics(),
+                bubble: this.getBubbleStatistics(),
+    combo: this.getComboStatistics(),
                 stage: this.getStageStatistics(),
                 performance: this.getPerformanceStatistics()';
-            this.updateCacheTime('statistics),
+            this.updateCacheTime('statistics',
             
             return statistics;
 
@@ -235,15 +235,15 @@ export class UserDataManager {
      * 実績情報を取得'
      */''
     public async getUserAchievements()';
-        if(this.isCacheValid('achievements) { return this.dataCache.achievements!; }'
+        if(this.isCacheValid('achievements' { return this.dataCache.achievements!; }'
         
         try { const achievements: UserAchievements = {
                 unlocked: this.getUnlockedAchievements();
-                total: this.getTotalAchievements();
-               , progress: this.getAchievementProgress(),
+                total: this.getTotalAchievements(),
+    progress: this.getAchievementProgress(),
                 recent: this.getRecentAchievements(),
                 categories: this.getAchievementsByCategory()';
-            this.updateCacheTime('achievements),
+            this.updateCacheTime('achievements',
             
             return achievements;
 
@@ -256,42 +256,42 @@ export class UserDataManager {
     /**
      * 基本統計情報を取得
      */
-    private getBasicStatistics(): BasicStatistics { const stats = this.statisticsManager ?   : undefined
+    private getBasicStatistics(): BasicStatistics { const stats = this.statisticsManager ? undefined : undefined
             this.statisticsManager.getStatistics() :  
             {};
         
         return { totalScore: stats.totalScore || 0,
             averageScore: stats.averageScore || 0;
-            bestScore: stats.bestScore || 0;
-           , totalPlaytime: stats.totalPlaytime || 0, };
-            gamesPlayed: stats.gamesPlayed || 0 }
-        }
+            bestScore: stats.bestScore || 0,
+    totalPlaytime: stats.totalPlaytime || 0, };
+            gamesPlayed: stats.gamesPlayed || 0 
+    }
     
     /**
      * 泡統計情報を取得
      */'
-    private getBubbleStatistics(): BubbleStatistics { const stats = this.statisticsManager ?   : undefined''
-            this.statisticsManager.getBubbleStatistics(''';
+    private getBubbleStatistics(): BubbleStatistics { const stats = this.statisticsManager ? undefined : undefined''
+            this.statisticsManager.getBubbleStatistics('''
             favoriteType: stats.favoriteType || 'normal' ,}))
     }
     
     /**
      * コンボ統計情報を取得
      */)
-    private getComboStatistics(): ComboStatistics { const stats = this.statisticsManager ?   : undefined
+    private getComboStatistics(): ComboStatistics { const stats = this.statisticsManager ? undefined : undefined
             this.statisticsManager.getComboStatistics() :  
             {};
         
         return { maxCombo: stats.maxCombo || 0,
-            averageCombo: stats.averageCombo || 0;
-           , totalCombos: stats.totalCombos || 0, };
-            perfectCombos: stats.perfectCombos || 0 }
-        }
+            averageCombo: stats.averageCombo || 0,
+    totalCombos: stats.totalCombos || 0, };
+            perfectCombos: stats.perfectCombos || 0 
+    }
     
     /**
      * ステージ統計情報を取得
      */
-    private getStageStatistics(): StageStatistics { const stats = this.statisticsManager ?   : undefined
+    private getStageStatistics(): StageStatistics { const stats = this.statisticsManager ? undefined : undefined
             this.statisticsManager.getStageStatistics() :  
             {};
         
@@ -303,7 +303,7 @@ export class UserDataManager {
     /**
      * パフォーマンス統計情報を取得'
      */''
-    private getPerformanceStatistics(''';
+    private getPerformanceStatistics('''
             optimalSettings: 'high',
             recommendedQuality: 'high);
         })
@@ -311,7 +311,7 @@ export class UserDataManager {
     /**
      * プレイヤーレベルを計算
      */
-    private calculatePlayerLevel(): number { const totalScore = this.statisticsManager ?   : undefined
+    private calculatePlayerLevel(): number { const totalScore = this.statisticsManager ? undefined : undefined
             this.statisticsManager.getStatistics().totalScore || 0 : ;
             0;
         
@@ -320,7 +320,7 @@ export class UserDataManager {
     /**
      * 総経験値を計算
      */
-    private calculateTotalExperience(): number { const stats = this.statisticsManager ?   : undefined
+    private calculateTotalExperience(): number { const stats = this.statisticsManager ? undefined : undefined
             this.statisticsManager.getStatistics() :  
             {};
         
@@ -330,7 +330,7 @@ export class UserDataManager {
     /**
      * 総プレイ時間を取得
      */
-    private getTotalPlaytime(): number { const stats = this.statisticsManager ?   : undefined
+    private getTotalPlaytime(): number { const stats = this.statisticsManager ? undefined : undefined
             this.statisticsManager.getStatistics() :  
             {};
         
@@ -340,7 +340,7 @@ export class UserDataManager {
     /**
      * 総ゲームプレイ数を取得
      */
-    private getTotalGamesPlayed(): number { const stats = this.statisticsManager ?   : undefined
+    private getTotalGamesPlayed(): number { const stats = this.statisticsManager ? undefined : undefined
             this.statisticsManager.getStatistics() :  
             {};
         
@@ -358,8 +358,8 @@ export class UserDataManager {
                 id: achievement.id;
                 name: achievement.name;
                 description: achievement.description);
-                icon: achievement.icon);
-               , unlocked: achievement.unlocked,);
+                icon: achievement.icon),
+    unlocked: achievement.unlocked,);
                 unlockedAt: achievement.unlockedAt))) ,}
     }
     
@@ -379,10 +379,10 @@ export class UserDataManager {
             .filter(achievement => !achievement.unlocked && achievement.progress !== undefined && achievement.maxProgress !== undefined);
             .map(achievement => ({
                 id: achievement.id);
-                name: achievement.name);
-               , progress: achievement.progress!,);
-                maxProgress: achievement.maxProgress!);
-               , percentage: Math.round((achievement.progress! / achievement.maxProgress!) * 100) ,}
+                name: achievement.name),
+    progress: achievement.progress!,);
+                maxProgress: achievement.maxProgress!),
+    percentage: Math.round((achievement.progress! / achievement.maxProgress!) * 100) ,}
             });
     }
     
@@ -399,7 +399,7 @@ export class UserDataManager {
                 achievement.unlockedAt && );
                 achievement.unlockedAt.getTime() > oneWeekAgo;
             );
-            .sort((a, b) => (b.unlockedAt? .getTime() || 0) - (a.unlockedAt?.getTime() || 0));
+            .sort((a, b) => (b.unlockedAt?.getTime() || 0) - (a.unlockedAt?.getTime() || 0));
             .slice(0, 5); }
     }
     
@@ -472,7 +472,7 @@ export class UserDataManager {
 
             }
 
-                throw new Error('無効なインポートデータです); }'
+                throw new Error('無効なインポートデータです'; }'
             }
             
             // プロフィールの復元
@@ -488,7 +488,7 @@ export class UserDataManager {
             ;
             // すべてのキャッシュを無効化
             this.invalidateCache()';
-            console.log('[UserDataManager] データインポート完了);
+            console.log('[UserDataManager] データインポート完了';
             return true;
 
         } catch (error') {
@@ -512,8 +512,8 @@ export class UserDataManager {
     private invalidateCache(): void { this.dataCache = {
             statistics: null;
             achievements: null;
-            profile: null;
-           , lastUpdate: 0 }
+            profile: null,
+    lastUpdate: 0 }
     
     private invalidateProfileCache(): void { this.dataCache.profile = null; }
     
@@ -529,22 +529,22 @@ export class UserDataManager {
     /**
      * デフォルトプロフィールを取得'
      */''
-    private getDefaultProfile(''';
+    private getDefaultProfile('''
             username: 'プレイヤー';
             level: 1);
             experience: 0);
             joinDate: new Date();
             totalPlaytime: 0;
-            gamesPlayed: 0;
-           , lastActive: new Date();
+            gamesPlayed: 0,
+    lastActive: new Date();
         }
     
     /**
      * デフォルト統計を取得'
      */''
-    private getDefaultStatistics(''';
+    private getDefaultStatistics('''
             bubble: { totalPopped: 0, normalPopped: 0, specialPopped: 0, bossDefeated: 0, electricActivated: 0, favoriteType: 'normal' ,})
-            combo: { maxCombo: 0, averageCombo: 0, totalCombos: 0, perfectCombos: 0 ,})'
+            combo: { maxCombo: 0, averageCombo: 0, totalCombos: 0, perfectCombos: 0 ,}''
             stage: { stagesCleared: 0, currentStage: 1, bestStageScore: {,}, stageCompletionTimes: {},''
             performance: { averageFPS: 60, averageResponseTime: 150, optimalSettings: 'high', recommendedQuality: 'high' ,}
     
@@ -552,8 +552,8 @@ export class UserDataManager {
      * デフォルト実績を取得
      */
     private getDefaultAchievements(): UserAchievements { return { unlocked: [],
-            total: 0;
-           , progress: [], };
+            total: 0,
+    progress: [], };
             recent: [], }
             categories: {}
     
@@ -564,7 +564,7 @@ export class UserDataManager {
         this.eventBus.off('dataUpdateRequired'');''
         this.eventBus.off('profileUpdated'');''
         this.eventBus.off('statisticsUpdated'');''
-        this.eventBus.off('achievementsUpdated);
+        this.eventBus.off('achievementsUpdated';
         ';
         // キャッシュクリア
         this.invalidateCache()';

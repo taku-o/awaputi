@@ -22,13 +22,13 @@ interface ValidationWarning { type: string,
 
 interface ScriptBlock { content: string,
     fullMatch: string;
-    startIndex: number;
-   , attributes: Record<string, string> }
+    startIndex: number,
+    attributes: Record<string, string> }
 
 interface ValidationResult { isValid: boolean,
     errors: ValidationError[];
-    warnings: ValidationWarning[];
-   , scriptBlockCount: number ,}
+    warnings: ValidationWarning[],
+    scriptBlockCount: number ,}
 
 export class HTMLJavaScriptChecker {
     private errors: ValidationError[];
@@ -62,21 +62,21 @@ export class HTMLJavaScriptChecker {
             this.validateStringLiterals(htmlContent);
 
             return { isValid: this.errors.length === 0,
-                errors: this.errors;
-               , warnings: this.warnings, };
-                scriptBlockCount: scriptBlocks.length }
-            } catch (error) { this.errors.push({)
+                errors: this.errors,
+    warnings: this.warnings, };
+                scriptBlockCount: scriptBlocks.length 
+    } catch (error) { this.errors.push({)
                 type: 'PARSE_ERROR'), }
                 message: `HTML解析エラー: ${(error, as, Error}).message}`;
-                line: 0;
-               , column: 0;
+                line: 0,
+    column: 0;
             }),
 
             return { isValid: false,
-                errors: this.errors;
-               , warnings: this.warnings, };
-                scriptBlockCount: 0 }
-            }
+                errors: this.errors,
+    warnings: this.warnings, };
+                scriptBlockCount: 0 
+    }
     }
 
     /**
@@ -90,10 +90,10 @@ export class HTMLJavaScriptChecker {
 
         while((match = scriptRegex.exec(htmlContent) !== null) {
             blocks.push({)
-                content: match[1]);
-               , fullMatch: match[0],);
-                startIndex: match.index);
-               , attributes: this.parseScriptAttributes(match[0] ,});
+                content: match[1]),
+    fullMatch: match[0],);
+                startIndex: match.index),
+    attributes: this.parseScriptAttributes(match[0] ,});
         }
 
         return blocks;
@@ -135,7 +135,7 @@ export class HTMLJavaScriptChecker {
         if(attributes.type === 'module'') { '
             this.warnings.push({ }
 
-                type: 'MODULE_SCRIPT), }'
+                type: 'MODULE_SCRIPT', }'
                 message: `ES6モジュールスクリプト検出 (ブロック ${index + 1}}) - 構文チェックをスキップ`;
                 blockIndex: index;
             }),
@@ -149,8 +149,8 @@ export class HTMLJavaScriptChecker {
         } catch (error) { this.errors.push({)'
                 type: 'SYNTAX_ERROR'), }
                 message: `構文エラー (ブロック ${index + 1}): ${(error, as, Error}).message}`;
-                blockIndex: index;
-               , originalError: error as Error;
+                blockIndex: index,
+    originalError: error as Error;
             }),
         }
     }
@@ -191,7 +191,7 @@ export class HTMLJavaScriptChecker {
         if(escapedMatches) { '
             this.warnings.push({ }
 
-                type: 'ESCAPED_XSS_TEST), }'
+                type: 'ESCAPED_XSS_TEST', }'
                 message: `適切にエスケープされたXSSテストコードが検出されました (${escapedMatches.length}件})`;
                 count: escapedMatches.length;
             }),
@@ -239,7 +239,7 @@ export class HTMLJavaScriptChecker {
 
         }
 
-            parts.push('✅ 構文検証: 合格); }'
+            parts.push('✅ 構文検証: 合格'; }'
         } else {  }
             parts.push(`❌ 構文検証: 失敗 (${result.errors.length}件のエラー}`});
         }
@@ -256,7 +256,7 @@ export class HTMLJavaScriptChecker {
 
 ' }'
 
-        return, parts.join('\n''});
+        return, parts.join('\n''}';
 
     }''
 }

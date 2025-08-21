@@ -11,16 +11,16 @@ type BackgroundEffectType = 'particles' | 'rain' | 'snow' | 'fog' | 'stars' | 'c
 interface BackgroundEffectOptions { density: number,
     speed: number;
     color: string;
-    size: number;
-   , opacity: number ,}
+    size: number,
+    opacity: number ,}
 
 /**
  * Background effect interface
  */
 interface BackgroundEffect { effectType: BackgroundEffectType;
     enabled: boolean;
-    intensity: number;
-   , options: BackgroundEffectOptions
+    intensity: number,
+    options: BackgroundEffectOptions
     }
 
 /**
@@ -169,7 +169,7 @@ export class BackgroundEffectRenderer {
 
             context.restore();''
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'BackgroundEffectRenderer.renderSnowEffect' ,});
+                context: 'BackgroundEffectRenderer.renderSnowEffect' ,}';
         }
     }
     
@@ -222,7 +222,7 @@ export class BackgroundEffectRenderer {
 
             context.restore();''
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'BackgroundEffectRenderer.renderStarsEffect' ,});
+                context: 'BackgroundEffectRenderer.renderStarsEffect' ,}';
         }
     }
     
@@ -246,7 +246,7 @@ export class BackgroundEffectRenderer {
                     break;' }'
 
             } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'BackgroundEffectRenderer.updateBackgroundEffect),' }
+                context: 'BackgroundEffectRenderer.updateBackgroundEffect',' }
 
             }');
         }

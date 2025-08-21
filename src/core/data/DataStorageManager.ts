@@ -21,8 +21,8 @@ export interface PerformanceStatistics { saveOperations: number,
     loadOperations: number;
     cacheHits: number;
     cacheMisses: number;
-    totalSaveTime: number;
-   , totalLoadTime: number;
+    totalSaveTime: number,
+    totalLoadTime: number;
     averageSaveTime?: string;
     averageLoadTime?: string; ,}
 export interface SaveOptions { priority?: OperationPriority;
@@ -52,38 +52,38 @@ export interface SaveResult { success: boolean,
     ,}
 export interface ChunkMetadata { totalChunks: number,
     chunkSize: number;
-    totalSize: number;
-   , timestamp: number;
+    totalSize: number,
+    timestamp: number;
     checksum?: string;
     compression?: CompressionType;
     encryption?: EncryptionType;
     ,}
 export interface LargeDataMetadata extends ChunkMetadata { dataType: string,
-    version: string;
-   , originalSize: number;
+    version: string,
+    originalSize: number;
     compressionRatio?: number ,}
 export interface StorageQuota { used: number,
     available: number;
-    total: number;
-   , percentage: number ,}
+    total: number,
+    percentage: number ,}
 export interface DataValidationResult { valid: boolean,
-    errors: ValidationError[];
-   , warnings: ValidationWarning[];
+    errors: ValidationError[],
+    warnings: ValidationWarning[];
     schema?: string ,}
 export interface ValidationError { field: string,
     expected: string;
-    actual: string;
-   , severity: ErrorSeverity
+    actual: string,
+    severity: ErrorSeverity
     ,}
 export interface ValidationWarning { field: string,
-    message: string;
-   , code: string ,}
+    message: string,
+    code: string ,}
 export interface CacheEntry<T = any> { data: T,
     timestamp: number;
     expiry?: number;
     tags: string[];
-    size: number;
-   , hits: number ,}
+    size: number,
+    hits: number ,}
 export interface StorageProvider { setItem(key: string, value: string): Promise<void> | void,
     getItem(key: string): Promise<string | null> | string | null,
     removeItem(key: string): Promise<void> | void,
@@ -92,8 +92,8 @@ export interface StorageProvider { setItem(key: string, value: string): Promise<
     key(index: number): string | null, }
 export interface DataManagerReference { isInitialized: boolean,
     version: string;
-    asyncQueue: AsyncQueue;
-   , cache: CacheManager;
+    asyncQueue: AsyncQueue,
+    cache: CacheManager;
     playerData?: PlayerDataManager;
     settingsManager?: SettingsManager;
     statisticsManager?: StatisticsManager;
@@ -103,8 +103,8 @@ export interface DataManagerReference { isInitialized: boolean,
 export interface AsyncQueue { enqueue<T>(operation: () => Promise<T>, options: QueueOptions): Promise<T>
     ,}
 export interface QueueOptions { priority: OperationPriority,
-    timeout: number;
-   , metadata: Record<string, any>, }
+    timeout: number,
+    metadata: Record<string, any>, }
 export interface CacheManager { invalidateByTags(tags: string[]): void,
     get<T>(key: string): CacheEntry<T> | null,
     set<T>(key: string, data: T, options?: CacheSetOptions): void;
@@ -122,22 +122,22 @@ export interface SettingsManager { saveSettings(data: any): Promise<boolean>,
 
 export interface StatisticsManager {;
     getDetailedStatistics(''';
-export type DataType = 'playerData' | 'settings' | 'statistics' | 'cache' | 'logs' | 'preferences';''
-export type OperationPriority = 'low' | 'normal' | 'high' | 'critical';''
-export type ErrorSeverity = 'warning' | 'error' | 'critical';''
-export type CachePriority = 'low' | 'normal' | 'high';''
-export type StorageEventType = 'saved' | 'loaded' | 'deleted' | 'error' | 'quota_exceeded';''
-export type CompressionType = 'none' | 'gzip' | 'lz4' | 'brotli';''
-export type EncryptionType = 'none' | 'aes-256-gcm' | 'chacha20-poly1305';
+export type DataType = 'playerData' | 'settings' | 'statistics' | 'cache' | 'logs' | 'preferences';
+export type OperationPriority = 'low' | 'normal' | 'high' | 'critical';
+export type ErrorSeverity = 'warning' | 'error' | 'critical';
+export type CachePriority = 'low' | 'normal' | 'high';
+export type StorageEventType = 'saved' | 'loaded' | 'deleted' | 'error' | 'quota_exceeded';
+export type CompressionType = 'none' | 'gzip' | 'lz4' | 'brotli';
+export type EncryptionType = 'none' | 'aes-256-gcm' | 'chacha20-poly1305'
 
 // 定数
 export const DEFAULT_SAVE_OPTIONS: SaveOptions = {''
     priorit;y: 'normal';
-    timeout: 10000;
-   , chunkSize: 1024 * 1024, // 1MB;
+    timeout: 10000,
+    chunkSize: 1024 * 1024, // 1MB;
     compress: false;
-    encrypt: false;
-   , tags: [],
+    encrypt: false,
+    tags: [],
     version: '1.0.0' 
 ,} as const;
 ';
@@ -148,13 +148,13 @@ export const DEFAULT_LOAD_OPTIONS: LoadOptions = {;
     useCache: true;
     fallbackToDefault: true;
     validateSchema: false;
-    decrypt: false;
-   , maxAge: 3600000 // 1 hour 
+    decrypt: false,
+    maxAge: 3600000 // 1 hour 
 } as const;
 export const PERFORMANCE_THRESHOLDS = { SAVE_WARNING: 100, // ms
     LOAD_WARNING: 50,  // ms;
-    CACHE_HIT_RATIO_MIN: 0.8;
-   , OPERATION_TIMEOUT: 30000 // ms 
+    CACHE_HIT_RATIO_MIN: 0.8,
+    OPERATION_TIMEOUT: 30000 // ms 
 ,} as const;
 export const STORAGE_LIMITS = { MAX_ITEM_SIZE: 10 * 1024 * 1024, // 10MB
     MAX_TOTAL_SIZE: 50 * 1024 * 1024, // 50MB;
@@ -195,16 +195,14 @@ export function parseStorageKey(key: string): { prefix: string; dataType: string
             return { prefix,''
                 dataType: remainder.replace(STORAGE_KEYS.METADATA_SUFFIX, '''), };
                 isChunk: false ;
-}
-            },
+    },
         }
     ';
 
     return { ''
-        prefix: '';
-       , dataType: key, };
+        prefix: '',
+    dataType: key, };
         isChunk: false ;
-}
     },
 }
 
@@ -213,8 +211,8 @@ export function shouldUseChunking(dataSize: number, threshold: number = STORAGE_
 export function validateDataType(dataType: string): boolean { return /^[a-zA-Z0-9_-]+$/.test(dataType) && dataType.length <= 50; }
 export function createStorageEvent(;
     type: StorageEventType;
-    dataType: string);
-   , duration: number);
+    dataType: string),
+    duration: number);
     additionalData?: Partial<StorageEvent>;
     ): StorageEvent { return { type,
         dataType,
@@ -233,7 +231,7 @@ export class DataStorageManager {
 
         this.dataManager = dataManager;''
         this.errorHandler = getErrorHandler('';
-    })'
+    }''
         console.log('[DataStorageManager] Component, initialized); }
     /**
      * データ保存の実装（非同期キュー使用）
@@ -259,7 +257,7 @@ export class DataStorageManager {
                 if(dataSize > STORAGE_LIMITS.MAX_ITEM_SIZE) {
                     
                 }
-                    throw new Error(`Data, size ${dataSize} exceeds, maximum limit ${STORAGE_LIMITS.MAX_ITEM_SIZE}`});
+                    throw new Error(`Data size ${dataSize} exceeds maximum limit ${STORAGE_LIMITS.MAX_ITEM_SIZE}`}');
                 }
                 
                 // データタイプ別の処理
@@ -298,7 +296,7 @@ export class DataStorageManager {
                 }
                 ';
                 // イベント発火
-                const event = createStorageEvent('saved', dataType, duration, { size: dataSize )),''
+                const event = createStorageEvent('saved', dataType, duration, { size: dataSize )',''
                 this.dataManager.emit('dataSaved', event);
                 
                 // キャッシュ無効化
@@ -306,10 +304,10 @@ export class DataStorageManager {
                  }
                 return { ...result, size: dataSize ,}''
             } catch (error) {
-                this.errorHandler.handleError(error as Error, 'DATA_SAVE_ERROR', {)'
+                this.errorHandler.handleError(error as Error, 'DATA_SAVE_ERROR', {''
                     operation: 'save');
-                    dataType,)';
-                    options: mergedOptions),' }'
+                    dataType,'';
+                    options: mergedOptions',' }'
 
                 }');
                 throw error;
@@ -403,15 +401,15 @@ export class DataStorageManager {
                 if (mergedOptions.useCache && result !== null) { const cacheKey = this.generateCacheKey(dataType, mergedOptions); }
                     const tags = [`dataType:${dataType}`, ...(mergedOptions.tags || [])];
                     this.dataManager.cache.set(cacheKey, result, { ttl: mergedOptions.maxAge,)'
-                        tags)' }
+                        tags'' }
                 ';
                 // イベント発火
-                const event = createStorageEvent('loaded', dataType, duration);''
+                const event = createStorageEvent('loaded', dataType, duration';''
                 this.dataManager.emit('dataLoaded', event);
                 
                 return result;
 
-            } catch (error) { this.errorHandler.handleError(error as Error, 'DATA_LOAD_ERROR', {)'
+            } catch (error) { this.errorHandler.handleError(error as Error, 'DATA_LOAD_ERROR', {''
                     operation: 'load');
                     dataType,);
                     options: mergedOptions ,});
@@ -430,7 +428,7 @@ export class DataStorageManager {
 
             timeout: mergedOptions.timeout!,' }'
 
-            metadata: { dataType, operation: 'load' ,});
+            metadata: { dataType, operation: 'load' ,}';
     }
 
     /**
@@ -441,14 +439,14 @@ export class DataStorageManager {
 
         }
 
-            throw new Error('PlayerData, system not, available); }'
+            throw new Error('PlayerData, system not, available'; }'
         }
 
         const result = await this.dataManager.playerData.saveData(data);
 
         console.log('[DataStorageManager] Player data saved successfully', { );
-            dataSize: calculateStorageSize(data);
-           , timestamp: Date.now( });
+            dataSize: calculateStorageSize(data),
+    timestamp: Date.now( });
         
         return result;
     }
@@ -461,7 +459,7 @@ export class DataStorageManager {
 
         }
 
-            throw new Error('PlayerData, system not, available); }'
+            throw new Error('PlayerData, system not, available'; }'
         }
 
         const result = this.dataManager.playerData.getAllData()';
@@ -500,7 +498,7 @@ export class DataStorageManager {
 
         }
 
-            throw new Error('SettingsManager, not available); }'
+            throw new Error('SettingsManager, not available'; }'
         }
 
         const result = this.dataManager.settingsManager.getCurrentSettings()';
@@ -531,7 +529,7 @@ export class DataStorageManager {
 
         }
 
-            throw new Error('StatisticsManager, not available); }'
+            throw new Error('StatisticsManager, not available'; }'
         }
 
         const result = await this.dataManager.statisticsManager.getDetailedStatistics();
@@ -546,12 +544,12 @@ export class DataStorageManager {
      */
     private async saveGenericData(dataType: string, data: any, options: SaveOptions): Promise<SaveResult> { console.log(`[DataStorageManager] Saving, generic data: ${dataType)`},
         
-        const key = generateStorageKey(dataType};
+        const key = generateStorageKey(dataType}
         const, payload = {
             data }
-            timestamp: Date.now(});
-            version: options.version || this.dataManager.version;
-           , metadata: options.metadata;
+            timestamp: Date.now());
+            version: options.version || this.dataManager.version,
+    metadata: options.metadata;
         },
         
         const serializedData = JSON.stringify(payload);
@@ -561,8 +559,7 @@ export class DataStorageManager {
             key, ;
             timestamp: payload.timestamp, };
             size: serializedData.length ;
-}
-        },
+    },
     }
 
     /**
@@ -598,8 +595,8 @@ export class DataStorageManager {
             const key = generateStorageKey(dataType, STORAGE_KEYS.DIRECT_PREFIX);
             const payload = { data,
                 timestamp: Date.now();
-                version: options.version || this.dataManager.version;
-               , options: options.metadata 
+                version: options.version || this.dataManager.version,
+    options: options.metadata 
 ,};
             const serializedData = JSON.stringify(payload);
             await this.storageProvider.setItem(key, serializedData);
@@ -607,17 +604,16 @@ export class DataStorageManager {
             const endTime = performance.now();
             const duration = endTime - startTime;
             
-            console.log(`[DataStorageManager] Direct, save completed, for ${dataType} in ${duration.toFixed(2})ms`);
+            console.log(`[DataStorageManager] Direct save completed for ${dataType} in ${duration.toFixed(2})ms`');
             
             return { success: true, 
                 key, ;
                 timestamp: payload.timestamp, };
                 size: serializedData.length ;
-}
-            },
+    },
 
         } catch (error') {
-            this.errorHandler.handleError(error as Error, 'DIRECT_SAVE_ERROR', {)'
+            this.errorHandler.handleError(error as Error, 'DIRECT_SAVE_ERROR', {''
                 operation: 'saveDataDirect');
                 dataType,);
                 options); });
@@ -648,7 +644,7 @@ export class DataStorageManager {
             return payload.data;
 
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'DIRECT_LOAD_ERROR', {)'
+            this.errorHandler.handleError(error as Error, 'DIRECT_LOAD_ERROR', {''
                 operation: 'loadDataDirect');
                 dataType,);
                 options); });
@@ -675,7 +671,7 @@ export class DataStorageManager {
             if (dataSize > chunkSize) { return await this.saveLargeDataInChunks(dataType, serializedData, options); else { return await this.saveGenericData(dataType, data, options);' }'
 
             } catch (error) {
-            this.errorHandler.handleError(error as Error, 'LARGE_DATA_SAVE_ERROR', {)'
+            this.errorHandler.handleError(error as Error, 'LARGE_DATA_SAVE_ERROR', {''
                 operation: 'saveLargeData');
                 dataType,);
                 options); });
@@ -716,8 +712,8 @@ export class DataStorageManager {
             chunkSize,
             totalSize: serializedData.length;
             originalSize: serializedData.length;
-            timestamp: Date.now();
-           , version: options.version || this.dataManager.version 
+            timestamp: Date.now(),
+    version: options.version || this.dataManager.version 
 ,};
         await this.saveLargeDataMetadata(dataType, metadata);
         
@@ -728,8 +724,7 @@ export class DataStorageManager {
             metadata,
             timestamp: metadata.timestamp, };
             size: metadata.totalSize ;
-}
-        },
+    },
     }
 
     /**
@@ -788,7 +783,7 @@ export class DataStorageManager {
             return result;
 
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'LARGE_DATA_LOAD_ERROR', {)'
+            this.errorHandler.handleError(error as Error, 'LARGE_DATA_LOAD_ERROR', {''
                 operation: 'loadLargeData');
                 dataType,);
                 options); });
@@ -821,8 +816,8 @@ export class DataStorageManager {
     private hashOptions(options: Record<string, any>): string { const normalizedOptions = {
             ...options,
             // 動的な値を除外
-            timestamp: undefined;
-           , _internal: undefined 
+            timestamp: undefined,
+    _internal: undefined 
 ,};
         const optionsStr = JSON.stringify(normalizedOptions, Object.keys(normalizedOptions).sort();
         
@@ -856,8 +851,7 @@ export class DataStorageManager {
         ,}
 
                 severity: 'error' ;
-}
-            }),
+    }',
         }
         ';
         // データタイプ別検証
@@ -866,18 +860,18 @@ export class DataStorageManager {
             case 'playerData':'';
                 if(typeof, data !== 'object' || Array.isArray(data)) {'
                     errors.push({''
-                        field: 'playerData',)';
-                        expected: 'object')';
-                       , actual: typeof data,' }'
+                        field: 'playerData','';
+                        expected: 'object')',
+    actual: typeof data,' }'
 
                         severity: 'error')'); }
                 break;
 
             case 'settings':'';
                 if(typeof, data !== 'object' || Array.isArray(data)) { errors.push({''
-                        field: 'settings',)';
-                        expected: 'object')';
-                       , actual: typeof data,')';
+                        field: 'settings','';
+                        expected: 'object')',
+    actual: typeof data,')';
                         severity: 'error' ,}
                 break;
         }
@@ -940,11 +934,10 @@ export class DataStorageManager {
 }''
             } catch (error) { console.warn('[DataStorageManager] Failed to estimate storage usage:', error }
         return { used: totalSize,
-            available: STORAGE_LIMITS.MAX_TOTAL_SIZE - totalSize;
-           , total: STORAGE_LIMITS.MAX_TOTAL_SIZE, };
+            available: STORAGE_LIMITS.MAX_TOTAL_SIZE - totalSize,
+    total: STORAGE_LIMITS.MAX_TOTAL_SIZE, };
             percentage: (totalSize / STORAGE_LIMITS.MAX_TOTAL_SIZE) * 100 ;
-}
-        },
+    },
     }
 
     /**
@@ -954,10 +947,10 @@ export class DataStorageManager {
         const stats = { ...this.performanceStats;
         
         // 平均時間の計算
-        stats.averageSaveTime = stats.saveOperations > 0 ?   : undefined'';
+        stats.averageSaveTime = stats.saveOperations > 0 ? undefined : undefined'';
             (stats.totalSaveTime / stats.saveOperations).toFixed(2) : '0';
 
-        stats.averageLoadTime = stats.loadOperations > 0 ?   : undefined'';
+        stats.averageLoadTime = stats.loadOperations > 0 ? undefined : undefined'';
             (stats.totalLoadTime / stats.loadOperations).toFixed(2) : '0';
         
         return stats;
@@ -993,23 +986,23 @@ export class DataStorageManager {
                 
                 // メタデータを削除
                 const metadataKey = generateStorageKey(`${dataType}${ STORAGE_KEYS.METADATA_SUFFIX}`}
-                await, this.storageProvider.removeItem(metadataKey});
+                await this.storageProvider.removeItem(metadataKey});
             } else {  // 通常データを削除
                 const key = generateStorageKey(dataType); }
                 await this.storageProvider.removeItem(key); }
             // 直接保存データも削除
-            const directKey = generateStorageKey(dataType, STORAGE_KEYS.DIRECT_PREFIX);
+            const directKey = generateStorageKey(dataType STORAGE_KEYS.DIRECT_PREFIX);
             await this.storageProvider.removeItem(directKey);
             
             // キャッシュ無効化
-            this.invalidateCacheByDataType(dataType);
+            this.invalidateCacheByDataType(dataType');
             
             console.log(`[DataStorageManager] Data, deleted: ${dataType}`}');
             ';
 
             return true;''
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'DATA_DELETE_ERROR', {)'
+            this.errorHandler.handleError(error as Error, 'DATA_DELETE_ERROR', {''
                 operation: 'deleteData',);
                 dataType); });
             return false;
@@ -1024,7 +1017,7 @@ export class DataStorageManager {
             console.log('[DataStorageManager] Cleanup, completed');' }
 
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'CLEANUP_ERROR', {)'
+            this.errorHandler.handleError(error as Error, 'CLEANUP_ERROR', {''
                 operation: 'cleanup'),' }
 
             }');

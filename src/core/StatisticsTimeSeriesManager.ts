@@ -15,11 +15,11 @@ export class StatisticsTimeSeriesManager {
         this.maxDataPoints = 1000; // 最大データポイント数
         this.aggregationIntervals = {
             hourly: 60 * 60 * 1000;
-            daily: 24 * 60 * 60 * 1000;
-           , weekly: 7 * 24 * 60 * 60 * 1000;
+            daily: 24 * 60 * 60 * 1000,
+    weekly: 7 * 24 * 60 * 60 * 1000;
     }
-            monthly: 30 * 24 * 60 * 60 * 1000 }
-        }
+            monthly: 30 * 24 * 60 * 60 * 1000 
+    }
 
     /**
      * 時系列データを記録
@@ -46,7 +46,7 @@ export class StatisticsTimeSeriesManager {
             if (this.timeSeriesData.length > this.maxDataPoints) { this.timeSeriesData.shift();' }'
 
             } catch (error) {
-            ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'recordTimeSeriesData); }
+            ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'recordTimeSeriesData'; }
     }
 
     /**
@@ -109,12 +109,12 @@ export class StatisticsTimeSeriesManager {
                 if(!aggregated[bucketTime]) {
                 
                     aggregated[bucketTime] = {
-                        timestamp: bucketTime;
-                       , count: 0;
+                        timestamp: bucketTime,
+    count: 0;
                 }
                         sum: 0, }
-                        values: [] }
-                    }
+                        values: [] 
+    }
 
                 aggregated[bucketTime].count++;
                 aggregated[bucketTime].sum += point[metric] || 0;
@@ -122,11 +122,11 @@ export class StatisticsTimeSeriesManager {
             });
 
             return Object.values(aggregated).map(bucket => ({ timestamp: bucket.timestamp)
-                value: bucket.sum / bucket.count);
-               , count: bucket.count,);
+                value: bucket.sum / bucket.count),
+    count: bucket.count,);
                 sum: bucket.sum);
-                min: Math.min(...bucket.values);
-               , max: Math.max(...bucket.values))).sort((a, b) => a.timestamp - b.timestamp);
+                min: Math.min(...bucket.values),
+    max: Math.max(...bucket.values))).sort((a, b) => a.timestamp - b.timestamp);
 
         } catch (error) {
             ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'aggregateData'');
@@ -156,8 +156,8 @@ export class StatisticsTimeSeriesManager {
                 aggregation: period,')';
                 metric: 'playTime');
             return { score: scoreData,
-                efficiency: efficiencyData;
-               , playTime: playTimeData;
+                efficiency: efficiencyData,
+    playTime: playTimeData;
                 period,
     }
                 days, };
@@ -187,20 +187,20 @@ export class StatisticsTimeSeriesManager {
 
             return { totalDataPoints: dataPoints,
                 dateRange: {
-                    start: firstPoint.timestamp;
-                   , end: lastPoint.timestamp, };
-                    duration: lastPoint.timestamp - firstPoint.timestamp }
-                };
+                    start: firstPoint.timestamp,
+    end: lastPoint.timestamp, };
+                    duration: lastPoint.timestamp - firstPoint.timestamp 
+    };
                 trends: this.calculateTrends();
-                peaks: this.findPeaks();
-               , averages: this.calculateAverages();
+                peaks: this.findPeaks(),
+    averages: this.calculateAverages();
             } catch (error) {
             ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getTimeSeriesStatisticsSummary);
             return { totalDataPoints: 0, };
                 dateRange: null, }
                 trends: {};
                 peaks: {};
-                averages: {}
+                averages: {
     }
 
     /**
@@ -215,14 +215,14 @@ export class StatisticsTimeSeriesManager {
 
             if(recentData.length === 0) {
                 return { period: days,
-                    gamesPlayed: 0;
-                   , averageScore: 0;
+                    gamesPlayed: 0,
+    averageScore: 0;
     ,}
 
                     averageEfficiency: 0,' };
 
-                    trend: 'no-data' }
-                }
+                    trend: 'no-data' 
+    }
 
             const totalGames = recentData.length;
             const totalScore = recentData.reduce((sum, point) => sum + point.score, 0);
@@ -252,20 +252,20 @@ export class StatisticsTimeSeriesManager {
 
             return { period: days,
                 gamesPlayed: totalGames;
-                averageScore: Math.round(averageScore);
-               , averageEfficiency: Math.round(averageEfficiency * 10) / 10;
+                averageScore: Math.round(averageScore),
+    averageEfficiency: Math.round(averageEfficiency * 10) / 10;
                 trend,
-                bestScore: Math.max(...recentData.map(point = > point.score ,};
-                worstScore: Math.min(...recentData.map(point => point.score); }
-            } catch (error) {
+                bestScore: Math.max(...recentData.map(point = > point.score ,}
+                worstScore: Math.min(...recentData.map(point => point.score); 
+    } catch (error) {
             ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getRecentPerformance'');
             return { period: days,
-                gamesPlayed: 0;
-               , averageScore: 0,
+                gamesPlayed: 0,
+    averageScore: 0,
                 averageEfficiency: 0,' };
 
-                trend: 'no-data' }
-            }
+                trend: 'no-data' 
+    }
     }
 
     /**
@@ -296,10 +296,10 @@ export class StatisticsTimeSeriesManager {
                     timeRange: `${peakHour}:00-${peakHour + 1}:00`
                 };
                 peakDay: { day: peakDay;
-                    name: dayNames[peakDay];
-                   , count: dayCounts[peakDay] };
-                hourDistribution: hourCounts;
-               , dayDistribution: dayCounts;
+                    name: dayNames[peakDay],
+    count: dayCounts[peakDay] };
+                hourDistribution: hourCounts,
+    dayDistribution: dayCounts;
             },
 
         } catch (error) {
@@ -309,9 +309,8 @@ export class StatisticsTimeSeriesManager {
 
                 peakHour: { hour: 0, count: 0, timeRange: '0:00-1:00' ,},''
                 peakDay: { day: 0, name: 'Sunday', count: 0 ,},
-                hourDistribution: new Array(24).fill(0);
-               , dayDistribution: new Array(7).fill(0);
-            }
+                hourDistribution: new Array(24).fill(0),
+    dayDistribution: new Array(7).fill(0);
     }
 
     /**
@@ -327,8 +326,8 @@ export class StatisticsTimeSeriesManager {
                 return { }
                     distribution: {};
                     average: 0;
-                    median: 0;
-                   , mode: 0;
+                    median: 0,
+    mode: 0;
                 },
             }
 
@@ -358,30 +357,30 @@ export class StatisticsTimeSeriesManager {
 
             return { distribution: buckets,
                 average: Math.round(average);
-                median: Math.round(median);
-               , shortest: sortedTimes[0], };
-                longest: sortedTimes[sortedTimes.length - 1] }
-            } catch (error) {
+                median: Math.round(median),
+    shortest: sortedTimes[0], };
+                longest: sortedTimes[sortedTimes.length - 1] 
+    } catch (error) {
             ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getPlayTimeDistribution'');
             return { }
                 distribution: {};
                 average: 0;
-                median: 0;
-               , mode: 0;
+                median: 0,
+    mode: 0;
             },
         }
     }
 
     /**'
      * 期間比較分析''
-     * @param {string} period1 - 比較期間1('7d', '30d', etc.)
+     * @param {string} period1 - 比較期間1('7d', '30d', etc.'
      * @param {string} period2 - 比較期間2
      * @returns {Object} 比較結果'
      */''
-    compareTimePeriods(period1 = '7d', period2 = '14d) {'
+    compareTimePeriods(period1 = '7d', period2 = '14d' {'
         try {'
             const now = Date.now()';
-            const days1 = parseInt(period1.replace('d', ''));''
+            const days1 = parseInt(period1.replace('d', '')';''
             const days2 = parseInt(period2.replace('d', '');
 
             const data1 = this.timeSeriesData.filter(point => );
@@ -406,8 +405,8 @@ export class StatisticsTimeSeriesManager {
                     gamesChange: this.calculatePercentageChange(stats2.totalGames, stats1.totalGames }
             } catch (error) {
             ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'compareTimePeriods); }
-            return { period1: {}, period2: {}, comparison: {}
-}
+            return { period1: {}, period2: {}, comparison: {
+    }
 
     /**
      * 期間統計を計算
@@ -417,12 +416,12 @@ export class StatisticsTimeSeriesManager {
     calculatePeriodStats(data) {
         if (data.length === 0) {
             return { totalGames: 0,
-                averageScore: 0;
-               , averageEfficiency: 0;
+                averageScore: 0,
+    averageEfficiency: 0;
     ,}
                 totalPlayTime: 0, };
-                bestScore: 0 }
-            }
+                bestScore: 0 
+    }
 
         const totalGames = data.length;
         const totalScore = data.reduce((sum, point) => sum + point.score, 0);
@@ -431,8 +430,8 @@ export class StatisticsTimeSeriesManager {
         const bestScore = Math.max(...data.map(point => point.score);
 
         return { totalGames,
-            averageScore: totalScore / totalGames;
-           , averageEfficiency: totalEfficiency / totalGames;
+            averageScore: totalScore / totalGames,
+    averageEfficiency: totalEfficiency / totalGames;
             totalPlayTime, };
             bestScore }
         }
@@ -487,7 +486,7 @@ export class StatisticsTimeSeriesManager {
 
         const change = (secondAvg - firstAvg) / firstAvg;
 
-        if(change > 0.1) return 'up';''
+        if(change > 0.1) return 'up';
         if(change < -0.1) return 'down';
 
     }
@@ -508,14 +507,14 @@ export class StatisticsTimeSeriesManager {
 
         return { score: {
                 max: Math.max(...scores);
-                maxIndex: scores.indexOf(Math.max(...scores);
-               , min: Math.min(...scores), };
+                maxIndex: scores.indexOf(Math.max(...scores),
+    min: Math.min(...scores), };
                 minIndex: scores.indexOf(Math.min(...scores);
             },
             efficiency: { max: Math.max(...efficiencies);
                 maxIndex: efficiencies.indexOf(Math.max(...efficiencies);
-                min: Math.min(...efficiencies);
-               , minIndex: efficiencies.indexOf(Math.min(...efficiencies }
+                min: Math.min(...efficiencies),
+    minIndex: efficiencies.indexOf(Math.min(...efficiencies }
 
     /**
      * 平均値を計算
@@ -535,8 +534,8 @@ export class StatisticsTimeSeriesManager {
 
         return { score: totals.score / count,
             efficiency: totals.efficiency / count, };
-            playTime: totals.playTime / count }
-        }
+            playTime: totals.playTime / count 
+    }
 
     /**
      * サマリーを生成
@@ -581,4 +580,4 @@ export function getStatisticsTimeSeriesManager() { if (!statisticsTimeSeriesMana
  * @returns {StatisticsTimeSeriesManager} 新しいシングルトンインスタンス
  */
 export function reinitializeStatisticsTimeSeriesManager() {;
-    statisticsTimeSeriesManagerInstance = new StatisticsTimeSeriesManager(' })'
+    statisticsTimeSeriesManagerInstance = new StatisticsTimeSeriesManager(' }''

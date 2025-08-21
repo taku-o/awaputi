@@ -4,7 +4,7 @@
  * TutorialOverlayから分離されたユーザー操作処理機能
  */
 
-import { getErrorHandler  } from '../../../utils/ErrorHandler.js';''
+import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 import { LoggingSystem  } from '../../LoggingSystem.js';
 
 // 型定義
@@ -15,21 +15,21 @@ export interface InteractionState { isListening: boolean;
     isDragging: boolean;
     isScrolling: boolean;
     lastTouchPosition: Position;
-    touchStartTime: number;
-   , gestureRecognition: {
+    touchStartTime: number,
+    gestureRecognition: {
         enable;d: boolean;
-        threshold: number;
-       , timeWindow: number }
+        threshold: number,
+    timeWindow: number }
 
 export interface KeyboardNavigation { enabled: boolean,
     currentFocusIndex: number;
-    focusableElements: HTMLElement[];
-   , shortcuts: {
+    focusableElements: HTMLElement[],
+    shortcuts: {
         nex;t: string[];
         previous: string[];
         skip: string[];
-        complete: string[];
-       , help: string[] ,}
+        complete: string[],
+    help: string[] ,}
 
 export interface AccessibilityConfig { enabled: boolean,
     highContrast: boolean;
@@ -38,29 +38,29 @@ export interface AccessibilityConfig { enabled: boolean,
     reducedMotion: boolean;
     keyboardNavigation: boolean;
     focusIndicators: boolean;
-    announcements: boolean;
-   , textSizeMultiplier: number ,}
+    announcements: boolean,
+    textSizeMultiplier: number ,}
 
 export interface GestureConfig { callback: (() => void) | null;
     enabled: boolean;
-    duration?: number }
-}
+    duration?: number 
+    }
 
 export interface Gestures { swipeLeft: GestureConfig;
     swipeRight: GestureConfig;
     swipeUp: GestureConfig;
     swipeDown: GestureConfig;
     tap: GestureConfig;
-    doubleTap: GestureConfig;
-   , longPress: GestureConfig
+    doubleTap: GestureConfig,
+    longPress: GestureConfig
     }
 
 export interface PointerState { isDown: boolean;
     startPosition: Position;
     currentPosition: Position;
     startTime: number;
-    lastTapTime: number;
-   , tapCount: number }
+    lastTapTime: number,
+    tapCount: number }
 
 export interface InteractionCallbacks { onNext: (() => void) | null;
     onPrevious: (() => void) | null;
@@ -69,8 +69,8 @@ export interface InteractionCallbacks { onNext: (() => void) | null;
     onClose: (() => void) | null;
     onHelp: (() => void) | null;
     onResize: (() => void) | null;
-    onInteraction: ((dat;a: any) => void) | null }
-}
+    onInteraction: ((data: any) => void) | null 
+    }
 
 export type BoundHandlers = { [K in keyof DocumentEventMap]?: (event: DocumentEventMap[K]) => void ,}
 };
@@ -97,28 +97,28 @@ export class TutorialInteractionHandler {
             click: this.handleOverlayClick.bind(this);
             touchstart: this.handleTouchStart.bind(this);
             touchmove: this.handleTouchMove.bind(this);
-            touchend: this.handleTouchEnd.bind(this);
-           , wheel: this.handleWheel.bind(this);
+            touchend: this.handleTouchEnd.bind(this),
+    wheel: this.handleWheel.bind(this);
     }
 
-            contextmenu: this.handleContextMenu.bind(this); }
-        };
+            contextmenu: this.handleContextMenu.bind(this); 
+    };
         
         // インタラクション状態
         this.interactionState = { isListening: false,
-            isDragging: false;
-           , isScrolling: false, }
+            isDragging: false,
+    isScrolling: false, }
             lastTouchPosition: { x: 0, y: 0 ,},
-            touchStartTime: 0;
-           , gestureRecognition: { enabled: false;
-                threshold: 50;
-               , timeWindow: 500 }
-        };
+            touchStartTime: 0,
+    gestureRecognition: { enabled: false;
+                threshold: 50,
+    timeWindow: 500 
+    };
         // キーボードナビゲーション
         this.keyboardNavigation = { enabled: true,
             currentFocusIndex: 0;
-            focusableElements: [];
-           , shortcuts: {''
+            focusableElements: [],
+    shortcuts: {''
                 next: ['ArrowRight', 'Space', 'Tab'],
                 previous: ['ArrowLeft', 'Shift+Tab],
                 skip: ['Escape', 's'],
@@ -134,8 +134,8 @@ export class TutorialInteractionHandler {
             reducedMotion: false;
             keyboardNavigation: true;
             focusIndicators: true;
-            announcements: true;
-           , textSizeMultiplier: 1.0 ,};
+            announcements: true,
+    textSizeMultiplier: 1.0 ,};
         // タッチジェスチャー
         this.gestures = {
             swipeLeft: { callback: null, enabled: true ,},
@@ -151,8 +151,8 @@ export class TutorialInteractionHandler {
             startPosition: { x: 0, y: 0 ,},
             currentPosition: { x: 0, y: 0 ,},
             startTime: 0;
-            lastTapTime: 0;
-           , tapCount: 0;
+            lastTapTime: 0,
+    tapCount: 0;
         },
         
         // コールバック
@@ -162,8 +162,8 @@ export class TutorialInteractionHandler {
             onComplete: null;
             onClose: null;
             onHelp: null;
-            onResize: null;
-           , onInteraction: null ,};
+            onResize: null,
+    onInteraction: null ,};
         this.initialize();
     }
     
@@ -172,10 +172,10 @@ export class TutorialInteractionHandler {
      */
     initialize(): void { try {'
             this.setupAccessibility()';
-            this.loggingSystem.debug('TutorialInteractionHandler', 'Interaction handler initialized);' }
+            this.loggingSystem.debug('TutorialInteractionHandler', 'Interaction handler initialized';' }
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialInteractionHandler.initialize); }'
+            this.errorHandler.handleError(error, 'TutorialInteractionHandler.initialize'; }'
     }
     
     /**
@@ -184,21 +184,21 @@ export class TutorialInteractionHandler {
     startListening(): void { try {'
             if(this.interactionState.isListening) return;
 
-            document.addEventListener('keydown', this.boundHandlers.keydown!);''
-            window.addEventListener('resize', this.boundHandlers.resize!);''
-            document.addEventListener('click', this.boundHandlers.click!);''
-            document.addEventListener('touchstart', this.boundHandlers.touchstart!, { passive: false )),''
-            document.addEventListener('touchmove', this.boundHandlers.touchmove!, { passive: false )),''
-            document.addEventListener('touchend', this.boundHandlers.touchend!);''
-            document.addEventListener('wheel', this.boundHandlers.wheel!, { passive: false )),''
-            document.addEventListener('contextmenu', this.boundHandlers.contextmenu!);
+            document.addEventListener('keydown', this.boundHandlers.keydown!';''
+            window.addEventListener('resize', this.boundHandlers.resize!';''
+            document.addEventListener('click', this.boundHandlers.click!';''
+            document.addEventListener('touchstart', this.boundHandlers.touchstart!, { passive: false )',''
+            document.addEventListener('touchmove', this.boundHandlers.touchmove!, { passive: false )',''
+            document.addEventListener('touchend', this.boundHandlers.touchend!';''
+            document.addEventListener('wheel', this.boundHandlers.wheel!, { passive: false )',''
+            document.addEventListener('contextmenu', this.boundHandlers.contextmenu!';
             ';
 
             this.interactionState.isListening = true;''
-            this.loggingSystem.debug('TutorialInteractionHandler', 'Event listeners started);' }
+            this.loggingSystem.debug('TutorialInteractionHandler', 'Event listeners started';' }
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialInteractionHandler.startListening); }'
+            this.errorHandler.handleError(error, 'TutorialInteractionHandler.startListening'; }'
     }
     
     /**
@@ -207,21 +207,21 @@ export class TutorialInteractionHandler {
     stopListening(): void { try {'
             if(!this.interactionState.isListening) return;
 
-            document.removeEventListener('keydown', this.boundHandlers.keydown);''
-            window.removeEventListener('resize', this.boundHandlers.resize);''
-            document.removeEventListener('click', this.boundHandlers.click);''
-            document.removeEventListener('touchstart', this.boundHandlers.touchstart);''
-            document.removeEventListener('touchmove', this.boundHandlers.touchmove);''
-            document.removeEventListener('touchend', this.boundHandlers.touchend);''
-            document.removeEventListener('wheel', this.boundHandlers.wheel);''
-            document.removeEventListener('contextmenu', this.boundHandlers.contextmenu);
+            document.removeEventListener('keydown', this.boundHandlers.keydown';''
+            window.removeEventListener('resize', this.boundHandlers.resize';''
+            document.removeEventListener('click', this.boundHandlers.click';''
+            document.removeEventListener('touchstart', this.boundHandlers.touchstart';''
+            document.removeEventListener('touchmove', this.boundHandlers.touchmove';''
+            document.removeEventListener('touchend', this.boundHandlers.touchend';''
+            document.removeEventListener('wheel', this.boundHandlers.wheel';''
+            document.removeEventListener('contextmenu', this.boundHandlers.contextmenu';
             ';
 
             this.interactionState.isListening = false;''
-            this.loggingSystem.debug('TutorialInteractionHandler', 'Event listeners stopped);' }
+            this.loggingSystem.debug('TutorialInteractionHandler', 'Event listeners stopped';' }
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialInteractionHandler.stopListening); }'
+            this.errorHandler.handleError(error, 'TutorialInteractionHandler.stopListening'; }'
     }
     
     /**
@@ -245,7 +245,7 @@ export class TutorialInteractionHandler {
                 this.triggerSkip(); } else if(this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.complete) { event.preventDefault();
                 this.triggerComplete(); } else if(this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.help) { event.preventDefault();''
                 this.triggerHelp()';
-            if(key === 'Tab' && !event.shiftKey) {', ';
+            if(key === 'Tab' && !event.shiftKey' {', ';
 
             }
 
@@ -257,7 +257,7 @@ export class TutorialInteractionHandler {
             if (this.accessibility.announcements) { this.announceKeyAction(keyCombo);' }'
 
             } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleKeydown); }'
+            this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleKeydown'; }'
     }
     
     /**
@@ -274,8 +274,8 @@ export class TutorialInteractionHandler {
                 startPosition: { x: touch.clientX, y: touch.clientY ,},
                 currentPosition: { x: touch.clientX, y: touch.clientY ,},
                 startTime: Date.now();
-                lastTapTime: this.pointerState.lastTapTime;
-               , tapCount: this.pointerState.tapCount;
+                lastTapTime: this.pointerState.lastTapTime,
+    tapCount: this.pointerState.tapCount;
             },
             
             this.interactionState.lastTouchPosition = { x: touch.clientX, y: touch.clientY ,}
@@ -285,7 +285,7 @@ export class TutorialInteractionHandler {
             if (this.gestures.longPress.enabled) { this.startLongPressDetection();' }'
 
             } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleTouchStart); }'
+            this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleTouchStart'; }'
     }
     
     /**
@@ -311,7 +311,7 @@ export class TutorialInteractionHandler {
                 this.cancelLongPressDetection();' }'
 
             } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleTouchMove); }'
+            this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleTouchMove'; }'
     }
     
     /**
@@ -340,7 +340,7 @@ export class TutorialInteractionHandler {
             this.interactionState.isDragging = false;
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleTouchEnd); }'
+            this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleTouchEnd'; }'
     }
     
     /**
@@ -364,7 +364,7 @@ export class TutorialInteractionHandler {
 
                 if(this.pointerState.tapCount === 1 && this.gestures.tap.enabled) {' }'
 
-                    this.triggerGesture('tap); }'
+                    this.triggerGesture('tap'; }'
                 }
                 this.pointerState.tapCount = 0;
             }, 300);
@@ -393,20 +393,20 @@ export class TutorialInteractionHandler {
             if(deltaX > 0 && this.gestures.swipeRight.enabled) {'
     }
 
-                this.triggerGesture('swipeRight);' }
+                this.triggerGesture('swipeRight';' }
 
             } else if(deltaX < 0 && this.gestures.swipeLeft.enabled) { ''
-                this.triggerGesture('swipeLeft); }'
+                this.triggerGesture('swipeLeft'; }'
 
         } else if (absY > threshold && absY > absX) { // 垂直スワイプ
             if(deltaY > 0 && this.gestures.swipeDown.enabled) {', ';
 
             }
 
-                this.triggerGesture('swipeDown);' }
+                this.triggerGesture('swipeDown';' }
 
             } else if(deltaY < 0 && this.gestures.swipeUp.enabled) { ''
-                this.triggerGesture('swipeUp); }'
+                this.triggerGesture('swipeUp'; }'
 }
     
     /**
@@ -416,14 +416,14 @@ export class TutorialInteractionHandler {
     handleOverlayClick(event) {
         try {
             // チュートリアル外をクリックした場合の処理
-            if(event.target.classList.contains('tutorial-overlay-background) {''
+            if(event.target.classList.contains('tutorial-overlay-background' {''
                 this.triggerNext();
     }
 
-            this.triggerCallback('onInteraction', { type: 'click', event );' }
+            this.triggerCallback('onInteraction', { type: 'click', event ';' }
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleOverlayClick); }'
+            this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleOverlayClick'; }'
     }
     
     /**
@@ -432,14 +432,14 @@ export class TutorialInteractionHandler {
      */''
     handleResize(event) {'
         try {'
-            this.triggerCallback('onResize', { event ));
+            this.triggerCallback('onResize', { event )';
 
     }
 
-            this.loggingSystem.debug('TutorialInteractionHandler', 'Window resized);' }
+            this.loggingSystem.debug('TutorialInteractionHandler', 'Window resized';' }
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleResize); }'
+            this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleResize'; }'
     }
     
     /**
@@ -458,7 +458,7 @@ export class TutorialInteractionHandler {
             }, 100);
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleWheel); }'
+            this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleWheel'; }'
     }
     
     /**
@@ -472,7 +472,7 @@ export class TutorialInteractionHandler {
             event.preventDefault();' }'
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleContextMenu); }'
+            this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleContextMenu'; }'
     }
     
     /**
@@ -484,7 +484,7 @@ export class TutorialInteractionHandler {
 
             if(this.pointerState.isDown && !this.interactionState.isDragging) {' }'
 
-                this.triggerGesture('longPress); }'
+                this.triggerGesture('longPress'; }'
 }, this.gestures.longPress.duration);
     }
     
@@ -511,7 +511,7 @@ export class TutorialInteractionHandler {
             gesture.callback(gestureType); }
         }
 
-        this.loggingSystem.debug('TutorialInteractionHandler', `Gesture triggered: ${gestureType}`});
+        this.loggingSystem.debug('TutorialInteractionHandler', `Gesture triggered: ${gestureType}`}';
     }
     
     /**
@@ -538,7 +538,7 @@ export class TutorialInteractionHandler {
     }
 
     triggerHelp()';
-        this.triggerCallback('onHelp);
+        this.triggerCallback('onHelp';
     }
     
     /**
@@ -549,13 +549,13 @@ export class TutorialInteractionHandler {
     triggerCallback(callbackName, data = null) {
         try {
             const callback = this.callbacks[callbackName];''
-            if(callback && typeof, callback === 'function) {'
+            if(callback && typeof, callback === 'function' {'
     }
 
                 callback(data);' }'
 
             } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialInteractionHandler.triggerCallback); }'
+            this.errorHandler.handleError(error, 'TutorialInteractionHandler.triggerCallback'; }'
     }
     
     /**
@@ -582,12 +582,12 @@ export class TutorialInteractionHandler {
      * @returns キーコンボ文字列
      */'
     getKeyCombo(event: KeyboardEvent): string { const parts: string[] = [],''
-        if(event.ctrlKey) parts.push('Ctrl);''
-        if(event.altKey) parts.push('Alt);''
-        if(event.shiftKey) parts.push('Shift);''
-        if(event.metaKey) parts.push('Meta);''
+        if(event.ctrlKey) parts.push('Ctrl';''
+        if(event.altKey) parts.push('Alt';''
+        if(event.shiftKey) parts.push('Shift';''
+        if(event.metaKey) parts.push('Meta';''
         parts.push(event.key);''
-        return parts.join('+); }'
+        return parts.join('+'; }'
     
     /**
      * ショートカットマッチングを確認
@@ -596,7 +596,7 @@ export class TutorialInteractionHandler {
      * @returns マッチするかどうか
      */'
     isShortcutMatch(keyCombo: string, shortcuts: string[]): boolean { ''
-        return shortcuts.includes(keyCombo) || shortcuts.includes(keyCombo.split('+).pop(') || ''); }
+        return shortcuts.includes(keyCombo) || shortcuts.includes(keyCombo.split('+'.pop() || ''); }
     
     /**
      * タブナビゲーションを処理
@@ -621,7 +621,7 @@ export class TutorialInteractionHandler {
             focusableElements[newIndex].focus();
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleTabNavigation); }'
+            this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleTabNavigation'; }'
     }
     
     /**
@@ -634,16 +634,16 @@ export class TutorialInteractionHandler {
             'select:not([disabled])',
             'textarea:not([disabled])',
             'a[href]',
-            '[tabindex]:not([tabindex="-1"])';
+            '[tabindex]:not([tabindex="-1"]"';
         ];
 
         return Array.from(document.querySelectorAll(selectors.join(', '));
 
             .filter(element => {  )'
-                return element.offsetParent !== null && );' }'
+                return element.offsetParent !== null && ';' }'
 
                        getComputedStyle(element).visibility !== 'hidden'; }
-            });
+            }';
     }
     
     /**
@@ -657,9 +657,9 @@ export class TutorialInteractionHandler {
                                                   navigator.userAgent.includes('JAWS'') ||;
                                                   window.speechSynthesis !== undefined;
 
-            this.loggingSystem.debug('TutorialInteractionHandler', 'Accessibility settings configured', this.accessibility);''
+            this.loggingSystem.debug('TutorialInteractionHandler', 'Accessibility settings configured', this.accessibility';''
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialInteractionHandler.setupAccessibility); }'
+            this.errorHandler.handleError(error, 'TutorialInteractionHandler.setupAccessibility'; }'
     }
     
     /**
@@ -699,7 +699,7 @@ export class TutorialInteractionHandler {
                 window.speechSynthesis.speak(utterance);' }'
 
             } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialInteractionHandler.announceKeyAction); }'
+            this.errorHandler.handleError(error, 'TutorialInteractionHandler.announceKeyAction'; }'
     }
     
     /**
@@ -747,7 +747,7 @@ export class TutorialInteractionHandler {
 
             }');
 
-            this.loggingSystem.debug('TutorialInteractionHandler', 'Interaction handler disposed);''
+            this.loggingSystem.debug('TutorialInteractionHandler', 'Interaction handler disposed';''
         } catch (error) {
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.dispose''); }
 

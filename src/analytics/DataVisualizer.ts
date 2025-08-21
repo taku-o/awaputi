@@ -15,8 +15,8 @@ export interface DataVisualizerOptions { enableInteractivity?: boolean;
 
 export interface Margin { top: number,
     right: number;
-    bottom: number;
-   , left: number ,}
+    bottom: number,
+    left: number ,}
 
 export interface VisualizationData { values: number[];
     labels?: string[];
@@ -31,11 +31,11 @@ export interface ScatterPlotData { x: number,
     label?: string; ,}
 
 export interface HeatmapData { x: number,
-    y: number;
-   , value: number ,}
+    y: number,
+    value: number ,}
 
-export interface TreeMapData { name: string;
-   , value: number;
+export interface TreeMapData { name: string,
+    value: number;
     children?: TreeMapData[]
     }
 
@@ -58,8 +58,8 @@ export class DataVisualizer {
         this.options = {
             enableInteractivity: true;
             enableAnimation: true;
-            animationDuration: 1000;
-           , defaultWidth: 500;
+            animationDuration: 1000,
+    defaultWidth: 500;
     ,}
             defaultHeight: 400, }
             margin: { top: 20, right: 30, bottom: 40, left: 50 ,},
@@ -96,7 +96,7 @@ export class DataVisualizer {
      */'
     private async loadD3(): Promise<void> { ''
         return new Promise((resolve, reject) => { ''
-            if(typeof, d3 !== 'undefined) {'
+            if(typeof, d3 !== 'undefined' {'
                 this.d3 = window.d3;''
                 resolve()';
             const script = document.createElement('script'');''
@@ -125,7 +125,7 @@ export class DataVisualizer {
                 time: '%H時%M分%S秒',
                 periods: ['午前', '午後],
                 days: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日],
-                shortDays: ['日', '月', '火', '水', '木', '金', '土],)';
+                shortDays: ['日', '月', '火', '水', '木', '金', '土],'';
                 months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月],')';
                 shortMonths: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月]);
             
@@ -155,7 +155,7 @@ export class DataVisualizer {
 
 ' }'
 
-        const g = svg.append('g''})''
+        const g = svg.append('g''}'''
             .attr('transform', `translate(${margin.left},${ margin.top)`);
 
         // スケールの設定
@@ -174,13 +174,13 @@ export class DataVisualizer {
             .attr('transform', `translate(0,${height - margin.top - margin.bottom)`)''
             .call(this.d3.axisBottom(xScale));
 
-        g.append('g)'';
+        g.append('g''';
             .call(this.d3.axisLeft(yScale));
 ';
         // データポイントの描画
-        const, dots = g.selectAll('.dot)';
+        const, dots = g.selectAll('.dot'';
             .data(data)'';
-            .enter(').append('circle'')'';
+            .enter().append('circle'')'';
             .attr('class', 'dot'')'';
             .attr('r', (d: ScatterPlotData) => d.size || 5')'';
             .attr('cx', (d: ScatterPlotData) => xScale(d.x))'';
@@ -196,18 +196,18 @@ export class DataVisualizer {
                 // ツールチップ表示など' }'
 
                 console.log('Hovered:', d});
-            });
+            }';
         }
 ';
         // アニメーション
         if(this.options.enableAnimation) {'
 
-            dots.style('opacity', 0)';
+            dots.style('opacity', 0'';
                 .transition()'';
                 .duration(this.options.animationDuration)';
         }
 
-                .style('opacity', 1); }
+                .style('opacity', 1'; }
         }
 ';
 
@@ -244,7 +244,7 @@ export class DataVisualizer {
 
 ' }'
 
-        const g = svg.append('g''})''
+        const g = svg.append('g''}'''
             .attr('transform', `translate(${margin.left},${ margin.top)`);
 
         // カラースケール
@@ -252,19 +252,19 @@ export class DataVisualizer {
             .domain(this.d3.extent(data, (d: HeatmapData) => d.value)');
 ';
         // ヒートマップセルの描画
-        g.selectAll('.cell)';
+        g.selectAll('.cell'';
             .data(data)'';
-            .enter(').append('rect'')'';
+            .enter().append('rect'')'';
             .attr('class', 'cell'')'';
             .attr('x', (d: HeatmapData) => xValues.indexOf(d.x) * cellWidth')'';
             .attr('y', (d: HeatmapData) => yValues.indexOf(d.y) * cellHeight')'';
-            .attr('width', cellWidth)'';
-            .attr('height', cellHeight)'';
+            .attr('width', cellWidth''';
+            .attr('height', cellHeight''';
             .style('fill', (d: HeatmapData) => colorScale(d.value))'';
             .style('stroke', '#fff'')'';
             .style('stroke-width', 1};
 
-        this.svgElements.set(containerId, svg};' }'
+        this.svgElements.set(containerId, svg}' }'
 
         this.visualizations.set(containerId, { type: 'heatmap', data, config });
 
@@ -286,7 +286,7 @@ export class DataVisualizer {
         // SVG要素の作成
         const svg = this.d3.select(`#${containerId)`')''
             .append('svg'')'';
-            .attr('width', width)'';
+            .attr('width', width''';
             .attr('height', height);
 
         // ツリーマップレイアウト
@@ -304,7 +304,7 @@ export class DataVisualizer {
         const, colorScale = this.d3.scaleOrdinal(this.d3.schemeCategory10);
 ';
         // ノードの描画
-        const, leaf = svg.selectAll('g)';
+        const, leaf = svg.selectAll('g'';
             .data(root.leaves()'';
             .enter(',}.append('g''}' }
 
@@ -313,18 +313,18 @@ export class DataVisualizer {
         leaf.append('rect'')'';
             .attr('width', (d: any) => d.x1 - d.x0)'';
             .attr('height', (d: any) => d.y1 - d.y0)'';
-            .style('fill', (d: any) => colorScale(d.parent? .data.name || d.data.name))'';
+            .style('fill', (d: any) => colorScale(d.parent?.data.name || d.data.name))'';
             .style('stroke', '#fff'')'';
-            .style('stroke-width', 2);
+            .style('stroke-width', 2';
 
         leaf.append('text'')'';
-            .attr('x', 4)'';
-            .attr('y', 14) : undefined'';
+            .attr('x', 4''';
+            .attr('y', 14' : undefined'';
             .text((d: any) => d.data.name)'';
             .attr('font-size', '12px'')'';
             .attr('fill', 'white};
 
-        this.svgElements.set(containerId, svg};' }'
+        this.svgElements.set(containerId, svg}' }'
 
         this.visualizations.set(containerId, { type: 'treemap', data, config });
 
@@ -352,7 +352,7 @@ export class DataVisualizer {
 
 ' }'
 
-        const g = svg.append('g''})''
+        const g = svg.append('g''}'''
             .attr('transform', `translate(${margin.left},${ margin.top)`);
 
         // スケールの設定
@@ -375,20 +375,20 @@ export class DataVisualizer {
             .attr('transform', `translate(0,${height - margin.top - margin.bottom)`)''
             .call(this.d3.axisBottom(xScale));
 
-        g.append('g)'';
+        g.append('g''';
             .call(this.d3.axisLeft(yScale));
 ';
         // ラインの描画
-        g.append('path)'';
+        g.append('path''';
             .datum(data.values)'';
             .attr('fill', 'none'')'';
             .attr('stroke', '#007bff'')'';
-            .attr('stroke-width', 2)'';
-            .attr('d', line);
+            .attr('stroke-width', 2''';
+            .attr('d', line';
 ';
 
         this.svgElements.set(containerId, svg);''
-        this.scales.set(containerId, { xScale, yScale }};' }'
+        this.scales.set(containerId, { xScale, yScale }}' }'
 
         this.visualizations.set(containerId, { type: 'timeseries', data, config });
 
@@ -433,7 +433,7 @@ export class DataVisualizer {
         const dots = svg.selectAll('.dot);
             .data(newData);
 
-        dots.enter(').append('circle'')'';
+        dots.enter().append('circle'')'';
             .attr('class', 'dot);
             .merge(dots)';
             .transition()'';
@@ -491,14 +491,14 @@ export class DataVisualizer {
      * リソースの解放
      */
     destroy(): void { // 全ての可視化を削除
-        for(const, containerId of, this.visualizations.keys() {
+        for(const containerId of this.visualizations.keys() {
             
         }
             this.removeVisualization(containerId); }
         }
 
         this.visualizations.clear();
-        this.svgElements.clear(');''
+        this.svgElements.clear();''
         this.scales.clear()';
         console.log('DataVisualizer, destroyed'');
 

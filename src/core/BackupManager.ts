@@ -7,8 +7,8 @@ interface ValidationManager { [key: string]: unknown, }
 interface BackupConfig { autoBackupInterval: number,
     maxBackups: number;
     maxBackupAge: number;
-    compressionEnabled: boolean;
-   , encryptionEnabled: boolean ,}
+    compressionEnabled: boolean,
+    encryptionEnabled: boolean ,}
 
 interface BackupJob { [key: string]: unknown, }
 
@@ -43,8 +43,8 @@ export class BackupManager {
             maxBackupAge: 30 * 24 * 60 * 60 * 1000, // 30日;
             compressionEnabled: true;
     ,}
-            encryptionEnabled: false // SecurityManagerと統合時に有効化 }
-        };
+            encryptionEnabled: false // SecurityManagerと統合時に有効化 
+    };
         // バックアップ管理
         this.backupQueue = [];
         this.isBackupInProgress = false;
@@ -57,8 +57,8 @@ export class BackupManager {
             failedBackups: 0;
             autoBackups: 0;
             manualBackups: 0;
-            averageBackupSize: 0;
-           , averageBackupTime: 0 ,};
+            averageBackupSize: 0,
+    averageBackupTime: 0 ,};
         this.initialize();
     }
     
@@ -70,11 +70,11 @@ export class BackupManager {
             await this.loadBackupHistory();
             // 自動バックアップの開始
             this.startAutoBackup()';
-            console.log('BackupManager, initialized);
+            console.log('BackupManager, initialized';
              }
 
         } catch (error') {
-            getErrorHandler(').handleError(error, 'BACKUP_MANAGER_INITIALIZATION_ERROR', {)'
+            getErrorHandler().handleError(error, 'BACKUP_MANAGER_INITIALIZATION_ERROR', {''
                 operation: 'initialize'),' }
 
             }');
@@ -84,13 +84,13 @@ export class BackupManager {
     /**
      * 手動バックアップの作成'
      */''
-    async createBackup(dataType = 'all', options = { ) {'
+    async createBackup(dataType = 'all', options = { ' {'
         try {'
             if(this.isBackupInProgress && !options.force) {', ';
 
             }
 
-                throw new Error('Backup, already in, progress); }'
+                throw new Error('Backup, already in, progress'; }'
             }
             
             this.isBackupInProgress = true;
@@ -107,7 +107,7 @@ export class BackupManager {
 
                 const validationResult = await this.validation.validate('backup', {)
                     metadata,);
-                    data: backupData),
+                    data: backupData',
                 ';
 
             }
@@ -151,19 +151,19 @@ export class BackupManager {
                 backupId,
                 metadata,
                 duration, };
-                size: JSON.stringify(finalBackupData).length }
-            };
+                size: JSON.stringify(finalBackupData).length 
+    };
             ';
 
         } catch (error) { this.updateStatistics(false, 0, 0, false);''
-            getErrorHandler(').handleError(error, 'BACKUP_CREATION_ERROR', {)'
+            getErrorHandler().handleError(error, 'BACKUP_CREATION_ERROR', {''
                 operation: 'createBackup');
                 dataType,);
-                options); });
+                options); }';
             
             return { success: false, };
-                error: error.message }
-            } finally { this.isBackupInProgress = false; }
+                error: error.message 
+    } finally { this.isBackupInProgress = false; }
     }
     
     /**
@@ -180,22 +180,22 @@ export class BackupManager {
 
                 this.statistics.autoBackups++;' }'
 
-                console.log(`Auto, backup created: ${result.backupId}`'});
+                console.log(`Auto, backup created: ${result.backupId}`'}';
 
             } else { }'
 
-                console.error('Auto backup failed:', result.error); }
+                console.error('Auto backup failed:', result.error'; }
             }
             
             return result;
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'AUTO_BACKUP_ERROR', {)'
-                operation: 'createAutoBackup' ,});
+        } catch (error) { getErrorHandler().handleError(error, 'AUTO_BACKUP_ERROR', {''
+                operation: 'createAutoBackup' ,}';
             
             return { success: false, };
-                error: error.message }
-            }
+                error: error.message 
+    }
     }
     
     /**
@@ -239,7 +239,7 @@ export class BackupManager {
             ';
 
         } catch (error) {
-            getErrorHandler(').handleError(error, 'BACKUP_DATA_COLLECTION_ERROR', {)'
+            getErrorHandler().handleError(error, 'BACKUP_DATA_COLLECTION_ERROR', {''
                 operation: 'collectBackupData',);
                 dataType); });
             
@@ -252,18 +252,18 @@ export class BackupManager {
      */
     createBackupMetadata(dataType, data, options = { ) {'
         return { version: this.version,''
-            timestamp: Date.now()';
-           , gameVersion: window.GAME_VERSION || '1.0.0',);
+            timestamp: Date.now()',
+    gameVersion: window.GAME_VERSION || '1.0.0',);
             dataTypes: Object.keys(data),
             dataType,
-            size: JSON.stringify(data).length;
-           , checksum: null, // ValidationManagerで設定;
+            size: JSON.stringify(data).length,
+    checksum: null, // ValidationManagerで設定;
             automatic: options.automatic || false;
             manual: options.manual || false;
             compressed: this.config.compressionEnabled;
             encrypted: this.config.encryptionEnabled;
-            userAgent: navigator.userAgent;
-           , platform: navigator.platform;
+            userAgent: navigator.userAgent,
+    platform: navigator.platform;
     ,}
             language: navigator.language,' };
 
@@ -284,11 +284,11 @@ export class BackupManager {
      * バックアップ履歴の読み込み'
      */''
     async loadBackupHistory()';
-            const history = await this.storage.load('backupHistory);
+            const history = await this.storage.load('backupHistory';
             this.backupHistory = history || [];
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'BACKUP_HISTORY_LOAD_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'BACKUP_HISTORY_LOAD_ERROR', {''
                 operation: 'loadBackupHistory' ,});
             
             this.backupHistory = [];
@@ -308,8 +308,8 @@ export class BackupManager {
             this.backupHistory.push({ id: backupId,
                 timestamp: metadata.timestamp;
                 dataType: metadata.dataType);
-                size: metadata.size);
-               , automatic: metadata.automatic,);
+                size: metadata.size),
+    automatic: metadata.automatic,);
                 description: metadata.description);
             // 履歴の制限（最大100件）
             if(this.backupHistory.length > 100) {
@@ -319,11 +319,11 @@ export class BackupManager {
                 this.backupHistory = this.backupHistory.slice(-100); }
             }
 
-            await this.storage.save('backupHistory', this.backupHistory);
+            await this.storage.save('backupHistory', this.backupHistory';
             ';
 
         } catch (error) {
-            getErrorHandler(').handleError(error, 'BACKUP_HISTORY_UPDATE_ERROR', {)'
+            getErrorHandler().handleError(error, 'BACKUP_HISTORY_UPDATE_ERROR', {''
                 operation: 'updateBackupHistory',);
                 backupId); });
         }
@@ -345,18 +345,18 @@ export class BackupManager {
                         const backupData = await this.storage.load(`backup_${backup.id}`);
                         return { ...backup,
                             exists: !!backupData, };
-                            metadata: backupData? .metadata || null }
-                        } catch (error) { return { ...backup, : undefined
+                            metadata: backupData?.metadata || null 
+    } catch (error) { return { ...backup, : undefined
                             exists: false, };
-                            metadata: null }
-                        }
+                            metadata: null 
+    }
                 })
             );
             
             return backupList;
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'BACKUP_LIST_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'BACKUP_LIST_ERROR', {''
                 operation: 'getBackupList' ,});
             
             return [];
@@ -376,14 +376,14 @@ export class BackupManager {
 
                 this.backupHistory = this.backupHistory.filter(backup => backup.id !== backupId);' }'
 
-                await this.storage.save('backupHistory', this.backupHistory});
+                await this.storage.save('backupHistory', this.backupHistory}';
             }
             
             return true;
             ';
 
         } catch (error) {
-            getErrorHandler(').handleError(error, 'BACKUP_DELETE_ERROR', {)'
+            getErrorHandler().handleError(error, 'BACKUP_DELETE_ERROR', {''
                 operation: 'deleteBackup',);
                 backupId); });
             
@@ -417,7 +417,7 @@ export class BackupManager {
             return toDelete.length;
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'BACKUP_CLEANUP_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'BACKUP_CLEANUP_ERROR', {''
                 operation: 'cleanupOldBackups' ,});
             
             return 0;
@@ -442,7 +442,7 @@ export class BackupManager {
             console.log(`Auto, backup started, with ${this.config.autoBackupInterval / 1000}s, interval`);
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'AUTO_BACKUP_START_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'AUTO_BACKUP_START_ERROR', {''
                 operation: 'startAutoBackup' ,});
         }
     }
@@ -461,7 +461,7 @@ export class BackupManager {
 
                 console.log('Auto, backup stopped'); }'
 
-            } catch (error) { getErrorHandler(').handleError(error, 'AUTO_BACKUP_STOP_ERROR', {)'
+            } catch (error) { getErrorHandler().handleError(error, 'AUTO_BACKUP_STOP_ERROR', {''
                 operation: 'stopAutoBackup' ,});
         }
     }
@@ -478,7 +478,7 @@ export class BackupManager {
             }
                 this.startAutoBackup(); }
             } catch (error) {
-            getErrorHandler(').handleError(error, 'BACKUP_CONFIG_UPDATE_ERROR', {)'
+            getErrorHandler().handleError(error, 'BACKUP_CONFIG_UPDATE_ERROR', {''
                 operation: 'updateConfig',);
                 newConfig); });
         }
@@ -539,7 +539,7 @@ export class BackupManager {
             ';
 
         } catch (error) {
-            getErrorHandler(').handleError(error, 'BACKUP_GET_ERROR', {)'
+            getErrorHandler().handleError(error, 'BACKUP_GET_ERROR', {''
                 operation: 'getBackup',);
                 backupId); });
             
@@ -551,11 +551,11 @@ export class BackupManager {
     destroy() {'
         try {'
             this.stopAutoBackup()';
-            console.log('BackupManager, destroyed);
+            console.log('BackupManager, destroyed';
     }
 
         } catch (error') {
-            getErrorHandler(').handleError(error, 'BACKUP_MANAGER_DESTROY_ERROR', {)'
+            getErrorHandler().handleError(error, 'BACKUP_MANAGER_DESTROY_ERROR', {''
                 operation: 'destroy'),' }
 
             }');

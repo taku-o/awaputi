@@ -3,7 +3,7 @@
  * Issue #131 対応
  */
 
-import { promises, as fs  } from 'fs';''
+import { promises, as fs  } from 'fs';
 import path from 'path';
 
 // Type definitions
@@ -11,8 +11,8 @@ interface ImportPatterns { namedImport: RegExp,
     defaultImport: RegExp;
     namespaceImport: RegExp;
     sideEffectImport: RegExp;
-    dynamicImport: RegExp;
-   , requireCall: RegExp
+    dynamicImport: RegExp,
+    requireCall: RegExp
     ,}
 ';
 
@@ -22,8 +22,8 @@ interface ImportInfo { ''
     sourcePath: string;
     fullMatch: string;
     lineNumber: number;
-    startIndex: number;
-   , endIndex: number;
+    startIndex: number,
+    endIndex: number;
     containingFile?: string }
 
 interface ImportSearchResults { byClassName: Map<string, ImportInfo[]>;
@@ -38,12 +38,12 @@ interface UpdateResult { file: string,''
 
 interface ValidationIssue { type: string,
     line: number;
-    content: string;
-   , message: string ,}
+    content: string,
+    message: string ,}
 
 interface ImportPathInfo { path: string;
-    line: number;
-   , type: string }
+    line: number,
+    type: string }
 
 export class ImportUpdater {
     private cache: Map<string, any>;
@@ -111,7 +111,7 @@ export class ImportUpdater {
      * ファイル内容からインポート文を抽出
      */''
     extractImportsFromContent(content: string, filePath: string): ImportInfo[] { const imports: ImportInfo[] = [],''
-        const lines = content.split('\n);
+        const lines = content.split('\n';
 ';
         // 名前付きインポート
         for(const, match of, content.matchAll(this.importPatterns.namedImport)) {''
@@ -125,11 +125,11 @@ export class ImportUpdater {
                     importedName: name;
                     sourcePath: sourcePath;
                     fullMatch: match[0]);
-                    lineNumber: lineNumber);
-                   , startIndex: match.index,)
+                    lineNumber: lineNumber),
+    startIndex: match.index,)
             }
-                    endIndex: match.index + match[0].length); }
-}
+                    endIndex: match.index + match[0].length); 
+    }
 
         // デフォルトインポート
         for(const, match of, content.matchAll(this.importPatterns.defaultImport) { const lineNumber = this.findLineNumber(content, match.index);
@@ -139,10 +139,10 @@ export class ImportUpdater {
                 importedName: match[1];
                 sourcePath: match[2];
                 fullMatch: match[0]);
-                lineNumber: lineNumber);
-               , startIndex: match.index, }
-                endIndex: match.index + match[0].length); }
-        }
+                lineNumber: lineNumber),
+    startIndex: match.index, }
+                endIndex: match.index + match[0].length); 
+    }
 
         // 名前空間インポート
         for(const, match of, content.matchAll(this.importPatterns.namespaceImport) { const lineNumber = this.findLineNumber(content, match.index);
@@ -152,10 +152,10 @@ export class ImportUpdater {
                 importedName: match[1];
                 sourcePath: match[2];
                 fullMatch: match[0]);
-                lineNumber: lineNumber);
-               , startIndex: match.index, }
-                endIndex: match.index + match[0].length); }
-        }
+                lineNumber: lineNumber),
+    startIndex: match.index, }
+                endIndex: match.index + match[0].length); 
+    }
 
         // サイドエフェクトインポート
         for(const, match of, content.matchAll(this.importPatterns.sideEffectImport) { const lineNumber = this.findLineNumber(content, match.index);
@@ -165,10 +165,10 @@ export class ImportUpdater {
                 importedName: null;
                 sourcePath: match[1];
                 fullMatch: match[0]);
-                lineNumber: lineNumber);
-               , startIndex: match.index, }
-                endIndex: match.index + match[0].length); }
-        }
+                lineNumber: lineNumber),
+    startIndex: match.index, }
+                endIndex: match.index + match[0].length); 
+    }
 
         // 動的インポート
         for(const, match of, content.matchAll(this.importPatterns.dynamicImport) { const lineNumber = this.findLineNumber(content, match.index);
@@ -178,10 +178,10 @@ export class ImportUpdater {
                 importedName: null;
                 sourcePath: match[1];
                 fullMatch: match[0]);
-                lineNumber: lineNumber);
-               , startIndex: match.index, }
-                endIndex: match.index + match[0].length); }
-        }
+                lineNumber: lineNumber),
+    startIndex: match.index, }
+                endIndex: match.index + match[0].length); 
+    }
 
         return imports;
     }
@@ -211,9 +211,9 @@ export class ImportUpdater {
 
                     });''
                 } catch (error) { results.push({'
-                    file: filePath,)';
-                    status: 'failed',)';
-                    error: error.message),' }'
+                    file: filePath,'';
+                    status: 'failed','';
+                    error: error.message',' }'
 
                 }');
             }
@@ -276,9 +276,9 @@ export class ImportUpdater {
 
                     });''
                 } catch (error) { results.push({'
-                    file: filePath,)';
-                    status: 'failed',)';
-                    error: error.message),' }'
+                    file: filePath,'';
+                    status: 'failed','';
+                    error: error.message',' }'
 
                 }');
             }
@@ -292,9 +292,9 @@ export class ImportUpdater {
      * ファイル内容の名前付きインポートを更新
      */
     updateNamedImportsInContent(content: string, oldName: string, newName: string): string { // 名前付きインポートのパターンをより厳密に
-        const namedImportPattern = new RegExp(' })'
+        const namedImportPattern = new RegExp(' }''
             `import\\s*\\{([^}]*\\b${oldName}\\b[^)]*')\\}\\s*from\\s*(['"\`][^'"\`]+['"\`]")`,"", 'g';
-        );
+        ';
         ';
 
         return content.replace(namedImportPattern, (match, importList, fromClause) => {  ' }'
@@ -318,16 +318,16 @@ export class ImportUpdater {
         for(let, i = 0; i < lines.length; i++) {
 
             const line = lines[i].trim()';
-            if (line.startsWith('import '') && !line.includes('from) {'
+            if (line.startsWith('import '') && !line.includes('from' {'
                 // import文にfromがない（サイドエフェクト以外）
                 if(!this.importPatterns.sideEffectImport.test(line)) {'
                     issues.push({''
                         type: 'missing_from);
-                        line: i + 1)';
-                       , content: line,' }'
+                        line: i + 1'',
+    content: line,' }'
 
-                        message: 'Import statement missing "from" clause')'); }
-}
+                        message: 'Import statement missing "from" clause')'); 
+    }
             ';
             // 閉じ括弧の不一致
             if (line.includes('import { '') && !line.includes())) {'
@@ -342,11 +342,11 @@ export class ImportUpdater {
                 if(!foundClosing) { '
                     issues.push({''
                         type: 'unclosed_brace);
-                        line: i + 1)';
-                       , content: line,' }'
+                        line: i + 1'',
+    content: line,' }'
 
-                        message: 'Unclosed brace in import statement'); }
-}
+                        message: 'Unclosed brace in import statement'); 
+    }
         }
         
         // 循環依存の検出（簡易版）
@@ -355,12 +355,12 @@ export class ImportUpdater {
 
         for(const, circular of, circularImports) { '
             issues.push({''
-                type: 'circular_dependency);
-               , line: circular.line }
+                type: 'circular_dependency',
+    line: circular.line }
 
                 content: circular.path,') }'
 
-                message: `Potential circular dependency, detected: ${circular.path}`)');
+                message: `Potential circular dependency, detected: ${circular.path}`'');
         }
         
         return issues;
@@ -370,8 +370,8 @@ export class ImportUpdater {
      * すべてのJavaScriptファイルを取得'
      */''
     async getAllJavaScriptFiles(rootDir: string = 'src''): Promise<string[]> { ''
-        if(this.cache.has('allJsFiles)) {''
-            return this.cache.get('allJsFiles) as string[]; }'
+        if(this.cache.has('allJsFiles)' {''
+            return this.cache.get('allJsFiles' as string[]; }'
         
         const files: string[] = [],
         
@@ -395,7 +395,7 @@ export class ImportUpdater {
         }
 
         await scanDirectory(rootDir);''
-        this.cache.set('allJsFiles', files);
+        this.cache.set('allJsFiles', files';
         return files;
     }
 
@@ -403,11 +403,11 @@ export class ImportUpdater {
      * インポートパスを解決'
      */''
     resolveImportPath(importPath: string, currentDir: string): string {;
-        if (importPath.startsWith('./'') || importPath.startsWith('../) {'
+        if (importPath.startsWith('./'') || importPath.startsWith('../' {'
             // 相対パス
             return path.resolve(currentDir, importPath);' }'
 
-        } else if(importPath.startsWith('/) { // 絶対パス'
+        } else if(importPath.startsWith('/' { // 絶対パス'
             return path.resolve(importPath); } else {  // ノードモジュールまたはエイリアス - そのまま返す }
             return importPath;
 
@@ -418,7 +418,7 @@ export class ImportUpdater {
         let relativePath = path.relative(fromDir, toPath);
         ';
         // 拡張子を除去（.jsファイルの場合）
-        if(relativePath.endsWith('.js) {', ';
+        if(relativePath.endsWith('.js' {', ';
 
         }
 
@@ -426,7 +426,7 @@ export class ImportUpdater {
         }
         ';
         // 相対パスが現在のディレクトリを指さない場合は./を追加
-        if (!relativePath.startsWith('../'') && !relativePath.startsWith('./)) { ''
+        if (!relativePath.startsWith('../'') && !relativePath.startsWith('./)' { ''
             relativePath = './' + relativePath; }
         
         return relativePath;
@@ -460,13 +460,13 @@ export class ImportUpdater {
     matchesFileName(importInfo: ImportInfo, fileName: string): boolean { const sourcePath = importInfo.sourcePath;
         return sourcePath.includes(fileName) || '';
                path.basename(sourcePath) === fileName ||'';
-               path.basename(sourcePath, '.js) === fileName; }'
+               path.basename(sourcePath, '.js' === fileName; }'
 
     /**
      * 行番号を検索
      */'
     findLineNumber(content: string, index: number): number { ''
-        return content.substring(0, index).split('\n).length; }'
+        return content.substring(0, index).split('\n'.length; }'
 
     /**
      * 変更数をカウント'
@@ -497,12 +497,12 @@ export class ImportUpdater {
                 const sourcePath = this.extractSourcePathFromMatch(patternName, match.slice(1);
                 if (sourcePath) {
                     paths.push({)
-                        path: sourcePath);
-                       , line: this.findLineNumber(content, match.index),
+                        path: sourcePath),
+    line: this.findLineNumber(content, match.index),
         
         }
-                        type: patternName }
-                    });
+                        type: patternName 
+    });
                 }
 }
         
@@ -517,7 +517,7 @@ export class ImportUpdater {
         const suspiciousPaths = importPaths.filter(imp => ');''
             imp.path.includes('..'') && '';
             imp.path.split('../).length > 3;
-        );
+        ';
         
         return suspiciousPaths;
 

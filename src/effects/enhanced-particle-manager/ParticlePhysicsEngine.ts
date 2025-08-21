@@ -9,35 +9,35 @@ export interface PhysicsSettings { gravity: number,
     bounce: number;
     airResistance: number;
     collisionDetection: boolean;
-    magneticFields: MagneticField[];
-   , windForce: Vector2D
+    magneticFields: MagneticField[],
+    windForce: Vector2D
     ,}
 
 export interface AnimationSettings { interpolation: boolean;
     easingEnabled: boolean;
-    smoothRotation: boolean;
-   , smoothScaling: boolean }
+    smoothRotation: boolean,
+    smoothScaling: boolean }
 
 export interface MagneticField { x: number;
     y: number;
     strength: number;
-    radius: number;
-   , radiusSquared: number }
+    radius: number,
+    radiusSquared: number }
 
-export interface Vector2D { x: number;
-   , y: number }
+export interface Vector2D { x: number,
+    y: number }
 
 export interface Boundaries { left: number;
     right: number;
-    top: number;
-   , bottom: number }
+    top: number,
+    bottom: number }
 
-export interface TrailPoint { x: number;
-   , y: number;
+export interface TrailPoint { x: number,
+    y: number;
     alpha?: number }
 
-export interface PulsationConfig { speed: number;
-   , amplitude: number }
+export interface PulsationConfig { speed: number,
+    amplitude: number }
 
 export interface Particle { x: number;
     y: number;
@@ -48,8 +48,8 @@ export interface Particle { x: number;
     life: number;
     maxLife: number;
     alpha: number;
-    active: boolean;
-   , type: string;
+    active: boolean,
+    type: string;
     rotation?: number;
     rotationSpeed?: number;
     baseScale?: number;
@@ -63,8 +63,8 @@ export interface Particle { x: number;
 ';
 
 export interface BackgroundParticle extends Particle {;
-    type: 'background';
-   , gravityAffected: false }
+    type: 'background',
+    gravityAffected: false }
 
 export type BackgroundTheme = 'default' | 'stars' | 'snow' | 'sakura' | 'ocean';
 
@@ -97,7 +97,7 @@ export class ParticlePhysicsEngine {
         ';
     }
 
-    })'
+    }''
         console.log('[ParticlePhysicsEngine] パーティクル物理演算エンジンを初期化しました'); }'
     }
     
@@ -341,23 +341,23 @@ export class ParticlePhysicsEngine {
                 vx: (Math.random() - 0.5) * 0.2;
                 vy: (Math.random() - 0.5) * 0.2;
                 size: Math.random() * 2 + 0.5;
-                color: this.getBackgroundParticleColor();
-               , alpha: Math.random() * 0.3 + 0.1,
+                color: this.getBackgroundParticleColor(),
+    alpha: Math.random() * 0.3 + 0.1,
                 life: Math.random() * 5000 + 2000,
-                maxLife: Math.random(''';
-                type: 'background';
-               , gravityAffected: false ,}))
-            )';
+                maxLife: Math.random('''
+                type: 'background',
+    gravityAffected: false ,}))
+            '';
             this.backgroundParticles.push(particle);''
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
-                context: 'ParticlePhysicsEngine.createBackgroundParticle' ,});
+                context: 'ParticlePhysicsEngine.createBackgroundParticle' ,}';
         }
     }
     
     /**
      * 背景パーティクルの色を取得'
      */''
-    getBackgroundParticleColor(''';
+    getBackgroundParticleColor('''
             default: ['#ffffff', '#cccccc', '#aaaaaa],
             stars: ['#ffffff', '#ffffcc', '#ccccff],
             snow: ['#ffffff', '#f0f8ff', '#e6e6fa],
@@ -392,7 +392,7 @@ export class ParticlePhysicsEngine {
 
             console.log(`[ParticlePhysicsEngine] 風力を設定: (${x}, ${y}`});''
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
-                context: 'ParticlePhysicsEngine.setWindForce),' }
+                context: 'ParticlePhysicsEngine.setWindForce',' }
 
             }');
         }
@@ -426,14 +426,14 @@ export class ParticlePhysicsEngine {
 
         this.animationSettings.easingEnabled = enabled;' }'
 
-        console.log(`[ParticlePhysicsEngine] スムーズトランジション: ${enabled ? '有効' : '無効}`});
+        console.log(`[ParticlePhysicsEngine] スムーズトランジション: ${enabled ? '有効' : '無効}`}';
     }
     
     /**
      * タイミングプロファイルを設定'
      */''
     setTimingProfiles(profiles: TimingProfiles): void { this.timingProfiles = profiles;''
-        console.log('[ParticlePhysicsEngine] タイミングプロファイルを設定しました:', profiles); }
+        console.log('[ParticlePhysicsEngine] タイミングプロファイルを設定しました:', profiles'; }
     
     /**
      * 物理設定を更新'

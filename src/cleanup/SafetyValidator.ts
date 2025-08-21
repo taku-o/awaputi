@@ -1,25 +1,25 @@
-import fs from 'fs';''
-import path from 'path';''
+import fs from 'fs';
+import path from 'path';
 import { ReferenceResult  } from './ReferenceChecker.js';
 
 interface CurrentFileCheck { exists: boolean,
-    currentFilePath: string;
-   , error: string | null ,}
+    currentFilePath: string,
+    error: string | null ,}
 ';
 
 interface Reference { ''
-    type: 'import' | 'string';
-   , context: string }
+    type: 'import' | 'string',
+    context: string }
 
 interface ReferenceValidation { hasActiveReferences: boolean;
-    activeReferences: Reference[];
-   , inactiveReferences: Reference[]
+    activeReferences: Reference[],
+    inactiveReferences: Reference[]
     }
 
 interface FileSizeValidation { valid: boolean;
     size: number;
-    warnings: string[];
-   , error: string | null }
+    warnings: string[],
+    error: string | null }
 
 interface SafetyReportResult { filePath: string;
     currentFileExists: boolean;
@@ -30,19 +30,19 @@ interface SafetyReportResult { filePath: string;
     fileSize: number;
     isSafeToDelete: boolean;
     warnings: string[];
-    errors: string[];
-   , details: {
+    errors: string[],
+    details: {
         currentFileChec;k: CurrentFileCheck;
-        referenceCheck: ReferenceValidation;
-       , sizeCheck: FileSizeValidation
+        referenceCheck: ReferenceValidation,
+    sizeCheck: FileSizeValidation
     }
 
 export interface SafetyResults { results: SafetyReportResult[],
     totalFiles: number;
     safeToDelete: number;
     unsafeToDelete: number;
-    totalWarnings: number;
-   , totalErrors: number ,}
+    totalWarnings: number,
+    totalErrors: number ,}
 
 export class SafetyValidator {
     private maxSafeFileSize: number;
@@ -61,8 +61,8 @@ export class SafetyValidator {
             await fs.promises.access(currentFilePath, fs.constants.F_OK);
             return { exists: true,
                 currentFilePath, };
-                error: null }
-            } catch (error) { return { exists: false, };
+                error: null 
+    } catch (error) { return { exists: false, };
                 currentFilePath, }
                 error: `Current file does not, exist: ${currentFilePath}`
             }
@@ -87,8 +87,8 @@ export class SafetyValidator {
 
         return { hasActiveReferences: activeReferences.length > 0,
             activeReferences, };
-            inactiveReferences: references.filter(ref => !activeReferences.includes(ref); }
-        }
+            inactiveReferences: references.filter(ref => !activeReferences.includes(ref); 
+    }
 
     private isActiveStringReference(context: string): boolean { const inactivePatterns = [
             /\/\/.*/, // Comments];
@@ -176,8 +176,8 @@ export class SafetyValidator {
             currentFilePath: currentFileCheck.currentFilePath;
             hasActiveReferences: referenceCheck.hasActiveReferences;
             activeReferencesCount: referenceCheck.activeReferences.length;
-            activeReferences: referenceCheck.activeReferences;
-           , fileSize: sizeCheck.size;
+            activeReferences: referenceCheck.activeReferences,
+    fileSize: sizeCheck.size;
             isSafeToDelete,
             warnings,
             errors,

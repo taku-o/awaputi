@@ -23,34 +23,34 @@ interface AccessibilitySettings { visualFeedback: boolean,
     highContrast: boolean;
     largeFonts: boolean;
     reduceMotion: boolean;
-    hapticFeedback: boolean;
-   , vibrationIntensity: number ,}
+    hapticFeedback: boolean,
+    vibrationIntensity: number ,}
 
 // Types for exported settings
 interface ExportedSettings { version: string;
-    timestamp: string;
-   , settings: AccessibilitySettings
+    timestamp: string,
+    settings: AccessibilitySettings
     }
 
 // Types for validation result
 interface ValidationResult { valid: boolean;
-    errors: string[];
-   , warnings: string[] }
+    errors: string[],
+    warnings: string[] }
 
 // Config manager interface
 interface ConfigManager { get(key: string): any;
     set(key: string, value: any): void,
-    watch(namespace: string, key: string, callback: (newValu;e: any) => void): void ,}
+    watch(namespace: string, key: string, callback: (newValue: any) => void): void ,}
 }
 
 // Main controller interface
 interface MainController { configManager: ConfigManager,
     audioDescriptionManager: {
         notificationContaine;r: HTMLElement ,};
-    audioFeedbackManager: { updateColorIndicatorVisibility(visible: boolean): void;
-       , hapticSettings: {
-            enabled: boolean;
-           , vibrationIntensity: number };
+    audioFeedbackManager: { updateColorIndicatorVisibility(visible: boolean): void,
+    hapticSettings: {
+            enabled: boolean,
+    vibrationIntensity: number };
         updateVibrationManagerSettings(): void;
     };
     audioCueManager: { patternRecognition: {
@@ -74,11 +74,11 @@ export class AudioSettingsManager {
             patternRecognition: false;
             highContrast: false;
             largeFonts: false;
-            reduceMotion: false;
-           , hapticFeedback: false, // 触覚フィードバック設定
+            reduceMotion: false,
+    hapticFeedback: false, // 触覚フィードバック設定
     }
-            vibrationIntensity: 0.8 // 振動強度 }
-        }
+            vibrationIntensity: 0.8 // 振動強度 
+    }
 
     /**
      * 設定を読み込み
@@ -136,11 +136,11 @@ export class AudioSettingsManager {
         style.id = 'audio-accessibility-high-contrast';
         style.textContent = `;
             .audio-accessibility-notifications .notification { background-color: #000000 !important,
-                color: #ffffff !important;
-               , border: 2px solid #ffffff !important ,}
+                color: #ffffff !important,
+    border: 2px solid #ffffff !important ,}
             .audio-accessibility-captions { background-color: #000000 !important;
-                color: #ffffff !important;
-               , border: 2px solid #ffffff !important }
+                color: #ffffff !important,
+    border: 2px solid #ffffff !important }
         `;
         ';
         // 既存のスタイルを削除してから追加
@@ -240,8 +240,8 @@ export class AudioSettingsManager {
             highContrast: false;
             largeFonts: false;
             reduceMotion: false;
-            hapticFeedback: false;
-           , vibrationIntensity: 0.8 };
+            hapticFeedback: false,
+    vibrationIntensity: 0.8 };
         Object.assign(this.settings, defaultSettings);
         
         // 設定を永続化
@@ -259,8 +259,8 @@ export class AudioSettingsManager {
      */''
     public exportSettings()';
             version: '1.0.0);
-            timestamp: new Date().toISOString();
-           , settings: { ...this.settings;
+            timestamp: new Date().toISOString(),
+    settings: { ...this.settings;
     }
 
     /**
@@ -273,7 +273,7 @@ export class AudioSettingsManager {
 
             }
 
-                throw new Error('Invalid, settings data, structure); }'
+                throw new Error('Invalid, settings data, structure'; }'
             }
             
             // 有効な設定のみをインポート
@@ -314,14 +314,14 @@ export class AudioSettingsManager {
                 case 'vibrationIntensity':';
             }
 
-                    if (typeof, value !== 'number' || value < 0 || value > 1) {' }
+                    if (typeof, value !== 'number' || value < 0 || value > 1' {' }
 
-                        errors.push(`${key} must, be a, number between, 0 and, 1`'});
+                        errors.push(`${key} must, be a, number between, 0 and, 1`'}';
                     }
                     break;
 
                 default:'';
-                    if(typeof, value !== 'boolean) {'
+                    if(typeof, value !== 'boolean' {'
                         
                     }
                         errors.push(`${key} must, be a, boolean value`}),

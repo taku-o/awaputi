@@ -8,27 +8,27 @@
  * Challenge reward interface
  */
 interface ChallengeReward { type: string,
-    amount: number;
-   , description: string ,}
+    amount: number,
+    description: string ,}
 
 /**
  * Challenge data interface
  */
 interface ChallengeData { id: string;
     title: string;
-    description: string;
-   , type: 'daily' | 'weekly' | 'special' | 'event',
+    description: string,
+    type: 'daily' | 'weekly' | 'special' | 'event',
     difficulty: 'easy' | 'medium' | 'hard' | 'expert';
     progress: number;
-    target: number;
-   , reward: ChallengeReward;
+    target: number,
+    reward: ChallengeReward;
     deadline?: Date;
     priority?: number; ,}
 
 /**
  * Challenge system interface
  */
-interface ChallengeSystem { getChallengeById?: (challengeI;d: string) => Promise<ChallengeData | null> ,}
+interface ChallengeSystem { getChallengeById?: (challengeId: string) => Promise<ChallengeData | null> ,}
 }
 
 /**
@@ -40,8 +40,8 @@ interface LocalizationManager { translate(key: string): string | null, }
  * Bound event handlers
  */
 interface BoundHandlers { close: () => void,
-    backdropClick: (even;t: Event) => void;
-    keyDown: (even;t: KeyboardEvent) => void ,}
+    backdropClick: (event: Event) => void;
+    keyDown: (event: KeyboardEvent) => void ,}
 }
 
 export class ChallengeDetailModal {
@@ -68,15 +68,15 @@ export class ChallengeDetailModal {
         
         // イベントハンドラー
         this.boundHandlers = {
-            close: this.close.bind(this);
-           , backdropClick: this.onBackdropClick.bind(this);
+            close: this.close.bind(this),
+    backdropClick: this.onBackdropClick.bind(this);
     ,}
 
-            keyDown: this.onKeyDown.bind(this); }
-        };
+            keyDown: this.onKeyDown.bind(this); 
+    };
 
-        console.log('[ChallengeDetailModal] インスタンス作成);
-        this.createModalStructure(');
+        console.log('[ChallengeDetailModal] インスタンス作成';
+        this.createModalStructure();
     }
     
     /**
@@ -89,8 +89,8 @@ export class ChallengeDetailModal {
                 position: fixed;
                 top: 0;
                 left: 0;
-                width: 100%;
-               , height: 100%;
+                width: 100%,
+    height: 100%;
                 z-index: 10000,
                 display: none;
                 align-items: center,
@@ -104,27 +104,27 @@ export class ChallengeDetailModal {
             this.backdrop.style.cssText = `;
                 position: absolute;
                 top: 0;
-                left: 0;
-               , width: 100%,
+                left: 0,
+    width: 100%,
                 height: 100%,
                 background-color: rgba(0, 0, 0, 0.5);
                 cursor: pointer,
             `;''
-            this.backdrop.addEventListener('click', this.boundHandlers.backdropClick);
+            this.backdrop.addEventListener('click', this.boundHandlers.backdropClick';
             ';
             // モーダル本体
             this.modal = document.createElement('div'');''
             this.modal.className = 'challenge-detail-modal';
             this.modal.style.cssText = `;
-                position: relative;
-               , background: white,
+                position: relative,
+    background: white,
                 border-radius: 12px,
                 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
                 max-width: 600px,
                 width: 90%;
                 max-height: 80vh,
-                overflow: hidden;
-               , display: flex;
+                overflow: hidden,
+    display: flex;
                 flex-direction: column,
             `;
             ';
@@ -154,23 +154,23 @@ export class ChallengeDetailModal {
             this.closeButton = document.createElement('button'');''
             this.closeButton.className = 'challenge-detail-modal-close';
             this.closeButton.style.cssText = `;
-                background: none;
-               , border: none;
+                background: none,
+    border: none;
                 font-size: 28px,
                 color: #7f8c8d;
                 cursor: pointer;
                 padding: 0;
                 width: 32px;
-                height: 32px;
-               , display: flex;
+                height: 32px,
+    display: flex;
                 align-items: center,
                 justify-content: center,
                 border-radius: 50%,
                 transition: all 0.2s ease,
             `;''
-            this.closeButton.innerHTML = '×';''
+            this.closeButton.innerHTML = '×';
             this.closeButton.setAttribute('aria-label', this.localizationManager.translate('common.close'') || '閉じる'');''
-            this.closeButton.addEventListener('click', this.boundHandlers.close);''
+            this.closeButton.addEventListener('click', this.boundHandlers.close';''
             this.closeButton.addEventListener('mouseover', () => {  ''
                 this.closeButton!.style.backgroundColor = '#ecf0f1';' }
 
@@ -181,7 +181,7 @@ export class ChallengeDetailModal {
                 this.closeButton!.style.backgroundColor = 'transparent';' }
 
                 this.closeButton!.style.color = '#7f8c8d'; }
-            });
+            }';
             ';
 
             header.appendChild(title);''
@@ -209,7 +209,7 @@ export class ChallengeDetailModal {
             this.modal.setAttribute('aria-labelledby', 'challenge-detail-title'');''
             title.id = 'challenge-detail-title';
 
-            console.log('[ChallengeDetailModal] モーダル構造作成完了);
+            console.log('[ChallengeDetailModal] モーダル構造作成完了';
 
         } catch (error') {
             console.error('[ChallengeDetailModal] モーダル構造作成エラー:', error);
@@ -248,7 +248,7 @@ export class ChallengeDetailModal {
             document.addEventListener('keydown', this.boundHandlers.keyDown);
             
             // フォーカス管理
-            this.closeButton? .focus();
+            this.closeButton?.focus();
             // チャレンジデータ読み込み
             await this.loadChallengeData(challengeId);
 
@@ -276,7 +276,7 @@ export class ChallengeDetailModal {
             }
             ';
             // キーボードイベント削除
-            document.removeEventListener('keydown', this.boundHandlers.keyDown);
+            document.removeEventListener('keydown', this.boundHandlers.keyDown';
             
             // 状態リセット
             this.currentChallengeId = null;
@@ -284,7 +284,7 @@ export class ChallengeDetailModal {
             this.error = null;
             this.isLoading = false;
 
-            console.log('[ChallengeDetailModal] モーダル閉じる);
+            console.log('[ChallengeDetailModal] モーダル閉じる';
 
         } catch (error') {
             console.error('[ChallengeDetailModal] 閉じるエラー:', error); }
@@ -311,7 +311,7 @@ export class ChallengeDetailModal {
                 this.renderChallengeDetails();
             }
 
-                throw new Error('チャレンジデータが見つかりません);' }
+                throw new Error('チャレンジデータが見つかりません';' }
 
             } catch (error) {
             console.error('[ChallengeDetailModal] データ読み込みエラー:', error);
@@ -329,8 +329,8 @@ export class ChallengeDetailModal {
             description: 'このチャレンジの詳細説明です。目標を達成して報酬を獲得しましょう。',
             type: 'daily',
             difficulty: 'medium';
-            progress: 50;
-           , target: 100,
+            progress: 50,
+    target: 100,
             reward: { ''
                 type: 'ap',
                 amount: 100,
@@ -389,13 +389,13 @@ export class ChallengeDetailModal {
                     <div>"";
                         <h4 style="margin: 0 0 8px 0; color: #2c3e50;">タイプ</h4>""
                         <div style="padding: 8px 12px; background: #e8f4f8; border-radius: 6px; color: #2c3e50;">""
-                            ${this.getTypeDisplayName(challenge.type"})"
+                            ${this.getTypeDisplayName(challenge.type"}""
                         </div>;
                     </div>";
                     <div>"";
                         <h4 style="margin: 0 0 8px 0; color: #2c3e50;">難易度</h4>""
-                        <div style="padding: 8px 12px; background: ${this.getDifficultyColor(challenge.difficulty"}); border-radius: 6px;, color: #2c3e50;">""
-                            ${this.getDifficultyDisplayName(challenge.difficulty"})"
+                        <div style="padding: 8px 12px; background: ${this.getDifficultyColor(challenge.difficulty"}"; border-radius: 6px;, color: #2c3e50;">""
+                            ${this.getDifficultyDisplayName(challenge.difficulty"}""
                         </div>;
                     </div>;
                 </div>";
@@ -416,7 +416,7 @@ export class ChallengeDetailModal {
                     <div, style="margin-bottom: 24px;">""
                         <h4, style="margin: 0, 0 8px, 0; color: #2c3e50;">期限</h4>""
                         <div, style="color: #e74c3c; font-weight: bold;">" ,}"
-                            ${this.formatDeadline(challenge.deadline"})"
+                            ${this.formatDeadline(challenge.deadline"}""
                         </div>";
                     </div>"";
                 ` : ''}
@@ -435,7 +435,7 @@ export class ChallengeDetailModal {
             <div style="text-align: center; padding: 40px;, color: #e74c3c;">""
                 <div style="font-size: 18px; margin-bottom: 16px;">エラーが発生しました</div>" }"
                 <div style="color: #7f8c8d; margin-bottom: 24px;">${this.error || '不明なエラー'}</div>''
-                <button onclick="this.closest('.challenge-detail-modal-container'').querySelector('.challenge-detail-modal-close).click(')" "";
+                <button onclick="this.closest('.challenge-detail-modal-container'').querySelector('.challenge-detail-modal-close'.click()" "";
                         style="padding: 8px 16px; background: #e74c3c; color: white; border: none; border-radius: 4px;, cursor: pointer;">
                     閉じる;
                 </button>;
@@ -454,7 +454,7 @@ export class ChallengeDetailModal {
      * キーボード処理"
      */""
     private onKeyDown(event: KeyboardEvent): void { ""
-        if(event.key === 'Escape) {'
+        if(event.key === 'Escape' {'
             event.preventDefault();
         }
             this.close(); }
@@ -545,10 +545,10 @@ export class ChallengeDetailModal {
             this.contentArea = null;
             this.challengeData = null;
 
-            console.log('[ChallengeDetailModal] クリーンアップ完了);
+            console.log('[ChallengeDetailModal] クリーンアップ完了';
 
         } catch (error') {
-            console.error('[ChallengeDetailModal] クリーンアップエラー:', error); }
+            console.error('[ChallengeDetailModal] クリーンアップエラー:', error'; }
 
     }''
 }

@@ -7,15 +7,15 @@
 interface InsightGenerator { priority: 'low' | 'medium' | 'high' | 'critical',
     frequency: number,
     lastGenerated: number,
-    generate: (dat;a: AnalysisData') => Promise<Insight[]> | Insight[] ,}'
+    generate: (data: AnalysisData') => Promise<Insight[]> | Insight[] ,}'
 }
 
-interface AnalysisData { timestamp: number;
-   , metrics: Map<string, any>;
-    history: AnalysisHistoryPoint[];
-   , trends: Map<string, TrendData>;
-    anomalies: Anomaly[];
-   , baseline: Map<string, number>;
+interface AnalysisData { timestamp: number,
+    metrics: Map<string, any>;
+    history: AnalysisHistoryPoint[],
+    trends: Map<string, TrendData>;
+    anomalies: Anomaly[],
+    baseline: Map<string, number>;
     stats: Map<string, StatisticalData> }
 
 interface AnalysisHistoryPoint { timestamp: number,
@@ -25,30 +25,30 @@ interface AnalysisHistoryPoint { timestamp: number,
 interface TrendData { ''
     trend: 'stable' | 'increasing' | 'decreasing';
     confidence: number;
-    timestamp: number;
-   , analyzer: string }
+    timestamp: number,
+    analyzer: string }
 
-interface Anomaly { timestamp: number;
-   , metricId: string,
+interface Anomaly { timestamp: number,
+    metricId: string,
     value: number,
     severity: 'low' | 'medium' | 'high' | 'critical';
-    score: number;
-   , type: string ,}
+    score: number,
+    type: string ,}
 
 interface StatisticalData { timestamp: number;
-    stats: any;
-   , dataPoints: number }
+    stats: any,
+    dataPoints: number }
 ';
 
 interface Insight { ''
     type: 'bottleneck' | 'optimization' | 'degradation' | 'resource';
-    category: string;
-   , title: string,
+    category: string,
+    title: string,
     description: string,
     impact: 'low' | 'medium' | 'high' | 'critical',
     suggestions: string[],
-    severity: 'low' | 'medium' | 'high' | 'critical';
-   , metrics: Record<string, any>;
+    severity: 'low' | 'medium' | 'high' | 'critical',
+    metrics: Record<string, any>;
     timestamp?: number;
     generator?: string;
     priority?: string; }
@@ -56,29 +56,29 @@ interface Insight { ''
 interface ReportSummary { total_insights: number,
     recent_insights: number;
     critical_issues: number;
-    high_priority_issues: number;
-   , categories: Record<string, number> }
+    high_priority_issues: number,
+    categories: Record<string, number> }
 
 interface ReportInsights { recent: Insight[],
     critical: Insight[];
-    high_priority: Insight[];
-   , by_category: Record<string, Insight[]> }
+    high_priority: Insight[],
+    by_category: Record<string, Insight[]> }
 
 interface Recommendation { action: string,
 
     frequency: number,
-    priority: 'low' | 'medium' | 'high';
-   , description: string ,}
+    priority: 'low' | 'medium' | 'high',
+    description: string ,}
 
 interface PerformanceReport { timestamp: number;
     summary: ReportSummary;
-    insights: ReportInsights;
-   , recommendations: Recommendation[]
+    insights: ReportInsights,
+    recommendations: Recommendation[]
     }
 
 interface ExportedInsights { timestamp: number;
-    insights: Insight[];
-   , generators: Record<string, InsightGenerator> }
+    insights: Insight[],
+    generators: Record<string, InsightGenerator> }
 
 interface MainController { errorHandler: any,
     anomalies?: Anomaly[];
@@ -116,37 +116,37 @@ export class PerformanceReportGenerator {
      */''
     private initializeInsightGenerators(''';
         this.insightGenerators.set('bottlenecks', { ')'
-            priority: 'high');
-           , frequency: 30000, // 30 seconds);
-            lastGenerated: 0);
-           , generate: (data: AnalysisData) => this.generateBottleneckInsights(data);' ,}'
+            priority: 'high'),
+    frequency: 30000, // 30 seconds);
+            lastGenerated: 0),
+    generate: (data: AnalysisData) => this.generateBottleneckInsights(data);' ,}'
 
         }');
         ';
         // Optimization opportunities detector
         this.insightGenerators.set('optimization', { ')'
-            priority: 'medium');
-           , frequency: 60000, // 1 minute);
-            lastGenerated: 0);
-           , generate: (data: AnalysisData) => this.generateOptimizationInsights(data);' ,}'
+            priority: 'medium'),
+    frequency: 60000, // 1 minute);
+            lastGenerated: 0),
+    generate: (data: AnalysisData) => this.generateOptimizationInsights(data);' ,}'
 
         }');
         ';
         // Performance degradation detector
         this.insightGenerators.set('degradation', { ')'
-            priority: 'high');
-           , frequency: 15000, // 15 seconds);
-            lastGenerated: 0);
-           , generate: (data: AnalysisData) => this.generateDegradationInsights(data);' ,}'
+            priority: 'high'),
+    frequency: 15000, // 15 seconds);
+            lastGenerated: 0),
+    generate: (data: AnalysisData) => this.generateDegradationInsights(data);' ,}'
 
         }');
         ';
         // Resource utilization analyzer
         this.insightGenerators.set('resources', { ')'
-            priority: 'medium');
-           , frequency: 45000, // 45 seconds);
-            lastGenerated: 0);
-           , generate: (data: AnalysisData) => this.generateResourceInsights(data) ,}
+            priority: 'medium'),
+    frequency: 45000, // 45 seconds);
+            lastGenerated: 0),
+    generate: (data: AnalysisData) => this.generateResourceInsights(data) ,}
         });
     }
     
@@ -171,15 +171,15 @@ export class PerformanceReportGenerator {
                     history: this.mainController.metricsCollector.getAnalysisHistory();
                     trends: this.mainController.dataProcessor.getAllTrends();
                     anomalies: this.mainController.anomalies || [];
-                    baseline: this.mainController.performanceBaseline;
-                   , stats: this.mainController.dataProcessor.getAllStatisticalData(), });
+                    baseline: this.mainController.performanceBaseline,
+    stats: this.mainController.dataProcessor.getAllStatisticalData(), });
                 
                 if(insights && insights.length > 0) {
                 
                     this.insights.push(...insights.map(insight => ({
                         ...insight);
-                        timestamp: currentTimestamp);
-                       , generator: generatorId,);
+                        timestamp: currentTimestamp),
+    generator: generatorId,);
                         priority: generator.priority)));
                 ,}
                     generator.lastGenerated = currentTimestamp; }
@@ -202,10 +202,10 @@ export class PerformanceReportGenerator {
         ';
         // Check for FPS bottlenecks
         const fps = metrics.get('fps'');''
-        const fpsBaseline = baseline.get('fps);''
+        const fpsBaseline = baseline.get('fps';''
         if(fps && fpsBaseline && fps < fpsBaseline * 0.8) { '
             insights.push({''
-                type: 'bottleneck',)';
+                type: 'bottleneck','';
                 category: 'rendering',' }
 
                 title: 'FPS Performance Bottleneck'),' }
@@ -213,7 +213,7 @@ export class PerformanceReportGenerator {
                 description: `Current FPS (${fps.toFixed(1})) is significantly below baseline(${fpsBaseline.toFixed(1}))`,''
                 impact: 'high',
                 suggestions: ['reduce_graphics_quality', 'optimize_rendering'],
-                severity: this.calculateSeverity(fps, fpsBaseline, 'fps),
+                severity: this.calculateSeverity(fps, fpsBaseline, 'fps',
                 metrics: { current: fps, baseline: fpsBaseline, ratio: fps / fpsBaseline ,}''
             }');
         }
@@ -230,27 +230,26 @@ export class PerformanceReportGenerator {
                 type: 'bottleneck',
                 category: 'memory',
                 title: 'Memory Usage Bottleneck',
-                description: 'Memory usage is consistently increasing',)';
+                description: 'Memory usage is consistently increasing','';
                 impact: 'medium',')';
                 suggestions: ['memory_cleanup', 'check_memory_leaks]');''
                 severity: memoryUsed && memoryBaseline ? this.calculateSeverity(memoryUsed, memoryBaseline, 'memory'') : 'medium',
                 metrics: { 
                     current: memoryUsed, ;
-                    baseline: memoryBaseline;
-                   , trend: memoryTrend.trend;
+                    baseline: memoryBaseline,
+    trend: memoryTrend.trend;
         ,}
-                    confidence: memoryTrend.confidence  }
-
-                }''
+                    confidence: memoryTrend.confidence  
+    }''
             }');
         }
         ';
         // Check for frame time bottlenecks
         const frameTime = metrics.get('frame_time'');''
-        const frameTimeBaseline = baseline.get('frame_time);''
+        const frameTimeBaseline = baseline.get('frame_time';''
         if(frameTime && frameTimeBaseline && frameTime > frameTimeBaseline * 1.5) { '
             insights.push({''
-                type: 'bottleneck',)';
+                type: 'bottleneck','';
                 category: 'rendering',' }
 
                 title: 'Frame Time Bottleneck'),' }
@@ -259,7 +258,7 @@ export class PerformanceReportGenerator {
                 impact: 'high',
                 suggestions: ['optimize_rendering', 'reduce_complexity'],
                 severity: this.calculateSeverity(frameTime, frameTimeBaseline, 'frame_time),
-                metrics: { current: frameTime, baseline: frameTimeBaseline, ratio: frameTime / frameTimeBaseline ,});
+                metrics: { current: frameTime, baseline: frameTimeBaseline, ratio: frameTime / frameTimeBaseline ,}';
         }
         
         return insights;
@@ -273,7 +272,7 @@ export class PerformanceReportGenerator {
     private generateOptimizationInsights(analysisData: AnalysisData): Insight[] { const insights: Insight[] = [], }
         const { stats, metrics, baseline } = analysisData;
 
-        const descriptiveStats = stats.get('descriptive)? .stats;
+        const descriptiveStats = stats.get('descriptive)?.stats;
         if (!descriptiveStats) return insights;
         ';
         // Check for FPS optimization opportunities
@@ -286,7 +285,7 @@ export class PerformanceReportGenerator {
                 impact: 'low',
                 suggestions: ['increase_graphics_quality', 'enable_advanced_features'],
 
-        })'
+        }''
                 severity: 'low',) }
                 metrics: { p95_fps: descriptiveStats.fps.p95, threshold: 55 ,});
         }
@@ -303,16 +302,16 @@ export class PerformanceReportGenerator {
                     impact: 'medium',
                     suggestions: ['memory_pooling', 'optimize_allocations'],
 
-        })'
+        }''
                     severity: 'low',') }
 
-                    metrics: { efficiency: memoryEfficiency, threshold: 0.7 ,})');
+                    metrics: { efficiency: memoryEfficiency, threshold: 0.7 ,}'');
             }
         }
         ';
         // Check for network optimization opportunities
         const networkLatency = metrics.get('network_latency'');''
-        const networkBaseline = baseline.get('network_latency);''
+        const networkBaseline = baseline.get('network_latency';''
         if(networkLatency && networkBaseline && networkLatency < networkBaseline * 0.8) {'
             insights.push({''
                 type: 'optimization',
@@ -322,7 +321,7 @@ export class PerformanceReportGenerator {
                 impact: 'low',
                 suggestions: ['enable_network_features', 'increase_sync_frequency'],
 
-        })'
+        }''
                 severity: 'low',) }
                 metrics: { current: networkLatency, baseline: networkBaseline, ratio: networkLatency / networkBaseline ,});
         }
@@ -341,14 +340,14 @@ export class PerformanceReportGenerator {
         // Check for performance degradation trends
         for(const [metricId, trendData] of trends) { '
 
-            if(metricId === 'fps' && trendData.trend === 'decreasing' && trendData.confidence > 0.7) {'
+            if(metricId === 'fps' && trendData.trend === 'decreasing' && trendData.confidence > 0.7' {'
                 insights.push({''
-                    type: 'degradation',)';
+                    type: 'degradation','';
                     category: 'performance',' }
 
                     title: 'FPS Degradation Detected'),' }
 
-                    description: `FPS is showing a decreasing trend with ${(trendData.confidence * 100}.toFixed(1'})% confidence`,''
+                    description: `FPS is showing a decreasing trend with ${(trendData.confidence * 100}.toFixed(1'}'% confidence`,''
                     impact: 'high',
                     suggestions: ['investigate_performance', 'restart_application'],
                     severity: 'high',
@@ -356,39 +355,39 @@ export class PerformanceReportGenerator {
                 }');
             }
 
-            if(metricId === 'memory_used' && trendData.trend === 'increasing' && trendData.confidence > 0.8) { '
+            if(metricId === 'memory_used' && trendData.trend === 'increasing' && trendData.confidence > 0.8' { '
                 insights.push({''
-                    type: 'degradation',)';
+                    type: 'degradation','';
                     category: 'memory',' }
 
                     title: 'Memory Degradation Detected'),' }
 
-                    description: `Memory usage is consistently increasing with ${(trendData.confidence * 100}.toFixed(1'})% confidence`,''
+                    description: `Memory usage is consistently increasing with ${(trendData.confidence * 100}.toFixed(1'}'% confidence`,''
                     impact: 'medium',
                     suggestions: ['memory_cleanup', 'investigate_leaks'],
-                    severity: 'medium';
-                   , metrics: { confidence: trendData.confidence, trend: trendData.trend, metric: metricId ,});
+                    severity: 'medium',
+    metrics: { confidence: trendData.confidence, trend: trendData.trend, metric: metricId ,});
             }
         }
         
         // Check for recent anomalies indicating degradation
         const recentAnomalies = anomalies.filter(a => );''
-            Date.now(') - a.timestamp < 30000 && a.severity === 'critical';
+            Date.now() - a.timestamp < 30000 && a.severity === 'critical';
         );
 
         if(recentAnomalies.length >= 3) {'
             insights.push({''
                 type: 'degradation',
-                category: 'stability',)';
-                title: 'Performance Instability Detected')';
-               , description: `Multiple critical anomalies detected in the last 30 seconds`,
+                category: 'stability','';
+                title: 'Performance Instability Detected')',
+    description: `Multiple critical anomalies detected in the last 30 seconds`,
                 impact: 'critical',
                 suggestions: ['emergency_mode', 'restart_application'],
 
         }
 
                 severity: 'critical',) }
-                metrics: { anomaly_count: recentAnomalies.length, time_window: 30000 ,});
+                metrics: { anomaly_count: recentAnomalies.length, time_window: 30000 ,}';
         }
         
         return insights;
@@ -404,10 +403,10 @@ export class PerformanceReportGenerator {
         ';
         // Check memory utilization
         const memoryUsed = metrics.get('memory_used'');''
-        const memoryBaseline = baseline.get('memory_used);''
+        const memoryBaseline = baseline.get('memory_used';''
         if(memoryUsed && memoryBaseline && memoryUsed > memoryBaseline * 1.5) { '
             insights.push({''
-                type: 'resource',)';
+                type: 'resource','';
                 category: 'memory',' }
 
                 title: 'High Memory Utilization'),' }
@@ -420,10 +419,10 @@ export class PerformanceReportGenerator {
         }
 
         // Check CPU utilization(if, available);''
-        const cpuUsage = metrics.get('cpu_usage);''
+        const cpuUsage = metrics.get('cpu_usage';''
         if(cpuUsage && cpuUsage > 80) { '
             insights.push({''
-                type: 'resource',)';
+                type: 'resource','';
                 category: 'cpu',' }
 
                 title: 'High CPU Utilization'),' }
@@ -438,10 +437,10 @@ export class PerformanceReportGenerator {
         ';
         // Check network utilization
         const networkLatency = metrics.get('network_latency'');''
-        const networkBaseline = baseline.get('network_latency);''
+        const networkBaseline = baseline.get('network_latency';''
         if(networkLatency && networkBaseline && networkLatency > networkBaseline * 2) { '
             insights.push({''
-                type: 'resource',)';
+                type: 'resource','';
                 category: 'network',' }
 
                 title: 'High Network Latency'),' }
@@ -450,7 +449,7 @@ export class PerformanceReportGenerator {
                 impact: 'medium',
                 suggestions: ['check_network', 'reduce_network_load'],
                 severity: this.calculateSeverity(networkLatency, networkBaseline, 'network),
-                metrics: { current: networkLatency, baseline: networkBaseline, ratio: networkLatency / networkBaseline ,});
+                metrics: { current: networkLatency, baseline: networkBaseline, ratio: networkLatency / networkBaseline ,}';
         }
         
         return insights;
@@ -471,17 +470,17 @@ export class PerformanceReportGenerator {
         switch(metricType) {'
 
             case 'fps':'';
-                if(ratio < 0.5) return 'critical';''
-                if(ratio < 0.7) return 'high';''
-                if(ratio < 0.9) return 'medium';''
+                if(ratio < 0.5) return 'critical';
+                if(ratio < 0.7) return 'high';
+                if(ratio < 0.9) return 'medium';
                 return 'low';
 
             case 'frame_time':'';
             case 'memory':'';
             case 'network':'';
-                if(ratio > 3) return 'critical';''
-                if(ratio > 2) return 'high';''
-                if(ratio > 1.5) return 'medium';''
+                if(ratio > 3) return 'critical';
+                if(ratio > 2) return 'high';
+                if(ratio > 1.5) return 'medium';
                 return 'low';
 
                 ';
@@ -525,14 +524,14 @@ export class PerformanceReportGenerator {
             summary: {
                 total_insights: this.insights.length;
                 recent_insights: recentInsights.length;
-                critical_issues: criticalInsights.length;
-               , high_priority_issues: highInsights.length, };
-                categories: this.getInsightCategorySummary(); }
-            },
+                critical_issues: criticalInsights.length,
+    high_priority_issues: highInsights.length, };
+                categories: this.getInsightCategorySummary(); 
+    },
             insights: { recent: recentInsights;
                 critical: criticalInsights;
-                high_priority: highInsights;
-               , by_category: this.groupInsightsByCategory(recentInsights };
+                high_priority: highInsights,
+    by_category: this.groupInsightsByCategory(recentInsights }
             recommendations: this.generateRecommendations(recentInsights);
         }
     
@@ -585,12 +584,12 @@ export class PerformanceReportGenerator {
 
         for(const [suggestion, count] of sortedSuggestions) {
             recommendations.push({)
-                action: suggestion)';
-               , frequency: count,')';
+                action: suggestion)',
+    frequency: count,')';
                 priority: count >= 3 ? 'high' : count >= 2 ? 'medium' : 'low');
         ,}
-                description: this.getRecommendationDescription(suggestion); }
-            });
+                description: this.getRecommendationDescription(suggestion); 
+    });
         }
         
         return recommendations;
@@ -628,8 +627,8 @@ export class PerformanceReportGenerator {
      */
     exportInsights(): ExportedInsights { return { timestamp: Date.now(),
             insights: this.insights, };
-            generators: Object.fromEntries(this.insightGenerators'); }
-        }
+            generators: Object.fromEntries(this.insightGenerators'); 
+    }
     
     /**
      * Cleanup generator resources

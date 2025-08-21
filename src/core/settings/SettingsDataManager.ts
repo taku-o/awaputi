@@ -33,22 +33,22 @@ export interface AccessibilitySettings { highContrast: boolean,
     keyboardNavigation: boolean;
     voiceGuidance: boolean;
     subtitles: boolean;
-    profiles: AccessibilityProfile;
-   , importExport: boolean ,}
+    profiles: AccessibilityProfile,
+    importExport: boolean ,}
 
 export interface ControlsSettings { keyboardEnabled: boolean;
-    mouseEnabled: boolean;
-   , touchEnabled: boolean }
+    mouseEnabled: boolean,
+    touchEnabled: boolean }
 
 export interface KeyboardShortcuts { pause: string[];
     menu: string[];
-    settings: string[];
-   , help: string[] }
+    settings: string[],
+    help: string[] }
 
 export interface UISettings { showFPS: boolean;
     showDebugInfo: boolean;
-    animationSpeed: number;
-   , uiScale: number }
+    animationSpeed: number,
+    uiScale: number }
 
 export interface SocialSettings { enableSharing: boolean;
     autoPromptHighScore: boolean;
@@ -57,14 +57,14 @@ export interface SocialSettings { enableSharing: boolean;
     includeScreenshot: boolean;
     screenshotQuality: ScreenshotQuality;
     privacyLevel: PrivacyLevel;
-    customMessage: string;
-   , showWatermark: boolean }
+    customMessage: string,
+    showWatermark: boolean }
 
 export interface NotificationSettings { 'challenges.enabled': boolean;'', 'challenges.newChallenge': boolean;'', 'challenges.challengeComplete': boolean;'', 'challenges.dailyReminder': boolean;'', 'challenges.weeklyReminder': boolean;'', 'achievements.enabled': boolean;'', 'achievements.unlocked': boolean;'', 'achievements.progress': boolean;'', 'achievements.rare': boolean;'', 'leaderboard.enabled': boolean;'', 'leaderboard.newRecord': boolean;'', 'leaderboard.rankChange': boolean;'', 'system.enabled': boolean;'', 'system.updates': boolean;'', 'system.maintenance': boolean; }
 
 export interface PrivacySettings { dataCollection: boolean,
-    analytics: boolean;
-   , crashReports: boolean ,}
+    analytics: boolean,
+    crashReports: boolean ,}
 
 export interface DefaultSettings { masterVolume: number;
     sfxVolume: number;
@@ -77,36 +77,36 @@ export interface DefaultSettings { masterVolume: number;
     keyboardShortcuts: KeyboardShortcuts;
     ui: UISettings;
     social: SocialSettings;
-    notifications: NotificationSettings;
-   , privacy: PrivacySettings
+    notifications: NotificationSettings,
+    privacy: PrivacySettings
     }
 
 export interface ParsedSettingKey { category: string;
     settingName: string;
-    fullKey: string;
-   , isLegacy: boolean }
+    fullKey: string,
+    isLegacy: boolean }
 
-export interface ValidationResult { isValid: boolean;
-   , errors: string[] }
+export interface ValidationResult { isValid: boolean,
+    errors: string[] }
 
-export interface SettingsCount { total: number;
-   , categories: number }
+export interface SettingsCount { total: number,
+    categories: number }
 
 export interface DataManagerStats { totalSettings: number;
     categoriesCount: number;
     systemLanguage: string;
-    defaultsGenerated: boolean;
-   , structureValid: boolean }
+    defaultsGenerated: boolean,
+    structureValid: boolean }
 
 export interface LegacyKeyMap { [key: string]: string, }
 ';
 // 列挙型
-export type FontSize = 'small' | 'medium' | 'large' | 'xlarge';''
-export type ContrastLevel = 'normal' | 'high' | 'maximum';''
-export type AccessibilityProfile = 'default' | 'visual' | 'motor' | 'cognitive' | 'hearing';''
-export type QualitySetting = 'auto' | 'low' | 'medium' | 'high' | 'ultra';''
-export type SocialPlatform = 'auto' | 'twitter' | 'facebook' | 'native';''
-export type ScreenshotQuality = 'low' | 'medium' | 'high';''
+export type FontSize = 'small' | 'medium' | 'large' | 'xlarge';
+export type ContrastLevel = 'normal' | 'high' | 'maximum';
+export type AccessibilityProfile = 'default' | 'visual' | 'motor' | 'cognitive' | 'hearing';
+export type QualitySetting = 'auto' | 'low' | 'medium' | 'high' | 'ultra';
+export type SocialPlatform = 'auto' | 'twitter' | 'facebook' | 'native';
+export type ScreenshotQuality = 'low' | 'medium' | 'high';
 export type PrivacyLevel = 'public' | 'friends' | 'private';
 
 export class SettingsDataManager {
@@ -126,41 +126,41 @@ export class SettingsDataManager {
             sfxVolume: { type: 'number', min: 0, max: 1 ,},''
             bgmVolume: { type: 'number', min: 0, max: 1 ,};
 
-        console.log('[SettingsDataManager] Component, initialized);
+        console.log('[SettingsDataManager] Component, initialized';
     }
     
     /**
      * デフォルト設定を生成
      * @returns デフォルト設定オブジェクト
      */
-    getDefaultSettings('): DefaultSettings { return { // 音響設定
+    getDefaultSettings(): DefaultSettings { return { // 音響設定
             masterVolume: 0.7;
             sfxVolume: 0.8;
             bgmVolume: 0.5;
             isMuted: false;
             ;
             // 言語設定
-            language: this.detectSystemLanguage(''';
+            language: this.detectSystemLanguage('''
             quality: 'auto';
             // アクセシビリティ設定
            , accessibility: {
                 highContrast: false;
                 reducedMotion: false;
                 largeText: false;
-                screenReader: false;
-               , colorBlindSupport: false,
+                screenReader: false,
+    colorBlindSupport: false,
                 fontSize: 'medium',
                 contrastLevel: 'normal';
-                keyboardNavigation: true;
-               , voiceGuidance: false,
+                keyboardNavigation: true,
+    voiceGuidance: false,
                 subtitles: false,
                 profiles: 'default', };
-                importExport: false }
-            };
+                importExport: false 
+    };
             // 操作設定
             controls: { keyboardEnabled: true;
-                mouseEnabled: true;
-               , touchEnabled: true }))
+                mouseEnabled: true,
+    touchEnabled: true })'
             // キーボードショートカット（Issue #170で削除されたもの以外）
             keyboardShortcuts: { ''
                 pause: ['Space'],
@@ -173,18 +173,18 @@ export class SettingsDataManager {
             // UI設定
             ui: { showFPS: false;
                 showDebugInfo: false;
-                animationSpeed: 1.0;
-               , uiScale: 1.0 };
+                animationSpeed: 1.0,
+    uiScale: 1.0 };
             // ソーシャル共有設定
             social: { enableSharing: true;
-                autoPromptHighScore: true;
-               , autoPromptAchievements: true,
+                autoPromptHighScore: true,
+    autoPromptAchievements: true,
                 defaultPlatform: 'auto', // 'auto', 'twitter', 'facebook', 'native'';
                 includeScreenshot: true,
                 screenshotQuality: 'high', // 'low', 'medium', 'high''';
                 privacyLevel: 'public', // 'public', 'friends', 'private''';
-                customMessage: '';
-               , showWatermark: true ,};
+                customMessage: '',
+    showWatermark: true ,};
             // 通知設定（平坦化構造）
             notifications: { '', 'challenges.enabled': true,
                 'challenges.newChallenge': true,
@@ -204,9 +204,9 @@ export class SettingsDataManager {
 
             // プライバシー設定
             privacy: { dataCollection: true;
-                analytics: true;
-               , crashReports: true }
-        }
+                analytics: true,
+    crashReports: true 
+    }
     
     /**
      * システム言語を検出
@@ -216,7 +216,7 @@ export class SettingsDataManager {
         const browserLang = navigator.language || (navigator, as any').userLanguage || 'en';
         ';
         // 日本語の場合
-        if(browserLang.startsWith('ja)) {''
+        if(browserLang.startsWith('ja)' {''
             return 'ja'; }
         ';
         // デフォルトは英語
@@ -252,7 +252,7 @@ export class SettingsDataManager {
             console.log(`[SettingsDataManager] Category '${category}' setup, completed with ${Object.keys(defaultValues}).length} settings`);''
         } catch (error) { }
 
-            console.error(`[SettingsDataManager] Failed to setup category '${category}':`, error);
+            console.error(`[SettingsDataManager] Failed to setup category '${category}':`, error';
             throw error;
         }
     }
@@ -270,26 +270,25 @@ export class SettingsDataManager {
 
             // レガシーキー形式（例: 'masterVolume'）'
             return { ''
-                category: 'legacy';
-               , settingName: key;
+                category: 'legacy',
+    settingName: key;
         ,}
                 fullKey: key, };
-                isLegacy: true }
-
-            };''
+                isLegacy: true 
+    };''
         } else if(parts.length === 2) { ''
             // 新しい形式（例: 'audio.masterVolume'）
             return { category: parts[0],
-                settingName: parts[1];
-               , fullKey: key, };
-                isLegacy: false }
-            } else {
+                settingName: parts[1],
+    fullKey: key, };
+                isLegacy: false 
+    } else {
             // ネストされた形式（例: 'accessibility.highContrast'）'
             return { category: parts[0],''
-                settingName: parts.slice(1).join('.), }'
+                settingName: parts.slice(1).join('.', }'
                 fullKey: key, };
-                isLegacy: false }
-            }
+                isLegacy: false 
+    }
     }
     
     /**
@@ -343,7 +342,7 @@ export class SettingsDataManager {
      * @returns マージされた設定
      */''
     mergeSettings(defaultSettings: Record<string, any>, loadedSettings: Record<string, any>): Record<string, any> { ''
-        if(!loadedSettings || typeof, loadedSettings !== 'object) { }'
+        if(!loadedSettings || typeof, loadedSettings !== 'object' { }'
             return { ...defaultSettings;
         }
         
@@ -379,14 +378,14 @@ export class SettingsDataManager {
 
         }
 
-            errors.push('Settings, must be, a valid, object); }'
+            errors.push('Settings, must be, a valid, object'; }'
             return { isValid: false, errors }
         
         // 必須カテゴリの存在確認
         for (const, category of, requiredCategories) { if(!(category, in settings) {' }'
 
-                errors.push(`Missing, required category: ${category}`'});''
-            } else if(typeof, settings[category] !== 'object' || settings[category] === null) { ' }
+                errors.push(`Missing, required category: ${category}`'}';''
+            } else if(typeof, settings[category] !== 'object' || settings[category] === null' { ' }
 
                 errors.push(`Category '${category}' must, be an, object`});
             }
@@ -405,10 +404,10 @@ export class SettingsDataManager {
         
         return { totalSettings: settingsCount.total,
             categoriesCount: settingsCount.categories;
-            systemLanguage: this.detectSystemLanguage();
-           , defaultsGenerated: true, };
-            structureValid: true }
-        }
+            systemLanguage: this.detectSystemLanguage(),
+    defaultsGenerated: true, };
+            structureValid: true 
+    }
     
     /**
      * 設定数を再帰的にカウント
@@ -429,6 +428,6 @@ export class SettingsDataManager {
         }
         
         return { total, };
-            categories: categories.size }
-        }''
+            categories: categories.size 
+    }''
 }

@@ -1,20 +1,20 @@
-import { getErrorHandler  } from '../../../utils/ErrorHandler.js';''
-import { getTranslationKeyManager  } from '../management/TranslationKeyManager.js';''
+import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
+import { getTranslationKeyManager  } from '../management/TranslationKeyManager.js';
 import { getProgressTracker  } from '../management/ProgressTracker.js';
 ';
 
 interface LanguageInfo { name: string,''
-    direction: 'ltr' | 'rtl';
-   , encoding: string ,}
+    direction: 'ltr' | 'rtl',
+    encoding: string ,}
 
-interface CategoryInfo { name: string;
-   , description: string }
+interface CategoryInfo { name: string,
+    description: string }
 
 interface TemplateConfig { placeholder: string;
     includeMetadata: boolean;
     includeComments: boolean;
-    sortKeys: boolean;
-   , validateStructure: boolean }
+    sortKeys: boolean,
+    validateStructure: boolean }
 
 interface GenerateLanguageFilesOptions { baseLanguage?: string;
     includeEmpty?: boolean;
@@ -48,14 +48,14 @@ interface SynchronizeTranslationFilesOptions { addMissingKeys?: boolean;
 interface FileGenerationResult { language: string,
     languageName: string;
     totalFiles: number;
-    totalKeys: number;
-   , filesGenerated: Array<{
+    totalKeys: number,
+    filesGenerated: Array<{
         categor;y: string;
         name: string;
-        keys: number;
-       , content: string ,}>;
-    errors: Array<{ category: string;
-       , error: string }>;
+        keys: number,
+    content: string ,}>;
+    errors: Array<{ category: string,
+    error: string }>;
 }
 
 interface TranslationObject { _metadata: {
@@ -65,23 +65,23 @@ interface TranslationObject { _metadata: {
         version: string;
         completionRate: number;
         totalKeys: number;
-        translatedKeys: number;
-       , generator: string };
+        translatedKeys: number,
+    generator: string };
     [key: string]: any,
 }
 
 interface TranslationTemplate { _instructions?: {
         READM;E: string;
-        PLACEHOLDER: string;
-       , GUIDELINES: string[] ,};
+        PLACEHOLDER: string,
+    GUIDELINES: string[] ,};
     _metadata?: { language: string;
         templateVersion: string;
         createdAt: string;
         baseLanguage: string;
         translator: string;
         reviewer: string;
-        status: string;
-       , notes: string };
+        status: string,
+    notes: string };
     [key: string]: any,
 }
 
@@ -91,49 +91,49 @@ interface ExtractedKeyInfo { key: string,
     contexts: Set<string>;
     lines: Array<{
         fil;e: string;
-        line: number;
-       , context: string ,}>;
+        line: number,
+    context: string ,}>;
 }
 
 interface ExtractionResults { totalFiles: number,
     totalKeys: number;
-    uniqueKeys: number;
-   , keysByFile: Map<string, string[]>;
+    uniqueKeys: number,
+    keysByFile: Map<string, string[]>;
     errors: Array<{
-        fil;e: string;
-       , error: string ,}>;
+        fil;e: string,
+    error: string ,}>;
 }
 
 interface LanguageChanges { language: string,
     categoriesProcessed: number;
     keysAdded: string[];
     keysRemoved: string[];
-    keysUpdated: string[];
-   , errors: Array<{
-        categor;y: string;
-       , error: string ,}>;
+    keysUpdated: string[],
+    errors: Array<{
+        categor;y: string,
+    error: string ,}>;
 }
 
 interface SyncResults { baseLanguage: string,
     targetLanguages: string[];
-    timestamp: string;
-   , changes: Map<string, LanguageChanges>;
+    timestamp: string,
+    changes: Map<string, LanguageChanges>;
     summary: {
         filesProcesse;d: number;
         keysAdded: number;
         keysRemoved: number;
-        keysUpdated: number;
-       , errors: number ,};
+        keysUpdated: number,
+    errors: number ,};
     report?: string;
 }
 
 interface ProcessedTranslationData { translations: any,
-    totalKeys: number;
-   , translatedKeys: number ,}
+    totalKeys: number,
+    translatedKeys: number ,}
 
 interface CategorySyncResult { added: string[];
-    removed: string[];
-   , updated: string[] }
+    removed: string[],
+    updated: string[] }
 
 /**
  * 翻訳ファイル生成クラス - 新言語用翻訳ファイルとテンプレートの自動生成
@@ -162,11 +162,11 @@ export class TranslationFileGenerator {
             ['he', { name: 'עברית', direction: 'rtl', encoding: 'UTF-8' ,}],''
             ['fr', { name: 'Français', direction: 'ltr', encoding: 'UTF-8' ,}],''
             ['de', { name: 'Deutsch', direction: 'ltr', encoding: 'UTF-8' ,}],''
-            ['es', { name: 'Español', direction: 'ltr', encoding: 'UTF-8' ,}])'
+            ['es', { name: 'Español', direction: 'ltr', encoding: 'UTF-8' ,}]''
         ]');
         
         // カテゴリ情報
-        this.categories = new Map<string, CategoryInfo>([']';
+        this.categories = new Map<string, CategoryInfo>([']'
             ['common', { name: '共通', description: '共通UI要素、ボタン、基本操作' ,}],''
             ['menu', { name: 'メニュー', description: 'メニュー画面、ナビゲーション' ,}],''
             ['game', { name: 'ゲーム', description: 'ゲームプレイ関連の用語' ,}],''
@@ -181,8 +181,8 @@ export class TranslationFileGenerator {
             placeholder: '[TRANSLATION_NEEDED]';
             includeMetadata: true;
             includeComments: true;
-            sortKeys: true;
-           , validateStructure: true };
+            sortKeys: true,
+    validateStructure: true };
         console.log('TranslationFileGenerator, initialized');
     }
     
@@ -215,7 +215,7 @@ export class TranslationFileGenerator {
             console.log(`Generating, translation files, for ${languageInfo.name} (${ language)`);
             
             // 基準言語の翻訳データを取得
-            const, baseTranslations = await, this.loadBaseTranslations(baseLanguage};
+            const, baseTranslations = await, this.loadBaseTranslations(baseLanguage}
             if (!baseTranslations} { }
                 throw, new Error(`Base, language translations, not found: ${baseLanguage}`});
             }
@@ -225,8 +225,8 @@ export class TranslationFileGenerator {
                 languageName: languageInfo.name;
                 totalFiles: 0;
                 totalKeys: 0;
-                filesGenerated: [];
-               , errors: [] ,};
+                filesGenerated: [],
+    errors: [] ,};
             // カテゴリ別にファイルを生成
             for (const [category, categoryInfo] of this.categories) { try { }
                     const categoryData = baseTranslations[category] || {};
@@ -243,15 +243,15 @@ export class TranslationFileGenerator {
                     results.filesGenerated.push({)
                         category: category,);
                         name: categoryInfo.name);
-                        keys: Object.keys(this.flattenObject(categoryData).length;
-                       , content: translationFile ,});
+                        keys: Object.keys(this.flattenObject(categoryData).length,
+    content: translationFile ,});
                     results.totalKeys += Object.keys(this.flattenObject(categoryData).length;
                     
                 } catch (error) {
                     console.error(`Error generating ${category} file for ${language}:`, error);
                     results.errors.push({ )
-                        category: category);
-                       , error: error instanceof Error ? error.message : String(error });
+                        category: category),
+    error: error instanceof Error ? error.message : String(error });
                 }
             }
             
@@ -270,21 +270,21 @@ export class TranslationFileGenerator {
             // 進捗追跡に登録
             this.registerGeneratedFiles(language, generatedFiles);
             
-            console.log(`Successfully generated ${results.totalFiles} files with ${results.totalKeys} keys for ${ language}`};
+            console.log(`Successfully generated ${results.totalFiles} files with ${results.totalKeys} keys for ${ language}`}
             return { success: true, };
                 results: results, }
                 files: Object.fromEntries(generatedFiles});
             };
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'TRANSLATION_FILE_GENERATOR_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'TRANSLATION_FILE_GENERATOR_ERROR', {''
                 operation: 'generateLanguageFiles',);
                 language: language ,});
             
             return { success: false,
                 error: error instanceof Error ? error.message : String(error), };
-                language: language }
-            }
+                language: language 
+    }
     }
     
     /**
@@ -293,8 +293,8 @@ export class TranslationFileGenerator {
     async generateCategoryFile(;
         language: string, ;
         category: string );
-        categoryData: any);
-       , options: GenerateCategoryFileOptions = { ): Promise<string>;
+        categoryData: any),
+    options: GenerateCategoryFileOptions = { ): Promise<string>;
         const { includeEmpty = true,
             generateTemplate = true,
             preserveExisting = true } = options;
@@ -303,12 +303,12 @@ export class TranslationFileGenerator {
         const existingTranslations = await this.loadExistingCategoryFile(language, category);
         
         const translationObject: TranslationObject = { _metadata: {
-                language: language;
-               , category: category,
-                generatedAt: new Date().toISOString(''';
+                language: language,
+    category: category,
+                generatedAt: new Date().toISOString('''
                 version: '1.0.0';
-                completionRate: 0;
-               , totalKeys: 0,
+                completionRate: 0,
+    totalKeys: 0,
                 translatedKeys: 0,
                 generator: 'TranslationFileGenerator' ,}
         };
@@ -317,8 +317,8 @@ export class TranslationFileGenerator {
             categoryData,
             existingTranslations,
             { includeEmpty: includeEmpty)
-                generateTemplate: generateTemplate);
-               , preserveExisting: preserveExisting,);
+                generateTemplate: generateTemplate),
+    preserveExisting: preserveExisting,);
                 language: language);
         ),
         
@@ -327,7 +327,7 @@ export class TranslationFileGenerator {
         // メタデータを更新
         translationObject._metadata.totalKeys = processedData.totalKeys;
         translationObject._metadata.translatedKeys = processedData.translatedKeys;
-        translationObject._metadata.completionRate = processedData.totalKeys > 0 ?   : undefined
+        translationObject._metadata.completionRate = processedData.totalKeys > 0 ? undefined : undefined
             Math.round((processedData.translatedKeys / processedData.totalKeys) * 100) : 0;
         
         return this.formatTranslationFile(translationObject); }
@@ -357,8 +357,8 @@ export class TranslationFileGenerator {
             _metadata: includeMetadata ? { : undefined'
                 language: language,
                 templateVersion: '1.0.0',
-                createdAt: new Date().toISOString(''';
-               , baseLanguage: 'ja',
+                createdAt: new Date().toISOString(''',
+    baseLanguage: 'ja',
                 translator: '[TRANSLATOR_NAME]',
                 reviewer: '[REVIEWER_NAME]',
                 status: 'template',
@@ -367,8 +367,8 @@ export class TranslationFileGenerator {
         // 基準翻訳からテンプレートを生成)
         for(const [category, categoryData] of Object.entries(baseTranslations) { template[category] = this.generateCategoryTemplate(categoryData, {)
                 includeExamples: includeExamples, }
-                language: language); }
-        }
+                language: language); 
+    }
         
         return this.formatTemplate(template, format);
     }
@@ -392,8 +392,8 @@ export class TranslationFileGenerator {
         const results: ExtractionResults = { totalFiles: sourceFiles.length,
             totalKeys: 0;
             uniqueKeys: 0;
-            keysByFile: new Map();
-           , errors: [] ,};
+            keysByFile: new Map(),
+    errors: [] ,};
         for(const, filePath of, sourceFiles) {
         
             try {
@@ -411,11 +411,10 @@ export class TranslationFileGenerator {
                             extractedKeys.set(key, {)
                                 key: key);
                                 category: this.keyManager.categorizeKey(key);
-                                files: new Set();
-                               , contexts: new Set();
+                                files: new Set(),
+    contexts: new Set();
         ,}
-                                lines: [] }
-                            });
+                                lines: []});
                         }
                         
                         const keyInfo = extractedKeys.get(key)!;
@@ -425,10 +424,10 @@ export class TranslationFileGenerator {
                             const context = this.extractContext(content, match.index);
                             keyInfo.contexts.add(context);
                             keyInfo.lines.push({)
-                                file: filePath);
-                               , line: lineNumber, }
-                                context: context); }
-}
+                                file: filePath),
+    line: lineNumber, }
+                                context: context); 
+    }
                 }
                 
                 results.keysByFile.set(filePath, Array.from(fileKeys);
@@ -437,8 +436,8 @@ export class TranslationFileGenerator {
             } catch (error) {
                 console.error(`Error processing file ${filePath}:`, error);
                 results.errors.push({ )
-                    file: filePath);
-                   , error: error instanceof Error ? error.message : String(error });
+                    file: filePath),
+    error: error instanceof Error ? error.message : String(error });
             }
         }
         
@@ -450,11 +449,11 @@ export class TranslationFileGenerator {
                 this.keyManager.registerKey(key, {)
                     description: `Extracted from source files`),
                     context: Array.from(keyInfo.contexts).join(', '),
-                    category: keyInfo.category;
-                   , extractedFrom: Array.from(keyInfo.files);
+                    category: keyInfo.category,
+    extractedFrom: Array.from(keyInfo.files);
         ,}
-                    autoExtracted: true }
-                });
+                    autoExtracted: true 
+    });
             }
             console.log(`Auto-registered ${extractedKeys.size} extracted, keys`});
         }
@@ -467,8 +466,8 @@ export class TranslationFileGenerator {
      */
     async synchronizeTranslationFiles(;
         baseLanguage: string );
-        targetLanguages: string[]);
-       , options: SynchronizeTranslationFilesOptions = { ): Promise<SyncResults>;
+        targetLanguages: string[]),
+    options: SynchronizeTranslationFilesOptions = { ): Promise<SyncResults>;
         const { addMissingKeys = true,
             removeObsoleteKeys = false,
             updateMetadata = true,
@@ -478,13 +477,13 @@ export class TranslationFileGenerator {
         const syncResults: SyncResults = { baseLanguage: baseLanguage,
             targetLanguages: targetLanguages;
             timestamp: new Date().toISOString();
-            changes: new Map();
-           , summary: {
+            changes: new Map(),
+    summary: {
                 filesProcessed: 0;
                 keysAdded: 0;
                 keysRemoved: 0;
-                keysUpdated: 0;
-               , errors: 0 ,}
+                keysUpdated: 0,
+    errors: 0 ,}
         };
         // 基準言語の翻訳データを取得
         const baseTranslations = await this.loadBaseTranslations(baseLanguage);
@@ -502,8 +501,8 @@ export class TranslationFileGenerator {
                     categoriesProcessed: 0;
                     keysAdded: [];
                     keysRemoved: [];
-                    keysUpdated: [];
-                   , errors: [] ,};
+                    keysUpdated: [],
+    errors: [] ,};
                 // カテゴリ別に同期
                 for(const [category, baseCategoryData] of Object.entries(baseTranslations) { try { }
                         const targetCategoryData = await this.loadExistingCategoryFile(language, category) || {};
@@ -513,8 +512,8 @@ export class TranslationFileGenerator {
                             targetCategoryData,
                             { language: language,
                                 category: category);
-                                addMissingKeys: addMissingKeys);
-                               , removeObsoleteKeys: removeObsoleteKeys,);
+                                addMissingKeys: addMissingKeys),
+    removeObsoleteKeys: removeObsoleteKeys,);
                                 preserveTranslations: preserveTranslations);
                         ),
                         ;
@@ -525,8 +524,8 @@ export class TranslationFileGenerator {
                          } catch (error) {
                         console.error(`Error synchronizing ${category} for ${language}:`, error);
                         languageChanges.errors.push({ )
-                            category: category);
-                           , error: error instanceof Error ? error.message : String(error });
+                            category: category),
+    error: error instanceof Error ? error.message : String(error });
                     }
                 }
                 
@@ -597,8 +596,8 @@ export class TranslationFileGenerator {
 
                     cancel: 'Cancel',' };
 
-                    save: 'Save' }
-                }
+                    save: 'Save' 
+    }
             return null;
         } catch (error) { return null;
     
@@ -607,8 +606,8 @@ export class TranslationFileGenerator {
         existingTranslations: any, ;
         options: { includeEmpty: boolean;
             generateTemplate: boolean);
-            preserveExisting: boolean);
-           , language: string ,}
+            preserveExisting: boolean),
+    language: string ,}
     ): ProcessedTranslationData {
         const { includeEmpty, generateTemplate, preserveExisting, language } = options;
         const flattenedBase = this.flattenObject(categoryData);
@@ -628,7 +627,7 @@ export class TranslationFileGenerator {
         }
                 translatedKeys++; }
             } else if (generateTemplate) { // テンプレート生成
-                processedTranslations[key] = includeEmpty ?   : undefined
+                processedTranslations[key] = includeEmpty ? undefined : undefined
                     this.templateConfig.placeholder: value,
                 if(!includeEmpty) translatedKeys++; }
 
@@ -642,14 +641,14 @@ export class TranslationFileGenerator {
         
         return { translations: nestedTranslations,
             totalKeys: totalKeys, };
-            translatedKeys: translatedKeys }
-        }
+            translatedKeys: translatedKeys 
+    }
     ';
 
     private formatTranslationFile(translationObject: TranslationObject): string { ''
         return JSON.stringify(translationObject, null, 2); }
 
-    private formatTemplate(template: TranslationTemplate, format: 'json' | 'csv' | 'xlsx): string { ''
+    private formatTemplate(template: TranslationTemplate, format: 'json' | 'csv' | 'xlsx': string { ''
         switch(format) {'
 
             case 'csv':'';
@@ -664,17 +663,17 @@ export class TranslationFileGenerator {
     private generateMetadataFile(language: string, results: FileGenerationResult): string { const metadata = {
             _fileInfo: {'
                 language: language,
-                generatedAt: new Date().toISOString(''';
-               , generator: 'TranslationFileGenerator',
+                generatedAt: new Date().toISOString(''',
+    generator: 'TranslationFileGenerator',
                 version: '1.0.0' ,};
             statistics: { totalFiles: results.totalFiles)
-                totalKeys: results.totalKeys);
-               , completionRate: 0,);
-                lastUpdated: new Date().toISOString( ,};
+                totalKeys: results.totalKeys),
+    completionRate: 0,);
+                lastUpdated: new Date().toISOString( ,}
             categories: results.filesGenerated.map(file => ({ name: file.category)
                , keys: file.keys,);
-                completionRate: 0)));
-           , errors: results.errors ,};
+                completionRate: 0))),
+    errors: results.errors ,};
         return JSON.stringify(metadata, null, 2);
     }
 
@@ -715,7 +714,7 @@ export class TranslationFileGenerator {
     private registerGeneratedFiles(language: string, generatedFiles: Map<string, string>): void { // ProgressTrackerに翻訳セットを登録
         for(const [category, content] of generatedFiles) {'
 
-            if(category !== '_metadata) {'
+            if(category !== '_metadata' {'
                 try {
         }
 
@@ -727,7 +726,7 @@ export class TranslationFileGenerator {
                         category);
                         translationData)';
                         { category: category,''
-                            version: _metadata? .version || '1.0.0', : undefined')';
+                            version: _metadata?.version || '1.0.0', : undefined')';
                             priority: 'normal');
                     ), } catch (error) {
                     console.warn(`Failed to register translation set ${language}/${category}:`, error);
@@ -750,7 +749,7 @@ export class TranslationFileGenerator {
     private formatExtractionResults(extractedKeys: Map<string, ExtractedKeyInfo>, results: ExtractionResults, outputFormat: string): any { // Mock implementation }
         return { extractedKeys, results }
     
-    private generateCategoryTemplate(categoryData: any, options: { includeExamples: boolean;, language: string ): any {
+    private generateCategoryTemplate(categoryData: any, options: { includeExamples: boolean,  language: string ): any {
         // Mock implementation }
         return {}
 
@@ -762,8 +761,8 @@ export class TranslationFileGenerator {
     
     private async synchronizeCategoryFile(;
         baseCategoryData: any );
-        targetCategoryData: any);
-       , options: any;
+        targetCategoryData: any),
+    options: any;
     ): Promise<CategorySyncResult>,
         // Mock implementation
         return { added: [], removed: [], updated: [] ,}
@@ -774,14 +773,14 @@ export class TranslationFileGenerator {
     /**
      * サポート言語を取得
      */''
-    getSupportedLanguages(''';
-        direction: 'ltr' | 'rtl);
-       , encoding: string);
+    getSupportedLanguages('''
+        direction: 'ltr' | 'rtl),
+    encoding: string);
     }> { return Array.from(this.supportedLanguages.entries().map(([code, info]) => ({
             code: code;
             name: info.name;
-            direction: info.direction);
-           , encoding: info.encoding ,}
+            direction: info.direction),
+    encoding: info.encoding ,}
         });
     }
     
@@ -789,11 +788,11 @@ export class TranslationFileGenerator {
      * サポートカテゴリを取得
      */
     getSupportedCategories(): Array<{ code: string,
-        name: string;
-       , description: string ,}> { return Array.from(this.categories.entries().map(([code, info]) => ({
+        name: string,
+    description: string ,}> { return Array.from(this.categories.entries().map(([code, info]) => ({
             code: code;
-            name: info.name);
-           , description: info.description ,}
+            name: info.name),
+    description: info.description ,}
         });
     }
     
@@ -802,12 +801,12 @@ export class TranslationFileGenerator {
      */
     getStats(): { supportedLanguages: number,
         supportedCategories: number;
-        templateConfig: TemplateConfig;
-       , generatedFilesCount: number ,} { return { supportedLanguages: this.supportedLanguages.size;
-            supportedCategories: this.categories.size;
-           , templateConfig: this.templateConfig, };
-            generatedFilesCount: 0 // 実際の実装では生成ファイル数を追跡 }
-        }
+        templateConfig: TemplateConfig,
+    generatedFilesCount: number ,} { return { supportedLanguages: this.supportedLanguages.size;
+            supportedCategories: this.categories.size,
+    templateConfig: this.templateConfig, };
+            generatedFilesCount: 0 // 実際の実装では生成ファイル数を追跡 
+    }
 }
 
 // シングルトンインスタンス
@@ -817,4 +816,4 @@ let translationFileGeneratorInstance: TranslationFileGenerator | null = null,
  * TranslationFileGeneratorのシングルトンインスタンスを取得
  */
 export function getTranslationFileGenerator(): TranslationFileGenerator { if (!translationFileGeneratorInstance) {''
-        translationFileGeneratorInstance = new TranslationFileGenerator(' })'
+        translationFileGeneratorInstance = new TranslationFileGenerator(' }''

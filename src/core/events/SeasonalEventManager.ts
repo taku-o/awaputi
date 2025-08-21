@@ -11,8 +11,8 @@ interface SeasonalPeriod { months: number[],
 
 interface SeasonalEventData { id: string;
     season: Season;
-    startTime: number;
-   , endTime: number }
+    startTime: number,
+    endTime: number }
 
 interface SeasonalEffects { [key: string]: any, }
 
@@ -34,8 +34,8 @@ interface SpecialRules { bloomEffect?: boolean;
     frostedGlass?: number;
     bubbleColorFilters?: {
         hueShif;t: number;
-        saturation: number;
-       , brightness: number ,};
+        saturation: number,
+    brightness: number ,};
     backgroundMusic?: string;
 }
 
@@ -44,8 +44,8 @@ interface Event { seasonalEffects?: SeasonalEffects;
 
 interface SeasonInfo { season: Season,
     seasonData: SeasonalPeriod;
-    activeEvents: SeasonalEventData[];
-   , timeUntilNextSeason: number ,}
+    activeEvents: SeasonalEventData[],
+    timeUntilNextSeason: number ,}
 
 interface SavedSeasonalData { activeSeasonalEvents?: [string, SeasonalEventData][];
     currentSeason?: Season;
@@ -151,8 +151,8 @@ export class SeasonalEventManager { private gameEngine: any }
                     season: season);
             ,}
                     startTime: Date.now(), }
-                    endTime: this.getSeasonEndTime(season); }
-                });
+                    endTime: this.getSeasonEndTime(season); 
+    });
                 
                 console.log(`Activated, seasonal event: ${eventId} for, season: ${ season)`},
                 ;
@@ -222,8 +222,8 @@ export class SeasonalEventManager { private gameEngine: any }
         // 春特有の泡の色調整
         specialRules.bubbleColorFilters = {
             hueShift: 10;
-            saturation: 1.2;
-           , brightness: 1.1 };
+            saturation: 1.2,
+    brightness: 1.1 };
         ;
         // 春のBGM設定
         specialRules.backgroundMusic = 'spring-melody';
@@ -232,11 +232,11 @@ export class SeasonalEventManager { private gameEngine: any }
         if(this.gameEngine.particleManager) { '
 
             this.gameEngine.particleManager.addSeasonalEffect('cherry-blossoms', {''
-                type: 'falling-petals',)';
-                color: '#FFB6C1')';
-               , count: 15,' }'
+                type: 'falling-petals','';
+                color: '#FFB6C1')',
+    count: 15,' }'
 
-                speed: 0.5)'); }'
+                speed: 0.5''); }'
         }
 
         console.log('Applied, spring seasonal, effects');
@@ -253,8 +253,8 @@ export class SeasonalEventManager { private gameEngine: any }
         // 夏特有の色調整
         specialRules.bubbleColorFilters = {
             hueShift: -5;
-            saturation: 1.3;
-           , brightness: 1.2 };
+            saturation: 1.3,
+    brightness: 1.2 };
         ;
         // 夏のBGM設定
         specialRules.backgroundMusic = 'summer-festival';
@@ -263,10 +263,10 @@ export class SeasonalEventManager { private gameEngine: any }
         if(this.gameEngine.particleManager) { '
 
             this.gameEngine.particleManager.addSeasonalEffect('fireworks', {''
-                type: 'burst',)';
+                type: 'burst','';
                 colors: ['#FF0000', '#00FF00', '#0000FF', '#FFFF00],' }
 
-                interval: 5000)'); }'
+                interval: 5000''); }'
         }
 
         console.log('Applied, summer seasonal, effects');
@@ -283,8 +283,8 @@ export class SeasonalEventManager { private gameEngine: any }
         // 秋特有の色調整
         specialRules.bubbleColorFilters = {
             hueShift: 20;
-            saturation: 1.1;
-           , brightness: 0.9 };
+            saturation: 1.1,
+    brightness: 0.9 };
         ;
         // 秋のBGM設定
         specialRules.backgroundMusic = 'autumn-leaves';
@@ -293,11 +293,11 @@ export class SeasonalEventManager { private gameEngine: any }
         if(this.gameEngine.particleManager) { '
 
             this.gameEngine.particleManager.addSeasonalEffect('falling-leaves', {''
-                type: 'falling',)';
-                colors: ['#FF8C00', '#DC143C', '#B8860B', '#CD853F])';
+                type: 'falling','';
+                colors: ['#FF8C00', '#DC143C', '#B8860B', '#CD853F]'';
                 count: 12,' }'
 
-                speed: 0.8)'); }'
+                speed: 0.8''); }'
         }
 
         console.log('Applied, autumn seasonal, effects');
@@ -314,8 +314,8 @@ export class SeasonalEventManager { private gameEngine: any }
         // 冬特有の色調整
         specialRules.bubbleColorFilters = {
             hueShift: -10;
-            saturation: 0.8;
-           , brightness: 1.1 };
+            saturation: 0.8,
+    brightness: 1.1 };
         ;
         // 冬のBGM設定
         specialRules.backgroundMusic = 'winter-wonderland';
@@ -325,15 +325,15 @@ export class SeasonalEventManager { private gameEngine: any }
 
             this.gameEngine.particleManager.addSeasonalEffect('snowfall', {''
                 type: 'falling',
-                color: '#FFFFFF);
-               , count: 20 ,}
+                color: '#FFFFFF',
+    count: 20 ,}
 
                 speed: 0.3,') }'
 
-                size: { min: 2, max: 5 ,})');
+                size: { min: 2, max: 5 ,}'');
         }
 
-        console.log('Applied, winter seasonal, effects);
+        console.log('Applied winter seasonal effects');
     }
     
     /**
@@ -384,10 +384,10 @@ export class SeasonalEventManager { private gameEngine: any }
      * 現在の季節情報を取得
      */
     getCurrentSeasonInfo(): SeasonInfo { return { season: this.currentSeason,
-            seasonData: this.SEASONAL_PERIODS[this.currentSeason];
-           , activeEvents: this.getActiveSeasonalEvents(), };
-            timeUntilNextSeason: this.getTimeUntilNextSeason(); }
-        }
+            seasonData: this.SEASONAL_PERIODS[this.currentSeason],
+    activeEvents: this.getActiveSeasonalEvents(), };
+            timeUntilNextSeason: this.getTimeUntilNextSeason(); 
+    }
     
     /**
      * 次の季節までの時間を取得
@@ -434,8 +434,8 @@ export class SeasonalEventManager { private gameEngine: any }
      */
     save(): void { try {
             const dataToSave: SavedSeasonalData = {
-                activeSeasonalEvents: Array.from(this.activeSeasonalEvents.entries();
-               , currentSeason: this.currentSeason,
+                activeSeasonalEvents: Array.from(this.activeSeasonalEvents.entries(),
+    currentSeason: this.currentSeason,
                 lastUpdated: Date.now()';
             localStorage.setItem('seasonalEventData', JSON.stringify(dataToSave));''
             console.log('[SeasonalEventManager] 季節イベントデータを保存しました');' }

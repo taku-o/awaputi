@@ -21,8 +21,8 @@ export interface Achievement { id: string,
     icon: string;
     category: CategoryType;
     type: AchievementType;
-    condition: AchievementCondition;
-   , reward: AchievementReward;
+    condition: AchievementCondition,
+    reward: AchievementReward;
     difficulty?: DifficultyLevel;
     hidden?: boolean; ,}
 
@@ -44,21 +44,21 @@ export interface AchievementReward { ap: number,
     titles?: string[]; }
 
 export interface RewardItem { type: ItemType,
-    id: string;
-   , quantity: number ,}
+    id: string,
+    quantity: number ,}
 
 export interface Category { name: string;
     description: string;
-    icon: string;
-   , color: string;
+    icon: string,
+    color: string;
     priority?: number;
     unlockRequirements?: string[]; }
 
 export interface AchievementStatistics { total: number,
     byCategory: Record<CategoryType, number>,
     byType: Record<AchievementType, number>,
-    totalAP: number;
-   , averageAP: number;
+    totalAP: number,
+    averageAP: number;
     difficultyDistribution?: Record<DifficultyLevel, number> }
 
 export interface AchievementFilter { category?: CategoryType;
@@ -70,8 +70,8 @@ export interface AchievementFilter { category?: CategoryType;
     unlocked?: boolean; }
 
 export interface AchievementSearchResult { achievements: Achievement[],
-    totalCount: number;
-   , categories: string[] ,}
+    totalCount: number,
+    categories: string[] ,}
 
 // 列挙型
 export type CategoryType = ;
@@ -130,7 +130,7 @@ export type BubbleType = '';
     | 'spiky''';
     | 'pink';
 
-export type DifficultyLevel = 'easy' | 'medium' | 'hard' | 'expert' | 'legendary';''
+export type DifficultyLevel = 'easy' | 'medium' | 'hard' | 'expert' | 'legendary';
 export type ItemType = 'powerup' | 'skin' | 'currency' | 'unlock';
 
 export class AchievementDefinitions {
@@ -149,7 +149,7 @@ export class AchievementDefinitions {
      * 全実績を初期化
      * @returns 実績定義オブジェクト'
      */''
-    private initializeAchievements(''';
+    private initializeAchievements('''
                 id: 'firstBubble',
                 name: '初めての泡',
                 description: '初めて泡を割る',
@@ -596,8 +596,8 @@ export class AchievementDefinitions {
                 type: 'single',' }
 
                 condition: { type: 'timeSpecificScore', startHour: 22, endHour: 2, score: 2000 ,},
-                reward: { ap: 200 }
-        }
+                reward: { ap: 200 
+    }
 
     /**
      * 実績カテゴリを初期化
@@ -758,10 +758,10 @@ export class AchievementDefinitions {
             total: achievements.length }
             byCategory: {} as Record<CategoryType, number>,
             byType: { single: 0;
-                cumulative: 0;
-               , progressive: 0 };
-            totalAP: 0;
-           , averageAP: 0;
+                cumulative: 0,
+    progressive: 0 };
+            totalAP: 0,
+    averageAP: 0;
         },
 
         // カテゴリ別統計
@@ -815,10 +815,10 @@ export class AchievementDefinitions {
 
         // APによる難易度推定
         const ap = achievement.reward.ap;''
-        if(ap <= 50) return 'easy';''
-        if(ap <= 150) return 'medium';''
-        if(ap <= 300) return 'hard';''
-        if(ap <= 400) return 'expert';''
+        if(ap <= 50) return 'easy';
+        if(ap <= 150) return 'medium';
+        if(ap <= 300) return 'hard';
+        if(ap <= 400) return 'expert';
         return 'legendary'; }
 
     /**

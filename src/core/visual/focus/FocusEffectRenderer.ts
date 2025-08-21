@@ -17,61 +17,61 @@
 // 型定義
 export interface MainController { config: VisualFocusConfig,
     state: VisualFocusState;
-    elements: VisualFocusElements;
-   , cssClasses: CSSClasses
+    elements: VisualFocusElements,
+    cssClasses: CSSClasses
     ,}
 
 export interface VisualFocusConfig { focusRing: FocusRingConfig;
     navigationFeedback: NavigationFeedbackConfig;
-    highContrast: HighContrastConfig;
-   , animations: AnimationConfig
+    highContrast: HighContrastConfig,
+    animations: AnimationConfig
     }
 
 export interface FocusRingConfig { color: string;
     width: number;
     offset: number;
     borderRadius: number;
-    animationDuration: number;
-   , enabled: boolean }
+    animationDuration: number,
+    enabled: boolean }
 
-export interface NavigationFeedbackConfig { fadeTimeout: number;
-   , enabled: boolean }
+export interface NavigationFeedbackConfig { fadeTimeout: number,
+    enabled: boolean }
 
 export interface HighContrastConfig { color: string;
-    width: number;
-   , enabled: boolean }
+    width: number,
+    enabled: boolean }
 
 export interface AnimationConfig { enabled: boolean;
     duration: number;
-    easing: string;
-   , reducedMotion: boolean }
+    easing: string,
+    reducedMotion: boolean }
 
 export interface VisualFocusState { animationTimers: Map<string, number>,
     currentFocusElement: HTMLElement | null;
-    isHighContrastMode: boolean;
-   , keyboardMode: boolean ,}
+    isHighContrastMode: boolean,
+    keyboardMode: boolean ,}
 
-export interface VisualFocusElements { focusRing: HTMLElement;
-   , focusOverlay: HTMLElement
+export interface VisualFocusElements { focusRing: HTMLElement,
+    focusOverlay: HTMLElement
     }
 
 export interface CSSClasses { keyboardMode: string;
     mouseMode: string;
     highContrast: string;
-    focusRing: string;
-   , focusOverlay: string }
+    focusRing: string,
+    focusOverlay: string }
 
 export interface ElementBounds { left: number;
     top: number;
     width: number;
     height: number;
-    right: number;
-   , bottom: number }
+    right: number,
+    bottom: number }
 
 export interface ViewportBounds { top: number;
     left: number;
-    bottom: number;
-   , right: number }
+    bottom: number,
+    right: number }
 
 export interface EffectOptions { duration?: number;
     delay?: number;
@@ -83,8 +83,8 @@ export interface CustomEffectStyle { position: string,
     top: string;
     width: string;
     height: string;
-    pointerEvents: string;
-   , zIndex: string ,}
+    pointerEvents: string,
+    zIndex: string ,}
 
 export interface RenderingOptimizationResult { shouldRender: boolean;
     reason?: string;
@@ -93,9 +93,9 @@ export interface RenderingOptimizationResult { shouldRender: boolean;
     }
 
 // 列挙型
-export type EffectType = 'pulse' | 'glow' | 'ripple' | 'flash' | 'slide' | 'zoom';''
-export type LandmarkType = 'main' | 'nav' | 'aside' | 'header' | 'footer' | 'section' | 'article';''
-export type GroupType = 'form' | 'fieldset' | 'section' | 'nav' | 'aside' | 'group' | 'radiogroup';''
+export type EffectType = 'pulse' | 'glow' | 'ripple' | 'flash' | 'slide' | 'zoom';
+export type LandmarkType = 'main' | 'nav' | 'aside' | 'header' | 'footer' | 'section' | 'article';
+export type GroupType = 'form' | 'fieldset' | 'section' | 'nav' | 'aside' | 'group' | 'radiogroup';
 export type TimerType = 'focusRing' | 'overlay' | 'fadeOut' | 'customEffect';
 
 // 定数
@@ -114,8 +114,8 @@ export const EFFECT_DURATIONS: Record<EffectType, number> = { pulse: 1000,
     glow: 1500;
     ripple: 800;
     flash: 500;
-    slide: 600;
-   , zoom: 400 ,};
+    slide: 600,
+    zoom: 400 ,};
 ';
 
 export const CSS_ANIMATIONS: Record<EffectType, string> = {;
@@ -128,13 +128,13 @@ export const CSS_ANIMATIONS: Record<EffectType, string> = {;
 export const DEFAULT_EFFECT_OPTIONS: Required<EffectOptions> = { duration: 2000,
 
     delay: 0,
-    easing: 'ease-in-out';
-   , autoRemove: true ,};
+    easing: 'ease-in-out',
+    autoRemove: true ,};
 export const Z_INDEX = { FOCUS_RING: 9999,
     FOCUS_OVERLAY: 9998;
     CUSTOM_EFFECT: 9998;
-    LANDMARK: 9997;
-   , GROUP: 9996 ,} as const;
+    LANDMARK: 9997,
+    GROUP: 9996 ,} as const;
 ';
 
 export const CSS_CLASSES = {;
@@ -151,15 +151,15 @@ export function getElementBounds(element: HTMLElement): ElementBounds { const re
     return { left: rect.left + scrollX,
         top: rect.top + scrollY;
         width: rect.width;
-        height: rect.height;
-       , right: rect.right + scrollX, };
-        bottom: rect.bottom + scrollY }
+        height: rect.height,
+    right: rect.right + scrollX, };
+        bottom: rect.bottom + scrollY 
     }
 
 export function getViewportBounds(): ViewportBounds { return { top: 0,
-        left: 0;
-       , bottom: window.innerHeight, };
-        right: window.innerWidth }
+        left: 0,
+    bottom: window.innerHeight, };
+        right: window.innerWidth 
     }
 
 export function isElementInViewport(bounds: ElementBounds, viewport: ViewportBounds): boolean { return !(bounds.bottom < viewport.top || bounds.top > viewport.bottom ||
@@ -168,16 +168,16 @@ export function isElementInViewport(bounds: ElementBounds, viewport: ViewportBou
 export function createCustomEffectStyles(;
     bounds: ElementBounds
     );
-    effectType: EffectType);
-   , config: FocusRingConfig'';
+    effectType: EffectType),
+    config: FocusRingConfig'';
 '): CustomEffectStyle { const baseStyle: CustomEffectStyle = {''
         position: 'absolute' }
         left: `${bounds.left}px`;
         top: `${bounds.top}px`;
         width: `${bounds.width}px`;
         height: `${bounds.height}px`,''
-        pointerEvents: 'none';
-       , zIndex: Z_INDEX.CUSTOM_EFFECT.toString();
+        pointerEvents: 'none',
+    zIndex: Z_INDEX.CUSTOM_EFFECT.toString();
     };
     
     return baseStyle;
@@ -204,14 +204,14 @@ export function getEffectCSS(effectType: EffectType, config: FocusRingConfig): s
             `;''
         case 'ripple': return `;
                 border: 1px solid ${config.color}
-                border-radius: 50%;
-               , animation: ${animation}
+                border-radius: 50%,
+    animation: ${animation}
 
             `;''
         case 'flash': return `;
                 background-color: ${config.color};
-                opacity: 0.3;
-               , animation: ${animation}
+                opacity: 0.3,
+    animation: ${animation}
 
             `;''
         case 'slide': return `;
@@ -278,7 +278,7 @@ export class FocusEffectRenderer {
         // 自動非表示タイマー
         const timer = window.setTimeout(() => { ring.classList.remove(CSS_CLASSES.ACTIVE);' }'
 
-        }, this.config.navigationFeedback.fadeTimeout);
+        }, this.config.navigationFeedback.fadeTimeout';
 
         this.state.animationTimers.set('focusRing', timer);
     }
@@ -316,7 +316,7 @@ export class FocusEffectRenderer {
                 current.classList.add(CSS_CLASSES.LANDMARK, CSS_CLASSES.HIGHLIGHTED }
                 break; }
             }
-            current = current.parentElement;
+            current = current.parentElement
         }
     }
 
@@ -364,7 +364,7 @@ export class FocusEffectRenderer {
      * エフェクトのフェードアウト
      */''
     fadeOutEffects()';
-        clearTimerIfExists(this.state.animationTimers, 'fadeOut);
+        clearTimerIfExists(this.state.animationTimers, 'fadeOut';
         ';
 
         const timer = window.setTimeout(() => { this.clearAllEffects();' }'
@@ -393,10 +393,10 @@ export class FocusEffectRenderer {
     /**
      * カスタムエフェクトの作成
      */
-    createCustomEffect(';
+    createCustomEffect('
         element: HTMLElement, ')';
-        effectType: EffectType = 'pulse')';
-       , options: Partial<EffectOptions> = { ): HTMLElement {''
+        effectType: EffectType = 'pulse')',
+    options: Partial<EffectOptions> = { ': HTMLElement {''
         const bounds = getElementBounds(element }
         const opts: Required<EffectOptions> = { ...DEFAULT_EFFECT_OPTIONS, ...options;
 
@@ -480,14 +480,14 @@ export class FocusEffectRenderer {
      * アニメーションの無効化'
      */''
     private disableAnimations(''';
-        this.elements.focusRing.style.animation = 'none';''
+        this.elements.focusRing.style.animation = 'none';
         this.elements.focusOverlay.style.animation = 'none';
         
         // カスタムエフェクトのアニメーションも無効化)
         document.querySelectorAll(`.${ CSS_CLASSES.CUSTOM_EFFECT)`}.forEach((element} => {' }'
 
-            (element, as HTMLElement'}).style.animation = 'none';
-        });
+            (element, as HTMLElement'}'.style.animation = 'none';
+        }';
     }
 
     /**

@@ -11,15 +11,15 @@ interface TrackedElement { x: number;
     y: number;
     width: number;
     height: number;
-    color: string;
-   , timestamp: number }
+    color: string,
+    timestamp: number }
 
 interface CoordinateEntry { baseX: number;
     baseY: number;
     scaledX: number;
     scaledY: number;
-    context: string;
-   , timestamp: Date
+    context: string,
+    timestamp: Date
     }
 
 interface ScaledCoordinateManager { getDebugInfo(): DebugInfo;
@@ -49,8 +49,8 @@ export class CoordinateSystemDebugger {
     constructor(;
         scaledCoordinateManager: ScaledCoordinateManager
     );
-        uiPositionCalculator: UIPositionCalculator | null = null)';
-       , inputCoordinateConverter: InputCoordinateConverter | null = null'';
+        uiPositionCalculator: UIPositionCalculator | null = null)',
+    inputCoordinateConverter: InputCoordinateConverter | null = null'';
     ') {'
         this.scaledCoordinateManager = scaledCoordinateManager,
         this.uiPositionCalculator = uiPositionCalculator;
@@ -104,8 +104,8 @@ export class CoordinateSystemDebugger {
         this.debugPanel.id = 'coordinate-debug-panel';
         this.debugPanel.style.cssText = `;
             position: fixed;
-            top: 10px;
-           , right: 10px,
+            top: 10px,
+    right: 10px,
             width: 320px,
             background: rgba(0, 0, 0, 0.9);
 
@@ -161,8 +161,8 @@ export class CoordinateSystemDebugger {
         const scaleFactor = debugInfo.scaleFactor;
         ';
 
-        const deviceType = this.uiPositionCalculator ?   : undefined'';
-            this.uiPositionCalculator.getDeviceType(') : 'unknown';
+        const deviceType = this.uiPositionCalculator ? undefined : undefined'';
+            this.uiPositionCalculator.getDeviceType() : 'unknown';
         
         const html = `;
             <h3>🎯 Coordinate System Debug</h3>';
@@ -172,21 +172,21 @@ export class CoordinateSystemDebugger {
                 <div>Base Size: ${canvasInfo.baseWidth} × ${canvasInfo.baseHeight}</div>
                 <div>Display Size: ${canvasInfo.displayWidth} × ${canvasInfo.displayHeight}</div>"
                 <div>Actual Size: ${canvasInfo.actualWidth} × ${canvasInfo.actualHeight}</div>""
-                <div>Scale Factor: <span style="color: #4CAF50; font-weight: bold;">${scaleFactor.toFixed(3"})</span></div>"
+                <div>Scale Factor: <span style="color: #4CAF50; font-weight: bold;">${scaleFactor.toFixed(3"}"</span></div>"
                 <div>Pixel Ratio: ${canvasInfo.pixelRatio}</div>""
                 <div>Device Type: <span style="color: #2196F3;">${deviceType}</span></div>
             </div>";
 
             <div style="margin-bottom: 15px;">"
                 <h4>🎮 Control Panel</h4>"";
-                <button onclick="window.coordinateDebugger.toggleOverlays(")", "";
+                <button onclick="window.coordinateDebugger.toggleOverlays()", "";
                         style="background: ${this.showOverlays ? '#4CAF50' : '#757575'},
 
                                color: white; border: none;, padding: 5px 10px, ''
                                border-radius: 4px; margin-right: 5px;, cursor: pointer;">""
                     ${this.showOverlays ? 'Hide' : 'Show'} Overlays'
                 </button>'';
-                <button onclick="window.coordinateDebugger.logCurrentState(")", "";
+                <button onclick="window.coordinateDebugger.logCurrentState()", "";
                         style="background: #FF9800; color: white;, border: none, ""
                                padding: 5px 10px; border-radius: 4px;, cursor: pointer;">"
                     Log State;
@@ -197,7 +197,7 @@ export class CoordinateSystemDebugger {
                 <h4>📍 Tracked Elements (${ this.trackedElements.size)")</h4>""
                 <div, style="max-height: 120px; overflow-y: auto; font-size: 11px;">""
                     ${Array.from(this.trackedElements.entries(}.map(([id, element]"} => `" }"
-                        <div style="margin: 3px 0; padding: 3px;, background: rgba(255,255,255,0.1"}); border-radius: 3px;">
+                        <div style="margin: 3px 0; padding: 3px,  background: rgba(255,255,255,0.1"}"; border-radius: 3px;">
                             <strong>${id}</strong>: (${element.x.toFixed(1}), ${element.y.toFixed(1})) ;
                             ${element.width}×${element.height}"
                         </div>"";
@@ -236,7 +236,7 @@ export class CoordinateSystemDebugger {
             return; }
         }
 
-        const gameCanvas = document.getElementById('gameCanvas);''
+        const gameCanvas = document.getElementById('gameCanvas';''
         if(!gameCanvas) {'
 
             this.log('warn', 'Game canvas not found, cannot create overlay'');
@@ -247,8 +247,8 @@ export class CoordinateSystemDebugger {
         this.overlayCanvas = document.createElement('canvas'');''
         this.overlayCanvas.id = 'coordinate-debug-overlay';
         this.overlayCanvas.style.cssText = `;
-            position: absolute;
-           , top: ${gameCanvas.offsetTop}px;
+            position: absolute,
+    top: ${gameCanvas.offsetTop}px;
             left: ${gameCanvas.offsetLeft}px;
             width: ${gameCanvas.offsetWidth}px;
             height: ${gameCanvas.offsetHeight}px;
@@ -384,8 +384,8 @@ export class CoordinateSystemDebugger {
             ctx.strokeRect(scaledX, scaledY, scaledWidth, scaledHeight);
             ';
             // ラベル
-            ctx.fillStyle = element.color || '#FF5722';''
-            ctx.font = '12px Arial';''
+            ctx.fillStyle = element.color || '#FF5722';
+            ctx.font = '12px Arial';
             ctx.fillText(id, scaledX + 2, scaledY - 5);
             ';
             // 中心点
@@ -419,9 +419,9 @@ export class CoordinateSystemDebugger {
         ctx.moveTo(20, 0);
         ctx.lineTo(20, 100 * scaleFactor);''
         ctx.stroke(''';
-        ctx.fillStyle = '#4CAF50';)'
+        ctx.fillStyle = '#4CAF50';''
         ctx.font = '14px Arial';')'
-        ctx.fillText('X', 105 * scaleFactor, 25);
+        ctx.fillText('X', 105 * scaleFactor, 25';
 
     }
 
@@ -437,7 +437,7 @@ export class CoordinateSystemDebugger {
 
         const ctx = this.overlayContext;''
         const canvasInfo = this.scaledCoordinateManager.getCanvasInfo()';
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';''
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
         ctx.fillRect(10, canvasInfo.displayHeight - 80, 200, 70);
 
         ctx.fillStyle = '#FFFFFF';
@@ -450,19 +450,19 @@ export class CoordinateSystemDebugger {
 
         ctx.fillText(`Display: ${canvasInfo.displayWidth}×${ canvasInfo.displayHeight}`, 15, canvasInfo.displayHeight - 30};' }'
 
-        ctx.fillText(`Pixel Ratio: ${canvasInfo.pixelRatio}`, 15, canvasInfo.displayHeight - 15'});
+        ctx.fillText(`Pixel Ratio: ${canvasInfo.pixelRatio}`, 15, canvasInfo.displayHeight - 15'}';
     }
     
     /**
      * UI要素をトラッキング'
      */''
-    trackElement(id: string, x: number, y: number, width: number, height: number, color: string = '#FF5722): void { this.trackedElements.set(id, {'
+    trackElement(id: string, x: number, y: number, width: number, height: number, color: string = '#FF5722': void { this.trackedElements.set(id, {'
             x: x;
             y: y);
-            width: width);
-           , height: height,);
-            color: color);
-           , timestamp: Date.now( ,});
+            width: width),
+    height: height,);
+            color: color),
+    timestamp: Date.now( ,});
         
         if(this.showOverlays) {
         ';
@@ -487,7 +487,7 @@ export class CoordinateSystemDebugger {
 
             this.renderOverlays() }
 
-        this.log('debug', `Stopped tracking element: ${id}`'});
+        this.log('debug', `Stopped tracking element: ${id}`'}';
     }
     
     /**
@@ -498,8 +498,8 @@ export class CoordinateSystemDebugger {
             baseY: baseY;
             scaledX: scaledX;
             scaledY: scaledY;
-            context: context;
-           , timestamp: new Date( };
+            context: context,
+    timestamp: new Date( };
         
         this.coordinateHistory.push(entry);
         
@@ -521,18 +521,18 @@ export class CoordinateSystemDebugger {
         const debugInfo = this.scaledCoordinateManager.getDebugInfo();
         const state = {
             timestamp: new Date().toISOString();
-            canvasInfo: debugInfo.canvasInfo);
-           , scaleFactor: debugInfo.scaleFactor,)';
+            canvasInfo: debugInfo.canvasInfo),
+    scaleFactor: debugInfo.scaleFactor,)';
             trackedElements: Array.from(this.trackedElements.entries(),
             coordinateHistory: this.coordinateHistory.slice(-10);
     ,}
-            overlaysEnabled: this.showOverlays }
-        };
+            overlaysEnabled: this.showOverlays 
+    };
         console.group('🎯 Coordinate, System Debug, State');''
         console.table(debugInfo.canvasInfo);''
-        console.log('Tracked Elements:', this.trackedElements);''
+        console.log('Tracked Elements:', this.trackedElements';''
         console.log('Recent Coordinate Conversions:', this.coordinateHistory.slice(-5));''
-        console.log('Full State Object:', state);''
+        console.log('Full State Object:', state';''
         console.groupEnd()';
         this.log('info', 'Current state logged to console);
     }
@@ -544,7 +544,7 @@ export class CoordinateSystemDebugger {
 
         // キーボードショートカット (Ctrl+Shift+C');''
         document.addEventListener('keydown', (event) => { ''
-            if(event.ctrlKey && event.shiftKey && event.code === 'KeyC) {'
+            if(event.ctrlKey && event.shiftKey && event.code === 'KeyC' {'
                 event.preventDefault();
     }
                 if (this.isEnabled) { }
@@ -582,19 +582,19 @@ export class CoordinateSystemDebugger {
 
                 case 'debug':' }
 
-                    console.debug(`%c${prefix} ${message}`, 'color: #2196F3', ...args);
+                    console.debug(`%c${prefix} ${message}`, 'color: #2196F3', ...args';
 
                     break;''
                 case 'info':'';
-                    console.info(`%c${prefix} ${message}`, 'color: #4CAF50', ...args);
+                    console.info(`%c${prefix} ${message}`, 'color: #4CAF50', ...args';
 
                     break;''
                 case 'warn':'';
-                    console.warn(`%c${prefix} ${message}`, 'color: #FF9800', ...args);
+                    console.warn(`%c${prefix} ${message}`, 'color: #FF9800', ...args';
 
                     break;''
                 case 'error':'';
-                    console.error(`%c${prefix} ${message}`, 'color: #F44336', ...args);
+                    console.error(`%c${prefix} ${message}`, 'color: #F44336', ...args';
                     break;
             }
 }
@@ -607,7 +607,7 @@ export class CoordinateSystemDebugger {
         if(validLevels.includes(level)) {'
             this.logLevel = level;' }'
 
-            this.log('info', `Log level set to: ${level}`'});
+            this.log('info', `Log level set to: ${level}`'}';
 
         } else { }'
 

@@ -6,11 +6,11 @@
  * Main Controller Pattern適用版
  */
 
-import fs from 'fs';''
-import path from 'path';''
-import { ConfigurationParser  } from './test-configuration/ConfigurationParser.js';''
-import { ExpectationGenerator  } from './test-configuration/ExpectationGenerator.js';''
-import { TestFileOperations  } from './test-configuration/TestFileOperations.js';''
+import fs from 'fs';
+import path from 'path';
+import { ConfigurationParser  } from './test-configuration/ConfigurationParser.js';
+import { ExpectationGenerator  } from './test-configuration/ExpectationGenerator.js';
+import { TestFileOperations  } from './test-configuration/TestFileOperations.js';
 import { ConfigurationValidator  } from './test-configuration/ConfigurationValidator.js';
 
 // Type definitions
@@ -20,33 +20,33 @@ interface TestConfigurationOptions { projectRoot?: string;
     backupEnabled?: boolean;
     dryRun?: boolean; }
 
-interface ErrorHandler { handleError: (erro;r: Error, context: string, details?: any) => void }
-}
+interface ErrorHandler { handleError: (error: Error, context: string, details?: any) => void 
+    }
 
-interface ConfigurationManager { get: (namespac;e: string, path: string) => any ,}
+interface ConfigurationManager { get: (namespace: string, path: string) => any ,}
 }
 
 interface TestFilePatterns { bubble: string,
-    gameBalance: string;
-   , bubbleManager: string ,}
+    gameBalance: string,
+    bubbleManager: string ,}
 
 interface Component { initialized: boolean;
     parseAllConfigurations?: () => any;
-    generateTestCode?: (expectation;s: any, testType: string) => string | null;
-    updateTestFile?: (testTyp;e: string, testCode: string, options: any) => UpdateResult;
-    validateConfigurationSync?: (canonica;l: any) => ValidationResult;
+    generateTestCode?: (expectations: any, testType: string) => string | null;
+    updateTestFile?: (testType: string, testCode: string, options: any) => UpdateResult;
+    validateConfigurationSync?: (canonical: any) => ValidationResult;
     clearCache?: () => void;
     cleanup?: () => void;
     initialize?: () => Promise<void>; ,}
 }
 
 interface ComponentDefinition { name: string,
-    class: new (controlle;r: TestConfigurationGenerator) => Component ,}
+    class: new (controller: TestConfigurationGenerator) => Component ,}
 }
 
 interface ExpectationMetadata { extractedAt: number;
-    sourceFiles: string[];
-   , generatorVersion: string }
+    sourceFiles: string[],
+    generatorVersion: string }
 
 interface CanonicalExpectations { bubbleTypes: Record<string, any>;
     gameBalance: Record<string, any>;
@@ -64,22 +64,22 @@ interface UpdateOptions { testTypes?: string[];
 interface UpdateResults { updated: UpdateResult[],
     }
     failed: Array<{ testType?: string; error: string ,}>,
-    skipped: UpdateResult[];
-   , backups: UpdateResult[];
+    skipped: UpdateResult[],
+    backups: UpdateResult[];
     }
 
 interface ValidationResult { valid: boolean,
     issues: string[];
     warnings: string[];
-    bubbleTypesCount: number;
-   , sourceFiles: string[] ,}
+    bubbleTypesCount: number,
+    sourceFiles: string[] ,}
 
 interface GenerationStatistics { totalExpectations: number;
     lastGenerated: number | null;
     bubbleTypesProcessed: number;
     sourceFilesProcessed: number;
-    cacheSize: number;
-   , componentsInitialized: number }
+    cacheSize: number,
+    componentsInitialized: number }
 
 export class TestConfigurationGenerator {
     private components: Map<string, Component>;
@@ -108,7 +108,7 @@ export class TestConfigurationGenerator {
 
                 }
 
-                    console.error('Details:', details); }
+                    console.error('Details:', details'; }
 }
         };
         
@@ -116,7 +116,7 @@ export class TestConfigurationGenerator {
         this.configurationManager = { ''
             get: (namespace: string, path: string') => {;
                 // Node.js環境では実際の設定ファイルから直接読み取る
-                console.warn('[TestConfigurationGenerator] ConfigurationManager.get(') is not available in Node.js environment') ,}
+                console.warn('[TestConfigurationGenerator] ConfigurationManager.get() is not available in Node.js environment') ,}
                 return undefined;
         ';
         // 設定
@@ -141,7 +141,7 @@ export class TestConfigurationGenerator {
     /**
      * コンポーネントを初期化'
      */''
-    async initializeComponents(''';
+    async initializeComponents('''
                 { name: 'parser', class: ConfigurationParser ,},''
                 { name: 'generator', class: ExpectationGenerator ,},''
                 { name: 'fileOperations', class: TestFileOperations ,},''
@@ -178,8 +178,8 @@ export class TestConfigurationGenerator {
             parseAllConfigurations: () => null, };
             generateTestCode: () => null,' }'
 
-            updateTestFile: (') => ({ success: false, error: 'Component not available' ,}),''
-            validateConfigurationSync: (') => ({ valid: false, issues: ['Component not available], warnings: [], bubbleTypesCount: 0, sourceFiles: [] ,});
+            updateTestFile: () => ({ success: false, error: 'Component not available' ,}',''
+            validateConfigurationSync: () => ({ valid: false, issues: ['Component not available], warnings: [], bubbleTypesCount: 0, sourceFiles: [] ,});
         }
 
     /**
@@ -200,7 +200,7 @@ export class TestConfigurationGenerator {
                 // 後方互換性のためキャッシュに保存
         }
 
-                this.generatedExpectations.set('canonical', expectations); }
+                this.generatedExpectations.set('canonical', expectations'; }
             }
             return expectations;
         }
@@ -210,10 +210,10 @@ export class TestConfigurationGenerator {
             bubbleTypes: {};
             gameBalance: {};
             metadata: { ''
-                extractedAt: Date.now(''';
-               , generatorVersion: '1.0.0' })'
+                extractedAt: Date.now(''',
+    generatorVersion: '1.0.0' }''
         };')'
-        this.generatedExpectations.set('canonical', fallbackExpectations);
+        this.generatedExpectations.set('canonical', fallbackExpectations';
         return fallbackExpectations;
     }
 
@@ -248,11 +248,11 @@ describe('${ testType} Tests', ('} => { ' }
             try {
                 const results: UpdateResults = {
                     updated: [];
-                    failed: [];
-                   , skipped: [];
+                    failed: [],
+    skipped: [];
         }
-                    backups: [] }
-                };
+                    backups: [] 
+    };
                 const testTypes = options.testTypes || ['bubble', 'gameBalance', 'bubbleManager'];
                 
                 for(const, testType of, testTypes) {
@@ -299,8 +299,8 @@ describe('${ testType} Tests', ('} => { ' }
                 return { updated: [],' }'
 
                     failed: [{ error: (error, as Error').message }];
-                    skipped: [];
-                   , backups: [];
+                    skipped: [],
+    backups: [];
                 },
             }
         }
@@ -309,8 +309,8 @@ describe('${ testType} Tests', ('} => { ' }
         return { updated: [],' }'
 
             failed: [{ error: 'Components not available' }];
-            skipped: [];
-           , backups: [];
+            skipped: [],
+    backups: [];
         },
     }
 
@@ -330,10 +330,10 @@ describe('${ testType} Tests', ('} => { ' }
         // フォールバック：基本的な検証結果を返す
         return { valid: false,''
             issues: ['Component validation not available];
-            warnings: [];
-           , bubbleTypesCount: 0, };
-            sourceFiles: [] }
-        }
+            warnings: [],
+    bubbleTypesCount: 0, };
+            sourceFiles: [] 
+    }
 
     /**
      * 生成統計を取得'
@@ -341,7 +341,7 @@ describe('${ testType} Tests', ('} => { ' }
     getGenerationStatistics()';
         const canonical = this.generatedExpectations.get('canonical);
         if(canonical) {
-            stats.lastGenerated = canonical.metadata? .extractedAt;
+            stats.lastGenerated = canonical.metadata?.extractedAt;
             stats.bubbleTypesProcessed = Object.keys(canonical.bubbleTypes || {).length;
         }
             stats.sourceFilesProcessed = canonical.metadata?.sourceFiles?.length || 0; }
@@ -369,14 +369,14 @@ describe('${ testType} Tests', ('} => { ' }
      * クリーンアップ
      */
     cleanup(): void { // コンポーネントのクリーンアップ
-        for(const, component of, this.components.values() {
+        for(const component of this.components.values() {
             if (component.cleanup) {
         }
                 component.cleanup(); }
 }
         this.components.clear();
         // レガシーデータのクリーンアップ
-        this.generatedExpectations.clear(')';
+        this.generatedExpectations.clear()';
         console.log('[TestConfigurationGenerator] クリーンアップ完了);
     }
 }

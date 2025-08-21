@@ -1,5 +1,5 @@
-import fs from 'fs/promises';''
-import path from 'path';''
+import fs from 'fs/promises';
+import path from 'path';
 import { SafetyVerifier  } from './SafetyVerifier.js';
 
 // Type definitions
@@ -9,34 +9,34 @@ interface FileInfo { filePath: string,
 interface DeletionSummary { totalFiles: number,
     attempted: number;
     succeeded: number;
-    failed: number;
-   , skipped: number ,}
+    failed: number,
+    skipped: number ,}
 
 interface SafetyCheck { overallSafety: boolean;
     [key: string]: any, }
 
 interface BackupFileInfo { size: number,
     lastModified: string;
-    contentHash: string;
-   , lineCount: number ,}
+    contentHash: string,
+    lineCount: number ,}
 
-interface GitCommitInfo { hash: string;
-   , message: string }
+interface GitCommitInfo { hash: string,
+    message: string }
 
 interface GitInfo { hasHistory: boolean;
-    lastCommit: GitCommitInfo | null;
-   , branch: string | null;
+    lastCommit: GitCommitInfo | null,
+    branch: string | null;
     error?: string }
 ';
 
 interface RecoveryInstructions { ''
     method: 'git_history' | 'manual';
-    commands: string[];
-   , notes: string[] }
+    commands: string[],
+    notes: string[] }
 
 interface BackupRecord { filePath: string;
-    createdAt: string;
-   , backupCreated: boolean;
+    createdAt: string,
+    backupCreated: boolean;
     fileInfo?: BackupFileInfo;
     gitInfo?: GitInfo;
     recoveryInstructions?: RecoveryInstructions;
@@ -44,22 +44,22 @@ interface BackupRecord { filePath: string;
 
 interface DeletionResult { filePath: string,
     success: boolean;
-    deletedAt: string | null;
-   , error: string | null ,}
+    deletedAt: string | null,
+    error: string | null ,}
 
 interface VerificationResult { filePath: string;
-    deleted: boolean;
-   , verifiedAt: string;
+    deleted: boolean,
+    verifiedAt: string;
     error?: string }
 
 interface TestResults { basicImportTest: boolean;
-    buildTest: boolean;
-   , syntaxTest: boolean }
+    buildTest: boolean,
+    syntaxTest: boolean }
 
 interface PostDeletionTestResult { passed: boolean;
     tests: TestResults;
-    errors: string[];
-   , executedAt: string }
+    errors: string[],
+    executedAt: string }
 ';
 
 interface DeletionRecord { filePath: string,''
@@ -67,8 +67,8 @@ interface DeletionRecord { filePath: string,''
     backupRecord?: BackupRecord;
     deletionResult?: DeletionResult;
     verificationResult?: VerificationResult;
-    testResult?: PostDeletionTestResult;
-   , timestamp: string;
+    testResult?: PostDeletionTestResult,
+    timestamp: string;
     reason?: string;
     safetyCheck?: SafetyCheck;
     ,}
@@ -83,8 +83,8 @@ interface DeletionError { filePath: string,
 
 interface DeletionResults { summary: DeletionSummary,
     deletions: DeletionRecord[];
-    errors: DeletionError[];
-   , startTime: string;
+    errors: DeletionError[],
+    startTime: string;
     endTime?: string;
     duration?: number; ,}
 
@@ -94,8 +94,8 @@ interface SizeReduction { filesDeleted: number,
 interface DeletionReport { summary: DeletionSummary;
     successfulDeletions: DeletionRecord[];
     skippedDeletions: DeletionRecord[];
-    errors: DeletionError[];
-   , recoveryInfo: {
+    errors: DeletionError[],
+    recoveryInfo: {
         backupRecord;s: Record<string, BackupRecord>;
         deletionLog: DeletionRecord[] ,};
     generatedAt: string;
@@ -127,11 +127,11 @@ export class SequentialFileRemover {
                 totalFiles: verifiedFiles.length;
                 attempted: 0;
                 succeeded: 0;
-                failed: 0;
-               , skipped: 0 };
+                failed: 0,
+    skipped: 0 };
             deletions: [];
-            errors: [];
-           , startTime: new Date().toISOString();
+            errors: [],
+    startTime: new Date().toISOString();
         };
 
         for(const, fileInfo of, verifiedFiles) {
@@ -146,12 +146,12 @@ export class SequentialFileRemover {
                     results.summary.skipped++;
                     results.deletions.push({'
                         filePath: fileInfo.filePath,
-                        status: 'skipped',)';
+                        status: 'skipped','';
                         reason: 'Final safety check failed',);
                         safetyCheck: finalSafetyCheck);
         ,}
-                        timestamp: new Date().toISOString(); }
-                    });
+                        timestamp: new Date().toISOString(); 
+    });
                     continue;
                 }
 
@@ -168,7 +168,7 @@ export class SequentialFileRemover {
                     
                     if (verificationResult.deleted) {
                         // 削除後テスト実行
-                        const testResult = await this.runPostDeletionTests(''';
+                        const testResult = await this.runPostDeletionTests('''
                             status: 'deleted';
                             backupRecord,
                             deletionResult);
@@ -182,25 +182,25 @@ export class SequentialFileRemover {
 
                         if(testResult.passed) { results.summary.succeeded++; } else { results.summary.failed++;
                             results.errors.push({'
-                                filePath: fileInfo.filePath,)';
+                                filePath: fileInfo.filePath,'';
                                 error: 'Post-deletion tests failed',' }
 
-                                testResult)'); }'
+                                testResult''); }'
 } else { results.summary.failed++;
                         results.errors.push({'
-                            filePath: fileInfo.filePath,)';
+                            filePath: fileInfo.filePath,'';
                             error: 'Deletion verification failed',' }
 
-                            verificationResult)'); }'
+                            verificationResult''); }'
 } else { results.summary.failed++;
                     results.errors.push({'
-                        filePath: fileInfo.filePath,)';
+                        filePath: fileInfo.filePath,'';
                         error: 'File deletion failed', }
                         deletionResult); }
                 } catch (error) { results.summary.failed++;
                 results.errors.push({)
-                    filePath: fileInfo.filePath);
-                   , error: (error, as Error).message;
+                    filePath: fileInfo.filePath),
+    error: (error, as Error).message;
                     timestamp: new Date().toISOString( });
             }
         }
@@ -224,8 +224,8 @@ export class SequentialFileRemover {
             const gitInfo = await this.getGitFileInfo(filePath);
             
             backup.fileInfo = {
-                size: stats.size;
-               , lastModified: stats.mtime.toISOString(),
+                size: stats.size,
+    lastModified: stats.mtime.toISOString(),
                 contentHash: this.calculateHash(content),
                 lineCount: content.split('\n).length ,};
             backup.gitInfo = gitInfo;
@@ -247,8 +247,8 @@ export class SequentialFileRemover {
     async deleteFile(filePath: string): Promise<DeletionResult> { const result: DeletionResult = {
             filePath,
             success: false;
-            deletedAt: null;
-           , error: null ,};
+            deletedAt: null,
+    error: null ,};
         try { // ファイル存在確認
             await fs.access(filePath);
             
@@ -268,8 +268,8 @@ export class SequentialFileRemover {
      */
     async verifyDeletion(filePath: string): Promise<VerificationResult> { const verification: VerificationResult = {
             filePath,
-            deleted: false;
-           , verifiedAt: new Date().toISOString( ,};
+            deleted: false,
+    verifiedAt: new Date().toISOString( ,};
         try { // ファイルが存在しないことを確認
             await fs.access(filePath);
 
@@ -284,13 +284,13 @@ export class SequentialFileRemover {
      * 削除後テスト実行
      */
     async runPostDeletionTests(): Promise<PostDeletionTestResult> { const testResult: PostDeletionTestResult = {
-            passed: false;
-           , tests: {
+            passed: false,
+    tests: {
                 basicImportTest: false;
-                buildTest: false;
-               , syntaxTest: false };
-            errors: [];
-           , executedAt: new Date().toISOString();
+                buildTest: false,
+    syntaxTest: false };
+            errors: [],
+    executedAt: new Date().toISOString();
         };
 
         try { // 基本的なインポートテスト
@@ -327,7 +327,7 @@ export class SequentialFileRemover {
                     const content = await fs.readFile(coreFile, 'utf8'');
                     ';
                     // 基本的な構文チェック
-                    if(content.includes('SyntaxError) || content.length === 0) {'
+                    if(content.includes('SyntaxError) || content.length === 0' {'
             
             }
                         return false; catch (error) { // コアファイルにアクセスできない場合
@@ -374,8 +374,8 @@ export class SequentialFileRemover {
                     // 明らかな構文エラーをチェック
                     if (content.includes('SyntaxError'') || '';
                         content.includes('Unexpected, token'') ||'';
-                        content.match(/\bimport\s+.*\s+from\s+['"][^'"]*_old\.js['"]/) ||"";
-                        content.match(/\bimport\s+.*\s+from\s+['"][^'"]*_original\.js['"]/) ||"";
+                        content.match(/\bimport\s+.*\s+from\s+['"][^'"]*_old\.js['"]/" ||"";
+                        content.match(/\bimport\s+.*\s+from\s+['"][^'"]*_original\.js['"]/" ||"";
                         content.match(/\bimport\s+.*\s+from\s+['"][^'"]*_backup\.js['"]/) {
             }
                         return false; catch (error) { // ファイル読み取りエラーは無視
@@ -418,7 +418,7 @@ export class SequentialFileRemover {
                 } catch (error) { // ディレクトリアクセスエラーは無視 }
         }
 
-        await scanDir('./src);
+        await scanDir('./src';
         return jsFiles;
     }
 
@@ -427,30 +427,30 @@ export class SequentialFileRemover {
      */''
     async getGitFileInfo(filePath: string): Promise<GitInfo> { const gitInfo: GitInfo = {
             hasHistory: false;
-            lastCommit: null;
-           , branch: null };
+            lastCommit: null,
+    branch: null };
 ';
 
         try { }
 
             const { exec } = await import('child_process'');''
-            const { promisify } = await import('util);''
+            const { promisify } = await import('util';''
             const execAsync = promisify(exec);
 
             // 最後のコミット情報
             try { }
 
-                const { stdout } = await execAsync(`git, log -1 --format="%H %s %ai" -- "${ filePath)"`);
+                const { stdout } = await execAsync(`git, log -1 --format="%H %s %ai" -- "${ filePath""`);
                 if(stdout.trim() {"
 
                     const [hash, ...rest] = stdout.trim("}.split(' ''};
-                    gitInfo.hasHistory = true;
+                    gitInfo.hasHistory = true
                     gitInfo.lastCommit = {
                 }
 
                         hash,' }'
 
-                        message: rest.join(', '});
+                        message: rest.join(', '}';
                     };''
                 } catch (error) { // Git履歴取得エラーは無視 }
 
@@ -469,25 +469,25 @@ export class SequentialFileRemover {
      */''
     generateRecoveryInstructions(filePath: string, gitInfo: GitInfo): RecoveryInstructions { const instructions: RecoveryInstructions = {''
             method: 'git_history';
-            commands: [];
-           , notes: [] };
+            commands: [],
+    notes: [] };
 ';
 
         if (gitInfo.hasHistory && gitInfo.lastCommit) { instructions.commands.push(' }'
 
-                `# ${filePath}を復旧するコマンド:`)''
-                `git show ${gitInfo.lastCommit.hash}:"${filePath}" > "${ filePath"}"` });"
-            instructions.notes.push(")";
+                `# ${filePath}を復旧するコマンド:`'''
+                `git show ${gitInfo.lastCommit.hash}:"${filePath}" > "${ filePath"}"` }";"
+            instructions.notes.push()";
                 `最後のコミット: ${gitInfo.lastCommit.hash}`")""
                 `ブランチ: ${ gitInfo.branch || 'unknown'}`' }
 
-            '});
+            '}';
 
         } else {
             instructions.method = 'manual';
 
             instructions.notes.push('';
-                'Git履歴が見つかりません',)';
+                'Git履歴が見つかりません','';
                 '手動で復旧する必要があります',' }
 
                 '対応する現在ファイルから復元を検討してください'); }
@@ -529,8 +529,8 @@ export class SequentialFileRemover {
             skippedDeletions: deletionResults.deletions.filter(d => d.status === 'skipped);
             errors: deletionResults.errors;
             recoveryInfo: {
-                backupRecords: this.backupRecord;
-               , deletionLog: this.deletionLog ,}
+                backupRecords: this.backupRecord,
+    deletionLog: this.deletionLog ,}
             };
             generatedAt: new Date().toISOString();
         };

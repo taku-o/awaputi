@@ -27,16 +27,16 @@ interface SoundCategoryConfig { volume: number,
  */
 interface PlaybackStats { totalPlayed: number,
     activeCount: number;
-    peakConcurrency: number;
-   , errors: number ,}
+    peakConcurrency: number,
+    errors: number ,}
 /**
  * エフェクト設定インターフェース
  */
 interface EffectConfig { maxPitchShift: number,
     maxVolumeScale: number;
     maxPan: number;
-    fadeInDuration: number;
-   , fadeOutDuration: number ,}
+    fadeInDuration: number,
+    fadeOutDuration: number ,}
 /**
  * 音響エフェクトインターフェース
  */
@@ -102,19 +102,18 @@ export class AudioPlaybackController {
         // 再生統計
         this.playbackStats = {
             totalPlayed: 0;
-            activeCount: 0;
-           , peakConcurrency: 0
+            activeCount: 0,
+    peakConcurrency: 0
 }
             errors: 0 ;
-}
-        },
+    },
         
         // エフェクト設定
         this.effectConfig = { maxPitchShift: 2.0,
             maxVolumeScale: 2.0;
             maxPan: 1.0;
-            fadeInDuration: 0.01;
-           , fadeOutDuration: 0.1 
+            fadeInDuration: 0.01,
+    fadeOutDuration: 0.1 
 ,};
         // 音響カテゴリ設定
         this.soundCategories = {
@@ -136,8 +135,8 @@ export class AudioPlaybackController {
         audioContext: AudioContext;
         sfxGainNode: GainNode
     );
-        masterGainNode: GainNode);
-       , soundBuffers: Map<string, AudioBuffer>;
+        masterGainNode: GainNode),
+    soundBuffers: Map<string, AudioBuffer>;
     ): void { this.audioContext = audioContext;
         this.sfxGainNode = sfxGainNode;
         this.masterGainNode = masterGainNode;
@@ -169,8 +168,8 @@ export class AudioPlaybackController {
 ';
 
         } catch (error) { this.playbackStats.errors++;''
-            getErrorHandler(').handleError(error, 'AUDIO_ERROR', {''
-                component: 'AudioPlaybackController',)';
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
+                component: 'AudioPlaybackController','';
                 operation: 'playSound',);
                 soundName); });
             return null;
@@ -260,9 +259,9 @@ export class AudioPlaybackController {
 ';
 
         } catch (error) { this.playbackStats.errors++;''
-            getErrorHandler(').handleError(error, 'AUDIO_ERROR', {)'
+            getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioPlaybackController',')';
-                operation: '_playSound' ,});
+                operation: '_playSound' ,}';
             return null;
     /**
      * 泡破壊音を再生
@@ -278,8 +277,8 @@ export class AudioPlaybackController {
         const comboOptions: PlaybackOptions = {
             ...options,
             category: 'bubble';
-            pitch: 1.0 + (comboLevel * 0.1);
-           , volume: (options.volume || 1.0) * (1.0 + comboLevel * 0.2 ,};
+            pitch: 1.0 + (comboLevel * 0.1),
+    volume: (options.volume || 1.0) * (1.0 + comboLevel * 0.2 ,};
         
         return this.playSound(soundName, comboOptions);
     }
@@ -320,7 +319,7 @@ export class AudioPlaybackController {
             pitch: 1.0 + (comboLevel * 0.15,
             volume: (options.volume || 1.0) * Math.min(2.0, 1.0 + comboLevel * 0.3 };
 
-        return this.playSound('pop_combo', comboOptions);
+        return this.playSound('pop_combo', comboOptions';
     }
 
     /**
@@ -338,8 +337,8 @@ export class AudioPlaybackController {
 
         return this.playSound(config.sound, { ...options,)'
             category: 'achievement');
-            pitch: (options.pitch || 1.0) * config.pitch;
-           , volume: (options.volume || 1.0) * config.volume 
+            pitch: (options.pitch || 1.0) * config.pitch,
+    volume: (options.volume || 1.0) * config.volume 
 ,});
     }
 
@@ -379,7 +378,7 @@ export class AudioPlaybackController {
             });
             this.activeSources.clear();
             this.playbackStats.activeCount = 0;
-        } catch (error) { getErrorHandler(').handleError(error, 'AUDIO_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioPlaybackController',')';
                 operation: 'stopAllSounds' ,});
         }
@@ -416,7 +415,7 @@ export class AudioPlaybackController {
             // 現在は基本的なゲイン・パン・ピッチのみサポート
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'AUDIO_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioPlaybackController',')';
                 operation: 'applyAudioEffects' ,});
         }
@@ -470,12 +469,12 @@ export class AudioPlaybackController {
         categories: Array<{ name: string; volume: number;, priority: number }> 
     } { return { ...this.playbackStats,
             activeCount: this.activeSources.size;
-            maxConcurrent: this.maxConcurrentSounds;
-           , categories: Object.keys(this.soundCategories).map(category => ({)
-                name: category);
-               , volume: this.soundCategories[category].volume,') };
+            maxConcurrent: this.maxConcurrentSounds,
+    categories: Object.keys(this.soundCategories).map(category => ({)
+                name: category),
+    volume: this.soundCategories[category].volume,') };
 
-                priority: this.soundCategories[category].priority))'); }'
+                priority: this.soundCategories[category].priority)''); }'
         }
 
     /**
@@ -483,7 +482,7 @@ export class AudioPlaybackController {
      * @param soundName - テスト音響名
      * @returns テスト成功フラグ'
      */''
-    testSound(soundName: string = 'click): boolean { try {'
+    testSound(soundName: string = 'click': boolean { try {'
             const source = this.playSound(soundName, { volume: 0.5 ),
             return source !== null } catch (error) { return false;
 
@@ -494,8 +493,8 @@ export class AudioPlaybackController {
         this.playbackStats = {
             totalPlayed: 0;
             activeCount: 0;
-            peakConcurrency: 0;
-           , errors: 0 
+            peakConcurrency: 0,
+    errors: 0 
 ,}
 
     /**
@@ -526,4 +525,4 @@ export function getAudioPlaybackController(): AudioPlaybackController { if (!aud
  */
 export function reinitializeAudioPlaybackController(): AudioPlaybackController { if (audioPlaybackControllerInstance) {
         audioPlaybackControllerInstance.dispose(); }''
-    audioPlaybackControllerInstance = new AudioPlaybackController(');
+    audioPlaybackControllerInstance = new AudioPlaybackController();

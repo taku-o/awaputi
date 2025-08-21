@@ -4,7 +4,7 @@
  * 検索機能、カテゴリ表示、ユーザーフィードバック機能を提供
  */
 
-import { ErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';
 import { LoggingSystem  } from '../LoggingSystem.js';
 
 // 型定義
@@ -17,9 +17,9 @@ export interface HelpManager { contentLoader?: ContentLoader;
 
 export interface ContentLoader {;
     loadFAQData(''';
-export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced';''
-export type SortOrder = 'relevance' | 'popularity' | 'recent' | 'alphabetical' | 'helpful';''
-export type FeedbackType = 'helpful' | 'not_helpful' | 'suggestion';
+export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced';
+export type SortOrder = 'relevance' | 'popularity' | 'recent' | 'alphabetical' | 'helpful';
+export type FeedbackType = 'helpful' | 'not_helpful' | 'suggestion'
 
 /**
  * FAQシステムクラス
@@ -64,56 +64,56 @@ export class FAQSystem {
         
         // 検索・フィルタリング
         this.searchEngine = null;''
-        this.activeFilters = new Set<string>(');''
+        this.activeFilters = new Set<string>();''
         this.sortOrder = 'relevance';
         
         // 表示設定
         this.displayConfig = {
             itemsPerPage: 10,
-            expandedItems: new Set<string>(');
+            expandedItems: new Set<string>();
             showCategories: true;
             showSearchBox: true;
             showFeedback: true;
     ,}
-            animationDuration: 300 }
-        };
+            animationDuration: 300 
+    };
         // FAQカテゴリ定義
         this.defaultCategories = [{;
                 id: 'gameplay',
                 name: 'ゲームプレイ',
                 description: 'ゲームの基本操作や遊び方について',
-                icon: '🎮';
-               , priority: 1 ,};
+                icon: '🎮',
+    priority: 1 ,};
             { ''
                 id: 'bubbles',
                 name: '泡の種類',
                 description: '特殊泡の効果や使い方について',
-                icon: '🫧';
-               , priority: 2 ,};
+                icon: '🫧',
+    priority: 2 ,};
             { ''
                 id: 'scoring',
                 name: 'スコアシステム',
                 description: 'スコアの計算方法やコンボについて',
-                icon: '🏆';
-               , priority: 3 ,};
+                icon: '🏆',
+    priority: 3 ,};
             { ''
                 id: 'controls',
                 name: '操作方法',
                 description: 'キーボードやマウスの操作について',
-                icon: '⌨️';
-               , priority: 4 ,};
+                icon: '⌨️',
+    priority: 4 ,};
             { ''
                 id: 'settings',
                 name: '設定',
                 description: 'ゲーム設定や環境設定について',
-                icon: '⚙️';
-               , priority: 5 ,};
+                icon: '⚙️',
+    priority: 5 ,};
             { ''
                 id: 'troubleshooting',
                 name: 'トラブルシューティング',
                 description: '問題解決や不具合報告について',
-                icon: '🔧';
-               , priority: 6 ,}]
+                icon: '🔧',
+    priority: 6 ,}]
             }]
         ];
         // デフォルトFAQデータ
@@ -125,87 +125,87 @@ export class FAQSystem {
                 answer: '画面に現れる泡をクリックして割るゲームです。泡が自然破裂する前に割る必要があります。特殊な泡にはそれぞれ異なる効果があります。',']';
                 tags: ['基本', '初心者', '遊び方],
                 difficulty: 'beginner',
-                lastUpdated: new Date().toISOString(''';
-               , id: 'game_objective',
+                lastUpdated: new Date().toISOString(''',
+    id: 'game_objective',
                 category: 'gameplay',
                 question: 'ゲームの目的は何？',
                 answer: 'できるだけ高いスコアを獲得することが目的です。泡を連続して割ってコンボを決めたり、特殊泡を活用してボーナスポイントを稼ぎましょう。',
-                tags: ['目的', 'スコア', 'コンボ],)';
+                tags: ['目的', 'スコア', 'コンボ],'';
                 difficulty: 'beginner',')';
-                lastUpdated: new Date().toISOString(''';
-               , id: 'special_bubbles_types',
+                lastUpdated: new Date().toISOString(''',
+    id: 'special_bubbles_types',
                 category: 'bubbles',
                 question: '特殊泡にはどんな種類がある？',
                 answer: '虹色泡（ボーナスタイム）、ピンク泡（HP回復）、時計泡（時間停止）、電気泡（画面震動）、毒泡（ダメージ）、石泡・鉄泡（複数回クリック必要）など、18種類以上の特殊泡があります。',
-                tags: ['特殊泡', '種類', '効果],)';
+                tags: ['特殊泡', '種類', '効果],'';
                 difficulty: 'intermediate',')';
-                lastUpdated: new Date().toISOString(''';
-               , id: 'rainbow_bubble_effect',
+                lastUpdated: new Date().toISOString(''',
+    id: 'rainbow_bubble_effect',
                 category: 'bubbles',
                 question: '虹色の泡の効果は？',
                 answer: '虹色泡を割るとボーナスタイムが発動し、一定時間すべての泡のスコアが2倍になります。見つけたら優先的に割りましょう。',
-                tags: ['虹色泡', 'ボーナスタイム', 'スコア2倍],)';
+                tags: ['虹色泡', 'ボーナスタイム', 'スコア2倍],'';
                 difficulty: 'beginner',')';
-                lastUpdated: new Date().toISOString(''';
-               , id: 'combo_system',
+                lastUpdated: new Date().toISOString(''',
+    id: 'combo_system',
                 category: 'scoring',
                 question: 'コンボシステムはどう動作する？',
                 answer: '泡を連続して素早く割るとコンボが発生し、スコアにボーナスが付きます。コンボ数が高いほど獲得スコアが増加します。時間が空くとコンボは途切れます。',
-                tags: ['コンボ', 'ボーナス', 'スコア],)';
+                tags: ['コンボ', 'ボーナス', 'スコア],'';
                 difficulty: 'intermediate',')';
-                lastUpdated: new Date().toISOString(''';
-               , id: 'score_calculation',
+                lastUpdated: new Date().toISOString(''',
+    id: 'score_calculation',
                 category: 'scoring',
                 question: 'スコアはどうやって計算される？',
                 answer: '基本スコア + コンボボーナス + 特殊泡ボーナス + タイミングボーナスで計算されます。難しい泡ほど高得点で、コンボ中は倍率が上がります。',
-                tags: ['スコア計算', 'ボーナス', '倍率],)';
+                tags: ['スコア計算', 'ボーナス', '倍率],'';
                 difficulty: 'advanced',')';
-                lastUpdated: new Date().toISOString(''';
-               , id: 'mouse_controls',
+                lastUpdated: new Date().toISOString(''',
+    id: 'mouse_controls',
                 category: 'controls',
                 question: 'マウス操作方法は？',
                 answer: '左クリックで泡を割る、ドラッグで泡を押し退けることができます。右クリックは使用しません。',
-                tags: ['マウス', 'クリック', 'ドラッグ],)';
+                tags: ['マウス', 'クリック', 'ドラッグ],'';
                 difficulty: 'beginner',')';
-                lastUpdated: new Date().toISOString(''';
-               , id: 'keyboard_shortcuts',
+                lastUpdated: new Date().toISOString(''',
+    id: 'keyboard_shortcuts',
                 category: 'controls',
                 question: 'キーボードショートカットはある？',
                 answer: 'Escキー：メニューを開く、Hキー：ヘルプを表示、Pキー：ポーズ、Ctrl+Shift+D：デバッグモード切り替え、などがあります。',
-                tags: ['キーボード', 'ショートカット', 'ホットキー],)';
+                tags: ['キーボード', 'ショートカット', 'ホットキー],'';
                 difficulty: 'intermediate',')';
-                lastUpdated: new Date().toISOString(''';
-               , id: 'audio_settings',
+                lastUpdated: new Date().toISOString(''',
+    id: 'audio_settings',
                 category: 'settings',
                 question: '音量設定はどこで変更できる？',
                 answer: 'メインメニューの設定から音量を調整できます。BGM、効果音、マスター音量をそれぞれ個別に設定可能です。',
-                tags: ['音量', '設定', 'BGM', '効果音],)';
+                tags: ['音量', '設定', 'BGM', '効果音],'';
                 difficulty: 'beginner',')';
-                lastUpdated: new Date().toISOString(''';
-               , id: 'performance_settings',
+                lastUpdated: new Date().toISOString(''',
+    id: 'performance_settings',
                 category: 'settings',
                 question: 'ゲームが重い時はどうすれば？',
                 answer: '設定で視覚効果を下げる、パーティクル数を減らす、フレームレート制限を設定する、ブラウザの他のタブを閉じるなどを試してください。',
-                tags: ['パフォーマンス', '重い', '最適化],)';
+                tags: ['パフォーマンス', '重い', '最適化],'';
                 difficulty: 'intermediate',')';
-                lastUpdated: new Date().toISOString(''';
-               , id: 'game_not_loading',
+                lastUpdated: new Date().toISOString(''',
+    id: 'game_not_loading',
                 category: 'troubleshooting',
                 question: 'ゲームが読み込まれない',
                 answer: 'ブラウザを更新する、キャッシュをクリアする、JavaScriptが有効になっているか確認する、対応ブラウザ（Chrome、Firefox、Safari、Edge）を使用しているか確認してください。',
-                tags: ['読み込み', 'エラー', 'ブラウザ],)';
+                tags: ['読み込み', 'エラー', 'ブラウザ],'';
                 difficulty: 'beginner',')';
-                lastUpdated: new Date().toISOString(''';
-               , id: 'save_data_lost',
+                lastUpdated: new Date().toISOString(''',
+    id: 'save_data_lost',
                 category: 'troubleshooting',
                 question: 'セーブデータが消えた',
                 answer: 'ブラウザのローカルストレージが削除された可能性があります。プライベートモード使用、クッキー削除、ブラウザのストレージクリアが原因の場合があります。バックアップ機能を使用することをお勧めします。',
-                tags: ['セーブデータ', '消失', 'ローカルストレージ],)';
+                tags: ['セーブデータ', '消失', 'ローカルストレージ],'';
                 difficulty: 'intermediate',);
                 lastUpdated: new Date().toISOString();
                 viewCount: 0;
-                helpfulCount: 0;
-               , notHelpfulCount: 0 ,}
+                helpfulCount: 0,
+    notHelpfulCount: 0 ,}
         ];
         this.initialize();
     }
@@ -224,11 +224,11 @@ export class FAQSystem {
             this.buildSearchIndex();
             // ユーザー統計の読み込み
             this.loadUserStatistics()';
-            this.loggingSystem.info('FAQSystem', 'FAQ system initialized);' }
+            this.loggingSystem.info('FAQSystem', 'FAQ system initialized';' }
 
         } catch (error) {
-            this.loggingSystem.error('FAQSystem', 'Failed to initialize FAQ system', error);''
-            ErrorHandler.handle(error as Error, 'FAQSystem.initialize); }'
+            this.loggingSystem.error('FAQSystem', 'Failed to initialize FAQ system', error';''
+            ErrorHandler.handle(error as Error, 'FAQSystem.initialize'; }'
     }
     
     /**
@@ -237,10 +237,10 @@ export class FAQSystem {
     private initializeCategories(): void { this.defaultCategories.forEach(category => { 
             this.categories.set(category.id, {
                 ...category);
-                faqCount: 0);
-               , viewCount: 0,) }
-                lastAccessed: null); }
-        });
+                faqCount: 0),
+    viewCount: 0,) }
+                lastAccessed: null); 
+    });
     }
     
     /**
@@ -251,10 +251,10 @@ export class FAQSystem {
             this.faqDatabase.set(faq.id, {)
                 ...faq,);
                 id: faq.id);
-                createdAt: new Date().toISOString();
-               , popularity: 0, }
-                relevanceScore: 0 }
-            });
+                createdAt: new Date().toISOString(),
+    popularity: 0, }
+                relevanceScore: 0 
+    });
             // カテゴリのFAQ数を更新
             const category = this.categories.get(faq.category);
             if (category) { category.faqCount!++; }
@@ -268,7 +268,7 @@ export class FAQSystem {
      * 外部FAQデータの読み込み
      */
     private async loadExternalFAQData(): Promise<void> { try {
-            if(this.gameEngine.helpManager? .contentLoader) {
+            if(this.gameEngine.helpManager?.contentLoader) {
                 const faqContent = await this.gameEngine.helpManager.contentLoader.loadFAQData();
                 if(faqContent && Array.isArray(faqContent) {
                     faqContent.forEach(faq => { );
@@ -385,10 +385,10 @@ export class FAQSystem {
             this.loggingSystem.error('FAQSystem', 'FAQ search error', error);
             return { faqs: [],
                 totalCount: 0;
-                page: 1;
-               , totalPages: 0, };
-                hasMore: false }
-            }
+                page: 1,
+    totalPages: 0, };
+                hasMore: false 
+    }
     }
     
     /**
@@ -446,10 +446,10 @@ export class FAQSystem {
         
         return { faqs: filteredFAQs.slice(startIndex, endIndex),
             totalCount: filteredFAQs.length;
-            page: page;
-           , totalPages: Math.ceil(filteredFAQs.length / itemsPerPage), };
-            hasMore: endIndex < filteredFAQs.length }
-        }
+            page: page,
+    totalPages: Math.ceil(filteredFAQs.length / itemsPerPage), };
+            hasMore: endIndex < filteredFAQs.length 
+    }
     
     /**
      * FAQ配列のソート
@@ -524,21 +524,21 @@ export class FAQSystem {
             }
             
             // フィードバックデータを保存
-            const feedbackId = `${faqId}_${Date.now(})`;
+            const feedbackId = `${faqId}_${Date.now())`;
             this.feedbackData.set(feedbackId, { faqId: faqId)
                , type: feedbackType,);
                 comment: comment);
-                timestamp: new Date().toISOString();
-               , userAgent: navigator.userAgent' ,}'
+                timestamp: new Date().toISOString(),
+    userAgent: navigator.userAgent' ,}'
 
             }');
             ';
             // 統計更新
-            this.updateUsageStatistics(faqId, 'feedback', feedbackType);
+            this.updateUsageStatistics(faqId, 'feedback', feedbackType';
 
-            this.loggingSystem.info('FAQSystem', `Feedback recorded: ${faqId} - ${feedbackType}`});''
+            this.loggingSystem.info('FAQSystem', `Feedback recorded: ${faqId} - ${feedbackType}`}';''
         } catch (error) {
-            this.loggingSystem.error('FAQSystem', 'Failed to record feedback', error); }
+            this.loggingSystem.error('FAQSystem', 'Failed to record feedback', error'; }
     }
     
     /**
@@ -550,15 +550,15 @@ export class FAQSystem {
     private updateUsageStatistics(faqId: string, action: string, details: string = ''): void {
         const statsKey = `${faqId}_${action}`;
         const currentStats = this.usageStatistics.get(statsKey) || { count: 0,
-            lastAction: null;
-           , details: [] ,};
+            lastAction: null,
+    details: [] ,};
         currentStats.count++;
         currentStats.lastAction = new Date().toISOString();
         
         if(details) { currentStats.details.push({)
                 value: details }
-                timestamp: new Date().toISOString(); }
-            });
+                timestamp: new Date().toISOString(); 
+    });
             
             // 詳細は最新10件のみ保持
             if (currentStats.details.length > 10) { currentStats.details = currentStats.details.slice(-10); }
@@ -698,15 +698,15 @@ export class FAQSystem {
      * @returns システム統計
      */
     getSystemStats(): SystemStats { return { totalFAQs: this.faqDatabase.size,
-            totalCategories: this.categories.size;
-           , totalViews: Array.from(this.faqDatabase.values().reduce((sum, faq) => sum + (faq.viewCount || 0), 0),
+            totalCategories: this.categories.size,
+    totalViews: Array.from(this.faqDatabase.values().reduce((sum, faq) => sum + (faq.viewCount || 0), 0),
             totalFeedback: this.feedbackData.size;
-            mostPopularFAQ: this.getPopularFAQs(1)[0];
-           , categoryStats: Object.fromEntries();
+            mostPopularFAQ: this.getPopularFAQs(1)[0],
+    categoryStats: Object.fromEntries();
                 Array.from(this.categories.entries().map(([id, category]) => [id,
                     {
-                        name: category.name;
-                       , faqCount: category.faqCount || 0, };
+                        name: category.name,
+    faqCount: category.faqCount || 0, };
                         viewCount: category.viewCount || 0 }]
                     }]
                 ]);
@@ -727,7 +727,7 @@ export class FAQSystem {
             this.feedbackData.clear();
             this.usageStatistics.clear();''
             this.userPreferences.clear()';
-            this.loggingSystem.info('FAQSystem', 'FAQ system cleaned up);' }
+            this.loggingSystem.info('FAQSystem', 'FAQ system cleaned up';' }
 
         } catch (error) {
             this.loggingSystem.error('FAQSystem', 'Failed to cleanup FAQ system', error); }

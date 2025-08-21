@@ -8,11 +8,11 @@ export interface MotionManager { visualAccessibilityManager: VisualAccessibility
     accessibilityManager: AccessibilityManager;
     gameEngine: GameEngine;
     config: MotionConfig;
-    userPreferences: UserPreferences;
-   , hazardPatterns: Record<string, HazardPattern>,
+    userPreferences: UserPreferences,
+    hazardPatterns: Record<string, HazardPattern>,
     currentLevel: MotionLevel;
-    stats: MotionStats;
-   , setMotionLevel: (leve;l: MotionLevel) => void ,}
+    stats: MotionStats,
+    setMotionLevel: (level: MotionLevel) => void ,}
 }
 
 export interface VisualAccessibilityManager { [key: string]: any, }
@@ -24,46 +24,46 @@ export interface GameEngine { [key: string]: any, }
 export interface MotionConfig { respectSystemPreference: boolean,
     globalReducedMotion: boolean;
     vestibularSafety: boolean;
-    vestibularGuidelines: VestibularGuidelines;
-   , motionCategories: Record<string, MotionCategoryConfig>,
+    vestibularGuidelines: VestibularGuidelines,
+    motionCategories: Record<string, MotionCategoryConfig>,
     motionLevels: Record<string, MotionLevelConfig>, }
 
 export interface VestibularGuidelines { maxRotationSpeed: number,
     maxScaleChange: number;
-    maxParallaxDistance: number;
-   , flashingThreshold: number ,}
+    maxParallaxDistance: number,
+    flashingThreshold: number ,}
 
 export interface MotionCategoryConfig { enabled: boolean;
-    intensity: number;
-   , duration: number;
+    intensity: number,
+    duration: number;
     vestibularSafe?: boolean }
 
 export interface MotionLevelConfig { name: string;
-    description: string;
-   , enabled: boolean }
+    description: string,
+    enabled: boolean }
 
 export interface UserPreferences { motionLevel: MotionLevel;
     granularControls: GranularControls;
-    selectiveReduction: SelectiveReduction;
-   , customIntensities: Map<string, number>,
+    selectiveReduction: SelectiveReduction,
+    customIntensities: Map<string, number>,
     autoReduceOnPerformance: boolean ,}
 
 export interface GranularControls { particleDensity: number;
     cameraMovement: number;
     backgroundMotion: number;
-    uiTransitions: number;
-   , gameplayEffects: number }
+    uiTransitions: number,
+    gameplayEffects: number }
 
 export interface SelectiveReduction { disableRotation: boolean;
     disableScaling: boolean;
     disableParallax: boolean;
-    disableFlashing: boolean;
-   , disableAutoplay: boolean }
+    disableFlashing: boolean,
+    disableAutoplay: boolean }
 
 export interface HazardPattern { threshold: number;
     detected: boolean;
-    description: string;
-   , severity: HazardSeverity
+    description: string,
+    severity: HazardSeverity
     }
 
 export interface AnimationParams { rotationSpeed?: number;
@@ -74,8 +74,8 @@ export interface AnimationParams { rotationSpeed?: number;
     intensity?: number; }
 
 export interface ViolationInfo { type: ViolationType,
-    value: number;
-   , limit: number;
+    value: number,
+    limit: number;
     severity?: HazardSeverity
     ,}
 
@@ -90,33 +90,33 @@ export interface MotionLevelChangeData { previous: MotionLevel,
     ,}
 
 export interface CategoryConfigChangeData { category: string;
-    previous: MotionCategoryConfig;
-   , current: MotionCategoryConfig
+    previous: MotionCategoryConfig,
+    current: MotionCategoryConfig
     }
 
-export interface GranularControlsChangeData { previous: GranularControls;
-   , current: GranularControls
+export interface GranularControlsChangeData { previous: GranularControls,
+    current: GranularControls
     }
 
-export interface SelectiveReductionChangeData { previous: SelectiveReduction;
-   , current: SelectiveReduction
+export interface SelectiveReductionChangeData { previous: SelectiveReduction,
+    current: SelectiveReduction
     }
 
 export interface HazardDetectedData { pattern: string;
-    value: number;
-   , threshold: number }
+    value: number,
+    threshold: number }
 
 export interface MotionStats { vestibularWarnings: number;
     configChanges: number;
-    hazardDetections: number;
-   , performanceReductions: number }
+    hazardDetections: number,
+    performanceReductions: number }
 
 export interface ConfigStats { currentLevel: MotionLevel;
     globalReducedMotion: boolean;
     vestibularSafety: boolean;
     enabledCategories: string[];
-    hazardDetections: string[];
-   , listenerCount: number }
+    hazardDetections: string[],
+    listenerCount: number }
 
 export interface LevelSettings { [category: string]: MotionCategoryConfig;
     }
@@ -146,27 +146,27 @@ export type ConfigListener = (type: ConfigEventType, data: ConfigChangeData') =>
 ';
 // 定数
 export const MOTION_LEVELS: MotionLevel[] = ['none', 'essential', 'reduced', 'normal', 'enhanced'];''
-export const STORAGE_KEY = 'motionManager_preferences';''
+export const STORAGE_KEY = 'motionManager_preferences';
 export const MEDIA_QUERY_REDUCED_MOTION = '(prefers-reduced-motion: reduce')',
 
 export const DEFAULT_VESTIBULAR_GUIDELINES: VestibularGuidelines = { maxRotationSpeed: 45, // degrees per second
-    maxScaleChange: 1.5;
-   , maxParallaxDistance: 100, // pixels;
+    maxScaleChange: 1.5,
+    maxParallaxDistance: 100, // pixels;
     flashingThreshold: 3 // flashes per second ,};
 export const DEFAULT_CATEGORY_CONFIG: MotionCategoryConfig = { enabled: true,
     intensity: 1.0;
-    duration: 1.0;
-   , vestibularSafe: true ,};
+    duration: 1.0,
+    vestibularSafe: true ,};
 export const DEFAULT_GRANULAR_CONTROLS: GranularControls = { particleDensity: 1.0,
     cameraMovement: 1.0;
     backgroundMotion: 1.0;
-    uiTransitions: 1.0;
-   , gameplayEffects: 1.0 ,};
+    uiTransitions: 1.0,
+    gameplayEffects: 1.0 ,};
 export const DEFAULT_SELECTIVE_REDUCTION: SelectiveReduction = { disableRotation: false,
     disableScaling: false;
     disableParallax: false;
-    disableFlashing: false;
-   , disableAutoplay: false ,};
+    disableFlashing: false,
+    disableAutoplay: false ,};
 // ユーティリティ関数
 export function isValidMotionLevel(level: string): level is MotionLevel { return MOTION_LEVELS.includes(level, as MotionLevel); }
 
@@ -277,7 +277,7 @@ export class MotionConfigManager {
         this.hazardPatterns = motionManager.hazardPatterns;
         // レベル別設定のキャッシュを初期化
         this.levelSettingsCache = createDefaultLevelSettings('';
-    ,})'
+    ,}''
         console.log('[MotionConfigManager] Component, initialized'); }'
     }
     
@@ -317,9 +317,9 @@ export class MotionConfigManager {
         const targetLevel: MotionLevel = reducedMotion ? 'reduced' : this.userPreferences.motionLevel,
         this.motionManager.setMotionLevel(targetLevel);
 
-        this.notifyConfigListeners('systemPreference', { reducedMotion ));' }
+        this.notifyConfigListeners('systemPreference', { reducedMotion )';' }
 
-        console.log(`System, motion preference, changed: ${reducedMotion ? 'reduced' : 'normal}`});
+        console.log(`System, motion preference, changed: ${reducedMotion ? 'reduced' : 'normal}`}';
     }
     
     /**
@@ -327,7 +327,7 @@ export class MotionConfigManager {
      */'
     loadUserPreferences(): void { ''
         if(!supportsLocalStorage()) {''
-            console.warn('LocalStorage not supported, using defaults);
+            console.warn('LocalStorage not supported using defaults);
             return; }
 
         try { const saved = localStorage.getItem(STORAGE_KEY);
@@ -335,7 +335,7 @@ export class MotionConfigManager {
                 const preferences = JSON.parse(saved);
                 
                 // 基本設定をマージ
-                Object.assign(this.userPreferences, preferences);
+                Object.assign(this.userPreferences preferences');
                 
                 // カスタム強度の復元（Map形式）
                 if(preferences.customIntensities && Array.isArray(preferences.customIntensities') {'
@@ -344,7 +344,7 @@ export class MotionConfigManager {
                     this.userPreferences.customIntensities = new Map(preferences.customIntensities); }
                 }
 
-                console.log('Motion preferences loaded:', this.userPreferences);''
+                console.log('Motion preferences loaded:', this.userPreferences';''
             } catch (error) { console.warn('Failed to load motion preferences:', error }
     }
     
@@ -454,7 +454,7 @@ export class MotionConfigManager {
 
         this.notifyConfigListeners('categoryConfig', { category)
             previous: previousConfig,);
-            current: this.config.motionCategories[category]);
+            current: this.config.motionCategories[category]';
         return true ,}
 
     /**
@@ -464,14 +464,14 @@ export class MotionConfigManager {
         const validated: Partial<MotionCategoryConfig> = {}''
         if (typeof, config.enabled === 'boolean'') { validated.enabled = config.enabled; }
 
-        if(typeof, config.intensity === 'number) {', ';
+        if(typeof, config.intensity === 'number' {', ';
 
         }
 
             validated.intensity = clampIntensity(config.intensity); }
         }
 
-        if(typeof, config.duration === 'number) {'
+        if(typeof, config.duration === 'number' {'
             ';
 
         }
@@ -479,7 +479,7 @@ export class MotionConfigManager {
             validated.duration = clampDuration(config.duration); }
         }
 
-        if(typeof, config.vestibularSafe === 'boolean) { validated.vestibularSafe = config.vestibularSafe; }'
+        if(typeof, config.vestibularSafe === 'boolean' { validated.vestibularSafe = config.vestibularSafe; }'
         
         return validated;
     }
@@ -493,14 +493,14 @@ export class MotionConfigManager {
         // 値の検証とクランプ
         Object.keys(controls).forEach(key => {  ')'
             const value = controls[key as keyof GranularControls]');''
-            if(typeof, value === 'number) { }'
+            if(typeof, value === 'number' { }'
                 (this.userPreferences.granularControls, as any)[key] = clampIntensity(value); }
 });
         ';
         // 設定の保存
         this.saveUserPreferences()';
-        this.notifyConfigListeners('granularControls', { previous: previousControls,)'
-            current: this.userPreferences.granularControls)'),
+        this.notifyConfigListeners('granularControls', { previous: previousControls,''
+            current: this.userPreferences.granularControls''),
 
         console.log('Granular motion controls updated:', this.userPreferences.granularControls }
     
@@ -513,14 +513,14 @@ export class MotionConfigManager {
         // Boolean値のみ更新
         Object.keys(reductions).forEach(key => {  ')'
             const value = reductions[key as keyof SelectiveReduction]');''
-            if(typeof, value === 'boolean) { }'
+            if(typeof, value === 'boolean' { }'
                 (this.userPreferences.selectiveReduction, as any)[key] = value; }
 });
         ';
         // 設定の保存
         this.saveUserPreferences()';
-        this.notifyConfigListeners('selectiveReduction', { previous: previousReductions,)'
-            current: this.userPreferences.selectiveReduction)'),
+        this.notifyConfigListeners('selectiveReduction', { previous: previousReductions,''
+            current: this.userPreferences.selectiveReduction''),
 
         console.log('Selective motion reduction updated:', this.userPreferences.selectiveReduction }
     
@@ -535,47 +535,47 @@ export class MotionConfigManager {
         
         // 回転速度チェック
         if(animationParams.rotationSpeed !== undefined && ')';
-            animationParams.rotationSpeed > guidelines.maxRotationSpeed) { '
+            animationParams.rotationSpeed > guidelines.maxRotationSpeed' { '
             violations.push({''
                 type: 'rotation_speed);
-                value: animationParams.rotationSpeed)';
-               , limit: guidelines.maxRotationSpeed,' }'
+                value: animationParams.rotationSpeed'',
+    limit: guidelines.maxRotationSpeed,' }'
 
-                severity: 'high'); }
-        }
+                severity: 'high'); 
+    }
         
         // スケール変更チェック
         if(animationParams.scaleChange !== undefined && ')';
-            animationParams.scaleChange > guidelines.maxScaleChange) { '
+            animationParams.scaleChange > guidelines.maxScaleChange' { '
             violations.push({''
                 type: 'scale_change);
-                value: animationParams.scaleChange)';
-               , limit: guidelines.maxScaleChange,' }'
+                value: animationParams.scaleChange'',
+    limit: guidelines.maxScaleChange,' }'
 
-                severity: 'medium'); }
-        }
+                severity: 'medium'); 
+    }
         
         // パララックス距離チェック
         if(animationParams.parallaxDistance !== undefined && ')';
-            animationParams.parallaxDistance > guidelines.maxParallaxDistance) { '
+            animationParams.parallaxDistance > guidelines.maxParallaxDistance' { '
             violations.push({''
                 type: 'parallax_distance);
-                value: animationParams.parallaxDistance)';
-               , limit: guidelines.maxParallaxDistance,' }'
+                value: animationParams.parallaxDistance'',
+    limit: guidelines.maxParallaxDistance,' }'
 
-                severity: 'medium'); }
-        }
+                severity: 'medium'); 
+    }
         
         // 点滅頻度チェック
         if(animationParams.flashingRate !== undefined && ')';
-            animationParams.flashingRate > guidelines.flashingThreshold) { '
+            animationParams.flashingRate > guidelines.flashingThreshold' { '
             violations.push({''
                 type: 'flashing_rate);
-                value: animationParams.flashingRate)';
-               , limit: guidelines.flashingThreshold,' }'
+                value: animationParams.flashingRate'',
+    limit: guidelines.flashingThreshold,' }'
 
-                severity: 'critical'); }
-        }
+                severity: 'critical'); 
+    }
 
         if(violations.length > 0) { '
             this.motionManager.stats.vestibularWarnings++;''
@@ -650,25 +650,25 @@ export class MotionConfigManager {
             .map(([pattern]) => pattern);
         
         return { currentLevel: this.motionManager.currentLevel,
-            globalReducedMotion: this.config.globalReducedMotion;
-           , vestibularSafety: this.config.vestibularSafety;
+            globalReducedMotion: this.config.globalReducedMotion,
+    vestibularSafety: this.config.vestibularSafety;
             enabledCategories,
             hazardDetections, };
-            listenerCount: this.configListeners.size }
-        }
+            listenerCount: this.configListeners.size 
+    }
 
     /**
      * 現在の設定をエクスポート
      */
     exportConfig(): { motionLevel: MotionLevel,
         categoryConfigs: Record<string, MotionCategoryConfig>,
-        userPreferences: UserPreferences;
-       , vestibularGuidelines: VestibularGuidelines
+        userPreferences: UserPreferences,
+    vestibularGuidelines: VestibularGuidelines
     ,} { return {  };
             motionLevel: this.motionManager.currentLevel, }
             categoryConfigs: { ...this.config.motionCategories;
             userPreferences: { ...this.userPreferences;
-                customIntensities: new Map(this.userPreferences.customIntensities };
+                customIntensities: new Map(this.userPreferences.customIntensities }
             vestibularGuidelines: { ...this.config.vestibularGuidelines;
     }
 
@@ -704,7 +704,7 @@ export class MotionConfigManager {
 
             return true;''
         } catch (error) {
-            console.error('Failed to import configuration:', error);
+            console.error('Failed to import configuration:', error';
             return false;
 
     /**

@@ -23,8 +23,8 @@ export interface ChallengeUIElements { container: HTMLElement,
     challengeItems: HTMLElement[];
     progressSection: HTMLElement;
     footer: HTMLElement;
-    loadingIndicator: HTMLElement;
-   , errorMessage: HTMLElement;
+    loadingIndicator: HTMLElement,
+    errorMessage: HTMLElement;
     announcer?: HTMLElement;
     refreshButton?: HTMLElement;
     ,}
@@ -32,8 +32,8 @@ export interface ChallengeUIElements { container: HTMLElement,
 export interface UIRenderConfig { styles: UIStyleConfig,
     accessibility: AccessibilityRenderConfig;
     layout: LayoutConfig;
-    animation: AnimationConfig;
-   , responsive: ResponsiveConfig
+    animation: AnimationConfig,
+    responsive: ResponsiveConfig
     ,}
 
 export interface UIStyleConfig { backgroundColor: string;
@@ -41,39 +41,39 @@ export interface UIStyleConfig { backgroundColor: string;
     accentColor: string;
     borderRadius: string;
     fontSize: string;
-    fontFamily: string;
-   , theme: UITheme;
+    fontFamily: string,
+    theme: UITheme;
     customCSS?: string }
 
 export interface AccessibilityRenderConfig { enabled: boolean;
     highContrast: boolean;
     reducedMotion: boolean;
     screenReaderOptimized: boolean;
-    focusVisible: boolean;
-   , announcements: boolean }
+    focusVisible: boolean,
+    announcements: boolean }
 
 export interface LayoutConfig { maxHeight: string;
     padding: string;
     margin: string;
     gridColumns: number;
-    itemSpacing: string;
-   , compactMode: boolean }
+    itemSpacing: string,
+    compactMode: boolean }
 
 export interface AnimationConfig { enabled: boolean;
     duration: string;
     easing: string;
-    progressAnimations: boolean;
-   , loadingAnimations: boolean }
+    progressAnimations: boolean,
+    loadingAnimations: boolean }
 
 export interface ResponsiveConfig { breakpoints: ResponsiveBreakpoints;
     mobileFirst: boolean;
-    adaptiveText: boolean;
-   , flexibleLayout: boolean }
+    adaptiveText: boolean,
+    flexibleLayout: boolean }
 
 export interface ResponsiveBreakpoints { mobile: number;
     tablet: number;
-    desktop: number;
-   , widescreen: number }
+    desktop: number,
+    widescreen: number }
 
 export interface Challenge { id: string;
     title: string;
@@ -83,8 +83,8 @@ export interface Challenge { id: string;
     progress: number;
     target: number;
     reward: ChallengeReward;
-    deadline: Date;
-   , priority: number;
+    deadline: Date,
+    priority: number;
     metadata?: ChallengeMetadata
     }
 
@@ -96,12 +96,12 @@ export interface ChallengeReward { ap?: number;
     }
 
 export interface RewardItem { type: string,
-    id: string;
-   , quantity: number;
+    id: string,
+    quantity: number;
     name?: string ,}
 
-export interface CurrencyReward { type: CurrencyType;
-   , amount: number }
+export interface CurrencyReward { type: CurrencyType,
+    amount: number }
 
 export interface ChallengeMetadata { category?: string;
     tags?: string[];
@@ -114,35 +114,35 @@ export interface ChallengeUIState { challenges: Challenge[],
     loading: boolean;
     error?: string;
     selectedChallenge?: Challenge;
-    filterBy: string;
-   , sortBy: string;
+    filterBy: string,
+    sortBy: string;
     lastUpdated?: Date
     ,}
 
 export interface ChallengeUIReference { config: UIRenderConfig;
-    state: ChallengeUIState;
-   , elements: ChallengeUIElements
+    state: ChallengeUIState,
+    elements: ChallengeUIElements
     }
 
 export interface ProgressVisualization { bar: HTMLElement;
     fill: HTMLElement;
     text: HTMLElement;
-    percentage: number;
-   , animated: boolean }
+    percentage: number,
+    animated: boolean }
 
 export interface DifficultyConfig { label: string;
     color: string;
-    icon?: string;
-   , className: string }
+    icon?: string,
+    className: string }
 
-export interface FilterOption { value: string;
-   , text: string;
+export interface FilterOption { value: string,
+    text: string;
     count?: number;
     disabled?: boolean; }
 
 export interface SortOption { value: string,
-    text: string;
-   , order: SortOrder;
+    text: string,
+    order: SortOrder;
     icon?: string ,}
 
 export interface ChallengeItemElements { container: HTMLElement;
@@ -152,8 +152,8 @@ export interface ChallengeItemElements { container: HTMLElement;
     description: HTMLElement;
     progress: ProgressVisualization;
     footer: HTMLElement;
-    deadline: HTMLElement;
-   , reward: HTMLElement;
+    deadline: HTMLElement,
+    reward: HTMLElement;
     badges?: HTMLElement[]
     }
 
@@ -164,8 +164,8 @@ export interface RenderOptions { skipAnimations?: boolean;
 
 export interface StyleInjection { id: string,
     css: string;
-    element: HTMLStyleElement;
-   , scope: StyleScope
+    element: HTMLStyleElement,
+    scope: StyleScope
     ,}
 
 export interface MediaQueryState { mobile: boolean;
@@ -173,16 +173,16 @@ export interface MediaQueryState { mobile: boolean;
     desktop: boolean;
     highDPI: boolean;
     prefersDarkMode: boolean;
-    prefersReducedMotion: boolean;
-   , prefersHighContrast: boolean }
+    prefersReducedMotion: boolean,
+    prefersHighContrast: boolean }
 
 // 列挙型
-export type ChallengeType = 'daily' | 'weekly' | 'special' | 'event';''
-export type ChallengeDifficulty = 'easy' | 'medium' | 'hard';''
-export type ChallengeRarity = 'common' | 'rare' | 'epic' | 'legendary';''
-export type UITheme = 'light' | 'dark' | 'auto' | 'contrast';''
-export type SortOrder = 'asc' | 'desc';''
-export type CurrencyType = 'coins' | 'gems' | 'tokens' | 'points';''
+export type ChallengeType = 'daily' | 'weekly' | 'special' | 'event';
+export type ChallengeDifficulty = 'easy' | 'medium' | 'hard';
+export type ChallengeRarity = 'common' | 'rare' | 'epic' | 'legendary';
+export type UITheme = 'light' | 'dark' | 'auto' | 'contrast';
+export type SortOrder = 'asc' | 'desc';
+export type CurrencyType = 'coins' | 'gems' | 'tokens' | 'points';
 export type StyleScope = 'global' | 'component' | 'element';
 
 // 定数
@@ -198,8 +198,8 @@ export const DEFAULT_ACCESSIBILITY_CONFIG: AccessibilityRenderConfig = { enabled
     highContrast: false;
     reducedMotion: false;
     screenReaderOptimized: true;
-    focusVisible: true;
-   , announcements: true ,} as const;
+    focusVisible: true,
+    announcements: true ,} as const;
 ';
 
 export const DEFAULT_LAYOUT_CONFIG: LayoutConfig = {;
@@ -207,12 +207,12 @@ export const DEFAULT_LAYOUT_CONFIG: LayoutConfig = {;
     padding: '16px',
     margin: '8px',
     gridColumns: 1,
-    itemSpacing: '8px';
-   , compactMode: false ,} as const;
+    itemSpacing: '8px',
+    compactMode: false ,} as const;
 export const DEFAULT_RESPONSIVE_BREAKPOINTS: ResponsiveBreakpoints = { mobile: 768,
     tablet: 1024;
-    desktop: 1440;
-   , widescreen: 1920 ,} as const;
+    desktop: 1440,
+    widescreen: 1920 ,} as const;
 ';
 
 export const DIFFICULTY_CONFIG: Record<ChallengeDifficulty, DifficultyConfig> = { easy: {''
@@ -267,8 +267,8 @@ export const ACCESSIBILITY_STYLES = `;
         height: 1px !important;
         padding: 0 !important;
         margin: -1px !important;
-        overflow: hidden !important;
-       , clip: rect(0, 0, 0, 0) !important,
+        overflow: hidden !important,
+    clip: rect(0, 0, 0, 0) !important,
         white-space: nowrap !important,
         border: 0 !important ,}
     
@@ -277,8 +277,8 @@ export const ACCESSIBILITY_STYLES = `;
         top: -40px;
         left: 6px;
         background: #000;
-        color: white;
-       , padding: 8px;
+        color: white,
+    padding: 8px;
         text-decoration: none,
         z-index: 9999, }
     
@@ -298,8 +298,8 @@ export const COMPONENT_BASE_STYLES = `;
         display: flex;
         flex-direction: column,
         background-color: var(--background-color),
-        color: var(--text-color);
-       , border: 1px solid var(--border-color);
+        color: var(--text-color),
+    border: 1px solid var(--border-color);
         border-radius: 8px,
         overflow: hidden;
         font-family: Arial, sans-serif }
@@ -316,11 +316,11 @@ export const COMPONENT_BASE_STYLES = `;
         font-weight: bold,
         color: var(--text-color ,}
     
-    .challenge-ui-refresh { background: none;
-       , border: 1px solid var(--border-color);
+    .challenge-ui-refresh { background: none,
+    border: 1px solid var(--border-color);
         border-radius: 4px,
-        padding: 8px 12px;
-       , cursor: pointer;
+        padding: 8px 12px,
+    cursor: pointer;
         font-size: 16px,
         transition: background-color 0.2s ,}
     
@@ -330,8 +330,8 @@ export const COMPONENT_BASE_STYLES = `;
         border-radius: 6px,
         padding: 12px;
         margin: 8px;
-        cursor: pointer;
-       , transition: transform 0.2s, box-shadow 0.2s, }
+        cursor: pointer,
+    transition: transform 0.2s, box-shadow 0.2s, }
     
     .challenge-item:hover { transform: translateY(-2px),
         box-shadow: 0 4px 8px rgba(0,0,0,0.1 }
@@ -344,8 +344,8 @@ export const COMPONENT_BASE_STYLES = `;
         height: 8px;
         background-color: var(--border-color),
         border-radius: 4px,
-        overflow: hidden;
-       , margin: 8px 0 ,}
+        overflow: hidden,
+    margin: 8px 0 ,}
     
     .challenge-item-progress-fill { height: 100%, }
         background-color: var(--accent-color})
@@ -408,7 +408,7 @@ export function getDifficultyInfo(difficulty: ChallengeDifficulty): DifficultyCo
         className: 'challenge-difficulty-unknown' ,}
 
 export function createAccessibleId(prefix: string, suffix?: string): string {
-    const id = `${prefix}-${Date.now(})-${Math.random(}.toString(36}.substr(2, 9})`;
+    const id = `${prefix}-${Date.now())-${Math.random().toString(36).substr(2, 9})`;
     return suffix ? `${id}-${suffix}` : id;
 }
 
@@ -507,7 +507,7 @@ export class ChallengeUIRenderer {
             this.assembleElements();
 
         } catch (error) {
-            console.error('[ChallengeUIRenderer] Failed to create elements:', error);
+            console.error('[ChallengeUIRenderer] Failed to create elements:', error';
             throw error; }
     }
     
@@ -516,10 +516,10 @@ export class ChallengeUIRenderer {
      */''
     private createContainer()';
         const container = document.createElement('div'');''
-        container.className = 'challenge-ui-container';''
+        container.className = 'challenge-ui-container';
         container.setAttribute('role', 'region'');''
         container.setAttribute('aria-label', 'チャレンジ一覧'');''
-        container.id = createAccessibleId('challenge-ui', 'main);
+        container.id = createAccessibleId('challenge-ui', 'main';
         
         return container;
     }
@@ -533,17 +533,17 @@ export class ChallengeUIRenderer {
         ';
         // タイトル
         const title = document.createElement('h2'');''
-        title.className = 'challenge-ui-title';''
-        title.textContent = 'チャレンジ';''
+        title.className = 'challenge-ui-title';
+        title.textContent = 'チャレンジ';
         title.id = createAccessibleId('challenge-ui', 'title'');
         ';
         // 更新ボタン
         const refreshButton = document.createElement('button'');''
-        refreshButton.className = 'challenge-ui-refresh';''
-        refreshButton.innerHTML = '🔄';''
+        refreshButton.className = 'challenge-ui-refresh';
+        refreshButton.innerHTML = '🔄';
         refreshButton.setAttribute('aria-label', 'チャレンジを更新'');''
         refreshButton.setAttribute('type', 'button'');''
-        refreshButton.title = 'チャレンジを更新';''
+        refreshButton.title = 'チャレンジを更新';
         refreshButton.id = createAccessibleId('challenge-ui', 'refresh);
         
         this.elements.refreshButton = refreshButton;
@@ -559,7 +559,7 @@ export class ChallengeUIRenderer {
      */''
     createFilterControls()';
         const container = document.createElement('div'');''
-        container.className = 'challenge-ui-filters';''
+        container.className = 'challenge-ui-filters';
         container.setAttribute('role', 'group'');''
         container.setAttribute('aria-label', 'チャレンジフィルター'');
 
@@ -567,17 +567,17 @@ export class ChallengeUIRenderer {
         const selectId = createAccessibleId('challenge-filter', 'select'');
 
         const label = document.createElement('label'');''
-        label.className = 'challenge-ui-filter-label';''
-        label.textContent = 'フィルター:';''
-        label.setAttribute('for', selectId);
+        label.className = 'challenge-ui-filter-label';
+        label.textContent = 'フィルター:';
+        label.setAttribute('for', selectId';
         label.id = labelId;
 
         const select = document.createElement('select'');
 
         select.id = selectId;''
-        select.className = 'challenge-ui-filter-select';''
+        select.className = 'challenge-ui-filter-select';
         select.setAttribute('aria-label', 'チャレンジの種類でフィルター'');''
-        select.setAttribute('aria-describedby', labelId);
+        select.setAttribute('aria-describedby', labelId';
 
         FILTER_OPTIONS.forEach(option => {  ');''
             const optionElement = document.createElement('option);
@@ -600,7 +600,7 @@ export class ChallengeUIRenderer {
      */''
     createSortControls()';
         const container = document.createElement('div'');''
-        container.className = 'challenge-ui-sorts';''
+        container.className = 'challenge-ui-sorts';
         container.setAttribute('role', 'group'');''
         container.setAttribute('aria-label', 'チャレンジソート'');
 
@@ -608,20 +608,20 @@ export class ChallengeUIRenderer {
         const selectId = createAccessibleId('challenge-sort', 'select'');
 
         const label = document.createElement('label'');''
-        label.className = 'challenge-ui-sort-label';''
-        label.textContent = '並び順:';''
-        label.setAttribute('for', selectId);
+        label.className = 'challenge-ui-sort-label';
+        label.textContent = '並び順:';
+        label.setAttribute('for', selectId';
         label.id = labelId;
 
         const select = document.createElement('select'');
 
         select.id = selectId;''
-        select.className = 'challenge-ui-sort-select';''
+        select.className = 'challenge-ui-sort-select';
         select.setAttribute('aria-label', 'チャレンジの並び順'');''
-        select.setAttribute('aria-describedby', labelId);
+        select.setAttribute('aria-describedby', labelId';
 
         SORT_OPTIONS.forEach(option => {  ');''
-            const optionElement = document.createElement('option); }'
+            const optionElement = document.createElement('option'; }'
             optionElement.value = option.value; }
             optionElement.textContent = option.icon ? `${option.icon} ${option.text}` : option.text;
             select.appendChild(optionElement);
@@ -638,10 +638,10 @@ export class ChallengeUIRenderer {
      */''
     createChallengeList()';
         const list = document.createElement('div'');''
-        list.className = 'challenge-ui-list';''
+        list.className = 'challenge-ui-list';
         list.setAttribute('role', 'list'');''
         list.setAttribute('aria-label', 'チャレンジアイテム'');''
-        list.id = createAccessibleId('challenge-list', 'container);
+        list.id = createAccessibleId('challenge-list', 'container';
         
         return list;
     }
@@ -651,19 +651,19 @@ export class ChallengeUIRenderer {
      */''
     createProgressSection()';
         const section = document.createElement('div'');''
-        section.className = 'challenge-ui-progress';''
+        section.className = 'challenge-ui-progress';
         section.setAttribute('role', 'region'');''
         section.setAttribute('aria-label', '全体進捗'');
 
         const titleId = createAccessibleId('challenge-progress', 'title'');
 
         const title = document.createElement('h3'');''
-        title.className = 'challenge-ui-progress-title';''
+        title.className = 'challenge-ui-progress-title';
         title.textContent = '全体進捗';
         title.id = titleId;
 
         const progressContainer = document.createElement('div'');''
-        progressContainer.className = 'challenge-ui-progress-container';''
+        progressContainer.className = 'challenge-ui-progress-container';
         progressContainer.setAttribute('aria-labelledby', titleId);
         
         section.appendChild(title);
@@ -677,12 +677,12 @@ export class ChallengeUIRenderer {
      */''
     createFooter()';
         const footer = document.createElement('div'');''
-        footer.className = 'challenge-ui-footer';''
+        footer.className = 'challenge-ui-footer';
         footer.setAttribute('role', 'contentinfo'');
 
         const info = document.createElement('div'');''
-        info.className = 'challenge-ui-info';''
-        info.textContent = '最終更新: 未取得';''
+        info.className = 'challenge-ui-info';
+        info.textContent = '最終更新: 未取得';
         info.setAttribute('aria-live', 'polite);
         
         footer.appendChild(info);
@@ -695,17 +695,17 @@ export class ChallengeUIRenderer {
      */''
     createLoadingIndicator()';
         const loader = document.createElement('div'');''
-        loader.className = 'challenge-ui-loading';''
-        loader.style.display = 'none';''
+        loader.className = 'challenge-ui-loading';
+        loader.style.display = 'none';
         loader.setAttribute('role', 'status'');''
         loader.setAttribute('aria-label', 'チャレンジを読み込み中'');
 
         const spinner = document.createElement('div'');''
-        spinner.className = 'challenge-ui-spinner';''
+        spinner.className = 'challenge-ui-spinner';
         spinner.setAttribute('aria-hidden', 'true'');
 
         const text = document.createElement('span'');''
-        text.className = 'challenge-ui-loading-text';''
+        text.className = 'challenge-ui-loading-text';
         text.textContent = '読み込み中...';
         
         loader.appendChild(spinner);
@@ -719,10 +719,10 @@ export class ChallengeUIRenderer {
      */''
     createErrorMessage()';
         const error = document.createElement('div'');''
-        error.className = 'challenge-ui-error';''
-        error.style.display = 'none';''
+        error.className = 'challenge-ui-error';
+        error.style.display = 'none';
         error.setAttribute('role', 'alert'');''
-        error.setAttribute('aria-live', 'assertive);
+        error.setAttribute('aria-live', 'assertive';
         
         return error;
     }
@@ -732,7 +732,7 @@ export class ChallengeUIRenderer {
      */''
     createAnnouncer()';
         const announcer = document.createElement('div'');''
-        announcer.className = 'challenge-ui-announcer sr-only';''
+        announcer.className = 'challenge-ui-announcer sr-only';
         announcer.setAttribute('aria-live', 'polite'');''
         announcer.setAttribute('aria-atomic', 'true);
         
@@ -780,8 +780,8 @@ export class ChallengeUIRenderer {
             if (this.state.challenges.length === 0) { this.renderEmptyState();' }'
 
             } catch (error) {
-            console.error('[ChallengeUIRenderer] Failed to render challenges:', error);''
-            this.showError('チャレンジの表示に失敗しました); }'
+            console.error('[ChallengeUIRenderer] Failed to render challenges:', error';''
+            this.showError('チャレンジの表示に失敗しました'; }'
     }
     
     /**
@@ -793,7 +793,7 @@ export class ChallengeUIRenderer {
         item.className = `challenge-item challenge-item-${challenge.difficulty}`;''
         item.setAttribute('role', 'listitem'');''
         item.setAttribute('tabindex', '0'');''
-        item.setAttribute('data-challenge-id', challenge.id);''
+        item.setAttribute('data-challenge-id', challenge.id';''
         item.setAttribute('data-index', index.toString();
         
         // 進捗計算
@@ -803,14 +803,14 @@ export class ChallengeUIRenderer {
         const deadlineText = formatDeadlineTime(challenge.deadline);
         ';
         // アクセシビリティ属性
-        item.setAttribute('aria-label)';
+        item.setAttribute('aria-label'';
             `チャレンジ: ${challenge.title}. ${challenge.description}. ` +')'
             `進捗: ${progressPercent}パーセント. 難易度: ${difficultyInfo.label}. ` +')''
             `期限: ${deadlineText}. ${ isCompleted ? '完了済み' : '進行中')`
         };
         ';
         // メタデータの処理
-        if(challenge.metadata? .newBadge} {', ';
+        if(challenge.metadata?.newBadge} {', ';
 
         }
 
@@ -851,7 +851,7 @@ export class ChallengeUIRenderer {
 
         }
 
-            item.classList.add('challenge-item-completed); }'
+            item.classList.add('challenge-item-completed'; }'
         }
         
         return item;
@@ -862,9 +862,9 @@ export class ChallengeUIRenderer {
      */
     private createChallengeItemElements( : undefined, challenge: Challenge
     );
-        progressPercent: number);
-       , isCompleted: boolean';
-    ): ChallengeItemElements { ''
+        progressPercent: number),
+    isCompleted: boolean';
+    ': ChallengeItemElements { ''
         const difficultyInfo = getDifficultyInfo(challenge.difficulty),
         // ヘッダー
         const header = document.createElement('div'');''
@@ -876,9 +876,9 @@ export class ChallengeUIRenderer {
 
         const difficulty = document.createElement('span''); }
         difficulty.className = `challenge-item-difficulty ${difficultyInfo.className}`;
-        difficulty.textContent = difficultyInfo.icon ?   : undefined';
+        difficulty.textContent = difficultyInfo.icon ? undefined : undefined';
             `${difficultyInfo.icon} ${difficultyInfo.label}` : difficultyInfo.label;''
-        difficulty.setAttribute('data-difficulty', challenge.difficulty);
+        difficulty.setAttribute('data-difficulty', challenge.difficulty';
         difficulty.style.color = difficultyInfo.color;
         ';
 
@@ -892,13 +892,13 @@ export class ChallengeUIRenderer {
         ';
         // 進捗バー
         const progressBarContainer = document.createElement('div'');''
-        progressBarContainer.className = 'challenge-item-progress';''
+        progressBarContainer.className = 'challenge-item-progress';
         progressBarContainer.setAttribute('data-progress', progressPercent.toString());
 
-        const progressBarId = createAccessibleId('challenge-progress', challenge.id);
+        const progressBarId = createAccessibleId('challenge-progress', challenge.id';
 
         const progressBar = document.createElement('div'');''
-        progressBar.className = 'challenge-item-progress-bar';''
+        progressBar.className = 'challenge-item-progress-bar';
         progressBar.setAttribute('role', 'progressbar'');''
         progressBar.setAttribute('aria-valuenow', challenge.progress.toString());''
         progressBar.setAttribute('aria-valuemin', '0'');''
@@ -908,7 +908,7 @@ export class ChallengeUIRenderer {
 
         ' }'
 
-        const progressFill = document.createElement('div''});''
+        const progressFill = document.createElement('div''}';''
         progressFill.className = 'challenge-item-progress-fill';
         progressFill.style.width = `${progressPercent}%`;
 
@@ -919,7 +919,7 @@ export class ChallengeUIRenderer {
         }
 
         const progressText = document.createElement('span'');''
-        progressText.className = 'challenge-item-progress-text';''
+        progressText.className = 'challenge-item-progress-text';
         progressText.textContent = `${challenge.progress}/${challenge.target} (${progressPercent}%')`;''
         progressText.setAttribute('aria-describedby', progressBarId);
         
@@ -933,8 +933,8 @@ export class ChallengeUIRenderer {
         footer.className = 'challenge-item-footer';
 
         const deadline = document.createElement('span'');''
-        deadline.className = 'challenge-item-deadline';''
-        deadline.textContent = `期限: ${formatDeadlineTime(challenge.deadline'})`;
+        deadline.className = 'challenge-item-deadline';
+        deadline.textContent = `期限: ${formatDeadlineTime(challenge.deadline'}'`;
 
         const reward = document.createElement('span'');''
         reward.className = 'challenge-item-reward';
@@ -945,7 +945,7 @@ export class ChallengeUIRenderer {
         
         // バッジの作成
         const badges: HTMLElement[] = [],
-        if(challenge.metadata? .tags) {
+        if(challenge.metadata?.tags) {
 
             challenge.metadata.tags.forEach(tag => { ');''
                 const badge = document.createElement('span'');
@@ -963,7 +963,7 @@ export class ChallengeUIRenderer {
         ';
 
         return { ''
-            container: document.createElement('div), // プレースホルダー;
+            container: document.createElement('div', // プレースホルダー;
             header,
             title,
             difficulty,
@@ -971,10 +971,10 @@ export class ChallengeUIRenderer {
             progress: {
                 bar: progressBarContainer;
                 fill: progressFill;
-                text: progressText;
-               , percentage: progressPercent, };
-                animated: this.config.animation.progressAnimations }
-            };
+                text: progressText,
+    percentage: progressPercent, };
+                animated: this.config.animation.progressAnimations 
+    };
             footer,
             deadline,
             reward,
@@ -986,16 +986,16 @@ export class ChallengeUIRenderer {
      */''
     private renderEmptyState()';
         const emptyState = document.createElement('div'');''
-        emptyState.className = 'challenge-ui-empty-state';''
+        emptyState.className = 'challenge-ui-empty-state';
         emptyState.setAttribute('role', 'status'');
 
         const icon = document.createElement('div'');''
-        icon.className = 'challenge-ui-empty-icon';''
-        icon.textContent = '📋';''
+        icon.className = 'challenge-ui-empty-icon';
+        icon.textContent = '📋';
         icon.setAttribute('aria-hidden', 'true'');
 
         const message = document.createElement('p'');''
-        message.className = 'challenge-ui-empty-message';''
+        message.className = 'challenge-ui-empty-message';
         message.textContent = '表示するチャレンジがありません';
         
         emptyState.appendChild(icon);
@@ -1008,7 +1008,7 @@ export class ChallengeUIRenderer {
      * 進捗セクションの更新'
      */''
     updateProgressSection()';
-        const container = this.elements.progressSection.querySelector('.challenge-ui-progress-container) as HTMLElement;''
+        const container = this.elements.progressSection.querySelector('.challenge-ui-progress-container' as HTMLElement;''
         if(!container) return;
 
         container.innerHTML = '';
@@ -1021,7 +1021,7 @@ export class ChallengeUIRenderer {
         const progressBarId = createAccessibleId('overall-progress', 'bar'');
 
         const progressBar = document.createElement('div'');''
-        progressBar.className = 'challenge-ui-overall-progress';''
+        progressBar.className = 'challenge-ui-overall-progress';
         progressBar.setAttribute('role', 'progressbar'');''
         progressBar.setAttribute('aria-valuenow', completed.toString());''
         progressBar.setAttribute('aria-valuemin', '0'');''
@@ -1031,7 +1031,7 @@ export class ChallengeUIRenderer {
 
         ' }'
 
-        const fill = document.createElement('div''});''
+        const fill = document.createElement('div''}';''
         fill.className = 'challenge-ui-overall-progress-fill';
         fill.style.width = `${completionRate}%`;
 
@@ -1042,7 +1042,7 @@ export class ChallengeUIRenderer {
         }
 
         const text = document.createElement('span'');''
-        text.className = 'challenge-ui-overall-progress-text';''
+        text.className = 'challenge-ui-overall-progress-text';
         text.textContent = `${completed}/${total} 完了 (${completionRate}%')`;''
         text.setAttribute('aria-describedby', progressBarId);
         
@@ -1059,16 +1059,16 @@ export class ChallengeUIRenderer {
         if (!info) return;
 
         const updateTime = this.state.lastUpdated || new Date()';
-        info.textContent = `最終更新: ${updateTime.toLocaleTimeString('ja-JP'})`;
+        info.textContent = `最終更新: ${updateTime.toLocaleTimeString('ja-JP'}'`;
     }
     
     /**
      * ローディング表示の制御'
      */''
     showLoading(show: boolean): void { ''
-        this.elements.loadingIndicator.style.display = show ? 'block' : 'none';''
-        this.elements.challengeList.style.display = show ? 'none' : 'block';''
-        this.elements.container.setAttribute('aria-busy', show ? 'true' : 'false); }
+        this.elements.loadingIndicator.style.display = show ? 'block' : 'none';
+        this.elements.challengeList.style.display = show ? 'none' : 'block';
+        this.elements.container.setAttribute('aria-busy', show ? 'true' : 'false'; }
     
     /**
      * エラー表示'
@@ -1080,7 +1080,7 @@ export class ChallengeUIRenderer {
         setTimeout(() => { ' }'
 
             this.elements.errorMessage.style.display = 'none'; }
-        }, 5000);
+        }, 5000';
     }
     
     /**
@@ -1102,7 +1102,7 @@ export class ChallengeUIRenderer {
 
             }
 
-                this.injectStyle('custom', this.config.styles.customCSS, 'component);' }
+                this.injectStyle('custom', this.config.styles.customCSS, 'component';' }
 
             } catch (error) { console.error('[ChallengeUIRenderer] Failed to apply styles:', error }
     }
@@ -1120,12 +1120,12 @@ export class ChallengeUIRenderer {
                     --text-color: #FFFFFF !important,
                     --border-color: #FFFFFF !important,
         }
-                    border: 3px solid var(--border-color) !important; }
-                }
+                    border: 3px solid var(--border-color) !important; 
+    }
                 
                 .challenge-item { background-color: #111111 !important,
-                    color: #FFFFFF !important;
-                   , border: 2px solid #FFFFFF !important ,}
+                    color: #FFFFFF !important,
+    border: 2px solid #FFFFFF !important ,}
             `;
         }
         
@@ -1146,20 +1146,20 @@ export class ChallengeUIRenderer {
         if(this.config.accessibility.screenReaderOptimized) {
             accessibilityCSS += `';
                 .challenge-item-progress::after {''
-                    content: "進捗 " attr(data-progress) " パーセント";
-                   , position: absolute;
+                    content: "進捗 " attr(data-progress) " パーセント",
+    position: absolute;
         }
-                    left: -10000px; }
-                }
+                    left: -10000px; 
+    }
                 ";
                 .challenge-item-difficulty::after { " }"
-                    content: "難易度 " attr(data-difficulty};
-                    position: absolute);
-                   , left: -10000px);
+                    content: "難易度 " attr(data-difficulty}
+                    position: absolute),
+    left: -10000px);
                 }"
             `"";
-        ")";""
-        this.injectStyle('accessibility', accessibilityCSS, 'component);
+        ")";
+        this.injectStyle('accessibility', accessibilityCSS, 'component';
     }
     
     /**
@@ -1195,7 +1195,7 @@ export class ChallengeUIRenderer {
 
         }
 
-            this.injectStyle('responsive', responsiveCSS, 'component); }
+            this.injectStyle('responsive', responsiveCSS, 'component'; }
 }
     
     /**
@@ -1242,7 +1242,7 @@ export class ChallengeUIRenderer {
         // 既存のスタイルを削除
         if(this.injectedStyles.has(fullId) {
             const existing = this.injectedStyles.get(fullId);''
-            existing? .element.remove()';
+            existing?.element.remove()';
         const style = document.createElement('style);
         style.id = fullId;
         style.textContent = css;

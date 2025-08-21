@@ -24,16 +24,16 @@ export class StatisticsFilterManager {
         
         // 現在のフィルター設定
         this.currentFilter = {;
-            period: 'last7days';
-           , customStart: null,
+            period: 'last7days',
+    customStart: null,
             customEnd: null,
             categories: ['all'],
             sortBy: 'date',
             sortOrder: 'desc' ,};
         // フィルター適用状態
         this.filterState = { isApplying: false,
-            lastApplied: null;
-           , cachedResults: new Map( ,};
+            lastApplied: null,
+    cachedResults: new Map( ,};
         
         // イベントハンドラ
         this.eventHandlers = new Map();
@@ -46,19 +46,19 @@ export class StatisticsFilterManager {
 
     }
 
-        if(!this.filterPeriods[period] && period !== 'custom) {' }
+        if(!this.filterPeriods[period] && period !== 'custom' {' }
 
-            throw new Error(`Invalid, filter period: ${period}`'});
+            throw new Error(`Invalid, filter period: ${period}`'}';
         }
         
         this.currentFilter.period = period;
 
-        if(period === 'custom) {'
+        if(period === 'custom' {'
 
             if(!customStart || !customEnd) {'
         }
 
-                throw new Error('Custom, period requires, start and, end dates); }'
+                throw new Error('Custom, period requires, start and, end dates'; }'
             }
             this.currentFilter.customStart = new Date(customStart);
             this.currentFilter.customEnd = new Date(customEnd);
@@ -85,7 +85,7 @@ export class StatisticsFilterManager {
         this.currentFilter.categories = categories;''
         this.clearCache()';
         this.emit('categoriesChanged', { ')'
-            categories: this.currentFilter.categories)' }'
+            categories: this.currentFilter.categories'' }'
     
     /**
      * ソート設定'
@@ -157,9 +157,9 @@ export class StatisticsFilterManager {
                 dateRange: dateRange;
                 statistics: sortedStats;
                 timeSeriesData: timeSeriesData;
-                summary: this.generateSummary(sortedStats);
-               , metadata: {
-                    totalRecords: sortedStats.sessions? .length || 0, : undefined
+                summary: this.generateSummary(sortedStats),
+    metadata: {
+                    totalRecords: sortedStats.sessions?.length || 0, : undefined
                     filteredAt: new Date(), 
                     filterSettings: { ...this.currentFilter
             ,};
@@ -171,7 +171,7 @@ export class StatisticsFilterManager {
             return result;
 
         } catch (error) {
-            console.error('Filter application failed:', error);''
+            console.error('Filter application failed:', error';''
             this.emit('filterError', error);
             throw error; } finally { this.filterState.isApplying = false; }
     }
@@ -185,18 +185,18 @@ export class StatisticsFilterManager {
         if (this.currentFilter.period === 'custom'') {
     }
             return { start: this.currentFilter.customStart, };
-                end: this.currentFilter.customEnd }
-            }
+                end: this.currentFilter.customEnd 
+    }
 
-        if(this.currentFilter.period === 'allTime) {'
+        if(this.currentFilter.period === 'allTime' {'
             return { '
         }
 
                 start: new Date(0), // Unix epoch };
-                end: now }
-            }
+                end: now 
+    }
 
-        if(this.currentFilter.period === 'today) {'
+        if(this.currentFilter.period === 'today' {'
             const start = new Date(now);
             start.setHours(0, 0, 0, 0);
 
@@ -207,7 +207,7 @@ export class StatisticsFilterManager {
             end.setHours(23, 59, 59, 999); }
             return { start, end }
 
-        if(this.currentFilter.period === 'yesterday) {'
+        if(this.currentFilter.period === 'yesterday' {'
             const start = new Date(now);
             start.setDate(start.getDate() - 1);
             start.setHours(0, 0, 0, 0);
@@ -219,7 +219,7 @@ export class StatisticsFilterManager {
             end.setHours(23, 59, 59, 999); }
             return { start, end }
 
-        if(this.currentFilter.period === 'thisWeek) {'
+        if(this.currentFilter.period === 'thisWeek' {'
             const start = new Date(now);
             const dayOfWeek = start.getDay();
 
@@ -230,7 +230,7 @@ export class StatisticsFilterManager {
             start.setHours(0, 0, 0, 0); }
             return { start, end: now ,}
 
-        if(this.currentFilter.period === 'thisMonth) {', ';
+        if(this.currentFilter.period === 'thisMonth' {', ';
 
         }
 
@@ -253,22 +253,22 @@ export class StatisticsFilterManager {
     async getTimeSeriesData(dateRange) { try {
             // StatisticsManagerから時系列データを取得
             if(this.statisticsManager.timeSeriesDataManager) {'
-                const dailyData = await this.statisticsManager.timeSeriesDataManager.getDataInRange(')';
-                    'daily', dateRange.start, dateRange.end)';
+                const dailyData = await this.statisticsManager.timeSeriesDataManager.getDataInRange()';
+                    'daily', dateRange.start, dateRange.end'';
 
                 ');
 
                 ';
 
-                const weeklyData = await this.statisticsManager.timeSeriesDataManager.getDataInRange(');
+                const weeklyData = await this.statisticsManager.timeSeriesDataManager.getDataInRange();
 
-                    'weekly', dateRange.start, dateRange.end);
+                    'weekly', dateRange.start, dateRange.end';
                 
                 return { daily: dailyData,
             }
                     weekly: weeklyData, };
-                    range: dateRange }
-                }
+                    range: dateRange 
+    }
             ';
 
             return { daily: [], weekly: [], range: dateRange ,}''
@@ -392,8 +392,8 @@ export class StatisticsFilterManager {
             return summary;, { totalScore: 0,
             totalGames: 0;
             totalPlayTime: 0;
-            avgAccuracy: 0;
-           , maxCombo: 0 ,});
+            avgAccuracy: 0,
+    maxCombo: 0 ,});
     }
     
     /**
@@ -407,8 +407,8 @@ export class StatisticsFilterManager {
 
             return { isEmpty: true,' };
 
-                message: '選択された期間にはデータがありません' }
-            }
+                message: '選択された期間にはデータがありません' 
+    }
         
         const totalScore = sessions.reduce((sum, s) => sum + (s.score || 0), 0);
         const totalPlayTime = sessions.reduce((sum, s) => sum + (s.playTime || 0), 0);
@@ -421,13 +421,13 @@ export class StatisticsFilterManager {
             totalScore,
             averageScore: totalScore / sessions.length;
             totalPlayTime,
-            averagePlayTime: totalPlayTime / sessions.length;
-           , averageAccuracy: avgAccuracy;
+            averagePlayTime: totalPlayTime / sessions.length,
+    averageAccuracy: avgAccuracy;
             maxCombo,
             period: this.currentFilter.period,' };
 
-            periodLabel: this.filterPeriods[this.currentFilter.period]? .label || 'カスタム期間' }
-        }
+            periodLabel: this.filterPeriods[this.currentFilter.period]?.label || 'カスタム期間' 
+    }
     
     /**
      * 期間別フィルタリング
@@ -464,10 +464,10 @@ export class StatisticsFilterManager {
             
             return { ...statisticsData,
                 sessions: filteredSessions;
-                filteredPeriod: period;
-               , filterStartDate: startDate, };
-                sessionCount: filteredSessions.length }
-            } catch (error) {
+                filteredPeriod: period,
+    filterStartDate: startDate, };
+                sessionCount: filteredSessions.length 
+    } catch (error) {
             console.error('Error filtering statistics by period:', error);
             return statisticsData;
     
@@ -479,8 +479,8 @@ export class StatisticsFilterManager {
     }
         const { period, customStart, customEnd, categories, sortBy, sortOrder } = this.currentFilter;
 
-        const customDates = customStart && customEnd ?   : undefined'';
-            `${customStart.getTime(})-${customEnd.getTime('})` : '';
+        const customDates = customStart && customEnd ? undefined : undefined'';
+            `${customStart.getTime(})-${customEnd.getTime('}'` : '';
 
         return `${period}_${customDates}_${categories.join(','})_${sortBy}_${sortOrder}`;
     }
@@ -493,14 +493,14 @@ export class StatisticsFilterManager {
     /**
      * フィルター設定のリセット'
      */''
-    resetFilters(''';
-            period: 'last7days';
-           , customStart: null,
+    resetFilters('''
+            period: 'last7days',
+    customStart: null,
             customEnd: null,
             categories: ['all'],
             sortBy: 'date',
             sortOrder: 'desc);
-        })'
+        }''
 
         this.clearCache()';
         this.emit('filtersReset', this.currentFilter);
@@ -523,8 +523,8 @@ export class StatisticsFilterManager {
             key,
             label: value.label)
     ,}
-            days: value.days }
-        });
+            days: value.days 
+    });
     }
     
     /**
@@ -574,4 +574,4 @@ export class StatisticsFilterManager {
 
     }
 
-        this.eventHandlers.clear(') }'
+        this.eventHandlers.clear() }'

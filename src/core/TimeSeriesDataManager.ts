@@ -17,8 +17,8 @@ export class TimeSeriesDataManager {
             daily: 365,      // 1年間;
             weekly: 52,      // 52週間
     }
-            monthly: 24      // 2年間 }
-        };
+            monthly: 24      // 2年間 
+    };
         // 現在の期間キー
         this.currentPeriodKeys = this.updateCurrentPeriodKeys();
         
@@ -68,8 +68,8 @@ export class TimeSeriesDataManager {
     updateTimeSeriesData(dataMap, periodKey, category, value, metadata) {
         if(!dataMap.has(periodKey) {
             dataMap.set(periodKey, {);
-                timestamp: Date.now();
-               , categories: new Map();
+                timestamp: Date.now(),
+    categories: new Map();
     ,}
                 totalDataPoints: 0, }
                 metadata: {});
@@ -83,18 +83,18 @@ export class TimeSeriesDataManager {
                 average: 0;
                 min: Infinity
     );
-                max: -Infinity);
-               , count: 0, }
-                trend: 'stable'); }
-        }
+                max: -Infinity),
+    count: 0, }
+                trend: 'stable'); 
+    }
         
         const categoryData = periodData.categories.get(category);
         
         // 値の追加
         categoryData.values.push({ )
             value: value);
-            timestamp: Date.now();
-           , metadata: metadata });
+            timestamp: Date.now(),
+    metadata: metadata });
         // 統計の更新
         categoryData.total += value;
         categoryData.count++;
@@ -177,8 +177,8 @@ export class TimeSeriesDataManager {
             }
             
             const entry = { period: periodKey,
-                timestamp: periodData.timestamp;
-               , totalDataPoints: periodData.totalDataPoints, }
+                timestamp: periodData.timestamp,
+    totalDataPoints: periodData.totalDataPoints, }
                 categories: {};
             // カテゴリフィルター
             if(category) {
@@ -206,18 +206,18 @@ export class TimeSeriesDataManager {
         return { total: categoryData.total,
             average: Math.round(categoryData.average * 100) / 100;
             min: categoryData.min === Infinity ? 0 : categoryData.min;
-            max: categoryData.max === -Infinity ? 0 : categoryData.max;
-           , count: categoryData.count;
+            max: categoryData.max === -Infinity ? 0 : categoryData.max,
+    count: categoryData.count;
     ,}
             trend: categoryData.trend,' };
 
-            recentValues: categoryData.values.slice(-10) // 最新10個 }
-        }
+            recentValues: categoryData.values.slice(-10) // 最新10個 
+    }
     
     /**
      * 集計データの取得
      */''
-    getAggregatedData(category, period, aggregationType = 'sum) {'
+    getAggregatedData(category, period, aggregationType = 'sum' {'
         const timeSeriesData = this.getTimeSeriesData(period, category);
         
     }
@@ -248,13 +248,13 @@ export class TimeSeriesDataManager {
                     value = categoryData.count;
                     break;
             }
-                default: value = categoryData.total; }
-            }
+                default: value = categoryData.total; 
+    }
             
             return { period: entry.period,
                 value: value, };
-                trend: categoryData.trend }
-            });
+                trend: categoryData.trend 
+    }';
         
         return result;
     }
@@ -282,10 +282,10 @@ export class TimeSeriesDataManager {
             period1: { ...period1, stats: stats1 ,},
             period2: { ...period2, stats: stats2 ,},
             comparison: { totalChange: stats2.total - stats1.total;
-                totalChangePercent: stats1.total > 0 ?   : undefined
+                totalChangePercent: stats1.total > 0 ? undefined : undefined
                     ((stats2.total - stats1.total) / stats1.total) * 100 : 0;
                 averageChange: stats2.average - stats1.average,
-                averageChangePercent: stats1.average > 0 ?   : undefined'';
+                averageChangePercent: stats1.average > 0 ? undefined : undefined'';
                     ((stats2.average - stats1.average) / stats1.average) * 100 : 0,
                 trend: stats2.average > stats1.average ? 'improving' : '';
                        stats2.average < stats1.average ? 'declining' : 'stable' 
@@ -317,15 +317,15 @@ export class TimeSeriesDataManager {
             average: count > 0 ? total / count : 0;
             min: min === Infinity ? 0 : min;
             max: max = == -Infinity ? 0 : max ,};
-            count: count }
-        }
+            count: count 
+    }
     
     /**
      * 期間キーの生成・解析
      */'
     getDayKey(date) { ' }'
 
-        return `${date.getFullYear(})-${String(date.getMonth(} + 1'}.padStart(2, '0'})-${ String(date.getDate( }.padStart(2, '0'})`;
+        return `${date.getFullYear(})-${String(date.getMonth(} + 1'}.padStart(2, '0'}'-${ String(date.getDate( }.padStart(2, '0'})`;
     }
     
     getWeekKey(date) {
@@ -336,7 +336,7 @@ export class TimeSeriesDataManager {
 
         const week = this.getWeekNumber(date);' }'
 
-        return `${year}-W${String(week}.padStart(2, '0'})`;
+        return `${year}-W${String(week}.padStart(2, '0'}'`;
     }
     ';
 
@@ -360,7 +360,7 @@ export class TimeSeriesDataManager {
             case 'daily':'';
                 return new Date(periodKey);''
             case 'weekly':'';
-                const [year, week] = periodKey.split('-W);''
+                const [year, week] = periodKey.split('-W';''
                 return this.getDateFromWeek(parseInt(year), parseInt(week));''
             case 'monthly':'';
                 const [monthYear, month] = periodKey.split('-);
@@ -385,11 +385,11 @@ export class TimeSeriesDataManager {
     updateCurrentPeriodKeys() {
         const now = new Date();
         this.currentPeriodKeys = {
-            day: this.getDayKey(now);
-           , week: this.getWeekKey(now);
+            day: this.getDayKey(now),
+    week: this.getWeekKey(now);
     }
-            month: this.getMonthKey(now); }
-        };
+            month: this.getMonthKey(now); 
+    };
         return this.currentPeriodKeys;
     }
     
@@ -440,7 +440,7 @@ export class TimeSeriesDataManager {
     setupAutoSave() { setInterval(() => {  }
             this.save();' }'
 
-        }, this.saveInterval);
+        }, this.saveInterval';
         ';
         // ページ離脱時の保存
         window.addEventListener('beforeunload', () => { this.save(); });
@@ -465,11 +465,11 @@ export class TimeSeriesDataManager {
             const data = {
                 daily: Array.from(this.dailyData.entries();
                 weekly: Array.from(this.weeklyData.entries();
-                monthly: Array.from(this.monthlyData.entries();
-               , currentPeriodKeys: this.currentPeriodKeys;
+                monthly: Array.from(this.monthlyData.entries(),
+    currentPeriodKeys: this.currentPeriodKeys;
     }
-                lastSaveTime: Date.now(); }
-            };
+                lastSaveTime: Date.now(); 
+    };
             ';
             // Mapを配列に変換してから保存
             const serializedData = this.serializeData(data);''
@@ -537,8 +537,8 @@ export class TimeSeriesDataManager {
                     {
             }]
                         ...value,] }
-                        categories: new Map(value.categories || []); }
-                    }
+                        categories: new Map(value.categories || []); 
+    }
                 ]);
             }
         });
@@ -566,12 +566,12 @@ export class TimeSeriesDataManager {
                 daily: this.dailyData.size;
     }
                 weekly: this.weeklyData.size, };
-                monthly: this.monthlyData.size }
-            };
+                monthly: this.monthlyData.size 
+    };
             currentPeriods: this.currentPeriodKeys;
             categories: this.getAllCategories();
-            dateRange: this.getDateRange();
-           , lastUpdate: this.lastSaveTime;
+            dateRange: this.getDateRange(),
+    lastUpdate: this.lastSaveTime;
         },
     }
     
@@ -607,8 +607,8 @@ export class TimeSeriesDataManager {
         
         allKeys.sort();
         return { start: allKeys[0], };
-            end: allKeys[allKeys.length - 1] }
-        }
+            end: allKeys[allKeys.length - 1] 
+    }
 }
 
 /**
@@ -655,8 +655,8 @@ class DataArchiveManager { constructor() {
         this.archiveStorage.set(key, {)
             data: data);
     ,}
-            archivedAt: Date.now(); }
-        });
+            archivedAt: Date.now(); 
+    });
         
         // アーカイブサイズ制限
         if(this.archiveStorage.size > this.maxArchiveSize) {
@@ -674,4 +674,4 @@ class DataArchiveManager { constructor() {
 
     }
 
-        this.archiveStorage.clear(') }'
+        this.archiveStorage.clear() }'

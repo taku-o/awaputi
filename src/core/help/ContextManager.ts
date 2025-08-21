@@ -4,7 +4,7 @@
  * 現在の状況に応じた適切なヘルプコンテンツの提供を担当
  */
 
-import { ErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';
 import { LoggingSystem  } from '../LoggingSystem.js';
 
 // 型定義
@@ -24,8 +24,8 @@ export interface GameEngine { sceneManager?: {
 export interface Context { scene: string,
     gameState: GameState;
     userInterface: UIState;
-    userAction: UserAction | null;
-   , timestamp: number;
+    userAction: UserAction | null,
+    timestamp: number;
     [key: string]: any, }
 
 export interface GameState { isPlaying?: boolean;
@@ -40,49 +40,49 @@ export interface UIState { activeDialogs: number,
     visiblePanels?: number; }
 
 export interface UserAction { type: string,
-    data: any;
-   , timestamp: number ,}
+    data: any,
+    timestamp: number ,}
 
 export interface UserActivity { isActive: boolean;
-    idleTime: number;
-   , recentActions: UserAction[]
+    idleTime: number,
+    recentActions: UserAction[]
     }
 
 export interface HelpItem { id: string;
-    title: string;
-   , priority: number }
+    title: string,
+    priority: number }
 
 export interface TooltipData { element: HTMLElement;
     content: string | TooltipContent;
-    options: TooltipOptions;
-   , registered: number }
+    options: TooltipOptions,
+    registered: number }
 ';
 
 export interface TooltipContent { html?: string;''
-    toString(''';
-    severity: 'low' | 'medium' | 'high';
-   , description: string ,}
+    toString('''
+    severity: 'low' | 'medium' | 'high',
+    description: string ,}
 
 export interface BehaviorPatterns { clickFrequency: number;
     averageIdleTime: number;
-    commonTargets: string[];
-   , strugglingAreas: string[] }
+    commonTargets: string[],
+    strugglingAreas: string[] }
 
 export interface SmartHelp { type: string;
     struggles: Struggle[];
     help: HelpContent;
-    confidence: number;
-   , timestamp: number }
+    confidence: number,
+    timestamp: number }
 
-export interface HelpContent { title: string;
-   , suggestions: HelpSuggestion[]
+export interface HelpContent { title: string,
+    suggestions: HelpSuggestion[]
     }
 
-export interface HelpSuggestion { text: string;
-   , action: string }
+export interface HelpSuggestion { text: string,
+    action: string }
 
-export interface Position { x: number;
-   , y: number }
+export interface Position { x: number,
+    y: number }
 
 export interface UserBehaviorTracker { actions: UserAction[]
     )
@@ -131,11 +131,11 @@ export class ContextManager {
         this.contextCache = new Map<string, any>();
         this.tooltipConfig = {
             showDelay: 800;
-            hideDelay: 300;
-           , maxWidth: 300;
+            hideDelay: 300,
+    maxWidth: 300;
     ,}
-            maxHeight: 200 }
-        };
+            maxHeight: 200 
+    };
         // 動的ヘルプ
         this.helpProviders = new Map<string, HelpProvider>();
         this.userBehaviorTracker = { actions: [],
@@ -160,10 +160,10 @@ export class ContextManager {
             this.setupHelpProviders();
             // イベントリスナーの設定
             this.setupEventListeners()';
-            this.loggingSystem.info('ContextManager', 'Context manager initialized successfully);''
+            this.loggingSystem.info('ContextManager', 'Context manager initialized successfully';''
         } catch (error) {
-            this.loggingSystem.error('ContextManager', 'Failed to initialize context manager', error);''
-            ErrorHandler.handle(error, 'ContextManager.initialize); }'
+            this.loggingSystem.error('ContextManager', 'Failed to initialize context manager', error';''
+            ErrorHandler.handle(error, 'ContextManager.initialize'; }'
     }
 
     /**
@@ -175,8 +175,8 @@ export class ContextManager {
                 scene: this.getCurrentScene();
                 gameState: this.getGameState();
                 userInterface: this.getUIState();
-                userAction: this.getLastUserAction();
-               , timestamp: Date.now( };
+                userAction: this.getLastUserAction(),
+    timestamp: Date.now( };
 
             // コンテキスト検出器を実行
             for(const [name, detector] of this.contextDetectors.entries() {
@@ -200,7 +200,7 @@ export class ContextManager {
 
                     this.contextHistory.shift() }
 
-            this.loggingSystem.debug('ContextManager', `Context detected: ${context.scene}`});
+            this.loggingSystem.debug('ContextManager', `Context detected: ${context.scene}`}';
 
             return context;''
         } catch (error) {
@@ -239,11 +239,11 @@ export class ContextManager {
             // 重複排除とスコアリング
             const uniqueHelp = this.deduplicateAndScore(relevantHelp, context);
 
-            this.loggingSystem.debug('ContextManager', `Found ${uniqueHelp.length} relevant help items`});
+            this.loggingSystem.debug('ContextManager', `Found ${uniqueHelp.length} relevant help items`}';
 
             return uniqueHelp;''
         } catch (error) {
-            this.loggingSystem.error('ContextManager', 'Failed to get relevant help', error);
+            this.loggingSystem.error('ContextManager', 'Failed to get relevant help', error';
             return [];
 
     /**
@@ -273,7 +273,7 @@ export class ContextManager {
             // イベントリスナーの追加
             this.attachTooltipListeners(targetElement, tooltipId);
 
-            this.loggingSystem.debug('ContextManager', `Tooltip registered: ${tooltipId}`});''
+            this.loggingSystem.debug('ContextManager', `Tooltip registered: ${tooltipId}`}';''
         } catch (error) {
             this.loggingSystem.error('ContextManager', 'Failed to register tooltip', error); }
     }
@@ -287,7 +287,7 @@ export class ContextManager {
      */
     showContextualTooltip(x: number, y: number, content: string | TooltipContent, options: TooltipOptions = { ): string | null {
         try { }
-            const tooltipId = `contextual_${Date.now(})`;
+            const tooltipId = `contextual_${Date.now())`;
             const tooltip = this.createTooltipElement(content, options);
             ';
             // 位置調整
@@ -296,7 +296,7 @@ export class ContextManager {
             tooltip.style.top = `${position.y}px`;
             ';
             // 表示アニメーション
-            tooltip.style.opacity = '0';''
+            tooltip.style.opacity = '0';
             tooltip.style.transform = 'scale(0.8)';
             document.body.appendChild(tooltip);
 
@@ -308,8 +308,8 @@ export class ContextManager {
             
             // アクティブツールチップに追加
             this.activeTooltips.set(tooltipId, { )
-                element: tooltip);
-               , showTime: Date.now(), }
+                element: tooltip),
+    showTime: Date.now(), }
                 position: { x, y });
             // 自動非表示タイマー
             setTimeout(() => this.hideTooltip(tooltipId), options.autoHide || 5000');
@@ -381,7 +381,7 @@ export class ContextManager {
 
                 const helpContent = this.generateHelpForStruggles(struggles);
 
-                this.loggingSystem.info('ContextManager', `Smart help generated for ${struggles.length} struggles`'};
+                this.loggingSystem.info('ContextManager', `Smart help generated for ${struggles.length} struggles`'}
 
                 return { ''
                     type: 'smart_help';
@@ -390,13 +390,13 @@ export class ContextManager {
             }
                     help: helpContent, };
                     confidence: this.calculateHelpConfidence(patterns), }
-                    timestamp: Date.now(});
+                    timestamp: Date.now());
                 }
             ';
 
             return null;''
         } catch (error) {
-            this.loggingSystem.error('ContextManager', 'Failed to get smart help', error);
+            this.loggingSystem.error('ContextManager', 'Failed to get smart help', error';
             return null;
 
     // ---- プライベートメソッド ----
@@ -410,19 +410,17 @@ export class ContextManager {
             return { isPlaying: this.gameEngine.isRunning,
                 isPaused: this.gameEngine.isPaused, }
                 score: this.gameEngine.score || 0, };
-                level: this.gameEngine.currentLevel || 1 }
-
-            };''
+                level: this.gameEngine.currentLevel || 1 
+    };''
         }');
 ';
         // UI状態検出器
         this.contextDetectors.set('uiState', (context: Context) => {  return { ''
                 activeDialogs: document.querySelectorAll('.dialog:not(.hidden)'').length,' }
 
-                hoveredElements: document.querySelectorAll(':hover).length, };
-                focusedElement: document.activeElement? .tagName }
-
-            };''
+                hoveredElements: document.querySelectorAll(':hover'.length, };
+                focusedElement: document.activeElement?.tagName 
+    };''
         }');
 ';
         // ユーザー活動検出器 : undefined
@@ -430,14 +428,14 @@ export class ContextManager {
             const timeSinceLastAction = lastAction ? Date.now() - lastAction: Infinity,
             return { isActive: timeSinceLastAction < 10000, // 10秒以内 
                 idleTime: timeSinceLastAction, };
-                recentActions: this.userBehaviorTracker.actions.slice(-5); }
-            });
+                recentActions: this.userBehaviorTracker.actions.slice(-5); 
+    });
     }
 
     /**
      * ツールチップレジストリの設定
      */''
-    private setupTooltipRegistry(''';
+    private setupTooltipRegistry('''
             { selector: '.start-button', content: 'ゲームを開始します' ,},''
             { selector: '.pause-button', content: 'ゲームを一時停止します' ,},''
             { selector: '.help-button', content: 'ヘルプを表示します' ,},''
@@ -464,7 +462,7 @@ export class ContextManager {
             { id: 'bubble_basics', title: '泡の割り方', priority: 1 ,},''
             { id: 'scoring_system', title: 'スコアシステム', priority: 2 ,},]'
             { id: 'special_bubbles', title: '特殊な泡について', priority: 3 ,}]
-        ]);
+        ]';
     }
 
     /**
@@ -473,7 +471,7 @@ export class ContextManager {
     private setupEventListeners()';
         document.addEventListener('mousemove', (event: MouseEvent) => { ' }
 
-            this.trackUserAction('mouse_move', { x: event.clientX, y: event.clientY ,});''
+            this.trackUserAction('mouse_move', { x: event.clientX, y: event.clientY ,}';''
         }');
 ';
         // クリック追跡
@@ -481,7 +479,7 @@ export class ContextManager {
             this.trackUserAction('click', { )
                 x: event.clientX, );
                 y: event.clientY ), }
-                target: (event.target, as HTMLElement)? .tagName  }
+                target: (event.target, as HTMLElement)?.tagName  }
 
             });''
         }');
@@ -489,7 +487,7 @@ export class ContextManager {
         // キーワード追跡 : undefined
         document.addEventListener('keydown', (event: KeyboardEvent) => { ' 
             this.trackUserAction('keydown', { key: event.key ,});
-        });
+        }';
     }
 
     /**
@@ -501,7 +499,7 @@ export class ContextManager {
 
         }
 
-            return this.gameEngine.sceneManager.currentScene? .constructor.name || 'Unknown';''
+            return this.gameEngine.sceneManager.currentScene?.constructor.name || 'Unknown';
         return 'Unknown';
     }
 
@@ -514,8 +512,8 @@ export class ContextManager {
         
         return { isRunning: this.gameEngine.isRunning || false,
             isPaused: this.gameEngine.isPaused || false, };
-            score: this.gameEngine.score || 0 }
-        }
+            score: this.gameEngine.score || 0 
+    }
 
     /**
      * UI状態を取得
@@ -630,7 +628,7 @@ export class ContextManager {
      * @returns ツールチップID
      */
     private generateTooltipId(element: HTMLElement): string {
-        return `tooltip_${element.id || element.className || Date.now(})`;
+        return `tooltip_${element.id || element.className || Date.now())`;
     }
 
     /**
@@ -679,10 +677,10 @@ export class ContextManager {
         const tooltip = document.createElement('div'');''
         tooltip.className = 'context-tooltip';
         tooltip.style.cssText = `;
-            position: fixed;
-           , background: rgba(0, 0, 0, 0.9),
-            color: white;
-           , padding: 8px 12px;
+            position: fixed,
+    background: rgba(0, 0, 0, 0.9),
+            color: white,
+    padding: 8px 12px;
             border-radius: 6px,
             font-size: 14px, }
             max-width: ${options.maxWidth || this.tooltipConfig.maxWidth}px;
@@ -726,7 +724,7 @@ export class ContextManager {
     private hideTooltip(tooltipId: string): void { const activeTooltip = this.activeTooltips.get(tooltipId);''
         if(activeTooltip) {'
 
-            activeTooltip.element.style.opacity = '0';''
+            activeTooltip.element.style.opacity = '0';
             activeTooltip.element.style.transform = 'scale(0.8)';
             
             setTimeout(() => { 
@@ -748,7 +746,7 @@ export class ContextManager {
         const scene = state.scene || 'Unknown'; }
         const gameState = state.gameState || {};
 
-        if(scene === 'GameScene) {'
+        if(scene === 'GameScene' {'
 
             if(gameState.isPaused) return 'GameScene.paused';
 
@@ -778,8 +776,8 @@ export class ContextManager {
             suggestions.push({ ''
                 action: 'try_drag', ')';
                 label: 'ドラッグ操作も試してみてください', }
-                priority: 4 ); }
-            });
+                priority: 4 ); 
+    });
         }
         
         return suggestions;
@@ -793,8 +791,8 @@ export class ContextManager {
     private analyzeUserBehavior(userBehavior: any): BehaviorPatterns { const patterns: BehaviorPatterns = {
             clickFrequency: 0;
             averageIdleTime: 0;
-            commonTargets: [];
-           , strugglingAreas: [] };
+            commonTargets: [],
+    strugglingAreas: [] };
 ';
 
         const actions = this.userBehaviorTracker.actions;''
@@ -822,20 +820,20 @@ export class ContextManager {
         // 過度のクリック
         if(patterns.clickFrequency > 0.7) {'
             struggles.push({''
-                type: 'excessive_clicking',)';
+                type: 'excessive_clicking','';
                 severity: 'medium',' }
 
-                description: 'クリックが多すぎる可能性があります'); }
-        }
+                description: 'クリックが多すぎる可能性があります'); 
+    }
 ';
         // 長いアイドル時間
         if(patterns.averageIdleTime > 10000) { '
             struggles.push({''
-                type: 'long_idle',)';
+                type: 'long_idle','';
                 severity: 'low',' }
 
-                description: '操作に迷っている可能性があります'); }
-        }
+                description: '操作に迷っている可能性があります'); 
+    }
 
         return struggles;
     }
@@ -846,8 +844,8 @@ export class ContextManager {
      * @returns ヘルプコンテンツ'
      */''
     private generateHelpForStruggles(struggles: Struggle[]): HelpContent { const helpContent: HelpContent = {''
-            title: 'お困りではありませんか？';
-           , suggestions: [] };
+            title: 'お困りではありませんか？',
+    suggestions: [] };
 ';
 
         struggles.forEach(struggle => {  );''
@@ -855,7 +853,7 @@ export class ContextManager {
 
                 case 'excessive_clicking':';
                     helpContent.suggestions.push({'
-            })'
+            }''
                         text: 'ドラッグ操作も試してみてください',') }
 
                         action: 'show_drag_tutorial'),' }
@@ -913,7 +911,7 @@ export class ContextManager {
             this.tooltipRegistry.clear();
             this.contextDetectors.clear();''
             this.helpProviders.clear()';
-            this.loggingSystem.info('ContextManager', 'Context manager destroyed);''
+            this.loggingSystem.info('ContextManager', 'Context manager destroyed';''
         } catch (error) {
             this.loggingSystem.error('ContextManager', 'Failed to destroy context manager', error); }
 }

@@ -16,8 +16,8 @@ export class ComparisonResultRenderer {
                 average: '#2196F3';
     ,}
 
-                needsImprovement: '#FF9800' }
-            };
+                needsImprovement: '#FF9800' 
+    };
             icons: { ''
                 improved: '↑',
                 declined: '↓',
@@ -30,8 +30,7 @@ export class ComparisonResultRenderer {
                 number: (value) => value.toLocaleString();
                 time: (value) => this.formatTime(value);
                 score: (value) => Math.round(value).toLocaleString();
-            }
-        }
+    }
     
     /**
      * 比較サマリーを生成
@@ -46,17 +45,17 @@ export class ComparisonResultRenderer {
 
             return { available: false,' };
 
-                message: '比較可能なデータがありません' }
-            }
+                message: '比較可能なデータがありません' 
+    }
 
         let totalImprovements = 0;
         let totalDeclines = 0;
 ';
 
         availableComparisons.forEach(comparison => {  totalImprovements += comparison.improvements || 0;)'
-            totalDeclines += comparison.declines || 0)');
+            totalDeclines += comparison.declines || 0'');
 
-        let overallAssessment = 'stable';''
+        let overallAssessment = 'stable';
         if(totalImprovements > totalDeclines) {' }'
 
             overallAssessment = 'improving';' }
@@ -69,8 +68,8 @@ export class ComparisonResultRenderer {
             totalImprovements,
             totalDeclines,
             comparisonCount: availableComparisons.length, };
-            details: this.generateDetailedAnalysis(comparisons); }
-        }
+            details: this.generateDetailedAnalysis(comparisons); 
+    }
     
     /**
      * ベンチマークサマリーを生成
@@ -84,7 +83,7 @@ export class ComparisonResultRenderer {
         const { above_average, average, below_average } = comparison;
         const total = above_average + average + below_average;
 
-        let overallPerformance = 'average';''
+        let overallPerformance = 'average';
         if(above_average > below_average) {', ';
 
         }
@@ -99,10 +98,10 @@ export class ComparisonResultRenderer {
             below_average: total > 0 ? (below_average / total) * 100 : 0 ,};
         return { overallPerformance,
             performanceRatio,
-            strongMetrics: this.identifyStrongMetrics(comparison);
-           , weakMetrics: this.identifyWeakMetrics(comparison), };
-            analysis: this.generateBenchmarkAnalysis(comparison); }
-        }
+            strongMetrics: this.identifyStrongMetrics(comparison),
+    weakMetrics: this.identifyWeakMetrics(comparison), };
+            analysis: this.generateBenchmarkAnalysis(comparison); 
+    }
     
     /**
      * ステージ比較サマリーを生成
@@ -119,14 +118,14 @@ export class ComparisonResultRenderer {
 
             return { available: false,' };
 
-                message: '比較可能なステージデータがありません' }
-            }
+                message: '比較可能なステージデータがありません' 
+    }
 
         let totalImprovements = 0;
         let totalDeclines = 0;
         const stagesByCategory = { tutorial: [],
-            normal: [];
-           , special: [] ,};
+            normal: [],
+    special: [] ,};
         availableComparisons.forEach(stage => {  totalImprovements += stage.comparison.improvements || 0;)
             totalDeclines += stage.comparison.declines || 0;
             );
@@ -136,7 +135,7 @@ export class ComparisonResultRenderer {
 
         }');
 
-        let overallTrend = 'stable';''
+        let overallTrend = 'stable';
         if(totalImprovements > totalDeclines) {', ';
 
         }
@@ -153,8 +152,8 @@ export class ComparisonResultRenderer {
             stageCount: availableComparisons.length;
             stagesByCategory,
             details: this.generateStageAnalysisDetails(stageComparisons), };
-            recommendations: this.generateStageRecommendations(stageComparisons); }
-        }
+            recommendations: this.generateStageRecommendations(stageComparisons); 
+    }
     
     /**
      * 詳細分析を生成
@@ -163,11 +162,11 @@ export class ComparisonResultRenderer {
      */
     generateDetailedAnalysis(comparisons) {
         const analysis = {
-            strengths: [];
-           , weaknesses: [];
+            strengths: [],
+    weaknesses: [];
     }
-            opportunities: [] }
-        };
+            opportunities: [] 
+    };
         Object.entries(comparisons).forEach(([period, comparison]) => {  if (!comparison.available) return; }
 
 ' }'
@@ -176,16 +175,16 @@ export class ComparisonResultRenderer {
                 if (metric.trend === 'improved' && Math.abs(metric.changePercent) > 10) {
                     analysis.strengths.push({
                         metric: metricName);
-                        period: period);
-                       , improvement: metric.changePercent, }
+                        period: period),
+    improvement: metric.changePercent, }
 
                         value: metric.current),' }'
 
                     }');''
                 } else if (metric.trend === 'declined' && Math.abs(metric.changePercent) > 10) { analysis.weaknesses.push({
                         metric: metricName);
-                        period: period);
-                       , decline: metric.changePercent,);
+                        period: period),
+    decline: metric.changePercent,);
                         value: metric.current ,}
             });
         });
@@ -202,26 +201,26 @@ export class ComparisonResultRenderer {
      */
     generateBenchmarkAnalysis(comparison) {
         const analysis = {
-            strengths: [];
-           , improvements: [];
+            strengths: [],
+    improvements: [];
     }
-            insights: [] }
-        };
+            insights: [] 
+    };
         Object.entries(comparison.metrics || {}).forEach(([metricName, metric]) => { ''
-            if(metric.performance === 'above_average) {'
+            if(metric.performance === 'above_average' {'
                 analysis.strengths.push({
-                    metric: metricName);
-                   , percentileRank: metric.percentileRank }
+                    metric: metricName),
+    percentileRank: metric.percentileRank }
                     value: metric.current,) }
 
                     difference: metric.differencePercent),' }'
 
                 }');''
-            } else if(metric.performance === 'below_average) { analysis.improvements.push({'
+            } else if(metric.performance === 'below_average' { analysis.improvements.push({'
                     metric: metricName;
                     percentileRank: metric.percentileRank);
-                    value: metric.current);
-                   , difference: metric.differencePercent,);
+                    value: metric.current),
+    difference: metric.differencePercent,);
                     targetValue: metric.benchmark.median ,}
         });
 
@@ -241,10 +240,10 @@ export class ComparisonResultRenderer {
 
         if(analysis.strengths.length > 0) { '
             analysis.insights.push({''
-                type: 'leverage_strength',)';
+                type: 'leverage_strength','';
                 message: '強みを活かしてさらなる成長を目指しましょう', }
-                metrics: analysis.strengths); }
-        }
+                metrics: analysis.strengths); 
+    }
 
         return analysis;
     }
@@ -257,8 +256,8 @@ export class ComparisonResultRenderer {
     generateStageAnalysisDetails(stageComparisons) { const details = { }
             byCategory: {};
             excellentStages: [];
-            improvingStages: [];
-           , strugglingStages: [];
+            improvingStages: [],
+    strugglingStages: [];
         },
 
         Object.entries(stageComparisons).forEach(([stageId, stageData]) => {  if (!stageData.comparison || !stageData.comparison.available) return;
@@ -269,28 +268,28 @@ export class ComparisonResultRenderer {
             if(!details.byCategory[category]) {
 
                 details.byCategory[category] = {
-                    stages: [];
-                   , averagePerformance: 0;
+                    stages: [],
+    averagePerformance: 0;
             ,}
                     totalImprovements: 0, }
-                    totalDeclines: 0 }
-                }
+                    totalDeclines: 0 
+    }
 
             const categoryData = details.byCategory[category];
             categoryData.stages.push({ stageId)'
                 performance,')';
-                comparison: stageData.comparison)');
+                comparison: stageData.comparison'');
             categoryData.totalImprovements += stageData.comparison.improvements || 0;
             categoryData.totalDeclines += stageData.comparison.declines || 0;
 ';
             // パフォーマンス別分類
-            if(performance.grade === 'A' || performance.grade === 'B) {', ';
+            if(performance.grade === 'A' || performance.grade === 'B' {', ';
 
             ,}
 
                 details.excellentStages.push(stageId);' }'
 
-            } else if(stageData.comparison.overallTrend === 'improving) { ''
+            } else if(stageData.comparison.overallTrend === 'improving' { ''
                 details.improvingStages.push(stageId);' }'
 
             } else if(performance.grade === 'D' || performance.grade === 'F) { details.strugglingStages.push(stageId); }
@@ -329,21 +328,21 @@ export class ComparisonResultRenderer {
 
         if(weakStages.length > 0) { '
             recommendations.push({''
-                type: 'focus_weak_stages',)';
-                priority: 'high')';
-               , stages: weakStages,' }'
+                type: 'focus_weak_stages','';
+                priority: 'high')',
+    stages: weakStages,' }'
 
-                message: '以下のステージに重点的に取り組むことをお勧めします'); }
-        }
+                message: '以下のステージに重点的に取り組むことをお勧めします'); 
+    }
 
         if(improvingStages.length > 0) { '
             recommendations.push({''
-                type: 'maintain_momentum',)';
-                priority: 'medium')';
-               , stages: improvingStages,' }'
+                type: 'maintain_momentum','';
+                priority: 'medium')',
+    stages: improvingStages,' }'
 
-                message: '改善が見られるステージでの練習を継続しましょう'); }
-        }
+                message: '改善が見られるステージでの練習を継続しましょう'); 
+    }
 
         return recommendations;
     }
@@ -373,8 +372,8 @@ export class ComparisonResultRenderer {
      */''
     categorizeStage(stageId) {'
 
-        if (stageId === 'tutorial'') return 'tutorial';''
-        if(stageId.startsWith('stage)) return 'normal';''
+        if (stageId === 'tutorial'') return 'tutorial';
+        if(stageId.startsWith('stage)' return 'normal';
         if(['endless', 'timeattack', 'awawa].includes(stageId)) return 'special';
 
     }
@@ -437,8 +436,8 @@ export class ComparisonResultRenderer {
         return { score: averageScore,
             grade,
             strengths: this.identifyStageStrengths(stageData), };
-            weaknesses: this.identifyStageWeaknesses(stageData); }
-        }
+            weaknesses: this.identifyStageWeaknesses(stageData); 
+    }
     
     /**
      * ステージの強みを特定
@@ -451,28 +450,28 @@ export class ComparisonResultRenderer {
         if(stageData.completionRate >= 0.8) {'
     }
 
-            strengths.push('高い完了率); }'
+            strengths.push('高い完了率'; }'
 
         }''
         if(stageData.averageAccuracy >= 0.85) {', ';
 
         }
 
-            strengths.push('優れた精度); }'
+            strengths.push('優れた精度'; }'
 
         }''
         if(stageData.consistencyScore >= 0.7) {', ';
 
         }
 
-            strengths.push('安定したパフォーマンス); }'
+            strengths.push('安定したパフォーマンス'; }'
 
         }''
         if(stageData.averageAttemptsToComplete <= 3) {', ';
 
         }
 
-            strengths.push('効率的なクリア); }'
+            strengths.push('効率的なクリア'; }'
         }
         
         return strengths;
@@ -489,28 +488,28 @@ export class ComparisonResultRenderer {
         if(stageData.completionRate < 0.5) {'
     }
 
-            weaknesses.push('低い完了率); }'
+            weaknesses.push('低い完了率'; }'
 
         }''
         if(stageData.averageAccuracy < 0.7) {', ';
 
         }
 
-            weaknesses.push('精度の改善が必要); }'
+            weaknesses.push('精度の改善が必要'; }'
 
         }''
         if(stageData.consistencyScore < 0.4) {', ';
 
         }
 
-            weaknesses.push('パフォーマンスが不安定); }'
+            weaknesses.push('パフォーマンスが不安定'; }'
 
         }''
         if(stageData.averageAttemptsToComplete > 10) {', ';
 
         }
 
-            weaknesses.push('クリアまでの試行回数が多い); }'
+            weaknesses.push('クリアまでの試行回数が多い'; }'
         }
         
         return weaknesses;
@@ -528,8 +527,8 @@ export class ComparisonResultRenderer {
         return Object.entries(comparison.metrics || {})''
             .filter(([_, metric]) => metric.performance === 'above_average');
             .map(([name, metric]) => ({ name,
-                percentileRank: metric.percentileRank);
-               , value: metric.current ,})
+                percentileRank: metric.percentileRank),
+    value: metric.current ,})
             .sort((a, b) => b.percentileRank - a.percentileRank);
     }
     
@@ -546,8 +545,8 @@ export class ComparisonResultRenderer {
             .filter(([_, metric]) => metric.performance === 'below_average');
             .map(([name, metric]) => ({ name,
                 percentileRank: metric.percentileRank;
-                value: metric.current);
-               , targetValue: metric.benchmark.median ,})
+                value: metric.current),
+    targetValue: metric.benchmark.median ,})
             .sort((a, b) => a.percentileRank - b.percentileRank);
     }
     

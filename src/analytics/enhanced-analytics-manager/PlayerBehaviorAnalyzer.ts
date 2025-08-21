@@ -4,7 +4,7 @@
  */
 // TypeScript interfaces and types
 export interface AnalysisOptions {
-    timeRange?: { star;t: Date, end: Date 
+    timeRange?: { start: Date, end: Date 
 ,}
     filters?: Record<string, any>;
     metrics?: string[];
@@ -20,19 +20,17 @@ export class PlayerBehaviorAnalyzer {
         // プレイヤー行動分析
         this.playerBehavior = {
             sessionData: null;
-            interactionPatterns: [];
-           , skillProgression: {
-                accuracyHistory: [];
-               , reactionTimeHistory: []
+            interactionPatterns: [],
+    skillProgression: {
+                accuracyHistory: [],
+    reactionTimeHistory: []
 }
                 comboHistory: [] ;
-}
-            },
+    },
             playStyle: { aggressive: 0;
-                defensive: 0;
-               , strategic: 0 
-}
-        },
+                defensive: 0,
+    strategic: 0 
+    },
         
         this.sessionStats = null;
         this.longSessionMarked = false;
@@ -50,13 +48,12 @@ export class PlayerBehaviorAnalyzer {
             difficulty: sessionInfo.difficulty;
             initialSkillLevel: this.getPlayerSkillLevel();
             previousBestScore: sessionInfo.previousBestScore || 0;
-            sessionId: sessionId;
-           , playerSettings: {
+            sessionId: sessionId,
+    playerSettings: {
                 soundEnabled: sessionInfo.soundEnabled
 }
                 effectsEnabled: sessionInfo.effectsEnabled ;
-}
-        },
+    },
         
         this.playerBehavior.interactionPatterns = [];
         this.sessionStats = { clickCount: 0,
@@ -70,8 +67,8 @@ export class PlayerBehaviorAnalyzer {
             itemsUsed: 0;
             bubblesPopped: 0;
             bubblesMissed: 0;
-            scoreProgression: [];
-           , exitEvents: [] 
+            scoreProgression: [],
+    exitEvents: [] 
 ,}
     
     /**
@@ -87,8 +84,7 @@ export class PlayerBehaviorAnalyzer {
             accuracy: bubbleData.action === 'popped' ? 1 : 0
 
            , position: bubbleData.position || null ;
-}
-        },
+    },
         
         this.playerBehavior.interactionPatterns.push(pattern);
         
@@ -131,7 +127,7 @@ export class PlayerBehaviorAnalyzer {
         switch(behaviorData.type) {''
             case 'interaction':';
                 stats.clickCount++;''
-                if(behaviorData.action === 'popped) {'
+                if(behaviorData.action === 'popped' {'
                     stats.successfulClicks++;
                     stats.bubblesPopped++;
                     
@@ -142,7 +138,7 @@ export class PlayerBehaviorAnalyzer {
                         stats.maxCombo = stats.currentCombo; }
 
                     }''
-                } else if(behaviorData.action === 'missed) { stats.missedClicks++;
+                } else if(behaviorData.action === 'missed' { stats.missedClicks++;
                     stats.bubblesMissed++;
                     stats.currentCombo = 0; }
                 ';
@@ -160,8 +156,8 @@ export class PlayerBehaviorAnalyzer {
 
             case 'score_update':';
                 stats.scoreProgression.push({ );''
-                    timestamp: Date.now()';
-                   , source: behaviorData.source || 'unknown' });
+                    timestamp: Date.now()',
+    source: behaviorData.source || 'unknown' });
                 break;
         }
     /**
@@ -171,26 +167,24 @@ export class PlayerBehaviorAnalyzer {
      */
     trackExitBehavior(exitData, sessionDuration) {'
         const exitInfo = {''
-            timestamp: Date.now(''';
-            exitReason: exitData.reason || 'unknown';
-           , exitPoint: {
+            timestamp: Date.now('''
+            exitReason: exitData.reason || 'unknown',
+    exitPoint: {
                 stageProgress: exitData.stageProgress || 0;
-                timeRemaining: exitData.timeRemaining || 0;
-               , playerHP: exitData.playerHP || 0
+                timeRemaining: exitData.timeRemaining || 0,
+    playerHP: exitData.playerHP || 0
 }
                 currentScore: exitData.currentScore || 0 ;
-}
-            },
+    },
             playerSituation: { isInCombat: exitData.isInCombat || false)
-                recentFailures: exitData.recentFailures || 0);
-               , comboBroken: exitData.comboBroken || false,);
+                recentFailures: exitData.recentFailures || 0),
+    comboBroken: exitData.comboBroken || false,);
                 lowHP: (exitData.playerHP || 100) < 30 
 ,};
             gameState: { activeBubbles: exitData.activeBubbles || 0;
-                nextBubbleTypes: exitData.nextBubbleTypes || [];
-               , activeItems: exitData.activeItems || [] 
-}
-        },
+                nextBubbleTypes: exitData.nextBubbleTypes || [],
+    activeItems: exitData.activeItems || [] 
+    },
         
         // セッション統計に追加
         if (this.sessionStats) { this.sessionStats.exitEvents.push(exitInfo); }
@@ -213,8 +207,7 @@ export class PlayerBehaviorAnalyzer {
             comboBrokenExit: exitInfo.playerSituation.comboBroken
 }
             difficultySpike: exitInfo.playerSituation.recentFailures > 3 ;
-}
-        },
+    },
         
         // パターンの分類
         const dominantPattern = Object.entries(exitPatterns);
@@ -228,8 +221,7 @@ export class PlayerBehaviorAnalyzer {
         
         return { patterns: dominantPattern, };
             exitInfo: exitInfo ;
-}
-        },
+    },
     }
     
     /**
@@ -241,9 +233,9 @@ export class PlayerBehaviorAnalyzer {
 
         const reactionTime = this.getAverageReactionTime();
 
-        if(accuracy > 0.9 && reactionTime < 400) return 'expert';''
-        if(accuracy > 0.8 && reactionTime < 500) return 'advanced';''
-        if(accuracy > 0.7 && reactionTime < 600) return 'intermediate';''
+        if(accuracy > 0.9 && reactionTime < 400) return 'expert';
+        if(accuracy > 0.8 && reactionTime < 500) return 'advanced';
+        if(accuracy > 0.7 && reactionTime < 600) return 'intermediate';
         if(accuracy > 0.5 && reactionTime < 800) return 'beginner';
 
         ';
@@ -281,8 +273,7 @@ export class PlayerBehaviorAnalyzer {
         return { aggressive: this.playerBehavior.playStyle.aggressive / total,
             defensive: this.playerBehavior.playStyle.defensive / total, };
             strategic: this.playerBehavior.playStyle.strategic / total ;
-}
-        },
+    },
     }
     
     /**
@@ -294,11 +285,10 @@ export class PlayerBehaviorAnalyzer {
         
         return { accuracy: stats.clickCount > 0 ? stats.successfulClicks / stats.clickCount : 0,
             averageReactionTime: stats.averageReactionTime;
-            maxCombo: stats.maxCombo;
-           , bubblesPopped: stats.bubblesPopped, };
+            maxCombo: stats.maxCombo,
+    bubblesPopped: stats.bubblesPopped, };
             itemsUsed: stats.itemsUsed ;
-}
-        },
+    },
     }
     
     /**
@@ -322,8 +312,8 @@ export class PlayerBehaviorAnalyzer {
             itemsUsed: stats.itemsUsed;
             exitEvents: stats.exitEvents.length;
             skillImprovement: this.calculateSkillImprovement(), };
-            playStyle: this.getPlayStyleDistribution(); }
-        }
+            playStyle: this.getPlayStyleDistribution(); 
+    }
     
     /**
      * スキル向上の計算
@@ -334,7 +324,7 @@ export class PlayerBehaviorAnalyzer {
         const sessionData = this.playerBehavior.sessionData;
     }
         if (!sessionStats || !sessionData) return { improved: false }
-        const currentAccuracy = sessionStats.clickCount > 0 ?   : undefined
+        const currentAccuracy = sessionStats.clickCount > 0 ? undefined : undefined
             sessionStats.successfulClicks / sessionStats.clickCount: 0,
         const currentReactionTime = sessionStats.averageReactionTime;
         
@@ -343,8 +333,7 @@ export class PlayerBehaviorAnalyzer {
         const historicalReactionTime = this.getAverageReactionTime()';
                 accuracy: accuracyImprovement ? 'improved' : (currentAccuracy < historicalAccuracy - 0.05 ? 'declined' : 'stable''),
                 speed: reactionTimeImprovement ? 'improved' : (currentReactionTime > historicalReactionTime + 50 ? 'declined' : 'stable');
-            }
-        }
+    }
     
     /**
      * 学習曲線の分析
@@ -376,11 +365,10 @@ export class PlayerBehaviorAnalyzer {
         return { ''
             trend: accuracyTrend > 0.05 || speedTrend > 0.05 ? 'improving' : '';
                    (accuracyTrend < -0.05 || speedTrend < -0.05 ? 'declining' : 'stable'),
-            accuracyTrend: accuracyTrend;
-           , speedTrend: speedTrend, };
+            accuracyTrend: accuracyTrend,
+    speedTrend: speedTrend, };
             segments: segments.length ;
-}
-        },
+    },
     }
     
     /**
@@ -411,7 +399,7 @@ export class PlayerBehaviorAnalyzer {
      * @returns {string}
      */
     calculateEngagementLevel(sessionDuration, totalInteractions) {
-        const interactionsPerMinute = sessionDuration > 0 ?   : undefined
+        const interactionsPerMinute = sessionDuration > 0 ? undefined : undefined
             (totalInteractions / (sessionDuration / 60000)) : 0;
         // セッション長とインタラクション密度から判定
         if(sessionDuration > 15 * 60 * 1000 && interactionsPerMinute > 20) {'
@@ -464,8 +452,8 @@ export class PlayerBehaviorAnalyzer {
 
             indicators: indicators,' };
 
-            severity: indicatorCount >= 3 ? 'high' : (indicatorCount >= 2 ? 'medium' : 'low'); }
-        }
+            severity: indicatorCount >= 3 ? 'high' : (indicatorCount >= 2 ? 'medium' : 'low'); 
+    }
     
     /**
      * フロー状態指標の検出
@@ -479,7 +467,7 @@ export class PlayerBehaviorAnalyzer {
         const indicators = { highAccuracy: stats.clickCount > 0 ? (stats.successfulClicks / stats.clickCount) > 0.8 : false,
             consistentTiming: this.calculateConsistencyScore() > 0.7;
             sustainedCombo: stats.maxCombo > 10;
-            longSession: (Date.now() - this.playerBehavior.sessionData? .startTime || 0) > 10 * 60 * 1000, : undefined
+            longSession: (Date.now() - this.playerBehavior.sessionData?.startTime || 0) > 10 * 60 * 1000, : undefined
             improvedPerformance: this.calculateSkillImprovement().improved 
 ,};
         const indicatorCount = Object.values(indicators).filter(Boolean).length;
@@ -488,8 +476,8 @@ export class PlayerBehaviorAnalyzer {
 
             indicators: indicators,' };
 
-            intensity: indicatorCount >= 4 ? 'high' : (indicatorCount >= 3 ? 'medium' : 'low'); }
-        }
+            intensity: indicatorCount >= 4 ? 'high' : (indicatorCount >= 3 ? 'medium' : 'low'); 
+    }
     
     /**
      * 急速クリックパターンの検出
@@ -539,12 +527,12 @@ export class PlayerBehaviorAnalyzer {
         if (endInfo.completed) return 1.0;
         
         // 時間ベースの進行度計算
-        const timeProgress = endInfo.timeRemaining ?   : undefined
+        const timeProgress = endInfo.timeRemaining ? undefined : undefined
             1 - (endInfo.timeRemaining / (5 * 60 * 1000)) : 0;
         
         // スコアベースの進行度計算（おおよその推定）
         const scoreProgress = (endInfo.finalScore || 0) / ;
-            Math.max(this.playerBehavior.sessionData? .previousBestScore || 1000, 1000);
+            Math.max(this.playerBehavior.sessionData?.previousBestScore || 1000, 1000);
         
         // 組み合わせた進行度
     }
@@ -552,4 +540,4 @@ export class PlayerBehaviorAnalyzer {
     /**
      * セッションデータのリセット
      */''
-    resetSessionData(');
+    resetSessionData();

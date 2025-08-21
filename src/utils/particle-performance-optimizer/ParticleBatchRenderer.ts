@@ -12,8 +12,8 @@ interface BatchConfig { enabled: boolean,
     bufferReuse: boolean;
     dynamicBuffering: boolean;
     frustumCulling: boolean;
-    instancing: boolean;
-   , atlasOptimization: boolean ,}
+    instancing: boolean,
+    atlasOptimization: boolean ,}
 
 interface Batch { material: string;
     particles: Particle[];
@@ -24,34 +24,34 @@ interface Batch { material: string;
     blendMode: string;
     shader: any;
     drawCalls: number;
-    vertexCount: number;
-   , triangleCount: number }
+    vertexCount: number,
+    triangleCount: number }
 
 interface BatchManager { batches: Map<string, Batch>;
     activeBatches: Batch[];
     batchPool: Batch[];
-    maxBatches: number;
-   , vertexBuffers: Map<string, any>;
+    maxBatches: number,
+    vertexBuffers: Map<string, any>;
     indexBuffers: Map<string, any>;
-    currentBuffer: any;
-   , bufferPool: any[] ,}
+    currentBuffer: any,
+    bufferPool: any[] ,}
 
 interface TextureAtlas { enabled: boolean;
     atlas: any;
-    atlasSize: number;
-   , atlasSlots: Map<string, number>;
+    atlasSize: number,
+    atlasSlots: Map<string, number>;
     freeSlots: number[];
     slotSize: number;
     utilization: number;
     fragmentation: number;
-    totalSlots: number;
-   , usedSlots: number ,}
+    totalSlots: number,
+    usedSlots: number ,}
 
 interface InstanceBuffer { transforms: Float32Array | null;
     colors: Float32Array | null;
     uvs: Float32Array | null;
-    count: number;
-   , maxInstances: number }
+    count: number,
+    maxInstances: number }
 
 interface RenderingStats { batchesCreated: number;
     batchesReused: number;
@@ -64,11 +64,11 @@ interface RenderingStats { batchesCreated: number;
     bufferTime: number;
     sortingTime: number;
     batchEfficiency: number;
-    averageBatchSize: number;
-   , fillRate: number }
+    averageBatchSize: number,
+    fillRate: number }
 
-interface Particle { x: number;
-   , y: number;
+interface Particle { x: number,
+    y: number;
     z?: number;
     size?: number;
     color?: string;
@@ -81,8 +81,8 @@ interface Particle { x: number;
 
 interface BoundingBox { x: number,
     y: number;
-    width: number;
-   , height: number ,}
+    width: number,
+    height: number ,}
 
 interface ParticleBatchRendererConfig { enabled?: boolean;
     maxBatchSize?: number;
@@ -117,8 +117,8 @@ export class ParticleBatchRenderer {
             bufferReuse: config.bufferReuse !== undefined ? config.bufferReuse : true;
             dynamicBuffering: config.dynamicBuffering !== undefined ? config.dynamicBuffering : true;
             // Optimization settings
-            frustumCulling: config.frustumCulling !== undefined ? config.frustumCulling : true;
-           , instancing: config.instancing !== undefined ? config.instancing : true;
+            frustumCulling: config.frustumCulling !== undefined ? config.frustumCulling : true,
+    instancing: config.instancing !== undefined ? config.instancing : true;
     }
             atlasOptimization: config.atlasOptimization !== undefined ? config.atlasOptimization : true 
         };
@@ -130,8 +130,8 @@ export class ParticleBatchRenderer {
             // Vertex buffer management
             vertexBuffers: new Map();
             indexBuffers: new Map();
-            currentBuffer: null;
-           , bufferPool: [] ,};
+            currentBuffer: null,
+    bufferPool: [] ,};
         // Texture atlas management
         this.textureAtlas = { enabled: this.batchConfig.atlasOptimization,
             atlas: null;
@@ -142,14 +142,14 @@ export class ParticleBatchRenderer {
             // Atlas statistics
             utilization: 0;
             fragmentation: 0;
-            totalSlots: 0;
-           , usedSlots: 0 ,};
+            totalSlots: 0,
+    usedSlots: 0 ,};
         // Instance buffer for efficient rendering
         this.instanceBuffer = { transforms: null,
             colors: null;
             uvs: null;
-            count: 0;
-           , maxInstances: this.batchConfig.maxInstances ,};
+            count: 0,
+    maxInstances: this.batchConfig.maxInstances ,};
         // Rendering statistics
         this.stats = { batchesCreated: 0,
             batchesReused: 0;
@@ -164,8 +164,8 @@ export class ParticleBatchRenderer {
             sortingTime: 0;
             // Efficiency metrics
             batchEfficiency: 0;
-            averageBatchSize: 0;
-           , fillRate: 0 ,};
+            averageBatchSize: 0,
+    fillRate: 0 ,};
         this.initializeBatchRenderer();
     }
     
@@ -247,7 +247,7 @@ export class ParticleBatchRenderer {
             // Primary: Sort by texture/material
             if(this.batchConfig.sortByTexture) {'
 
-                const textureA = a.texture || a.type || 'default';''
+                const textureA = a.texture || a.type || 'default';
                 const textureB = b.texture || b.type || 'default';
             ,}
                 if (textureA !== textureB) { }
@@ -256,7 +256,7 @@ export class ParticleBatchRenderer {
             // Secondary: Sort by blend mode
             if(this.batchConfig.sortByBlendMode) {'
 
-                const blendA = a.blendMode || 'normal';''
+                const blendA = a.blendMode || 'normal';
                 const blendB = b.blendMode || 'normal';
                 if (blendA !== blendB) {
             }
@@ -329,10 +329,10 @@ export class ParticleBatchRenderer {
                 blendMode: 'normal';
                 shader: null;
                 // Statistics
-                drawCalls: 0;
-               , vertexCount: 0, }
-                triangleCount: 0 }
-            }
+                drawCalls: 0,
+    vertexCount: 0, }
+                triangleCount: 0 
+    }
         
         return batch;
     }
@@ -341,8 +341,8 @@ export class ParticleBatchRenderer {
      * Get material identifier for particle
      */''
     private getParticleMaterial(particle: Particle): string { ''
-        const texture = particle.texture || particle.type || 'default';''
-        const blendMode = particle.blendMode || 'normal';''
+        const texture = particle.texture || particle.type || 'default';
+        const blendMode = particle.blendMode || 'normal';
         const shader = particle.shader || 'default';
          }
         return `${texture}_${blendMode}_${shader}`;
@@ -397,10 +397,10 @@ export class ParticleBatchRenderer {
         }
         
         return { x: minX,
-            y: minY;
-           , width: maxX - minX, };
-            height: maxY - minY }
-        }
+            y: minY,
+    width: maxX - minX, };
+            height: maxY - minY 
+    }
     
     /**
      * Prepare vertex data for batch
@@ -560,10 +560,10 @@ export class ParticleBatchRenderer {
      */
     getStats(): object { return { ...this.stats,
             textureAtlas: {
-                utilization: this.textureAtlas.utilization;
-               , usedSlots: this.textureAtlas.usedSlots, };
-                totalSlots: this.textureAtlas.totalSlots }
-}
+                utilization: this.textureAtlas.utilization,
+    usedSlots: this.textureAtlas.usedSlots, };
+                totalSlots: this.textureAtlas.totalSlots 
+    }
     
     /**
      * Reset statistics

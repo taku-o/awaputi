@@ -4,24 +4,24 @@ interface ListenerOptions { once?: boolean;
 
 interface ListenerInfo { callback: EventCallback,
     once: boolean;
-    priority: number;
-   , id: string ,}
+    priority: number,
+    id: string ,}
 
 interface EventHistoryEntry { event: string;
-    data: any;
-   , timestamp: number }
+    data: any,
+    timestamp: number }
 
 interface ErrorInfo { type: 'listener_error' | 'emit_error';
     error: Error;
     event: string;
     listenerId?: string;
-    data?: any;
-   , timestamp: number }
+    data?: any,
+    timestamp: number }
 
-interface DebugInfo { eventNames: string[];
-   , listenerCounts: Record<string, number>;
-    recentEvents: EventHistoryEntry[];
-   , totalEvents: number ,}
+interface DebugInfo { eventNames: string[],
+    listenerCounts: Record<string, number>;
+    recentEvents: EventHistoryEntry[],
+    totalEvents: number ,}
 
 type EventCallback = (data: any, event: string) => boolean | void;
 type ErrorHandler = (errorInfo: ErrorInfo) => void;
@@ -67,15 +67,15 @@ export class ComponentEventBus {
 
         }
 
-            throw new Error('Invalid, event or, callback); }'
+            throw new Error('Invalid, event or, callback'; }'
         }
         
         if(!this.listeners.has(event) { this.listeners.set(event, []); }
         
         const listenerInfo: ListenerInfo = { callback,
             once: options.once || false;
-            priority: options.priority || 0;
-           , id: this.generateListenerId( ,};
+            priority: options.priority || 0,
+    id: this.generateListenerId( ,};
         
         this.listeners.get(event)!.push(listenerInfo);
         
@@ -185,7 +185,7 @@ export class ComponentEventBus {
      * @param handler - エラーハンドラー関数
      */''
     onError(handler: ErrorHandler): void { ''
-        if(typeof, handler === 'function) {'
+        if(typeof, handler === 'function' {'
             
         ,}
             this.errorHandlers.push(handler);
@@ -199,15 +199,15 @@ export class ComponentEventBus {
                 this.getEventNames().map(event => [event, this.getListenerCount(event)]);
             ),
             recentEvents: this.eventHistory.slice(-10), };
-            totalEvents: this.eventHistory.length }
-        }
+            totalEvents: this.eventHistory.length 
+    }
     
     /**
      * リスナーIDを生成
      * @returns ユニークなリスナーID'
      */''
     private generateListenerId()';
-        return 'listener_' + Date.now(') + '_' + Math.random().toString(36).substr(2, 9);
+        return 'listener_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
     
     /**
@@ -217,8 +217,8 @@ export class ComponentEventBus {
      */
     private addToHistory(event: string, data: any): void { this.eventHistory.push({)
             event);
-            data: this.safeClone(data);
-           , timestamp: Date.now( });
+            data: this.safeClone(data),
+    timestamp: Date.now( });
         
         // 履歴サイズを制限
         if (this.eventHistory.length > this.maxHistorySize) { this.eventHistory.shift(); }
@@ -234,8 +234,8 @@ export class ComponentEventBus {
             type: 'listener_error';
             error,
             event,
-            listenerId: listener.id;
-           , timestamp: Date.now( ,};
+            listenerId: listener.id,
+    timestamp: Date.now( ,};
         
         // エラーハンドラーに通知
         for(const handler of this.errorHandlers) {
@@ -246,7 +246,7 @@ export class ComponentEventBus {
             } catch (handlerError) { console.error('Error in error handler:', handlerError }
         }
 
-        console.error(`EventBus listener error in event '${event}':`, error);
+        console.error(`EventBus listener error in event '${event}':`, error';
     }
     
     /**
@@ -259,8 +259,8 @@ export class ComponentEventBus {
             type: 'emit_error';
             error,
             event,
-            data: this.safeClone(data);
-           , timestamp: Date.now( ,};
+            data: this.safeClone(data),
+    timestamp: Date.now( ,};
         
         // エラーハンドラーに通知
         for(const handler of this.errorHandlers) {
@@ -271,7 +271,7 @@ export class ComponentEventBus {
             } catch (handlerError) { console.error('Error in error handler:', handlerError }
         }
 
-        console.error(`EventBus emit error for event '${event}':`, error);
+        console.error(`EventBus emit error for event '${event}':`, error';
     }
     
     /**
@@ -280,7 +280,7 @@ export class ComponentEventBus {
      * @returns クローンされたオブジェクト'
      */''
     private safeClone(obj: any): any { try {'
-            if(obj === null || typeof, obj !== 'object) {'
+            if(obj === null || typeof, obj !== 'object' {'
                 
             }
                 return obj;
@@ -293,4 +293,4 @@ export class ComponentEventBus {
      * EventBusのクリーンアップ
      */'
     cleanup(): void { ''
-        this.removeAllListeners(' })'
+        this.removeAllListeners(' }''

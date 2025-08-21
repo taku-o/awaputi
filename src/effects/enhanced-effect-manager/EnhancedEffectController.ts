@@ -15,8 +15,8 @@ interface ShadowObject { x: number,
 interface LightSourceBase { x: number,
     y: number;
     intensity: number;
-    color: string;
-   , radius: number ,}
+    color: string,
+    radius: number ,}
 
 /**
  * Light source type'
@@ -29,8 +29,8 @@ type LightSourceType = 'point' | 'directional' | 'spot';
 interface LightSource extends LightSourceBase { id: number,
     type: LightSourceType;
     animated: boolean;
-    animation: any | null;
-   , created: number ,}
+    animation: any | null,
+    created: number ,}
 
 /**
  * Shadow effect interface
@@ -42,14 +42,14 @@ interface ShadowEffect { id: number,''
     opacity: number;
     blur: number;
     direction: number;
-    distance: number;
-   , created: number ,}
+    distance: number,
+    created: number ,}
 
 /**
  * Reflection object interface
  */
-interface ReflectionObject { x: number;
-   , y: number;
+interface ReflectionObject { x: number,
+    y: number;
     width?: number;
     height?: number;
     image?: HTMLImageElement;
@@ -63,8 +63,8 @@ interface WaterRipple { x: number,
     radius: number;
     maxRadius: number;
     speed: number;
-    intensity: number;
-   , lifetime: number ,}
+    intensity: number,
+    lifetime: number ,}
 
 /**
  * Reflection effect interface
@@ -75,8 +75,8 @@ interface ReflectionEffect { id: number,''
     surfaceY: number;
     intensity: number;
     distortion: number;
-    ripples: WaterRipple[];
-   , created: number ,}
+    ripples: WaterRipple[],
+    created: number ,}
 
 /**
  * Background effect type'
@@ -100,14 +100,14 @@ interface BackgroundEffect { id: number,
     type: BackgroundEffectType;
     options: BackgroundEffectOptions;
     particles: any[];
-    active: boolean;
-   , created: number ,}
+    active: boolean,
+    created: number ,}
 
 /**
  * Transition effect interface
  */
-interface TransitionEffect { id: number;
-   , type: string;
+interface TransitionEffect { id: number,
+    type: string;
     [key: string]: any, }
 
 /**
@@ -115,8 +115,8 @@ interface TransitionEffect { id: number;
  */
 interface PerformanceMetrics { effectCount: number,
     renderTime: number;
-    memoryUsage: number;
-   , lastFrameTime: number ,}
+    memoryUsage: number,
+    lastFrameTime: number ,}
 
 /**
  * Error handler interface
@@ -142,7 +142,7 @@ export class EnhancedEffectController {
 
         this.canvas = canvas;''
         this.errorHandler = getErrorHandler('';
-    })'
+    }''
         console.log('[EnhancedEffectController] 拡張効果コントローラーを初期化しました'); }'
     }
     
@@ -156,8 +156,8 @@ export class EnhancedEffectController {
                 shadowObject: shadowObject;
                 lightSource: lightSource;
                 opacity: 0.6;
-                blur: 2;
-               , direction: this._calculateShadowDirection(shadowObject, lightSource),
+                blur: 2,
+    direction: this._calculateShadowDirection(shadowObject, lightSource),
                 distance: this._calculateShadowDistance(shadowObject, lightSource),
                 created: Date.now( ,};
             
@@ -166,7 +166,7 @@ export class EnhancedEffectController {
 
             return shadowEffect.id;''
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'EnhancedEffectController.addShadowEffect' ,});
+                context: 'EnhancedEffectController.addShadowEffect' ,}';
             return -1;
     
     /**
@@ -180,8 +180,8 @@ export class EnhancedEffectController {
                 surfaceY: surfaceY;
                 intensity: intensity;
                 distortion: distortion;
-                ripples: [];
-               , created: Date.now( ,};
+                ripples: [],
+    created: Date.now( ,};
             
             this.reflectionSurfaces.push(reflectionEffect);
             console.log(`[EnhancedEffectController] 反射効果を追加: ID ${reflectionEffect.id}`});
@@ -204,15 +204,15 @@ export class EnhancedEffectController {
                         maxRadius);
                         speed);
                         intensity,) }
-                        lifetime: 0); }
-                    });
+                        lifetime: 0); 
+    });
                 }
             });
             ';
 
             console.log(`[EnhancedEffectController] 水面リップル効果を追加: (${x}, ${y}`});''
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'EnhancedEffectController.addWaterRipple),' }
+                context: 'EnhancedEffectController.addWaterRipple',' }
 
             }');
         }
@@ -230,15 +230,15 @@ export class EnhancedEffectController {
                 radius,
                 type, // 'point', 'directional', 'spot';
                 animated: false;
-                animation: null;
-               , created: Date.now( ,};
+                animation: null,
+    created: Date.now( ,};
             
             this.lightSources.push(lightSource);
             console.log(`[EnhancedEffectController] 光源を追加: ${type} at (${x}, ${y}`});
 
             return lightSource.id;''
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'EnhancedEffectController.addLightSource' ,});
+                context: 'EnhancedEffectController.addLightSource' ,}';
             return -1;
     
     /**
@@ -253,12 +253,12 @@ export class EnhancedEffectController {
                     density: options.density || 1.0,
                     speed: options.speed || 1.0,
                     color: options.color || '#ffffff';
-                    size: options.size || 1.0;
-                   , opacity: options.opacity || 0.5;
+                    size: options.size || 1.0,
+    opacity: options.opacity || 0.5;
                     ...options,
                 particles: [];
-                active: true;
-               , created: Date.now();
+                active: true,
+    created: Date.now();
             ,};
             
             this.backgroundEffects.push(backgroundEffect);
@@ -282,7 +282,7 @@ export class EnhancedEffectController {
              }
             console.log(`[EnhancedEffectController] 効果を削除: ID ${effectId}`});''
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'EnhancedEffectController.removeEffect' ,});
+                context: 'EnhancedEffectController.removeEffect' ,}';
         }
     }
     

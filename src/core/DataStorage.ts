@@ -21,8 +21,8 @@ interface StorageAdapter { set(key: string, value: any): Promise<void>,
 
 interface StorageConfig { retryAttempts: number,
     retryDelay: number;
-    compressionThreshold: number;
-   , maxStorageSize: number ,}
+    compressionThreshold: number,
+    maxStorageSize: number ,}
 export class DataStorage {
     private adapters: Map<string, StorageAdapter>;
     private primaryAdapter: string;
@@ -33,15 +33,15 @@ export class DataStorage {
 ';
 
         this.adapters = new Map(''';
-        this.primaryAdapter = 'localStorage';''
+        this.primaryAdapter = 'localStorage';
         this.fallbackAdapter = 'indexedDB';
-        this.currentAdapter = null;
+        this.currentAdapter = null
         
         // 設定
         this.config = {
             retryAttempts: 3;
-            retryDelay: 100;
-           , compressionThreshold: 1024, // 1KB以上で圧縮を検討
+            retryDelay: 100,
+    compressionThreshold: 1024, // 1KB以上で圧縮を検討
     }
             maxStorageSize: 10 * 1024 * 1024 // 10MB制限 }))
         this.initialize();
@@ -57,7 +57,7 @@ export class DataStorage {
             try { const indexedDBAdapter = new IndexedDBAdapter();''
                 await indexedDBAdapter.initialize();
 
-                this.adapters.set('indexedDB', indexedDBAdapter);' }
+                this.adapters.set('indexedDB', indexedDBAdapter';' }
 
             } catch (error) { console.warn('IndexedDB not available:', error }
             
@@ -65,7 +65,7 @@ export class DataStorage {
             await this.selectAdapter();
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'STORAGE_INITIALIZATION_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'STORAGE_INITIALIZATION_ERROR', {''
                 operation: 'initialize' ,});
         }
     }
@@ -88,15 +88,15 @@ export class DataStorage {
             const fallback = this.adapters.get(this.fallbackAdapter);
             if(fallback && await, this.testAdapter(fallback) { this.currentAdapter = fallback;' }'
 
-                console.log(`DataStorage: Using ${this.fallbackAdapter} as, fallback adapter`'});
+                console.log(`DataStorage: Using ${this.fallbackAdapter} as, fallback adapter`'}';
                 return;
             }
 
-            throw new Error('No, storage adapter, available);
+            throw new Error('No, storage adapter, available';
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'ADAPTER_SELECTION_ERROR', {)'
-                operation: 'selectAdapter' ,});
+        } catch (error) { getErrorHandler().handleError(error, 'ADAPTER_SELECTION_ERROR', {''
+                operation: 'selectAdapter' ,}';
         }
     }
     
@@ -120,7 +120,7 @@ export class DataStorage {
     async save(key, data, options = {}) { return await this.withRetry(async () => { ''
             if(!this.currentAdapter) {' };
 
-                throw new Error('No, storage adapter, available); }'
+                throw new Error('No, storage adapter, available'; }'
             }
             
             // データの前処理
@@ -146,7 +146,7 @@ export class DataStorage {
         return await this.withRetry(async () => { ''
             if(!this.currentAdapter) {' };
 
-                throw new Error('No, storage adapter, available); }'
+                throw new Error('No, storage adapter, available'; }'
             }
             
             const data = await this.currentAdapter.get(key);
@@ -165,7 +165,7 @@ export class DataStorage {
         return await this.withRetry(async () => { ''
             if(!this.currentAdapter) {' };
 
-                throw new Error('No, storage adapter, available); }'
+                throw new Error('No, storage adapter, available'; }'
             }
             
             return await this.currentAdapter.remove(key);
@@ -180,13 +180,13 @@ export class DataStorage {
 
             }
 
-                throw new Error('No, storage adapter, available); }'
+                throw new Error('No, storage adapter, available'; }'
             }
             
             return await this.currentAdapter.keys();
 
-        } catch (error) { getErrorHandler(').handleError(error, 'STORAGE_KEYS_ERROR', {)'
-                operation: 'keys' ,});
+        } catch (error) { getErrorHandler().handleError(error, 'STORAGE_KEYS_ERROR', {''
+                operation: 'keys' ,}';
             return [];
     
     /**
@@ -218,7 +218,7 @@ export class DataStorage {
             return totalSize;
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'STORAGE_SIZE_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'STORAGE_SIZE_ERROR', {''
                 operation: 'getStorageSize' ,});
             return 0;
     
@@ -230,8 +230,8 @@ export class DataStorage {
             
             // タイムスタンプの追加
             processedData._metadata = { ''
-                timestamp: Date.now(''';
-               , version: '1.0.0' }))
+                timestamp: Date.now(''',
+    version: '1.0.0' }))
             // 圧縮の検討)
             const dataSize = JSON.stringify(processedData).length;
             if(dataSize > this.config.compressionThreshold && options.compress !== false) {
@@ -243,7 +243,7 @@ export class DataStorage {
             return processedData;
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'DATA_PREPROCESSING_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'DATA_PREPROCESSING_ERROR', {''
                 operation: 'preprocessData' ,});
             return data;
     
@@ -270,7 +270,7 @@ export class DataStorage {
             return cleanData;
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'DATA_POSTPROCESSING_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'DATA_POSTPROCESSING_ERROR', {''
                 operation: 'postprocessData' ,});
             return data;
     
@@ -284,7 +284,7 @@ export class DataStorage {
 
             }
 
-                throw new Error('Data, verification failed: No, data retrieved); }'
+                throw new Error('Data, verification failed: No, data retrieved'; }'
             }
             
             // 基本的な整合性チェック
@@ -295,10 +295,10 @@ export class DataStorage {
 
             }
 
-                throw new Error('Data, verification failed: Data, mismatch); }'
+                throw new Error('Data, verification failed: Data, mismatch'; }'
 
             } catch (error) {
-            getErrorHandler(').handleError(error, 'DATA_VERIFICATION_ERROR', {)'
+            getErrorHandler().handleError(error, 'DATA_VERIFICATION_ERROR', {''
                 operation: 'verifyData',);
                 key); });
             throw error;
@@ -316,7 +316,7 @@ export class DataStorage {
                 throw new Error(`Storage, capacity exceeded: ${currentSize + dataSize} > ${this.config.maxStorageSize}`});
 
             } catch (error) {
-            getErrorHandler(').handleError(error, 'STORAGE_CAPACITY_ERROR', {)'
+            getErrorHandler().handleError(error, 'STORAGE_CAPACITY_ERROR', {''
                 operation: 'checkStorageCapacity',);
                 key); });
             throw error;
@@ -341,7 +341,7 @@ export class DataStorage {
                     await new Promise(resolve => setTimeout(resolve, this.config.retryDelay * (attempt + 1));
                     ';
                     // アダプターの再選択を試行
-                    if(error.message.includes('storage, adapter) {'
+                    if(error.message.includes('storage, adapter' {'
                 
                 }
                         await this.selectAdapter(); }
@@ -361,7 +361,7 @@ export class DataStorage {
 
     }
 
-                if(typeof, adapter.destroy === 'function) { }'
+                if(typeof, adapter.destroy === 'function' { }'
                     adapter.destroy(); }
 });
             
@@ -369,8 +369,8 @@ export class DataStorage {
             this.currentAdapter = null;
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'STORAGE_DESTROY_ERROR', {)'
-                operation: 'destroy' ,});
+        } catch (error) { getErrorHandler().handleError(error, 'STORAGE_DESTROY_ERROR', {''
+                operation: 'destroy' ,}';
         }
 }
 
@@ -394,7 +394,7 @@ class LocalStorageAdapter { ''
 
             }
 
-                throw new Error('LocalStorage, quota exceeded); }'
+                throw new Error('LocalStorage, quota exceeded'; }'
             }
             throw error;
         }
@@ -535,4 +535,4 @@ class IndexedDBAdapter { ''
     
     }
 
-            this.db.close(') }'
+            this.db.close() }'

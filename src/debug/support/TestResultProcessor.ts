@@ -12,4 +12,4 @@ export class TestResultProcessor {
 
     public initialize(): void { // Implementation }
 
-    public destroy(');
+    public destroy();

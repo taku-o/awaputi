@@ -7,22 +7,22 @@ export interface Particle { isActive: boolean,
     scale: number;
     size: number;
     color: string;
-    type: ParticleType;
-   , trail: TrailPoint[];
+    type: ParticleType,
+    trail: TrailPoint[];
     zIndex?: number ,}
 
 export interface TrailPoint { x: number;
-    y: number;
-   , alpha: number }
+    y: number,
+    alpha: number }
 
 export interface Viewport { x: number;
     y: number;
-    width: number;
-   , height: number }
+    width: number,
+    height: number }
 
 export interface RenderingStats { supportedTypes: string[];
-    colorSets: number;
-   , renderingFeatures: string[] }
+    colorSets: number,
+    renderingFeatures: string[] }
 
 export interface ColorSets { [key: string]: string[], }
 
@@ -328,8 +328,8 @@ export class ParticleRenderer {
                 'circle', 'star', 'diamond', 'spike', 'lightning',
                 'cloud', 'ripple', 'explosion';
             ]);
-            colorSets: 14)';
-           , renderingFeatures: ['';
+            colorSets: 14'',
+    renderingFeatures: ['';
                 'Trail rendering',
                 'Multi-shape support',
                 'Alpha blending',
@@ -356,7 +356,7 @@ export class ParticleRenderer {
 
         }
 
-            throw new Error('Draw, function must, be a, function); }'
+            throw new Error('Draw, function must, be a, function'; }'
         }
         
         if (!this.customDrawFunctions) { this.customDrawFunctions = new Map(); }
@@ -392,7 +392,7 @@ export class ParticleRenderer {
     public renderOptimized(context: CanvasRenderingContext2D, particles: Particle[], viewport: Viewport | null = null): void { context.save();
         
         // ビューポートカリング
-        const visibleParticles = viewport ?   : undefined
+        const visibleParticles = viewport ? undefined : undefined
             particles.filter(p => this.isParticleVisible(p, viewport) : ;
             particles;
         
@@ -462,7 +462,7 @@ export class ParticleRenderer {
         switch(type) {'
 
             case 'lightning':'';
-                context.lineCap = 'round';''
+                context.lineCap = 'round';
                 context.lineJoin = 'round';
 
                 break;''

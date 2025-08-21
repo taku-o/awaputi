@@ -41,11 +41,11 @@ export class DataAggregationProcessor {
             
             return this.createSuccessResponse(aggregatedData, {)
                 aggregationRules});
-                sourceDataCount: rawData.length);
-               , aggregatedGroupCount: Object.keys(aggregatedData).length }
-            });
+                sourceDataCount: rawData.length),
+    aggregatedGroupCount: Object.keys(aggregatedData).length 
+    });
         } catch (error) {
-            console.error('Aggregation error:', error);''
+            console.error('Aggregation error:', error';''
             return this.createErrorResponse('AGGREGATION_ERROR'')'';
                 'Failed to aggregate data', 500); }
     }
@@ -77,8 +77,8 @@ export class DataAggregationProcessor {
                         cached: true,});
                         requestId);
             }
-                        responseTime: performance.now() - startTime }
-                    });
+                        responseTime: performance.now() - startTime 
+    });
                 }
             }
             
@@ -96,7 +96,7 @@ export class DataAggregationProcessor {
             }
                     hierarchicalGrouping, }
                     filters: aggregationRules.filters || {},')'
-                    period: aggregationRules.period)');
+                    period: aggregationRules.period'');
                 ;
                 aggregatedResults[dataType] = typeResult;
             }
@@ -110,8 +110,8 @@ export class DataAggregationProcessor {
                 this.aggregationCache.set(cacheKey, {)
                     data: finalResult);
             ,}
-                    timestamp: Date.now(); }
-                });
+                    timestamp: Date.now(); 
+    });
             }
             
             const responseTime = Math.max(performance.now() - startTime, 0.1);
@@ -120,11 +120,11 @@ export class DataAggregationProcessor {
                 responseTime);
                 aggregationRules,);
                 dataTypes);
-                totalGroups: this.countTotalGroups(finalResult);
-               , cached: false ,});
+                totalGroups: this.countTotalGroups(finalResult),
+    cached: false ,});
         } catch (error) {
-            console.error('Advanced aggregation error:', error);''
-            return this.createErrorResponse('ADVANCED_AGGREGATION_ERROR); }'
+            console.error('Advanced aggregation error:', error';''
+            return this.createErrorResponse('ADVANCED_AGGREGATION_ERROR'; }'
                 error.message, 500, { requestId });
         }
     }
@@ -163,8 +163,8 @@ export class DataAggregationProcessor {
                 interval);
                 aggregateBy,);
                 fillGaps);
-                startDate: new Date(startDate).getTime();
-               , endDate: new Date(endDate).getTime( ,});
+                startDate: new Date(startDate).getTime(),
+    endDate: new Date(endDate).getTime( ,});
             
             const responseTime = Math.max(performance.now() - startTime, 0.1);
             
@@ -176,9 +176,9 @@ export class DataAggregationProcessor {
             ' ,}'
 
         } catch (error) {
-            console.error('Time series aggregation error:', error);''
-            return this.createErrorResponse('TIMESERIES_AGGREGATION_ERROR); }'
-                error.message, 500, { requestId });
+            console.error('Time series aggregation error:', error';''
+            return this.createErrorResponse('TIMESERIES_AGGREGATION_ERROR'; }'
+                error.message, 500, { requestId }';
         }
     }
     
@@ -202,14 +202,14 @@ export class DataAggregationProcessor {
             const summary = {
                 overview: {
                     totalSessions: sessions.length;
-                    totalInteractions: interactions.length;
-                   , totalPerformanceRecords: performance.length;
+                    totalInteractions: interactions.length,
+    totalPerformanceRecords: performance.length;
                     period ,}
                 },
                 sessionStats: this.calculateSessionStats(sessions);
                 interactionStats: this.calculateInteractionStats(interactions);
-                performanceStats: this.calculatePerformanceStats(performance);
-               , generatedAt: new Date().toISOString();
+                performanceStats: this.calculatePerformanceStats(performance),
+    generatedAt: new Date().toISOString();
             };
             
             return summary;
@@ -261,14 +261,14 @@ export class DataAggregationProcessor {
         ';
 
             const groupKey = groupBy.map(key => { ');''
-                if (key === 'date' && item.timestamp) {
+                if (key === 'date' && item.timestamp' {
         
         }
 
                     // 日付でのグループ化（YYYY-MM-DD形式）' }'
 
-                    return new Date(item.timestamp).toISOString(').split('T'')[0];''
-                return item[key] || 'unknown';''
+                    return new Date(item.timestamp).toISOString().split('T'')[0];''
+                return item[key] || 'unknown';
             }').join('|);
             
             if (!groups[groupKey]) { groups[groupKey] = []; }
@@ -287,8 +287,8 @@ export class DataAggregationProcessor {
     aggregateGroup(groupData, aggregateBy) {
         const result = {
     }
-            count: groupData.length }
-        };
+            count: groupData.length 
+    };
         for(const [field, operations] of Object.entries(aggregateBy) {
         
             const values = groupData.map(item => item[field]).filter(val => val != null);
@@ -299,25 +299,25 @@ export class DataAggregationProcessor {
 
         }
 
-            if(operations.includes('sum) {' }
+            if(operations.includes('sum' {' }
 
                 result[`${field}_sum`] = values.reduce((sum, val) => sum + Number(val), 0');
             }
 
-            if(operations.includes('avg) { ' }
+            if(operations.includes('avg' { ' }
 
                 result[`${field}_avg`] = values.reduce((sum, val) => sum + Number(val), 0') / values.length;
             }
 
-            if(operations.includes('min) { ' }
+            if(operations.includes('min' { ' }
 
                 result[`${field}_min`] = Math.min(...values.map(Number));
 
-            if(operations.includes('max) { ' }
+            if(operations.includes('max' { ' }
 
                 result[`${field}_max`] = Math.max(...values.map(Number));
 
-            if(operations.includes('count) {'
+            if(operations.includes('count' {'
                 
             }
                 result[`${field}_count`] = values.length;
@@ -373,8 +373,8 @@ export class DataAggregationProcessor {
         
         return { totalSessions: sessions.length,
             completedSessions: completedSessions.length;
-            completionRate: completedSessions.length / sessions.length;
-           , averageDuration: durations.reduce((sum, d) => sum + d, 0) / durations.length || 0,
+            completionRate: completedSessions.length / sessions.length,
+    averageDuration: durations.reduce((sum, d) => sum + d, 0) / durations.length || 0,
             averageScore: scores.reduce((sum, s) => sum + s, 0) / scores.length || 0, };
             maxScore: scores.length > 0 ? Math.max(...scores) : 0 
         }
@@ -410,8 +410,8 @@ export class DataAggregationProcessor {
         return { totalInteractions: interactions.length,
             totalScore,
             averageReactionTime: reactionTimes.reduce((sum, rt) => sum + rt, 0) / reactionTimes.length || 0, };
-            bubbleTypeStats: bubbleTypes }
-        }
+            bubbleTypeStats: bubbleTypes 
+    }
     
     /**
      * パフォーマンス統計の計算
@@ -422,11 +422,11 @@ export class DataAggregationProcessor {
             return { noData: true }
         
         const fpsValues = performanceData.map(p => p.fps).filter(fps => fps > 0);
-        const memoryValues = performanceData.map(p => p.memoryUsage? .used).filter(mem => mem > 0);
+        const memoryValues = performanceData.map(p => p.memoryUsage?.used).filter(mem => mem > 0);
         
         return { : undefined
-            totalRecords: performanceData.length;
-           , averageFPS: fpsValues.reduce((sum, fps) => sum + fps, 0) / fpsValues.length || 0,
+            totalRecords: performanceData.length,
+    averageFPS: fpsValues.reduce((sum, fps) => sum + fps, 0) / fpsValues.length || 0,
             minFPS: fpsValues.length > 0 ? Math.min(...fpsValues) : 0;
             maxFPS: fpsValues.length > 0 ? Math.max(...fpsValues) : 0, };
             averageMemoryUsage: memoryValues.reduce((sum, mem) => sum + mem, 0) / memoryValues.length || 0 }
@@ -438,8 +438,8 @@ export class DataAggregationProcessor {
         const rawData = await this.storageManager.getData(dataType, query);
         
         if (!Array.isArray(rawData) || rawData.length === 0) { }
-            return { groups: {}, metadata: { totalRecords: 0 }
-        }
+            return { groups: {}, metadata: { totalRecords: 0 
+    }
         
         // 簡略化実装
         const groupedData = this.groupData(rawData, rules.multiGroupBy);
@@ -449,10 +449,10 @@ export class DataAggregationProcessor {
         
         return { groups: aggregatedResult,
             metadata: {
-                totalRecords: rawData.length;
-               , processedRecords: rawData.length, };
-                groupCount: Object.keys(aggregatedResult).length }
-}
+                totalRecords: rawData.length,
+    processedRecords: rawData.length, };
+                groupCount: Object.keys(aggregatedResult).length 
+    }
     
     performTimeSeriesAggregation(data, rules) { // 時系列集計実装（元の performTimeSeriesAggregation メソッド） }
         const { timeField, interval, aggregateBy } = rules;
@@ -480,8 +480,8 @@ export class DataAggregationProcessor {
             const aggregated = this.aggregateGroup(groupData, aggregateBy);
             
             result.push({)
-                timestamp: timeKey);
-               , datetime: new Date(timeKey).toISOString();
+                timestamp: timeKey),
+    datetime: new Date(timeKey).toISOString();
                 interval,
         
         }
@@ -514,9 +514,8 @@ export class DataAggregationProcessor {
             'week': 7 * 24 * 60 * 60 * 1000,
     }
 
-            'month': 30 * 24 * 60 * 60 * 1000 }
-
-        };''
+            'month': 30 * 24 * 60 * 60 * 1000 
+    };''
         return intervals[interval] || intervals['hour'];
     }
     
@@ -526,8 +525,8 @@ export class DataAggregationProcessor {
     
     }
         return { summary: this.createAggregationSummary(aggregatedResults), };
-            details: aggregatedResults }
-        }
+            details: aggregatedResults 
+    }
     
     createAggregationSummary(aggregatedResults) {
     
@@ -539,8 +538,8 @@ export class DataAggregationProcessor {
             summary[dataType] = {
                 totalGroups: Object.keys(result.groups || {).length;
         }
-                totalRecords: result.metadata? .totalRecords || 0 }
-            }
+                totalRecords: result.metadata?.totalRecords || 0 
+    }
         return summary;
     }
     
@@ -563,7 +562,7 @@ export class DataAggregationProcessor {
         
     
     }
-        return `agg_${Date.now(})_${Math.random().toString(36}.substr(2, 9})`;
+        return `agg_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
     }
     
     createSuccessResponse(data, metadata = { ) {

@@ -9,57 +9,57 @@ interface DeviceThresholds { lowEndDevice: {
         cpu: number;    // cores
        , fps: number };
     mediumDevice: { memory: number;
-        cpu: number;
-       , fps: number };
+        cpu: number,
+    fps: number };
     highEndDevice: { memory: number;
-        cpu: number;
-       , fps: number }
+        cpu: number,
+    fps: number }
 
 interface OptimizationLevel { imageQuality: number,
     animationReduction: number;
     updateThrottling: number;
-    cacheSize: number;
-   , lazyLoadDelay: number ,}
+    cacheSize: number,
+    lazyLoadDelay: number ,}
 
 interface OptimizationLevels { aggressive: OptimizationLevel;
-    moderate: OptimizationLevel;
-   , minimal: OptimizationLevel
+    moderate: OptimizationLevel,
+    minimal: OptimizationLevel
     }
 
 interface CacheEntry { data: any;
     timestamp: number;
-    lastAccess: number;
-   , accessCount: number }
+    lastAccess: number,
+    accessCount: number }
 
 interface MemoryManager { cache: Map<string, CacheEntry>;
     maxCacheSize: number;
-    lastCleanup: number;
-   , cleanupInterval: number;
+    lastCleanup: number,
+    cleanupInterval: number;
     hits?: number;
     misses?: number; ,}
 
 interface PerformanceMonitoring { enabled: boolean,
     metricsBuffer: PerformanceMetrics[];
-    reportInterval: number;
-   , lastReport: number ,}
+    reportInterval: number,
+    lastReport: number ,}
 
 interface ConnectionInfo { effectiveType: string;
     downlink: number;
-    rtt: number;
-   , saveData: boolean }
+    rtt: number,
+    saveData: boolean }
 
-interface BrowserPerformanceInfo { cpuBenchmark: number;
-   , memoryInfo: {
+interface BrowserPerformanceInfo { cpuBenchmark: number,
+    memoryInfo: {
         use;d: number;
-        total: number;
-       , limit: number } | null;
-    timeOrigin: number;
-   , _dummyResult: number;
+        total: number,
+    limit: number } | null;
+    timeOrigin: number,
+    _dummyResult: number;
 }
 
 interface RenderingPerformanceInfo { renderBenchmark: number,
-    canvasSupport: boolean;
-   , context2D: boolean ,}
+    canvasSupport: boolean,
+    context2D: boolean ,}
 
 interface DeviceInfo { memory: number;
     cores: number;
@@ -67,46 +67,46 @@ interface DeviceInfo { memory: number;
     userAgent: string;
     connection: ConnectionInfo;
     browserPerformance: BrowserPerformanceInfo;
-    renderingPerformance: RenderingPerformanceInfo;
-   , deviceClass: 'low' | 'medium' | 'high' }
+    renderingPerformance: RenderingPerformanceInfo,
+    deviceClass: 'low' | 'medium' | 'high' }
 ';
 
 interface OptimizationSettings extends OptimizationLevel { ''
     level: 'aggressive' | 'moderate' | 'minimal',
-    deviceClass: 'low' | 'medium' | 'high';
-   , connectionType: string ,}
+    deviceClass: 'low' | 'medium' | 'high',
+    connectionType: string ,}
 
-interface PerformanceMetrics { timestamp: number;
-   , memory: {
-        use;d: number;
-       , total: number } | null;
+interface PerformanceMetrics { timestamp: number,
+    memory: {
+        use;d: number,
+    total: number } | null;
     timing: PageTimings | null;
-    cacheStats: CacheStats;
-   , fps: number;
+    cacheStats: CacheStats,
+    fps: number;
 }
 
 interface PageTimings { domContentLoaded: number,
     loadComplete: number;
-    firstPaint: number;
-   , firstContentfulPaint: number ,}
+    firstPaint: number,
+    firstContentfulPaint: number ,}
 
 interface CacheStats { size: number;
     maxSize: number;
-    hitRate: number;
-   , lastCleanup: number }
+    hitRate: number,
+    lastCleanup: number }
 
 interface FPSCounter { frames: number;
-    lastTime: number;
-   , fps: number }
+    lastTime: number,
+    fps: number }
 ';
 
 interface MetricsAnalysis { averageFPS: number,''
     memoryTrend: 'increasing' | 'decreasing' | 'stable';
-    cacheEfficiency: number;
-   , performanceScore: {
+    cacheEfficiency: number,
+    performanceScore: {
         overal;l: number;
-        fps: number;
-       , memory: number ,}
+        fps: number,
+    memory: number ,}
 ';
 
 interface PerformanceRecommendation { ''
@@ -118,15 +118,15 @@ interface PerformanceRecommendation { ''
 interface PerformanceReport { timestamp: number;
     deviceInfo: DeviceInfo;
     optimizationSettings: OptimizationSettings;
-    metrics: MetricsAnalysis;
-   , recommendations: PerformanceRecommendation[]
+    metrics: MetricsAnalysis,
+    recommendations: PerformanceRecommendation[]
     }
 
 interface OptimizationInfo { deviceInfo: DeviceInfo;
     optimizationSettings: OptimizationSettings;
     performanceMetrics: MetricsAnalysis;
-    cacheStats: CacheStats;
-   , isOptimized: boolean }
+    cacheStats: CacheStats,
+    isOptimized: boolean }
 
 type ThrottledFunction = (...args: any[]) => void;
 
@@ -150,12 +150,12 @@ declare global { interface Navigator {
 
     interface Performance { memory?: {
             usedJSHeapSiz;e: number;
-            totalJSHeapSize: number;
-           , jsHeapSizeLimit: number ,}
+            totalJSHeapSize: number,
+    jsHeapSizeLimit: number ,}
 
     interface PerformanceNavigationTiming { navigationStart: number,
-        domContentLoadedEventEnd: number;
-       , loadEventEnd: number ,}
+        domContentLoadedEventEnd: number,
+    loadEventEnd: number ,}
 }
 
 export class MobileSocialPerformanceOptimizer {
@@ -186,42 +186,42 @@ export class MobileSocialPerformanceOptimizer {
                 cpu: 2,    // cores
     }
     }
-                fps: 30 }
-            };
+                fps: 30 
+    };
             mediumDevice: { memory: 4;
-                cpu: 4;
-               , fps: 45 };
+                cpu: 4,
+    fps: 45 };
             highEndDevice: { memory: 6;
-                cpu: 6;
-               , fps: 60 }
-        };
+                cpu: 6,
+    fps: 60 
+    };
         // 最適化レベル
         this.optimizationLevels = { aggressive: {
                 imageQuality: 0.6;
                 animationReduction: 0.8;
                 updateThrottling: 100;
-                cacheSize: 10;
-               , lazyLoadDelay: 500 };
+                cacheSize: 10,
+    lazyLoadDelay: 500 };
             moderate: { imageQuality: 0.8;
                 animationReduction: 0.5;
                 updateThrottling: 50;
-                cacheSize: 20;
-               , lazyLoadDelay: 300 };
+                cacheSize: 20,
+    lazyLoadDelay: 300 };
             minimal: { imageQuality: 0.9;
                 animationReduction: 0.2;
                 updateThrottling: 16;
-                cacheSize: 50;
-               , lazyLoadDelay: 100 }
-        };
+                cacheSize: 50,
+    lazyLoadDelay: 100 
+    };
         // メモリ管理
         this.memoryManager = { cache: new Map<string, CacheEntry>(),
             maxCacheSize: 50;
-            lastCleanup: Date.now();
-           , cleanupInterval: 300000 // 5分 ,};
+            lastCleanup: Date.now(),
+    cleanupInterval: 300000 // 5分 ,};
         // パフォーマンス監視
         this.monitoring = { enabled: false,
-            metricsBuffer: [];
-           , reportInterval: 30000, // 30秒;
+            metricsBuffer: [],
+    reportInterval: 30000, // 30秒;
             lastReport: Date.now( ,}
 
     /**
@@ -243,10 +243,10 @@ export class MobileSocialPerformanceOptimizer {
             // 画像最適化を設定
             this.setupImageOptimization();
             // アニメーション最適化を設定
-            this.setupAnimationOptimization(''';
-            console.log('MobileSocialPerformanceOptimizer initialized:', {)
+            this.setupAnimationOptimization('''
+            console.log('MobileSocialPerformanceOptimizer initialized: ', {)
                 deviceInfo: this.deviceInfo,);
-                optimizationLevel: this.optimizationSettings.level),
+                optimizationLevel: this.optimizationSettings.level',
             ' }'
 
         } catch (error) {
@@ -269,8 +269,8 @@ export class MobileSocialPerformanceOptimizer {
             browserPerformance: await this.measureBrowserPerformance();
             ;
             // レンダリング性能
-            renderingPerformance: await this.measureRenderingPerformance(''';
-           , deviceClass: 'medium' }))
+            renderingPerformance: await this.measureRenderingPerformance(''',
+    deviceClass: 'medium' }))
         // デバイスクラスの判定);
         info.deviceClass = this.classifyDevice(info);
         
@@ -284,20 +284,20 @@ export class MobileSocialPerformanceOptimizer {
 
         if(!connection) {'
             return { ''
-                effectiveType: 'unknown';
-               , downlink: 0;
+                effectiveType: 'unknown',
+    downlink: 0;
         }
                 rtt: 0, };
-                saveData: false }
-            }
+                saveData: false 
+    }
         ';
 
         return { ''
             effectiveType: connection.effectiveType || 'unknown';
-            downlink: connection.downlink || 0;
-           , rtt: connection.rtt || 0, };
-            saveData: connection.saveData || false }
-        }
+            downlink: connection.downlink || 0,
+    rtt: connection.rtt || 0, };
+            saveData: connection.saveData || false 
+    }
 
     /**
      * ブラウザ性能の測定
@@ -317,14 +317,14 @@ export class MobileSocialPerformanceOptimizer {
         // メモリ情報
         const memoryInfo = performance.memory ? { : undefined
             used: performance.memory.usedJSHeapSize;
-            total: performance.memory.totalJSHeapSize;
-           , limit: performance.memory.jsHeapSizeLimit ,} : null;
+            total: performance.memory.totalJSHeapSize,
+    limit: performance.memory.jsHeapSizeLimit ,} : null;
         return { cpuBenchmark: cpuTime,
             memoryInfo,
             timeOrigin: performance.timeOrigin;
             // 結果を使用してコンパイラ最適化を防ぐ ,};
-            _dummyResult: result }
-        }
+            _dummyResult: result 
+    }
 
     /**
      * レンダリング性能の測定
@@ -341,8 +341,8 @@ export class MobileSocialPerformanceOptimizer {
             
                 resolve({
                     renderBenchmark: 0);
-                    canvasSupport: false);
-                   , context2D: false
+                    canvasSupport: false),
+    context2D: false
             }
                 ), }
                 return; }
@@ -359,10 +359,10 @@ export class MobileSocialPerformanceOptimizer {
             requestAnimationFrame(() => { const renderTime = performance.now() - startTime;
                 
                 resolve({
-                    renderBenchmark: renderTime);
-                   , canvasSupport: true }
-                    context2D: true }
-                });
+                    renderBenchmark: renderTime),
+    canvasSupport: true }
+                    context2D: true 
+    });
             });
         });
     }
@@ -381,8 +381,8 @@ export class MobileSocialPerformanceOptimizer {
         
         const totalScore = memoryScore + cpuScore + performanceScore;
 
-        if(totalScore >= 8) return 'high';''
-        if(totalScore >= 6) return 'medium';''
+        if(totalScore >= 8) return 'high';
+        if(totalScore >= 6) return 'medium';
         return 'low'; }
 
     /**
@@ -447,13 +447,13 @@ export class MobileSocialPerformanceOptimizer {
     collectPerformanceMetrics(): void { if (!this.monitoring.enabled) return;
         
         const metrics: PerformanceMetrics = {
-            timestamp: Date.now();
-           , memory: performance.memory ? { : undefined
-                used: performance.memory.usedJSHeapSize;
-               , total: performance.memory.totalJSHeapSize } : null;
+            timestamp: Date.now(),
+    memory: performance.memory ? { : undefined
+                used: performance.memory.usedJSHeapSize,
+    total: performance.memory.totalJSHeapSize } : null;
             timing: this.getPageTimings();
-            cacheStats: this.getCacheStats();
-           , fps: this.getCurrentFPS();
+            cacheStats: this.getCacheStats(),
+    fps: this.getCurrentFPS();
         };
         
         this.monitoring.metricsBuffer.push(metrics);
@@ -471,8 +471,8 @@ export class MobileSocialPerformanceOptimizer {
     getCurrentFPS(): number { if (!this.fpsCounter) {
             this.fpsCounter = {
                 frames: 0;
-                lastTime: performance.now();
-               , fps: 60 };
+                lastTime: performance.now(),
+    fps: 60 };
             const countFrame = (): void => {  this.fpsCounter!.frames++;
                 const now = performance.now();
                 
@@ -502,17 +502,17 @@ export class MobileSocialPerformanceOptimizer {
         if (!navigation) return null;
         
         return { domContentLoaded: navigation.domContentLoadedEventEnd - navigation.navigationStart,
-            loadComplete: navigation.loadEventEnd - navigation.navigationStart;
-           , firstPaint: this.getFirstPaintTime(), };
-            firstContentfulPaint: this.getFirstContentfulPaintTime(); }
-        }
+            loadComplete: navigation.loadEventEnd - navigation.navigationStart,
+    firstPaint: this.getFirstPaintTime(), };
+            firstContentfulPaint: this.getFirstContentfulPaintTime(); 
+    }
 
     /**
      * First Paint時間の取得'
      */''
     getFirstPaintTime()';
         const paintEntries = performance.getEntriesByType('paint'');''
-        const firstPaint = paintEntries.find(entry => entry.name === 'first-paint);
+        const firstPaint = paintEntries.find(entry => entry.name === 'first-paint';
         return firstPaint ? firstPaint.startTime: 0 
     /**
      * First Contentful Paint時間の取得'
@@ -525,10 +525,10 @@ export class MobileSocialPerformanceOptimizer {
      * キャッシュ統計の取得
      */
     getCacheStats(): CacheStats { return { size: this.memoryManager.cache.size,
-            maxSize: this.memoryManager.maxCacheSize;
-           , hitRate: this.calculateCacheHitRate(), };
-            lastCleanup: this.memoryManager.lastCleanup }
-        }
+            maxSize: this.memoryManager.maxCacheSize,
+    hitRate: this.calculateCacheHitRate(), };
+            lastCleanup: this.memoryManager.lastCleanup 
+    }
 
     /**
      * キャッシュヒット率の計算
@@ -682,7 +682,7 @@ export class MobileSocialPerformanceOptimizer {
      */
     setupImageOptimization(): void { // 画像品質の動的調整
         this.optimizeImageQuality = (imageData: string, targetQuality?: number): Promise<string> | string => { 
-            const quality = targetQuality || (this.optimizationSettings? .imageQuality ?? 0.8);
+            const quality = targetQuality || (this.optimizationSettings?.imageQuality ?? 0.8);
             
             if (quality >= 0.9) return imageData; // 最適化不要
              }
@@ -784,7 +784,7 @@ export class MobileSocialPerformanceOptimizer {
         ';
         // 既存のスタイルを置換
         const existing = document.getElementById('mobile-animation-optimization);
-        if (existing) { existing.parentNode? .removeChild(existing); }
+        if (existing) { existing.parentNode?.removeChild(existing); }
         
         document.head.appendChild(style);
     }
@@ -827,9 +827,9 @@ export class MobileSocialPerformanceOptimizer {
                 lastExecTime = currentTime; }
             } else {  if (timeoutId) clearTimeout(timeoutId);
                 timeoutId = setTimeout(() => {  }
-                    func.apply(this, args); }
+                    func.apply(this args); }
                     lastExecTime = Date.now(); }
-                }, delay - (currentTime - lastExecTime));
+                } delay - (currentTime - lastExecTime)');
             }
         }
 
@@ -840,10 +840,10 @@ export class MobileSocialPerformanceOptimizer {
             return null; }
         
         const report: PerformanceReport = { timestamp: Date.now(),
-            deviceInfo: this.deviceInfo;
-           , optimizationSettings: this.optimizationSettings,
+            deviceInfo: this.deviceInfo,
+    optimizationSettings: this.optimizationSettings,
             metrics: this.analyzeMetrics(),
-            recommendations: this.generateRecommendations(')';
+            recommendations: this.generateRecommendations()';
         console.log('Performance, Report:', report);
         
         // 必要に応じて最適化設定を調整
@@ -858,10 +858,10 @@ export class MobileSocialPerformanceOptimizer {
         const recentMetrics = buffer.slice(-30); // 直近30サンプル
         
         return { averageFPS: this.calculateAverage(recentMetrics.map(m => m.fps),
-            memoryTrend: this.calculateMemoryTrend(recentMetrics);
-           , cacheEfficiency: this.calculateCacheHitRate(), };
-            performanceScore: this.calculatePerformanceScore(recentMetrics); }
-        }
+            memoryTrend: this.calculateMemoryTrend(recentMetrics),
+    cacheEfficiency: this.calculateCacheHitRate(), };
+            performanceScore: this.calculatePerformanceScore(recentMetrics); 
+    }
 
     /**
      * 平均値計算
@@ -880,8 +880,8 @@ export class MobileSocialPerformanceOptimizer {
         
         const trend = (memoryValues[memoryValues.length - 1] - memoryValues[0]) / memoryValues[0];
 
-        if(trend > 0.1) return 'increasing';''
-        if(trend < -0.1) return 'decreasing';''
+        if(trend > 0.1) return 'increasing';
+        if(trend < -0.1) return 'decreasing';
         return 'stable';
 
     /**
@@ -898,8 +898,8 @@ export class MobileSocialPerformanceOptimizer {
         
         return { overall: (fpsScore + memoryScore) / 2,
             fps: fpsScore, };
-            memory: memoryScore }
-        }
+            memory: memoryScore 
+    }
 
     /**
      * メモリスコア計算
@@ -922,29 +922,29 @@ export class MobileSocialPerformanceOptimizer {
         if(analysis.averageFPS < targetFPS) {'
             recommendations.push({''
                 type: 'fps',
-                severity: 'high',)';
+                severity: 'high','';
                 message: 'FPSが低下しています。アニメーションの削減を推奨します。',' }
 
-                action: 'increaseAnimationReduction')'); }
-        }
+                action: 'increaseAnimationReduction')'); 
+    }
 
         if(analysis.memoryTrend === 'increasing'') { '
             recommendations.push({''
                 type: 'memory',
-                severity: 'medium',)';
+                severity: 'medium','';
                 message: 'メモリ使用量が増加傾向です。キャッシュクリーンアップを推奨します。',' }
 
-                action: 'triggerMemoryCleanup'); }
-        }
+                action: 'triggerMemoryCleanup'); 
+    }
 
         if(analysis.cacheEfficiency < 80) { '
             recommendations.push({''
                 type: 'cache',
-                severity: 'low',)';
+                severity: 'low','';
                 message: 'キャッシュ効率が低下しています。キャッシュ戦略の見直しを推奨します。',' }
 
-                action: 'optimizeCacheStrategy'); }
-        }
+                action: 'optimizeCacheStrategy'); 
+    }
         
         return recommendations;
     }
@@ -964,8 +964,8 @@ export class MobileSocialPerformanceOptimizer {
                     this.optimizationSettings!.animationReduction = Math.min(0.9);
 
                         this.optimizationSettings!.animationReduction + 0.1);''
-                    this.applyAnimationOptimization(''';
-                case 'triggerMemoryCleanup':'';
+                    this.applyAnimationOptimization('''
+                case 'triggerMemoryCleanup': '';
                     this.triggerMemoryCleanup()';
                 case 'optimizeCacheStrategy':);
                     this.memoryManager.maxCacheSize = Math.max(10);
@@ -999,8 +999,8 @@ export class MobileSocialPerformanceOptimizer {
     setCachedData(key: string, data: any): void { const entry: CacheEntry = {
             data,
             timestamp: Date.now();
-            lastAccess: Date.now();
-           , accessCount: 1 ,};
+            lastAccess: Date.now(),
+    accessCount: 1 ,};
         this.memoryManager.cache.set(key, entry);
         
         // キャッシュサイズ制限
@@ -1015,10 +1015,10 @@ export class MobileSocialPerformanceOptimizer {
 
         return { deviceInfo: this.deviceInfo,
             optimizationSettings: this.optimizationSettings;
-            performanceMetrics: this.analyzeMetrics();
-           , cacheStats: this.getCacheStats(), };
-            isOptimized: this.isInitialized }
-        }
+            performanceMetrics: this.analyzeMetrics(),
+    cacheStats: this.getCacheStats(), };
+            isOptimized: this.isInitialized 
+    }
 
     /**
      * クリーンアップ
@@ -1058,4 +1058,4 @@ export function reinitializeMobileSocialPerformanceOptimizer(): MobileSocialPerf
     return mobileSocialPerformanceOptimizerInstance;
 }
 
-export const mobileSocialPerformanceOptimizer = getMobileSocialPerformanceOptimizer(');
+export const mobileSocialPerformanceOptimizer = getMobileSocialPerformanceOptimizer();

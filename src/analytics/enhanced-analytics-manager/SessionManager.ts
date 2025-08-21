@@ -4,7 +4,7 @@
  */
 // TypeScript interfaces and types
 export interface AnalysisOptions {
-    timeRange?: { star;t: Date, end: Date 
+    timeRange?: { start: Date, end: Date 
 ,}
     filters?: Record<string, any>;
     metrics?: string[];
@@ -49,8 +49,8 @@ export class SessionManager {
                 completed: false;
                 exitReason: null;
                 interactions: [];
-                scoreProgression: [];
-               , itemsUsed: [] 
+                scoreProgression: [],
+    itemsUsed: [] 
 ,}
         },
         
@@ -97,8 +97,8 @@ export class SessionManager {
             timestamp: Date.now();
             bubbleType: interactionData.bubbleType;
             action: interactionData.action;
-            reactionTime: interactionData.reactionTime;
-           , position: interactionData.position;
+            reactionTime: interactionData.reactionTime,
+    position: interactionData.position;
     }
             score: interactionData.score' }'
 
@@ -121,12 +121,11 @@ export class SessionManager {
             timestamp: Date.now();
             score: scoreData.totalScore;
             scoreGain: scoreData.amount;
-            source: scoreData.type;
-           , multiplier: scoreData.multiplier
+            source: scoreData.type,
+    multiplier: scoreData.multiplier
 }
             comboCount: scoreData.comboCount ;
-}
-        }),
+    }),
         
         // 最大コンボの更新
         if (scoreData.comboCount > this.currentSession.stats.maxCombo) { this.currentSession.stats.maxCombo = scoreData.comboCount; }
@@ -142,12 +141,11 @@ export class SessionManager {
         this.currentSession.stats.itemsUsed.push({);
             timestamp: Date.now();
             itemType: itemData.itemType;
-            cost: itemData.cost;
-           , effectiveness: itemData.effectiveness
+            cost: itemData.cost,
+    effectiveness: itemData.effectiveness
 }
             duration: itemData.duration ;
-}
-        }),
+    }),
     }
     
     /**
@@ -205,13 +203,12 @@ export class SessionManager {
         
         if (recentSessions.length === 0) {
             return { totalSessions: 0,
-                averageDuration: 0;
-               , averageScore: 0
+                averageDuration: 0,
+    averageScore: 0
 ,}
                 completionRate: 0, };
                 averageAccuracy: 0 ;
-}
-            },
+    },
         }
         
         const totalDuration = recentSessions.reduce((sum, s) => sum + s.stats.duration, 0);
@@ -229,12 +226,12 @@ export class SessionManager {
         
         return { totalSessions: recentSessions.length,
             averageDuration: totalDuration / recentSessions.length;
-            averageScore: totalScore / recentSessions.length;
-           , completionRate: completedSessions / recentSessions.length
+            averageScore: totalScore / recentSessions.length,
+    completionRate: completedSessions / recentSessions.length
 ,}
             averageAccuracy: averageAccuracy, };
-            exitReasons: this.summarizeExitReasons(recentSessions); }
-        }
+            exitReasons: this.summarizeExitReasons(recentSessions); 
+    }
     
     /**
      * 離脱理由の要約
@@ -315,4 +312,4 @@ export class SessionManager {
     /**
      * セッションデータのクリア
      */''
-    clearSessionData(');
+    clearSessionData();

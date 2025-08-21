@@ -9,8 +9,8 @@ interface PlayerData { username: string,
     ap: number;
     tap: number;
     unlockedStages: string[];
-    ownedItems: any[];
-   , highScores: Record<string, number> }
+    ownedItems: any[],
+    highScores: Record<string, number> }
 
 interface StageConfig {
     name: string;
@@ -40,13 +40,13 @@ export class MainMenuDialogManager {
             const playerData = this.gameEngine.playerData as PlayerData;
             // 半透明オーバーレイ
             context.save()';
-            context.fillStyle = 'rgba(0,0,0,0.8)';''
+            context.fillStyle = 'rgba(0,0,0,0.8)';
             context.fillRect(0, 0, canvas.width, canvas.height);
             ';
             // タイトル
-            context.fillStyle = '#FFFFFF';''
-            context.font = 'bold 32px Arial';''
-            context.textAlign = 'center';''
+            context.fillStyle = '#FFFFFF';
+            context.font = 'bold 32px Arial';
+            context.textAlign = 'center';
             context.textBaseline = 'middle';
             
             // Transform行列のスケールを考慮した中央位置
@@ -60,15 +60,15 @@ export class MainMenuDialogManager {
             this.renderBackButton(context);
             ';
             // 操作説明
-            context.fillStyle = '#AAAAAA';''
-            context.font = '14px Arial';''
-            context.fillText('クリックまたはESCで戻る', canvas.width / 2, canvas.height - 40);
+            context.fillStyle = '#AAAAAA';
+            context.font = '14px Arial';
+            context.fillText('クリックまたはESCで戻る', canvas.width / 2, canvas.height - 40';
             ';
 
             context.restore();' }'
 
-        } catch (error) { this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {)'
-                context: 'DialogManager.renderUserInfo' ,});
+        } catch (error) { this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {''
+                context: 'DialogManager.renderUserInfo' ,}';
         }
     }
     
@@ -78,8 +78,8 @@ export class MainMenuDialogManager {
     renderUserInfoContent(context: CanvasRenderingContext2D, playerData: PlayerData): void { try {
             const canvas = this.gameEngine.canvas as HTMLCanvasElement;
 
-            context.font = '20px Arial';''
-            context.textAlign = 'left';''
+            context.font = '20px Arial';
+            context.textAlign = 'left';
             context.textBaseline = 'top';
             
             const infoX = 150;
@@ -102,15 +102,15 @@ export class MainMenuDialogManager {
             infoY += lineHeight;
             ';
             // ハイスコア表示
-            context.fillText('ハイスコア:', infoX, infoY);
+            context.fillText('ハイスコア:', infoX, infoY';
             infoY += lineHeight;
 
-            context.font = '16px, Arial';''
+            context.font = '16px, Arial';
             context.fillStyle = '#CCCCCC';
             
             if (Object.keys(playerData.highScores).length > 0) {
                 Object.entries(playerData.highScores}.forEach(([stage, score]} => { }
-                    const stageConfig = this.gameEngine.stageManager? .getStageConfig?.(stage}) as StageConfig | null;
+                    const stageConfig = this.gameEngine.stageManager?.getStageConfig?.(stage}) as StageConfig | null;
                     const stageName = stageConfig?.name || stage; : undefined
                     context.fillText(`  ${stageName}: ${score}`, infoX + 20, infoY);
 
@@ -119,9 +119,9 @@ export class MainMenuDialogManager {
 
             } else { }'
 
-                context.fillText('  まだ記録がありません', infoX + 20, infoY);' }
+                context.fillText('  まだ記録がありません', infoX + 20, infoY';' }
 
-            } catch (error) { this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {)'
+            } catch (error) { this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {''
                 context: 'DialogManager.renderUserInfoContent' ,});
         }
     }
@@ -142,21 +142,21 @@ export class MainMenuDialogManager {
             const centerX = (canvas.width / 2') / transform.a;
             ';
             // 警告アイコン
-            context.fillStyle = '#FF6666';''
-            context.font = 'bold 48px Arial';''
-            context.textAlign = 'center';''
-            context.textBaseline = 'middle';''
-            context.fillText('⚠️', centerX, 150);
+            context.fillStyle = '#FF6666';
+            context.font = 'bold 48px Arial';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText('⚠️', centerX, 150';
             ';
             // タイトル
-            context.fillStyle = '#FFFFFF';''
-            context.font = 'bold 28px Arial';''
-            context.fillText('データクリア確認', centerX, 200);
+            context.fillStyle = '#FFFFFF';
+            context.font = 'bold 28px Arial';
+            context.fillText('データクリア確認', centerX, 200';
             ';
             // 警告メッセージ
-            context.font = '18px Arial';''
-            context.fillStyle = '#FFCCCC';''
-            context.fillText('すべてのデータが削除されます。', centerX, 250);''
+            context.font = '18px Arial';
+            context.fillStyle = '#FFCCCC';
+            context.fillText('すべてのデータが削除されます。', centerX, 250';''
             context.fillText('この操作は取り消せません。', centerX, 280);
             
             // 削除データ詳細
@@ -165,16 +165,16 @@ export class MainMenuDialogManager {
             this.renderDataClearButtons(context);
             ';
             // 操作説明
-            context.fillStyle = '#AAAAAA';''
-            context.font = '14px Arial';''
-            context.textAlign = 'center';''
-            context.fillText('ESCでキャンセル', canvas.width / 2, canvas.height - 40);
+            context.fillStyle = '#AAAAAA';
+            context.font = '14px Arial';
+            context.textAlign = 'center';
+            context.fillText('ESCでキャンセル', canvas.width / 2, canvas.height - 40';
             ';
 
             context.restore();' }'
 
-        } catch (error) { this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {)'
-                context: 'DialogManager.renderDataClearConfirmation' ,});
+        } catch (error) { this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {''
+                context: 'DialogManager.renderDataClearConfirmation' ,}';
         }
     }
     
@@ -182,29 +182,29 @@ export class MainMenuDialogManager {
      * データクリア詳細を描画'
      */''
     renderDataClearDetails(context: CanvasRenderingContext2D): void { try {'
-            context.font = '16px Arial';''
-            context.fillStyle = '#CCCCCC';''
+            context.font = '16px Arial';
+            context.fillStyle = '#CCCCCC';
             context.textAlign = 'left';
             const detailX = 200;
             let detailY = 320;
             const lineHeight = 25;
 
-            context.fillText('• ユーザー名', detailX, detailY);
+            context.fillText('• ユーザー名', detailX, detailY';
 
             detailY += lineHeight;''
-            context.fillText('• 所持AP・TAP', detailX, detailY);
+            context.fillText('• 所持AP・TAP', detailX, detailY';
 
             detailY += lineHeight;''
-            context.fillText('• ハイスコア記録', detailX, detailY);
+            context.fillText('• ハイスコア記録', detailX, detailY';
 
             detailY += lineHeight;''
-            context.fillText('• 開放済みステージ', detailX, detailY);
+            context.fillText('• 開放済みステージ', detailX, detailY';
 
             detailY += lineHeight;''
-            context.fillText('• 所持アイテム', detailX, detailY);' }
+            context.fillText('• 所持アイテム', detailX, detailY';' }
 
-        } catch (error) { this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {)'
-                context: 'DialogManager.renderDataClearDetails' ,});
+        } catch (error) { this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {''
+                context: 'DialogManager.renderDataClearDetails' ,}';
         }
     }
     
@@ -219,7 +219,7 @@ export class MainMenuDialogManager {
             
             // 削除実行ボタン
             const deleteButtonX = canvas.width / 2 - buttonWidth - 15;''
-            context.fillStyle = '#CC0000';''
+            context.fillStyle = '#CC0000';
             context.fillRect(deleteButtonX, buttonY, buttonWidth, buttonHeight);
 
             context.strokeStyle = '#FFFFFF';
@@ -227,15 +227,15 @@ export class MainMenuDialogManager {
             context.lineWidth = 2;''
             context.strokeRect(deleteButtonX, buttonY, buttonWidth, buttonHeight);
 
-            context.fillStyle = '#FFFFFF';''
-            context.font = 'bold 16px Arial';''
-            context.textAlign = 'center';''
-            context.textBaseline = 'middle';''
-            context.fillText('削除実行', deleteButtonX + buttonWidth / 2, buttonY + buttonHeight / 2);
+            context.fillStyle = '#FFFFFF';
+            context.font = 'bold 16px Arial';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText('削除実行', deleteButtonX + buttonWidth / 2, buttonY + buttonHeight / 2';
             
             // キャンセルボタン
             const cancelButtonX = canvas.width / 2 + 15;''
-            context.fillStyle = '#666666';''
+            context.fillStyle = '#666666';
             context.fillRect(cancelButtonX, buttonY, buttonWidth, buttonHeight);
 
             context.strokeStyle = '#FFFFFF';
@@ -243,10 +243,10 @@ export class MainMenuDialogManager {
             context.lineWidth = 2;''
             context.strokeRect(cancelButtonX, buttonY, buttonWidth, buttonHeight);
 
-            context.fillStyle = '#FFFFFF';''
-            context.fillText('キャンセル', cancelButtonX + buttonWidth / 2, buttonY + buttonHeight / 2);' }
+            context.fillStyle = '#FFFFFF';
+            context.fillText('キャンセル', cancelButtonX + buttonWidth / 2, buttonY + buttonHeight / 2';' }
 
-        } catch (error) { this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {)'
+        } catch (error) { this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {''
                 context: 'DialogManager.renderDataClearButtons' ,});
         }
     }
@@ -267,10 +267,10 @@ export class MainMenuDialogManager {
             const centerX = (canvas.width / 2') / transform.a;
             ';
             // タイトル
-            context.fillStyle = '#FFFFFF';''
-            context.font = 'bold 32px Arial';''
-            context.textAlign = 'center';''
-            context.textBaseline = 'middle';''
+            context.fillStyle = '#FFFFFF';
+            context.font = 'bold 32px Arial';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
             context.fillText('操作説明', centerX, 80);
             
             // 操作説明内容
@@ -282,8 +282,8 @@ export class MainMenuDialogManager {
 
             context.restore();' }'
 
-        } catch (error) { this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {)'
-                context: 'DialogManager.renderControlsHelp' ,});
+        } catch (error) { this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {''
+                context: 'DialogManager.renderControlsHelp' ,}';
         }
     }
     
@@ -293,8 +293,8 @@ export class MainMenuDialogManager {
     renderControlsHelpContent(context: CanvasRenderingContext2D): void { try {
             const canvas = this.gameEngine.canvas as HTMLCanvasElement;
 
-            context.font = '18px Arial';''
-            context.textAlign = 'left';''
+            context.font = '18px Arial';
+            context.textAlign = 'left';
             context.textBaseline = 'top';
             
             const leftX = 100;
@@ -304,12 +304,12 @@ export class MainMenuDialogManager {
             const lineHeight = 30;
             ';
             // 左列：基本操作
-            context.fillStyle = '#FFFF99';''
-            context.font = 'bold 20px Arial';''
-            context.fillText('基本操作', leftX, leftY);
+            context.fillStyle = '#FFFF99';
+            context.font = 'bold 20px Arial';
+            context.fillText('基本操作', leftX, leftY';
             leftY += 35;
 
-            context.fillStyle = '#CCCCCC';''
+            context.fillStyle = '#CCCCCC';
             context.font = '16px Arial';
 
             const basicControls: string[] = ['';
@@ -329,12 +329,12 @@ export class MainMenuDialogManager {
             }');
             ';
             // 右列：ゲームのコツ
-            context.fillStyle = '#99FFFF';''
-            context.font = 'bold 20px Arial';''
-            context.fillText('ゲームのコツ', rightX, rightY);
+            context.fillStyle = '#99FFFF';
+            context.font = 'bold 20px Arial';
+            context.fillText('ゲームのコツ', rightX, rightY';
             rightY += 35;
 
-            context.fillStyle = '#CCCCCC';''
+            context.fillStyle = '#CCCCCC';
             context.font = '16px Arial';
 
             const gameTips: string[] = ['';
@@ -354,16 +354,16 @@ export class MainMenuDialogManager {
             }');
             ';
             // 泡の種類説明
-            context.fillStyle = '#FFCC99';''
-            context.font = 'bold 20px Arial';''
-            context.textAlign = 'center';''
-            context.fillText('泡の種類', canvas.width / 2, 380);
+            context.fillStyle = '#FFCC99';
+            context.font = 'bold 20px Arial';
+            context.textAlign = 'center';
+            context.fillText('泡の種類', canvas.width / 2, 380';
 
-            context.font = '14px Arial';''
-            context.textAlign = 'left';''
-            context.fillStyle = '#CCCCCC';''
-            context.fillText('普通(青) 石(灰) 鉄(茶) ダイヤ(白) ピンク(回復) 毒(緑) とげとげ(連鎖) 虹色(ボーナス) 時計(時停) S字(得点) ビリビリ(妨害) 逃げる(移動')', leftX, 410);''
-        } catch (error) { this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {)'
+            context.font = '14px Arial';
+            context.textAlign = 'left';
+            context.fillStyle = '#CCCCCC';
+            context.fillText('普通(青) 石(灰) 鉄(茶) ダイヤ(白) ピンク(回復) 毒(緑) とげとげ(連鎖) 虹色(ボーナス) 時計(時停) S字(得点) ビリビリ(妨害) 逃げる(移動')', leftX, 410';''
+        } catch (error) { this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {''
                 context: 'DialogManager.renderControlsHelpContent' ,});
         }
     }
@@ -379,7 +379,7 @@ export class MainMenuDialogManager {
             const buttonX = (canvas.width - buttonWidth') / 2;
             const y = buttonY || canvas.height - 100;
 
-            context.fillStyle = '#666666';''
+            context.fillStyle = '#666666';
             context.fillRect(buttonX, y, buttonWidth, buttonHeight);
 
             context.strokeStyle = '#FFFFFF';
@@ -387,14 +387,14 @@ export class MainMenuDialogManager {
             context.lineWidth = 2;''
             context.strokeRect(buttonX, y, buttonWidth, buttonHeight);
 
-            context.fillStyle = '#FFFFFF';''
-            context.font = 'bold 16px Arial';''
-            context.textAlign = 'center';''
-            context.textBaseline = 'middle';''
-            context.fillText('戻る', buttonX + buttonWidth / 2, y + buttonHeight / 2);' }
+            context.fillStyle = '#FFFFFF';
+            context.font = 'bold 16px Arial';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText('戻る', buttonX + buttonWidth / 2, y + buttonHeight / 2';' }
 
-        } catch (error) { this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {)'
-                context: 'DialogManager.renderBackButton' ,});
+        } catch (error) { this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {''
+                context: 'DialogManager.renderBackButton' ,}';
         }
     }
     
@@ -411,15 +411,15 @@ export class MainMenuDialogManager {
             playerData.ownedItems = [];
             ';
 
-            // ローカルストレージからも削除)'
+            // ローカルストレージからも削除''
             localStorage.removeItem('bubblePop_playerData'');
 
             console.log('All, player data, has been, cleared');
 
             return true;''
         } catch (error) {
-            this.errorHandler.handleError(error, 'DATA_CLEAR_ERROR', {)'
-                context: 'DialogManager.executeDataClear),' }
+            this.errorHandler.handleError(error, 'DATA_CLEAR_ERROR', {''
+                context: 'DialogManager.executeDataClear',' }
 
             }');
             return false;''

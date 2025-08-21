@@ -12,13 +12,13 @@ interface MockGameEngine { statisticsManager: MockStatisticsManager;
     seoMetaManager: MockSeoMetaManager | null;
     on: jest.Mock;
     off: jest.Mock;
-    emit: jest.Mock;
-   , isDebugMode: jest.Mock<boolean> }
+    emit: jest.Mock,
+    isDebugMode: jest.Mock<boolean> }
 interface MockNavigator { onLine: boolean;
-    userAgent: string;
-   , language: string }
-interface MockWindow { closed: boolean;
-   , close: jest.Mock }
+    userAgent: string,
+    language: string }
+interface MockWindow { closed: boolean,
+    close: jest.Mock }
 interface ShareData { type: string;
     score?: number;
     text?: string;
@@ -74,15 +74,15 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
         // GameEngineのモック
         mockGameEngine = {
             statisticsManager: { ,}
-                recordSocialEvent: jest.fn(); }
-            },
+                recordSocialEvent: jest.fn(); 
+    },
             localizationManager: { ''
-                getCurrentLanguage: jest.fn<string>(').mockReturnValue('ja);
-                translate: jest.fn<string>().mockImplementation((key: string) => key) }
-            };
-        seoMetaManager: { updateOpenGraphTags: jest.fn( };
-            on: jest.fn();
-           , off: jest.fn(),
+                getCurrentLanguage: jest.fn<string>().mockReturnValue('ja);
+                translate: jest.fn<string>().mockImplementation((key: string) => key) 
+    };
+        seoMetaManager: { updateOpenGraphTags: jest.fn( }
+            on: jest.fn(),
+    off: jest.fn(),
             emit: jest.fn(),
             isDebugMode: jest.fn<boolean>().mockReturnValue(false);
         };
@@ -91,8 +91,8 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
         mockNavigator = { onLine: true,''
             userAgent: 'Mozilla/5.0(Chrome/90.0)',
             language: 'ja-JP' ,};
-        Object.defineProperty(window, 'navigator', { value: mockNavigator,)'
-            writable: true)'),
+        Object.defineProperty(window, 'navigator', { value: mockNavigator,''
+            writable: true''),
         // WindowのモックSetup
         Object.defineProperty(window, 'location', {'
             value: {''
@@ -103,8 +103,8 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             writable: true);
         // Window.openのモック
         window.open = jest.fn().mockReturnValue({ )
-            closed: false);
-       , close: jest.fn(),' }'
+            closed: false),
+    close: jest.fn(),' }'
 
         } as unknown as Window') as any;
 
@@ -124,7 +124,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
 
             const platform = socialSharingManager.detectPlatform();' }'
 
-            expect(platform).toBe('twitter);' }
+            expect(platform).toBe('twitter';' }
 
         }');''
         test('Facebook アプリ内ブラウザを検出', () => {  ''
@@ -132,7 +132,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
 
             const platform = socialSharingManager.detectPlatform();' }'
 
-            expect(platform).toBe('facebook);' }
+            expect(platform).toBe('facebook';' }
 
         }');''
         test('URLパラメータからプラットフォームを検出', () => {  ''
@@ -140,19 +140,19 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
 
             const platform = socialSharingManager.detectPlatform();' }'
 
-            expect(platform).toBe('twitter);' }
+            expect(platform).toBe('twitter';' }
 
         }');''
         test('リファラーからプラットフォームを検出', () => { ''
-            Object.defineProperty(document, 'referrer', { : undefined)'
+            Object.defineProperty(document, 'referrer', { : undefined''
                 value: 'https://twitter.com/share', 
-                configurable: true),' }'
+                configurable: true',' }'
 
             }');''
             mockNavigator.userAgent = 'Mozilla/5.0(generic, browser)';
 
             const platform = socialSharingManager.detectPlatform();''
-            expect(platform).toBe('twitter);''
+            expect(platform).toBe('twitter';''
         }');
 
     }''
@@ -162,24 +162,24 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
                 text: 'テストメッセージ',
                 url: 'https://example.com',' }
 
-                type: 'score' }
-            };
+                type: 'score' 
+    };
             ';
 
             const url = socialSharingManager.generateTwitterShareUrl(shareData);''
             expect(url).toContain('https: //twitter.com/intent/tweet),
-            expect(url).toContain('text=);''
-            expect(url).toContain('url=https: //example.com),
+            expect(url).toContain('text=';''
+            expect(url).toContain('url=https: //example.com',
         }');''
         test('ハッシュタグが適切に生成される', () => {  const shareData: ShareData = {''
                 text: 'テストメッセージ',
                 type: 'score', }
-                isHighScore: true }
-            };
+                isHighScore: true 
+    };
             ';
 
             const hashtags = socialSharingManager.generateTwitterHashtags(shareData);''
-            expect(hashtags).toContain('#BubblePop);''
+            expect(hashtags).toContain('#BubblePop';''
             expect(hashtags).toContain('#Gaming);
 
             expect(hashtags.length).toBeLessThanOrEqual(2);''
@@ -190,8 +190,8 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
                 text: longText,
                 url: 'https://example.com',' }
 
-                type: 'score' }
-            };
+                type: 'score' 
+    };
             const url = socialSharingManager.generateTwitterShareUrl(shareData);''
             const urlParams = new URLSearchParams(url.split('? ')[1]');''
             const text = urlParams.get('text);
@@ -203,30 +203,30 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
                 text: 'テストメッセージ',
                 mentions: ['user1', '@user2],' }
 
-                type: 'achievement' }
-            };
+                type: 'achievement' 
+    };
             const url = socialSharingManager.generateTwitterShareUrl(shareData);''
             const urlParams = new URLSearchParams(url.split('? ')[1]');''
-            const text = urlParams.get('text);''
-            expect(text).toContain('@user1);''
-            expect(text).toContain('@user2);''
+            const text = urlParams.get('text';''
+            expect(text).toContain('@user1';''
+            expect(text).toContain('@user2';''
         }');''
         test('Twitter共有ウィンドウが開かれる', async () => {  : undefined'
             const shareData: ShareData = {''
                 text: 'テストメッセージ',
                 url: 'https://example.com',' }
 
-                type: 'score' }
-            };
+                type: 'score' 
+    };
             const result = await socialSharingManager.shareViaTwitterUrl(shareData);
 
             expect(result.success).toBe(true);''
-            expect(result.method).toBe('twitter-url);''
-            expect(result.platform).toBe('twitter);''
+            expect(result.method).toBe('twitter-url';''
+            expect(result.platform).toBe('twitter';''
             expect(window.open).toHaveBeenCalledWith()';
                 expect.stringContaining('twitter.com/intent/tweet''),
                 'twitter-share',
-                expect.stringContaining('width=550);''
+                expect.stringContaining('width=550';''
         }');
 
     }''
@@ -236,73 +236,73 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
                 title: 'テストタイトル',
                 url: 'https://example.com',' }
 
-                type: 'score' }
-            };
+                type: 'score' 
+    };
             ';
 
             const url = socialSharingManager.generateFacebookShareUrl(shareData);''
-            expect(url).toContain('facebook.com/sharer/sharer.php);''
+            expect(url).toContain('facebook.com/sharer/sharer.php';''
             expect(url).toContain('u=https: //example.com),
-            expect(url).toContain('t=テストタイトル);''
+            expect(url).toContain('t=テストタイトル';''
         }');''
         test('quote パラメータが設定される', () => {  const shareData: ShareData = {''
                 url: 'https://example.com',
                 quote: 'カスタム引用テキスト',' }
 
-                type: 'achievement' }
-            };
+                type: 'achievement' 
+    };
             ';
 
             const url = socialSharingManager.generateFacebookShareUrl(shareData);''
-            expect(url).toContain('quote=カスタム引用テキスト);''
+            expect(url).toContain('quote=カスタム引用テキスト';''
         }');''
         test('ハッシュタグが適切に設定される', () => {  const shareData: ShareData = {''
                 url: 'https://example.com',
                 hashtag: '#CustomHashtag',' }
 
-                type: 'score' }
-            };
+                type: 'score' 
+    };
             ';
 
             const url = socialSharingManager.generateFacebookShareUrl(shareData);''
-            expect(url).toContain('hashtag=CustomHashtag);''
+            expect(url).toContain('hashtag=CustomHashtag';''
         }');''
         test('デフォルトハッシュタグが設定される', () => {  const shareData: ShareData = {''
                 url: 'https://example.com',' }
 
-                type: 'achievement' }
-            };
+                type: 'achievement' 
+    };
             ';
 
             const url = socialSharingManager.generateFacebookShareUrl(shareData);''
-            expect(url).toContain('hashtag=BubblePopAchievement);''
+            expect(url).toContain('hashtag=BubblePopAchievement';''
         }');''
         test('Facebook Dialog modeが動作する', () => {  const shareData: ShareData = {''
                 url: 'https://example.com',' }
 
-                title: 'テスト' }
-            };
+                title: 'テスト' 
+    };
             const options: ShareOptions = { mode: 'dialog', appId: 'test123' ,}
 
             const url = socialSharingManager.generateFacebookShareUrl(shareData, options);''
-            expect(url).toContain('facebook.com/dialog/share);''
-            expect(url).toContain('app_id=test123);''
+            expect(url).toContain('facebook.com/dialog/share';''
+            expect(url).toContain('app_id=test123';''
         }');''
         test('Facebook共有ウィンドウが開かれる', async () => {  const shareData: ShareData = {''
                 title: 'テストタイトル',
                 url: 'https://example.com',' }
 
-                type: 'score' }
-            };
+                type: 'score' 
+    };
             const result = await socialSharingManager.shareViaFacebookUrl(shareData);
 
             expect(result.success).toBe(true);''
-            expect(result.method).toBe('facebook-url);''
-            expect(result.platform).toBe('facebook);''
+            expect(result.method).toBe('facebook-url';''
+            expect(result.platform).toBe('facebook';''
             expect(window.open).toHaveBeenCalledWith()';
                 expect.stringContaining('facebook.com/sharer''),
                 'facebook-share',
-                expect.stringContaining('width=626);''
+                expect.stringContaining('width=626';''
         }');
 
     }''
@@ -312,8 +312,8 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
                 type: 'score',
                 score: 1500,
                 title: 'テストタイトル', }
-                url: window.location.href }
-            };
+                url: window.location.href 
+    };
             ';
 
             socialSharingManager.updateOGTagsForFacebook(shareData);''
@@ -323,23 +323,23 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
                     description: expect.stringContaining('1,500点を達成''),
                     url: shareData.url,
                     type: 'website' ,});
-            );''
+            ';''
         }');''
         test('実績共有時のOGタグ更新', () => {  const shareData: ShareData = {''
                 type: 'achievement',
                 name: 'テスト実績',
                 title: 'テストタイトル', }
-                url: window.location.href }
-            };
+                url: window.location.href 
+    };
             ';
 
             socialSharingManager.updateOGTagsForFacebook(shareData);''
             expect(mockGameEngine.seoMetaManager!.updateOpenGraphTags).toHaveBeenCalledWith(';
                 expect.objectContaining({ ')'
                     title: 'BubblePop - 実績「テスト実績」解除！''),
-                    description: expect.stringContaining('テスト実績);
-                   , url: shareData.url ,});
-            );''
+                    description: expect.stringContaining('テスト実績),
+    url: shareData.url ,});
+            ';''
         }');''
         test('SEOMetaManagerが無い場合のエラーハンドリング', () => {  mockGameEngine.seoMetaManager = null; }
 
@@ -356,16 +356,16 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
                 type: 'score',
                 score: 1500,' }'
 
-                stage: 'normal' }
-            };
+                stage: 'normal' 
+    };
             // ShareContentGeneratorのモック
             socialSharingManager.shareContentGenerator = { ''
-                generateScoreMessage: jest.fn<OptimizedMessage>(').mockReturnValue({''
+                generateScoreMessage: jest.fn<OptimizedMessage>().mockReturnValue({''
                     message: 'BubblePopで1,500点を達成！ #BubblePop #Gaming',
-                    platform: 'twitter',)';
+                    platform: 'twitter','';
                     language: 'ja',' }
 
-                    metadata: { optimized: true })');
+                    metadata: { optimized: true }'');
             };
 
             const result = socialSharingManager.generateOptimizedMessage(shareData, 'twitter) as OptimizedMessage;
@@ -374,7 +374,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
 
             expect(result.optimized).toBe(true);''
             expect(socialSharingManager.shareContentGenerator.generateScoreMessage).toHaveBeenCalledWith(';
-                shareData,)';
+                shareData,'';
                 'twitter');''
         }');''
         test('ShareContentGeneratorが無い場合のフォールバック', () => {  socialSharingManager.shareContentGenerator = null; }
@@ -394,12 +394,12 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
                 type: 'score',
                 score: 1500,' }'
 
-                text: 'テストメッセージ' }
-            };
+                text: 'テストメッセージ' 
+    };
             const options: ShareOptions = { platform: 'twitter', forceExternal: true ,}
 
             const result = await socialSharingManager.share(shareData, options);''
-            expect(result.method).toBe('twitter-url);''
+            expect(result.method).toBe('twitter-url';''
             expect(result.platform).toBe('twitter);
 
             expect(window.open).toHaveBeenCalled();''
@@ -409,9 +409,9 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             const shareData: ShareData = { type: 'score', score: 1000 ,}
             // ShareContentGeneratorのモック
             socialSharingManager.shareContentGenerator = { ''
-                generateScoreMessage: jest.fn<OptimizedMessage>(').mockReturnValue({''
+                generateScoreMessage: jest.fn<OptimizedMessage>().mockReturnValue({''
                     message: '最適化されたメッセージ',
-                    platform: 'generic',)';
+                    platform: 'generic','';
                     language: 'ja', }
                     metadata: { optimized: true });
     });
@@ -430,8 +430,8 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
                 type: 'score',
                 score: 1500,' }'
 
-                text: 'テストメッセージ' }
-            };
+                text: 'テストメッセージ' 
+    };
             ';
 
             await socialSharingManager.shareViaTwitterUrl(shareData);''
@@ -440,7 +440,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
                 expect.objectContaining({ hasText: true)'
                    , hasUrl: false,')';
                     dataType: 'score'),
-            );' }'
+            ';' }'
 
         }');''
         test('Facebook共有統計が記録される', async () => {  const shareData: ShareData = {''
@@ -457,7 +457,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
                 expect.objectContaining({ hasUrl: true)'
                    , hasTitle: true,')';
                     dataType: 'achievement'),
-            );' }'
+            ';' }'
 
         }');''
         test('パフォーマンス統計が更新される', () => {  ''
@@ -478,7 +478,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             const url = socialSharingManager.generateTwitterShareUrl(shareData);
             // フォールバックURLが生成されることを確認' }'
 
-            expect(url).toContain('twitter.com/intent/tweet);' }
+            expect(url).toContain('twitter.com/intent/tweet';' }
 
         }');''
         test('Facebook URL生成エラー時のフォールバック', () => {  // 不正なデータでエラーを発生させる
@@ -487,7 +487,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             const url = socialSharingManager.generateFacebookShareUrl(shareData);
             // フォールバックURLが生成されることを確認' }'
 
-            expect(url).toContain('facebook.com/sharer);' }
+            expect(url).toContain('facebook.com/sharer';' }
 
         }');''
         test('ポップアップブロック時のエラーハンドリング', async () => {  // window.openがnullを返す場合をシミュレート
@@ -500,7 +500,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
 
             expect(result.success).toBe(false);''
             expect(result.error).toContain('ポップアップがブロックされました);
-        });
+        }';
 
     }''
 }');

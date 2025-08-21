@@ -2,10 +2,10 @@
  * Game Engine Initializer
  * ゲームエンジンの初期化・設定・統合機能を担当
  */
-// import { getErrorHandler  } from '../../utils/ErrorHandler.js';''
-// import { getPerformanceOptimizer  } from '../../utils/PerformanceOptimizer.js';''
-// import { getMemoryManager  } from '../../utils/MemoryManager.js';''
-// import { getPoolManager  } from '../../utils/ObjectPool.js';''
+// import { getErrorHandler  } from '../../utils/ErrorHandler.js';
+// import { getPerformanceOptimizer  } from '../../utils/PerformanceOptimizer.js';
+// import { getMemoryManager  } from '../../utils/MemoryManager.js';
+// import { getPoolManager  } from '../../utils/ObjectPool.js';
 // import { getSEOMonitor  } from '../../seo/SEOMonitor.js';
 
 interface GameEngine { sceneManager?: any;
@@ -32,7 +32,7 @@ export class GameEngineInitializer {
      * ブラウザ互換性のチェック
      */''
     checkBrowserCompatibility()';
-            canvas: !!document.createElement('canvas).getContext,
+            canvas: !!document.createElement('canvas'.getContext,
             audio: !!window.AudioContext || !!(window, as any').webkitAudioContext;
             requestAnimationFrame: !!window.requestAnimationFrame,
             localStorage: !!window.localStorage,
@@ -47,7 +47,7 @@ export class GameEngineInitializer {
 
         }
 
-            console.warn('[GameEngineInitializer] Unsupported features:', unsupportedFeatures); }
+            console.warn('[GameEngineInitializer] Unsupported features:', unsupportedFeatures'; }
         }
 
         console.log('[GameEngineInitializer] Browser, compatibility check, completed');
@@ -80,7 +80,7 @@ export class GameEngineInitializer {
                 import('../../scenes/ShopScene.js''),
                 import('../../scenes/UserInfoScene.js''),
                 import('../../scenes/SettingsScene.js''),]';
-                import('../../scenes/HelpScene.js)']';
+                import('../../scenes/HelpScene.js'']';
             ]');
             ';
             // シーンを登録
@@ -101,7 +101,7 @@ export class GameEngineInitializer {
     /**
      * ソーシャル機能の初期化
      */
-    initializeSocialFeatures(): void { if (this.gameEngine.socialSharingManager? .initialize) {'
+    initializeSocialFeatures(): void { if (this.gameEngine.socialSharingManager?.initialize) {'
             try {'
                 this.gameEngine.socialSharingManager.initialize()';
                 console.log('[GameEngineInitializer] Social, features initialized');' }
@@ -113,7 +113,7 @@ export class GameEngineInitializer {
     /**
      * オーディオシステムの初期化
      */
-    async initializeAudioSystem(): Promise<void> { if (this.gameEngine.audioManager? .initialize) {'
+    async initializeAudioSystem(): Promise<void> { if (this.gameEngine.audioManager?.initialize) {'
             try {'
                 await this.gameEngine.audioManager.initialize();
 
@@ -139,7 +139,7 @@ export class GameEngineInitializer {
     /**
      * リソースの破棄
      */'
-    destroy(): void { if (this.seoMonitor? .stopMonitoring) {''
+    destroy(): void { if (this.seoMonitor?.stopMonitoring) {''
             this.seoMonitor.stopMonitoring()';
         console.log('[GameEngineInitializer] Destroyed''); }
 }

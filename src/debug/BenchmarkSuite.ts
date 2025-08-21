@@ -6,8 +6,8 @@
  */
 
 //, TODO: Import these once they are converted to TypeScript
-// import { BenchmarkExecutor  } from './benchmark-suite/BenchmarkExecutor';''
-// import { BenchmarkResultAnalyzer  } from './benchmark-suite/BenchmarkResultAnalyzer';''
+// import { BenchmarkExecutor  } from './benchmark-suite/BenchmarkExecutor';
+// import { BenchmarkResultAnalyzer  } from './benchmark-suite/BenchmarkResultAnalyzer';
 // import { BenchmarkReporter  } from './benchmark-suite/BenchmarkReporter';
 
 // Temporary stub implementations until the actual modules are converted
@@ -51,9 +51,9 @@ interface GameEngine { canvas?: HTMLCanvasElement;
     audioManager?: { getActiveNodeCount(): number | undefined; }
 
 interface BenchmarkTest { name: string,
-    category: string;
-   , description: string,
-    test: (option;s?: BenchmarkOptions') => Promise<BenchmarkResult>;
+    category: string,
+    description: string,
+    test: (options?: BenchmarkOptions') => Promise<BenchmarkResult>;
     baseline: Record<string, number> }
 }
 
@@ -97,48 +97,48 @@ interface BenchmarkResult { success: boolean,
 ';
 
 interface ComparisonResult { ''
-    status: 'pass' | 'warning' | 'fail';
-   , overallScore: number }
+    status: 'pass' | 'warning' | 'fail',
+    overallScore: number }
 
 interface SuiteResult { results: Record<string, BenchmarkResult>;
     summary: BenchmarkSummary;
     totalExecutionTime: number;
-    timestamp: number;
-   , environment: EnvironmentInfo
+    timestamp: number,
+    environment: EnvironmentInfo
     ,}
 
 interface BenchmarkSummary { total: number;
     passed: number;
     failed: number;
-    warnings: number;
-   , categories: Record<string, CategoryStats>;
+    warnings: number,
+    categories: Record<string, CategoryStats>;
     performance: PerformanceStats
     ,}
 
 interface CategoryStats { passed: number;
-    failed: number;
-   , warnings: number }
+    failed: number,
+    warnings: number }
 
 interface PerformanceStats { avgExecutionTime: number;
     totalExecutionTime: number;
-    regressions: string[];
-   , improvements: string[] }
+    regressions: string[],
+    improvements: string[] }
 
 interface EnvironmentInfo { userAgent: string;
     platform: string;
     language: string;
     hardwareConcurrency: number;
     memory: MemoryInfo | null;
-    screen: ScreenInfo;
-   , timestamp: number }
+    screen: ScreenInfo,
+    timestamp: number }
 
 interface MemoryInfo { usedJSHeapSize: number;
-    totalJSHeapSize: number;
-   , jsHeapSizeLimit: number }
+    totalJSHeapSize: number,
+    jsHeapSizeLimit: number }
 
 interface ScreenInfo { width: number;
-    height: number;
-   , pixelRatio: number }
+    height: number,
+    pixelRatio: number }
 
 interface ExecutorConfig { [key: string]: any, }
 
@@ -189,94 +189,94 @@ export class BenchmarkSuite {
         this.loadBaselines();
         this.setupPerformanceObserver(); }
 
-    private setupBenchmarks(''';
+    private setupBenchmarks('''
         this.benchmarks.set('rendering', { ''
-            name: 'Rendering Performance',)';
+            name: 'Rendering Performance','';
             category: 'graphics',')';
-            description: 'レンダリングパフォーマンスの測定');
-           , test: this.benchmarkRendering.bind(this), }
+            description: 'レンダリングパフォーマンスの測定'),
+    test: this.benchmarkRendering.bind(this), }
 
             baseline: { avgFrameTime: 16.67, minFPS: 45 ,}''
         }');
 
         this.benchmarks.set('bubblePhysics', { ''
-            name: 'Bubble Physics',)';
+            name: 'Bubble Physics','';
             category: 'physics',')';
-            description: 'バブル物理演算のパフォーマンス');
-           , test: this.benchmarkBubblePhysics.bind(this), }
+            description: 'バブル物理演算のパフォーマンス'),
+    test: this.benchmarkBubblePhysics.bind(this), }
 
             baseline: { avgTimePerBubble: 0.1, maxBubbles: 100 ,}''
         }');
 
         this.benchmarks.set('particleEffects', { ''
-            name: 'Particle Effects',)';
+            name: 'Particle Effects','';
             category: 'effects',')';
-            description: 'パーティクルエフェクトのパフォーマンス');
-           , test: this.benchmarkParticleEffects.bind(this), }
+            description: 'パーティクルエフェクトのパフォーマンス'),
+    test: this.benchmarkParticleEffects.bind(this), }
 
             baseline: { avgUpdateTime: 2.0, maxParticles: 500 ,}''
         }');
 
         this.benchmarks.set('memoryAllocation', { ''
-            name: 'Memory Allocation',)';
+            name: 'Memory Allocation','';
             category: 'memory',')';
-            description: 'メモリ割り当てパフォーマンス');
-           , test: this.benchmarkMemoryAllocation.bind(this), }
+            description: 'メモリ割り当てパフォーマンス'),
+    test: this.benchmarkMemoryAllocation.bind(this), }
 
             baseline: { allocationRate: 1000, gcFrequency: 5 ,}''
         }');
 
         this.benchmarks.set('audioProcessing', { ''
-            name: 'Audio Processing',)';
+            name: 'Audio Processing','';
             category: 'audio',')';
-            description: '音声処理のパフォーマンス');
-           , test: this.benchmarkAudioProcessing.bind(this), }
+            description: '音声処理のパフォーマンス'),
+    test: this.benchmarkAudioProcessing.bind(this), }
 
             baseline: { latency: 100, concurrentSources: 10 ,}''
         }');
 
         this.benchmarks.set('inputLatency', { ''
-            name: 'Input Latency',)';
+            name: 'Input Latency','';
             category: 'input',')';
-            description: '入力応答性の測定');
-           , test: this.benchmarkInputLatency.bind(this), }
+            description: '入力応答性の測定'),
+    test: this.benchmarkInputLatency.bind(this), }
 
             baseline: { avgLatency: 50, maxLatency: 100 ,}''
         }');
 
         this.benchmarks.set('sceneTransition', { ''
-            name: 'Scene Transition',)';
+            name: 'Scene Transition','';
             category: 'system',')';
-            description: 'シーン遷移のパフォーマンス');
-           , test: this.benchmarkSceneTransition.bind(this), }
+            description: 'シーン遷移のパフォーマンス'),
+    test: this.benchmarkSceneTransition.bind(this), }
 
             baseline: { transitionTime: 500, memoryCleanup: 95 ,}''
         }');
 
         this.benchmarks.set('dataProcessing', { ''
-            name: 'Data Processing',)';
+            name: 'Data Processing','';
             category: 'data',')';
-            description: 'データ処理のパフォーマンス');
-           , test: this.benchmarkDataProcessing.bind(this), }
+            description: 'データ処理のパフォーマンス'),
+    test: this.benchmarkDataProcessing.bind(this), }
 
             baseline: { processingRate: 10000, serializationTime: 100 ,}''
         }');
 ';
         // ストレステスト
         this.benchmarks.set('stressTest', { ''
-            name: 'Stress Test',)';
+            name: 'Stress Test','';
             category: 'stress',')';
-            description: '高負荷時のシステム安定性');
-           , test: this.benchmarkStressTest.bind(this), }
+            description: '高負荷時のシステム安定性'),
+    test: this.benchmarkStressTest.bind(this), }
 
             baseline: { stabilityScore: 90, recoveryTime: 2000 ,}''
         }');
 
         this.benchmarks.set('memoryStress', { ''
-            name: 'Memory Stress',)';
+            name: 'Memory Stress','';
             category: 'stress',')';
-            description: 'メモリ負荷テスト');
-           , test: this.benchmarkMemoryStress.bind(this), }
+            description: 'メモリ負荷テスト'),
+    test: this.benchmarkMemoryStress.bind(this), }
             baseline: { maxMemoryUsage: 200, leakRate: 0 ,});
     }
 
@@ -308,14 +308,14 @@ export class BenchmarkSuite {
 
         }
 
-                    if(entry.name.startsWith('benchmark-) { }'
+                    if(entry.name.startsWith('benchmark-' { }'
                         this.recordPerformanceEntry(entry); }
 });''
             }');
 ';
 
             this.performanceObserver.observe({ ')'
-                entryTypes: ['measure', 'navigation', 'resource] });
+                entryTypes: ['measure', 'navigation', 'resource]});
         }
     }
 
@@ -327,8 +327,8 @@ export class BenchmarkSuite {
             }
             this.currentBenchmark.performanceEntries.push({ name: entry.name)
                , duration: entry.duration,);
-                startTime: entry.startTime);
-               , timestamp: Date.now( ,});
+                startTime: entry.startTime),
+    timestamp: Date.now( ,});
         }
     }
 
@@ -338,7 +338,7 @@ export class BenchmarkSuite {
 
         }
 
-            throw new Error('Benchmarks, are already, running); }'
+            throw new Error('Benchmarks, are already, running'; }'
         }
 
         this.isRunning = true;
@@ -369,8 +369,8 @@ export class BenchmarkSuite {
             const suiteResult: SuiteResult = { results: results,
                 summary: this.generateSummary(results);
                 totalExecutionTime: totalTime;
-                timestamp: Date.now();
-               , environment: this.captureEnvironment( ,};
+                timestamp: Date.now(),
+    environment: this.captureEnvironment( ,};
 
             this.results.set(Date.now(), suiteResult);
             return suiteResult;
@@ -386,25 +386,25 @@ export class BenchmarkSuite {
     private generateSummary(results: Record<string, BenchmarkResult>): BenchmarkSummary { const summary: BenchmarkSummary = {
             total: Object.keys(results).length;
             passed: 0;
-            failed: 0;
-           , warnings: 0, }
+            failed: 0,
+    warnings: 0, }
             categories: {};
             performance: { avgExecutionTime: 0;
                 totalExecutionTime: 0;
-                regressions: [];
-               , improvements: [] }
-        };
+                regressions: [],
+    improvements: [] 
+    };
         let totalExecutionTime = 0;
 
         Object.entries(results).forEach(([name, result]) => {  ''
-            const category = result.benchmark? .category || 'other';
+            const category = result.benchmark?.category || 'other';
              }
             if (!summary.categories[category]) { : undefined 
                 summary.categories[category] = { passed: 0, failed: 0, warnings: 0 ,}
 
             if(result.success) {'
 
-                if(result.comparison? .status === 'fail) {'
+                if(result.comparison?.status === 'fail' {'
                     summary.failed++;
 
                     summary.categories[category].failed++;
@@ -441,12 +441,12 @@ export class BenchmarkSuite {
             platform: navigator.platform;
             language: navigator.language;
             hardwareConcurrency: navigator.hardwareConcurrency;
-            memory: memoryInfo;
-           , screen: {
-                width: screen.width;
-               , height: screen.height, };
-                pixelRatio: window.devicePixelRatio }
-            };
+            memory: memoryInfo,
+    screen: {
+                width: screen.width,
+    height: screen.height, };
+                pixelRatio: window.devicePixelRatio 
+    };
             timestamp: Date.now();
         }
 ';
@@ -454,14 +454,14 @@ export class BenchmarkSuite {
     private async benchmarkRendering(options: BenchmarkOptions = { )): Promise<BenchmarkResult> {
         const iterations = options.iterations || 60;
 
-        const canvas = this.gameEngine? .canvas;''
+        const canvas = this.gameEngine?.canvas;''
         const ctx = canvas?.getContext('2d);
 
         if(!canvas || !ctx) {', ';
 
         }
 
-            throw new Error('Canvas, not available, for rendering, benchmark); }'
+            throw new Error('Canvas, not available, for rendering, benchmark'; }'
         }
  : undefined
         const frameTimes: number[] = [],
@@ -486,10 +486,10 @@ export class BenchmarkSuite {
 
         const avgFrameTime = frameTimes.reduce((sum, time) => sum + time, 0) / frameTimes.length;
         return { avgFrameTime,
-            fps: 1000 / avgFrameTime;
-           , minFPS: 1000 / Math.max(...frameTimes), };
-            success: true }
-        }
+            fps: 1000 / avgFrameTime,
+    minFPS: 1000 / Math.max(...frameTimes), };
+            success: true 
+    }
 
     private async benchmarkBubblePhysics(options: BenchmarkOptions = { ): Promise<BenchmarkResult> {
         const bubbleCount = options.bubbleCount || 50;
@@ -514,8 +514,8 @@ export class BenchmarkSuite {
         return { bubbleCount,
             avgUpdateTime,
             avgTimePerBubble: avgUpdateTime / bubbleCount, };
-            success: true }
-        }
+            success: true 
+    }
 
     // 個別ベンチマークメソッド（簡略化版）
     private async benchmarkParticleEffects(options: BenchmarkOptions = { ): Promise<BenchmarkResult> { }
@@ -572,8 +572,8 @@ export class BenchmarkSuite {
     updateBaseline(benchmarkName: string, results: BenchmarkResult): void { if (results.success) {
             this.baselines.set(benchmarkName, {)
                 ...results);
-                timestamp: Date.now();
-               , environment: this.captureEnvironment( ,});
+                timestamp: Date.now(),
+    environment: this.captureEnvironment( ,});
             this.saveBaselines();
         }
     }

@@ -3,27 +3,27 @@
  * Issue #131 対応
  */
 
-import { promises, as fs  } from 'fs';''
+import { promises, as fs  } from 'fs';
 import path from 'path';
 
 // Type definitions
 interface ClassDefinition { name: string,
-    file: string;
-   , line: number,
-    type: 'export class' | 'class';
-   , relativeFile: string ,}
+    file: string,
+    line: number,
+    type: 'export class' | 'class',
+    relativeFile: string ,}
 
 interface DuplicateFile { fileName: string;
-    count: number;
-   , paths: string[] }
+    count: number,
+    paths: string[] }
 
 interface DuplicateClass { className: string;
-    count: number;
-   , locations: ClassDefinition[]
+    count: number,
+    locations: ClassDefinition[]
     }
 
-interface ImpactAnalysis { scope: string;
-   , potential_conflicts: string,
+interface ImpactAnalysis { scope: string,
+    potential_conflicts: string,
     maintenance_difficulty: 'low' | 'medium' | 'high',
     testing_complexity?: 'low' | 'medium' | 'high'; }
 ';
@@ -36,22 +36,22 @@ interface Conflict { ''
 
     paths?: string[];''
    , priority: 'low' | 'medium' | 'high',
-    riskLevel: 'low' | 'medium' | 'high';
-   , impactAnalysis: ImpactAnalysis
+    riskLevel: 'low' | 'medium' | 'high',
+    impactAnalysis: ImpactAnalysis
     ,}
 
 interface ConflictReport { analysis_date: string;
     project: string;
     total_files_analyzed: number;
-    total_classes_found: number;
-   , duplications: {
+    total_classes_found: number,
+    duplications: {
         class_name_duplication;s: number;
         file_name_duplications: number;
-        high_priority_conflicts: number;
-       , medium_priority_conflicts: number };
-    conflicts: Conflict[];
-   , summary: { most_critical: string[];
-       , recommendations: string[] }
+        high_priority_conflicts: number,
+    medium_priority_conflicts: number };
+    conflicts: Conflict[],
+    summary: { most_critical: string[],
+    recommendations: string[] }
 
 export class DuplicationAnalyzer {
     private sourceDir: string;
@@ -60,7 +60,7 @@ export class DuplicationAnalyzer {
     private duplicateFiles: DuplicateFile[];
     private, duplicateClasses: DuplicateClass[]';
 
-    constructor(sourceDir: string = 'src) {'
+    constructor(sourceDir: string = 'src' {'
         this.sourceDir = sourceDir;
         this.files = [];
         this.classes = [];
@@ -120,11 +120,11 @@ export class DuplicationAnalyzer {
             const lineNumber = this.getLineNumber(content, match.index);
             
             classes.push({)
-                name: className)';
-               , file: filePath,')';
+                name: className)',
+    file: filePath,')';
                 line: lineNumber'),
-                type: match[0].includes('export'') ? 'export class' : 'class';
-               , relativeFile: path.relative(process.cwd(), filePath });
+                type: match[0].includes('export'') ? 'export class' : 'class',
+    relativeFile: path.relative(process.cwd(), filePath });
         }
 
         return classes;
@@ -134,7 +134,7 @@ export class DuplicationAnalyzer {
      * 文字位置から行番号を計算
      */'
     private getLineNumber(content: string, index: number): number { ''
-        return content.substring(0, index).split('\n).length; }'
+        return content.substring(0, index).split('\n'.length; }'
 
     /**
      * 重複ファイル名を検出
@@ -155,8 +155,8 @@ export class DuplicationAnalyzer {
         this.duplicateFiles = Array.from(fileNames.entries();
             .filter(([name, paths]) => paths.length > 1);
             .map(([name, paths]) => ({ fileName: name,
-                count: paths.length);
-               , paths: paths ,});
+                count: paths.length),
+    paths: paths ,});
         return this.duplicateFiles;
     }
 
@@ -179,8 +179,8 @@ export class DuplicationAnalyzer {
         this.duplicateClasses = Array.from(classNames.entries();
             .filter(([name, classes]) => classes.length > 1);
             .map(([name, classes]) => ({ className: name,
-                count: classes.length);
-               , locations: classes ,});
+                count: classes.length),
+    locations: classes ,});
         return this.duplicateClasses;
     }
 
@@ -195,11 +195,11 @@ export class DuplicationAnalyzer {
                 name: duplicate.className;
                 count: duplicate.count;
                 locations: duplicate.locations;
-                priority: this.calculatePriority(duplicate);
-               , riskLevel: this.calculateRiskLevel(duplicate);
+                priority: this.calculatePriority(duplicate),
+    riskLevel: this.calculateRiskLevel(duplicate);
         ,}
-                impactAnalysis: this.analyzeImpact(duplicate); }
-            };
+                impactAnalysis: this.analyzeImpact(duplicate); 
+    };
             conflicts.push(conflict);
         }
 ';
@@ -207,8 +207,8 @@ export class DuplicationAnalyzer {
         for(const, duplicate of, this.duplicateFiles) {'
             const conflict: Conflict = {''
                 type: 'file';
-                name: duplicate.fileName;
-               , count: duplicate.count,
+                name: duplicate.fileName,
+    count: duplicate.count,
                 paths: duplicate.paths,
                 priority: 'medium',
                 riskLevel: 'low',
@@ -217,8 +217,8 @@ export class DuplicationAnalyzer {
                     potential_conflicts: 'import_confusion';
         ,}
 
-                    maintenance_difficulty: 'medium' }
-};
+                    maintenance_difficulty: 'medium' 
+    };
             conflicts.push(conflict);
         }
 
@@ -229,8 +229,8 @@ export class DuplicationAnalyzer {
      * 優先度を計算'
      */''
     private calculatePriority(duplicate: DuplicateClass): 'low' | 'medium' | 'high' { ''
-        if(duplicate.count >= 3) return 'high';''
-        if(duplicate.count === 2) return 'medium';''
+        if(duplicate.count >= 3) return 'high';
+        if(duplicate.count === 2) return 'medium';
         return 'low'; }
 
     /**
@@ -269,14 +269,14 @@ export class DuplicationAnalyzer {
      * スコープを決定'
      */''
     private determineScope(directories: string[]): string { ''
-        const hasCore = directories.some(dir => dir.includes('/core/));''
-        const hasUI = directories.some(dir => dir.includes('/ui/'') || dir.includes('/scenes/));''
+        const hasCore = directories.some(dir => dir.includes('/core/)';''
+        const hasUI = directories.some(dir => dir.includes('/ui/'') || dir.includes('/scenes/)';''
         const hasDebug = directories.some(dir => dir.includes('/debug/);
 
-        if(hasCore && hasUI) return 'core_ui_components';''
-        if(hasCore) return 'core_system';''
-        if(hasUI) return 'ui_components';''
-        if(hasDebug) return 'debug_system';''
+        if(hasCore && hasUI) return 'core_ui_components';
+        if(hasCore) return 'core_system';
+        if(hasUI) return 'ui_components';
+        if(hasDebug) return 'debug_system';
         return 'mixed_components';
 
     /**
@@ -286,20 +286,20 @@ export class DuplicationAnalyzer {
         ';
 
         return { ''
-            analysis_date: new Date().toISOString(').split('T'')[0],
+            analysis_date: new Date().toISOString().split('T'')[0],
             project: 'awaputi';
-            total_files_analyzed: this.files.length;
-           , total_classes_found: this.classes.length,
+            total_files_analyzed: this.files.length,
+    total_classes_found: this.classes.length,
             duplications: {''
                 class_name_duplications: conflicts.filter(c => c.type === 'class'').length,
                 file_name_duplications: conflicts.filter(c => c.type === 'file'').length,
                 high_priority_conflicts: conflicts.filter(c => c.priority === 'high'').length,' };
 
-                medium_priority_conflicts: conflicts.filter(c => c.priority === 'medium'').length }
-            };
+                medium_priority_conflicts: conflicts.filter(c => c.priority === 'medium'').length 
+    };
             conflicts: conflicts,
             summary: { most_critical: conflicts''
-                    .filter(c => c.priority === 'high)'';
+                    .filter(c => c.priority === 'high''';
                     .map(c => c.name),
                 recommendations: ['';
                     'DialogManager系クラスの即座の名前解決',

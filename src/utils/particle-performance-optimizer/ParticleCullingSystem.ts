@@ -11,8 +11,8 @@ interface CullingConfig { distanceCulling: boolean,
     ageCulling: boolean;
     maxCullingDistance: number;
     nearCullingDistance: number;
-    maxAge: number;
-   , ageBasedCulling: boolean ,}
+    maxAge: number,
+    ageBasedCulling: boolean ,}
 
 interface ImportanceFactors {
     distance: { weigh;t: number;, inverted: boolean },
@@ -26,15 +26,15 @@ interface ImportanceFactors {
 interface ImportanceThresholds { veryHigh: number,
     high: number;
     medium: number;
-    low: number;
-   , veryLow: number ,}
+    low: number,
+    veryLow: number ,}
 
 interface ImportanceScoring { enabled: boolean;
-    factors: ImportanceFactors;
-   , scoreCache: Map<string, number>;
+    factors: ImportanceFactors,
+    scoreCache: Map<string, number>;
     cacheValidFrames: number;
-    currentFrame: number;
-   , thresholds: ImportanceThresholds
+    currentFrame: number,
+    thresholds: ImportanceThresholds
     ,}
 
 interface CullingStats { totalParticles: number;
@@ -46,8 +46,8 @@ interface CullingStats { totalParticles: number;
     finalCount: number;
     cullingEfficiency: number;
     cullingTime: number;
-    averageCullingTime: number;
-   , scoringTime: number }
+    averageCullingTime: number,
+    scoringTime: number }
 
 interface OcclusionSystem { enabled: boolean;
     occluders: Set<OccluderBounds>;
@@ -57,19 +57,19 @@ interface OcclusionSystem { enabled: boolean;
 
 interface OccluderBounds { x: number;
     y: number;
-    width: number;
-   , height: number }
+    width: number,
+    height: number }
 
 interface CameraInfo { x: number;
     y: number;
-    width: number;
-   , height: number }
+    width: number,
+    height: number }
 
-interface ParticleVelocity { x: number;
-   , y: number }
+interface ParticleVelocity { x: number,
+    y: number }
 
-interface CullableParticle { x: number;
-   , y: number;
+interface CullableParticle { x: number,
+    y: number;
     size?: number;
     birthTime?: number;
     opacity?: number;
@@ -109,8 +109,8 @@ export class ParticleCullingSystem {
             // Age thresholds
            , maxAge: config.maxAge || 10.0, // seconds
     }
-            ageBasedCulling: config.ageBasedCulling || true }
-        };
+            ageBasedCulling: config.ageBasedCulling || true 
+    };
         // Importance scoring system
         this.importanceScoring = { enabled: config.importanceEnabled !== undefined ? config.importanceEnabled : true,
             
@@ -132,9 +132,9 @@ export class ParticleCullingSystem {
            , thresholds: { veryHigh: 0.8;
                 high: 0.6;
                 medium: 0.4;
-                low: 0.2;
-               , veryLow: 0.1 }
-        };
+                low: 0.2,
+    veryLow: 0.1 
+    };
         // Culling statistics
         this.stats = { totalParticles: 0,
             culledByDistance: 0;
@@ -146,8 +146,8 @@ export class ParticleCullingSystem {
             cullingEfficiency: 0;
             // Performance tracking
             cullingTime: 0;
-            averageCullingTime: 0;
-           , scoringTime: 0 ,};
+            averageCullingTime: 0,
+    scoringTime: 0 ,};
         // Occlusion system
         this.occlusionSystem = { enabled: this.cullingConfig.occlusionCulling,
             occluders: new Set<OccluderBounds>();
@@ -194,7 +194,7 @@ export class ParticleCullingSystem {
         
         // Update statistics
         this.stats.finalCount = visibleParticles.length;
-        this.stats.cullingEfficiency = this.stats.totalParticles > 0 ?   : undefined
+        this.stats.cullingEfficiency = this.stats.totalParticles > 0 ? undefined : undefined
             (this.stats.totalParticles - this.stats.finalCount) / this.stats.totalParticles: 0,
         
         const cullingTime = performance.now() - cullingStart;
@@ -344,7 +344,7 @@ export class ParticleCullingSystem {
             const dy = particle.y - camera.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
             const normalizedDistance = Math.min(1, distance / this.cullingConfig.maxCullingDistance);
-            const distanceScore = factors.distance.inverted ?   : undefined
+            const distanceScore = factors.distance.inverted ? undefined : undefined
                 (1 - normalizedDistance) : normalizedDistance;
         }
             totalScore += distanceScore * factors.distance.weight; }
@@ -362,7 +362,7 @@ export class ParticleCullingSystem {
         totalScore += opacityScore * factors.opacity.weight;
         
         // Velocity factor
-        const velocity = particle.velocity ?   : undefined
+        const velocity = particle.velocity ? undefined : undefined
             Math.sqrt(particle.velocity.x * particle.velocity.x + particle.velocity.y * particle.velocity.y) : 0;
         const normalizedVelocity = Math.min(1, velocity / 300); // Assume max velocity of 300
         const velocityScore = factors.velocity.inverted ? (1 - normalizedVelocity) : normalizedVelocity;
@@ -439,7 +439,7 @@ export class ParticleCullingSystem {
             
             for(const [key, _] of this.importanceScoring.scoreCache) {
             
-                const frameNumber = parseInt(key.split('_).pop(') || '0');
+                const frameNumber = parseInt(key.split('_'.pop() || '0');
                 if (frameNumber < cutoffFrame) {
             
             }
@@ -471,4 +471,4 @@ export class ParticleCullingSystem {
     /**
      * Reset statistics'
      */''
-    resetStats(');
+    resetStats();

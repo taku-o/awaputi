@@ -11,13 +11,13 @@ interface MainController { ruleCategories?: {
 }
 
 interface Rule { name: string,
-    check: (oldValu;e: any, newValue: any, context: ValidationContext) => boolean | RuleResult;
+    check: (oldValue: any, newValue: any, context: ValidationContext) => boolean | RuleResult;
     enabled?: boolean;
     category?: string;
     severity?: 'low' | 'medium' | 'high' | 'critical' | 'warning';
     priority?: number;
     autoFix?: boolean;
-    autoFixFn?: (valu;e: any, context: ValidationContext) => any ,}
+    autoFixFn?: (value: any, context: ValidationContext) => any ,}
 }
 
 interface ValidationContext { bubbleType?: string;
@@ -41,8 +41,8 @@ interface RuleExecutionRecord { ruleName: string;
     oldValue: any;
     newValue: any;
     context: ValidationContext;
-    result: RuleExecutionResult;
-   , timestamp: number }
+    result: RuleExecutionResult,
+    timestamp: number }
 
 interface ExtendedRuleResult extends RuleExecutionResult { ruleName: string;
     category?: string;
@@ -55,39 +55,39 @@ interface RulesSummary { totalRules: number,
     skipped: number;
     passed: number;
     failed: number;
-    errors: number;
-   , totalExecutionTime: number ,}
+    errors: number,
+    totalExecutionTime: number ,}
 
-interface RulesExecutionResult { results: ExtendedRuleResult[];
-   , summary: RulesSummary
+interface RulesExecutionResult { results: ExtendedRuleResult[],
+    summary: RulesSummary
     }
 
 interface SlowRuleData { count: number;
     totalTime: number;
-    averageTime: number;
-   , maxTime: number }
+    averageTime: number,
+    maxTime: number }
 
 interface PerformanceMetrics { totalExecutions: number;
     totalExecutionTime: number;
-    averageExecutionTime: number;
-   , slowRules: Map<string, SlowRuleData> }
+    averageExecutionTime: number,
+    slowRules: Map<string, SlowRuleData> }
 
 interface HistoryFilters { ruleName?: string;
     success?: boolean;
     timeRange?: {
-        star;t: number;
-       , end: number ,};
+        start: number,
+    end: number ,};
     limit?: number;
 }
 
 interface EngineConfiguration { maxHistorySize?: number; }
 
 interface EngineStatistics { executionHistory: {
-        siz;e: number;
-       , maxSize: number };
+        siz;e: number,
+    maxSize: number };
     performance: { totalExecutions: number;
-        averageExecutionTime: number;
-       , slowRulesCount: number };
+        averageExecutionTime: number,
+    slowRulesCount: number };
     rules: {
         slowestRule: SlowRuleData & { name: string } | null;
         fastestRule: SlowRuleData & { name: string } | null;
@@ -109,17 +109,17 @@ export class ValidationRuleEngine {
         // Performance tracking
         this.performanceMetrics = {
             totalExecutions: 0;
-            totalExecutionTime: 0;
-           , averageExecutionTime: 0,
+            totalExecutionTime: 0,
+    averageExecutionTime: 0,
             slowRules: new Map(''
-    ,})'
+    ,}''
         console.log('[ValidationRuleEngine] Rule, engine component, initialized'), }'
     }
     
     /**
      * Execute validation rule
      */
-    executeRule(rule: Rule, oldValue: any, newValue: any, context: ValidationContext): RuleExecutionResult { const startTime = performance.now(');
+    executeRule(rule: Rule, oldValue: any, newValue: any, context: ValidationContext): RuleExecutionResult { const startTime = performance.now();
         let executionResult: RuleExecutionResult,
         try {
             // Validate rule structure
@@ -129,8 +129,8 @@ export class ValidationRuleEngine {
                     valid: false,' }'
 
                     message: `Invalid rule, structure: ${rule.name || 'unknown'}`;
-                    executionTime: 0;
-                   , error: true;
+                    executionTime: 0,
+    error: true;
                 },
             }
             
@@ -159,8 +159,8 @@ export class ValidationRuleEngine {
             executionResult = { valid: false }
                 message: `Rule execution, failed: ${(error, as, Error}).message}`;
                 executionTime,
-                error: true;
-               , originalError: error as Error;
+                error: true,
+    originalError: error as Error;
             },
         }
         
@@ -169,8 +169,8 @@ export class ValidationRuleEngine {
             oldValue,);
             newValue);
             context: this.sanitizeContext(context);
-            result: executionResult;
-           , timestamp: Date.now( ,});
+            result: executionResult,
+    timestamp: Date.now( ,});
         
         return executionResult;
     }
@@ -189,8 +189,8 @@ export class ValidationRuleEngine {
                     ruleName: rule.name,
                     skipped: true,
                     reason: 'Rule disabled);
-                    valid: false);
-                   , executionTime: 0,);
+                    valid: false),
+    executionTime: 0,);
                     error: false);
         ,}
                 continue; }
@@ -199,14 +199,14 @@ export class ValidationRuleEngine {
             const result = this.executeRule(rule, oldValue, newValue, context);
             
             results.push({ ruleName: rule.name)
-                category: rule.category)';
-               , severity: rule.severity,')';
-                ...result)');
+                category: rule.category)',
+    severity: rule.severity,')';
+                ...result'');
             
             totalExecutionTime += result.executionTime || 0;
             ';
             // Early termination for critical failures
-            if(result.error && rule.severity === 'critical) { }'
+            if(result.error && rule.severity === 'critical' { }'
                 console.warn(`[ValidationRuleEngine] Critical rule failure, terminating: ${rule.name}`});
                 break;
             }
@@ -227,7 +227,7 @@ export class ValidationRuleEngine {
      * Validate rule structure'
      */''
     private validateRuleStructure(rule: Rule): boolean { ''
-        if(!rule || typeof, rule !== 'object) {'
+        if(!rule || typeof, rule !== 'object' {'
             
         }
             return false;
@@ -237,11 +237,11 @@ export class ValidationRuleEngine {
 
         for (const, field of, requiredFields) { if (!rule[field]) {' }'
 
-                console.error(`[ValidationRuleEngine] Missing, required field: ${field}`'});
+                console.error(`[ValidationRuleEngine] Missing, required field: ${field}`'}';
                 return false;
         ';
         // Validate check function
-        if(typeof, rule.check !== 'function) { ' }
+        if(typeof, rule.check !== 'function' { ' }
 
             console.error(`[ValidationRuleEngine] Check, must be, a function: ${rule.name}`);
             return false;
@@ -250,10 +250,10 @@ export class ValidationRuleEngine {
         // Validate optional fields
         if(rule.severity && !['low', 'medium', 'high', 'critical', 'warning].includes(rule.severity) { ' }
 
-            console.warn(`[ValidationRuleEngine] Invalid, severity: ${rule.severity}`'});
+            console.warn(`[ValidationRuleEngine] Invalid, severity: ${rule.severity}`'}';
         }
 
-        if(rule.autoFix && rule.autoFixFn && typeof, rule.autoFixFn !== 'function) {'
+        if(rule.autoFix && rule.autoFixFn && typeof, rule.autoFixFn !== 'function' {'
             
         }
             console.error(`[ValidationRuleEngine] AutoFixFn, must be, a function: ${rule.name}`);
@@ -275,11 +275,11 @@ export class ValidationRuleEngine {
             const validatedResult: RuleResult = {'
                 valid: result.valid === true,
                 message: result.message || '';
-                severity: result.severity || undefined;
-               , suggestion: result.suggestion || undefined;
+                severity: result.severity || undefined,
+    suggestion: result.suggestion || undefined;
         ,}
-                metadata: result.metadata || undefined }
-            };
+                metadata: result.metadata || undefined 
+    };
             // Remove undefined values
             Object.keys(validatedResult).forEach(key => {  );
                 if ((validatedResult, as any)[key] === undefined) { }
@@ -295,8 +295,8 @@ export class ValidationRuleEngine {
 
         return { valid: false,' };
 
-            message: 'Rule returned invalid result format' }
-        }
+            message: 'Rule returned invalid result format' 
+    }
     
     /**
      * Record rule execution metrics
@@ -310,11 +310,11 @@ export class ValidationRuleEngine {
         if(executionTime > 10) {
             const slowRuleData = this.performanceMetrics.slowRules.get(rule.name) || {
                 count: 0;
-                totalTime: 0;
-               , averageTime: 0;
+                totalTime: 0,
+    averageTime: 0;
         }
-                maxTime: 0 }
-            };
+                maxTime: 0 
+    };
             slowRuleData.count++;
             slowRuleData.totalTime += executionTime;
             slowRuleData.averageTime = slowRuleData.totalTime / slowRuleData.count;
@@ -355,21 +355,21 @@ export class ValidationRuleEngine {
      * Sanitize context for history storage
      */''
     private sanitizeContext(context: ValidationContext): ValidationContext { ''
-        if(!context || typeof, context !== 'object) { }'
+        if(!context || typeof, context !== 'object' { }'
             return {}
         
         // Remove potentially large or sensitive data
         const sanitized = { ...context;
         // Remove functions
         Object.keys(sanitized).forEach(key => {  ');''
-            if(typeof, sanitized[key] === 'function) { }'
+            if(typeof, sanitized[key] === 'function' { }'
                 delete sanitized[key]; }
 
             }''
         }');
         ';
         // Limit relatedValues size
-        if(sanitized.relatedValues && typeof, sanitized.relatedValues === 'object) {'
+        if(sanitized.relatedValues && typeof, sanitized.relatedValues === 'object' {'
             const keys = Object.keys(sanitized.relatedValues);
             if (keys.length > 20) {
                 sanitized.relatedValues = Object.keys(sanitized.relatedValues).slice(0, 20);
@@ -430,7 +430,7 @@ export class ValidationRuleEngine {
             !(context.propertyType || ''').includes('Time) { return false; }
         
         // Category-based applicability
-        if (rule.category === this.mainController.ruleCategories? .PERFORMANCE && ;
+        if (rule.category === this.mainController.ruleCategories?.PERFORMANCE && ;
             !context.checkPerformance) { return false; }
         
         return true;
@@ -471,8 +471,8 @@ export class ValidationRuleEngine {
      */
     getPerformanceMetrics(): PerformanceMetrics & { slowRules: Record<string, SlowRuleData>; historySize: number ,} { return { ...this.performanceMetrics,
             slowRules: Object.fromEntries(this.performanceMetrics.slowRules), };
-            historySize: this.executionHistory.length }
-        }
+            historySize: this.executionHistory.length 
+    }
     
     /**
      * Optimize rule execution order
@@ -483,7 +483,7 @@ export class ValidationRuleEngine {
             const aSlowData = this.performanceMetrics.slowRules.get(a.name);''
             const bSlowData = this.performanceMetrics.slowRules.get(b.name);
             
-            const aAvgTime = aSlowData? .averageTime || 0;
+            const aAvgTime = aSlowData?.averageTime || 0;
             const bAvgTime = bSlowData?.averageTime || 0;
             ';
             // Critical rules first
@@ -510,10 +510,10 @@ export class ValidationRuleEngine {
      * Reset performance metrics
      */
     resetMetrics(): void { this.performanceMetrics = {
-            totalExecutions: 0;
-           , totalExecutionTime: 0,
+            totalExecutions: 0,
+    totalExecutionTime: 0,
             averageExecutionTime: 0,
-            slowRules: new Map(')';
+            slowRules: new Map()';
         console.log('[ValidationRuleEngine] Performance, metrics reset'), }'
     
     /**
@@ -532,14 +532,14 @@ export class ValidationRuleEngine {
         
         return { executionHistory: {
                 size: this.executionHistory.length };
-                maxSize: this.maxHistorySize }
-            };
+                maxSize: this.maxHistorySize 
+    };
             performance: { totalExecutions: metrics.totalExecutions;
-                averageExecutionTime: metrics.averageExecutionTime;
-               , slowRulesCount: Object.keys(metrics.slowRules).length };
-            rules: { slowestRule: this.getSlowestRule();
-               , fastestRule: this.getFastestRule( }
-        }
+                averageExecutionTime: metrics.averageExecutionTime,
+    slowRulesCount: Object.keys(metrics.slowRules).length };
+            rules: { slowestRule: this.getSlowestRule(),
+    fastestRule: this.getFastestRule( 
+    }
     
     /**
      * Get, slowest rule

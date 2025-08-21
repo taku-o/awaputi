@@ -1,6 +1,6 @@
-import { getErrorHandler  } from '../utils/ErrorHandler.js';''
-import { MotionConfigManager  } from './motion/MotionConfigManager.js';''
-import { AnimationController  } from './motion/AnimationController.js';''
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
+import { MotionConfigManager  } from './motion/MotionConfigManager.js';
+import { AnimationController  } from './motion/AnimationController.js';
 import { VestibularSafetyManager  } from './motion/VestibularSafetyManager.js';
 
 /**
@@ -13,23 +13,23 @@ export class MotionManager {'
     constructor(visualAccessibilityManager) {
         this.visualAccessibilityManager = visualAccessibilityManager;
         this.accessibilityManager = visualAccessibilityManager.accessibilityManager;
-        this.gameEngine = this.accessibilityManager? .gameEngine;
+        this.gameEngine = this.accessibilityManager?.gameEngine;
         
         // モーション設定
         this.config = { : undefined
             enabled: true;
             globalReducedMotion: false;
             respectSystemPreference: true;
-            vestibularSafety: true;
-           , motionLevels: {''
+            vestibularSafety: true,
+    motionLevels: {''
                 none: 'すべてのアニメーションを無効',
                 essential: '重要なアニメーションのみ',
                 reduced: '軽減されたアニメーション',
                 normal: '通常のアニメーション';
     ,}
 
-                enhanced: '強化されたアニメーション' }
-            };
+                enhanced: '強化されたアニメーション' 
+    };
             motionCategories: {
                 transitions: { enabled: true, intensity: 1.0, duration: 1.0 ,},
                 transforms: { enabled: true, intensity: 1.0, duration: 1.0 ,},
@@ -40,8 +40,8 @@ export class MotionManager {'
                 game: { enabled: true, intensity: 0.9, duration: 1.0 ,},
                 background: { enabled: true, intensity: 0.6, duration: 1.0 ,},
             vestibularGuidelines: { maxRotationSpeed: 360, // 度/秒
-                maxScaleChange: 2.0;
-               , maxParallaxDistance: 100, // ピクセル;
+                maxScaleChange: 2.0,
+    maxParallaxDistance: 100, // ピクセル;
                 flashingThreshold: 3, // 回/秒;
                 autoplayPause: 5000 // 5秒で自動停止 ,}
         };
@@ -55,35 +55,35 @@ export class MotionManager {'
         // パフォーマンス監視
         this.performanceMonitor = { frameRate: 60,
             droppedFrames: 0;
-            animationCount: 0;
-           , lastFrameTime: 0 ,};
+            animationCount: 0,
+    lastFrameTime: 0 ,};
         // 統計情報
         this.stats = { animationsControlled: 0,
             animationsPaused: 0;
             animationsReduced: 0;
-            vestibularWarnings: 0;
-           , performanceAdjustments: 0,
-            sessionStart: Date.now(''';
-            motionLevel: 'normal';
-           , vestibularSafety: true,
+            vestibularWarnings: 0,
+    performanceAdjustments: 0,
+            sessionStart: Date.now('''
+            motionLevel: 'normal',
+    vestibularSafety: true,
             autoReduceOnPerformance: true,
-            customIntensities: new Map(''';
-           , flashingSensitivity: 'medium',
-            parallaxSensitivity: 'medium';
-           , granularControls: {
+            customIntensities: new Map(''',
+    flashingSensitivity: 'medium',
+            parallaxSensitivity: 'medium',
+    granularControls: {
                 animationIntensity: 1.0;
                 transitionSpeed: 1.0;
                 effectsLevel: 1.0;
                 particleDensity: 1.0;
-                cameraMovement: 0.5;
-               , backgroundMotion: 0.8 ,};
+                cameraMovement: 0.5,
+    backgroundMotion: 0.8 ,};
             selectiveReduction: { disableRotation: false;
                 disableScaling: false;
                 disableParallax: false;
                 disableParticles: false;
-                disableCameraShake: false;
-               , disableBackgroundAnimation: false }
-        };
+                disableCameraShake: false,
+    disableBackgroundAnimation: false 
+    };
         // 危険なモーションパターンの検出
         this.hazardPatterns = {
             rapidFlashing: { threshold: 3, detected: false ,},
@@ -96,7 +96,7 @@ export class MotionManager {'
         this.animationController = new AnimationController(this);''
         this.vestibularSafetyManager = new VestibularSafetyManager(this);
 
-        console.log('[MotionManager] Main, Controller initialized, with sub-components);
+        console.log('[MotionManager] Main Controller initialized with sub-components);
         this.initialize();
     }
     
@@ -123,14 +123,14 @@ export class MotionManager {'
             // 初期アニメーション分析
             this.analyzeExistingAnimations();
             // 安全性監視開始（前庭安全に委譲）
-            this.vestibularSafetyManager.startSafetyMonitoring(');
+            this.vestibularSafetyManager.startSafetyMonitoring();
 
     }
 
             console.log('MotionManager, initialized successfully'); }'
 
-        } catch (error) { getErrorHandler(').handleError(error, 'MOTION_MANAGER_ERROR', {)'
-                operation: 'initialize' ,});
+        } catch (error) { getErrorHandler().handleError(error, 'MOTION_MANAGER_ERROR', {''
+                operation: 'initialize' ,}';
         }
     }
     
@@ -156,14 +156,14 @@ export class MotionManager {'
     detectAnimationCategory(element) {'
         // クラス名からカテゴリを推定
         const classNames = element.className.toLowerCase()';
-        if(classNames.includes('particle)) return 'particles';''
-        if(classNames.includes('parallax)) return 'parallax';''
-        if(classNames.includes('camera)) return 'camera';''
-        if (classNames.includes('ui'') || classNames.includes('menu)) return 'ui';''
-        if (classNames.includes('game'') || classNames.includes('bubble)) return 'game';''
-        if (classNames.includes('background'') || classNames.includes('bg)) return 'background';''
-        if(classNames.includes('transition)) return 'transitions';''
-        if(classNames.includes('transform)) return 'transforms';
+        if(classNames.includes('particle)' return 'particles';
+        if(classNames.includes('parallax)' return 'parallax';
+        if(classNames.includes('camera)' return 'camera';
+        if (classNames.includes('ui'') || classNames.includes('menu)' return 'ui';
+        if (classNames.includes('game'') || classNames.includes('bubble)' return 'game';
+        if (classNames.includes('background'') || classNames.includes('bg)' return 'background';
+        if(classNames.includes('transition)' return 'transitions';
+        if(classNames.includes('transform)' return 'transforms';
 
         ';
 
@@ -269,10 +269,10 @@ export class MotionManager {'
 
             document.querySelectorAll('.complex-animation'').forEach(element => { ' }
 
-                element.style.animationPlayState = 'paused')); }
+                element.style.animationPlayState = 'paused')'; }
         }
 
-        console.log(`Performance, mode ${enabled ? 'enabled' : 'disabled'}`);
+        console.log(`Performance, mode ${enabled ? 'enabled' : 'disabled'}`';
     }
     
     // ========== 個別アニメーション制御（後方互換性） ==========
@@ -282,7 +282,7 @@ export class MotionManager {'
      */''
     pauseAnimation(element) {'
 
-        if(typeof, element === 'string) {'
+        if(typeof, element === 'string' {'
     }
             element = document.getElementById(element); }
         }
@@ -300,7 +300,7 @@ export class MotionManager {'
      */''
     resumeAnimation(element) {'
 
-        if(typeof, element === 'string) {'
+        if(typeof, element === 'string' {'
     }
             element = document.getElementById(element); }
         }
@@ -317,15 +317,15 @@ export class MotionManager {'
      */''
     reduceAnimation(element) {'
 
-        if(typeof, element === 'string) {'
+        if(typeof, element === 'string' {'
     }
             element = document.getElementById(element); }
         }
 
         if(element) {'
 
-            element.style.animationDuration = '0.5s';''
-            element.style.animationIterationCount = '1';''
+            element.style.animationDuration = '0.5s';
+            element.style.animationIterationCount = '1';
             element.classList.add('motion-reduced);
         }
             this.stats.animationsReduced++; }
@@ -342,8 +342,8 @@ export class MotionManager {'
             activeAnimations: this.activeAnimations.size;
             pausedAnimations: this.pausedAnimations.size;
             frameRate: this.performanceMonitor.frameRate;
-            categories: this.config.motionCategories;
-           , hazardPatterns: Object.fromEntries();
+            categories: this.config.motionCategories,
+    hazardPatterns: Object.fromEntries();
     ,}
                 Object.entries(this.hazardPatterns).map(([key, value]) => [key, value.detected]) };
             ); }
@@ -355,8 +355,8 @@ export class MotionManager {'
     getStats() { return { }
             main: { ...this.stats;
             config: this.configManager.getConfigStats();
-            animation: this.animationController.getAnimationStats();
-           , safety: this.vestibularSafetyManager.getSafetyStats();
+            animation: this.animationController.getAnimationStats(),
+    safety: this.vestibularSafetyManager.getSafetyStats();
         }
     
     // ========== その他のユーティリティ ==========

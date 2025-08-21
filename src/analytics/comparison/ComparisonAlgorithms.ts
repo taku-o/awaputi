@@ -8,12 +8,12 @@ export class ComparisonAlgorithms {
     constructor() {
         // アルゴリズム設定
         this.algorithmConfig = {
-            minSampleSize: 3;
-           , trendThreshold: 0.05, // 5%;
+            minSampleSize: 3,
+    trendThreshold: 0.05, // 5%;
             confidenceLevel: 0.95;
     ,}
-            outlierThreshold: 3 // 標準偏差の3倍 }
-        }
+            outlierThreshold: 3 // 標準偏差の3倍 
+    }
     
     /**
      * 線形トレンドを計算
@@ -91,16 +91,16 @@ export class ComparisonAlgorithms {
 
             if (values.length > 0) {
                 benchmark[key] = {
-                    min: values[0];
-                   , percentile25: this.calculatePercentile(values, 25),
+                    min: values[0],
+    percentile25: this.calculatePercentile(values, 25),
                     median: this.calculatePercentile(values, 50),
                     percentile75: this.calculatePercentile(values, 75),
-                    max: values[values.length - 1];
-                   , mean: values.reduce((sum, val) => sum + val, 0) / values.length,
+                    max: values[values.length - 1],
+    mean: values.reduce((sum, val) => sum + val, 0) / values.length,
                     stdDev: this.calculateStandardDeviation(values);
         ,}
-                    count: values.length }
-                }
+                    count: values.length 
+    }
         }
 
         return benchmark;
@@ -141,17 +141,17 @@ export class ComparisonAlgorithms {
         
         return { stageId: stageId,
             sessionCount: sessions.length;
-            completionRate: completedSessions.length / sessions.length;
-           , averageScore: scores.length > 0 ?   : undefined
+            completionRate: completedSessions.length / sessions.length,
+    averageScore: scores.length > 0 ? undefined : undefined
                 scores.reduce((sum, s) => sum + s, 0) / scores.length : 0,
-            averageAccuracy: accuracies.length > 0 ?   : undefined
+            averageAccuracy: accuracies.length > 0 ? undefined : undefined
                 accuracies.reduce((sum, a) => sum + a, 0) / accuracies.length : 0,
-            firstCompletionTime: this.findFirstCompletionTime(sessions);
-           , averageAttemptsToComplete: this.calculateAverageAttemptsToComplete(sessions);
+            firstCompletionTime: this.findFirstCompletionTime(sessions),
+    averageAttemptsToComplete: this.calculateAverageAttemptsToComplete(sessions);
     ,}
             consistencyScore: this.calculateConsistencyScore(sessions), };
-            estimatedDifficulty: this.estimateStageDifficulty(sessions); }
-        }
+            estimatedDifficulty: this.estimateStageDifficulty(sessions); 
+    }
     
     /**
      * 最初の完了時間を見つける
@@ -263,8 +263,8 @@ export class ComparisonAlgorithms {
         return { quality,
             confidence,
             sampleSize, };
-            reliability: sampleSize >= this.algorithmConfig.minSampleSize }
-        }
+            reliability: sampleSize >= this.algorithmConfig.minSampleSize 
+    }
     
     /**
      * 外れ値を検出
@@ -353,6 +353,6 @@ export class ComparisonAlgorithms {
         
         return { lower: mean - marginOfError }
             upper: mean + marginOfError, };
-            marginOfError: marginOfError }
-        }''
+            marginOfError: marginOfError 
+    }''
 }

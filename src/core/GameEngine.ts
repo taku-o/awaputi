@@ -1,56 +1,56 @@
-import { PlayerData  } from './PlayerData.js';''
-import { BubbleManager  } from '../managers/BubbleManager.js';''
-import { ScoreManager  } from '../managers/ScoreManager.js';''
-import { StageManager  } from './StageManager.js';''
-import { SceneManager  } from './SceneManager.js';''
-import { ItemManager  } from './ItemManager.js';''
-import { SettingsManager  } from './SettingsManager.js';''
-// import { getLocalizationManager  } from './LocalizationManager.js';''
-import { CoreKeyboardShortcutManager  } from './KeyboardShortcutManager.js';''
-import { AchievementManager  } from './AchievementManager.js';''
-// import { AchievementEventIntegrator  } from './AchievementEventIntegrator.js';''
-// import { AchievementNotificationSystem  } from './achievements/AchievementNotificationSystem.js';''
-import { StatisticsManager  } from './StatisticsManager.js';''
-// import { EventStageManager  } from './EventStageManager.js';''
-// import { ChallengeSystem  } from './ChallengeSystem.js';''
-// import { DailyChallengeManager  } from './DailyChallengeManager.js';''
-// import { WeeklyChallengeManager  } from './WeeklyChallengeManager.js';''
-import { AudioManager  } from '../audio/AudioManager.js';''
-import { ParticleManager  } from '../effects/ParticleManager.js';''
-import { EffectManager  } from '../effects/EffectManager.js';''
-import { EnhancedParticleManager  } from '../effects/EnhancedParticleManager.js';''
-import { EnhancedEffectManager  } from '../effects/EnhancedEffectManager.js';''
-// import { getSeasonalEffectManager  } from '../effects/SeasonalEffectManager.js';''
-// import { getEffectQualityController  } from '../effects/EffectQualityController.js';''
-// import { getEffectPerformanceMonitor  } from '../effects/EffectPerformanceMonitor.js';''
-// import { getEffectConfigurationIntegrator  } from '../effects/EffectConfigurationIntegrator.js';''
-// import { getAudioVisualSynchronizer  } from '../effects/AudioVisualSynchronizer.js';''
-// import { getPoolManager  } from '../utils/ObjectPool.js';''
-import { RenderOptimizer, PerformanceMonitor  } from '../utils/RenderOptimizer.js';''
-import { getMemoryManager  } from '../utils/MemoryManager.js';''
-import { getPerformanceOptimizer  } from '../utils/PerformanceOptimizer.js';''
-// import { getBrowserCompatibility  } from '../utils/BrowserCompatibility.js';''
-import { ResponsiveCanvasManager  } from '../utils/ResponsiveCanvasManager.js';''
-import { getErrorHandler  } from '../utils/ErrorHandler.js';''
-import { getConfigurationManager  } from './ConfigurationManager.js';''
-import { getCalculationEngine  } from './CalculationEngine.js';''
-// import { EffectDebugInterface  } from '../effects/EffectDebugInterface.js';''
-import { EnhancedDebugInterface  } from '../debug/EnhancedDebugInterface.js';''
-// import { EffectProfiler  } from '../effects/EffectProfiler.js';''
-// import { EffectOptimizationAdvisor  } from '../effects/EffectOptimizationAdvisor.js';''
-// import { EffectPerformanceOptimizer  } from '../effects/EffectPerformanceOptimizer.js';''
-// import { EffectErrorHandler  } from '../effects/EffectErrorHandler.js';''
-// import { VisualPolishEnhancements  } from '../effects/VisualPolishEnhancements.js';''
-// import { AnimationManager  } from '../effects/AnimationManager.js';''
-// import { getHelpManager  } from './help/HelpManager.js';''
-// import { getSEOMonitor  } from '../seo/SEOMonitor.js';''
-import { SocialSharingManager  } from './SocialSharingManager.js';''
+import { PlayerData  } from './PlayerData.js';
+import { BubbleManager  } from '../managers/BubbleManager.js';
+import { ScoreManager  } from '../managers/ScoreManager.js';
+import { StageManager  } from './StageManager.js';
+import { SceneManager  } from './SceneManager.js';
+import { ItemManager  } from './ItemManager.js';
+import { SettingsManager  } from './SettingsManager.js';
+// import { getLocalizationManager  } from './LocalizationManager.js';
+import { CoreKeyboardShortcutManager  } from './KeyboardShortcutManager.js';
+import { AchievementManager  } from './AchievementManager.js';
+// import { AchievementEventIntegrator  } from './AchievementEventIntegrator.js';
+// import { AchievementNotificationSystem  } from './achievements/AchievementNotificationSystem.js';
+import { StatisticsManager  } from './StatisticsManager.js';
+// import { EventStageManager  } from './EventStageManager.js';
+// import { ChallengeSystem  } from './ChallengeSystem.js';
+// import { DailyChallengeManager  } from './DailyChallengeManager.js';
+// import { WeeklyChallengeManager  } from './WeeklyChallengeManager.js';
+import { AudioManager  } from '../audio/AudioManager.js';
+import { ParticleManager  } from '../effects/ParticleManager.js';
+import { EffectManager  } from '../effects/EffectManager.js';
+import { EnhancedParticleManager  } from '../effects/EnhancedParticleManager.js';
+import { EnhancedEffectManager  } from '../effects/EnhancedEffectManager.js';
+// import { getSeasonalEffectManager  } from '../effects/SeasonalEffectManager.js';
+// import { getEffectQualityController  } from '../effects/EffectQualityController.js';
+// import { getEffectPerformanceMonitor  } from '../effects/EffectPerformanceMonitor.js';
+// import { getEffectConfigurationIntegrator  } from '../effects/EffectConfigurationIntegrator.js';
+// import { getAudioVisualSynchronizer  } from '../effects/AudioVisualSynchronizer.js';
+// import { getPoolManager  } from '../utils/ObjectPool.js';
+import { RenderOptimizer, PerformanceMonitor  } from '../utils/RenderOptimizer.js';
+import { getMemoryManager  } from '../utils/MemoryManager.js';
+import { getPerformanceOptimizer  } from '../utils/PerformanceOptimizer.js';
+// import { getBrowserCompatibility  } from '../utils/BrowserCompatibility.js';
+import { ResponsiveCanvasManager  } from '../utils/ResponsiveCanvasManager.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
+import { getConfigurationManager  } from './ConfigurationManager.js';
+import { getCalculationEngine  } from './CalculationEngine.js';
+// import { EffectDebugInterface  } from '../effects/EffectDebugInterface.js';
+import { EnhancedDebugInterface  } from '../debug/EnhancedDebugInterface.js';
+// import { EffectProfiler  } from '../effects/EffectProfiler.js';
+// import { EffectOptimizationAdvisor  } from '../effects/EffectOptimizationAdvisor.js';
+// import { EffectPerformanceOptimizer  } from '../effects/EffectPerformanceOptimizer.js';
+// import { EffectErrorHandler  } from '../effects/EffectErrorHandler.js';
+// import { VisualPolishEnhancements  } from '../effects/VisualPolishEnhancements.js';
+// import { AnimationManager  } from '../effects/AnimationManager.js';
+// import { getHelpManager  } from './help/HelpManager.js';
+// import { getSEOMonitor  } from '../seo/SEOMonitor.js';
+import { SocialSharingManager  } from './SocialSharingManager.js';
 import { LeaderboardManager  } from './LeaderboardManager.js';
 ';
 // サブコンポーネントのインポート
-import { GameEngineInitializer  } from './game-engine/GameEngineInitializer.js';''
-import { GameEngineEventManager  } from './game-engine/GameEngineEventManager.js';''
-import { GameEngineRenderer  } from './game-engine/GameEngineRenderer.js';''
+import { GameEngineInitializer  } from './game-engine/GameEngineInitializer.js';
+import { GameEngineEventManager  } from './game-engine/GameEngineEventManager.js';
+import { GameEngineRenderer  } from './game-engine/GameEngineRenderer.js';
 import { GameEngineUtilities  } from './game-engine/GameEngineUtilities.js';
 
 // Type definitions - GameEngineConfig removed (unused)
@@ -58,14 +58,14 @@ import { GameEngineUtilities  } from './game-engine/GameEngineUtilities.js';
 interface GameStats { fps: number,
     frameTime: number;
     entities: number;
-    particles: number;
-   , memoryUsage: number ,}
+    particles: number,
+    memoryUsage: number ,}
 
 interface GameState { isRunning: boolean;
     isPaused: boolean;
     currentScene?: string;
-    elapsedTime: number;
-   , frameCount: number }
+    elapsedTime: number,
+    frameCount: number }
 
 type EventListenerCallback = (...args: any[]) => void;
 
@@ -142,7 +142,7 @@ export class GameEngine {
         
         try {
             this.canvas = canvas;''
-            const context = canvas.getContext('2d);''
+            const context = canvas.getContext('2d';''
             if(!context) {'
     }
 
@@ -157,24 +157,24 @@ export class GameEngine {
 
             console.log('[DEBUG] GameEngine: 基本プロパティ設定完了'),
             // シンプルなイベントエミッター機能
-            this.eventListeners = new Map<string, Set<EventListenerCallback>>(');
+            this.eventListeners = new Map<string, Set<EventListenerCallback>>();
             
             // ゲーム状態初期化
             this.gameState = { isRunning: false,
                 isPaused: false;
-                elapsedTime: 0;
-               , frameCount: 0 ,};
+                elapsedTime: 0,
+    frameCount: 0 ,};
             ;
             // サブコンポーネントの初期化
-            console.log('[DEBUG] GameEngine: サブコンポーネント初期化開始),
-            this._initializeSubComponents(')';
+            console.log('[DEBUG] GameEngine: サブコンポーネント初期化開始',
+            this._initializeSubComponents()';
             console.log('[DEBUG] GameEngine: サブコンポーネント初期化完了'),
             
             // ブラウザ互換性チェック
-            this.initializer.checkBrowserCompatibility(');
+            this.initializer.checkBrowserCompatibility();
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'CANVAS_ERROR', { )'
+        } catch (error) { getErrorHandler().handleError(error, 'CANVAS_ERROR', { ''
                 canvasElement: canvas,')';
                 contextType: '2d' ,});
             throw error;
@@ -226,7 +226,7 @@ export class GameEngine {
             ' }'
 
         } catch (error) {
-            console.error('[GameEngine] Failed to initialize sub-components:', error);
+            console.error('[GameEngine] Failed to initialize sub-components:', error';
             throw error; }
     }
     
@@ -261,15 +261,15 @@ export class GameEngine {
             this.keyboardShortcutManager = new CoreKeyboardShortcutManager();
             
             // Social features
-            this.socialSharingManager = new SocialSharingManager(');''
+            this.socialSharingManager = new SocialSharingManager();''
             this.leaderboardManager = new LeaderboardManager()';
             console.log('[GameEngine] Game, systems initialized');
 
             ' }'
 
-        } catch (error) { this.errorHandler.handleError(error, 'GAME_SYSTEM_ERROR', {)'
+        } catch (error) { this.errorHandler.handleError(error, 'GAME_SYSTEM_ERROR', {''
                 component: 'GameEngine',')';
-                operation: 'initializeGameSystems' ,});
+                operation: 'initializeGameSystems' ,}';
             throw error;
         }
     }
@@ -278,8 +278,8 @@ export class GameEngine {
      * オーディオとエフェクトシステムを初期化'
      */''
     private _initializeAudioAndEffects()';
-                quality: 'medium' as const);
-               , getCompressorConfig: () => ({ threshold: -24, knee: 30, ratio: 12, attack: 0.003, release: 0.25 ,}),
+                quality: 'medium' as const),
+    getCompressorConfig: () => ({ threshold: -24, knee: 30, ratio: 12, attack: 0.003, release: 0.25 ,}),
                 getReverbConfig: () => ({ duration: 2, decay: 2, reverse: false ,}),
                 isCompressionEnabled: () => false;
                 isReverbEnabled: () => false;
@@ -291,10 +291,10 @@ export class GameEngine {
             this.effectManager = new EffectManager(this.canvas);
             this.enhancedParticleManager = new EnhancedParticleManager();''
             this.enhancedEffectManager = new EnhancedEffectManager()';
-            console.log('[GameEngine] Audio, and effects, initialized);
+            console.log('[GameEngine] Audio and effects initialized');
 
         } catch (error') {
-            this.errorHandler.handleError(error, 'AUDIO_EFFECTS_ERROR', {)'
+            this.errorHandler.handleError(error, 'AUDIO_EFFECTS_ERROR', {''
                 component: 'GameEngine',')';
                 operation: 'initializeAudioAndEffects'),' }
 
@@ -314,17 +314,17 @@ export class GameEngine {
             this.performanceMonitor = new PerformanceMonitor();
 
             // Debug interface(only, in development');''
-            if(process.env.NODE_ENV === 'development) {', ';
+            if(process.env.NODE_ENV === 'development' {', ';
 
             }
 
                 this.debugInterface = new EnhancedDebugInterface(this); }
             }
 
-            console.log('[GameEngine] Performance, and debug, systems initialized);
+            console.log('[GameEngine] Performance and debug systems initialized');
 
         } catch (error') {
-            this.errorHandler.handleError(error, 'PERFORMANCE_DEBUG_ERROR', {)'
+            this.errorHandler.handleError(error, 'PERFORMANCE_DEBUG_ERROR', {''
                 component: 'GameEngine',')';
                 operation: 'initializePerformanceAndDebug'),' }
 
@@ -353,13 +353,13 @@ export class GameEngine {
             // Start game systems
             this._startGameSystems();
             // Start game loop
-            this._gameLoop(')';
+            this._gameLoop()';
             console.log('[GameEngine] Started, successfully'');''
-            this.emit('started);
+            this.emit('started';
 
             ' }'
 
-        } catch (error) { this.errorHandler.handleError(error, 'START_ERROR', {)'
+        } catch (error) { this.errorHandler.handleError(error, 'START_ERROR', {''
                 component: 'GameEngine',')';
                 operation: 'start' ,});
             this.stop();
@@ -384,13 +384,13 @@ export class GameEngine {
             // Stop game systems
             this._stopGameSystems()';
             console.log('[GameEngine] Stopped, successfully'');''
-            this.emit('stopped);
+            this.emit('stopped';
 
             ' }'
 
-        } catch (error) { this.errorHandler.handleError(error, 'STOP_ERROR', {)'
+        } catch (error) { this.errorHandler.handleError(error, 'STOP_ERROR', {''
                 component: 'GameEngine',')';
-                operation: 'stop' ,});
+                operation: 'stop' ,}';
         }
     }
     
@@ -408,7 +408,7 @@ export class GameEngine {
 
         this.gameState.isPaused = true;''
         console.log('[GameEngine] Paused'');''
-        this.emit('paused);
+        this.emit('paused';
     }
     
     /**
@@ -463,7 +463,7 @@ export class GameEngine {
             requestAnimationFrame(() => this._gameLoop();
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'GAME_LOOP_ERROR', {)'
+            this.errorHandler.handleError(error, 'GAME_LOOP_ERROR', {''
                 component: 'GameEngine',')';
                 operation: 'gameLoop'),' }
 
@@ -490,7 +490,7 @@ export class GameEngine {
             if (this.sceneManager) this.sceneManager.update(deltaTime);
             ';
             // Update performance systems
-            if(this.memoryManager && 'update' in, this.memoryManager && typeof, this.memoryManager.update === 'function) {', ';
+            if(this.memoryManager && 'update' in, this.memoryManager && typeof, this.memoryManager.update === 'function' {', ';
 
             }
 
@@ -502,7 +502,7 @@ export class GameEngine {
 
         } catch (error) {
             this.errorHandler.handleError(error, 'UPDATE_ERROR', {''
-                component: 'GameEngine',)';
+                component: 'GameEngine','';
                 operation: 'update',);
                 deltaTime); });
         }
@@ -525,9 +525,9 @@ export class GameEngine {
             // Emit render event
             this.emit('render);
 
-        } catch (error) { this.errorHandler.handleError(error, 'RENDER_ERROR', {)'
+        } catch (error) { this.errorHandler.handleError(error, 'RENDER_ERROR', {''
                 component: 'GameEngine',')';
-                operation: 'render' ,});
+                operation: 'render' ,}';
         }
     }
     
@@ -535,10 +535,10 @@ export class GameEngine {
      * ゲームシステムを開始'
      */''
     private _startGameSystems()';
-        if(this.sceneManager && typeof, this.sceneManager.start === 'function) {'
+        if(this.sceneManager && typeof, this.sceneManager.start === 'function' {'
 
             this.sceneManager.start()';
-        if(this.audioManager && typeof, this.audioManager.start === 'function) {'
+        if(this.audioManager && typeof, this.audioManager.start === 'function' {'
         }
             this.audioManager.start(); }
 }
@@ -547,10 +547,10 @@ export class GameEngine {
      * ゲームシステムを停止'
      */''
     private _stopGameSystems()';
-        if(this.sceneManager && typeof, this.sceneManager.stop === 'function) {'
+        if(this.sceneManager && typeof, this.sceneManager.stop === 'function' {'
 
             this.sceneManager.stop()';
-        if(this.audioManager && typeof, this.audioManager.stop === 'function) {'
+        if(this.audioManager && typeof, this.audioManager.stop === 'function' {'
         }
             this.audioManager.stop(); }
 }
@@ -561,11 +561,11 @@ export class GameEngine {
     getStats(): GameStats { const fps = this.elapsedTime > 0 ? (this.frameCount * 1000) / this.elapsedTime: 0,
         
         return { fps: Math.round(fps)
-            frameTime: this.lastTime);
-           , entities: (this.bubbleManager? .bubbles?.length || 0, : undefined);
-            particles: (this.particleManager? .getParticles?.()?.length || 0, : undefined };
-            memoryUsage: this.memoryManager? .getStats?.()?.currentMemoryPressure || 0 }
-        }
+            frameTime: this.lastTime),
+    entities: (this.bubbleManager?.bubbles?.length || 0, : undefined);
+            particles: (this.particleManager?.getParticles?.()?.length || 0, : undefined };
+            memoryUsage: this.memoryManager?.getStats?.()?.currentMemoryPressure || 0 
+    }
     
     /**
      * 現在のゲーム状態を取得
@@ -612,7 +612,7 @@ export class GameEngine {
 
                 callback(...args);'
 
-            } catch (error) { this.errorHandler.handleError(error, 'EVENT_CALLBACK_ERROR', {)'
+            } catch (error) { this.errorHandler.handleError(error, 'EVENT_CALLBACK_ERROR', {''
                     event,')';
                     callback: callback.name || 'anonymous' ,});
             }
@@ -626,12 +626,12 @@ export class GameEngine {
             this.stop();
             
             // Cleanup sub-components
-            if (this.initializer? .destroy) this.initializer.destroy();
+            if (this.initializer?.destroy) this.initializer.destroy();
             if (this.eventManager?.destroy) this.eventManager.destroy();
             if (this.renderer?.destroy) this.renderer.destroy();
             if (this.utilities?.destroy) this.utilities.destroy();
             // Cleanup systems
-            this.memoryManager?.destroy?.(');''
+            this.memoryManager?.destroy?.();''
             if(this.performanceOptimizer && 'cleanup' in, this.performanceOptimizer && typeof, this.performanceOptimizer.cleanup === 'function) {
                 
             }
@@ -643,11 +643,11 @@ export class GameEngine {
             ';
             // Clear event listeners
             this.eventListeners.clear()';
-            console.log('[GameEngine] Destroyed, successfully);
+            console.log('[GameEngine] Destroyed, successfully';
 
-        } catch (error') { this.errorHandler.handleError(error, 'DESTROY_ERROR', { : undefined)'
+        } catch (error') { this.errorHandler.handleError(error, 'DESTROY_ERROR', { : undefined''
                 component: 'GameEngine',')';
-                operation: 'destroy' ,});
+                operation: 'destroy' ,}';
         }
     }
 
@@ -682,7 +682,7 @@ export class GameEngine {
 
         }, duration');
 
-        this.emit('screenShakeStarted', { duration, intensity });
+        this.emit('screenShakeStarted', { duration, intensity }';
 
     }''
 }

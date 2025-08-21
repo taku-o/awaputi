@@ -17,8 +17,8 @@ export interface DialogLayout { x: number,
     height: number;
     padding: number;
     titleHeight: number;
-    buttonHeight: number;
-   , buttonSpacing: number;
+    buttonHeight: number,
+    buttonSpacing: number;
     borderColor?: string;
     backgroundColor?: string;
     fontSize?: number; ,}
@@ -34,7 +34,7 @@ export interface AccessibilitySettings { highContrast?: boolean;
     reducedMotion?: boolean; }
 
 export interface GameEngine { errorHandler?: {
-        error: (messag;e: string, error: Error) => void ,}
+        error: (message: string, error: Error) => void ,}
     };
     canvas?: HTMLCanvasElement;
     playerData?: unknown;
@@ -42,16 +42,16 @@ export interface GameEngine { errorHandler?: {
     achievementManager?: unknown;
 }
 
-export interface EventBus { emit: (even;t: string, data?: unknown) => void,
-    on: (even;t: string, callback: (dat;a?: unknown) => void) => void ,}
+export interface EventBus { emit: (event: string, data?: unknown) => void,
+    on: (event: string, callback: (dat;a?: unknown) => void) => void ,}
 }
 
 export interface GameState { accessibilitySettings?: AccessibilitySettings;
     showingDialog?: string | null;
     dialogData?: DialogData;
-    onChange?: (ke;y: string, callback: (valu;e: unknown) => void) => void;
-    set?: (ke;y: string, value: unknown, notify?: boolean) => void }
-}
+    onChange?: (key: string, callback: (valu;e: unknown) => void) => void;
+    set?: (key: string, value: unknown, notify?: boolean) => void 
+    }
 
 /**
  * シーン用ダイアログ基底クラス
@@ -93,14 +93,14 @@ export class ScenesBaseDialog {
         this.layout = { x: 0, y: 0, width: 400, height: 300,
             padding: 20;
             titleHeight: 40;
-            buttonHeight: 35;
-           , buttonSpacing: 10 ,};
+            buttonHeight: 35,
+    buttonSpacing: 10 ,};
         // イベントリスナー
         this.onResult = null;
         this.onError = null;
         
         // エラーハンドラー
-        this.errorHandler = this.gameEngine? .errorHandler || console;
+        this.errorHandler = this.gameEngine?.errorHandler || console;
     }
     
     /**
@@ -142,7 +142,7 @@ export class ScenesBaseDialog {
         }
         
         try {
-            this.layout = { ...this.layout, ...layout;
+            this.layout = { ...this.layout ...layout;
             
             // ダイアログ背景
             this.renderBackground(context);
@@ -156,7 +156,7 @@ export class ScenesBaseDialog {
             // ボタンをレンダリング
             this.renderButtons(context);
             
-        } catch (error) { this.renderError(context, error as Error); }
+        } catch (error) { this.renderError(context error as Error'); }
     }
     
     /**
@@ -166,9 +166,9 @@ export class ScenesBaseDialog {
     protected renderTitle(context: CanvasRenderingContext2D'): void { ''
         if(!this.dialogData.title) return;
 
-        context.fillStyle = '#333333';''
-        context.font = 'bold 18px Arial, sans-serif';''
-        context.textAlign = 'center';''
+        context.fillStyle = '#333333';
+        context.font = 'bold 18px Arial, sans-serif';
+        context.textAlign = 'center';
         context.textBaseline = 'middle';
         context.fillText(;
             this.dialogData.title, as string);
@@ -187,15 +187,15 @@ export class ScenesBaseDialog {
      * @param error - エラーオブジェクト
      */''
     protected renderError(context: CanvasRenderingContext2D, error: Error): void { ''
-        context.fillStyle = '#FF0000';''
-        context.font = '14px Arial, sans-serif';''
-        context.textAlign = 'center';''
+        context.fillStyle = '#FF0000';
+        context.font = '14px Arial, sans-serif';
+        context.textAlign = 'center';
         context.textBaseline = 'middle';
 
-        context.fillText(')';
+        context.fillText()';
             'ダイアログの表示でエラーが発生しました');
-            this.layout.x + this.layout.width / 2,)';
-            this.layout.y + this.layout.height / 2)'';
+            this.layout.x + this.layout.width / 2,'';
+            this.layout.y + this.layout.height / 2''';
         ');''
         console.error('Dialog render error:', error }
     
@@ -226,24 +226,24 @@ export class ScenesBaseDialog {
      * @param isSelected - 選択状態
      */
     protected renderButton(;
-        context: CanvasRenderingContext2D;
-       , x: number, ;
+        context: CanvasRenderingContext2D,
+    x: number, ;
         y: number, ;
         width: number, ;
         height: number );
-        button: DialogButton)';
-       , isSelected: boolean'';
+        button: DialogButton)',
+    isSelected: boolean'';
     '): void { // ボタン背景'
         context.fillStyle = isSelected ? '#4CAF50' : '#CCCCCC',
         this.roundRect(context, x, y, width, height, 5);''
-        context.fill(''';
+        context.fill('''
         context.strokeStyle = isSelected ? '#45A049' : '#999999';)
-        context.lineWidth = 1;)'
+        context.lineWidth = 1;''
         this.roundRect(context, x, y, width, height, 5);''
-        context.stroke(''';
-        context.fillStyle = isSelected ? '#FFFFFF' : '#333333';''
-        context.font = '14px Arial, sans-serif';''
-        context.textAlign = 'center';''
+        context.stroke('''
+        context.fillStyle = isSelected ? '#FFFFFF' : '#333333';
+        context.font = '14px Arial, sans-serif';
+        context.textAlign = 'center';
         context.textBaseline = 'middle';
 
         context.fillText()';
@@ -414,7 +414,7 @@ export class ScenesBaseDialog {
 
         for(let, i = 1; i < words.length; i++) {'
             const word = words[i];''
-            const width = context.measureText(currentLine + ', ' + word).width;''
+            const width = context.measureText(currentLine + ', ' + word'.width;''
             if(width < maxWidth) {'
         }
 
@@ -436,12 +436,12 @@ export class ScenesBaseDialog {
      * @param radius - 角の半径
      */
     protected roundRect(;
-        context: CanvasRenderingContext2D;
-       , x: number, ;
+        context: CanvasRenderingContext2D,
+    x: number, ;
         y: number, ;
         width: number );
-        height: number);
-       , radius: number;
+        height: number),
+    radius: number;
     ): void { context.beginPath(),
         context.moveTo(x + radius, y);
         context.lineTo(x + width - radius, y);
@@ -470,9 +470,9 @@ export class ScenesBaseDialog {
         const newB = Math.min(255, Math.floor(b + (255 - b) * percent)');
 
         return '#' + '';
-            newR.toString(16).padStart(2, '0) +'';
-            newG.toString(16).padStart(2, '0) +'';
-            newB.toString(16).padStart(2, '0); }'
+            newR.toString(16).padStart(2, '0' +'';
+            newG.toString(16).padStart(2, '0' +'';
+            newB.toString(16).padStart(2, '0'; }'
     
     /**
      * アクセシビリティ設定を適用
@@ -501,7 +501,7 @@ export class ScenesBaseDialog {
      * @param context - Canvas描画コンテキスト
      */''
     protected renderBackground(context: CanvasRenderingContext2D): void { // 背景オーバーレイ
-        context.fillStyle = 'rgba(0, 0, 0, 0.5)';''
+        context.fillStyle = 'rgba(0, 0, 0, 0.5)';
         context.fillRect(0, 0, context.canvas.width, context.canvas.height);
         ';
         // ダイアログ背景
@@ -525,16 +525,16 @@ export class ScenesBaseDialog {
         if(this.eventBus) {'
 
             this.eventBus.emit('component-error', {}'
-                component: 'ScenesBaseDialog'}
-        }
+                component: 'ScenesBaseDialog'
+    }
 
                 operation,') }'
 
-                error)'});
+                error''}';
         }
         ';
         // 重大なエラーの場合はダイアログを強制終了
-        if(operation === 'render) {'
+        if(operation === 'render' {'
             this.isVisible = false;
             if (this.onError) {
         }
@@ -545,4 +545,4 @@ export class ScenesBaseDialog {
     /**
      * クリーンアップ'
      */''
-    cleanup(');
+    cleanup();

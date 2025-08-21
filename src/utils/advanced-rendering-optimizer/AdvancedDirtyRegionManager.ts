@@ -12,22 +12,22 @@ interface DirtyRegion { x: number,
     y: number;
     width: number;
     height: number;
-    timestamp: number;
-   , frame: number ,}
+    timestamp: number,
+    frame: number ,}
 
 interface RegionHistory { frame: number;
-    regions: DirtyRegion[];
-   , timestamp: number }
+    regions: DirtyRegion[],
+    timestamp: number }
 
 interface RegionStats { totalRegions: number;
     mergedRegions: number;
     skippedRedraws: number;
-    pixelsSaved: number;
-   , performanceGain: number }
+    pixelsSaved: number,
+    performanceGain: number }
 
 interface Hotspot { x: number;
-    y: number;
-   , count: number }
+    y: number,
+    count: number }
 
 /**
  * Dirty Region Management System
@@ -72,11 +72,11 @@ export class AdvancedDirtyRegionManager {
         this.stats = {
             totalRegions: 0;
             mergedRegions: 0;
-            skippedRedraws: 0;
-           , pixelsSaved: 0;
+            skippedRedraws: 0,
+    pixelsSaved: 0;
     ,}
-            performanceGain: 0 }
-        }
+            performanceGain: 0 
+    }
     
     /**
      * Add dirty region to be redrawn
@@ -99,8 +99,8 @@ export class AdvancedDirtyRegionManager {
                 y: expandedY;
                 width: finalWidth;
                 height: finalHeight;
-                timestamp: Date.now();
-               , frame: this._getCurrentFrame( ,};
+                timestamp: Date.now(),
+    frame: this._getCurrentFrame( ,};
             
             this.regions.add(region);
             this.stats.totalRegions++;
@@ -165,11 +165,11 @@ export class AdvancedDirtyRegionManager {
             // Store regions in history
             if(this.regions.size > 0) {
                 this.regionHistory.push({);
-                    frame: this._getCurrentFrame();
-                   , regions: Array.from(this.regions);
+                    frame: this._getCurrentFrame(),
+    regions: Array.from(this.regions);
             ,}
-                    timestamp: Date.now(); }
-                });
+                    timestamp: Date.now(); 
+    });
                 
                 // Limit history size
                 if (this.regionHistory.length > this.historySize) { this.regionHistory.shift(); }
@@ -228,8 +228,8 @@ export class AdvancedDirtyRegionManager {
             totalRegions: 0;
             mergedRegions: 0;
             skippedRedraws: 0;
-            pixelsSaved: 0;
-           , performanceGain: 0 }
+            pixelsSaved: 0,
+    performanceGain: 0 }
     
     // Private methods
     
@@ -263,8 +263,8 @@ export class AdvancedDirtyRegionManager {
         return { x,
             y,
             width: right - x;
-            height: bottom - y;
-           , timestamp: Math.max(region1.timestamp, region2.timestamp), };
+            height: bottom - y,
+    timestamp: Math.max(region1.timestamp, region2.timestamp), };
             frame: Math.max(region1.frame, region2.frame); }
         }
     

@@ -7,8 +7,8 @@
 interface ErrorInfo { id: string,
     timestamp: string;
     context: string;
-    message: string;
-   , name: string;
+    message: string,
+    name: string;
     stack?: string;
     metadata?: Record<string, any>;
     recovered?: boolean; }
@@ -16,19 +16,19 @@ interface ErrorInfo { id: string,
 interface ErrorStats { total: number,
     byType: Map<string, number>;
     byContext: Map<string, number>;
-    critical: number;
-   , recovered: number ,}
+    critical: number,
+    recovered: number ,}
 
 interface MainController { isBrowser?: boolean;
     isNode?: boolean;
-    determineSeverity?: (erro;r: ErrorInfo) => string ,}
+    determineSeverity?: (error: ErrorInfo) => string ,}
 }
 
 interface LogEntry { level: string;
     timestamp: string;
     id: string;
-    context: string;
-   , message: string;
+    context: string,
+    message: string;
     stack?: string;
     metadata?: Record<string, any>;
     [key: string]: any, }
@@ -36,8 +36,8 @@ interface LogEntry { level: string;
 interface ExportOptions { format?: 'json' | 'csv';
     includeStack?: boolean;
     timeRange?: {
-        star;t: number;
-       , end: number ,} | null;
+        start: number,
+    end: number ,} | null;
     severityFilter?: string | null;
     contextFilter?: string | null;
 }
@@ -46,24 +46,24 @@ interface HealthMetrics { totalErrors: number,
     recentErrorsCount: number;
     criticalErrorsCount: number;
     logSizeUsage: number;
-    recoveryRate: number;
-   , lastErrorTime: string | null ,}
+    recoveryRate: number,
+    lastErrorTime: string | null ,}
 
 interface ArchivedLogData { rotatedAt: string;
     errorCount: number;
-    statistics: ErrorStats;
-   , errors: ErrorInfo[]
+    statistics: ErrorStats,
+    errors: ErrorInfo[]
     }
 
 interface ExportData { exportedAt: string;
     errorCount: number;
-    statistics: ErrorStats;
-   , errors: Array<{
+    statistics: ErrorStats,
+    errors: Array<{
         i;d: string;
         timestamp: string;
         context: string;
-        message: string;
-       , name: string;
+        message: string,
+    name: string;
         metadata?: Record<string, any>;
         recovered?: boolean;
         stack?: string; }>;
@@ -86,10 +86,10 @@ export class ErrorLogger {
         
         // Error statistics
         this.errorStats = {
-            total: 0;
-           , byType: new Map(),
+            total: 0,
+    byType: new Map(),
             byContext: new Map(''
-    ,})'
+    ,}''
         console.log('[ErrorLogger] Error, logging component, initialized'), }'
     }
     
@@ -131,8 +131,8 @@ export class ErrorLogger {
          }
         console[logMethod as keyof Console](`[${severity}] ${errorInfo.context}: ${errorInfo.message}`, { id: errorInfo.id,
             timestamp: errorInfo.timestamp;
-            metadata: errorInfo.metadata);
-           , stack: errorInfo.stack ,});
+            metadata: errorInfo.metadata),
+    stack: errorInfo.stack ,});
     }
     
     /**
@@ -148,8 +148,8 @@ export class ErrorLogger {
             id: errorInfo.id;
             context: errorInfo.context;
             message: errorInfo.message;
-            stack: errorInfo.stack;
-           , metadata: errorInfo.metadata;
+            stack: errorInfo.stack,
+    metadata: errorInfo.metadata;
             ...additionalData;
         
         // Enhanced logging for different environments
@@ -173,7 +173,7 @@ export class ErrorLogger {
 
             styles[severity] || styles.LOW,
             'color: inherit;',
-            logEntry });
+            logEntry }';
     }
     
     /**
@@ -208,7 +208,7 @@ export class ErrorLogger {
      * @returns Unique error ID
      */
     generateErrorId(): string {
-        return `err_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
+        return `err_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
     }
     
     /**
@@ -236,7 +236,7 @@ export class ErrorLogger {
      * @returns Filtered errors
      */
     getErrorsBySeverity(severity: string): ErrorInfo[] { return this.errorLog.filter(error => { );
-            const errorSeverity = this.mainController.determineSeverity? .(error); }
+            const errorSeverity = this.mainController.determineSeverity?.(error); }
             return errorSeverity === severity;);
     }
     
@@ -281,7 +281,7 @@ export class ErrorLogger {
             filteredErrors = filteredErrors.filter(error => { );
         
         }
-                const severity = this.mainController.determineSeverity? .(error); }
+                const severity = this.mainController.determineSeverity?.(error); }
                 return severity === severityFilter;);
         }
         
@@ -291,14 +291,14 @@ export class ErrorLogger {
         // Format data : undefined
         const exportData: ExportData = { exportedAt: new Date().toISOString(),
             errorCount: filteredErrors.length;
-            statistics: this.getErrorStats();
-           , errors: filteredErrors.map(error => ({
+            statistics: this.getErrorStats(),
+    errors: filteredErrors.map(error => ({
                 id: error.id;
                 timestamp: error.timestamp;
                 context: error.context;
                 message: error.message);
-                name: error.name);
-               , metadata: error.metadata,);
+                name: error.name),
+    metadata: error.metadata,);
                 recovered: error.recovered);
                 ...(includeStack && { stack: error.stack ),' }'
 
@@ -331,16 +331,16 @@ export class ErrorLogger {
 
                 if (typeof, value === 'string'') {' }
 
-                    value = `"${value.replace(/"/g, '""''})"`;""
+                    value = `"${value.replace(/"/g, '""''}'"`;""
                 } else if (value === null || value === undefined") { ""
                     value = ''; }
 
                 return value;''
             }');''
-            csvRows.push(row.join(',));
+            csvRows.push(row.join(',)';
         }
 
-        return csvRows.join('\n);
+        return csvRows.join('\n';
     }
     
     /**
@@ -356,7 +356,7 @@ export class ErrorLogger {
     clearErrorStats(): void { this.errorStats = {
             total: 0,
             byType: new Map(),
-            byContext: new Map(')';
+            byContext: new Map()';
         console.log('[ErrorLogger] Error, statistics cleared'), }'
     
     /**
@@ -374,12 +374,10 @@ export class ErrorLogger {
      * @returns Archived log data
      */
     rotateLog(): ArchivedLogData { const archived: ArchivedLogData = {
-            rotatedAt: new Date().toISOString();
-           , errorCount: this.errorLog.length, }
+            rotatedAt: new Date().toISOString(),
+    errorCount: this.errorLog.length }
             statistics: { ...this.getErrorStats();
-            errors: [...this.errorLog];,
-        
-        this.clearErrorLog();
+            errors: [...this.errorLog]; this.clearErrorLog();
         
         console.log(`[ErrorLogger] Log rotated: ${archived.errorCount,} errors archived`}');
         return archived;
@@ -397,11 +395,11 @@ export class ErrorLogger {
             recentErrorsCount: recentErrors.length;
             criticalErrorsCount: criticalErrors.length;
             logSizeUsage: (this.errorLog.length / this.maxLogSize) * 100;
-            recoveryRate: this.errorStats.total > 0 ?   : undefined
+            recoveryRate: this.errorStats.total > 0 ? undefined : undefined
                 (this.errorStats.recovered / this.errorStats.total) * 100 : 0;
-            lastErrorTime: this.errorLog.length > 0 ?   : undefined ,};
-                this.errorLog[this.errorLog.length - 1].timestamp : null }
-        },
+            lastErrorTime: this.errorLog.length > 0 ? undefined : undefined ,};
+                this.errorLog[this.errorLog.length - 1].timestamp : null 
+    },
     }
     
     /**

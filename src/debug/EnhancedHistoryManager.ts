@@ -10,8 +10,8 @@ interface HistoryEntry { command: string,
     success: boolean;
     executionTime: number;
     errorMessage: string | null;
-    commandName: string;
-   , args: any[] ,}
+    commandName: string,
+    args: any[] ,}
 
 interface HistoryMetadata { success?: boolean;
     executionTime?: number;
@@ -24,11 +24,11 @@ interface HistorySettings { duplicateFilter: boolean,
 
 interface HistoryStatistics { totalCommands: number;
     successfulCommands: number;
-    failedCommands: number;
-   , averageExecutionTime: number }
+    failedCommands: number,
+    averageExecutionTime: number }
 
-interface ExtendedStatistics extends HistoryStatistics { successRate: string;
-   , totalEntries: number }
+interface ExtendedStatistics extends HistoryStatistics { successRate: string,
+    totalEntries: number }
 
 interface SearchOptions { limit?: number;
     successOnly?: boolean; }
@@ -41,7 +41,7 @@ interface ImportOptions { merge?: boolean; }
 interface ImportResult { imported: number,
     total: number ,}
 
-type ExportFormat = 'json' | 'csv' | 'text';''
+type ExportFormat = 'json' | 'csv' | 'text';
 type ImportFormat = 'json';
 
 export class EnhancedHistoryManager {
@@ -61,13 +61,13 @@ export class EnhancedHistoryManager {
         // 設定
         this.settings = {
             duplicateFilter: true }
-            exportEnabled: true }
-        };
+            exportEnabled: true 
+    };
         // 統計
         this.statistics = { totalCommands: 0,
             successfulCommands: 0;
-            failedCommands: 0;
-           , averageExecutionTime: 0 ,}
+            failedCommands: 0,
+    averageExecutionTime: 0 ,}
 
     /**
      * コマンドを履歴に追加
@@ -77,8 +77,8 @@ export class EnhancedHistoryManager {
             command,
             timestamp: Date.now(;
             success: metadata.success !== false);
-            executionTime: metadata.executionTime || 0)';
-           , errorMessage: metadata.errorMessage || null,')';
+            executionTime: metadata.executionTime || 0)',
+    errorMessage: metadata.errorMessage || null,')';
             commandName: metadata.commandName || command.split(', ')[0];
            , args: metadata.args || [] ,};
         // 重複フィルターが有効な場合
@@ -106,12 +106,12 @@ export class EnhancedHistoryManager {
     /**
      * 履歴をナビゲート
      */''
-    public navigate(direction: 'up' | 'down', filter: string | null = null): { command: string } | null { ''
+    public navigate(direction: 'up' | 'down', filter: string | null = null': { command: string } | null { ''
         if(this.history.length === 0) return null;
 
         let newIndex = this.currentIndex;
 
-        if(direction === 'up) {', ';
+        if(direction === 'up' {', ';
 
         }
 
@@ -179,18 +179,18 @@ export class EnhancedHistoryManager {
             successRate: this.statistics.totalCommands > 0 '';
                 ? (this.statistics.successfulCommands / this.statistics.totalCommands * 100).toFixed(2) + '%''';
                 : '0%', };
-            totalEntries: this.history.length }
-        }
+            totalEntries: this.history.length 
+    }
 
     /**
      * 履歴をエクスポート'
      */''
-    public exportHistory(format: ExportFormat = 'json', options: ExportOptions = { ): string {''
+    public exportHistory(format: ExportFormat = 'json', options: ExportOptions = { ': string {''
         if(!this.settings.exportEnabled) {', ';
 
         }
 
-            throw new Error('History, export is, disabled); }'
+            throw new Error('History, export is, disabled'; }'
         }
 
         const { successOnly = false, limit = null } = options;
@@ -218,11 +218,11 @@ export class EnhancedHistoryManager {
 
                         new Date(entry.timestamp).toISOString() }
 
-                        `"${entry.command.replace(/"/g, '""''})"`,
+                        `"${entry.command.replace(/"/g, '""''}'"`,
                         entry.success];
                         entry.executionTime || 0]";
                     ];""
-                    csvData.push(row.join(',);''
+                    csvData.push(row.join(',';''
                 }');
 
                 return csvData.join('\n'');
@@ -231,13 +231,13 @@ export class EnhancedHistoryManager {
                 return data.map(entry => {  );''
                     const timestamp = new Date(entry.timestamp).toLocaleString('' }
 
-                    const, status = entry.success ? '✓' : '✗'; })'
+                    const, status = entry.success ? '✓' : '✗'; }''
                     return `[${timestamp}] ${status} ${entry.command}`;')'
-                }').join('\n);
+                }').join('\n';
                 ';
 
             default:'';
-                throw new Error(`Unsupported, export format: ${format}`'}),
+                throw new Error(`Unsupported, export format: ${format}`'}',
         }
     }
 
@@ -272,7 +272,7 @@ export class EnhancedHistoryManager {
         }
 
         if(!Array.isArray(importedEntries)) {;
-            throw new Error('Imported, data must, be an, array); }'
+            throw new Error('Imported, data must, be an, array'; }'
 
         let importCount = 0;
         
@@ -288,9 +288,9 @@ export class EnhancedHistoryManager {
                 command: entry.command || ''');
                 timestamp: entry.timestamp || Date.now(;
                 success: entry.success !== false);
-                executionTime: entry.executionTime || 0)';
-               , errorMessage: entry.errorMessage || null,')';
-                commandName: entry.commandName || entry.command? .split(', '')[0] || '', : undefined
+                executionTime: entry.executionTime || 0)',
+    errorMessage: entry.errorMessage || null,')';
+                commandName: entry.commandName || entry.command?.split(', '')[0] || '', : undefined
                 args: entry.args || [] ,});
             importCount++;
         }
@@ -314,8 +314,8 @@ export class EnhancedHistoryManager {
     private resetStatistics(): void { this.statistics = {
             totalCommands: 0;
             successfulCommands: 0;
-            failedCommands: 0;
-           , averageExecutionTime: 0 }
+            failedCommands: 0,
+    averageExecutionTime: 0 }
 
     /**
      * 履歴をクリア
@@ -328,4 +328,4 @@ export class EnhancedHistoryManager {
      * リソースの解放
      */'
     public destroy(): void { ''
-        this.clear(' })'
+        this.clear(' }''

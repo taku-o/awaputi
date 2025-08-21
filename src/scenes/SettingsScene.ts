@@ -1,9 +1,9 @@
-import { Scene  } from '../core/Scene.js';''
-import { NavigationContextManager  } from '../core/navigation/NavigationContextManager.js';''
-import { getLoggingSystem  } from '../core/LoggingSystem.js';''
-import { AccessibilitySettingsManager, type, ExtendedStatistics  } from './settings-scene/AccessibilitySettingsManager.js';''
-import { VolumeControlComponent  } from '../components/VolumeControlComponent.js';''
-// import { AccessibilityProfileComponent  } from '../components/AccessibilityProfileComponent.js';''
+import { Scene  } from '../core/Scene.js';
+import { NavigationContextManager  } from '../core/navigation/NavigationContextManager.js';
+import { getLoggingSystem  } from '../core/LoggingSystem.js';
+import { AccessibilitySettingsManager, type, ExtendedStatistics  } from './settings-scene/AccessibilitySettingsManager.js';
+import { VolumeControlComponent  } from '../components/VolumeControlComponent.js';
+// import { AccessibilityProfileComponent  } from '../components/AccessibilityProfileComponent.js';
 // import { SettingsImportExportComponent  } from '../components/SettingsImportExportComponent.js';
 
 // Settings Scene specific types
@@ -24,13 +24,13 @@ export interface SettingItem { key: string; }
 
 export interface SettingsLayout { categoryWidth: number,
     settingsPadding: number;
-    itemHeight: number;
-   , titleHeight: number ,}
+    itemHeight: number,
+    titleHeight: number ,}
 
 export interface ConfirmDialogData { message: string;
     onConfirm?: () => void; }
-    onCancel?: () => void; }
-}
+    onCancel?: () => void; 
+    }
 
 export interface ProfileDialogData { profiles: any[],
     selectedIndex: number ,}
@@ -40,8 +40,8 @@ export interface SettingsSceneState { currentCategory: string;
     selectedSettingIndex: number;
     isEditingValue: boolean;
     tempValue: string | null;
-    showingConfirmDialog: boolean;
-   , confirmDialogData: ConfirmDialogData | null;
+    showingConfirmDialog: boolean,
+    confirmDialogData: ConfirmDialogData | null;
     showingProfileDialog?: boolean;
     profileDialogData?: ProfileDialogData | null;
     hasContextualHelp?: boolean;
@@ -118,16 +118,16 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         
         // レイアウト設定
         this.layout = { categoryWidth: 200;
-            settingsPadding: 20;
-           , itemHeight: 60; }
+            settingsPadding: 20,
+    itemHeight: 60; }
     ,}
-            titleHeight: 40 }
-        }
+            titleHeight: 40 
+    }
     
     /**
      * 設定項目の初期化
      */''
-    initializeSettingItems(''';
+    initializeSettingItems('''
                 { key: 'ui.language', label: '言語', type: 'select', options: [ ' ,}
  ]
                     { value: 'ja', label: '日本語' ,},]'
@@ -235,8 +235,8 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         accessibilityItems.push({ ''
             key: 'accessibility.profiles',
             label: 'アクセシビリティプロファイル',
-            type: 'custom',)
-            component: 'AccessibilityProfileComponent',)';
+            type: 'custom','
+            component: 'AccessibilityProfileComponent','';
             description: 'プリセットされたアクセシビリティ設定プロファイルを適用します',')';
             validator: 'profile')');
         // SettingsImportExportComponentの追加
@@ -244,8 +244,8 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         accessibilityItems.push({''
             key: 'accessibility.importExport',
             label: '設定のインポート・エクスポート',
-            type: 'custom',)
-            component: 'SettingsImportExportComponent',)';
+            type: 'custom','
+            component: 'SettingsImportExportComponent','';
             description: 'アクセシビリティ設定をファイルとして保存・読み込みします',')';
             validator: 'importExport');
         // 項目の有効性を検証
@@ -257,7 +257,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                 console.warn('[SettingsScene] Invalid accessibility item filtered out:', item); }
                 return false;
             return true;
-        });
+        }';
         
         return validItems as SettingItem[];
     }
@@ -275,9 +275,9 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         // コンテキストデータの処理
         this.processEntryContext(contextData);
 
-        console.log('[SettingsScene] 設定画面に入りました', {)''
+        console.log('[SettingsScene] 設定画面に入りました', {'''
             contextData,')';
-            accessMethod: contextData.accessMethod)'),
+            accessMethod: contextData.accessMethod''),
 
         this.loggingSystem.info('SettingsScene', 'Settings scene entered', {)
             contextData,);
@@ -291,7 +291,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             // アクセス方法に応じた初期設定
             if(contextData.accessMethod) {'
 
-                if(contextData.accessMethod.includes('help) {'
+                if(contextData.accessMethod.includes('help' {'
                     // ヘルプから設定に来た場合はアクセシビリティカテゴリを開く
             }
                     this.setAccessibilityFocusMode(); }
@@ -309,20 +309,20 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                 this.adjustCategoryForSourceScene(contextData.sourceScene); }
             }
 
-            this.loggingSystem.debug('SettingsScene', 'Entry context processed', contextData);''
+            this.loggingSystem.debug('SettingsScene', 'Entry context processed', contextData';''
         } catch (error) {
-            this.loggingSystem.error('SettingsScene', 'Error processing entry context', error); }
+            this.loggingSystem.error('SettingsScene', 'Error processing entry context', error'; }
     }
     
     /**
      * アクセシビリティフォーカスモードの設定'
      */''
-    setAccessibilityFocusMode(''';)
-        this.currentCategory = 'accessibility';)'
+    setAccessibilityFocusMode(''';'
+        this.currentCategory = 'accessibility';''
         this.selectedCategoryIndex = this.categories.indexOf('accessibility'');
 
         this.selectedSettingIndex = 0;''
-        this.loggingSystem.info('SettingsScene', 'Accessibility focus mode activated);
+        this.loggingSystem.info('SettingsScene', 'Accessibility focus mode activated';
     }
     
     /**
@@ -331,7 +331,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     setHelpIntegratedMode(''';
         this.currentCategory = 'general';
 )
-        this.selectedCategoryIndex = 0;)'
+        this.selectedCategoryIndex = 0;''
         this.loggingSystem.info('SettingsScene', 'Help integrated mode activated);
     }
     
@@ -446,10 +446,10 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const transform = context.getTransform();''
         const centerX = (width / 2') / transform.a;
 
-        context.fillStyle = '#2c3e50';''
-        context.font = 'bold 24px Arial, sans-serif';''
-        context.textAlign = 'center';''
-        context.fillText('設定', centerX, 40);
+        context.fillStyle = '#2c3e50';
+        context.font = 'bold 24px Arial, sans-serif';
+        context.textAlign = 'center';
+        context.fillText('設定', centerX, 40';
         ';
         // 区切り線
         context.strokeStyle = '#bdc3c7';
@@ -487,8 +487,8 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             context.fillRect(10, y, this.layout.categoryWidth, categoryHeight - 5);
             ';
             // テキスト
-            context.fillStyle = isSelected ? '#ffffff' : '#2c3e50';''
-            context.font = '16px Arial, sans-serif';''
+            context.fillStyle = isSelected ? '#ffffff' : '#2c3e50';
+            context.font = '16px Arial, sans-serif';
             context.textAlign = 'left';
             context.fillText(this.categoryLabels[i], 20, y + categoryHeight / 2 + 5);
         }
@@ -505,8 +505,8 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const currentItems = this.settingItems[this.currentCategory] || [];
         ';
         // カテゴリタイトル
-        context.fillStyle = '#2c3e50';''
-        context.font = 'bold 20px Arial, sans-serif';''
+        context.fillStyle = '#2c3e50';
+        context.font = 'bold 20px Arial, sans-serif';
         context.textAlign = 'left';
         context.fillText(this.categoryLabels[this.selectedCategoryIndex], startX, startY + 25);
         
@@ -542,15 +542,15 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         }
         ';
         // ラベル
-        context.fillStyle = '#2c3e50';''
-        context.font = '16px Arial, sans-serif';''
+        context.fillStyle = '#2c3e50';
+        context.font = '16px Arial, sans-serif';
         context.textAlign = 'left';
         context.fillText(item.label, x + 10, y + 25);
         ';
         // 説明（ある場合）
         if(item.description) {'
 
-            context.fillStyle = '#7f8c8d';''
+            context.fillStyle = '#7f8c8d';
             context.font = '12px Arial, sans-serif';
         }
             context.fillText(item.description, x + 10, y + 42); }
@@ -561,11 +561,11 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
 ';
 
         let currentValue;''
-        if(item.key === 'audio.muted) {'
+        if(item.key === 'audio.muted' {'
             // ミュート状態をAudioManagerから取得
         }
-            currentValue = this.gameEngine.audioManager ? this.gameEngine.audioManager.isMuted() : false; }
-        } else {  try { }
+            currentValue = this.gameEngine.audioManager ? this.gameEngine.audioManager.isMuted() : false; 
+    } else {  try { }
                 currentValue = this.gameEngine.settingsManager.get(item.key);' }'
 
             } catch (error) {
@@ -617,7 +617,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const toggleY = y - height / 2;
         ';
         // 背景
-        context.fillStyle = value ? '#2ecc71' : '#bdc3c7';''
+        context.fillStyle = value ? '#2ecc71' : '#bdc3c7';
         context.fillRect(toggleX, toggleY, width, height);
         
         // つまみ
@@ -641,7 +641,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const selectY = y - height / 2;
         ';
         // 背景
-        context.fillStyle = '#ffffff';''
+        context.fillStyle = '#ffffff';
         context.fillRect(x, selectY, width, height);
         ';
         // 枠線
@@ -653,14 +653,14 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const selectedOption = item.options?.find((opt: SettingOption) => opt.value === value');
         const displayText = selectedOption ? selectedOption.label: value,
 ;
-        context.fillStyle = '#2c3e50';''
-        context.font = '14px Arial, sans-serif';''
-        context.textAlign = 'left';''
+        context.fillStyle = '#2c3e50';
+        context.font = '14px Arial, sans-serif';
+        context.textAlign = 'left';
         context.fillText(displayText, x + 10, y + 5);
         ';
         // ドロップダウン矢印
-        context.fillStyle = '#7f8c8d';''
-        context.fillText('▼', x + width - 20, y + 5); }
+        context.fillStyle = '#7f8c8d';
+        context.fillText('▼', x + width - 20, y + 5'; }
     }
     
     /**
@@ -676,18 +676,18 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         ';
         // スライダーの進行部分
         const progress = (value - (item.min || 0)) / ((item.max || 1) - (item.min || 0)');''
-        context.fillStyle = '#3498db';''
+        context.fillStyle = '#3498db';
         context.fillRect(x, sliderY, sliderWidth * progress, sliderHeight);
         
         // つまみ
         const knobX = x + sliderWidth * progress - 8;
         const knobY = y - 8;''
-        context.fillStyle = isSelected ? '#2980b9' : '#3498db';''
+        context.fillStyle = isSelected ? '#2980b9' : '#3498db';
         context.fillRect(knobX, knobY, 16, 16);
         ';
         // 値の表示
-        context.fillStyle = '#2c3e50';''
-        context.font = '14px Arial, sans-serif';''
+        context.fillStyle = '#2c3e50';
+        context.font = '14px Arial, sans-serif';
         context.textAlign = 'right';
         context.fillText((Math.round(value * 100) / 100).toString(), x + width, y + 5); }
     
@@ -711,10 +711,10 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                 
             default:';
                 // フォールバック：不明なカスタムコンポーネントの場合はテキスト表示
-                context.fillStyle = '#7f8c8d';''
-                context.font = '14px Arial, sans-serif';''
-                context.textAlign = 'center';''
-                context.fillText('カスタムコンポーネント', x + width / 2, y + 5);
+                context.fillStyle = '#7f8c8d';
+                context.font = '14px Arial, sans-serif';
+                context.textAlign = 'center';
+                context.fillText('カスタムコンポーネント', x + width / 2, y + 5';
         }
                 break; }
 }
@@ -727,7 +727,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const controlY = y - controlHeight / 2;
         ';
         // 背景
-        context.fillStyle = isSelected ? '#e8f4fd' : '#f8f9fa';''
+        context.fillStyle = isSelected ? '#e8f4fd' : '#f8f9fa';
         context.fillRect(x, controlY, controlWidth, controlHeight);
         ';
         // 枠線
@@ -744,15 +744,15 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const progressBarY = y - 4;
         const progressBarHeight = 8;
         // 音量ダウンボタン
-        context.fillStyle = (value > 0') ? '#3498db' : '#95a5a6';''
+        context.fillStyle = (value > 0') ? '#3498db' : '#95a5a6';
         context.fillRect(x + 5, buttonY, buttonWidth, buttonHeight);''
-        context.fillStyle = '#ffffff';''
-        context.font = '14px Arial, sans-serif';''
-        context.textAlign = 'center';''
-        context.fillText('🔉', x + 5 + buttonWidth / 2, buttonY + 16);
+        context.fillStyle = '#ffffff';
+        context.font = '14px Arial, sans-serif';
+        context.textAlign = 'center';
+        context.fillText('🔉', x + 5 + buttonWidth / 2, buttonY + 16';
         ';
         // プログレスバー背景
-        context.fillStyle = '#bdc3c7';''
+        context.fillStyle = '#bdc3c7';
         context.fillRect(progressBarX, progressBarY, progressBarWidth, progressBarHeight);
         
         // プログレスバー進行部分
@@ -761,27 +761,27 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         context.fillRect(progressBarX, progressBarY, progressBarWidth * progress, progressBarHeight);
         ';
         // 音量アップボタン
-        context.fillStyle = (value < 1') ? '#3498db' : '#95a5a6';''
+        context.fillStyle = (value < 1') ? '#3498db' : '#95a5a6';
         context.fillRect(x + controlWidth - buttonWidth - 5, buttonY, buttonWidth, buttonHeight);''
-        context.fillStyle = '#ffffff';''
-        context.fillText('🔊', x + controlWidth - buttonWidth / 2 - 5, buttonY + 16);
+        context.fillStyle = '#ffffff';
+        context.fillText('🔊', x + controlWidth - buttonWidth / 2 - 5, buttonY + 16';
         ';
         // 音量パーセンテージ表示
-        context.fillStyle = '#2c3e50';''
-        context.font = '12px Arial, sans-serif';''
+        context.fillStyle = '#2c3e50';
+        context.font = '12px Arial, sans-serif';
         context.textAlign = 'right'; }
         context.fillText(`${Math.round((value || 0} * 100})%`, x + controlWidth - 5, y + 15);
         ';
         // 選択時の追加表示
         if(isSelected) {'
 
-            context.fillStyle = '#3498db';''
-            context.font = '10px Arial, sans-serif';''
+            context.fillStyle = '#3498db';
+            context.font = '10px Arial, sans-serif';
             context.textAlign = 'center';
 
         }
 
-            context.fillText('Enter: 音量アップ', x + controlWidth / 2, controlY + controlHeight + 12); }
+            context.fillText('Enter: 音量アップ', x + controlWidth / 2, controlY + controlHeight + 12'; }
 }
     
     /**
@@ -792,7 +792,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const controlY = y - controlHeight / 2;
         ';
         // 背景
-        context.fillStyle = isSelected ? '#e8f4fd' : '#f8f9fa';''
+        context.fillStyle = isSelected ? '#e8f4fd' : '#f8f9fa';
         context.fillRect(x, controlY, controlWidth, controlHeight);
         ';
         // 枠線
@@ -801,13 +801,13 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         context.strokeRect(x, controlY, controlWidth, controlHeight);
         
         // プロファイル情報
-        const currentProfile = this.accessibilitySettingsManager ?   : undefined;
+        const currentProfile = this.accessibilitySettingsManager ? undefined : undefined;
             this.accessibilitySettingsManager.getCurrentProfile() : null;''
         const profileName = currentProfile ? (currentProfile, as any').name: '標準',
         // プロファイル名表示;
-        context.fillStyle = '#2c3e50';''
-        context.font = '14px Arial, sans-serif';''
-        context.textAlign = 'left';''
+        context.fillStyle = '#2c3e50';
+        context.font = '14px Arial, sans-serif';
+        context.textAlign = 'left';
         context.fillText(`現在: ${profileName)`, x + 10, y + 5');
         
         // プロファイル切り替えボタン
@@ -816,24 +816,24 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const, buttonY = controlY + 3;
         const, buttonX = x + controlWidth - buttonWidth - 5;
 
-        context.fillStyle = isSelected ? '#3498db' : '#95a5a6';''
+        context.fillStyle = isSelected ? '#3498db' : '#95a5a6';
         context.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);''
-        context.fillStyle = '#ffffff';''
-        context.font = '12px, Arial, sans-serif';''
-        context.textAlign = 'center';''
+        context.fillStyle = '#ffffff';
+        context.font = '12px, Arial, sans-serif';
+        context.textAlign = 'center';
         context.fillText('変更', buttonX + buttonWidth / 2, buttonY + 16};
         ';
         // 選択時の操作説明
         if(isSelected} {'
 
-            context.fillStyle = '#3498db';''
+            context.fillStyle = '#3498db';
             context.font = '10px Arial, sans-serif';
 
         }
 
             context.textAlign = 'center';' }
-)
-            context.fillText('Enter: プロファイル選択', x + controlWidth / 2, controlY + controlHeight + 12});
+'
+            context.fillText('Enter: プロファイル選択', x + controlWidth / 2, controlY + controlHeight + 12}';
         }
     }
     
@@ -845,7 +845,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const controlY = y - controlHeight / 2;
         ';
         // 背景
-        context.fillStyle = isSelected ? '#e8f4fd' : '#f8f9fa';''
+        context.fillStyle = isSelected ? '#e8f4fd' : '#f8f9fa';
         context.fillRect(x, controlY, controlWidth, controlHeight);
         ';
         // 枠線
@@ -862,30 +862,30 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         
         // エクスポートボタン
         const exportButtonX = x + 10;''
-        context.fillStyle = '#2ecc71';''
+        context.fillStyle = '#2ecc71';
         context.fillRect(exportButtonX, buttonY, buttonWidth, buttonHeight);''
-        context.fillStyle = '#ffffff';''
-        context.font = '12px Arial, sans-serif';''
-        context.textAlign = 'center';''
-        context.fillText('保存', exportButtonX + buttonWidth / 2, buttonY + 16);
+        context.fillStyle = '#ffffff';
+        context.font = '12px Arial, sans-serif';
+        context.textAlign = 'center';
+        context.fillText('保存', exportButtonX + buttonWidth / 2, buttonY + 16';
         
         // インポートボタン
         const importButtonX = exportButtonX + buttonWidth + spacing;''
-        context.fillStyle = '#e74c3c';''
+        context.fillStyle = '#e74c3c';
         context.fillRect(importButtonX, buttonY, buttonWidth, buttonHeight);''
-        context.fillStyle = '#ffffff';''
-        context.fillText('読込', importButtonX + buttonWidth / 2, buttonY + 16);
+        context.fillStyle = '#ffffff';
+        context.fillText('読込', importButtonX + buttonWidth / 2, buttonY + 16';
         ';
         // 選択時の操作説明
         if(isSelected) {'
 
-            context.fillStyle = '#3498db';''
-            context.font = '10px Arial, sans-serif';''
+            context.fillStyle = '#3498db';
+            context.font = '10px Arial, sans-serif';
             context.textAlign = 'center';
 
         }
 
-            context.fillText('Enter: インポート/エクスポート選択', x + controlWidth / 2, controlY + controlHeight + 12); }
+            context.fillText('Enter: インポート/エクスポート選択', x + controlWidth / 2, controlY + controlHeight + 12'; }
 }
     
     /**
@@ -896,7 +896,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const inputY = y - height / 2;
         ';
         // 背景
-        context.fillStyle = '#ffffff';''
+        context.fillStyle = '#ffffff';
         context.fillRect(x, inputY, width, height);
         ';
         // 枠線
@@ -906,8 +906,8 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         context.strokeRect(x, inputY, width, height);
         ';
         // テキスト
-        context.fillStyle = '#2c3e50';''
-        context.font = '14px Arial, sans-serif';''
+        context.fillStyle = '#2c3e50';
+        context.font = '14px Arial, sans-serif';
         context.textAlign = 'left';
 
         const displayText = this.isEditingValue ? (this.tempValue || ''') : (value || '未設定');
@@ -950,7 +950,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const dialogX = (width - dialogWidth) / 2;''
         const dialogY = (height - dialogHeight') / 2;
 
-        context.fillStyle = '#ffffff';''
+        context.fillStyle = '#ffffff';
         context.fillRect(dialogX, dialogY, dialogWidth, dialogHeight);
 
         context.strokeStyle = '#bdc3c7';
@@ -959,14 +959,14 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         context.strokeRect(dialogX, dialogY, dialogWidth, dialogHeight);
         ';
         // メッセージ
-        context.fillStyle = '#2c3e50';''
-        context.font = '16px Arial, sans-serif';''
+        context.fillStyle = '#2c3e50';
+        context.font = '16px Arial, sans-serif';
         context.textAlign = 'center';
 
-        context.fillText(')';
-            this.confirmDialogData? .message || '設定を変更しますか？');
-            dialogX + dialogWidth / 2,)';
-            dialogY + 80)'';
+        context.fillText()';
+            this.confirmDialogData?.message || '設定を変更しますか？');
+            dialogX + dialogWidth / 2,'';
+            dialogY + 80''';
         ');
         
         // ボタン
@@ -975,19 +975,19 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const buttonY = dialogY + dialogHeight - 60;
         ';
         // キャンセルボタン
-        context.fillStyle = '#95a5a6';''
+        context.fillStyle = '#95a5a6';
         context.fillRect(dialogX + 80, buttonY, buttonWidth, buttonHeight);''
-        context.fillStyle = '#ffffff';''
-        context.fillText('キャンセル', dialogX + 80 + buttonWidth / 2, buttonY + 22);
+        context.fillStyle = '#ffffff';
+        context.fillText('キャンセル', dialogX + 80 + buttonWidth / 2, buttonY + 22';
         ';
         // OKボタン
-        context.fillStyle = '#3498db';''
+        context.fillStyle = '#3498db';
         context.fillRect(dialogX + dialogWidth - 160, buttonY, buttonWidth, buttonHeight);''
         context.fillStyle = '#ffffff';
 
     }
 
-        context.fillText('OK', dialogX + dialogWidth - 160 + buttonWidth / 2, buttonY + 22); }
+        context.fillText('OK', dialogX + dialogWidth - 160 + buttonWidth / 2, buttonY + 22'; }
     }
     
     /**
@@ -996,22 +996,22 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     renderHelp(context: CanvasRenderingContext2D, width: number, height: number) {
         const helpY = height - 40;
 
-        context.fillStyle = '#7f8c8d';''
-        context.font = '12px Arial, sans-serif';''
+        context.fillStyle = '#7f8c8d';
+        context.font = '12px Arial, sans-serif';
         context.textAlign = 'center';
 
-        context.fillText(')';
+        context.fillText()';
             '↑↓: 項目選択  ←→: カテゴリ切り替え  Enter: 設定変更 , Esc: 戻る');
             width / 2,);
     }
-            helpY); }
+            helpY'; }
     }
     
     /**
      * 入力処理'
      */''
     handleInput(event: Event): boolean | void { ''
-        if(event.type === 'keydown) {', ';
+        if(event.type === 'keydown' {', ';
 
         }
 
@@ -1049,24 +1049,24 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             case 'ArrowLeft':';
                 this.selectedCategoryIndex = Math.max(0, this.selectedCategoryIndex - 1);''
                 this.switchCategory()';
-            case 'ArrowRight':)';
+            case 'ArrowRight':'';
                 this.selectedCategoryIndex = Math.min(this.categories.length - 1, this.selectedCategoryIndex + 1);''
-                this.switchCategory(''';
-            case 'Enter':'';
+                this.switchCategory('''
+            case 'Enter': '';
                 this.activateCurrentSetting(''';
             case 'Escape':'';
-                this.goBack(''';)
-            case 'p':)';
+                this.goBack(''';'
+            case 'p':'';
             case 'P':')';
-                if(event.ctrlKey && this.currentCategory === 'accessibility) {''
-                    this.showAccessibilityProfiles(''';)
-            case 'e':)';
+                if(event.ctrlKey && this.currentCategory === 'accessibility' {''
+                    this.showAccessibilityProfiles(''';'
+            case 'e':'';
             case 'E':')';
-                if(event.ctrlKey && this.currentCategory === 'accessibility) {''
-                    this.exportAccessibilitySettings(''';)
-            case 'i':)';
+                if(event.ctrlKey && this.currentCategory === 'accessibility' {''
+                    this.exportAccessibilitySettings(''';'
+            case 'i':'';
             case 'I':')';
-                if(event.ctrlKey && this.currentCategory === 'accessibility) {'
+                if(event.ctrlKey && this.currentCategory === 'accessibility' {'
         }
                     this.importAccessibilitySettings(); }
                 }
@@ -1125,7 +1125,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const currentValue = this.gameEngine.settingsManager.get(item.key);
         ';
         // アクセシビリティ設定の場合は専用マネージャーを使用
-        if(item.key.startsWith('accessibility.) && this.accessibilitySettingsManager) {''
+        if(item.key.startsWith('accessibility.) && this.accessibilitySettingsManager' {''
             switch(item.type) {''
                 case 'toggle':'';
                     this.accessibilitySettingsManager.setSetting(item.key, !currentValue);
@@ -1152,7 +1152,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                     // 特別な処理が必要な設定項目
             }
 
-                    if(item.key === 'audio.muted) { }'
+                    if(item.key === 'audio.muted' { }'
                         this.handleAudioMuteToggle(); }
 
                     } else { }'
@@ -1230,8 +1230,8 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         switch(event.key) {'
 
             case 'Enter':'';
-                this.finishTextEditing(''';
-            case 'Escape':'';)
+                this.finishTextEditing('''
+            case 'Escape': '';)
                 this.cancelTextEditing()';
             case 'Backspace':')';
                 this.tempValue = (this.tempValue || '').slice(0, -1);
@@ -1255,7 +1255,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
 
         if(item) {'
             // アクセシビリティ設定の場合は専用マネージャーを使用
-            if(item.key.startsWith('accessibility.) && this.accessibilitySettingsManager) {'
+            if(item.key.startsWith('accessibility.) && this.accessibilitySettingsManager' {'
     }
                 this.accessibilitySettingsManager.setSetting(item.key, this.tempValue); }
             } else { this.gameEngine.settingsManager.set(item.key, this.tempValue); }
@@ -1281,10 +1281,10 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         switch(event.key) {'
 
             case 'Enter':';
-                this.confirmDialogData? .onConfirm?.();''
+                this.confirmDialogData?.onConfirm?.();''
                 this.closeConfirmDialog()';
             case 'Escape':);
-                this.confirmDialogData? .onCancel?.();
+                this.confirmDialogData?.onCancel?.();
                 this.closeConfirmDialog();
         }
                 break; }
@@ -1320,18 +1320,18 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         try {
             if (this.gameEngine.audioManager) {''
                 const newMutedState = this.gameEngine.audioManager.toggleMute()';
-                this.gameEngine.settingsManager.set('audio.muted', newMutedState);
+                this.gameEngine.settingsManager.set('audio.muted', newMutedState';
 
                 ';
 
     }
 
                 console.log(`[SettingsScene] Audio mute toggled: ${newMutedState}`'},' }
-)
-                this.loggingSystem.info('SettingsScene', `Audio mute toggled: ${newMutedState}`});''
+'
+                this.loggingSystem.info('SettingsScene', `Audio mute toggled: ${newMutedState}`}';''
             } catch (error) {
-            console.error('[SettingsScene] Error toggling audio mute:', error);''
-            this.loggingSystem.error('SettingsScene', 'Audio mute toggle error', error); }
+            console.error('[SettingsScene] Error toggling audio mute:', error';''
+            this.loggingSystem.error('SettingsScene', 'Audio mute toggle error', error'; }
     }
     
     /**
@@ -1341,14 +1341,14 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         switch(item.component) {'
 
             case 'VolumeControlComponent':'';
-                this.handleVolumeControl(''';
-            case 'AccessibilityProfileComponent':'';
-                this.handleAccessibilityProfileComponent(''';)
-            case 'SettingsImportExportComponent':)';
+                this.handleVolumeControl('''
+            case 'AccessibilityProfileComponent': '';
+                this.handleAccessibilityProfileComponent(''';'
+            case 'SettingsImportExportComponent':'';
                 this.handleSettingsImportExportComponent();
         }
 
-                console.warn('[SettingsScene] Unknown custom component:', item.component);' }'
+                console.warn('[SettingsScene] Unknown custom component:', item.component';' }'
 
                 this.loggingSystem.warn('SettingsScene', `Unknown custom component: ${item.component}`});
                 break;
@@ -1368,10 +1368,10 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
 
     }
 
-                this.loggingSystem.info('SettingsScene', 'Volume control activated);' }
+                this.loggingSystem.info('SettingsScene', 'Volume control activated';' }
 
             } catch (error) {
-            console.error('[SettingsScene] Error handling volume control:', error);''
+            console.error('[SettingsScene] Error handling volume control:', error';''
             this.loggingSystem.error('SettingsScene', 'Volume control error', error); }
     }
     
@@ -1388,10 +1388,10 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         ';
         try { // プロファイル選択ダイアログを表示
             this.showAccessibilityProfileDialog()';
-            this.loggingSystem.info('SettingsScene', 'Accessibility profile component activated);' }
+            this.loggingSystem.info('SettingsScene', 'Accessibility profile component activated';' }
 
         } catch (error) {
-            console.error('[SettingsScene] Error handling accessibility profile component:', error);''
+            console.error('[SettingsScene] Error handling accessibility profile component:', error';''
             this.loggingSystem.error('SettingsScene', 'Accessibility profile component error', error); }
     }
     
@@ -1401,7 +1401,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     showAccessibilityProfileDialog() {'
         const profiles = this.accessibilitySettingsManager.getAvailableProfiles();''
         const currentProfile = this.accessibilitySettingsManager.getCurrentProfile()';
-        console.log('[SettingsScene] Available Accessibility Profiles:', profiles);''
+        console.log('[SettingsScene] Available Accessibility Profiles:', profiles';''
         console.log('[SettingsScene] Current Profile:', currentProfile);
         
         // 簡易プロファイル選択（実際の実装では専用UIを作成）
@@ -1430,10 +1430,10 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             // エクスポート/インポート選択ダイアログを表示
             this.showImportExportDialog();
     }
-            this.loggingSystem.info('SettingsScene', 'Settings import/export component activated);' }
+            this.loggingSystem.info('SettingsScene', 'Settings import/export component activated';' }
 
         } catch (error) {
-            console.error('[SettingsScene] Error handling settings import/export component:', error);''
+            console.error('[SettingsScene] Error handling settings import/export component:', error';''
             this.loggingSystem.error('SettingsScene', 'Settings import/export component error', error); }
     }
     
@@ -1485,13 +1485,13 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
 )
                         if(!fallbackSuccess) {' }'
 
-                            console.error('Failed, to navigate, to fallback, menu scene''});'
+                            console.error('Failed, to navigate, to fallback, menu scene''}';'
                         }
 }
 
-                this.loggingSystem.info('SettingsScene', `Navigated back to: ${targetScene}, success: ${success}`});''
+                this.loggingSystem.info('SettingsScene', `Navigated back to: ${targetScene}, success: ${success}`}';''
             } catch (error) {
-                console.error('Error navigating back from settings screen:', error);''
+                console.error('Error navigating back from settings screen:', error';''
                 this.loggingSystem.error('SettingsScene', 'Navigation error', error); }
 }
     
@@ -1502,14 +1502,14 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         if (!this.accessibilitySettingsManager) return;
 
         const profiles = this.accessibilitySettingsManager.getAvailableProfiles()';
-        console.log('[SettingsScene] Available Accessibility Profiles:', profiles);
+        console.log('[SettingsScene] Available Accessibility Profiles:', profiles';
         
         // 簡易的なプロファイル表示（実際の実装では専用UIを作成）
         this.showingProfileDialog = true;
         this.profileDialogData = {
             profiles }
-            selectedIndex: 0 }
-        };
+            selectedIndex: 0 
+    };
         this.loggingSystem.info('SettingsScene', 'Accessibility profiles dialog opened);
     }
     
@@ -1522,14 +1522,14 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         ';
 
         try {'
-            this.accessibilitySettingsManager.exportSettings('json', true);
+            this.accessibilitySettingsManager.exportSettings('json', true';
 
     }
 
-            this.loggingSystem.info('SettingsScene', 'Accessibility settings export initiated);' }
+            this.loggingSystem.info('SettingsScene', 'Accessibility settings export initiated';' }
 
         } catch (error) {
-            console.error('[SettingsScene] Export failed:', error);''
+            console.error('[SettingsScene] Export failed:', error';''
             this.loggingSystem.error('SettingsScene', 'Export failed', error); }
     }
     
@@ -1543,13 +1543,13 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         try {
             // ファイル選択ダイアログを作成
             const input = document.createElement('input'');''
-            input.type = 'file';''
-            input.accept = '.json';''
+            input.type = 'file';
+            input.accept = '.json';
             input.style.display = 'none';
 
             input.addEventListener('change', async (event) => { 
                 const target = event.target as HTMLInputElement;
-                const file = target.files? .[0];
+                const file = target.files?.[0];
                 if (file) {
                     try {
                         await this.accessibilitySettingsManager.importSettings(file);
@@ -1560,10 +1560,10 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
 
                         this.settingItems.accessibility = this.accessibilitySettingsManager.getExtendedAccessibilitySettings() }
 
-                        this.loggingSystem.info('SettingsScene', 'Accessibility settings imported successfully);' }
+                        this.loggingSystem.info('SettingsScene', 'Accessibility settings imported successfully';' }
 
                     } catch (error) { : undefined''
-                        console.error('[SettingsScene] Import failed:', error);''
+                        console.error('[SettingsScene] Import failed:', error';''
                         this.loggingSystem.error('SettingsScene', 'Import failed', error); }
                 }
                 
@@ -1575,7 +1575,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             input.click();
 
         } catch (error) {
-            console.error('[SettingsScene] Import setup failed:', error);''
+            console.error('[SettingsScene] Import setup failed:', error';''
             this.loggingSystem.error('SettingsScene', 'Import setup failed', error); }
     }
     
@@ -1591,10 +1591,10 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             return { integrated: false, reason: 'AccessibilitySettingsManager not initialized' ,}
         
         return { integrated: true,
-            stats: this.accessibilitySettingsManager.getStats();
-           , profileCount: this.accessibilitySettingsManager.getAvailableProfiles().length, };
-            extendedSettings: this.accessibilitySettingsManager.getExtendedAccessibilitySettings().length }
-        }
+            stats: this.accessibilitySettingsManager.getStats(),
+    profileCount: this.accessibilitySettingsManager.getAvailableProfiles().length, };
+            extendedSettings: this.accessibilitySettingsManager.getExtendedAccessibilitySettings().length 
+    }
     
     /**
      * クリーンアップ処理
@@ -1619,8 +1619,8 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             this.loggingSystem.info('SettingsScene', 'Settings scene destroyed);
 
         } catch (error) {
-            console.error('Error during SettingsScene destruction:', error);''
-            this.loggingSystem.error('SettingsScene', 'Destruction error', error); }
+            console.error('Error during SettingsScene destruction:', error';''
+            this.loggingSystem.error('SettingsScene', 'Destruction error', error'; }
 
     }''
 }

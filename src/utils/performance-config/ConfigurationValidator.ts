@@ -21,8 +21,8 @@ interface ValidationError { key: string,
     error: string ,}
 
 interface FileValidationResult { valid: boolean;
-    file: string;
-   , timestamp: number;
+    file: string,
+    timestamp: number;
     issues?: ValidationIssue[];
     error?: string; }
 
@@ -33,19 +33,19 @@ interface ValidationIssue { type: string,
 
 interface CategoryValidationResult { valid: boolean,
     category: string;
-    issues: ValidationIssue[];
-   , warnings: string[];
+    issues: ValidationIssue[],
+    warnings: string[];
     result?: SubValidationResult
     ,}
 
-interface SubValidationResult { valid: boolean;
-   , issues: ValidationIssue[]
+interface SubValidationResult { valid: boolean,
+    issues: ValidationIssue[]
     }
 
 interface ValidatorStatus { rulesCount: number;
     validatorsCount: number;
-    strictMode: boolean;
-   , supportedTypes: string[] }
+    strictMode: boolean,
+    supportedTypes: string[] }
 
 interface ValidatorConfig { strictMode?: boolean;
     customRules?: Record<string, ValidationRule>; }
@@ -64,7 +64,7 @@ export class ConfigurationValidator {
 
         this.mainController = mainController;
         this.validators = new Map<string, ValidatorFunction>();''
-        this.rules = new Map<string, ValidationRule>(');
+        this.rules = new Map<string, ValidationRule>();
         this.strictMode = false;
 
         ';
@@ -101,18 +101,18 @@ export class ConfigurationValidator {
 
         this.validators.set('boolean', (value: any, constraints: ValidationConstraints) => {  ' }
 
-            if (typeof, value !== 'boolean'') throw new Error('Value, must be, a boolean);' }
+            if (typeof, value !== 'boolean'') throw new Error('Value, must be, a boolean';' }
 
         }');
 
         this.validators.set('string', (value: any, constraints: ValidationConstraints) => {  ''
-            if (typeof, value !== 'string'') throw new Error('Value, must be, a string);' }
+            if (typeof, value !== 'string'') throw new Error('Value, must be, a string';' }
 
             if(constraints.enum && !constraints.enum.includes(value)) {' }'
 
                 throw new Error(`Value must be one of: ${constraints.enum.join(', '})`);
             }
-        });
+        }';
     }
     
     /**'
@@ -122,96 +122,96 @@ export class ConfigurationValidator {
         this.rules.set('frameStabilization.targetFPS', { ')'
             type: 'number',' }
 
-            constraints: { min: 10, max: 120 ,})');
+            constraints: { min: 10, max: 120 ,}'');
 
         this.rules.set('frameStabilization.minFPS', { ')'
             type: 'number',' }
 
-            constraints: { min: 1, max: 60 ,})');
+            constraints: { min: 1, max: 60 ,}'');
 
         this.rules.set('frameStabilization.enabled', { ')'
             type: 'boolean')'),
 
-        this.rules.set('frameStabilization.adaptiveTargeting', {)'
+        this.rules.set('frameStabilization.adaptiveTargeting', {''
             type: 'boolean')'),
 
-        this.rules.set('frameStabilization.stabilityThreshold', {)'
+        this.rules.set('frameStabilization.stabilityThreshold', {''
             type: 'number',' }
 
-            constraints: { min: 1, max: 20 ,})');
+            constraints: { min: 1, max: 20 ,}'');
 ';
         // メモリ管理設定の検証ルール
         this.rules.set('memoryManagement.maxUsage', { ')'
             type: 'number',' }
 
-            constraints: { min: 10 * 1024 * 1024, max: 1024 * 1024 * 1024 ,} // 10MB-1GB)');
+            constraints: { min: 10 * 1024 * 1024, max: 1024 * 1024 * 1024 ,} // 10MB-1GB'');
 
         this.rules.set('memoryManagement.gcInterval', { ')'
             type: 'number',' }
 
-            constraints: { min: 1000, max: 300000 ,} // 1秒-5分)');
+            constraints: { min: 1000, max: 300000 ,} // 1秒-5分'');
 
         this.rules.set('memoryManagement.enabled', { ')'
             type: 'boolean')'),
 
-        this.rules.set('memoryManagement.aggressiveCleanup', {)'
+        this.rules.set('memoryManagement.aggressiveCleanup', {''
             type: 'boolean')'),
 
-        this.rules.set('memoryManagement.leakDetection', {)'
+        this.rules.set('memoryManagement.leakDetection', {''
             type: 'boolean')');
 ';
         // 品質制御設定の検証ルール
-        this.rules.set('qualityControl.qualityLevel', {)'
+        this.rules.set('qualityControl.qualityLevel', {''
             type: 'string',' }
 
-            constraints: { enum: ['low', 'medium', 'high', 'ultra] })');
+            constraints: { enum: ['low', 'medium', 'high', 'ultra] }'');
 
         this.rules.set('qualityControl.adjustmentSpeed', { ')'
             type: 'string',' }
 
-            constraints: { enum: ['slow', 'medium', 'fast] })');
+            constraints: { enum: ['slow', 'medium', 'fast] }'');
 
         this.rules.set('qualityControl.enabled', { ')'
             type: 'boolean')'),
 
-        this.rules.set('qualityControl.autoAdjust', {)'
+        this.rules.set('qualityControl.autoAdjust', {''
             type: 'boolean')'),
 
-        this.rules.set('qualityControl.minQuality', {)'
+        this.rules.set('qualityControl.minQuality', {''
             type: 'string',' }
 
-            constraints: { enum: ['low', 'medium', 'high] })');
+            constraints: { enum: ['low', 'medium', 'high] }'');
 ';
         // レンダリング最適化設定の検証ルール
         this.rules.set('rendering.enableOptimization', { ')'
             type: 'boolean')'),
 
-        this.rules.set('rendering.dirtyRegions', {)'
+        this.rules.set('rendering.dirtyRegions', {''
             type: 'boolean')'),
 
-        this.rules.set('rendering.viewportCulling', {)'
+        this.rules.set('rendering.viewportCulling', {''
             type: 'boolean')'),
 
-        this.rules.set('rendering.batchRendering', {)'
+        this.rules.set('rendering.batchRendering', {''
             type: 'boolean')'),
 
-        this.rules.set('rendering.layerCaching', {)'
+        this.rules.set('rendering.layerCaching', {''
             type: 'boolean')');
 ';
         // モバイル最適化設定の検証ルール
-        this.rules.set('mobile.enableOptimization', {)'
+        this.rules.set('mobile.enableOptimization', {''
             type: 'boolean')'),
 
-        this.rules.set('mobile.deviceDetection', {)'
+        this.rules.set('mobile.deviceDetection', {''
             type: 'boolean')'),
 
-        this.rules.set('mobile.batteryOptimization', {)'
+        this.rules.set('mobile.batteryOptimization', {''
             type: 'boolean')'),
 
-        this.rules.set('mobile.thermalManagement', {)'
+        this.rules.set('mobile.thermalManagement', {''
             type: 'boolean')'),
 
-        this.rules.set('mobile.touchOptimization', {)'
+        this.rules.set('mobile.touchOptimization', {''
             type: 'boolean' ,}
     
     /**
@@ -245,8 +245,8 @@ export class ConfigurationValidator {
      */
     async validateConfigChanges(changes: Record<string, any>): Promise<ValidationResult> { const results: ValidationResult = {
             valid: true;
-            errors: [];
-           , warnings: [] };
+            errors: [],
+    warnings: [] };
         for(const [key, value] of Object.entries(changes) {
 
             try {
@@ -278,20 +278,20 @@ export class ConfigurationValidator {
             const validation: FileValidationResult = {
                 valid: true;
                 file,
-                timestamp: Date.now(;
-               , issues: [] ,}))
+                timestamp: Date.now(,
+    issues: [] ,}))
             // 基本的な検証')'
             if(!file || typeof, file !== 'string'') { validation.valid = false;
 
                 validation.issues!.push({)'
                     type: 'invalid_file_path',' }
 
-                    message: 'Invalid file path provided'); }
-            }
+                    message: 'Invalid file path provided'); 
+    }
 ';
             // ファイル拡張子チェック
             if (file && !file.match(/\.(json|js|yaml|yml)$/i)') { validation.issues!.push({''
-                    type: 'unsupported_format',)';
+                    type: 'unsupported_format','';
                     message: 'File format may not be supported',')';
                     severity: 'warning' ,}
 
@@ -300,8 +300,8 @@ export class ConfigurationValidator {
         } catch (error) { return { valid: false,
                 file,
                 error: error instanceof Error ? error.message : String(error, };)
-                timestamp: Date.now(); }
-            }
+                timestamp: Date.now(); 
+    }
     }
     
     /**
@@ -313,8 +313,8 @@ export class ConfigurationValidator {
     async validateConfigCategory(category: string, config: Record<string, any>): Promise<CategoryValidationResult> { const validation: CategoryValidationResult = {
             valid: true;
             category,
-            issues: [];
-           , warnings: [] ,};
+            issues: [],
+    warnings: [] ,};
 ';
         // カテゴリ特有の検証ロジック
         switch(category) {'
@@ -356,20 +356,20 @@ export class ConfigurationValidator {
         // targetFPS vs minFPS consistency check
         if(config.targetFPS && config.minFPS && config.targetFPS <= config.minFPS) {'
             issues.push({''
-                type: 'consistency_error',)';
+                type: 'consistency_error','';
                 message: 'targetFPS must be greater than minFPS',' }
 
-                severity: 'error'); }
-        }
+                severity: 'error'); 
+    }
 
         // Stability threshold reasonableness
         if(config.stabilityThreshold && config.targetFPS) { if(config.stabilityThreshold > config.targetFPS * 0.5) {'
                 issues.push({''
-                    type: 'configuration_warning',)';
+                    type: 'configuration_warning','';
                     message: 'stabilityThreshold seems too high relative to targetFPS',' }
 
-                    severity: 'warning')'); }
-}
+                    severity: 'warning')'); 
+    }
 ';
 
         return { ''
@@ -386,24 +386,24 @@ export class ConfigurationValidator {
         // GC interval vs aggressive cleanup consistency
         if(config.aggressiveCleanup && config.gcInterval > 60000) {'
             issues.push({''
-                type: 'consistency_warning',)';
+                type: 'consistency_warning','';
                 message: 'Long GC interval with aggressive cleanup may be ineffective',' }
 
-                severity: 'warning'); }
-        }
+                severity: 'warning'); 
+    }
 ';
         // Memory limit reasonableness
         if(config.maxUsage && config.maxUsage < 50 * 1024 * 1024) { '
             issues.push({''
-                type: 'configuration_warning',)';
+                type: 'configuration_warning','';
                 message: 'Very low memory limit may cause performance issues',' }
 
-                severity: 'warning')'); }
-        }
+                severity: 'warning')'); 
+    }
 ';
 
         return { ''
-            valid: issues.filter(i = > i.severity === 'error).length === 0 };
+            valid: issues.filter(i = > i.severity === 'error'.length === 0 };
     issues }
         }
     
@@ -421,11 +421,11 @@ export class ConfigurationValidator {
 
             if(currentIndex < minIndex) {'
                 issues.push({''
-                    type: 'consistency_error',)';
+                    type: 'consistency_error','';
                     message: 'qualityLevel cannot be lower than minQuality',' }
 
-                    severity: 'error')'); }
-}
+                    severity: 'error')'); 
+    }
 ';
 
         return { ''
@@ -451,7 +451,7 @@ export class ConfigurationValidator {
 
                     type: 'consistency_warning''),' }
 
-                    message: `Optimization disabled but ${enabledOptions.join(', ''}) are enabled`,''
+                    message: `Optimization disabled but ${enabledOptions.join(', ''}' are enabled`,''
                     severity: 'warning''';
                 }'),
             }
@@ -472,11 +472,11 @@ export class ConfigurationValidator {
         // Battery optimization with thermal management
         if(config.batteryOptimization && !config.thermalManagement) {'
             issues.push({''
-                type: 'consistency_warning',)';
+                type: 'consistency_warning','';
                 message: 'Battery optimization works better with thermal management enabled',' }
 
-                severity: 'warning')'); }
-        }
+                severity: 'warning')'); 
+    }
 ';
 
         return { ''
@@ -533,10 +533,10 @@ export class ConfigurationValidator {
      * @returns Validator status
      */
     getValidatorStatus(): ValidatorStatus { return { rulesCount: this.rules.size,
-            validatorsCount: this.validators.size;
-           , strictMode: this.strictMode, };
-            supportedTypes: Array.from(this.validators.keys(); }
-        }
+            validatorsCount: this.validators.size,
+    strictMode: this.strictMode, };
+            supportedTypes: Array.from(this.validators.keys(); 
+    }
     
     /**
      * Cleanup validator resources

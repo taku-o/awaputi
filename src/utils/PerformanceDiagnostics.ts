@@ -19,36 +19,36 @@ interface DiagnosticSession { id: number,
     startTime: number;
     endTime?: number;
     duration?: number;
-    options: DiagnosticOptions;
-   , results: DiagnosticResults
+    options: DiagnosticOptions,
+    results: DiagnosticResults
     ,}
 
 interface CollectedDataSummary { totalMetrics: number;
-    collectionDuration: number;
-   , metricsPerSecond: number,
+    collectionDuration: number,
+    metricsPerSecond: number,
     categories: string[],
     dataQuality: 'excellent' | 'good' | 'fair' | 'poor' ,}
 
-interface CollectedData { summary: CollectedDataSummary;
-   , metrics: Record<string, any>;
-    timestamps: number[];
-   , metadata: Record<string, any> }
+interface CollectedData { summary: CollectedDataSummary,
+    metrics: Record<string, any>;
+    timestamps: number[],
+    metadata: Record<string, any> }
 
 interface Bottleneck { id: string,
 
     component: string,
     severity: 'low' | 'medium' | 'high' | 'critical';
     impact: number;
-    description: string;
-   , metrics: Record<string, any>;
+    description: string,
+    metrics: Record<string, any>;
     suggested_actions: string[] ,}
 
-interface Anomaly { id: string;
-   , type: string,
+interface Anomaly { id: string,
+    type: string,
     detection_time: number,
     severity: 'low' | 'medium' | 'high';
-    description: string;
-   , metrics: Record<string, any>;
+    description: string,
+    metrics: Record<string, any>;
     confidence: number ,}
 
 interface RootCause { id: string;
@@ -56,28 +56,28 @@ interface RootCause { id: string;
     cause: string;
     evidence: string[];
     confidence: number;
-    impact_assessment: string;
-   , remediation_steps: string[] }
+    impact_assessment: string,
+    remediation_steps: string[] }
 
-interface Recommendation { id: string;
-   , category: string,
+interface Recommendation { id: string,
+    category: string,
     priority: 'low' | 'medium' | 'high' | 'urgent';
-    title: string;
-   , description: string,
+    title: string,
+    description: string,
     estimated_impact: string,
-    implementation_difficulty: 'easy' | 'medium' | 'hard';
-   , steps: string[] ,}
+    implementation_difficulty: 'easy' | 'medium' | 'hard',
+    steps: string[] ,}
 ';
 interface OverallAssessment { score: number; // 0-100
     grade: 'A' | 'B' | 'C' | 'D' | 'F';
     summary: string;
     key_issues: string[];
-    strengths: string[];
-   , critical_recommendations: string[] }
+    strengths: string[],
+    critical_recommendations: string[] }
 
 interface AnalysisResults { bottlenecks: Bottleneck[];
-    anomalies: Anomaly[];
-   , rootCauses: RootCause[];
+    anomalies: Anomaly[],
+    rootCauses: RootCause[];
     recommendations?: Recommendation[]
     }
 
@@ -93,8 +93,8 @@ interface DiagnosticReport { timestamp: number,
     sessionId: number;
     summary: OverallAssessment;
     details: DiagnosticResults;
-    charts?: any[];
-   , metadata: Record<string, any> }
+    charts?: any[],
+    metadata: Record<string, any> }
 
 interface DiagnosticCapabilities {
     dataCollection: { availabl;e: boolean; [key: string]: any },
@@ -106,12 +106,12 @@ interface ComponentConfig { dataCollection?: any;
     reporting?: any; }
 
 interface ComponentReferences { dataCollector: DiagnosticDataCollector,
-    analyzer: DiagnosticAnalyzer;
-   , reporter: DiagnosticReporter
+    analyzer: DiagnosticAnalyzer,
+    reporter: DiagnosticReporter
     ,}
 
-interface QuickDiagnosisResult { session: DiagnosticSession;
-   , report: DiagnosticReport
+interface QuickDiagnosisResult { session: DiagnosticSession,
+    report: DiagnosticReport
     }
 
 // Component interfaces (will, be replaced, when actual, files are, converted);
@@ -149,23 +149,22 @@ class DummyDiagnosticDataCollector implements DiagnosticDataCollector { async co
 
         // Simulate data collection' }'
 
-        await new Promise(resolve => setTimeout(resolve, Math.min(options.duration || 5000, 1000)'});
+        await new Promise(resolve => setTimeout(resolve, Math.min(options.duration || 5000, 1000)'}';
         
         return { summary: {
-                totalMetrics: 150;
-               , collectionDuration: options.duration || 5000,
+                totalMetrics: 150,
+    collectionDuration: options.duration || 5000,
                 metricsPerSecond: 30,
                 categories: ['performance', 'memory', 'network', 'rendering'],' };
 
-                dataQuality: 'good' }
-            };
+                dataQuality: 'good' 
+    };
             metrics: { fps: 58.5;
                 memoryUsage: 45.2;
-                loadTime: 1250;
-               , renderTime: 16.8 }
-
-            },''
-            timestamps: [Date.now() - 5000, Date.now() - 2500, Date.now(''';
+                loadTime: 1250,
+    renderTime: 16.8 
+    },''
+            timestamps: [Date.now() - 5000, Date.now() - 2500, Date.now('''
                 browser: 'Chrome',
                 device: 'Desktop';
             }))
@@ -215,8 +214,8 @@ class DummyDiagnosticAnalyzer implements DiagnosticAnalyzer { ''
         const rootCauses: RootCause[] = [{ ''
             id: 'root_001',
             component: 'particle_system',]';
-            cause: 'Excessive particle generation','])';
-            evidence: ['High particle count', 'Memory growth pattern])';
+            cause: 'Excessive particle generation',']'';
+            evidence: ['High particle count', 'Memory growth pattern]'';
             confidence: 0.8,
             impact_assessment: 'Moderate performance impact',
             remediation_steps: ['Implement particle pooling', 'Add culling system] }];
@@ -255,11 +254,11 @@ class DummyDiagnosticAnalyzer implements DiagnosticAnalyzer { ''
             description: 'Sudden FPS drop detected', }
             metrics: { minFps: 35 }]
             confidence: 0.9]);
-        }])
+        }]'
     }
 
-    getAnalysisCapabilities(''';
-        return { available: true, analyzers: ['bottleneck', 'anomaly', 'root_cause] })', ')';
+    getAnalysisCapabilities('''
+        return { available: true, analyzers: ['bottleneck', 'anomaly', 'root_cause] }'', ')';
     configure(config: any): void { ''
         console.log('[DiagnosticAnalyzer] Configuration, updated'); }'
 
@@ -289,24 +288,24 @@ class DummyDiagnosticReporter implements DiagnosticReporter { ''
     }
 
     async generateReport(diagnosticSession: DiagnosticSession): Promise<DiagnosticReport> { return { timestamp: Date.now(,
-            sessionId: diagnosticSession.id;
-           , summary: diagnosticSession.results.overallAssessment || {'
+            sessionId: diagnosticSession.id,
+    summary: diagnosticSession.results.overallAssessment || {'
                 score: 75,
                 grade: 'C',
                 summary: 'System performance is acceptable';
-                key_issues: [];
-               , strengths: [], };
-                critical_recommendations: [] }
-            };
-            details: diagnosticSession.results;
-           , charts: [],
+                key_issues: [],
+    strengths: [], };
+                critical_recommendations: [] 
+    };
+            details: diagnosticSession.results,
+    charts: [],
             metadata: { ''
                 version: '1.0.0',
-                generatedBy: 'PerformanceDiagnostics' ,}))
+                generatedBy: 'PerformanceDiagnostics' ,})'
     }
 
-    getReportingCapabilities(''';
-        return { available: true, formats: ['json', 'html', 'csv] })', ')';
+    getReportingCapabilities('''
+        return { available: true, formats: ['json', 'html', 'csv] }'', ')';
     configure(config: any): void { ''
         console.log('[DiagnosticReporter] Configuration, updated'); }'
 
@@ -319,17 +318,17 @@ export class PerformanceDiagnostics {
     private dataCollector: DiagnosticDataCollector;
     private analyzer: DiagnosticAnalyzer;
     private reporter: DiagnosticReporter;
-    private, initialized: boolean;
+    private initialized: boolean;
     constructor() {
 
-        // Initialize sub-components (using, dummy implementations);
+        // Initialize sub-components (using dummy implementations);
         this.dataCollector = new DummyDiagnosticDataCollector();
         this.analyzer = new DummyDiagnosticAnalyzer();
         this.reporter = new DummyDiagnosticReporter();
         
         this.initialized = false;
 
-        this.initializeDiagnostics(');
+        this.initializeDiagnostics();
     }
 
         console.log('[PerformanceDiagnostics] Main, controller initialized, successfully'); }'
@@ -343,7 +342,7 @@ export class PerformanceDiagnostics {
             console.log('[PerformanceDiagnostics] Main, controller initialized, successfully');' }
 
         } catch (error) {
-            console.error('[PerformanceDiagnostics] Failed to initialize:', error);
+            console.error('[PerformanceDiagnostics] Failed to initialize:', error';
             throw error; }
     }
 ';
@@ -357,13 +356,13 @@ export class PerformanceDiagnostics {
         }
 
         const diagnosticSession: DiagnosticSession = { id: Date.now(,
-            startTime: performance.now(;
-           , options: {
+            startTime: performance.now(,
+    options: {
                 duration: options.duration || 30000, // 30秒;
                 includeBottleneckAnalysis: options.includeBottleneckAnalysis !== false;
                 includeAnomalyDetection: options.includeAnomalyDetection !== false;
-                includeRootCauseAnalysis: options.includeRootCauseAnalysis !== false;
-               , generateRecommendations: options.generateRecommendations !== false,
+                includeRootCauseAnalysis: options.includeRootCauseAnalysis !== false,
+    generateRecommendations: options.generateRecommendations !== false,
                 detailLevel: options.detailLevel || 'comprehensive', // basic, standard, comprehensive;
                 ...options,
             results: {,}))
@@ -385,8 +384,8 @@ export class PerformanceDiagnostics {
                 bottlenecks: analysisResults.bottlenecks;
                 anomalies: analysisResults.anomalies;
                 rootCauses: analysisResults.rootCauses;
-                recommendations: analysisResults.recommendations;
-               , overallAssessment: await this.analyzer.generateOverallAssessment(analysisResults), };
+                recommendations: analysisResults.recommendations,
+    overallAssessment: await this.analyzer.generateOverallAssessment(analysisResults), };
 
             diagnosticSession.endTime = performance.now();
             diagnosticSession.duration = diagnosticSession.endTime - diagnosticSession.startTime;
@@ -395,8 +394,8 @@ export class PerformanceDiagnostics {
             const report = await this.reporter.generateReport(diagnosticSession);
             
             return { session: diagnosticSession };
-                report: report }
-            } catch (error) {
+                report: report 
+    } catch (error) {
             console.error('[PerformanceDiagnostics] Comprehensive diagnosis failed:', error);
             throw error; }
     }
@@ -434,8 +433,8 @@ export class PerformanceDiagnostics {
      */''
     async quickDiagnosis(targetMetric: string | null = null): Promise<QuickDiagnosisResult> { const options: DiagnosticOptions = {'
             duration: 5000, // 5秒;
-            detailLevel: 'basic';
-           , includeRootCauseAnalysis: false ,};
+            detailLevel: 'basic',
+    includeRootCauseAnalysis: false ,};
         if (targetMetric) { options.focusMetric = targetMetric; }
 
         return await this.runComprehensiveDiagnosis(options);
@@ -484,11 +483,11 @@ export class PerformanceDiagnostics {
      * @returns Available diagnostic capabilities
      */
     getDiagnosticCapabilities(): DiagnosticCapabilities { return {  };
-            dataCollection: this.dataCollector.getCollectionStatus ?   : undefined 
+            dataCollection: this.dataCollector.getCollectionStatus ? undefined : undefined 
                 this.dataCollector.getCollectionStatus() : { available: true };
-            analysis: this.analyzer.getAnalysisCapabilities ?   : undefined
+            analysis: this.analyzer.getAnalysisCapabilities ? undefined : undefined
                 this.analyzer.getAnalysisCapabilities() : { available: true };
-            reporting: this.reporter.getReportingCapabilities ?   : undefined
+            reporting: this.reporter.getReportingCapabilities ? undefined : undefined
                 this.reporter.getReportingCapabilities() : { available: true }
 
     /**
@@ -517,10 +516,9 @@ export class PerformanceDiagnostics {
      * Get component references for advanced usage
      * @returns Component references
      */
-    getComponents(): ComponentReferences { return { dataCollector: this.dataCollector,
-            analyzer: this.analyzer, };
-            reporter: this.reporter }
-        }
+    getComponents(): ComponentReferences { return { dataCollector: this.dataCollector analyzer: this.analyzer };
+            reporter: this.reporter 
+    }
 
     /**
      * Cleanup diagnostic system
@@ -528,7 +526,7 @@ export class PerformanceDiagnostics {
     destroy(): void { try {
             // Destroy sub-components
             this.dataCollector.destroy && this.dataCollector.destroy();
-            this.analyzer.destroy && this.analyzer.destroy(');''
+            this.analyzer.destroy && this.analyzer.destroy();''
             this.reporter.destroy && this.reporter.destroy()';
             console.log('[PerformanceDiagnostics] Main, controller destroyed');' }
 
@@ -543,4 +541,4 @@ let performanceDiagnosticsInstance: PerformanceDiagnostics | null = null,
  * @returns Diagnostics instance
  */
 export function getPerformanceDiagnostics(): PerformanceDiagnostics { if (!performanceDiagnosticsInstance) {''
-        performanceDiagnosticsInstance = new PerformanceDiagnostics(' })'
+        performanceDiagnosticsInstance = new PerformanceDiagnostics(' }''

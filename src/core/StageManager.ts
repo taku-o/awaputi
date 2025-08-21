@@ -26,13 +26,13 @@ export class StageManager implements IStageManager { public gameEngine: any,
     /**
      * ステージ設定を初期化'
      */''
-    initializeStageConfigs(''';
+    initializeStageConfigs('''
                 name: '1分ステージ',
                 description: 'チュートリアル用の短いステージ',
                 duration: 60000, // 1分;
                 bubbleTypes: ['normal'];
-                spawnRate: 1.0;
-               , maxBubbles: 10,
+                spawnRate: 1.0,
+    maxBubbles: 10,
                 unlockCondition: null, // 最初から開放;
                 unlockMessage: '';
             },
@@ -42,15 +42,15 @@ export class StageManager implements IStageManager { public gameEngine: any,
                 description: '基本的な泡が出現するステージ',
                 duration: 300000, // 5分;
                 bubbleTypes: ['normal', 'stone', 'rainbow', 'pink', 'clock', 'score'],
-                spawnRate: 1.5;
-               , maxBubbles: 20,
+                spawnRate: 1.5,
+    maxBubbles: 20,
                 unlockCondition: null, // 最初から開放;
                 unlockMessage: '' ,};
             hard: { ''
                 name: 'ちょっと硬いアワアワ',
                 description: '硬い泡が多く出現するステージ',
-                duration: 300000,)';
-                bubbleTypes: ['normal', 'stone', 'iron', 'rainbow', 'pink', 'clock', 'score', 'poison])';
+                duration: 300000,'';
+                bubbleTypes: ['normal', 'stone', 'iron', 'rainbow', 'pink', 'clock', 'score', 'poison]'';
                 spawnRate: 1.6, // 1.8 -> 1.6 (少し緩和);
                 maxBubbles: 22, // 25 -> 22(少し緩和);' }'
 
@@ -145,8 +145,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
                 ],
                 unlockCondition: { type: 'tap', value: 35000 ,}, // 75000 -> 35000(大幅緩和);''
                 unlockMessage: 'TAP 35000以上で開放';
-            }
-        },
+    },
     }
     
     /**
@@ -172,7 +171,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
         // BubbleManagerの存在確認
         if(!this.gameEngine.bubbleManager} {' }'
 
-            console.error('BubbleManager, not found, in gameEngine''});
+            console.error('BubbleManager, not found, in gameEngine''}';
             return false;
         }
 
@@ -180,12 +179,11 @@ export class StageManager implements IStageManager { public gameEngine: any,
         
         this.currentStage = { id: stageId,
             config: config;
-            startTime: Date.now();
-           , bossEventsTriggered: [] ,};
+            startTime: Date.now() bossEventsTriggered: []  };
         // ゲームエンジンにステージ情報を設定
         this.gameEngine.timeRemaining = config.duration;
         
-        try { const configResult = this.gameEngine.bubbleManager.setStageConfig(config);
+        try { const configResult = this.gameEngine.bubbleManager.setStageConfig(config');
             if(configResult') {
                 ';
 
@@ -224,7 +222,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
             case 'tap':';
                 return playerData.tap >= condition.value;''
             case 'highScore':'';
-                return(playerData.highScores[condition.stage || '] || 0) >= condition.value;''
+                return(playerData.highScores[condition.stage || '] || 0' >= condition.value;''
             case 'stageComplete':'';
                 return playerData.unlockedStages.includes(condition.stage || '');
         }
@@ -240,10 +238,10 @@ export class StageManager implements IStageManager { public gameEngine: any,
             if(this.isStageUnlocked(stageId) {
                 unlockedStages.push({
                     id: stageId);
-                    name: config.name);
-                   , description: config.description, }
-                    duration: config.duration); }
-}
+                    name: config.name),
+    description: config.description, }
+                    duration: config.duration); 
+    }
         
         return unlockedStages;
     }
@@ -259,11 +257,11 @@ export class StageManager implements IStageManager { public gameEngine: any,
             if(!this.isStageUnlocked(stageId)) {
                 lockedStages.push({
                     id: stageId);
-                    name: config.name)';
-                   , description: config.description,' }'
+                    name: config.name)',
+    description: config.description,' }'
 
-                    unlockMessage: config.unlockMessage || ''); }
-}
+                    unlockMessage: config.unlockMessage || ''); 
+    }
         
         return lockedStages;
     }
@@ -285,7 +283,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
         const config = this.currentStage.config;
         const elapsedTime = config.duration - timeRemaining;
         
-        config.bossEvents? .forEach((event, index) => {  if(elapsedTime >= event.time && !this.currentStage!.bossEventsTriggered.includes(index) {
+        config.bossEvents?.forEach((event, index) => {  if(elapsedTime >= event.time && !this.currentStage!.bossEventsTriggered.includes(index) {
                 this.triggerBossEvent(event); }
                 this.currentStage!.bossEventsTriggered.push(index); }
 });
@@ -327,7 +325,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
         // データ保存
         playerData.save();
 
-        console.log(`Stage completed: ${this.currentStage.config.name}, Score: ${finalScore}, AP gained: ${apGain}`'});
+        console.log(`Stage completed: ${this.currentStage.config.name}, Score: ${finalScore}, AP gained: ${apGain}`'}';
         
         this.currentStage = null;
 

@@ -15,8 +15,8 @@ export interface DialogStackItem { type: string,
     ,}
 
 export interface DialogInfo { type: string;
-    data: DialogData;
-   , DialogClass: DialogClass
+    data: DialogData,
+    DialogClass: DialogClass
     }
 
 export interface LayoutConfig { minWidth: number;
@@ -24,16 +24,16 @@ export interface LayoutConfig { minWidth: number;
     maxWidth: number;
     maxHeight: number;
     padding: number;
-    buttonHeight: number;
-   , buttonSpacing: number }
+    buttonHeight: number,
+    buttonSpacing: number }
 
 export interface AnimationConfig { fadeInDuration: number;
     fadeOutDuration: number;
-    scaleInDuration: number;
-   , enabled: boolean }
+    scaleInDuration: number,
+    enabled: boolean }
 
-export interface AnimationState { isAnimating: boolean;
-   , startTime: number,
+export interface AnimationState { isAnimating: boolean,
+    startTime: number,
     type: 'fade-in' | 'fade-out' | 'scale-in' | null ,}
 
 export interface DialogLayout { x: number;
@@ -45,8 +45,8 @@ export interface DialogLayout { x: number;
     contentWidth: number;
     contentHeight: number;
     buttonY: number;
-    buttonWidth: number;
-   , buttonHeight: number }
+    buttonWidth: number,
+    buttonHeight: number }
 
 export class ScenesDialogManager {
     private gameEngine: GameEngine;
@@ -69,7 +69,7 @@ export class ScenesDialogManager {
         this.eventBus = eventBus;
         this.state = state;
         // ダイアログレジストリ
-        this.dialogs = new Map('';
+        this.dialogs = new Map(''
     ,}
 
             type: null // 'fade-in', 'fade-out', 'scale-in' }
@@ -117,7 +117,7 @@ export class ScenesDialogManager {
             // 状態を更新
             if(this.state.set) {'
 
-                this.state.set('showingDialog', type, false);
+                this.state.set('showingDialog', type, false';
 
             }
 
@@ -171,7 +171,7 @@ export class ScenesDialogManager {
             // 状態をクリア
             if(this.state.set) {'
 
-                this.state.set('showingDialog', null, false);
+                this.state.set('showingDialog', null, false';
 
             }
 
@@ -181,15 +181,15 @@ export class ScenesDialogManager {
             if(this.dialogStack.length > 0) {
                 const previousDialog = this.dialogStack.pop()!;''
                 if(this.state.set) {''
-                    this.state.set('showingDialog', previousDialog.type, false);
+                    this.state.set('showingDialog', previousDialog.type, false';
 
             }
 
-                    this.state.set('dialogData', previousDialog.data, false); }
+                    this.state.set('dialogData', previousDialog.data, false'; }
 }
             ';
             // イベント通知
-            this.eventBus.emit('dialog-closed', { type: currentType ),' }
+            this.eventBus.emit('dialog-closed', { type: currentType ',' }
 
         } catch (error) {
             this.handleError('closeDialog', error as Error); }
@@ -274,10 +274,10 @@ export class ScenesDialogManager {
             contentY: y + this.layout.padding;
             contentWidth: width - (this.layout.padding * 2);
             contentHeight: height - (this.layout.padding * 2);
-            buttonY: y + height - this.layout.padding - this.layout.buttonHeight;
-           , buttonWidth: (width - (this.layout.padding * 3)) / 2, };
-            buttonHeight: this.layout.buttonHeight }
-        }
+            buttonY: y + height - this.layout.padding - this.layout.buttonHeight,
+    buttonWidth: (width - (this.layout.padding * 3)) / 2, };
+            buttonHeight: this.layout.buttonHeight 
+    }
     
     /**
      * 背景オーバーレイを描画
@@ -285,7 +285,7 @@ export class ScenesDialogManager {
      * @param layout - レイアウト情報
      */''
     private renderOverlay(context: CanvasRenderingContext2D, layout: DialogLayout): void { // 背景をダークオーバーレイで覆う
-        context.fillStyle = 'rgba(0, 0, 0, 0.5)';''
+        context.fillStyle = 'rgba(0, 0, 0, 0.5)';
         context.fillRect(0, 0, context.canvas.width, context.canvas.height);
         
         // ダイアログ背景を描画
@@ -293,14 +293,14 @@ export class ScenesDialogManager {
         const { x, y, width, height } = layout;
         
         // アクセシビリティ設定に応じた色調整
-        const backgroundColor = this.state.accessibilitySettings? .highContrast '';
+        const backgroundColor = this.state.accessibilitySettings?.highContrast '';
             ? '#FFFFFF'  : undefined'';
             : '#F8F9FA';
         
         context.fillStyle = backgroundColor;
 
         this.roundRect(context, x, y, width, height, cornerRadius);''
-        context.fill(''';
+        context.fill('''
             ? '#000000'  : undefined'';
             : '#DEE2E6';)
         context.lineWidth = 1;)
@@ -332,9 +332,9 @@ export class ScenesDialogManager {
 
         this.roundRect(context, layout.x, layout.y, layout.width, layout.height, 8);''
         context.fill(''';
-        context.fillStyle = '#FFFFFF';''
-        context.font = '16px, sans-serif';''
-        context.textAlign = 'center';''
+        context.fillStyle = '#FFFFFF';
+        context.font = '16px, sans-serif';
+        context.textAlign = 'center';
         context.textBaseline = 'middle';
 
         context.fillText()';
@@ -374,7 +374,7 @@ export class ScenesDialogManager {
 
             return dialogInstance.handleClick(x, y, layout);''
         } catch (error) {
-            this.handleError('handleClick', error as Error);
+            this.handleError('handleClick', error as Error';
             return false;
     
     /**
@@ -387,7 +387,7 @@ export class ScenesDialogManager {
             return false; ,}
         ';
         try { // Escapeキーでダイアログを閉じる
-            if(event.key === 'Escape) {'
+            if(event.key === 'Escape' {'
                 this.closeDialog();
             }
                 return true;
@@ -402,7 +402,7 @@ export class ScenesDialogManager {
 
             return dialogInstance.handleKeyboard(event);''
         } catch (error) {
-            this.handleError('handleKeyboard', error as Error);
+            this.handleError('handleKeyboard', error as Error';
             return false;
     
     /**
@@ -484,12 +484,12 @@ export class ScenesDialogManager {
      * @param radius - 角の半径
      */
     private roundRect(;
-        context: CanvasRenderingContext2D;
-       , x: number, ;
+        context: CanvasRenderingContext2D,
+    x: number, ;
         y: number, ;
         width: number );
-        height: number);
-       , radius: number;
+        height: number),
+    radius: number;
     ): void { context.beginPath(),
         context.moveTo(x + radius, y);
         context.lineTo(x + width - radius, y);
@@ -526,7 +526,7 @@ export class ScenesDialogManager {
             }
 
                 this.handleError('component-error', errorData.error); }
-});
+}';
     }
     
     /**
@@ -538,10 +538,10 @@ export class ScenesDialogManager {
         console.error(`DialogManager ${operation) error:`, error');
         ';
         // エラーイベントを発火
-        this.eventBus.emit('component-error', {)'
+        this.eventBus.emit('component-error', {''
             component: 'DialogManager')';
             operation,')';
-            error)');
+            error'');
         ';
         // 重大なエラーの場合はダイアログを強制終了
         if(operation === 'render' || operation === 'showDialog} {'
@@ -549,9 +549,9 @@ export class ScenesDialogManager {
             if(this.state.set} {'
         }
 
-                this.state.set('showingDialog', null, false);' }
+                this.state.set('showingDialog', null, false';' }
 
-                this.state.set('dialogData', {), false});
+                this.state.set('dialogData', {), false}';
             }
 }
     

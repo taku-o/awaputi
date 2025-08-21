@@ -13,11 +13,11 @@ interface ShortcutConfig extends Required<ShortcutOptions> { shortcut: string,
 }
 
 interface ShortcutStatistics { totalShortcuts: number;
-    usageCount: number;
-   , conflicts: number }
+    usageCount: number,
+    conflicts: number }
 
-interface ShortcutConflict { shortcut: string;
-   , configs: ShortcutConfig[]
+interface ShortcutConflict { shortcut: string,
+    configs: ShortcutConfig[]
     }
 
 interface MainController { container?: HTMLElement;
@@ -49,14 +49,14 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
         super(mainController, 'DebugCommandProcessor);
 
         this.shortcuts = new Map<string, ShortcutConfig>();''
-        this.shortcutContexts = new Map<string, Map<string, ShortcutConfig>>(');''
+        this.shortcutContexts = new Map<string, Map<string, ShortcutConfig>>();''
         this.currentContext = 'global';
         this.shortcutStatistics = {
-            totalShortcuts: 0;
-           , usageCount: 0;
+            totalShortcuts: 0,
+    usageCount: 0;
     ,}
-            conflicts: 0 }
-        };
+            conflicts: 0 
+    };
         this.shortcutsEnabled = true;
         this.suspendShortcuts = false;
     }
@@ -79,8 +79,8 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
             description: options.description || '',
             context: options.context || 'global',
             group: options.group || 'general';
-            enabled: options.enabled !== false;
-           , preventDefault: options.preventDefault !== false;
+            enabled: options.enabled !== false,
+    preventDefault: options.preventDefault !== false;
             ...options;
 
         // 競合チェック
@@ -110,7 +110,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
             .replace(/command/g, 'meta'')'';
             .replace(/ctrl/g, 'ctrl'')'';
             .replace(/alt/g, 'alt'')'';
-            .replace(/shift/g, 'shift); }'
+            .replace(/shift/g, 'shift'; }'
 
     /**
      * ショートカット文字列を構築
@@ -119,24 +119,24 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      */
     buildShortcutString(event: KeyboardEvent): string { const parts: string[] = [],
 
-        if(event.ctrlKey) parts.push('ctrl);''
-        if(event.altKey) parts.push('alt);''
-        if(event.shiftKey) parts.push('shift);''
-        if(event.metaKey) parts.push('meta);
+        if(event.ctrlKey) parts.push('ctrl';''
+        if(event.altKey) parts.push('alt';''
+        if(event.shiftKey) parts.push('shift';''
+        if(event.metaKey) parts.push('meta';
         ';
         // 特殊キーの処理
         let key = event.key.toLowerCase()';
-        if (key === ', '') key = 'space';''
-        if (key === 'escape'') key = 'esc';''
-        if (key === 'delete'') key = 'del';''
-        if (key === 'arrowleft'') key = 'left';''
-        if (key === 'arrowright'') key = 'right';''
-        if (key === 'arrowup'') key = 'up';''
+        if (key === ', '') key = 'space';
+        if (key === 'escape'') key = 'esc';
+        if (key === 'delete'') key = 'del';
+        if (key === 'arrowleft'') key = 'left';
+        if (key === 'arrowright'') key = 'right';
+        if (key === 'arrowup'') key = 'up';
         if (key === 'arrowdown'') key = 'down';
 
         parts.push(key);
 
-        return parts.join('+); }'
+        return parts.join('+'; }'
 
     /**
      * キーボードイベントハンドラー
@@ -208,10 +208,10 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * @param event - キーボードイベント'
      */''
     handleDebugInterfaceKeyboard(event: KeyboardEvent): void { // ESCキーでインターフェースを非表示
-        if(event.key === 'Escape) {'
+        if(event.key === 'Escape' {'
             (this.mainController, as MainController).hide();''
             event.preventDefault()';
-        if(event.key === 'Tab) {'
+        if(event.key === 'Tab' {'
         }
             this.handleTabNavigation(event); }
 }
@@ -221,8 +221,8 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * @param event - キーボードイベント
      */'
     handleTabNavigation(event: KeyboardEvent): void { const controller = this.mainController as MainController;''
-        const focusableElements = controller.container? .querySelectorAll()';
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+        const focusableElements = controller.container?.querySelectorAll()';
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]"';
         );
 
         if (!focusableElements || focusableElements.length === 0) return;
@@ -279,8 +279,8 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
         // インターフェース制御
         const controller = this.mainController as MainController;
 
-        this.registerShortcut('f12', () => controller.toggle(''';
-            description: 'Toggle debug interface',)';
+        this.registerShortcut('f12', () => controller.toggle('''
+            description: 'Toggle debug interface','';
             group: 'interface'')';
         }'),
 
@@ -289,28 +289,28 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
             group: 'interface''';
         }'),
 
-        this.registerShortcut('ctrl+shift+r', () => controller.refresh(''';
-            description: 'Refresh debug data',)';
+        this.registerShortcut('ctrl+shift+r', () => controller.refresh('''
+            description: 'Refresh debug data','';
             group: 'interface'')';
         }'),
         // ウィンドウ操作
-        this.registerShortcut('ctrl+shift+m', () => controller.minimize(''';
-            description: 'Minimize debug interface',)';
+        this.registerShortcut('ctrl+shift+m', () => controller.minimize('''
+            description: 'Minimize debug interface','';
             group: 'window'')';
         }'),
 
-        this.registerShortcut('ctrl+shift+s', () => controller.showSettings(''';
-            description: 'Show settings modal',)';
+        this.registerShortcut('ctrl+shift+s', () => controller.showSettings('''
+            description: 'Show settings modal','';
             group: 'window'')';
         }'),
         // データ操作
-        this.registerShortcut('ctrl+shift+e', () => this.exportCurrentData(''';
-            description: 'Export current panel data',)';
+        this.registerShortcut('ctrl+shift+e', () => this.exportCurrentData('''
+            description: 'Export current panel data','';
             group: 'data'')';
         }'),
 
-        this.registerShortcut('ctrl+shift+c', () => this.clearCurrentData(''';
-            description: 'Clear current panel data',)';
+        this.registerShortcut('ctrl+shift+c', () => this.clearCurrentData('''
+            description: 'Clear current panel data','';
             group: 'data'')';
         }'),
         // 履歴ナビゲーション
@@ -321,7 +321,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
         }');
         this.registerShortcut('alt+right', () => this.navigateHistory(1), { ''
             description: 'Next panel in history',
-            group: 'navigation' ,});
+            group: 'navigation' ,}';
     }
 
     /**
@@ -351,9 +351,9 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * 現在のデータをクリア
      */'
     clearCurrentData(): void { ''
-        const panelManager = (this.mainController, as MainController').getComponent('panelManager) as PanelManager;''
-        const activePanel = panelManager? .getActivePanel()';
-        if(activePanel && confirm('Clear, current panel, data?) {'
+        const panelManager = (this.mainController, as MainController').getComponent('panelManager' as PanelManager;''
+        const activePanel = panelManager?.getActivePanel()';
+        if(activePanel && confirm('Clear, current panel, data?' {'
             // パネル固有のクリア処理
         }
             this.clearPanelData(activePanel); }
@@ -367,8 +367,8 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
         switch(panelId) {'
 
             case 'console':'';
-                this.clearConsoleData(''';
-            case 'performance':'';
+                this.clearConsoleData('''
+            case 'performance': '';
                 this.clearPerformanceData(''';
             case 'memory':'';
                 this.clearMemoryData()';
@@ -385,7 +385,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * コンソールデータをクリア
      */'
     clearConsoleData(): void { ''
-        const consoleOutput = (this.mainController, as MainController').container? .querySelector('.console-output);''
+        const consoleOutput = (this.mainController, as MainController').container?.querySelector('.console-output';''
         if(consoleOutput) {', ';
 
         }
@@ -397,7 +397,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * パフォーマンスデータをクリア
      */ : undefined'
     clearPerformanceData(): void { ''
-        const performanceCharts = (this.mainController, as MainController').container? .querySelector('.performance-charts);''
+        const performanceCharts = (this.mainController, as MainController').container?.querySelector('.performance-charts';''
         if(performanceCharts) {', ';
 
         }
@@ -409,7 +409,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * メモリデータをクリア
      */ : undefined'
     clearMemoryData(): void { ''
-        const memoryUsage = (this.mainController, as MainController').container? .querySelector('.memory-usage);''
+        const memoryUsage = (this.mainController, as MainController').container?.querySelector('.memory-usage';''
         if(memoryUsage) {', ';
 
         }
@@ -421,7 +421,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * ネットワークデータをクリア
      */ : undefined'
     clearNetworkData(): void { ''
-        const networkRequests = (this.mainController, as MainController').container? .querySelector('.network-requests);''
+        const networkRequests = (this.mainController, as MainController').container?.querySelector('.network-requests';''
         if(networkRequests) {', ';
 
         }

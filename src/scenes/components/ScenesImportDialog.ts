@@ -52,8 +52,8 @@ import { ScenesBaseDialog, GameEngine, EventBus, GameState  } from './ScenesBase
 export interface ImportValidationResult { isValid: boolean,
     errors?: string[];
     info?: {
-        recordCoun;t: number;
-       , createdAt: string ,}
+        recordCoun;t: number,
+    createdAt: string ,}
 
 export interface ImportPlayerData { username?: string;
     ap?: number;
@@ -74,8 +74,8 @@ export interface ImportGameSettings { graphics?: Record<string, unknown>;
 
 export interface ImportAchievementData { achievements?: Array<{
         i;d: string;
-        name: string;
-       , description: string;
+        name: string,
+    description: string;
         progress?: number;
         requirement?: number;
         unlockedAt?: string; ,}>;
@@ -156,9 +156,9 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
         if(typeof, document !== 'undefined'') {'
 
             this.fileInput = document.createElement('input'');''
-            this.fileInput.type = 'file';''
-            this.fileInput.accept = '.json,.txt';''
-            this.fileInput.style.display = 'none';''
+            this.fileInput.type = 'file';
+            this.fileInput.accept = '.json,.txt';
+            this.fileInput.style.display = 'none';
             this.fileInput.addEventListener('change', (e) => this.handleFileSelection(e);
         }
             document.body.appendChild(this.fileInput); }
@@ -200,11 +200,11 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
      * @param width - 幅
      */''
     private renderImportTypeSelection(context: CanvasRenderingContext2D, x: number, y: number, width: number): void { ''
-        context.fillStyle = '#333333';''
-        context.font = '14px Arial, sans-serif';''
-        context.textAlign = 'left';''
-        context.textBaseline = 'top';''
-        context.fillText('インポートタイプ:', x, y);
+        context.fillStyle = '#333333';
+        context.font = '14px Arial, sans-serif';
+        context.textAlign = 'left';
+        context.textBaseline = 'top';
+        context.fillText('インポートタイプ:', x, y';
          }
 
         const types: Array<{ key: ImportType;, label: string }> = [''
@@ -219,7 +219,7 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
             const isSelected = this.importType === type.key;
             ';
             // ラジオボタン
-            context.fillStyle = isSelected ? '#4CAF50' : '#CCCCCC';''
+            context.fillStyle = isSelected ? '#4CAF50' : '#CCCCCC';
             context.fillRect(x + 10, typeY, 12, 12);
             ';
             // ラベル
@@ -235,11 +235,11 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
      * @param width - 幅'
      */''
     private renderFileSelection(context: CanvasRenderingContext2D, x: number, y: number, width: number): void { ''
-        context.fillStyle = '#333333';''
-        context.font = '14px Arial, sans-serif';''
-        context.textAlign = 'left';''
-        context.textBaseline = 'top';''
-        context.fillText('選択ファイル:', x, y);
+        context.fillStyle = '#333333';
+        context.font = '14px Arial, sans-serif';
+        context.textAlign = 'left';
+        context.textBaseline = 'top';
+        context.fillText('選択ファイル:', x, y';
         ';
         // ファイル表示エリア
         context.strokeStyle = '#CCCCCC';
@@ -248,9 +248,9 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
         context.strokeRect(x, y + 20, width, 30);
 
         const fileName = this.selectedFile ? this.selectedFile.name: 'ファイルが選択されていません',
-        context.fillStyle = this.selectedFile ? '#333333' : '#999999';''
-        context.font = '12px Arial, sans-serif';''
-        context.textAlign = 'left';''
+        context.fillStyle = this.selectedFile ? '#333333' : '#999999';
+        context.font = '12px Arial, sans-serif';
+        context.textAlign = 'left';
         context.textBaseline = 'middle';
         context.fillText(fileName, x + 10, y + 35); }
     
@@ -264,15 +264,15 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
     private renderValidationResult(context: CanvasRenderingContext2D, x: number, y: number, width: number): void { const result = this.validationResult!;
         const isValid = result.isValid;
 
-        context.fillStyle = isValid ? '#4CAF50' : '#FF5722';''
-        context.font = 'bold 14px Arial, sans-serif';''
-        context.textAlign = 'left';''
-        context.textBaseline = 'top';''
+        context.fillStyle = isValid ? '#4CAF50' : '#FF5722';
+        context.font = 'bold 14px Arial, sans-serif';
+        context.textAlign = 'left';
+        context.textBaseline = 'top';
         context.fillText(isValid ? '✓ ファイルは有効です' : '✗ ファイルが無効です', x, y);
 
         if(!isValid && result.errors) {'
 
-            context.fillStyle = '#FF5722';''
+            context.fillStyle = '#FF5722';
             context.font = '12px Arial, sans-serif';
         }
             result.errors.forEach((error, index) => { }
@@ -281,14 +281,14 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
 
         if(isValid && result.info) {'
 
-            context.fillStyle = '#666666';''
+            context.fillStyle = '#666666';
             context.font = '12px Arial, sans-serif';
 
         }
 
             context.fillText(`データ数: ${result.info.recordCount || 0}`, x + 10, y + 25'};' }
 
-            context.fillText(`作成日: ${result.info.createdAt || '不明}`, x + 10, y + 40});
+            context.fillText(`作成日: ${result.info.createdAt || '不明}`, x + 10, y + 40}';
         }
     }
     
@@ -300,15 +300,15 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
      * @param width - 幅'
      */''
     private renderDataPreview(context: CanvasRenderingContext2D, x: number, y: number, width: number): void { ''
-        context.fillStyle = '#333333';''
-        context.font = 'bold 14px Arial, sans-serif';''
-        context.textAlign = 'left';''
-        context.textBaseline = 'top';''
+        context.fillStyle = '#333333';
+        context.font = 'bold 14px Arial, sans-serif';
+        context.textAlign = 'left';
+        context.textBaseline = 'top';
         context.fillText('データプレビュー:', x, y);
 
         if(this.previewData) {'
 
-            context.fillStyle = '#666666';''
+            context.fillStyle = '#666666';
             context.font = '12px Arial, sans-serif';
 
             const preview = JSON.stringify(this.previewData, null, 2);''
@@ -320,7 +320,7 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
 
             }');
 
-            if(preview.split('\n).length > 8') { ''
+            if(preview.split('\n'.length > 8') { ''
                 context.fillText('...', x + 10, y + 25 + (8 * 15); }
 }
     
@@ -336,7 +336,7 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
      * @param event - ファイル選択イベント
      */
     private async handleFileSelection(event: Event): Promise<void> { const target = event.target as HTMLInputElement;
-        const file = target.files? .[0];
+        const file = target.files?.[0];
         if(!file) {
             
         }
@@ -375,8 +375,8 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
     private readFileContent(file: File): Promise<string>,
         return new Promise((resolve, reject) => {  const reader = new FileReader();
 
-            reader.onload = (e) => resolve(e.target? .result, as string);''
-            reader.onerror = (') => reject(new, Error('ファイル読み込みエラー); }
+            reader.onload = (e) => resolve(e.target?.result, as string);''
+            reader.onerror = () => reject(new, Error('ファイル読み込みエラー); }
             reader.readAsText(file); }
         }
     
@@ -391,7 +391,7 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
 
         }
 
-            errors.push('データが正しい形式ではありません); }'
+            errors.push('データが正しい形式ではありません'; }'
             return { isValid: false, errors }
 
         switch(this.importType) {'
@@ -420,8 +420,8 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
                 recordCount: this.getRecordCount(data);
         }
 
-                createdAt: data.exportedAt || data.createdAt || '不明' }
-            }
+                createdAt: data.exportedAt || data.createdAt || '不明' 
+    }
         
         return result;
     }
@@ -444,7 +444,7 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
 
         }
 
-            errors.push('ハイスコアデータの形式が正しくありません); }'
+            errors.push('ハイスコアデータの形式が正しくありません'; }'
 }
     
     /**
@@ -467,7 +467,7 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
      */'
     private validateAchievements(data: ImportData, errors: string[]): void { ''
         if(!Array.isArray(data.achievements)) {''
-            errors.push('実績データは配列である必要があります); }'
+            errors.push('実績データは配列である必要があります'; }'
     }
     
     /**
@@ -494,20 +494,18 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
     private createPreviewData(data: ImportData): unknown { ''
         switch(this.importType) {'
 
-            case 'playerData': return { username: data.username;
-                   , ap: data.ap;
+            case 'playerData': return { username: data.username,
+    ap: data.ap;
         ,}
 
                     tap: data.tap,' };
 
-                    highScoresCount: Object.keys(data.highScores || {)).length }
-
-                };''
-            case 'gameSettings': return { graphics: data.graphics;
-                   , audio: data.audio, };
-                    gameplay: data.gameplay }
-
-                };''
+                    highScoresCount: Object.keys(data.highScores || {)).length 
+    };''
+            case 'gameSettings': return { graphics: data.graphics,
+    audio: data.audio, };
+                    gameplay: data.gameplay 
+    };''
             case 'achievements':;
                 return { achievementsCount: data.achievements ? data.achievements.length : 0, };
                     sample: data.achievements ? data.achievements.slice(0, 3) : [] 
@@ -529,16 +527,16 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
 
             if(this.onResult) {'
                 this.onResult({''
-                    action: 'import';
-                   , data: {
-                        type: this.importType);
-                       , importedData: this.importData }
-                        fileName: this.selectedFile? .name) }
-                    }
+                    action: 'import',
+    data: {
+                        type: this.importType),
+    importedData: this.importData }
+                        fileName: this.selectedFile?.name) 
+    }
 
-                );''
+                ';''
             } catch (error) { : undefined''
-            console.error('Import error:', error);''
+            console.error('Import error:', error';''
             alert('インポートに失敗しました: ' + (error, as Error).message); }
     }
     
@@ -575,7 +573,7 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
 
         }
 
-            throw new Error('プレイヤーデータにアクセスできません); }'
+            throw new Error('プレイヤーデータにアクセスできません'; }'
         }
         
         // バックアップ作成
@@ -583,7 +581,7 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
         try { // データを適用
             if(data.username) playerData.username = data.username;''
             if (typeof, data.ap === 'number'') playerData.ap = data.ap;''
-            if(typeof, data.tap === 'number) playerData.tap = data.tap; }'
+            if(typeof, data.tap === 'number' playerData.tap = data.tap; }'
             if (data.highScores) playerData.highScores = { ...data.highScores;
 
             if (data.unlockedStages) playerData.unlockedStages = [...data.unlockedStages];''
@@ -609,8 +607,8 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
             if(data.graphics) {
                 
             }
-                Object.assign(currentSettings.graphics || {), data.graphics); }
-            if (data.audio) { Object.assign(currentSettings.audio || {), data.audio); }
+                Object.assign(currentSettings.graphics || {) data.graphics); }
+            if (data.audio) { Object.assign(currentSettings.audio || {) data.audio'); }
             if(data.gameplay') {
                 ';
 
@@ -623,7 +621,7 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
 
             console.log('Game, settings imported, successfully');''
         } catch (error) {
-            throw new Error('ゲーム設定のインポートに失敗しました); }'
+            throw new Error('ゲーム設定のインポートに失敗しました'; }'
     }
     
     /**
@@ -642,7 +640,7 @@ export class ScenesImportDialog extends ScenesBaseDialog { // インポート用
 
             console.log('Achievements, imported successfully');''
         } catch (error) {
-            throw new Error('実績データのインポートに失敗しました); }'
+            throw new Error('実績データのインポートに失敗しました'; }'
     }
     
     /**

@@ -1,9 +1,9 @@
-import { FileScanner, FileInfo  } from './FileScanner.js';''
-import { ReferenceChecker, ReferenceResult  } from './ReferenceChecker.js';''
-import { SafetyValidator, SafetyResults  } from './SafetyValidator.js';''
-import { FileRemover, DeletionResults  } from './FileRemover.js';''
-import { ReportGenerator, ScanReport, ReferenceReport, SafetyReport, DeletionReport, SummaryReport  } from './ReportGenerator.js';''
-import fs from 'fs';''
+import { FileScanner, FileInfo  } from './FileScanner.js';
+import { ReferenceChecker, ReferenceResult  } from './ReferenceChecker.js';
+import { SafetyValidator, SafetyResults  } from './SafetyValidator.js';
+import { FileRemover, DeletionResults  } from './FileRemover.js';
+import { ReportGenerator, ScanReport, ReferenceReport, SafetyReport, DeletionReport, SummaryReport  } from './ReportGenerator.js';
+import fs from 'fs';
 import path from 'path';
 
 interface CleanupOptions { dryRun?: boolean;
@@ -17,19 +17,19 @@ interface CleanupOptions { dryRun?: boolean;
 interface CleanupResults { scanReport: ScanReport | null,
     referenceReport: ReferenceReport | null;
     safetyReport: SafetyReport | null;
-    deletionReport: DeletionReport | null;
-   , summaryReport: SummaryReport | null ,}
+    deletionReport: DeletionReport | null,
+    summaryReport: SummaryReport | null ,}
 
 type LogLevel = 'info' | 'warn' | 'error';
 
 interface ValidationOnlyResult { safeToDelete: any[],
-    unsafeToDelete: any[];
-   , summary: any ,}
+    unsafeToDelete: any[],
+    summary: any ,}
 
 interface TargetFileInfo { fileName: string;
     filePath: string;
-    size: string;
-   , lastModified: string }
+    size: string,
+    lastModified: string }
 
 export class CleanupOrchestrator {
     private options: Required<CleanupOptions>;
@@ -46,8 +46,8 @@ export class CleanupOrchestrator {
             verbose: options.verbose || false,
             patterns: options.patterns || ['*_old*', '*_original*],
             extensions: options.extensions || ['.js];
-            rootPath: options.rootPath || process.cwd();
-           , autoSaveReports: options.autoSaveReports !== false;
+            rootPath: options.rootPath || process.cwd(),
+    autoSaveReports: options.autoSaveReports !== false;
             ...options;
 
         this.fileScanner = new FileScanner();
@@ -57,10 +57,10 @@ export class CleanupOrchestrator {
         this.fileRemover = new FileRemover();''
         this.reportGenerator = new ReportGenerator()';
     private log(message: string, level: LogLevel = 'info''): void { ''
-        if(this.options.verbose || level === 'error) {'
+        if(this.options.verbose || level === 'error' {'
 
             const timestamp = new Date().toISOString('';
-        ,})'
+        ,}''
             const prefix = level === 'error' ? '❌' : level === 'warn' ? '⚠️' : 'ℹ️';) }
             console.log(`${prefix} [${timestamp}] ${message}`});
         }
@@ -84,7 +84,7 @@ export class CleanupOrchestrator {
                 await this.executeDelection();
             }
 
-                this.log('Dry run mode: Skipping actual file deletion', 'info); }
+                this.log('Dry run mode: Skipping actual file deletion', 'info'; }
             }
             ';
             // Step 5: Generate reports
@@ -96,7 +96,7 @@ export class CleanupOrchestrator {
 
             }
 
-                throw new Error('Summary, report was, not generated); }'
+                throw new Error('Summary, report was, not generated'; }'
             }
             
             return this.results.summaryReport;
@@ -109,7 +109,7 @@ export class CleanupOrchestrator {
     }
 
     async scanFiles()';
-        this.log(`Scanning for files with patterns: ${this.options.patterns.join(', ''})`, 'info');
+        this.log(`Scanning for files with patterns: ${this.options.patterns.join(', ''}'`, 'info');
         
         const scannedFiles = await this.fileScanner.scanWithInfo(;
             this.options.patterns);
@@ -142,7 +142,7 @@ export class CleanupOrchestrator {
 
         }
 
-            throw new Error('Scan, report is, not available); }'
+            throw new Error('Scan, report is, not available'; }'
         }
         
         const scannedFiles = this.results.scanReport.files;
@@ -150,7 +150,7 @@ export class CleanupOrchestrator {
 
         for(const, fileInfo of, scannedFiles) {'
 
-            const originalPath = fileInfo.filePath.includes('/) ?   : undefined'
+            const originalPath = fileInfo.filePath.includes('/' ? undefined : undefined'
                 fileInfo.filePath: this.findActualFilePath(fileInfo.fileName),
                 
             const referenceResult = await this.referenceChecker.generateReferenceReport(;
@@ -184,7 +184,7 @@ export class CleanupOrchestrator {
 
         }
 
-            throw new Error('Scan, or reference, report is, not available); }'
+            throw new Error('Scan, or reference, report is, not available'; }'
         }
         
         const scannedFiles = this.results.scanReport.files;
@@ -201,7 +201,7 @@ export class CleanupOrchestrator {
 
         if (safetyResults.totalErrors > 0} {' }'
 
-            this.log(`Found ${safetyResults.totalErrors} safety errors`, 'warn'});
+            this.log(`Found ${safetyResults.totalErrors} safety errors`, 'warn'}';
         }
         ';
 
@@ -220,7 +220,7 @@ export class CleanupOrchestrator {
 
         }
 
-            throw new Error('Safety, report is, not available); }'
+            throw new Error('Safety, report is, not available'; }'
         }
         
         const safeFiles = this.results.safetyReport.safeFiles;
@@ -230,21 +230,21 @@ export class CleanupOrchestrator {
             this.log('No files are safe to delete', 'warn);
             this.results.deletionReport = this.reportGenerator.generateDeletionReport({
                 results: []);
-                totalFiles: 0);
-               , successCount: 0,);
+                totalFiles: 0),
+    successCount: 0,);
                 failureCount: 0);
         ,}
-                timestamp: new Date().toISOString(); }
-            });
+                timestamp: new Date().toISOString(); 
+    });
             return;
         }
 
         const filePaths = safeFiles.map(file => { ');''
-            const fullPath = file.filePath.startsWith('/) ?   : undefined'
+            const fullPath = file.filePath.startsWith('/' ? undefined : undefined'
                 file.filePath: this.findActualFilePath(file.filePath 
             return fullPath;' ,}'
 
-        });
+        }';
 
         this.log(`Attempting to delete ${filePaths.length} safe files...`, 'info);
 
@@ -259,7 +259,7 @@ export class CleanupOrchestrator {
 
             deletionResults.results.forEach(result => {) }
 
-                const status = result.deleted && result.verified ? '✅' : '❌'});''
+                const status = result.deleted && result.verified ? '✅' : '❌'}';''
                 this.log(`  ${status} ${result.filePath}`, 'info'});
             });
         }
@@ -275,7 +275,7 @@ export class CleanupOrchestrator {
         if(this.options.autoSaveReports) {
 ';
 
-            const timestamp = new Date().toISOString(').replace(/[:.]/g, '-);
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-);
             
             // Save JSON report
             const jsonResult = await this.reportGenerator.saveReport();
@@ -284,7 +284,7 @@ export class CleanupOrchestrator {
             }
             if (jsonResult.saved) {' }'
 
-                this.log(`Summary report saved: ${jsonResult.filePath}`, 'info'});
+                this.log(`Summary report saved: ${jsonResult.filePath}`, 'info'}';
 
             } else { }'
 
@@ -301,7 +301,7 @@ export class CleanupOrchestrator {
 
             if (textResult.saved} {' }'
 
-                this.log(`Text report saved: ${textResult.filePath}`, 'info'});
+                this.log(`Text report saved: ${textResult.filePath}`, 'info'}';
 
             } else { }'
 
@@ -328,7 +328,7 @@ export class CleanupOrchestrator {
 
         for(const, possiblePath of, possiblePaths) {'
 
-            const fullPath = possiblePath.startsWith('/) ?   : undefined'
+            const fullPath = possiblePath.startsWith('/' ? undefined : undefined'
                 possiblePath : ;
                 path.join(this.options.rootPath, possiblePath);
             
@@ -345,8 +345,8 @@ export class CleanupOrchestrator {
         return scannedFiles.map(file => ({)
             fileName: file.fileName,);
             filePath: file.filePath);
-            size: this.reportGenerator.formatBytes(file.fileSize);
-           , lastModified: file.lastModified.toISOString() ,}
+            size: this.reportGenerator.formatBytes(file.fileSize),
+    lastModified: file.lastModified.toISOString() ,}
         });
     }
 
@@ -359,13 +359,13 @@ export class CleanupOrchestrator {
 
         }
 
-            throw new Error('Safety, or summary, report is, not available); }'
+            throw new Error('Safety, or summary, report is, not available'; }'
         }
         
         return { safeToDelete: this.results.safetyReport.safeFiles,
             unsafeToDelete: this.results.safetyReport.unsafeFiles, };
-            summary: this.results.summaryReport.summary }
-        }
+            summary: this.results.summaryReport.summary 
+    }
 
     getResults(): CleanupResults { return this.results; }
 

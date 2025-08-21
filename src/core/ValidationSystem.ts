@@ -84,8 +84,8 @@ class ValidationSystem { constructor() {
             if (!rule) {
                 return { isValid: true ,}
                     value: value, };
-                    message: null }
-                }
+                    message: null 
+    }
             
             // 型チェック
             if (rule.type && typeof, value !== rule.type) { const defaultValue = this._getDefaultValue(category, key); }
@@ -94,8 +94,8 @@ class ValidationSystem { constructor() {
                 
                 return { isValid: false,
                     value: defaultValue, };
-                    message: message }
-                }
+                    message: message 
+    }
             ';
             // 数値の範囲チェック
             if(typeof, value === 'number) { if (rule.min !== undefined && value < rule.min) { }'
@@ -104,8 +104,8 @@ class ValidationSystem { constructor() {
                     
                     return { isValid: false,
                         value: rule.min, };
-                        message: message }
-                    }
+                        message: message 
+    }
                 
                 if(rule.max !== undefined && value > rule.max) {
                 
@@ -118,8 +118,8 @@ class ValidationSystem { constructor() {
                     
                     return { isValid: false,
                         value: rule.max, };
-                        message: message }
-                    }
+                        message: message 
+    }
             }
             ';
             // 文字列の長さチェック
@@ -129,8 +129,8 @@ class ValidationSystem { constructor() {
                     
                     return { isValid: false,
                         value: this._getDefaultValue(category, key), };
-                        message: message }
-                    }
+                        message: message 
+    }
                 
                 if(rule.maxLength !== undefined && value.length > rule.maxLength) {
                 
@@ -143,8 +143,8 @@ class ValidationSystem { constructor() {
                     // 長すぎる場合は切り詰める
                     return { isValid: false,
                         value: value.substring(0, rule.maxLength), };
-                        message: message }
-                    }
+                        message: message 
+    }
                 
                 // パターンチェック
                 if(rule.pattern && !rule.pattern.test(value) {
@@ -155,8 +155,8 @@ class ValidationSystem { constructor() {
                     
                     return { isValid: false,
                         value: this._getDefaultValue(category, key), };
-                        message: message }
-                    }
+                        message: message 
+    }
             }
             
             // 配列の長さチェック
@@ -166,8 +166,8 @@ class ValidationSystem { constructor() {
                     
                     return { isValid: false,
                         value: this._getDefaultValue(category, key), };
-                        message: message }
-                    }
+                        message: message 
+    }
                 
                 if(rule.maxLength !== undefined && value.length > rule.maxLength) {
                 
@@ -180,8 +180,8 @@ class ValidationSystem { constructor() {
                     // 長すぎる場合は切り詰める
                     return { isValid: false,
                         value: value.slice(0, rule.maxLength), };
-                        message: message }
-                    }
+                        message: message 
+    }
             }
             ;
             // 列挙値チェック
@@ -194,11 +194,11 @@ class ValidationSystem { constructor() {
 
                 return { isValid: false,''
                     value: this._getDefaultValue(category, key), };
-                    message: message }
-                }
+                    message: message 
+    }
             ';
             // カスタム検証関数
-            if(rule.validator && typeof, rule.validator === 'function) {'
+            if(rule.validator && typeof, rule.validator === 'function' {'
                 try {
                     const validatorResult = rule.validator(value);
 
@@ -212,22 +212,22 @@ class ValidationSystem { constructor() {
                         
                         return { isValid: false,
                             value: this._getDefaultValue(category, key), };
-                            message: message }
-                        } catch (validatorError) {
+                            message: message 
+    } catch (validatorError) {
                     const message = `カスタム検証でエラー: ${category}.${key} - ${validatorError.message}`;
                     this._recordError(category, key, value, message);
                     
                     return { isValid: false,
                         value: this._getDefaultValue(category, key), };
-                        message: message }
-                    }
+                        message: message 
+    }
             }
             
             // すべての検証をパスした場合
             return { isValid: true,
                 value: value, };
-                message: null }
-            } catch (error) { // 検証処理自体でエラーが発生した場合
+                message: null 
+    } catch (error) { // 検証処理自体でエラーが発生した場合
             ErrorHandler.handleError(error, {''
                 context: 'ValidationSystem.validate);
                 category);
@@ -288,7 +288,7 @@ class ValidationSystem { constructor() {
         if(rule && rule.type) {
 
             switch(rule.type) {''
-                case 'string': return '';''
+                case 'string': return '';
                 case 'number': return 0;
 
         }
@@ -296,7 +296,7 @@ class ValidationSystem { constructor() {
                 case 'boolean': return false;' }
 
                 case 'object': return {};''
-                case 'function': return (') => {};''
+                case 'function': return () => {};''
                 case 'undefined': return undefined;
                 default: return null;
         
@@ -346,4 +346,4 @@ let instance = null;
  * @returns {ValidationSystem} インスタンス
  */
 function getValidationSystem() { if (!instance) {''
-        instance = new ValidationSystem(' })'
+        instance = new ValidationSystem(' }''

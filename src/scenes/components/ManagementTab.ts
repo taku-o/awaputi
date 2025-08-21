@@ -12,8 +12,8 @@ interface UserData { username: string,
     ownedItems: any[];
     registrationDate: Date;
     lastPlayDate: Date;
-    totalPlayTime: number;
-   , gamesPlayed: number ,}
+    totalPlayTime: number,
+    gamesPlayed: number ,}
 interface GameEngine { playerData?: {
         getUsername(): string;
         getAP(): number;
@@ -33,8 +33,8 @@ interface EventBus { on(event: string, callback: Function): void,
     off(event: string): void,
     emit(event: string, data?: any): void }
 interface AccessibilitySettings { highContrast: boolean,
-    largeText: boolean;
-   , reducedMotion: boolean ,}
+    largeText: boolean,
+    reducedMotion: boolean ,}
 interface TabState {
     accessibilitySettings: AccessibilitySettings;
 }
@@ -86,10 +86,10 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
                     unlockedStages: playerData.getUnlockedStages();
                     ownedItems: playerData.getOwnedItems();
                     registrationDate: playerData.getRegistrationDate();
-                    lastPlayDate: playerData.getLastPlayDate();
-                   , totalPlayTime: playerData.getTotalPlayTime( }
-                    gamesPlayed: playerData.getGamesPlayed(); }
-                }
+                    lastPlayDate: playerData.getLastPlayDate(),
+    totalPlayTime: playerData.getTotalPlayTime( }
+                    gamesPlayed: playerData.getGamesPlayed(); 
+    }
             ';
 
             this.lastDataUpdate = Date.now();''
@@ -139,7 +139,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
      * 背景を描画
      */''
     private renderBackground(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#F8F9FA';''
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#F8F9FA';
         context.fillRect(x, y, width, height);
 
         context.strokeStyle = this.accessibilitySettings.highContrast ? '#000000' : '#DEE2E6';
@@ -174,7 +174,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
         const trackHeight = height * (height / (height + this.maxScrollPosition));''
         const trackY = y + (this.scrollPosition / this.maxScrollPosition) * (height - trackHeight');
 
-        context.fillStyle = '#6C757D';''
+        context.fillStyle = '#6C757D';
         context.fillRect(x + 2, trackY, width - 4, trackHeight);
         ';
         // スクロールバー枠線
@@ -208,7 +208,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
     handleInput(event: KeyboardEvent | WheelEvent): boolean { ''
         if(!this.isActive) return false;
 
-        if(event.type === 'keydown) {'
+        if(event.type === 'keydown' {'
             const keyEvent = event as KeyboardEvent;''
             switch(keyEvent.key) {''
                 case 'ArrowUp':';
@@ -232,9 +232,9 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
                     return true;
 
                 case 'Home':'';
-                    event.preventDefault(''';
-                case 'End':';
-        })'
+                    event.preventDefault('''
+                case 'End': ';
+        }''
                     event.preventDefault() }
 
         } else if(event.type === 'wheel) { const wheelEvent = event as WheelEvent;
@@ -295,8 +295,8 @@ class UserInfoRenderer { private gameEngine: GameEngine
         labelFont: string;
         valueFont: string;
         titleColor: string;
-        labelColor: string;
-       , valueColor: string };
+        labelColor: string,
+    valueColor: string };
     
     private isInitialized: boolean = false;
 
@@ -315,8 +315,7 @@ class UserInfoRenderer { private gameEngine: GameEngine
     ,}
 
             valueColor: '#495057' ;
-}
-        },
+    },
     }
     
     /**
@@ -332,7 +331,7 @@ class UserInfoRenderer { private gameEngine: GameEngine
 
         if(settings.largeText) {'
 
-            this.textSettings.titleFont = '22px bold sans-serif';''
+            this.textSettings.titleFont = '22px bold sans-serif';
             this.textSettings.labelFont = '16px sans-serif';
 
         }
@@ -342,7 +341,7 @@ class UserInfoRenderer { private gameEngine: GameEngine
 
         if(settings.highContrast) {'
 
-            this.textSettings.titleColor = '#000000';''
+            this.textSettings.titleColor = '#000000';
             this.textSettings.labelColor = '#000000';
 
         }
@@ -364,8 +363,8 @@ class UserInfoRenderer { private gameEngine: GameEngine
         // セクションタイトル
         context.font = this.textSettings.titleFont;
         context.fillStyle = this.textSettings.titleColor;''
-        context.textAlign = 'left';''
-        context.textBaseline = 'top';''
+        context.textAlign = 'left';
+        context.textBaseline = 'top';
         context.fillText('現在のユーザー情報', x, currentY);
         currentY += 35;
 
@@ -373,19 +372,19 @@ class UserInfoRenderer { private gameEngine: GameEngine
             // データがない場合
             context.font = this.textSettings.labelFont;
             context.fillStyle = this.textSettings.labelColor;''
-            context.fillText('ユーザーデータを読み込み中...', x + 10, currentY);
+            context.fillText('ユーザーデータを読み込み中...', x + 10, currentY';
         }
             return currentY - y + 25;
         // ユーザー情報項目
         const infoItems = ['';
             { label: 'ユーザー名', value: userData.username || '(未設定')', key: 'username' ,},''
-            { label: 'AP(Awaputi, Points)', value: userData.ap?.toLocaleString(') || '0', key: 'ap' ,},''
-            { label: 'TAP(Total, AP)', value: userData.tap?.toLocaleString(') || '0', key: 'tap' ,},''
-            { label: 'ハイスコア', value: userData.highScore?.toLocaleString(') || '0', key: 'highScore' ,},''
+            { label: 'AP(Awaputi, Points)', value: userData.ap?.toLocaleString() || '0', key: 'ap' ,},''
+            { label: 'TAP(Total, AP)', value: userData.tap?.toLocaleString() || '0', key: 'tap' ,},''
+            { label: 'ハイスコア', value: userData.highScore?.toLocaleString() || '0', key: 'highScore' ,},''
             { label: 'アンロック済みステージ', value: userData.unlockedStages?.length || '0', key: 'stages' ,},''
             { label: '所有アイテム数', value: userData.ownedItems?.length || '0', key: 'items' ,},''
             { label: '総プレイ時間', value: this.formatPlayTime(userData.totalPlayTime), key: 'playTime' ,},]'
-            { label: 'プレイ回数', value: userData.gamesPlayed?.toLocaleString(') || '0', key: 'gamesPlayed' ,}]
+            { label: 'プレイ回数', value: userData.gamesPlayed?.toLocaleString() || '0', key: 'gamesPlayed' ,}]
         ];
         
         const itemHeight = 25;
@@ -395,8 +394,8 @@ class UserInfoRenderer { private gameEngine: GameEngine
             // ラベル
             context.font = this.textSettings.labelFont;
             context.fillStyle = this.textSettings.labelColor;''
-            context.textAlign = 'left';''
-            context.fillText(item.label + ':', x + 10, currentY);
+            context.textAlign = 'left';
+            context.fillText(item.label + ':', x + 10, currentY';
             
             // 値
             context.font = this.textSettings.valueFont;
@@ -453,7 +452,7 @@ class UserInfoRenderer { private gameEngine: GameEngine
         ';
 
         let truncated = text;''
-        while(context.measureText(truncated + '...).width > maxWidth && truncated.length > 0) { ''
+        while(context.measureText(truncated + '...).width > maxWidth && truncated.length > 0' { ''
             truncated = truncated.slice(0, -1); }
 
         return truncated + '...';
@@ -465,8 +464,8 @@ class UserInfoRenderer { private gameEngine: GameEngine
     /**
      * クリーンアップ
      */
-    cleanup(): void { this.isInitialized = false; }
-}
+    cleanup(): void { this.isInitialized = false; 
+    }
 
 /**
  * データ管理レンダラー
@@ -474,8 +473,8 @@ class UserInfoRenderer { private gameEngine: GameEngine
  */
 interface Button { id: string,
     label: string;
-    color: string;
-   , description: string ,}
+    color: string,
+    description: string ,}
 class DataManagementRenderer { private gameEngine: GameEngine
     private eventBus: EventBus;
     private state: TabState;
@@ -484,8 +483,8 @@ class DataManagementRenderer { private gameEngine: GameEngine
         labelFont: string;
         buttonFont: string;
         titleColor: string;
-        labelColor: string;
-       , buttonTextColor: string };
+        labelColor: string,
+    buttonTextColor: string };
     
     // ボタン設定
     private buttons: Button[];
@@ -509,8 +508,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
     ,}
 
             buttonTextColor: '#FFFFFF' ;
-}
-        },
+    },
         
         // ボタン設定
         this.buttons = [{;
@@ -559,7 +557,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
 
         if(settings.largeText) {'
 
-            this.textSettings.titleFont = '22px bold sans-serif';''
+            this.textSettings.titleFont = '22px bold sans-serif';
             this.textSettings.labelFont = '16px sans-serif';
 
         }
@@ -569,7 +567,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
 
         if(settings.highContrast) {'
 
-            this.textSettings.titleColor = '#000000';''
+            this.textSettings.titleColor = '#000000';
             this.textSettings.labelColor = '#000000';
 
         }
@@ -590,9 +588,9 @@ class DataManagementRenderer { private gameEngine: GameEngine
         // セクションタイトル
         context.font = this.textSettings.titleFont;
         context.fillStyle = this.textSettings.titleColor;''
-        context.textAlign = 'left';''
-        context.textBaseline = 'top';''
-        context.fillText('データ管理', x, currentY);
+        context.textAlign = 'left';
+        context.textBaseline = 'top';
+        context.fillText('データ管理', x, currentY';
         currentY += 35;
         
         // 説明テキスト
@@ -661,15 +659,15 @@ class DataManagementRenderer { private gameEngine: GameEngine
             context.lineWidth = 2;
             this.roundRect(context, x, y, width, height, cornerRadius);''
             context.stroke(''';
-        context.textAlign = 'center';)'
+        context.textAlign = 'center';''
         context.textBaseline = 'middle';)
         context.fillText(button.label, x + width / 2, y + height / 2);
         ';
         // 説明テキストを描画
         if(button.description) {'
             context.fillStyle = this.textSettings.labelColor;''
-            context.font = '12px sans-serif';''
-            context.textAlign = 'left';''
+            context.font = '12px sans-serif';
+            context.textAlign = 'left';
             context.textBaseline = 'top';
         }
             context.fillText(button.description, x + width + 15, y + height / 2 - 6); }
@@ -710,25 +708,25 @@ class DataManagementRenderer { private gameEngine: GameEngine
             switch(buttonId) {'
 
                 case 'username':'';
-                    await (this.gameEngine, as any).userInfoScene? .showUsernameChangeDialog()';
+                    await (this.gameEngine, as any).userInfoScene?.showUsernameChangeDialog()';
                 case 'export':')';
-                    await (this.gameEngine, as any).userInfoScene? .showDataExportDialog()';
+                    await (this.gameEngine, as any).userInfoScene?.showDataExportDialog()';
                 case 'import':')';
-                    await (this.gameEngine, as any).userInfoScene? .showDataImportDialog()';
+                    await (this.gameEngine, as any).userInfoScene?.showDataImportDialog()';
                 case 'statsExport':')';
-                    await (this.gameEngine, as any).userInfoScene? .showStatisticsExportDialog(''';
-                case 'reset':)';
+                    await (this.gameEngine, as any).userInfoScene?.showStatisticsExportDialog(''';
+                case 'reset':'';
                     await this.handleDataReset();
             }
 
-                    console.warn('Unknown button clicked:', buttonId);' }
+                    console.warn('Unknown button clicked:', buttonId';' }
 
             } catch (error) {
-            console.error('Button click error:', error);''
+            console.error('Button click error:', error';''
             this.eventBus.emit('component-error', {''
-                component: 'DataManagementRenderer',)';
+                component: 'DataManagementRenderer','';
                 operation: 'handleButtonClick',);
-                error); });
+                error); }';
         }
     /**
      * データリセット処理'
@@ -755,9 +753,9 @@ class DataManagementRenderer { private gameEngine: GameEngine
 
                 this.eventBus.emit('data-reset', { timestamp: Date.now( });
 
-                alert('データがリセットされました。);''
+                alert('データがリセットされました。';''
             } catch (error) {
-                console.error('Data reset error:', error);''
+                console.error('Data reset error:', error';''
                 alert('データリセット中にエラーが発生しました。); }
         }
     /**
@@ -844,4 +842,4 @@ class DataManagementRenderer { private gameEngine: GameEngine
     /**
      * クリーンアップ
      */''
-    cleanup(');
+    cleanup();

@@ -8,11 +8,11 @@
 interface Layout { isMobile: boolean,
     contentPadding: number;
     tabHeight: number;
-    headerHeight: number;
-   , fontSize: {
+    headerHeight: number,
+    fontSize: {
         titl;e: number;
-        tab: number;
-       , content: number ,}
+        tab: number,
+    content: number ,}
 
 // タブ情報のインターフェース
 interface Tab { id: string,
@@ -20,21 +20,21 @@ interface Tab { id: string,
     icon?: string ,}
 
 // ヒット領域のインターフェース
-interface HitAreas { tabs: TabArea[];
-   , backButton: ButtonInfo | null }
+interface HitAreas { tabs: TabArea[],
+    backButton: ButtonInfo | null }
 
 // タブ領域のインターフェース
 interface TabArea { id: string;
     x: number;
     y: number;
-    width: number;
-   , height: number }
+    width: number,
+    height: number }
 
 // ボタン情報のインターフェース
 interface ButtonInfo { x: number;
     y: number;
-    width: number;
-   , height: number }
+    width: number,
+    height: number }
 
 // ゲームエンジンのインターフェース
 interface GameEngine {
@@ -42,10 +42,10 @@ interface GameEngine {
 }
 
 // イベントバスのインターフェース
-interface EventBus { on(event: string, callback: (dat;a?: any) => void): void;
-    off(event: string, callback?: (dat;a?: any) => void): void;
-    emit(event: string, data?: any): void }
-}
+interface EventBus { on(event: string, callback: (data?: any) => void): void;
+    off(event: string, callback?: (data?: any) => void): void;
+    emit(event: string, data?: any): void 
+    }
 
 // シーン状態のインターフェース
 interface SceneState { get(key: string): any,
@@ -94,8 +94,8 @@ export class UserInfoRenderer {
         tabManager: TabManager;
         profileManager: ProfileManager
     );
-        helpSystem: HelpSystem);
-       , dialogManager: DialogManager;
+        helpSystem: HelpSystem),
+    dialogManager: DialogManager;
     ): void { try {
             const canvas = context.canvas,
             
@@ -148,11 +148,11 @@ export class UserInfoRenderer {
      */''
     private renderTitle(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void { const titleY = 30;
 
-        context.fillStyle = '#FFFFFF';''
-        context.font = 'bold 32px Arial';''
-        context.textAlign = 'center';''
-        context.textBaseline = 'top';''
-        context.fillText('ユーザー情報', canvas.width / 2, titleY);
+        context.fillStyle = '#FFFFFF';
+        context.font = 'bold 32px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'top';
+        context.fillText('ユーザー情報', canvas.width / 2, titleY';
         
         // タイトル下のライン
         const lineY = titleY + 50;''
@@ -183,7 +183,7 @@ export class UserInfoRenderer {
         const contentHeight = canvas.height - contentY - 80; // 戻るボタンのスペースを考慮
         ;
         // コンテンツ背景
-        context.fillStyle = '#2A2A2A';''
+        context.fillStyle = '#2A2A2A';
         context.fillRect(contentX, contentY, contentWidth, contentHeight);
         ';
         // コンテンツ境界線
@@ -203,7 +203,7 @@ export class UserInfoRenderer {
         const buttonY = canvas.height - 60;
         ';
         // ボタン背景
-        context.fillStyle = '#4A90E2';''
+        context.fillStyle = '#4A90E2';
         context.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
         ';
         // ボタン境界線
@@ -213,17 +213,17 @@ export class UserInfoRenderer {
         context.strokeRect(buttonX, buttonY, buttonWidth, buttonHeight);
         ';
         // ボタンテキスト
-        context.fillStyle = '#FFFFFF';''
-        context.font = '16px Arial';''
-        context.textAlign = 'center';''
-        context.textBaseline = 'middle';''
-        context.fillText('戻る', buttonX + buttonWidth / 2, buttonY + buttonHeight / 2);
+        context.fillStyle = '#FFFFFF';
+        context.font = '16px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillText('戻る', buttonX + buttonWidth / 2, buttonY + buttonHeight / 2';
         ';
         // 戻るボタンの座標を保存
         this.sceneState.set('backButton', {
             x: buttonX);
-            y: buttonY);
-           , width: buttonWidth,);
+            y: buttonY),
+    width: buttonWidth,';
             height: buttonHeight ,}
     
     /**
@@ -247,9 +247,9 @@ export class UserInfoRenderer {
                         textWidth + padding * 2, textHeight + padding');
         ';
         // エラーテキスト
-        context.fillStyle = '#FFFFFF';''
-        context.font = '16px Arial';''
-        context.textAlign = 'center';''
+        context.fillStyle = '#FFFFFF';
+        context.font = '16px Arial';
+        context.textAlign = 'center';
         context.textBaseline = 'middle';
         context.fillText(errorMessage, messageX, messageY); }
     
@@ -259,19 +259,19 @@ export class UserInfoRenderer {
     private renderErrorState(context: CanvasRenderingContext2D): void { const canvas = context.canvas;
         ';
         // 背景
-        context.fillStyle = '#1a1a2e';''
+        context.fillStyle = '#1a1a2e';
         context.fillRect(0, 0, canvas.width, canvas.height);
         ';
         // エラーメッセージ
-        context.fillStyle = '#FF6B6B';''
-        context.font = '24px Arial';''
-        context.textAlign = 'center';''
-        context.textBaseline = 'middle';''
-        context.fillText('レンダリングエラーが発生しました', canvas.width / 2, canvas.height / 2);
+        context.fillStyle = '#FF6B6B';
+        context.font = '24px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillText('レンダリングエラーが発生しました', canvas.width / 2, canvas.height / 2';
         ';
         // サブメッセージ
-        context.fillStyle = '#CCCCCC';''
-        context.font = '16px Arial';''
+        context.fillStyle = '#CCCCCC';
+        context.font = '16px Arial';
         context.fillText('ページを再読み込みしてください', canvas.width / 2, canvas.height / 2 + 40); }
     
     /**
@@ -286,10 +286,10 @@ export class UserInfoRenderer {
         return { isMobile,
             contentPadding: isMobile ? 10 : this.contentPadding;
             tabHeight: isMobile ? 50 : this.tabHeight;
-            headerHeight: isMobile ? 100 : this.headerHeight;
-           , fontSize: {
-                title: isMobile ? 24 : 32;
-               , tab: isMobile ? 14 : 16, };
+            headerHeight: isMobile ? 100 : this.headerHeight,
+    fontSize: {
+                title: isMobile ? 24 : 32,
+    tab: isMobile ? 14 : 16, };
                 content: isMobile ? 12 : 14 
 }
     
@@ -311,10 +311,10 @@ export class UserInfoRenderer {
         tabs.forEach((tab, index) => { hitAreas.tabs.push({
                 id: tab.id;
                 x: headerX + index * tabWidth);
-                y: headerY);
-               , width: tabWidth, }
-                height: layout.tabHeight); }
-            };
+                y: headerY),
+    width: tabWidth, }
+                height: layout.tabHeight); 
+    };
         
         return hitAreas;
     }

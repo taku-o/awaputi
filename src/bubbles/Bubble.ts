@@ -46,7 +46,7 @@ export class Bubble implements BubbleInterface { public id: string,
      * ユニークIDを生成
      */
     private _generateUniqueId(): string {
-        return `bubble_${Date.now(})_${Math.floor(Math.random(} * 1000})`;
+        return `bubble_${Date.now())_${Math.floor(Math.random() * 1000})`;
     }
     
     /**
@@ -104,12 +104,12 @@ export class Bubble implements BubbleInterface { public id: string,
         switch(this.type) {'
 
             case 'pink':'';
-                const healAmount = configManager.get('game', 'bubbles.pink.healAmount);''
+                const healAmount = configManager.get('game', 'bubbles.pink.healAmount';''
                 if(healAmount !== null) effects.healAmount = healAmount;
                 break;
 
             case 'poison':'';
-                const damageAmount = configManager.get('game', 'bubbles.poison.damageAmount);''
+                const damageAmount = configManager.get('game', 'bubbles.poison.damageAmount';''
                 if(damageAmount !== null) effects.damageAmount = damageAmount;
                 break;
 
@@ -122,22 +122,22 @@ export class Bubble implements BubbleInterface { public id: string,
                 break;
 
             case 'rainbow':'';
-                const bonusTimeMs = configManager.get('game', 'bubbles.rainbow.bonusTimeMs);''
+                const bonusTimeMs = configManager.get('game', 'bubbles.rainbow.bonusTimeMs';''
                 if(bonusTimeMs !== null) effects.bonusTimeMs = bonusTimeMs;
                 break;
 
             case 'clock':'';
-                const timeStopMs = configManager.get('game', 'bubbles.clock.timeStopMs);''
+                const timeStopMs = configManager.get('game', 'bubbles.clock.timeStopMs';''
                 if(timeStopMs !== null) effects.timeStopMs = timeStopMs;
                 break;
 
             case 'score':'';
-                const bonusScore = configManager.get('game', 'bubbles.score.bonusScore);''
+                const bonusScore = configManager.get('game', 'bubbles.score.bonusScore';''
                 if(bonusScore !== null) effects.bonusScore = bonusScore;
                 break;
 
             case 'spiky':'';
-                const chainRadius = configManager.get('game', 'bubbles.spiky.chainRadius);''
+                const chainRadius = configManager.get('game', 'bubbles.spiky.chainRadius';''
                 if(chainRadius !== null) effects.chainRadius = chainRadius;
                 break;
 
@@ -161,120 +161,120 @@ export class Bubble implements BubbleInterface { public id: string,
                 health: 1,
                 size: 50,
                 maxAge: 12000, // 10000 -> 12000(少し長く);''
-                color: '#87CEEB';
-               , score: 15 ,};
-            stone: { health: 2;
-               , size: 55,
+                color: '#87CEEB',
+    score: 15 ,};
+            stone: { health: 2,
+    size: 55,
                 maxAge: 16000, // 15000 -> 16000(少し長く);''
-                color: '#696969';
-               , score: 25 ,};
-            iron: { health: 3;
-               , size: 60,
+                color: '#696969',
+    score: 25 ,};
+            iron: { health: 3,
+    size: 60,
                 maxAge: 20000, // 変更なし;
-                color: '#708090';
-               , score: 40 ,};
+                color: '#708090',
+    score: 40 ,};
             diamond: { health: 4, // 5 -> 4 (少し弱く);
                 size: 65,
                 maxAge: 22000, // 25000 -> 22000(少し短く);''
-                color: '#B0E0E6';
-               , score: 60 ,};
-            pink: { health: 1;
-               , size: 45,
+                color: '#B0E0E6',
+    score: 60 ,};
+            pink: { health: 1,
+    size: 45,
                 maxAge: 10000, // 8000 -> 10000(少し長く);''
                 color: '#FFB6C1';
-                score: 20;
-               , healAmount: 25 // 20 -> 25 (回復量増加 ,};
-            poison: { health: 1;
-               , size: 48,
+                score: 20,
+    healAmount: 25 // 20 -> 25 (回復量増加 ,}
+            poison: { health: 1,
+    size: 48,
                 maxAge: 14000, // 12000 -> 14000(少し長く);''
                 color: '#9370DB';
-                score: 30;
-               , damageAmount: 8 // 10 -> 8 (ダメージ軽減 ,};
-            spiky: { health: 1;
-               , size: 52,
+                score: 30,
+    damageAmount: 8 // 10 -> 8 (ダメージ軽減 ,}
+            spiky: { health: 1,
+    size: 52,
                 maxAge: 13000, // 12000 -> 13000(少し長く);''
                 color: '#FF6347';
-                score: 35;
-               , chainRadius: 120 // 150 -> 120 (連鎖範囲を少し狭く ,};
-            rainbow: { health: 1;
-               , size: 55,
+                score: 35,
+    chainRadius: 120 // 150 -> 120 (連鎖範囲を少し狭く ,}
+            rainbow: { health: 1,
+    size: 55,
                 maxAge: 16000, // 15000 -> 16000(少し長く);''
                 color: '#FF69B4';
-                score: 400;
-               , bonusTimeMs: 8000 // 10000 -> 8000 (ボーナス時間短縮 ,};
-            clock: { health: 1;
-               , size: 50,
+                score: 400,
+    bonusTimeMs: 8000 // 10000 -> 8000 (ボーナス時間短縮 ,}
+            clock: { health: 1,
+    size: 50,
                 maxAge: 20000, // 18000 -> 20000(少し長く);''
                 color: '#FFD700';
-                score: 180;
-               , timeStopMs: 2500 // 3000 -> 2500 (時間停止短縮 ,};
-            score: { health: 1;
-               , size: 48,
+                score: 180,
+    timeStopMs: 2500 // 3000 -> 2500 (時間停止短縮 ,}
+            score: { health: 1,
+    size: 48,
                 maxAge: 9000, // 8000 -> 9000(少し長く);''
                 color: '#32CD32';
-                score: 250;
-               , bonusScore: 80 // 100 -> 80 (ボーナス軽減 ,};
-            electric: { health: 1;
-               , size: 50,
+                score: 250,
+    bonusScore: 80 // 100 -> 80 (ボーナス軽減 ,}
+            electric: { health: 1,
+    size: 50,
                 maxAge: 13000, // 12000 -> 13000(少し長く);''
                 color: '#FFFF00';
-                score: 20;
-               , shakeIntensity: 15, // 20 -> 15 (揺れ軽減);
-                disableDuration: 1500 // 2000 -> 1500 (操作不能時間短縮 ,};
-            escaping: { health: 1;
-               , size: 45,
+                score: 20,
+    shakeIntensity: 15, // 20 -> 15 (揺れ軽減);
+                disableDuration: 1500 // 2000 -> 1500 (操作不能時間短縮 ,}
+            escaping: { health: 1,
+    size: 45,
                 maxAge: 16000, // 15000 -> 16000(少し長く);''
                 color: '#FF8C00';
-                score: 50;
-               , escapeSpeed: 180, // 200 -> 180 (逃げる速度軽減);
-                escapeRadius: 90 // 100 -> 90 (逃げる範囲縮小 ,};
-            cracked: { health: 1;
-               , size: 52,
+                score: 50,
+    escapeSpeed: 180, // 200 -> 180 (逃げる速度軽減);
+                escapeRadius: 90 // 100 -> 90 (逃げる範囲縮小 ,}
+            cracked: { health: 1,
+    size: 52,
                 maxAge: 6000, // 5000 -> 6000(少し長く);''
-                color: '#8B4513';
-               , score: 30 ,};
+                color: '#8B4513',
+    score: 30 ,};
             boss: { health: 8, // 10 -> 8 (少し弱く);
                 size: 90, // 100 -> 90 (少し小さく);
                 maxAge: 35000, // 30000 -> 35000(少し長く);''
-                color: '#8B0000';
-               , score: 100 ,};
+                color: '#8B0000',
+    score: 100 ,};
             // 新しい泡タイプ
             golden: { health: 1;
-                size: 55;
-               , maxAge: 8000,
+                size: 55,
+    maxAge: 8000,
                 color: '#FFD700';
-                score: 500;
-               , multiplier: 2.0 // スコア倍率 ,};
+                score: 500,
+    multiplier: 2.0 // スコア倍率 ,};
             frozen: { health: 2;
-                size: 50;
-               , maxAge: 25000, // 長時間持続;
+                size: 50,
+    maxAge: 25000, // 長時間持続;
                 color: '#87CEEB';
-                score: 100;
-               , slowEffect: 0.5 // 周囲の泡の動きを遅くする ,};
+                score: 100,
+    slowEffect: 0.5 // 周囲の泡の動きを遅くする ,};
             magnetic: { health: 1;
-                size: 48;
-               , maxAge: 15000,
+                size: 48,
+    maxAge: 15000,
                 color: '#FF1493';
-                score: 150;
-               , magnetRadius: 100 // 他の泡を引き寄せる ,};
+                score: 150,
+    magnetRadius: 100 // 他の泡を引き寄せる ,};
             explosive: { health: 1;
-                size: 52;
-               , maxAge: 10000,
+                size: 52,
+    maxAge: 10000,
                 color: '#FF4500';
-                score: 200;
-               , explosionRadius: 150 // 爆発範囲 ,};
+                score: 200,
+    explosionRadius: 150 // 爆発範囲 ,};
             phantom: { health: 1;
-                size: 45;
-               , maxAge: 12000,
+                size: 45,
+    maxAge: 12000,
                 color: '#9370DB';
-                score: 300;
-               , phaseChance: 0.3 // クリックをすり抜ける確率 ,};
+                score: 300,
+    phaseChance: 0.3 // クリックをすり抜ける確率 ,};
             multiplier: { health: 1;
-                size: 50;
-               , maxAge: 18000,
+                size: 50,
+    maxAge: 18000,
                 color: '#32CD32';
-                score: 100;
-               , scoreMultiplier: 3.0 // 次の泡のスコアを3倍 ,}
+                score: 100,
+    scoreMultiplier: 3.0 // 次の泡のスコアを3倍 ,}
         };
         return configs[this.type] || configs.normal;
     }
@@ -435,9 +435,9 @@ export class Bubble implements BubbleInterface { public id: string,
         context.fill()';
         if(this.type === 'stone' || this.type === 'iron' || this.type === 'diamond'') {'
 
-            context.fillStyle = '#FFFFFF';''
-            context.font = 'bold 16px Arial';''
-            context.textAlign = 'center';''
+            context.fillStyle = '#FFFFFF';
+            context.font = 'bold 16px Arial';
+            context.textAlign = 'center';
             context.textBaseline = 'middle';
         }
             context.fillText(this.health.toString(), centerX, centerY); }
@@ -453,35 +453,35 @@ export class Bubble implements BubbleInterface { public id: string,
      * 特殊泡のアイコンを描画
      */''
     public renderSpecialIcon(context: CanvasRenderingContext2D, centerX: number, centerY: number): void { ''
-        context.fillStyle = '#FFFFFF';''
-        context.font = 'bold 20px Arial';''
-        context.textAlign = 'center';''
+        context.fillStyle = '#FFFFFF';
+        context.font = 'bold 20px Arial';
+        context.textAlign = 'center';
         context.textBaseline = 'middle';
 
         switch(this.type) {'
 
             case 'pink':'';
-                context.fillText('♥', centerX, centerY - 5);
+                context.fillText('♥', centerX, centerY - 5';
 
                 break;''
             case 'poison':'';
-                context.fillText('☠', centerX, centerY - 5);
+                context.fillText('☠', centerX, centerY - 5';
 
                 break;''
             case 'stone':'';
-                context.fillText('●', centerX, centerY - 5);
+                context.fillText('●', centerX, centerY - 5';
 
                 break;''
             case 'iron':'';
-                context.fillText('◆', centerX, centerY - 5);
+                context.fillText('◆', centerX, centerY - 5';
 
                 break;''
             case 'diamond':'';
-                context.fillText('♦', centerX, centerY - 5);
+                context.fillText('♦', centerX, centerY - 5';
 
                 break;''
             case 'spiky':'';
-                context.fillText('✦', centerX, centerY - 5);
+                context.fillText('✦', centerX, centerY - 5';
 
                 break;''
             case 'rainbow':;
@@ -494,62 +494,62 @@ export class Bubble implements BubbleInterface { public id: string,
                 gradient.addColorStop(1, '#FF00FF'');
 
                 context.fillStyle = gradient;''
-                context.fillText('◉', centerX, centerY - 5);''
+                context.fillText('◉', centerX, centerY - 5';''
                 context.restore()';
             case 'clock':')';
-                context.fillText('⏰', centerX, centerY - 5);
+                context.fillText('⏰', centerX, centerY - 5';
 
                 break;''
             case 'score':'';
-                context.fillText('S', centerX, centerY - 5);
+                context.fillText('S', centerX, centerY - 5';
 
                 break;''
             case 'electric':'';
-                context.fillText('⚡', centerX, centerY - 5);
+                context.fillText('⚡', centerX, centerY - 5';
 
                 break;''
             case 'escaping':'';
-                context.fillText('💨', centerX, centerY - 5);
+                context.fillText('💨', centerX, centerY - 5';
 
                 break;''
             case 'cracked':'';
-                context.fillText('💥', centerX, centerY - 5);
+                context.fillText('💥', centerX, centerY - 5';
 
                 break;''
             case 'boss':'';
-                context.fillStyle = '#FFFFFF';''
-                context.font = 'bold 24px Arial';''
-                context.fillText('👑', centerX, centerY - 5);
+                context.fillStyle = '#FFFFFF';
+                context.font = 'bold 24px Arial';
+                context.fillText('👑', centerX, centerY - 5';
 
                 // ボス泡の場合、耐久値も表示
-                context.font = 'bold 16px Arial';''
+                context.font = 'bold 16px Arial';
                 context.fillText(this.health.toString(), centerX, centerY + 15');
                 break;
 
             // 新しい泡タイプのアイコン
             case 'golden':'';
-                context.fillText('★', centerX, centerY - 5);
+                context.fillText('★', centerX, centerY - 5';
 
                 break;''
             case 'frozen':'';
-                context.fillText('❄', centerX, centerY - 5);
+                context.fillText('❄', centerX, centerY - 5';
 
                 break;''
             case 'magnetic':'';
-                context.fillText('🧲', centerX, centerY - 5);
+                context.fillText('🧲', centerX, centerY - 5';
 
                 break;''
             case 'explosive':'';
-                context.fillText('💣', centerX, centerY - 5);
+                context.fillText('💣', centerX, centerY - 5';
 
                 break;''
             case 'phantom':'';
                 context.fillStyle = 'rgba(255,255,255,0.7)'; // 半透明
-                context.fillText('👻', centerX, centerY - 5);
+                context.fillText('👻', centerX, centerY - 5';
 
                 break;''
             case 'multiplier':'';
-                context.fillText('×', centerX, centerY - 5);
+                context.fillText('×', centerX, centerY - 5';
         }
                 break; }
 }
@@ -601,14 +601,14 @@ export class Bubble implements BubbleInterface { public id: string,
                 // HP回復効果
                 this.effects.push({)'
                     type: 'heal',')';
-                    amount: config.healAmount || 25)');
+                    amount: config.healAmount || 25'');
                 break;
 
             case 'poison':;
                 // ダメージ効果
                 this.effects.push({)'
                     type: 'damage',')';
-                    amount: config.damageAmount || 8)');
+                    amount: config.damageAmount || 8'');
                 break;
 
             case 'spiky':;
@@ -616,38 +616,38 @@ export class Bubble implements BubbleInterface { public id: string,
                 this.effects.push({'
         ,}
 
-                    type: 'chain_destroy', })'
+                    type: 'chain_destroy', }''
                     position: { ...this.position,')'
-                    radius: config.chainRadius || 120)');
+                    radius: config.chainRadius || 120'');
                 break;
 
             case 'rainbow':;
                 // 虹色の泡：ボーナスタイム効果
                 this.effects.push({ ')'
                     type: 'bonus_time',')';
-                    duration: config.bonusTimeMs || 8000)');
+                    duration: config.bonusTimeMs || 8000'');
                 break;
 
             case 'clock':;
                 // 時計の泡：時間停止効果
                 this.effects.push({)'
                     type: 'time_stop',')';
-                    duration: config.timeStopMs || 2500)');
+                    duration: config.timeStopMs || 2500'');
                 break;
 
             case 'score':;
                 // S字の泡：追加スコア効果
                 this.effects.push({)'
                     type: 'bonus_score',')';
-                    amount: config.bonusScore || 80)');
+                    amount: config.bonusScore || 80'');
                 break;
 
             case 'electric':;
                 // ビリビリの泡：画面揺れ・操作不能効果
                 this.effects.push({)'
-                    type: 'screen_shake')';
-                   , intensity: config.shakeIntensity || 15,')';
-                    duration: config.disableDuration || 1500)');
+                    type: 'screen_shake')',
+    intensity: config.shakeIntensity || 15,')';
+                    duration: config.disableDuration || 1500'');
                 break;
 
             case 'escaping':;
@@ -665,9 +665,9 @@ export class Bubble implements BubbleInterface { public id: string,
             case 'golden':;
                 // 黄金の泡：スコア倍率効果
                 this.effects.push({)'
-                    type: 'score_multiplier')';
-                   , multiplier: config.multiplier || 2.0,')';
-                    duration: 5000 // 5秒間));
+                    type: 'score_multiplier')',
+    multiplier: config.multiplier || 2.0,')';
+                    duration: 5000 // 5秒間)';
                 break;
 
             case 'frozen':;
@@ -675,27 +675,27 @@ export class Bubble implements BubbleInterface { public id: string,
                 this.effects.push({''
                     type: 'slow_area', }
                     position: { ...this.position)
-                    radius: 120)';
-                   , slowFactor: config.slowEffect || 0.5,')';
-                    duration: 8000 // 8秒間));
+                    radius: 120'',
+    slowFactor: config.slowEffect || 0.5,')';
+                    duration: 8000 // 8秒間)';
                 break;
 
             case 'magnetic':;
                 // 磁石の泡：他の泡を引き寄せる効果
                 this.effects.push({ ''
                     type: 'magnetic_pull', })
-                    position: { ...this.position)'
+                    position: { ...this.position''
                     radius: config.magnetRadius || 100,')';
-                    strength: 150)');
+                    strength: 150'');
                 break;
 
             case 'explosive':;
                 // 爆発の泡：大きな爆発効果
                 this.effects.push({ ''
                     type: 'big_explosion', })
-                    position: { ...this.position)'
+                    position: { ...this.position''
                     radius: config.explosionRadius || 150,')';
-                    damage: 15)');
+                    damage: 15'');
                 break;
 
             case 'phantom':;
@@ -705,8 +705,8 @@ export class Bubble implements BubbleInterface { public id: string,
             case 'multiplier':;
                 // 倍率の泡：次の泡のスコアを倍増
                 this.effects.push({ ')'
-                    type: 'next_score_multiplier');
-                   , multiplier: config.scoreMultiplier || 3.0,);
+                    type: 'next_score_multiplier'),
+    multiplier: config.scoreMultiplier || 3.0,);
                     duration: 10000 // 10秒間);
                 break ,}
     }
@@ -741,7 +741,7 @@ export class Bubble implements BubbleInterface { public id: string,
      * 特殊タイプの振る舞い更新
      */''
     public updateSpecialBehavior(deltaTime: number, mousePosition?: Position): void { // deltaTimeは将来のフレーム補間で使用予定
-        console.log('Special behavior update with deltaTime:', deltaTime);''
+        console.log('Special behavior update with deltaTime:', deltaTime';''
         switch(this.type) {'
 
             case 'escaping':;
@@ -776,4 +776,4 @@ export class Bubble implements BubbleInterface { public id: string,
     /**
      * 効果を取得してクリア
      */''
-    public getAndClearEffects(');
+    public getAndClearEffects();

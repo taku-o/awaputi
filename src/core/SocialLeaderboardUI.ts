@@ -24,25 +24,25 @@ export class SocialLeaderboardUI {
                 enabled: options.accessibility !== false;
                 announcements: options.announcements !== false;
                 keyboardNavigation: options.keyboardNavigation !== false;
-                highContrast: options.highContrast === true;
-               , reducedMotion: options.reducedMotion = == true ,}
-                screenReaderDescriptions: options.screenReaderDescriptions !== false }
-            };
+                highContrast: options.highContrast === true,
+    reducedMotion: options.reducedMotion = == true ,}
+                screenReaderDescriptions: options.screenReaderDescriptions !== false 
+    };
             // 多言語設定
             localization: { enabled: options.localization !== false,''
-                defaultLanguage: options.defaultLanguage || 'ja';
-               , rtlSupport: options.rtlSupport === true ,}
+                defaultLanguage: options.defaultLanguage || 'ja',
+    rtlSupport: options.rtlSupport === true ,}
         };
         // 状態管理
         this.state = {;
             currentLeaderboard: 'overall';
-            currentPage: 1;
-           , selectedEntry: null,
+            currentPage: 1,
+    selectedEntry: null,
             focusedElement: null,
             sortOrder: 'desc',
             filterPeriod: 'all',
-            searchQuery: '';
-           , loading: false ,};
+            searchQuery: '',
+    loading: false ,};
         // DOM要素
         this.elements = { container: null,
             header: null;
@@ -50,15 +50,15 @@ export class SocialLeaderboardUI {
             content: null;
             entries: [];
             pagination: null;
-            announcer: null;
-           , loadingIndicator: null ,};
+            announcer: null,
+    loadingIndicator: null ,};
         // イベントハンドラー
         this.handlers = { keydown: this.handleKeydown.bind(this),
             click: this.handleClick.bind(this);
             focus: this.handleFocus.bind(this);
             resize: this.handleResize.bind(this);
-            filterChange: this.handleFilterChange.bind(this);
-           , searchInput: this.handleSearchInput.bind(this ,};
+            filterChange: this.handleFilterChange.bind(this),
+    searchInput: this.handleSearchInput.bind(this ,};
         
         // データキャッシュ
         this.cache = new Map();
@@ -67,8 +67,8 @@ export class SocialLeaderboardUI {
         // 統計
         this.stats = { renders: 0,
             interactions: 0;
-            keyboardNavigations: 0;
-           , searches: 0 ,};
+            keyboardNavigations: 0,
+    searches: 0 ,};
         this.initialize();
     }
     
@@ -97,7 +97,7 @@ export class SocialLeaderboardUI {
             this.log('SocialLeaderboardUI初期化完了);
 
         } catch (error) {
-            this.handleError('LEADERBOARD_UI_INIT_FAILED', error); }
+            this.handleError('LEADERBOARD_UI_INIT_FAILED', error'; }
     }
     
     /**
@@ -105,7 +105,7 @@ export class SocialLeaderboardUI {
      */''
     createElements()';
         this.elements.container = document.createElement('div'');''
-        this.elements.container.className = 'social-leaderboard-ui';''
+        this.elements.container.className = 'social-leaderboard-ui';
         this.elements.container.setAttribute('role', 'region'');''
         this.elements.container.setAttribute('aria-label', 'リーダーボード);
         
@@ -114,7 +114,7 @@ export class SocialLeaderboardUI {
         // コントロール
         this.elements.controls = this.createControls()';
         this.elements.content = document.createElement('div'');''
-        this.elements.content.className = 'leaderboard-content';''
+        this.elements.content.className = 'leaderboard-content';
         this.elements.content.setAttribute('role', 'main'');''
         this.elements.content.setAttribute('aria-live', 'polite'');''
         this.elements.content.setAttribute('aria-busy', 'false);
@@ -128,15 +128,15 @@ export class SocialLeaderboardUI {
         if(this.config.accessibility.enabled) {'
 
             this.elements.announcer = document.createElement('div'');''
-            this.elements.announcer.className = 'leaderboard-announcer sr-only';''
+            this.elements.announcer.className = 'leaderboard-announcer sr-only';
             this.elements.announcer.setAttribute('aria-live', 'polite'');''
             this.elements.announcer.setAttribute('aria-atomic', 'true);
             this.elements.announcer.style.cssText = `;
                 position: absolute !important;
                 left: -10000px !important;
                 width: 1px !important;
-                height: 1px !important;
-               , overflow: hidden !important;
+                height: 1px !important,
+    overflow: hidden !important;
         ,}
             `; }
         }
@@ -164,13 +164,13 @@ export class SocialLeaderboardUI {
         header.className = 'leaderboard-header';
 
         const title = document.createElement('h2'');''
-        title.className = 'leaderboard-title';''
-        title.id = 'leaderboard-title';''
+        title.className = 'leaderboard-title';
+        title.id = 'leaderboard-title';
         title.textContent = 'リーダーボード';
 
         const subtitle = document.createElement('div'');''
-        subtitle.className = 'leaderboard-subtitle';''
-        subtitle.id = 'leaderboard-subtitle';''
+        subtitle.className = 'leaderboard-subtitle';
+        subtitle.id = 'leaderboard-subtitle';
         subtitle.textContent = '上位プレイヤーのスコア';
         
         header.appendChild(title);
@@ -184,7 +184,7 @@ export class SocialLeaderboardUI {
      */''
     createControls()';
         const controls = document.createElement('div'');''
-        controls.className = 'leaderboard-controls';''
+        controls.className = 'leaderboard-controls';
         controls.setAttribute('role', 'toolbar'');''
         controls.setAttribute('aria-label', 'リーダーボード制御'');
         ';
@@ -193,12 +193,12 @@ export class SocialLeaderboardUI {
         filterGroup.className = 'control-group filter-group';
 
         const filterLabel = document.createElement('label'');''
-        filterLabel.htmlFor = 'leaderboard-filter';''
+        filterLabel.htmlFor = 'leaderboard-filter';
         filterLabel.textContent = '期間:';
 
         const filterSelect = document.createElement('select'');''
-        filterSelect.id = 'leaderboard-filter';''
-        filterSelect.className = 'leaderboard-filter';''
+        filterSelect.id = 'leaderboard-filter';
+        filterSelect.className = 'leaderboard-filter';
         filterSelect.setAttribute('aria-label', '表示期間を選択'');
         ';
 
@@ -225,19 +225,19 @@ export class SocialLeaderboardUI {
         searchGroup.className = 'control-group search-group';
 
         const searchLabel = document.createElement('label'');''
-        searchLabel.htmlFor = 'leaderboard-search';''
+        searchLabel.htmlFor = 'leaderboard-search';
         searchLabel.textContent = '検索:';
 
         const searchInput = document.createElement('input'');''
-        searchInput.type = 'text';''
-        searchInput.id = 'leaderboard-search';''
-        searchInput.className = 'leaderboard-search';''
-        searchInput.placeholder = 'プレイヤー名で検索';''
+        searchInput.type = 'text';
+        searchInput.id = 'leaderboard-search';
+        searchInput.className = 'leaderboard-search';
+        searchInput.placeholder = 'プレイヤー名で検索';
         searchInput.setAttribute('aria-label', 'プレイヤー名で検索'');
 
         const searchButton = document.createElement('button'');''
-        searchButton.type = 'button';''
-        searchButton.className = 'search-button';''
+        searchButton.type = 'button';
+        searchButton.className = 'search-button';
         searchButton.setAttribute('aria-label', '検索実行'');''
         searchButton.innerHTML = '🔍';
         
@@ -248,8 +248,8 @@ export class SocialLeaderboardUI {
         ';
         // 更新ボタン
         const refreshButton = document.createElement('button'');''
-        refreshButton.type = 'button';''
-        refreshButton.className = 'refresh-button';''
+        refreshButton.type = 'button';
+        refreshButton.className = 'refresh-button';
         refreshButton.setAttribute('aria-label', 'リーダーボードを更新'');''
         refreshButton.innerHTML = '🔄 更新';
         
@@ -265,23 +265,23 @@ export class SocialLeaderboardUI {
      */''
     createPagination()';
         const pagination = document.createElement('nav'');''
-        pagination.className = 'leaderboard-pagination';''
+        pagination.className = 'leaderboard-pagination';
         pagination.setAttribute('role', 'navigation'');''
         pagination.setAttribute('aria-label', 'リーダーボードページネーション'');
 
         const prevButton = document.createElement('button'');''
-        prevButton.className = 'pagination-button prev-button';''
+        prevButton.className = 'pagination-button prev-button';
         prevButton.setAttribute('aria-label', '前のページ'');''
         prevButton.innerHTML = '← 前へ';
         prevButton.disabled = true;
 
         const pageInfo = document.createElement('span'');''
-        pageInfo.className = 'page-info';''
+        pageInfo.className = 'page-info';
         pageInfo.setAttribute('aria-live', 'polite'');''
         pageInfo.textContent = 'ページ 1 / 1';
 
         const nextButton = document.createElement('button'');''
-        nextButton.className = 'pagination-button next-button';''
+        nextButton.className = 'pagination-button next-button';
         nextButton.setAttribute('aria-label', '次のページ'');''
         nextButton.innerHTML = '次へ →';
         nextButton.disabled = true;
@@ -298,17 +298,17 @@ export class SocialLeaderboardUI {
      */''
     createLoadingIndicator()';
         const indicator = document.createElement('div'');''
-        indicator.className = 'loading-indicator';''
-        indicator.style.display = 'none';''
+        indicator.className = 'loading-indicator';
+        indicator.style.display = 'none';
         indicator.setAttribute('aria-hidden', 'true'');
 
         const spinner = document.createElement('div'');''
-        spinner.className = 'loading-spinner';''
+        spinner.className = 'loading-spinner';
         spinner.setAttribute('role', 'progressbar'');''
         spinner.setAttribute('aria-label', '読み込み中'');
 
         const message = document.createElement('div'');''
-        message.className = 'loading-message';''
+        message.className = 'loading-message';
         message.textContent = 'リーダーボードを読み込み中...';
         
         indicator.appendChild(spinner);
@@ -335,8 +335,8 @@ export class SocialLeaderboardUI {
                 background: #ffffff;
                 border-radius: 8px,
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                padding: 24px;
-               , margin: 16px 0;
+                padding: 24px,
+    margin: 16px 0;
     ,}
                 font-family: system-ui, -apple-system, sans-serif; }
             }
@@ -346,15 +346,15 @@ export class SocialLeaderboardUI {
             
             .leaderboard-title { font-size: 24px,
                 font-weight: 600,
-                color: #333;
-               , margin: 0 0 8px 0 ,}
+                color: #333,
+    margin: 0 0 8px 0 ,}
             
             .leaderboard-subtitle { font-size: 14px;
-                color: #666;
-               , margin: 0 }
+                color: #666,
+    margin: 0 }
             
-            .leaderboard-controls { display: flex;
-               , gap: 16px;
+            .leaderboard-controls { display: flex,
+    gap: 16px;
                 margin-bottom: 24px,
                 flex-wrap: wrap,
                 align-items: center, }
@@ -380,12 +380,12 @@ export class SocialLeaderboardUI {
             .search-button,
             .refresh-button { padding: 8px 16px,
                 background: #007AFF;
-                color: white;
-               , border: none;
+                color: white,
+    border: none;
                 border-radius: 4px,
                 font-size: 14px,
-                cursor: pointer;
-               , transition: background-color 0.2s ,}
+                cursor: pointer,
+    transition: background-color 0.2s ,}
             
             .search-button:hover;
             .refresh-button:hover { background: #0056b3 }
@@ -398,14 +398,14 @@ export class SocialLeaderboardUI {
             
             .leaderboard-entry { display: flex,
                 align-items: center,
-                padding: 12px 16px;
-               , border: 1px solid #eee;
+                padding: 12px 16px,
+    border: 1px solid #eee;
                 border-radius: 6px,
                 margin-bottom: 8px,
                 background: #fafafa;
                 transition: all 0.2s ease;
-                cursor: pointer;
-               , position: relative ,}
+                cursor: pointer,
+    position: relative ,}
             
             .leaderboard-entry:hover { background: #f0f8ff;
                 border-color: #007AFF, }
@@ -428,15 +428,15 @@ export class SocialLeaderboardUI {
             .entry-name { flex: 1,
                 font-size: 16px,
                 font-weight: 500,
-                color: #333;
-               , margin: 0 16px ,}
+                color: #333,
+    margin: 0 16px ,}
             
             .entry-score { font-size: 16px;
                 font-weight: 600,
                 color: #007AFF ,}
             
-            .entry-metadata { font-size: 12px;
-               , color: #666;
+            .entry-metadata { font-size: 12px,
+    color: #666;
                 margin-top: 4px, }
             
             .leaderboard-pagination { display: flex,
@@ -446,12 +446,12 @@ export class SocialLeaderboardUI {
                 margin-top: 24px, }
             
             .pagination-button { padding: 8px 16px,
-                background: #f8f9fa;
-               , border: 1px solid #ddd;
+                background: #f8f9fa,
+    border: 1px solid #ddd;
                 border-radius: 4px,
                 font-size: 14px,
-                cursor: pointer;
-               , transition: background-color 0.2s ,}
+                cursor: pointer,
+    transition: background-color 0.2s ,}
             
             .pagination-button:hover:not(:disabled) { background: #e9ecef }
             
@@ -461,19 +461,19 @@ export class SocialLeaderboardUI {
             .pagination-button:disabled { opacity: 0.5,
                 cursor: not-allowed ,}
             
-            .page-info { font-size: 14px;
-               , color: #666 }
+            .page-info { font-size: 14px,
+    color: #666 }
             
-            .loading-indicator { text-align: center;
-               , padding: 40px }
+            .loading-indicator { text-align: center,
+    padding: 40px }
             
             .loading-spinner { width: 40px;
-                height: 40px;
-               , border: 4px solid #f3f3f3;
+                height: 40px,
+    border: 4px solid #f3f3f3;
                 border-top: 4px solid #007AFF,
                 border-radius: 50%,
-                animation: spin 1s linear infinite;
-               , margin: 0 auto 16px ,}
+                animation: spin 1s linear infinite,
+    margin: 0 auto 16px ,}
             
             @keyframes spin {
                 0% { transform: rotate(0deg), }
@@ -486,14 +486,14 @@ export class SocialLeaderboardUI {
                 left: -10000px !important;
                 width: 1px !important;
                 height: 1px !important;
-                overflow: hidden !important;
-               , clip: rect(1px, 1px, 1px, 1px) !important,
+                overflow: hidden !important,
+    clip: rect(1px, 1px, 1px, 1px) !important,
                 clip-path: inset(50%) !important, }
             
             /* 高コントラストモード */
             .high-contrast-mode .social-leaderboard-ui { background: #000000 !important,
-                color: #ffffff !important;
-               , border: 2px solid #ffffff !important ,}
+                color: #ffffff !important,
+    border: 2px solid #ffffff !important ,}
             
             .high-contrast-mode .leaderboard-entry { background: #333333 !important;
                 border-color: #ffffff !important,
@@ -510,8 +510,8 @@ export class SocialLeaderboardUI {
 
             /* レスポンシブ対応 */''
             @media(max-width: 768px) { .social-leaderboard-ui {
-                    padding: 16px;
-                   , margin: 8px 0 }
+                    padding: 16px,
+    margin: 8px 0 }
                 
                 .leaderboard-controls { flex-direction: column;
                     align-items: stretch,
@@ -543,31 +543,31 @@ export class SocialLeaderboardUI {
     /**
      * イベントリスナーの設定"
      */""
-    setupEventListeners(") {"
+    setupEventListeners() {"
         // キーボードナビゲーション""
-        this.elements.container.addEventListener('keydown', this.handlers.keydown);
+        this.elements.container.addEventListener('keydown', this.handlers.keydown';
         ';
         // フォーカス管理
-        this.elements.container.addEventListener('focusin', this.handlers.focus);
+        this.elements.container.addEventListener('focusin', this.handlers.focus';
         ';
         // フィルター変更
-        const filterSelect = this.elements.controls.querySelector('.leaderboard-filter);''
+        const filterSelect = this.elements.controls.querySelector('.leaderboard-filter';''
         if(filterSelect) {'
     }
 
-            filterSelect.addEventListener('change', this.handlers.filterChange); }
+            filterSelect.addEventListener('change', this.handlers.filterChange'; }
         }
         ';
         // 検索
         const searchInput = this.elements.controls.querySelector('.leaderboard-search'');''
-        const searchButton = this.elements.controls.querySelector('.search-button);''
+        const searchButton = this.elements.controls.querySelector('.search-button';''
         if(searchInput) {'
 
-            searchInput.addEventListener('input', this.handlers.searchInput);''
+            searchInput.addEventListener('input', this.handlers.searchInput';''
             searchInput.addEventListener('keydown', (event) => { '
         }
 
-                if(event.key === 'Enter) { }'
+                if(event.key === 'Enter' { }'
                     this.executeSearch(); }
 });
 
@@ -580,7 +580,7 @@ export class SocialLeaderboardUI {
         }
         ';
         // 更新ボタン
-        const refreshButton = this.elements.controls.querySelector('.refresh-button);''
+        const refreshButton = this.elements.controls.querySelector('.refresh-button';''
         if(refreshButton) {', ';
 
         }
@@ -608,7 +608,7 @@ export class SocialLeaderboardUI {
 }
         ';
         // ウィンドウリサイズ
-        window.addEventListener('resize', this.handlers.resize);
+        window.addEventListener('resize', this.handlers.resize';
     }
     
     /**
@@ -628,7 +628,7 @@ export class SocialLeaderboardUI {
      * ARIA属性の更新
      */''
     updateAriaAttributes()';
-        this.elements.content.setAttribute('aria-label', `${ entriesCount)件のリーダーボードエントリー`);
+        this.elements.content.setAttribute('aria-label', `${ entriesCount)件のリーダーボードエントリー`';
         ';
         // エントリーにARIA属性を設定
         this.elements.entries.forEach((entry, index) => { ''
@@ -646,7 +646,7 @@ export class SocialLeaderboardUI {
      */''
     addScreenReaderDescriptions()';
         const description = document.createElement('div'');''
-        description.id = 'leaderboard-description';''
+        description.id = 'leaderboard-description';
         description.className = 'sr-only';
         description.textContent = `;
             リーダーボードでは上位プレイヤーのスコアを確認できます。;
@@ -712,8 +712,8 @@ export class SocialLeaderboardUI {
         const names = ['プレイヤー1', 'プレイヤー2', 'プレイヤー3', 'プレイヤー4', 'プレイヤー5];
         );
         for (let i = 0; i < Math.min(this.config.maxEntries, 5); i++) { mockEntries.push({)
-                rank: i + 1);
-               , playerName: names[i] || `プレイヤー${i + 1)`;
+                rank: i + 1),
+    playerName: names[i] || `プレイヤー${i + 1)`;
                 score: (1000 - i * 100) + Math.floor(Math.random(,} * 100}, }
                 timestamp: Date.now() - (i * 3600000});
                 isCurrentPlayer: i === 2 // 3位を現在のプレイヤーとする;
@@ -722,8 +722,8 @@ export class SocialLeaderboardUI {
         
         return { entries: mockEntries,
             total: mockEntries.length, };
-            hasMore: false }
-        }
+            hasMore: false 
+    }
     
     /**
      * リーダーボードのレンダリング
@@ -739,15 +739,15 @@ export class SocialLeaderboardUI {
             // アクセシビリティアナウンス
             if (this.config.accessibility.announcements && this.elements.announcer) {' }'
 
-                this.announce(`リーダーボードが更新されました。${data.entries.length}件のエントリーが表示されています。`'});
+                this.announce(`リーダーボードが更新されました。${data.entries.length}件のエントリーが表示されています。`'}';
             }
 
-            this.log('リーダーボードレンダリング完了', { entriesCount: data.entries.length ),
+            this.log('リーダーボードレンダリング完了', { entriesCount: data.entries.length ',
 
             ' }'
 
         } catch (error) {
-            this.handleError('LEADERBOARD_RENDER_FAILED', error); }
+            this.handleError('LEADERBOARD_RENDER_FAILED', error'; }
     }
     
     /**
@@ -776,8 +776,8 @@ export class SocialLeaderboardUI {
     createEntryElement(entry, index) {'
 
         const element = document.createElement('div'');''
-        element.className = 'leaderboard-entry';''
-        element.setAttribute('data-entry-id', entry.id || index);''
+        element.className = 'leaderboard-entry';
+        element.setAttribute('data-entry-id', entry.id || index';''
         element.setAttribute('role', 'button'');''
         element.setAttribute('tabindex', '0);
 
@@ -789,7 +789,7 @@ export class SocialLeaderboardUI {
         ';
         // ランク
         const rank = document.createElement('div'');''
-        rank.className = 'entry-rank';''
+        rank.className = 'entry-rank';
         if(entry.rank <= 3) {', ';
 
         }
@@ -805,7 +805,7 @@ export class SocialLeaderboardUI {
         ';
         // スコア
         const score = document.createElement('div'');''
-        score.className = 'entry-score';''
+        score.className = 'entry-score';
         score.textContent = entry.score.toLocaleString()';
         const metadata = document.createElement('div'');''
         metadata.className = 'entry-metadata';
@@ -818,7 +818,7 @@ export class SocialLeaderboardUI {
         element.appendChild(metadata);
         ';
         // ARIA属性
-        element.setAttribute('aria-label)'';
+        element.setAttribute('aria-label''';
             `${entry.rank}位: ${entry.playerName}, スコア: ${entry.score.toLocaleString(})点`');
         ';
         // イベントリスナー
@@ -842,8 +842,8 @@ export class SocialLeaderboardUI {
         emptyState.className = 'empty-state';
         emptyState.style.cssText = `;
             text-align: center,
-            padding: 40px;
-           , color: #666;
+            padding: 40px,
+    color: #666;
         `;
         ';
 
@@ -865,7 +865,7 @@ export class SocialLeaderboardUI {
         const totalPages = Math.ceil(data.total / this.config.itemsPerPage);""
         const prevButton = this.elements.pagination.querySelector('.prev-button'');''
         const nextButton = this.elements.pagination.querySelector('.next-button'');''
-        const pageInfo = this.elements.pagination.querySelector('.page-info);
+        const pageInfo = this.elements.pagination.querySelector('.page-info';
         
         prevButton.disabled = this.state.currentPage <= 1;
     }
@@ -880,7 +880,7 @@ export class SocialLeaderboardUI {
         this.stats.interactions++;
         ';
         // 既存の選択をクリア
-        this.elements.entries.forEach(el => el.classList.remove('selected));
+        this.elements.entries.forEach(el => el.classList.remove('selected)';
         ';
         // 新しい選択を設定
         element.classList.add('selected);
@@ -894,7 +894,7 @@ export class SocialLeaderboardUI {
         }
         ';
         // イベントの発火
-        this.dispatchEvent('entrySelected', { entry, element ));
+        this.dispatchEvent('entrySelected', { entry, element )';
 
         this.log('エントリー選択', entry); }
     
@@ -931,18 +931,18 @@ export class SocialLeaderboardUI {
             case 'ArrowDown':';
                 event.preventDefault();''
                 this.focusNext()';
-            case 'ArrowUp':)';
+            case 'ArrowUp':'';
                 event.preventDefault();''
                 this.focusPrevious()';
-            case 'Home':)';
+            case 'Home':'';
                 event.preventDefault();''
                 this.focusFirst()';
-            case 'End':)';
+            case 'End':'';
                 event.preventDefault();''
                 this.focusLast(''';
-            case 'Enter':)';
+            case 'Enter':'';
             case ', ':')';
-                if(event.target.classList.contains('leaderboard-entry) {'
+                if(event.target.classList.contains('leaderboard-entry' {'
                     event.preventDefault();
     }
                     event.target.click(); }
@@ -1046,9 +1046,9 @@ export class SocialLeaderboardUI {
 
             if(query) {' }'
 
-                this.announce(`"${query"}"で検索しました。`"});"
+                this.announce(`"${query"}"で検索しました。`"}";"
             } else { }"
-                this.announce('検索をクリアしました。); }'
+                this.announce('検索をクリアしました。'; }'
 }
     }
     
@@ -1088,7 +1088,7 @@ export class SocialLeaderboardUI {
 
         } else { }'
 
-            this.elements.container.classList.remove('mobile-layout); }'
+            this.elements.container.classList.remove('mobile-layout'; }'
 }
     
     /**
@@ -1102,15 +1102,15 @@ export class SocialLeaderboardUI {
 
     }
 
-            this.elements.loadingIndicator.setAttribute('aria-hidden', show ? 'false' : 'true); }
-        }
+            this.elements.loadingIndicator.setAttribute('aria-hidden', show ? 'false' : 'true); 
+    }
 
         if(this.elements.content) {', ';
 
         }
 
-            this.elements.content.setAttribute('aria-busy', show ? 'true' : 'false); }
-}
+            this.elements.content.setAttribute('aria-busy', show ? 'true' : 'false); 
+    }
     
     /**
      * リフレッシュ
@@ -1171,14 +1171,14 @@ export class SocialLeaderboardUI {
 
         this.config = { ...this.config, ...newConfig;''
         this.applyStyles()';
-        this.log('設定更新', newConfig);
+        this.log('設定更新', newConfig';
     }
     
     /**
      * クリーンアップ'
      */''
     destroy()';
-        this.elements.container.removeEventListener('keydown', this.handlers.keydown);''
+        this.elements.container.removeEventListener('keydown', this.handlers.keydown';''
         window.removeEventListener('resize', this.handlers.resize);
         
         // タイマーのクリア
@@ -1208,7 +1208,7 @@ export class SocialLeaderboardUI {
      */'
     log(message, data = null) { ' }'
 
-        console.log(`[SocialLeaderboardUI] ${message}`, data || '''});
+        console.log(`[SocialLeaderboardUI] ${message}`, data || '''}';
 
     }''
 }

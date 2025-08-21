@@ -6,18 +6,18 @@ interface PerformanceMetrics { frameTime: number,
     dirtyRegionTime: number;
     renderEfficiency: number;
     cullingEfficiency: number;
-    cacheEfficiency: number;
-   , overallEfficiency: number;
+    cacheEfficiency: number,
+    overallEfficiency: number;
     performanceGain?: number ,}
 
 interface PerformanceBaseline { renderTime: number;
-    drawCalls: number;
-   , pixelsRendered: number }
+    drawCalls: number,
+    pixelsRendered: number }
 
 interface PerformanceFrameData { timestamp: number;
     renderTime: number;
-    totalObjects: number;
-   , efficiency: number }
+    totalObjects: number,
+    efficiency: number }
 
 interface PerformanceConfig { enabled: boolean;
     metrics: PerformanceMetrics;
@@ -25,18 +25,18 @@ interface PerformanceConfig { enabled: boolean;
     historySize: number;
     adaptiveMode: boolean;
     performanceTarget: number;
-    optimizationTrigger: number;
-   , baseline: PerformanceBaseline
+    optimizationTrigger: number,
+    baseline: PerformanceBaseline
     }
 
 interface PerformanceStats extends PerformanceMetrics { uptime: number;
     totalFrames: number;
     avgFPS: number;
-    baseline: PerformanceBaseline;
-   , optimizationLevel: string }
+    baseline: PerformanceBaseline,
+    optimizationLevel: string }
 
-type OptimizationLevel = 'conservative' | 'balanced' | 'aggressive';''
-type PerformanceTrend = 'improving' | 'stable' | 'degrading';''
+type OptimizationLevel = 'conservative' | 'balanced' | 'aggressive';
+type PerformanceTrend = 'improving' | 'stable' | 'degrading';
 type OperationType = 'cull' | 'composition' | 'dirtyRegion';
 
 interface PerformanceConfigUpdate { enabled?: boolean;
@@ -67,8 +67,8 @@ export class RenderingPerformanceMonitor {
 
         // Performance monitoring
         this.config = {
-            enabled: true;
-           , metrics: {
+            enabled: true,
+    metrics: {
                 frameTime: 0;
                 renderTime: 0;
                 cullTime: 0;
@@ -76,23 +76,23 @@ export class RenderingPerformanceMonitor {
                 dirtyRegionTime: 0;
                 // Efficiency metrics
                 renderEfficiency: 1.0;
-                cullingEfficiency: 1.0;
-               , cacheEfficiency: 1.0;
+                cullingEfficiency: 1.0,
+    cacheEfficiency: 1.0;
     }
-                overallEfficiency: 1.0 }
-            };
+                overallEfficiency: 1.0 
+    };
             // Performance history
-            history: [];
-           , historySize: 60, // 1 second at 60fps;
+            history: [],
+    historySize: 60, // 1 second at 60fps;
             // Adaptive optimization
-            adaptiveMode: true;
-           , performanceTarget: 16.67, // 60fps target;
+            adaptiveMode: true,
+    performanceTarget: 16.67, // 60fps target;
             optimizationTrigger: 20.0, // Trigger optimization at 50fps;
             // Benchmarking
             baseline: { renderTime: 16.67;
-                drawCalls: 500;
-               , pixelsRendered: 0 }
-        };
+                drawCalls: 500,
+    pixelsRendered: 0 
+    };
         // Performance intervals
         this.performanceInterval = null;
         this.monitoringStartTime = performance.now();
@@ -255,14 +255,14 @@ export class RenderingPerformanceMonitor {
             // < 40fps - aggressive optimization
         }
 
-            this.setOptimizationLevel('aggressive);' }
+            this.setOptimizationLevel('aggressive';' }
 
         } else if(renderTime > 20.0) { // < 50fps - balanced optimization
             this.setOptimizationLevel('balanced''); }
 
         } else { }'
 
-            this.setOptimizationLevel('conservative); }'
+            this.setOptimizationLevel('conservative'; }'
 }
 
     /**
@@ -274,7 +274,7 @@ export class RenderingPerformanceMonitor {
             // > 80fps - can relax optimizations
         }
 
-            this.setOptimizationLevel('conservative); }'
+            this.setOptimizationLevel('conservative'; }'
 }
 
     /**
@@ -335,8 +335,8 @@ export class RenderingPerformanceMonitor {
         
         const change = (recentAvg - olderAvg) / olderAvg;
 
-        if(change < -0.05) return 'improving';''
-        if(change > 0.05) return 'degrading';''
+        if(change < -0.05) return 'improving';
+        if(change > 0.05) return 'degrading';
         return 'stable';
 
     /**
@@ -368,8 +368,8 @@ export class RenderingPerformanceMonitor {
             dirtyRegionTime: 0;
             renderEfficiency: 1.0;
             cullingEfficiency: 1.0;
-            cacheEfficiency: 1.0;
-           , overallEfficiency: 1.0 };
+            cacheEfficiency: 1.0,
+    overallEfficiency: 1.0 };
         this.monitoringStartTime = performance.now();
     }
 
@@ -377,4 +377,4 @@ export class RenderingPerformanceMonitor {
      * Destroy performance monitor
      */'
     destroy(): void { this.stopPerformanceMonitoring();''
-        this.reset(' })'
+        this.reset(' }''

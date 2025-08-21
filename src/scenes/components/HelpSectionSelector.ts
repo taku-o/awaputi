@@ -1,10 +1,10 @@
-import { GameEngine  } from '../../core/GameEngine';''
-import { ComponentEventBus  } from './ComponentEventBus';''
+import { GameEngine  } from '../../core/GameEngine';
+import { ComponentEventBus  } from './ComponentEventBus';
 import { SceneState  } from './SceneState';
 
 interface SectionChangeData { oldSection: string,
-    newSection: string;
-   , buttonIndex: number ,}
+    newSection: string,
+    buttonIndex: number ,}
 
 /**
  * ヘルプセクション選択コンポーネント
@@ -88,7 +88,7 @@ export class HelpSectionSelector {
      * @param height - 高さ
      */''
     private renderBackground(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#F8F9FA';''
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#F8F9FA';
         context.fillRect(x, y, width, height);
         ';
         // 下部の境界線
@@ -111,14 +111,14 @@ export class HelpSectionSelector {
      * @param index - ボタンインデックス
      */
     private renderSectionButton(;
-        context: CanvasRenderingContext2D;
-       , x: number, ;
+        context: CanvasRenderingContext2D,
+    x: number, ;
         y: number, ;
         width: number, ;
         height: number, ;
         section: string );
-        label: string);
-       , index: number;
+        label: string),
+    index: number;
     ): void { const isActive = this.currentSection === section,
         const isHovered = this.hoveredButton === index;
         const isFocused = this.focusedButton === index;
@@ -141,7 +141,7 @@ export class HelpSectionSelector {
 
         if(isActive) {'
 
-            backgroundColor = this.interpolateColor('#E3F2FD', '#1976D2', animationProgress);''
+            backgroundColor = this.interpolateColor('#E3F2FD', '#1976D2', animationProgress';''
             textColor = '#FFFFFF';
 
         }
@@ -149,12 +149,12 @@ export class HelpSectionSelector {
             borderColor = '#1565C0';' }
 
         } else if(isHovered || isFocused) { ''
-            backgroundColor = '#E9ECEF';''
-            textColor = '#495057';''
+            backgroundColor = '#E9ECEF';
+            textColor = '#495057';
             borderColor = '#ADB5BD'; }
 
         } else {
-            backgroundColor = '#FFFFFF';''
+            backgroundColor = '#FFFFFF';
             textColor = '#6C757D';' }
 
             borderColor = '#DEE2E6'; }
@@ -163,7 +163,7 @@ export class HelpSectionSelector {
         // 高コントラストモードの調整
         if(this.accessibilitySettings.highContrast) {'
 
-            backgroundColor = isActive ? '#000000' : '#FFFFFF';''
+            backgroundColor = isActive ? '#000000' : '#FFFFFF';
             textColor = isActive ? '#FFFFFF' : '#000000';
 
         }
@@ -198,8 +198,8 @@ export class HelpSectionSelector {
         
         // ボタンテキストを描画
         context.fillStyle = textColor;''
-        context.font = this.accessibilitySettings.largeText ? '14px bold sans-serif' : '12px bold sans-serif';''
-        context.textAlign = 'center';''
+        context.font = this.accessibilitySettings.largeText ? '14px bold sans-serif' : '12px bold sans-serif';
+        context.textAlign = 'center';
         context.textBaseline = 'middle';
         ';
         // テキストのシャドウ効果（アクティブ時）
@@ -462,12 +462,12 @@ export class HelpSectionSelector {
      */
     getAvailableSections(): Array<{ id: string; label: string;, active: boolean }> { return this.sections.map((section, index) => ({
             id: section;
-            label: this.sectionLabels[index]);
-           , active: section === this.currentSection ,}
+            label: this.sectionLabels[index]),
+    active: section === this.currentSection ,}
         });
     }
     
     /**
      * クリーンアップ
      */''
-    cleanup(');
+    cleanup();

@@ -11,13 +11,13 @@ interface TTSConfig { enabled: boolean,
     defaultVolume: number;
     queueAnnouncements: boolean;
     maxQueueSize: number;
-    interruptOnNew: boolean;
-   , pauseBetweenAnnouncements: number ,}
+    interruptOnNew: boolean,
+    pauseBetweenAnnouncements: number ,}
 
 interface SpeechSettings { rate: number;
     pitch: number;
-    volume: number;
-   , voice: SpeechSynthesisVoice | null }
+    volume: number,
+    voice: SpeechSynthesisVoice | null }
 
 interface AnnouncementOptions { priority?: 'normal' | 'high';
     interrupt?: boolean;
@@ -28,45 +28,45 @@ interface AnnouncementOptions { priority?: 'normal' | 'high';
 interface Announcement { text: string,''
     priority: 'normal' | 'high';
     interrupt: boolean;
-    settings: SpeechSettings;
-   , timestamp: number;
-    resolve?: (valu;e?: any) => void;
-    reject?: (reaso;n?: any) => void; ,}
+    settings: SpeechSettings,
+    timestamp: number;
+    resolve?: (value?: any) => void;
+    reject?: (reason?: any) => void; ,}
 }
 
 interface PerformanceMetrics { totalAnnouncements: number,
     queuedAnnouncements: number;
     completedAnnouncements: number;
-    averageProcessingTime: number;
-   , speechDurations: number[] ,}
+    averageProcessingTime: number,
+    speechDurations: number[] ,}
 
-interface EventHandlers { onStart: ((announcemen;t: Announcement) => void) | null;
-    onEnd: ((announcemen;t: Announcement, duration: number) => void) | null;
-    onError: ((even;t: SpeechSynthesisErrorEvent, announcement: Announcement) => void) | null;
-    onPause: ((announcemen;t: Announcement) => void) | null;
-    onResume: ((announcemen;t: Announcement) => void) | null ,}
+interface EventHandlers { onStart: ((announcement: Announcement) => void) | null;
+    onEnd: ((announcement: Announcement, duration: number) => void) | null;
+    onError: ((event: SpeechSynthesisErrorEvent, announcement: Announcement) => void) | null;
+    onPause: ((announcement: Announcement) => void) | null;
+    onResume: ((announcement: Announcement) => void) | null ,}
 }
 
 interface VoiceInfo { name: string;
     lang: string;
     gender: string;
-    localService: boolean;
-   , default: boolean }
+    localService: boolean,
+    default: boolean }
 
 interface QueueStatus { queueLength: number;
-    isPlaying: boolean;
-   , currentAnnouncement: {
+    isPlaying: boolean,
+    currentAnnouncement: {
         tex;t: string;
         rate: number;
-        pitch: number;
-       , volume: number } | null;
+        pitch: number,
+    volume: number } | null;
 }
 
 interface PerformanceReport { totalAnnouncements: number,
     queuedAnnouncements: number;
     completedAnnouncements: number;
-    averageSpeechDuration: number;
-   , queueEfficiency: number ,}
+    averageSpeechDuration: number,
+    queueEfficiency: number ,}
 
 interface CurrentSpeechSettings extends SpeechSettings { voiceName: string }
 
@@ -91,8 +91,8 @@ export class TextToSpeechController {
             defaultVolume: 1.0;
             queueAnnouncements: true;
             maxQueueSize: 50;
-            interruptOnNew: false;
-           , pauseBetweenAnnouncements: 200;
+            interruptOnNew: false,
+    pauseBetweenAnnouncements: 200;
     }
             ...config
         };
@@ -110,20 +110,20 @@ export class TextToSpeechController {
         // Speech settings
         this.speechSettings = { rate: this.config.defaultRate,
             pitch: this.config.defaultPitch;
-            volume: this.config.defaultVolume;
-           , voice: this.config.defaultVoice ,};
+            volume: this.config.defaultVolume,
+    voice: this.config.defaultVoice ,};
         // Performance metrics
         this.performance = { totalAnnouncements: 0,
             queuedAnnouncements: 0;
             completedAnnouncements: 0;
-            averageProcessingTime: 0;
-           , speechDurations: [] ,};
+            averageProcessingTime: 0,
+    speechDurations: [] ,};
         // Event handlers
         this.eventHandlers = { onStart: null,
             onEnd: null;
             onError: null;
-            onPause: null;
-           , onResume: null ,}
+            onPause: null,
+    onResume: null ,}
 
     /**
      * Initialize text-to-speech controller
@@ -156,7 +156,7 @@ export class TextToSpeechController {
      */
     private loadVoices(): void { if (!this.speechSynthesis) return;
 
-        this.voices = this.speechSynthesis.getVoices(');
+        this.voices = this.speechSynthesis.getVoices();
         
         // Set default voice if not already set
         if(!this.currentVoice && this.voices.length > 0) {
@@ -185,8 +185,8 @@ export class TextToSpeechController {
         const announcement: Announcement = { ''
             text: this.formatSpeechOutput(text),
             priority: options.priority || 'normal';
-            interrupt: options.interrupt || this.config.interruptOnNew;
-           , settings: {
+            interrupt: options.interrupt || this.config.interruptOnNew,
+    settings: {
                 ...this.speechSettings;
                 ...options.speechSettings,
             timestamp: Date.now();
@@ -208,7 +208,7 @@ export class TextToSpeechController {
                 this.clearQueue();
             }
 
-            if(announcement.priority === 'high) { }'
+            if(announcement.priority === 'high' { }'
                 this.announcementQueue.unshift(announcement); }
             } else { this.announcementQueue.push(announcement); }
 
@@ -221,7 +221,7 @@ export class TextToSpeechController {
 
                     if(item.reject) {' }'
 
-                        item.reject(new, Error('Announcement, dropped - queue, full); }'
+                        item.reject(new, Error('Announcement, dropped - queue, full'; }'
 }
 
             this.performance.queuedAnnouncements++;
@@ -288,7 +288,7 @@ export class TextToSpeechController {
 
             }
 
-                reject(new, Error('Speech, synthesis not, available); }'
+                reject(new, Error('Speech, synthesis not, available'; }'
                 return; }
             }
 
@@ -351,7 +351,7 @@ export class TextToSpeechController {
     private formatSpeechOutput(text: string): string { ''
         if(!text) return '';
 
-        let formatted = text.toString(''';
+        let formatted = text.toString('''
             'URL': 'U R L',
             'HTML': 'H T M L',
             'CSS': 'C S S',
@@ -368,7 +368,7 @@ export class TextToSpeechController {
 
             const regex = new RegExp(`\\b${abbr}\\b`, 'gi'};' }
 
-            formatted = formatted.replace(regex, pronunciation'});
+            formatted = formatted.replace(regex, pronunciation'}';
         }
 
         // Handle symbols and special characters
@@ -386,12 +386,11 @@ export class TextToSpeechController {
             '/': ' slash ',
             '*': ' asterisk ',
             '^': ' caret ',
-            '~': ' tilde ' }
-
-        };
+            '~': ' tilde ' 
+    };
 
         for(const [symbol, pronunciation] of Object.entries(symbols)) { ''
-            formatted = formatted.replace(new RegExp('\\' + symbol, 'g), pronunciation); }
+            formatted = formatted.replace(new RegExp('\\' + symbol, 'g), pronunciation'; }
 ';
         // Handle numbers and units
         formatted = formatted.replace(/(\d+)px/g, '$1 pixels');''
@@ -435,7 +434,7 @@ export class TextToSpeechController {
         this.announcementQueue.forEach(announcement => { );''
             if(announcement.reject) {' }'
 
-                announcement.reject(new, Error('Announcement, cancelled); }'
+                announcement.reject(new, Error('Announcement, cancelled'; }'
 };
         
         this.announcementQueue = [];
@@ -447,7 +446,7 @@ export class TextToSpeechController {
     setSpeechRate(rate: number): void { if (rate >= 0.1 && rate <= 10) {'
             this.speechSettings.rate = rate;' }'
 
-            console.log(`TextToSpeechController: Speech, rate set, to ${rate}`'});
+            console.log(`TextToSpeechController: Speech, rate set, to ${rate}`'}';
 
         } else { }'
 
@@ -460,7 +459,7 @@ export class TextToSpeechController {
     setSpeechPitch(pitch: number): void { if (pitch >= 0 && pitch <= 2) {'
             this.speechSettings.pitch = pitch;' }'
 
-            console.log(`TextToSpeechController: Speech, pitch set, to ${pitch}`'});
+            console.log(`TextToSpeechController: Speech, pitch set, to ${pitch}`'}';
 
         } else { }'
 
@@ -473,7 +472,7 @@ export class TextToSpeechController {
     setSpeechVolume(volume: number): void { if (volume >= 0 && volume <= 1) {'
             this.speechSettings.volume = volume;' }'
 
-            console.log(`TextToSpeechController: Speech, volume set, to ${volume}`'});
+            console.log(`TextToSpeechController: Speech, volume set, to ${volume}`'}';
 
         } else { }'
 
@@ -493,7 +492,7 @@ export class TextToSpeechController {
 
             this.speechSettings.voice = voice;' }'
 
-            console.log(`TextToSpeechController: Voice, set to ${voice.name}`'});
+            console.log(`TextToSpeechController: Voice, set to ${voice.name}`'}';
             return true;
 
         } else {
@@ -503,17 +502,17 @@ export class TextToSpeechController {
     /**
      * Get available voices'
      */''
-    getAvailableVoices(''';
+    getAvailableVoices('''
             gender: 'unknown', // SpeechSynthesisVoice doesnt have gender property);
-            localService: voice.localService);
-           , default: voice.default)));
+            localService: voice.localService),
+    default: voice.default))';
     }
 
     /**
      * Get current speech settings'
      */''
-    getSpeechSettings(''';
-            voiceName: this.currentVoice? .name || 'default);
+    getSpeechSettings('''
+            voiceName: this.currentVoice?.name || 'default);
         })
 
     /**
@@ -523,10 +522,10 @@ export class TextToSpeechController {
             isPlaying: this.isPlaying,
             currentAnnouncement: this.currentUtterance ? { : undefined''
                 text: this.currentUtterance.text.substring(0, 50) + '...',
-                rate: this.currentUtterance.rate;
-               , pitch: this.currentUtterance.pitch, };
-                volume: this.currentUtterance.volume }
-            } : null
+                rate: this.currentUtterance.rate,
+    pitch: this.currentUtterance.pitch, };
+                volume: this.currentUtterance.volume 
+    } : null
         }
 
     /**
@@ -538,8 +537,8 @@ export class TextToSpeechController {
         return { totalAnnouncements: this.performance.totalAnnouncements,
             queuedAnnouncements: this.performance.queuedAnnouncements;
             completedAnnouncements: this.performance.completedAnnouncements;
-            averageSpeechDuration: avgDuration;
-           , queueEfficiency: this.performance.queuedAnnouncements > 0 ? ,};
+            averageSpeechDuration: avgDuration,
+    queueEfficiency: this.performance.queuedAnnouncements > 0 ? ,};
                 (this.performance.completedAnnouncements / this.performance.queuedAnnouncements) * 100 : 0 
         },
     }
@@ -556,7 +555,7 @@ export class TextToSpeechController {
      * Test speech synthesis'
      */''
     async testSpeech(text: string = 'Screen, reader test, announcement''): Promise<boolean> { try {'
-            await this.announce(text, { priority: 'high' )),''
+            await this.announce(text, { priority: 'high' )',''
             console.log('TextToSpeechController: Speech, test successful'),
 
             return true;' }'
@@ -607,8 +606,8 @@ export class TextToSpeechController {
             totalAnnouncements: 0;
             queuedAnnouncements: 0;
             completedAnnouncements: 0;
-            averageProcessingTime: 0;
-           , speechDurations: [] ,}
+            averageProcessingTime: 0,
+    speechDurations: [] ,}
 
     /**
      * Destroy and cleanup

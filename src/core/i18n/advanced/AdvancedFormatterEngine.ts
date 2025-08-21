@@ -7,17 +7,17 @@ export interface PluralRule { categories: string[],
 export interface ContextualPattern { levels?: string[];
     categories?: string[];
     rules: Record<string, Record<string, string>>, }
-export interface GenerationPattern { condition: (dat;a: any) => boolean,
-    generate: (dat;a: any, lang: string) => string ,}
+export interface GenerationPattern { condition: (data: any) => boolean,
+    generate: (data: any, lang: string) => string ,}
 export interface GenerationRule { patterns: GenerationPattern[]
     }
 export interface TranslationMemoryEntry { translation: string,
     original: string;
-    timestamp: number;
-   , usage: number ,}
+    timestamp: number,
+    usage: number ,}
 export interface MemoryConfig { maxEntries: number,
-    expirationTime: number;
-   , similarityThreshold: number ,}
+    expirationTime: number,
+    similarityThreshold: number ,}
 export interface FormatOptions { context?: string | null;
     forcePlural?: boolean;
     customRules?: any;
@@ -36,8 +36,8 @@ export interface SearchResult { similarity: number,
     original: string;
     translation: string;
     key: string;
-    timestamp: number;
-   , usage: number ,}
+    timestamp: number,
+    usage: number ,}
 export interface FormatterStats { pluralizations: number,
     contextualTranslations: number;
     dynamicGenerations: number;
@@ -47,8 +47,8 @@ export interface FormatterStats { pluralizations: number,
     memoryConfig: MemoryConfig;
     supportedLanguages: string[];
     contextualPatterns: number;
-    generationRules: number;
-   , hitRate: string ,}
+    generationRules: number,
+    hitRate: string ,}
 /**
  * 高度なフォーマット機能 - 複雑な複数形ルール、文脈依存翻訳、動的翻訳生成
  */
@@ -62,16 +62,15 @@ export class AdvancedFormatterEngine {
         pluralizations: number;
         contextualTranslations: number;
         dynamicGenerations: number;
-        memoryHits: number;
-       , memoryMisses: number ,};
+        memoryHits: number,
+    memoryMisses: number ,};
 
     constructor(''';
-            ['ja', { ])'
-                categories: ['other])';
-               , rules: {''
-                    other: (') => true '
-}
-                };
+            ['ja', { ]''
+                categories: ['other]'',
+    rules: {''
+                    other: () => true '
+    };
                 examples: { other: [0, 1, 2, 5, 10, 100] }
             }],
             // 英語
@@ -82,8 +81,8 @@ export class AdvancedFormatterEngine {
                     other: (n') => true '
 ,}
                 };
-                examples: { one: [1];
-                   , other: [0, 2, 3, 10, 100] }
+                examples: { one: [1],
+    other: [0, 2, 3, 10, 100] }
             }],
             // アラビア語（6つのカテゴリ）
             ['ar', { ]'
@@ -99,8 +98,8 @@ export class AdvancedFormatterEngine {
                 };
                 examples: { zero: [0];
                     one: [1];
-                    two: [2];
-                   , few: [3, 4, 5, 6, 7, 8, 9, 10, 103, 104],
+                    two: [2],
+    few: [3, 4, 5, 6, 7, 8, 9, 10, 103, 104],
                     many: [11, 12, 13, 99, 111, 112],
                     other: [100, 101, 102, 200, 1000] }
             }],
@@ -108,7 +107,7 @@ export class AdvancedFormatterEngine {
             ['zh', { ]'
                 categories: ['other'],
                 rules: {''
-                    other: (') => true '
+                    other: () => true '
 ,}
                 };
                 examples: { other: [0, 1, 2, 5, 10, 100] }
@@ -117,7 +116,7 @@ export class AdvancedFormatterEngine {
             ['ko', { ]'
                 categories: ['other'],
                 rules: {''
-                    other: (') => true '
+                    other: () => true '
 ,}
                 };
                 examples: { other: [0, 1, 2, 5, 10, 100] }
@@ -141,7 +140,7 @@ export class AdvancedFormatterEngine {
             }]''
         ]');
         // 文脈依存翻訳パターン
-        this.contextualPatterns = new Map<string, ContextualPattern>([// 敬語レベル（日本語）]';
+        this.contextualPatterns = new Map<string, ContextualPattern>([// 敬語レベル（日本語）]'
             ['ja-politeness', { ]'
                 levels: ['casual', 'polite', 'formal', 'honorific'],
                 rules: {'', 'greeting.hello': {''
@@ -175,7 +174,7 @@ export class AdvancedFormatterEngine {
 }],
             // 性別依存（アラビア語）
             ['ar-gender', { ]'
-                categories: ['masculine', 'feminine])';
+                categories: ['masculine', 'feminine]'';
                 rules: {'', 'adjective.good': {''
                         masculine: 'جيد',
                         feminine: 'جيدة' ,}
@@ -188,7 +187,7 @@ export class AdvancedFormatterEngine {
         ]'),
         
         // 動的翻訳生成ルール
-        this.generationRules = new Map<string, GenerationRule>([// 数値表現の生成;
+        this.generationRules = new Map<string, GenerationRule>([// 数値表現の生成
             ['number-expression', { patterns: [
                     {
                         condition: (n: number) => n >= 1000000;
@@ -229,7 +228,7 @@ export class AdvancedFormatterEngine {
         ]);
         ';
         // 翻訳メモリ
-        this.translationMemory = new Map<string, TranslationMemoryEntry>(');
+        this.translationMemory = new Map<string, TranslationMemoryEntry>();
         this.memoryConfig = { maxEntries: 10000,
             expirationTime: 24 * 60 * 60 * 1000, // 24時間;
             similarityThreshold: 0.8 
@@ -238,8 +237,8 @@ export class AdvancedFormatterEngine {
         this.statistics = { pluralizations: 0,
             contextualTranslations: 0;
             dynamicGenerations: 0;
-            memoryHits: 0;
-           , memoryMisses: 0 
+            memoryHits: 0,
+    memoryMisses: 0 
 ,};
         console.log('AdvancedFormatterEngine, initialized);
     }
@@ -249,13 +248,11 @@ export class AdvancedFormatterEngine {
      */
     formatPlural(key: string, count: number, language: string, options: FormatOptions = { ): string {
         try {
-            const { context = null,
-                forcePlural = false,
-                customRules = null } = options;
+            const { context = null forcePlural = false customRules = null } = options;
             
             // メモリチェック
             const memoryKey = `plural:${key}:${count}:${language}:${context}`;
-            const cached = this.getFromMemory(memoryKey);
+            const cached = this.getFromMemory(memoryKey');
             if(cached) {
                 this.statistics.memoryHits++;
             }
@@ -282,10 +279,10 @@ export class AdvancedFormatterEngine {
             this.statistics.pluralizations++;
             
             return translation;
-             } catch (error) { getErrorHandler(').handleError(error as Error, 'PLURAL_FORMATTING_ERROR', {)
-                key: key);
-               , count: count,);
-                language: language ,});
+             } catch (error) { getErrorHandler().handleError(error as Error, 'PLURAL_FORMATTING_ERROR', {)
+                key: key),
+    count: count,);
+                language: language ,}';
             return `${key}[${count}]`;
     /**
      * 文脈依存翻訳'
@@ -306,7 +303,7 @@ export class AdvancedFormatterEngine {
             }
                 return cached;
             // 動的コンテキスト解析
-            const resolvedContext = dynamicContext ?   : undefined
+            const resolvedContext = dynamicContext ? undefined : undefined
                 this.resolveDynamicContext(dynamicContext, parameters) : context;
             
             // 文脈パターンを取得
@@ -329,9 +326,9 @@ export class AdvancedFormatterEngine {
             this.statistics.contextualTranslations++;
             
             return translation;
-             } catch (error) { getErrorHandler(').handleError(error as Error, 'CONTEXTUAL_FORMATTING_ERROR', {)
-                key: key);
-               , context: context,);
+             } catch (error) { getErrorHandler().handleError(error as Error, 'CONTEXTUAL_FORMATTING_ERROR', {)
+                key: key),
+    context: context,);
                 language: language ,});
             return `${key}[${JSON.stringify(context})]`;
     /**
@@ -394,9 +391,9 @@ export class AdvancedFormatterEngine {
             return translation;
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error as Error, 'DYNAMIC_GENERATION_ERROR', {)
-                type: type);
-               , data: data,);
+        } catch (error) { getErrorHandler().handleError(error as Error, 'DYNAMIC_GENERATION_ERROR', {)
+                type: type),
+    data: data,);
                 language: language ,});
             return `[${type}:${JSON.stringify(data})]`;
     /**
@@ -426,10 +423,10 @@ export class AdvancedFormatterEngine {
                     similarity: similarity;
                     original: entry.original;
                     translation: entry.translation);
-                    key: key);
-                   , timestamp: entry.timestamp, }
-                    usage: entry.usage || 0); }
-        }
+                    key: key),
+    timestamp: entry.timestamp, }
+                    usage: entry.usage || 0); 
+    }
         
         // 類似度で降順ソート
         results.sort((a, b) => b.similarity - a.similarity);
@@ -450,12 +447,12 @@ export class AdvancedFormatterEngine {
 
             }
 
-                throw new Error('Maximum, nesting level, exceeded); }
+                throw new Error('Maximum, nesting level, exceeded'; }
             let result = pattern;
             ';
             // 複数形パターンを処理
             result = result.replace(/\{(\w+),\s*plural,\s*([^}]+)\}/g, (match, variable, pluralDef') => {  const count = data[variable];''
-                if(typeof, count === 'number) { }'
+                if(typeof, count === 'number' { }'
                     return this.formatPlural(pluralDef, count, language);
                 return match;
             });
@@ -472,7 +469,7 @@ export class AdvancedFormatterEngine {
             });
             // 数値パターンを処理
             result = result.replace(/\{(\w+),\s*number,\s*([^}]+)\}/g, (match, variable, format') => {  const numberValue = data[variable];''
-                if(typeof, numberValue === 'number) { }'
+                if(typeof, numberValue === 'number' { }'
                     return this.formatNumber(numberValue, format, language);
                 return match;
             });
@@ -494,9 +491,9 @@ export class AdvancedFormatterEngine {
             return result;
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error as Error, 'COMPLEX_FORMAT_ERROR', {)
+        } catch (error) { getErrorHandler().handleError(error as Error, 'COMPLEX_FORMAT_ERROR', {)
                 pattern: pattern,);
-                language: language ,});
+                language: language ,}';
             return pattern;
     /**
      * ヘルパー関数群
@@ -536,13 +533,13 @@ export class AdvancedFormatterEngine {
     }
 
     private resolveDynamicContext(dynamicContext: any, parameters: Record<string, any>): string { // 動的コンテキストの解決ロジック
-        if(typeof, dynamicContext === 'function) {', ';
+        if(typeof, dynamicContext === 'function' {', ';
 
         }
 
             return dynamicContext(parameters);
 
-        if(typeof, dynamicContext === 'object) {'
+        if(typeof, dynamicContext === 'object' {'
             // 条件に基づいてコンテキストを決定
             for(const [condition, context] of Object.entries(dynamicContext) {
                 if(this.evaluateCondition(condition, parameters) {
@@ -555,11 +552,11 @@ export class AdvancedFormatterEngine {
     private evaluateCondition(condition: string, parameters: Record<string, any>): boolean { // 簡単な条件評価（実際の実装ではより高度な評価が必要）
         try {
             // 安全な評価のため、限定的な条件のみサポート
-            if(condition.includes('age) && parameters.age !== undefined') {''
-                if(condition.includes('>=)) {''
-                    const threshold = parseInt(condition.split('>=)[1]');
+            if(condition.includes('age' && parameters.age !== undefined') {''
+                if(condition.includes('>=)' {''
+                    const threshold = parseInt(condition.split('>='[1]');
                     return parameters.age >= threshold;''
-                if(condition.includes('<=)) { ''
+                if(condition.includes('<=)' { ''
                     const threshold = parseInt(condition.split('<=)[1]);
                     return parameters.age <= threshold;
             
@@ -633,7 +630,7 @@ export class AdvancedFormatterEngine {
             en: { 1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five' ,},''
             ar: { 1: 'واحد', 2: 'اثنان', 3: 'ثلاثة', 4: 'أربعة', 5: 'خمسة' ,};
         
-        return numberWords[language]? .[number] || number.toString();
+        return numberWords[language]?.[number] || number.toString();
     }
 
      : undefined'';
@@ -643,7 +640,7 @@ export class AdvancedFormatterEngine {
             en: { thousand: 'thousand', million: 'million' ,},''
             ar: { thousand: 'ألف', million: 'مليون' ,};
         
-        return unitWords[language]? .[unit] || unit;
+        return unitWords[language]?.[unit] || unit;
     }
      : undefined
     private replacePlaceholders(text: string, data: Record<string, any>): string { if (!text) return text;
@@ -655,7 +652,7 @@ export class AdvancedFormatterEngine {
         const mockTranslations: Record<string, Record<string, string>> = {' }', 'item.one': { ja: '1つのアイテム', en: 'one item', ar: 'عنصر واحد' ,},'', 'item.other': { ja: '{count}つのアイテム', en: '{count} items', ar: '{count} عناصر' }
         };
         
-        return mockTranslations[key]? .[language] || key;
+        return mockTranslations[key]?.[language] || key;
     }
      : undefined
     private calculateSimilarity(str1: string, str2: string): number { // Levenshtein距離ベースの類似度計算
@@ -707,8 +704,8 @@ export class AdvancedFormatterEngine {
             this.cleanupMemory(); }
         this.translationMemory.set(key, { translation: translation)
             original: original || key);
-            timestamp: Date.now();
-           , usage: 1 
+            timestamp: Date.now(),
+    usage: 1 
 });
     }
     
@@ -775,13 +772,13 @@ export class AdvancedFormatterEngine {
     getStats(): FormatterStats { return { ...this.statistics,
             memorySize: this.translationMemory.size;
             memoryConfig: this.memoryConfig;
-            supportedLanguages: Array.from(this.pluralRules.keys(');
-            contextualPatterns: this.contextualPatterns.size;
-           , generationRules: this.generationRules.size,
-            hitRate: this.statistics.memoryHits + this.statistics.memoryMisses > 0 ?   : undefined' ,};
+            supportedLanguages: Array.from(this.pluralRules.keys();
+            contextualPatterns: this.contextualPatterns.size,
+    generationRules: this.generationRules.size,
+            hitRate: this.statistics.memoryHits + this.statistics.memoryMisses > 0 ? undefined : undefined' ,};
 
-                (this.statistics.memoryHits / (this.statistics.memoryHits + this.statistics.memoryMisses) * 100).toFixed(2) + '%' : '0%' }
-        },
+                (this.statistics.memoryHits / (this.statistics.memoryHits + this.statistics.memoryMisses) * 100).toFixed(2) + '%' : '0%' 
+    },
     }
 // シングルトンインスタンス
 let advancedFormatterEngineInstance: AdvancedFormatterEngine | null = null,
@@ -790,4 +787,4 @@ let advancedFormatterEngineInstance: AdvancedFormatterEngine | null = null,
  * AdvancedFormatterEngineのシングルトンインスタンスを取得
  */
 export function getAdvancedFormatterEngine(): AdvancedFormatterEngine { if (!advancedFormatterEngineInstance) {''
-        advancedFormatterEngineInstance = new AdvancedFormatterEngine(' })'
+        advancedFormatterEngineInstance = new AdvancedFormatterEngine(' }''

@@ -1,5 +1,5 @@
-import { getErrorHandler  } from '../../../utils/ErrorHandler.js';''
-import { getRTLLanguageDetector  } from './RTLLanguageDetector.js';''
+import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
+import { getRTLLanguageDetector  } from './RTLLanguageDetector.js';
 import { getRTLLayoutManager  } from './RTLLayoutManager.js';
 
 // インターフェース定義
@@ -12,18 +12,18 @@ interface RTLStyles { direction: string,
 
 interface DefaultRTLStyles { input: RTLStyles,
     button: RTLStyles;
-    menu: RTLStyles;
-   , dialog: RTLStyles
+    menu: RTLStyles,
+    dialog: RTLStyles
     ,}
 
 interface RegisteredComponent { id: string;
     type: string;
     element: HTMLElement;
-    options: any;
-   , createdAt: string }
+    options: any,
+    createdAt: string }
 
-interface CreateComponentResult { component: HTMLElement;
-   , componentId: string }
+interface CreateComponentResult { component: HTMLElement,
+    componentId: string }
 
 interface InputOptions { type?: string;
     placeholder?: string;
@@ -57,7 +57,6 @@ interface MenuItem { html?: string;
     onClick?: () => void;
     submenu?: MenuItem[];
     }
-}
 ';
 
 interface MenuOptions { ''
@@ -96,8 +95,8 @@ interface PaginationOptions { currentPage?: number;
 
 interface DialogButton { text?: string;
     type?: string;
-    onClick?: () => void; }
-}
+    onClick?: () => void; 
+    }
 
 interface DialogOptions { title?: string;
 
@@ -117,7 +116,7 @@ interface TooltipOptions { text?: string;''
 
 interface DropdownItem { href?: string;
     text?: string;
-    onClick?: (even;t: Event) => void ,}
+    onClick?: (event: Event) => void ,}
 }
 
 interface DropdownOptions { trigger?: string;
@@ -127,11 +126,11 @@ interface DropdownOptions { trigger?: string;
     id?: string; }
 
 interface ComponentStats { availableComponentTypes: string[],
-    registeredComponentsCount: number;
-   , registeredComponents: {
+    registeredComponentsCount: number,
+    registeredComponents: {
         i;d: string;
-        type: string;
-       , createdAt: string ,}[];
+        type: string,
+    createdAt: string ,}[];
 }
 
 /**
@@ -169,8 +168,8 @@ export class RTLUIComponents {
                 paddingRight: '12px';
     ,}
 
-                paddingLeft: '8px' }
-            };
+                paddingLeft: '8px' 
+    };
             button: { ''
                 direction: 'rtl',
                 textAlign: 'center' ,};
@@ -207,10 +206,9 @@ export class RTLUIComponents {
             // コンポーネントを登録
             const componentId = this.generateComponentId(type);
             this.registeredComponents.set(componentId, { id: componentId)
-                type: type);
-               , element: component,);
-                options: options);
-               , createdAt: new Date().toISOString( ,});
+                type: type),
+    element: component,);
+                options: options) createdAt: new Date().toISOString(  }');
             
             // RTLレイアウトを適用
             this.layoutManager.applyRTLLayout(component, { componentType: type)
@@ -218,9 +216,9 @@ export class RTLUIComponents {
             return { component, componentId };
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'RTL_COMPONENT_CREATION_ERROR', {)
+        } catch (error) { getErrorHandler().handleError(error, 'RTL_COMPONENT_CREATION_ERROR', {)
                 type: type,);
-                options: options ,});
+                options: options ,}';
             return null;
     
     /**
@@ -247,7 +245,7 @@ export class RTLUIComponents {
         // RTL固有の設定
         Object.assign(input.style, this.defaultRTLStyles.input);''
         input.setAttribute('dir', 'rtl'');''
-        input.setAttribute('lang', language);
+        input.setAttribute('lang', language';
         ';
         // 自動方向検出
         if(autoDirection) {'
@@ -261,8 +259,8 @@ export class RTLUIComponents {
 
                     target.style.direction = direction.direction;' }'
 
-                    target.style.textAlign = direction.direction === 'rtl' ? 'right' : 'left'; }
-});
+                    target.style.textAlign = direction.direction === 'rtl' ? 'right' : 'left'; 
+    }';
         }
         ';
         // RTL文字検証
@@ -276,7 +274,7 @@ export class RTLUIComponents {
                 const hasRTL = this.rtlDetector.containsRTLCharacters(target.value);' }'
 
                 input.classList.toggle('contains-rtl', hasRTL); }
-            });
+            }';
         }
         
         return input;
@@ -306,7 +304,7 @@ export class RTLUIComponents {
         // RTL設定
         Object.assign(textarea.style, this.defaultRTLStyles.input);''
         textarea.setAttribute('dir', 'rtl'');''
-        textarea.setAttribute('lang', language);
+        textarea.setAttribute('lang', language';
         ';
         // 自動リサイズ
         if(autoResize) {'
@@ -319,7 +317,7 @@ export class RTLUIComponents {
                 target.style.height = 'auto';' }
 
                 target.style.height = target.scrollHeight + 'px'; }
-            });
+            }';
         }
         
         return textarea;
@@ -361,7 +359,7 @@ export class RTLUIComponents {
         // RTL設定
         Object.assign(select.style, this.defaultRTLStyles.input);''
         select.setAttribute('dir', 'rtl'');''
-        select.setAttribute('lang', language);
+        select.setAttribute('lang', language';
         
         return select;
     }
@@ -390,18 +388,18 @@ export class RTLUIComponents {
                 li.textContent = item; }
 
             } else {
-                li.innerHTML = item.html || item.text || '';''
+                li.innerHTML = item.html || item.text || '';
                 if(item.onClick) {' }'
 
-                    li.addEventListener('click', item.onClick); }
+                    li.addEventListener('click', item.onClick'; }
 
                 }''
                 if(item.submenu) {'
 
                     const submenuResult = this.createRTLComponent('menu', {
                         items: item.submenu);
-                        orientation: orientation)';
-                       , language: language,')';
+                        orientation: orientation'',
+    language: language,')';
                         className: 'rtl-submenu');
                     if (submenuResult) {
                 ,}
@@ -415,7 +413,7 @@ export class RTLUIComponents {
         // RTL設定
         Object.assign(menu.style, this.defaultRTLStyles.menu);''
         menu.setAttribute('dir', 'rtl'');''
-        menu.setAttribute('lang', language);
+        menu.setAttribute('lang', language';
         
         return menu;
     }
@@ -431,7 +429,7 @@ export class RTLUIComponents {
             className = '',
             id = '' } = options;
 
-        const nav = document.createElement('nav);
+        const nav = document.createElement('nav';
 
         nav.className = `rtl-navigation ${className}`;''
         if(id) nav.id = id;
@@ -453,19 +451,19 @@ export class RTLUIComponents {
                 a.textContent = link; }
 
             } else {
-                a.href = link.href || '#';''
+                a.href = link.href || '#';
                 a.className = 'rtl-nav-link';
 
                 if(showIcons && link.icon) {' }'
 
-                    const icon = document.createElement('span); }'
+                    const icon = document.createElement('span'; }'
 
                     icon.className = `rtl-nav-icon ${link.icon}`;''
                     a.appendChild(icon);
                 }
 
                 const text = document.createElement('span'');''
-                text.className = 'rtl-nav-text';''
+                text.className = 'rtl-nav-text';
                 text.textContent = link.text || '';
                 a.appendChild(text);
             }
@@ -477,10 +475,10 @@ export class RTLUIComponents {
         nav.appendChild(ul);
         ';
         // RTL設定
-        nav.style.direction = 'rtl';''
-        nav.style.textAlign = 'right';''
+        nav.style.direction = 'rtl';
+        nav.style.textAlign = 'right';
         nav.setAttribute('dir', 'rtl'');''
-        nav.setAttribute('lang', language);
+        nav.setAttribute('lang', language';
         
         return nav;
     }
@@ -499,7 +497,7 @@ export class RTLUIComponents {
         const breadcrumb = document.createElement('nav'');
 
         breadcrumb.className = `rtl-breadcrumb ${className}`;''
-        breadcrumb.setAttribute('aria-label', 'Breadcrumb);''
+        breadcrumb.setAttribute('aria-label', 'Breadcrumb';''
         if(id) breadcrumb.id = id;
 
         const ol = document.createElement('ol'');''
@@ -549,10 +547,10 @@ export class RTLUIComponents {
         breadcrumb.appendChild(ol);
         ';
         // RTL設定
-        breadcrumb.style.direction = 'rtl';''
-        breadcrumb.style.textAlign = 'right';''
+        breadcrumb.style.direction = 'rtl';
+        breadcrumb.style.textAlign = 'right';
         breadcrumb.setAttribute('dir', 'rtl'');''
-        breadcrumb.setAttribute('lang', language);
+        breadcrumb.setAttribute('lang', language';
         
         return breadcrumb;
     }
@@ -572,7 +570,7 @@ export class RTLUIComponents {
         const pagination = document.createElement('nav'');
 
         pagination.className = `rtl-pagination ${className}`;''
-        pagination.setAttribute('aria-label', 'Pagination);''
+        pagination.setAttribute('aria-label', 'Pagination';''
         if(id) pagination.id = id;
 
         const ul = document.createElement('ul'');''
@@ -626,10 +624,10 @@ export class RTLUIComponents {
         pagination.appendChild(ul);
         ';
         // RTL設定
-        pagination.style.direction = 'rtl';''
-        pagination.style.textAlign = 'right';''
+        pagination.style.direction = 'rtl';
+        pagination.style.textAlign = 'right';
         pagination.setAttribute('dir', 'rtl'');''
-        pagination.setAttribute('lang', language);
+        pagination.setAttribute('lang', language';
         
         return pagination;
     }
@@ -665,8 +663,8 @@ export class RTLUIComponents {
             titleEl.textContent = title;
 
             const closeBtn = document.createElement('button'');''
-            closeBtn.className = 'rtl-dialog-close';''
-            closeBtn.innerHTML = '×';''
+            closeBtn.className = 'rtl-dialog-close';
+            closeBtn.innerHTML = '×';
             closeBtn.setAttribute('aria-label', 'Close'');
 
         }
@@ -709,7 +707,7 @@ export class RTLUIComponents {
                 } else { }'
 
                     btn.className = `rtl-dialog-button ${button.type || ''}`;''
-                    btn.textContent = button.text || '';''
+                    btn.textContent = button.text || '';
                     if(button.onClick) {', ';
 
                     }
@@ -725,7 +723,7 @@ export class RTLUIComponents {
         // RTL設定
         Object.assign(dialog.style, this.defaultRTLStyles.dialog);''
         dialog.setAttribute('dir', 'rtl'');''
-        dialog.setAttribute('lang', language);
+        dialog.setAttribute('lang', language';
         
         return dialog;
     }
@@ -744,16 +742,16 @@ export class RTLUIComponents {
         const tooltip = document.createElement('div'');
 
         tooltip.className = `rtl-tooltip rtl-tooltip-${position} ${className}`;''
-        tooltip.setAttribute('role', 'tooltip);''
+        tooltip.setAttribute('role', 'tooltip';''
         if(id) tooltip.id = id;
         
         tooltip.textContent = text;
         ';
         // RTL設定
-        tooltip.style.direction = 'rtl';''
-        tooltip.style.textAlign = 'right';''
+        tooltip.style.direction = 'rtl';
+        tooltip.style.textAlign = 'right';
         tooltip.setAttribute('dir', 'rtl'');''
-        tooltip.setAttribute('lang', language);
+        tooltip.setAttribute('lang', language';
         
         return tooltip;
     }
@@ -769,7 +767,7 @@ export class RTLUIComponents {
             className = '',
             id = '' } = options;
 
-        const dropdown = document.createElement('div);
+        const dropdown = document.createElement('div';
 
         dropdown.className = `rtl-dropdown ${className}`;''
         if(id) dropdown.id = id;
@@ -781,7 +779,7 @@ export class RTLUIComponents {
         ';
         // ドロップダウンメニュー
         const menu = document.createElement('div'');''
-        menu.className = 'rtl-dropdown-menu';''
+        menu.className = 'rtl-dropdown-menu';
         menu.style.display = 'none';
 
         items.forEach(item => {  ');''
@@ -796,8 +794,8 @@ export class RTLUIComponents {
                 itemEl.textContent = item; }
 
             } else {
-                itemEl.href = item.href || '#';''
-                itemEl.textContent = item.text || '';''
+                itemEl.href = item.href || '#';
+                itemEl.textContent = item.text || '';
                 if(item.onClick) {' }'
 
                     itemEl.addEventListener('click', item.onClick); }
@@ -810,18 +808,18 @@ export class RTLUIComponents {
         triggerEl.addEventListener('click', () => {  ''
             const isVisible = menu.style.display !== 'none';' }
 
-            menu.style.display = isVisible ? 'none' : 'block'; }
-        });
+            menu.style.display = isVisible ? 'none' : 'block'; 
+    }';
         ';
 
         dropdown.appendChild(triggerEl);''
         dropdown.appendChild(menu);
         ';
         // RTL設定
-        dropdown.style.direction = 'rtl';''
-        dropdown.style.textAlign = 'right';''
+        dropdown.style.direction = 'rtl';
+        dropdown.style.textAlign = 'right';
         dropdown.setAttribute('dir', 'rtl'');''
-        dropdown.setAttribute('lang', language);
+        dropdown.setAttribute('lang', language';
         
         return dropdown;
     }
@@ -861,7 +859,7 @@ export class RTLUIComponents {
     }
     
     private generateComponentId(type: string): string {
-        return `rtl-${type}-${Date.now(})-${Math.random(}.toString(36}.substr(2, 9})`;
+        return `rtl-${type}-${Date.now())-${Math.random().toString(36).substr(2, 9})`;
     }
     
     /**
@@ -910,12 +908,12 @@ export class RTLUIComponents {
      * 統計情報を取得
      */
     getStats(): ComponentStats { return { availableComponentTypes: Array.from(this.componentFactories.keys(),
-            registeredComponentsCount: this.registeredComponents.size;
-           , registeredComponents: this.getAllComponents().map(comp => ({)
-                id: comp.id);
-               , type: comp.type,) };
-                createdAt: comp.createdAt))); }
-        }
+            registeredComponentsCount: this.registeredComponents.size,
+    registeredComponents: this.getAllComponents().map(comp => ({)
+                id: comp.id),
+    type: comp.type,) };
+                createdAt: comp.createdAt))); 
+    }
 }
 
 // シングルトンインスタンス
@@ -925,4 +923,4 @@ let rtlUIComponentsInstance: RTLUIComponents | null = null,
  * RTLUIComponentsのシングルトンインスタンスを取得
  */
 export function getRTLUIComponents(): RTLUIComponents { if (!rtlUIComponentsInstance) {''
-        rtlUIComponentsInstance = new RTLUIComponents(' })'
+        rtlUIComponentsInstance = new RTLUIComponents(' }''

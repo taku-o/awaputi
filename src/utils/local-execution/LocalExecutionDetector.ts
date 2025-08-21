@@ -13,54 +13,54 @@
 // Type definitions
 interface SupportedFeatures { canvas: boolean,
     indexedDB: boolean;
-    localStorage: boolean;
-   , serviceWorker: boolean ,}
+    localStorage: boolean,
+    serviceWorker: boolean ,}
 
 interface BrowserInfo { name: string;
-    version: string;
-   , engine: string }
+    version: string,
+    engine: string }
 
 interface ExecutionContext { protocol: 'file:' | 'http:' | 'http;s:' | string;
     isLocal: boolean;
     canUseModules: boolean;
-    supportedFeatures: SupportedFeatures;
-   , browserInfo: BrowserInfo
+    supportedFeatures: SupportedFeatures,
+    browserInfo: BrowserInfo
     }
 
 interface DebugInfo { executionContext: ExecutionContext;
     isLocalExecution: boolean;
     shouldShowWarning: boolean;
-    userAgent: string;
-   , location: {
+    userAgent: string,
+    location: {
         hre;f: string;
         protocol: string;
-        host: string;
-       , pathname: string };
+        host: string,
+    pathname: string };
     timestamp: string;
 }
 
 class LocalExecutionDetector { /**
      * ローカルファイル実行かどうかを判定'
      */''
-    static isLocalExecution(''';
-            return window.location.protocol === 'file: ',' })'
+    static isLocalExecution('''
+            return window.location.protocol === 'file: ',' }''
         } catch (error) {
-            console.warn('LocalExecutionDetector: Protocol detection failed', error);
+            console.warn('LocalExecutionDetector: Protocol detection failed', error';
             return false;
 
     /**
      * 実行コンテキスト情報を取得
      */'
     static getExecutionContext(): ExecutionContext { ''
-        const protocol = this._getProtocol(''';
+        const protocol = this._getProtocol('''
         const isLocal = protocol === 'file: ',
         
         return { protocol,
             isLocal);
-            canUseModules: this._canUseESModules();
-           , supportedFeatures: this._detectSupportedFeatures( ,};
-            browserInfo: this._getBrowserInfo(); }
-        }
+            canUseModules: this._canUseESModules(),
+    supportedFeatures: this._detectSupportedFeatures( ,}
+            browserInfo: this._getBrowserInfo(); 
+    }
 
     /**
      * 警告を表示すべきかどうかを判定'
@@ -89,7 +89,7 @@ class LocalExecutionDetector { /**
      */''
     static resetWarningDismissal()';
             localStorage.removeItem('local-execution-warning-dismissed'');''
-            localStorage.removeItem('local-execution-warning-dismissed-at);''
+            localStorage.removeItem('local-execution-warning-dismissed-at';''
         } catch (error) { console.warn('LocalExecutionDetector: Could not reset warning dismissal', error }
     }
 
@@ -100,7 +100,7 @@ class LocalExecutionDetector { /**
             return window.location.protocol;' }'
 
         } catch (error) {
-            console.warn('LocalExecutionDetector: Could not get protocol', error);''
+            console.warn('LocalExecutionDetector: Could not get protocol', error';''
             return 'unknown: ', }
     }
 
@@ -120,10 +120,10 @@ class LocalExecutionDetector { /**
      * サポートされている機能を検出
      */
     private static _detectSupportedFeatures(): SupportedFeatures { return { canvas: this._supportsCanvas()
-            indexedDB: this._supportsIndexedDB();
-           , localStorage: this._supportsLocalStorage( ,};
-            serviceWorker: this._supportsServiceWorker(); }
-        }
+            indexedDB: this._supportsIndexedDB(),
+    localStorage: this._supportsLocalStorage( ,}
+            serviceWorker: this._supportsServiceWorker(); 
+    }
 
     /**
      * Canvas API のサポートを確認'
@@ -170,44 +170,44 @@ class LocalExecutionDetector { /**
                 name: 'unknown',
                 version: 'unknown',' };
 
-                engine: 'unknown' }
-            }
+                engine: 'unknown' 
+    }
     }
 
     /**
      * User Agent からブラウザ情報を解析'
      */''
     private static _parseBrowserInfo(userAgent: string): BrowserInfo { ''
-        let name = 'unknown';''
-        let version = 'unknown';''
+        let name = 'unknown';
+        let version = 'unknown';
         let engine = 'unknown';
 ';
         // Chrome
-        if(userAgent.indexOf('Chrome) > -1') {''
-            name = 'Chrome';''
+        if(userAgent.indexOf('Chrome' > -1') {''
+            name = 'Chrome';
             const match = userAgent.match(/Chrome\/(\d+\.\d+)/');''
-            version = match ? match[1] : 'unknown';''
+            version = match ? match[1] : 'unknown';
             engine = 'Blink'; }
 
         // Firefox
-        else if(userAgent.indexOf('Firefox) > -1') { ''
-            name = 'Firefox';''
+        else if(userAgent.indexOf('Firefox' > -1') { ''
+            name = 'Firefox';
             const match = userAgent.match(/Firefox\/(\d+\.\d+)/');''
-            version = match ? match[1] : 'unknown';''
+            version = match ? match[1] : 'unknown';
             engine = 'Gecko'; }
 
         // Safari
-        else if (userAgent.indexOf('Safari'') > -1 && userAgent.indexOf('Chrome) === -1') { ''
-            name = 'Safari';''
+        else if (userAgent.indexOf('Safari'') > -1 && userAgent.indexOf('Chrome' === -1') { ''
+            name = 'Safari';
             const match = userAgent.match(/Version\/(\d+\.\d+)/');''
-            version = match ? match[1] : 'unknown';''
+            version = match ? match[1] : 'unknown';
             engine = 'WebKit'; }
 
         // Edge
-        else if(userAgent.indexOf('Edg) > -1') { ''
-            name = 'Edge';''
+        else if(userAgent.indexOf('Edg' > -1') { ''
+            name = 'Edge';
             const match = userAgent.match(/Edg\/(\d+\.\d+)/');''
-            version = match ? match[1] : 'unknown';''
+            version = match ? match[1] : 'unknown';
             engine = 'Blink'; }
 
         return { name, version, engine }
@@ -219,12 +219,11 @@ class LocalExecutionDetector { /**
         return { executionContext: context,
             isLocalExecution: this.isLocalExecution(;
             shouldShowWarning: this.shouldShowWarning(;
-            userAgent: navigator.userAgent;
-           , location: {
+            userAgent: navigator.userAgent,
+    location: {
                 href: window.location.href);
-                protocol: window.location.protocol);
-               , host: window.location.host, };
-                pathname: window.location.pathname }
-
-            },')'
-            timestamp: new Date().toISOString(');
+                protocol: window.location.protocol),
+    host: window.location.host, };
+                pathname: window.location.pathname 
+    },')'
+            timestamp: new Date().toISOString();

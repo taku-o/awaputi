@@ -4,10 +4,10 @@
  * 分割されたコンポーネントを統合管理するメインクラス
  */
 
-import { ErrorHandler  } from '../utils/ErrorHandler.js';''
-import { ShareContentGenerator  } from './ShareContentGenerator.js';''
-import { socialErrorHandler  } from './SocialErrorHandler.js';''
-import { SocialPlatformAdapters  } from './SocialPlatformAdapters.js';''
+import { ErrorHandler  } from '../utils/ErrorHandler.js';
+import { ShareContentGenerator  } from './ShareContentGenerator.js';
+import { socialErrorHandler  } from './SocialErrorHandler.js';
+import { SocialPlatformAdapters  } from './SocialPlatformAdapters.js';
 import { SocialAnalyticsTracker  } from './SocialAnalyticsTracker.js';
 
 export class SocialSharingManager {
@@ -22,7 +22,7 @@ export class SocialSharingManager {
         
         // 分割されたコンポーネントを初期化
         this.platformAdapters = new SocialPlatformAdapters();''
-        this.analyticsTracker = new SocialAnalyticsTracker('';
+        this.analyticsTracker = new SocialAnalyticsTracker(''
     }
 
             defaultPlatform: 'web-share' }))
@@ -45,11 +45,11 @@ export class SocialSharingManager {
             // イベントリスナーの設定
             this.setupEventListeners()';
             this.analyticsTracker.trackShareEvent('system_init', {);
-                platform: this.platformAdapters.detectPlatform();
-               , webShareSupported: this.platformAdapters.isWebShareSupported( ,});
+                platform: this.platformAdapters.detectPlatform(),
+    webShareSupported: this.platformAdapters.isWebShareSupported( ,});
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'SocialSharingManager.init); }'
+            this.errorHandler.handleError(error, 'SocialSharingManager.init'; }'
     }
 
     /**
@@ -109,7 +109,7 @@ export class SocialSharingManager {
                 this.settings = { ...this.settings, ...JSON.parse(saved);''
             } catch (error) { }
 
-            this.analyticsTracker.trackError('settings_load_failed', { error: error.message });
+            this.analyticsTracker.trackError('settings_load_failed', { error: error.message }';
         }
     }
 
@@ -120,7 +120,7 @@ export class SocialSharingManager {
             localStorage.setItem('socialSharingSettings', JSON.stringify(this.settings);''
         } catch (error) { }
 
-            this.analyticsTracker.trackError('settings_save_failed', { error: error.message });
+            this.analyticsTracker.trackError('settings_save_failed', { error: error.message }';
         }
     }
 
@@ -161,8 +161,8 @@ export class SocialSharingManager {
     handleGameEnd(gameData) {'
 
         this.analyticsTracker.trackShareEvent('game_end', {)
-            score: gameData.score);
-           , level: gameData.level,);
+            score: gameData.score),
+    level: gameData.level,);
             duration: gameData.duration);
         if (this.settings.autoPrompt && gameData.score > 0) {
     ,}
@@ -227,22 +227,22 @@ export class SocialSharingManager {
      */'
     async share(shareData, options = { ) {''
         const startTime = Date.now(''';
-            this.analyticsTracker.trackShareEvent('share_request', {)'
-                platform: shareData.platform || 'auto');
-               , hasScreenshot: !!shareData.files,);
+            this.analyticsTracker.trackShareEvent('share_request', {''
+                platform: shareData.platform || 'auto'),
+    hasScreenshot: !!shareData.files,);
                 startTime);
 
             // データ検証
             const validation = this.platformAdapters.validateShareData(shareData);''
             if(!validation.valid) {' }'
 
-                throw new Error(`Share data validation failed: ${validation.errors.join(', '})`');
+                throw new Error(`Share data validation failed: ${validation.errors.join(', '}'`');
             }
 
             let result;
 ';
             // プラットフォーム別共有処理
-            if(shareData.platform === 'twitter) {', ';
+            if(shareData.platform === 'twitter' {', ';
 
             }
 
@@ -256,8 +256,8 @@ export class SocialSharingManager {
             }
 
             this.analyticsTracker.trackShareEvent('share_success', { )
-                platform: result.platform || shareData.platform);
-               , endTime: Date.now();
+                platform: result.platform || shareData.platform),
+    endTime: Date.now();
                 startTime });
 
             return result;
@@ -265,8 +265,8 @@ export class SocialSharingManager {
         } catch (error) {
             this.analyticsTracker.trackShareEvent('share_failure', {)
                 platform: shareData.platform,);
-                error: error.message);
-               , endTime: Date.now(),
+                error: error.message),
+    endTime: Date.now(),
                 startTime' }'
 
             }');
@@ -313,7 +313,7 @@ export class SocialSharingManager {
     showShareDialog(shareData) { '
         // ダイアログ表示のロジック
         this.analyticsTracker.trackUserBehavior('shareDialogShow', { }
-            platform: shareData.platform);
+            platform: shareData.platform';
 
     /**
      * オンライン状態変更時の処理'
@@ -365,23 +365,23 @@ export class SocialSharingManager {
     getDebugInfo() {
         return { settings: this.settings,
             platformCapabilities: this.platformAdapters.getAllPlatformCapabilities();
-            analytics: this.analyticsTracker.getDebugInfo();
-           , dependencies: {
+            analytics: this.analyticsTracker.getDebugInfo(),
+    dependencies: {
                 statisticsManager: !!this.statisticsManager;
-                achievementManager: !!this.achievementManager;
-               , localizationManager: !!this.localizationManager;
+                achievementManager: !!this.achievementManager,
+    localizationManager: !!this.localizationManager;
     ,}
                 screenshotCapture: !!this.screenshotCapture, };
-                shareContentGenerator: !!this.shareContentGenerator }
-}
+                shareContentGenerator: !!this.shareContentGenerator 
+    }
 
     /**
      * システムのクリーンアップ'
      */''
     cleanup()';
-        window.removeEventListener('online', this.onOnlineStatusChange);''
-        window.removeEventListener('offline', this.onOnlineStatusChange);''
-        window.removeEventListener('beforeunload', this.onBeforeUnload);
+        window.removeEventListener('online', this.onOnlineStatusChange';''
+        window.removeEventListener('offline', this.onOnlineStatusChange';''
+        window.removeEventListener('beforeunload', this.onBeforeUnload';
         ';
         // 分析データの最終保存
         this.analyticsTracker.trackShareEvent('system_cleanup);
@@ -394,4 +394,4 @@ export class SocialSharingManager {
 
     getAnalyticsTracker() { return this.analyticsTracker; }
 
-    getShareContentGenerator(');
+    getShareContentGenerator();

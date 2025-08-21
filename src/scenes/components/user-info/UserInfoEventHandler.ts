@@ -4,7 +4,7 @@
  * UserInfoSceneから分離されたイベント処理機能を提供
  */
 
-import { GameEngine  } from '../../../types/gameEngine';''
+import { GameEngine  } from '../../../types/gameEngine';
 import { EventBus  } from '../../../types/eventBus';
 
 // イベント関連の型定義
@@ -18,27 +18,27 @@ interface ErrorData { message: string,
 interface TabData { tabId: string;
     previousTabId?: string }
 
-interface EventCoordinates { x: number;
-   , y: number }
+interface EventCoordinates { x: number,
+    y: number }
 
 interface BackButton { x: number;
     y: number;
-    width: number;
-   , height: number }
+    width: number,
+    height: number }
 
 interface HitArea { x: number;
     y: number;
     width: number;
-    height: number;
-   , id: string }
+    height: number,
+    id: string }
 
 interface HitAreas { tabs: HitArea[];
     buttons?: HitArea[]
     }
 
 interface Layout { contentPadding: number;
-    headerHeight: number;
-   , tabHeight: number;
+    headerHeight: number,
+    tabHeight: number;
     [key: string]: any, }
 
 // シーン状態のインターフェース
@@ -87,23 +87,22 @@ export class UserInfoEventHandler {
         ';
         // ダイアログイベントの監視
         this.eventBus.on('dialog-opened', (data: DialogData) => { ''
-            console.log('Dialog opened:', data.type);' }
+            console.log('Dialog opened:', data.type';' }
 
-            this.sceneState.set('activeDialog', data.type);' }
+            this.sceneState.set('activeDialog', data.type';' }
 
         }');
 
         this.eventBus.on('dialog-closed', (data: DialogData) => {  ''
-            console.log('Dialog closed:', data.type);' }
+            console.log('Dialog closed:', data.type';' }
 
-            this.sceneState.set('activeDialog', null);' }
+            this.sceneState.set('activeDialog', null';' }
 
         }');
         ';
         // エラー関連イベント
-        this.eventBus.on('error-occurred', (data: ErrorData) => { this.showErrorMessage(data.message);' }
-
-        }');
+        this.eventBus.on('error-occurred', (data: ErrorData) => { this.showErrorMessage(data.message);' 
+    }');
 
         this.eventBus.on('error-cleared', () => { this.clearErrorMessage();' }
 
@@ -132,7 +131,7 @@ export class UserInfoEventHandler {
 
             ';
             // ダイアログが開いている場合は、ダイアログが優先
-            if(dialogManager && this.sceneState.get('activeDialog) {'
+            if(dialogManager && this.sceneState.get('activeDialog' {'
                 
             }
                 return this.handleDialogInput(event, dialogManager);
@@ -157,7 +156,7 @@ export class UserInfoEventHandler {
                 default: return false,' }'
 
             } catch (error) {
-            console.error('UserInfoEventHandler input error:', error);''
+            console.error('UserInfoEventHandler input error:', error';''
             this.showErrorMessage('入力処理中にエラーが発生しました);
             return false;
     
@@ -231,12 +230,12 @@ export class UserInfoEventHandler {
         switch(event.key) {'
 
             case 'Escape':'';
-                this.handleBackAction(''';
-            case '1':'';
+                this.handleBackAction('''
+            case '1': '';
             case '2':'';
             case '3':'';
             case '4':'';
-            case '5':)';
+            case '5':'';
             case '6':);
                 const tabIndex = parseInt(event.key) - 1;
                 this.handleTabShortcut(tabIndex);
@@ -283,8 +282,8 @@ export class UserInfoEventHandler {
         y: number, ;
         tabManager: TabManager
     );
-        renderer: Renderer);
-       , canvas: HTMLCanvasElement;
+        renderer: Renderer),
+    canvas: HTMLCanvasElement;
     ): boolean { const hitAreas = renderer.calculateHitAreas(canvas, tabManager);
         
         for(const, tabArea of, hitAreas.tabs) {
@@ -307,8 +306,8 @@ export class UserInfoEventHandler {
         y: number, ;
         tabManager: TabManager
     );
-        renderer: Renderer);
-       , canvas: HTMLCanvasElement;
+        renderer: Renderer),
+    canvas: HTMLCanvasElement;
     ): boolean { const layout = renderer.calculateLayout(canvas),
         const contentX = layout.contentPadding;
         const contentY = layout.headerHeight + layout.tabHeight;
@@ -333,8 +332,8 @@ export class UserInfoEventHandler {
             this.gameEngine.setCurrentScene('MainMenuScene'');''
             console.log('Navigating, back to, MainMenuScene');''
         } catch (error) {
-            console.error('Error navigating back:', error);''
-            this.showErrorMessage('メニューに戻れませんでした); }'
+            console.error('Error navigating back:', error';''
+            this.showErrorMessage('メニューに戻れませんでした'; }'
     }
     
     /**
@@ -348,14 +347,14 @@ export class UserInfoEventHandler {
      * ホバー状態の更新
      */''
     private updateHoverStates(x: number, y: number, canvas: HTMLCanvasElement): void { // 戻るボタンのホバー
-        const backButton = this.sceneState.get('backButton) as BackButton | null;''
+        const backButton = this.sceneState.get('backButton' as BackButton | null;''
         if(backButton) {
             const isHovering = x >= backButton.x && x <= backButton.x + backButton.width &&';
                               y >= backButton.y && y <= backButton.y + backButton.height;
 
         }
 
-            this.sceneState.set('backButtonHover', isHovering); }
+            this.sceneState.set('backButtonHover', isHovering'; }
         }
         
         // タブのホバー（将来の実装用）
@@ -371,8 +370,8 @@ export class UserInfoEventHandler {
             const rect = this.gameEngine.canvas.getBoundingClientRect();
         }
             return { x: event.touches[0].clientX - rect.left, };
-                y: event.touches[0].clientY - rect.top }
-            } else {  // マウスイベント
+                y: event.touches[0].clientY - rect.top 
+    } else {  // マウスイベント
             const mouseEvent = event as MouseEvent; }
             return { x: mouseEvent.offsetX || (mouseEvent, as any).layerX, };
                 y: mouseEvent.offsetY || (mouseEvent, as any).layerY }
@@ -383,24 +382,24 @@ export class UserInfoEventHandler {
      * エラーメッセージの表示
      */''
     private showErrorMessage(message: string): void { ''
-        this.sceneState.set('errorMessage', message);
+        this.sceneState.set('errorMessage', message';
         ';
         // 自動でエラーメッセージをクリア
-        if(this.sceneState.get('errorTimeout)) {''
-            clearTimeout(this.sceneState.get('errorTimeout); }', ';
+        if(this.sceneState.get('errorTimeout)' {''
+            clearTimeout(this.sceneState.get('errorTimeout'; }', ';
 
         const timeout = setTimeout(() => { this.clearErrorMessage();' }'
 
         }, 5000');
 
-        this.sceneState.set('errorTimeout', timeout);
+        this.sceneState.set('errorTimeout', timeout';
     }
     
     /**
      * エラーメッセージのクリア'
      */''
     private clearErrorMessage()';
-        this.sceneState.set('errorMessage', null);
+        this.sceneState.set('errorMessage', null';
 
         const timeout = this.sceneState.get('errorTimeout);
         if(timeout) {'
@@ -409,7 +408,7 @@ export class UserInfoEventHandler {
 
         }
 
-            this.sceneState.set('errorTimeout', null); }
+            this.sceneState.set('errorTimeout', null'; }
 }
     
     /**

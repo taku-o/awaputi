@@ -16,8 +16,8 @@ export interface LoggingSystem { info(component: string, message: string): void,
     error(component: string, message: string, error?: any): void }
 
 export interface GeneratorConfig { reportCacheTimeout: number,
-    maxCacheSize: number;
-   , defaultFormat: string ,}
+    maxCacheSize: number,
+    defaultFormat: string ,}
 
 export interface ReportMetadata { reportType?: string;
     generatedAt?: number;
@@ -37,18 +37,18 @@ export interface AnalysisResult { overallEffectivenessScore: number,
     keyMetrics: KeyMetrics;
     trends?: TrendAnalysis;
     recommendations: Recommendation[];
-    metadata: AnalysisMetadata;
-   , dataQuality: any ,}
+    metadata: AnalysisMetadata,
+    dataQuality: any ,}
 
 export interface DetailedAnalysis { usage: UsageAnalysis;
     engagement: EngagementAnalysis;
-    satisfaction: SatisfactionAnalysis;
-   , effectiveness: EffectivenessAnalysis
+    satisfaction: SatisfactionAnalysis,
+    effectiveness: EffectivenessAnalysis
     }
 
 export interface KeyMetrics { usage: UsageMetrics;
-    engagement: EngagementMetrics;
-   , satisfaction: SatisfactionMetrics
+    engagement: EngagementMetrics,
+    satisfaction: SatisfactionMetrics
     }
 
 export interface UsageMetrics { totalSessions: number;
@@ -61,18 +61,18 @@ export interface SatisfactionMetrics { averageRating: number,
     [key: string]: any, }
 
 export interface UsageAnalysis { summary: UsageSummary,
-    details: UsageDetails;
-   , insights: Insight[]
+    details: UsageDetails,
+    insights: Insight[]
     ,}
 
 export interface EngagementAnalysis { summary: EngagementSummary;
-    details: EngagementDetails;
-   , insights: Insight[]
+    details: EngagementDetails,
+    insights: Insight[]
     }
 
 export interface SatisfactionAnalysis { summary: SatisfactionSummary;
-    details: SatisfactionDetails;
-   , insights: Insight[]
+    details: SatisfactionDetails,
+    insights: Insight[]
     }
 
 export interface EffectivenessAnalysis { classification: string;
@@ -91,11 +91,11 @@ export interface SatisfactionSummary { [key: string]: any, }
 export interface SatisfactionDetails { [key: string]: any, }
 
 export interface Insight { type: string,
-    message: string;
-   , severity: 'low' | 'medium' | 'high' ,}
+    message: string,
+    severity: 'low' | 'medium' | 'high' ,}
 
-export interface TrendAnalysis { usage: UsageTrends;
-   , satisfaction: SatisfactionTrends
+export interface TrendAnalysis { usage: UsageTrends,
+    satisfaction: SatisfactionTrends
     }
 
 export interface UsageTrends { sessionGrowth?: TrendData;
@@ -111,8 +111,8 @@ export interface TrendData {;
 ';
 
 export interface Recommendation { title: string,''
-    priority: 'high' | 'medium' | 'low';
-   , description: string;
+    priority: 'high' | 'medium' | 'low',
+    description: string;
     [key: string]: any, }
 
 export interface AnalysisMetadata { confidenceLevel: number,
@@ -123,55 +123,55 @@ export interface ExecutiveReport { title: string,
     summary: ExecutiveSummary;
     metrics: ExecutiveMetrics;
     trends: ExecutiveTrends | null;
-    actionItems: string[];
-   , metadata: ReportMetadata
+    actionItems: string[],
+    metadata: ReportMetadata
     ,}
 
 export interface ExecutiveSummary { overallScore: number;
     classification: string;
     keyFindings: string[];
-    criticalIssues: CriticalIssue[];
-   , topRecommendations: Recommendation[]
+    criticalIssues: CriticalIssue[],
+    topRecommendations: Recommendation[]
     }
 
 export interface ExecutiveMetrics { totalSessions: number;
-    userSatisfaction: number;
-   , engagementLevel: number }
+    userSatisfaction: number,
+    engagementLevel: number }
 
-export interface ExecutiveTrends { usageTrend: string;
-   , satisfactionTrend: string }
+export interface ExecutiveTrends { usageTrend: string,
+    satisfactionTrend: string }
 
 export interface CriticalIssue { severity: string;
-    issue: string;
-   , impact: string }
+    issue: string,
+    impact: string }
 
 export interface DetailedReport { title: string;
     executiveSummary: ExecutiveSummary;
     detailedAnalysis: DetailedReportAnalysis;
     trends: TrendAnalysis;
     recommendations: RecommendationSection;
-    appendices: AppendicesSection;
-   , metadata: ReportMetadata
+    appendices: AppendicesSection,
+    metadata: ReportMetadata
     }
 
 export interface DetailedReportAnalysis { usage: AnalysisSection;
     engagement: AnalysisSection;
-    satisfaction: AnalysisSection;
-   , effectiveness: EffectivenessAnalysis
+    satisfaction: AnalysisSection,
+    effectiveness: EffectivenessAnalysis
     }
 
 export interface AnalysisSection { summary: any;
     details: any;
-    insights: Insight[];
-   , visualizations: VisualizationData
+    insights: Insight[],
+    visualizations: VisualizationData
     }
 
 export interface VisualizationData { charts?: any[];
     tables?: any[]; }
 
 export interface RecommendationSection { priority: PriorityRecommendations,
-    category: CategoryRecommendations;
-   , implementation: ImplementationPlan
+    category: CategoryRecommendations,
+    implementation: ImplementationPlan
     ,}
 
 export interface PriorityRecommendations { high?: Recommendation[];
@@ -186,8 +186,8 @@ export interface ImplementationPlan { phases?: any[];
     timeline?: Record<string, any>; }
 
 export interface AppendicesSection { dataQuality: any,
-    methodology: string;
-   , glossary: Record<string, any>, }
+    methodology: string,
+    glossary: Record<string, any>, }
 
 export interface ActionableReport { title: string,
     currentState: CurrentState;
@@ -195,16 +195,16 @@ export interface ActionableReport { title: string,
     shortTermGoals: ShortTermGoals;
     longTermStrategy: LongTermStrategy;
     monitoring: MonitoringSection;
-    riskAssessment: RiskAssessment;
-   , metadata: ReportMetadata
+    riskAssessment: RiskAssessment,
+    metadata: ReportMetadata
     ,}
 
 export interface CurrentState { overallScore: number;
-    classification: string;
-   , keyIssues: any[] }
+    classification: string,
+    keyIssues: any[] }
 
-export interface ImmediateActions { critical: Recommendation[];
-   , implementation: ActionPlan
+export interface ImmediateActions { critical: Recommendation[],
+    implementation: ActionPlan
     }
 
 export interface ActionPlan { actions?: string[];
@@ -215,24 +215,24 @@ export interface ShortTermGoals { targets: any[],
     resources: ResourceRequirements
     ,}
 
-export interface ResourceRequirements { budget: number;
-   , personnel: number }
+export interface ResourceRequirements { budget: number,
+    personnel: number }
 
 export interface LongTermStrategy { vision: string;
-    milestones: any[];
-   , successMetrics: any[] }
+    milestones: any[],
+    successMetrics: any[] }
 
 export interface MonitoringSection { kpis: any[];
-    dashboards: any[];
-   , reviewSchedule: ReviewSchedule
+    dashboards: any[],
+    reviewSchedule: ReviewSchedule
     }
 
 export interface ReviewSchedule {
     frequency: string;
 }
 
-export interface RiskAssessment { risks: any[];
-   , mitigation: any[] }
+export interface RiskAssessment { risks: any[],
+    mitigation: any[] }
 
 export interface ComprehensiveReport { title: string;
     executiveSummary: ExecutiveSummary;
@@ -240,8 +240,8 @@ export interface ComprehensiveReport { title: string;
     actionPlan: ActionableReport;
     additionalAnalysis: AdditionalAnalysis;
     visualizations: VisualizationsSection;
-    appendices: ExtendedAppendices;
-   , metadata: ReportMetadata
+    appendices: ExtendedAppendices,
+    metadata: ReportMetadata
     }
 
 export interface AdditionalAnalysis { competitiveAnalysis: Record<string, any>,
@@ -255,16 +255,16 @@ export interface VisualizationsSection { charts: any[],
 
 export interface ExtendedAppendices { rawData: Record<string, any>,
     methodology: string;
-    references: any[];
-   , changeLog: any[] ,}
+    references: any[],
+    changeLog: any[] ,}
 
 export type ReportFormat = 'json' | 'markdown' | 'html' | 'csv' | 'pdf';
 
 export type SupportedReportType = 'executive' | 'detailed' | 'actionable' | 'comprehensive';
 
 export interface GenerationStats { cacheSize: number,
-    supportedTypes: SupportedReportType[];
-   , config: GeneratorConfig
+    supportedTypes: SupportedReportType[],
+    config: GeneratorConfig
     ,}
 
 export class HelpReportGenerator {
@@ -286,11 +286,11 @@ export class HelpReportGenerator {
             maxCacheSize: 50,              // 最大キャッシュサイズ
     }
 
-            defaultFormat: 'json'          // デフォルトフォーマット }
-        };
+            defaultFormat: 'json'          // デフォルトフォーマット 
+    };
         ;
         // レポートキャッシュ
-        this.reportCache = new Map<string, any>(');
+        this.reportCache = new Map<string, any>();
         
         // サポートされるレポートタイプ
         this.supportedReportTypes = ['';
@@ -309,7 +309,7 @@ export class HelpReportGenerator {
      * @param options - オプション
      * @returns 効果測定レポート'
      */''
-    async generateEffectivenessReport(reportType: SupportedReportType = 'comprehensive', options: any = {})): Promise<ExecutiveReport | DetailedReport | ActionableReport | ComprehensiveReport>,
+    async generateEffectivenessReport(reportType: SupportedReportType = 'comprehensive', options: any = {})': Promise<ExecutiveReport | DetailedReport | ActionableReport | ComprehensiveReport>,
 
         try {'
             const cacheKey = this.generateCacheKey('report', { reportType, ...options );
@@ -356,7 +356,7 @@ export class HelpReportGenerator {
 
         } catch (error) { }
 
-            this.loggingSystem.error('HelpReportGenerator', `Failed to generate ${reportType} report`, error);
+            this.loggingSystem.error('HelpReportGenerator', `Failed to generate ${reportType} report`, error';
             throw error;
         }
     }
@@ -367,27 +367,27 @@ export class HelpReportGenerator {
      * @returns エグゼクティブレポート'
      */''
     generateExecutiveReport(analysis: AnalysisResult): ExecutiveReport { return { ''
-            title: 'ヘルプ効果性 エグゼクティブサマリー';
-           , summary: {
+            title: 'ヘルプ効果性 エグゼクティブサマリー',
+    summary: {
                 overallScore: analysis.overallEffectivenessScore;
-                classification: analysis.detailedAnalysis.effectiveness.classification;
-               , keyFindings: this.extractKeyFindings(analysis),
+                classification: analysis.detailedAnalysis.effectiveness.classification,
+    keyFindings: this.extractKeyFindings(analysis),
                 criticalIssues: this.identifyCriticalIssues(analysis),' };
 
                 topRecommendations: analysis.recommendations ? analysis.recommendations.slice(0, 3) : [] 
             },
             metrics: { totalSessions: analysis.keyMetrics.usage.totalSessions;
-                userSatisfaction: analysis.keyMetrics.satisfaction.averageRating;
-               , engagementLevel: analysis.keyMetrics.engagement.interactionRate };
+                userSatisfaction: analysis.keyMetrics.satisfaction.averageRating,
+    engagementLevel: analysis.keyMetrics.engagement.interactionRate };
             trends: analysis.trends ? { : undefined''
-                usageTrend: analysis.trends.usage.sessionGrowth? .trend || 'stable', : undefined'';
-                satisfactionTrend: analysis.trends.satisfaction.ratingTrend? .trend || 'stable' : undefined ,} : null;
-            actionItems: this.generateExecutiveActionItems(analysis);
-           , metadata: { generatedAt: Date.now();
+                usageTrend: analysis.trends.usage.sessionGrowth?.trend || 'stable', : undefined'';
+                satisfactionTrend: analysis.trends.satisfaction.ratingTrend?.trend || 'stable' : undefined ,} : null;
+            actionItems: this.generateExecutiveActionItems(analysis),
+    metadata: { generatedAt: Date.now();
                 analysisOptions: analysis.metadata.analysisOptions;
-                dataQuality: analysis.dataQuality;
-               , confidenceLevel: analysis.metadata.confidenceLevel }
-        }
+                dataQuality: analysis.dataQuality,
+    confidenceLevel: analysis.metadata.confidenceLevel 
+    }
     
     /**
      * 詳細レポートの生成
@@ -395,41 +395,41 @@ export class HelpReportGenerator {
      * @returns 詳細レポート'
      */''
     generateDetailedReport(analysis: AnalysisResult): DetailedReport { return { ''
-            title: 'ヘルプ効果性 詳細分析レポート';
-           , executiveSummary: {
+            title: 'ヘルプ効果性 詳細分析レポート',
+    executiveSummary: {
                 overallScore: analysis.overallEffectivenessScore;
                 classification: analysis.detailedAnalysis.effectiveness.classification;
-                keyFindings: this.extractKeyFindings(analysis);
-               , criticalIssues: this.identifyCriticalIssues(analysis), };
+                keyFindings: this.extractKeyFindings(analysis),
+    criticalIssues: this.identifyCriticalIssues(analysis), };
                 topRecommendations: analysis.recommendations ? analysis.recommendations.slice(0, 3) : [] 
             },
             detailedAnalysis: { usage: {
                     summary: analysis.detailedAnalysis.usage.summary;
                     details: analysis.detailedAnalysis.usage.details;
-                    insights: analysis.detailedAnalysis.usage.insights;
-                   , visualizations: this.generateUsageVisualizations(analysis.detailedAnalysis.usage };
+                    insights: analysis.detailedAnalysis.usage.insights,
+    visualizations: this.generateUsageVisualizations(analysis.detailedAnalysis.usage }
                 engagement: { summary: analysis.detailedAnalysis.engagement.summary;
                     details: analysis.detailedAnalysis.engagement.details;
-                    insights: analysis.detailedAnalysis.engagement.insights;
-                   , visualizations: this.generateEngagementVisualizations(analysis.detailedAnalysis.engagement };
+                    insights: analysis.detailedAnalysis.engagement.insights,
+    visualizations: this.generateEngagementVisualizations(analysis.detailedAnalysis.engagement };
                 satisfaction: { summary: analysis.detailedAnalysis.satisfaction.summary;
                     details: analysis.detailedAnalysis.satisfaction.details;
-                    insights: analysis.detailedAnalysis.satisfaction.insights;
-                   , visualizations: this.generateSatisfactionVisualizations(analysis.detailedAnalysis.satisfaction };
+                    insights: analysis.detailedAnalysis.satisfaction.insights,
+    visualizations: this.generateSatisfactionVisualizations(analysis.detailedAnalysis.satisfaction };
                 effectiveness: analysis.detailedAnalysis.effectiveness;
             },
             trends: analysis.trends || {} as TrendAnalysis;
             recommendations: { priority: this.categorizeRecommendationsByPriority(analysis.recommendations);
-                category: this.categorizeRecommendationsByCategory(analysis.recommendations);
-               , implementation: this.generateImplementationPlan(analysis.recommendations };
+                category: this.categorizeRecommendationsByCategory(analysis.recommendations),
+    implementation: this.generateImplementationPlan(analysis.recommendations }
             appendices: { dataQuality: analysis.dataQuality;
-                methodology: this.generateMethodologyDescription();
-               , glossary: this.generateGlossary( };
+                methodology: this.generateMethodologyDescription(),
+    glossary: this.generateGlossary( }
             metadata: { generatedAt: Date.now();
                 analysisOptions: analysis.metadata.analysisOptions;
-                dataVolume: analysis.metadata.dataVolume;
-               , confidenceLevel: analysis.metadata.confidenceLevel }
-        }
+                dataVolume: analysis.metadata.dataVolume,
+    confidenceLevel: analysis.metadata.confidenceLevel 
+    }
     
     /**
      * アクション可能レポートの生成
@@ -437,25 +437,25 @@ export class HelpReportGenerator {
      * @returns アクション可能レポート'
      */''
     generateActionableReport(analysis: AnalysisResult): ActionableReport { return { ''
-            title: 'ヘルプ効果性 アクションプラン';
-           , currentState: {
-                overallScore: analysis.overallEffectivenessScore;
-               , classification: analysis.detailedAnalysis.effectiveness.classification, };
-                keyIssues: this.identifyActionableIssues(analysis); }
-            },
-            immediateActions: { critical: this.getHighPriorityRecommendations(analysis.recommendations);
-               , implementation: this.generateImmediateActionPlan(analysis.recommendations };
+            title: 'ヘルプ効果性 アクションプラン',
+    currentState: {
+                overallScore: analysis.overallEffectivenessScore,
+    classification: analysis.detailedAnalysis.effectiveness.classification, };
+                keyIssues: this.identifyActionableIssues(analysis); 
+    },
+            immediateActions: { critical: this.getHighPriorityRecommendations(analysis.recommendations),
+    implementation: this.generateImmediateActionPlan(analysis.recommendations }
             shortTermGoals: { targets: this.generateShortTermTargets(analysis);
-                timeline: this.generateShortTermTimeline(analysis.recommendations);
-               , resources: this.estimateResourceRequirements(analysis.recommendations };
+                timeline: this.generateShortTermTimeline(analysis.recommendations),
+    resources: this.estimateResourceRequirements(analysis.recommendations }
             longTermStrategy: { vision: this.generateLongTermVision(analysis);
-                milestones: this.generateLongTermMilestones(analysis);
-               , successMetrics: this.defineSuccessMetrics(analysis };
+                milestones: this.generateLongTermMilestones(analysis),
+    successMetrics: this.defineSuccessMetrics(analysis }
             monitoring: { kpis: this.defineKPIs(analysis);
-                dashboards: this.recommendDashboards(analysis);
-               , reviewSchedule: this.generateReviewSchedule( };
-            riskAssessment: { risks: this.assessImplementationRisks(analysis.recommendations);
-               , mitigation: this.generateRiskMitigation(analysis.recommendations };
+                dashboards: this.recommendDashboards(analysis),
+    reviewSchedule: this.generateReviewSchedule( }
+            riskAssessment: { risks: this.assessImplementationRisks(analysis.recommendations),
+    mitigation: this.generateRiskMitigation(analysis.recommendations }
             metadata: { generatedAt: Date.now(),''
                 nextReviewDate: Date.now() + (30 * 24 * 60 * 60 * 1000'), // 30日後;
                 actionPlanVersion: '1.0' ,}
@@ -477,28 +477,28 @@ export class HelpReportGenerator {
             // 追加分析
            , additionalAnalysis: {
                 competitiveAnalysis: this.generateCompetitiveAnalysis(analysis);
-                userSegmentation: this.generateUserSegmentation(analysis);
-               , contentAnalysis: this.generateContentAnalysis(analysis), };
-                technologyAssessment: this.generateTechnologyAssessment(analysis); }
-            },
+                userSegmentation: this.generateUserSegmentation(analysis),
+    contentAnalysis: this.generateContentAnalysis(analysis), };
+                technologyAssessment: this.generateTechnologyAssessment(analysis); 
+    },
             
             // データ可視化
             visualizations: { charts: this.generateAllCharts(analysis);
-                dashboards: this.generateDashboardSpecs(analysis);
-               , exportOptions: this.getExportOptions( };
+                dashboards: this.generateDashboardSpecs(analysis),
+    exportOptions: this.getExportOptions( }
             // 参考資料
             appendices: { rawData: this.prepareRawDataSummary(analysis);
                 methodology: this.generateDetailedMethodology();
-                references: this.generateReferences();
-               , changeLog: this.generateChangeLog( };
-            ';
+                references: this.generateReferences(),
+    changeLog: this.generateChangeLog( };
+            '
 
             metadata: { ''
                 generatedAt: Date.now(''';
                 reportVersion: '1.0';
                 analysisScope: analysis.metadata.analysisOptions);
-                dataQuality: analysis.dataQuality)';
-               , confidenceLevel: analysis.metadata.confidenceLevel,')';
+                dataQuality: analysis.dataQuality'',
+    confidenceLevel: analysis.metadata.confidenceLevel,')';
                 nextScheduledAnalysis: Date.now() + (7 * 24 * 60 * 60 * 1000') // 7日後 ,}'
         }
     
@@ -508,7 +508,7 @@ export class HelpReportGenerator {
      * @param format - 出力形式
      * @returns フォーマットされたレポート
      */''
-    formatReport(report: any, format: ReportFormat = 'json): string | any { try {'
+    formatReport(report: any, format: ReportFormat = 'json': string | any { try {'
             switch(format.toLowerCase()) {''
                 case 'json':'';
                     return JSON.stringify(report, null, 2);
@@ -528,7 +528,7 @@ export class HelpReportGenerator {
 
                 default:' ,}'
 
-                    this.loggingSystem.warn('HelpReportGenerator', `Unsupported format: ${format}`});
+                    this.loggingSystem.warn('HelpReportGenerator', `Unsupported format: ${format}`}';
 
                     return report;''
             } catch (error) { }
@@ -572,8 +572,8 @@ export class HelpReportGenerator {
         if(report.recommendations) {
         
             markdown += `## 推奨事項\n\n`;
-            const recommendations = Array.isArray(report.recommendations) ?   : undefined
-                report.recommendations: (report.recommendations.priority? .high || []),
+            const recommendations = Array.isArray(report.recommendations) ? undefined : undefined
+                report.recommendations: (report.recommendations.priority?.high || []),
                  : undefined
         
             recommendations.slice(0, 5).forEach((rec: Recommendation, index: number) => { ,}
@@ -583,7 +583,7 @@ export class HelpReportGenerator {
             });
         }
 
-        markdown += `---\n*レポート生成日時: ${new, Date('}.toLocaleString('ja-JP'})*\n`;
+        markdown += `---\n*レポート生成日時: ${new, Date('}.toLocaleString('ja-JP'}'*\n`;
         
         return markdown;
     }
@@ -615,7 +615,7 @@ export class HelpReportGenerator {
             <h1>${report.title}</h1>
             ${this.generateHTMLContent(report})"
             <footer>"";
-                <p><em>レポート生成日時: ${new, Date("}.toLocaleString('ja-JP'})</em></p>
+                <p><em>レポート生成日時: ${new, Date("}.toLocaleString('ja-JP'}'</em></p>
             </footer>;
         </body>;
         </html>;
@@ -645,8 +645,8 @@ export class HelpReportGenerator {
         
         // 推奨事項をCSVに変換
         if(report.recommendations) {
-            const recommendations = Array.isArray(report.recommendations) ?   : undefined
-                report.recommendations: (report.recommendations.priority? .high || []),
+            const recommendations = Array.isArray(report.recommendations) ? undefined : undefined
+                report.recommendations: (report.recommendations.priority?.high || []),
              : undefined";
         }"
             recommendations.forEach((rec: Recommendation, index: number) => {" }"
@@ -660,7 +660,7 @@ export class HelpReportGenerator {
     // ========== ヘルパーメソッド ==========
     
     private generateCacheKey(type: string, options: any): string {
-        return `${type}_${JSON.stringify(options})_${Math.floor(Date.now(} / 60000})`; // 1分単位
+        return `${type}_${JSON.stringify(options})_${Math.floor(Date.now() / 60000})`; // 1分単位
     }
     
     private isCacheValid(cacheKey: string, timeout: number = 300000): boolean { const cached = this.reportCache.get(cacheKey);
@@ -682,14 +682,14 @@ export class HelpReportGenerator {
 
         if(analysis.overallEffectivenessScore < 0.5) {", ";
         }"
-            findings.push('ヘルプシステムの効果性が低い水準にあります); }'
+            findings.push('ヘルプシステムの効果性が低い水準にあります'; }'
         }
 
         if(analysis.keyMetrics.satisfaction.averageRating < 3.5) {', ';
 
         }
 
-            findings.push('ユーザー満足度の改善が必要です); }'
+            findings.push('ユーザー満足度の改善が必要です'; }'
         }
         
         return findings;
@@ -699,11 +699,11 @@ export class HelpReportGenerator {
 
         if(analysis.overallEffectivenessScore < 0.3) {'
             issues.push({''
-                severity: 'critical',)';
+                severity: 'critical','';
                 issue: '効果性スコアが極めて低い',' }
 
-                impact: 'ユーザー体験の大幅な悪化'); }
-        }
+                impact: 'ユーザー体験の大幅な悪化'); 
+    }
         
         return issues;
     }
@@ -767,7 +767,7 @@ export class HelpReportGenerator {
     
     private recommendDashboards(analysis: AnalysisResult): any[] { return [];  }
 
-    private generateReviewSchedule(''';
+    private generateReviewSchedule('''
         return { frequency: 'monthly' }
     );
     private assessImplementationRisks(recommendations: Recommendation[]): any[] { return [];  }

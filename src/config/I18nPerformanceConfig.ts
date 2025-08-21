@@ -14,16 +14,16 @@ export interface PerformanceMetric { threshold: number,
  */
 export interface PerformanceMetrics { languageSwitchTime: PerformanceMetric;
     translationLoadTime: PerformanceMetric;
-    fontLoadTime: PerformanceMetric;
-   , i18nMemoryUsage: PerformanceMetric
+    fontLoadTime: PerformanceMetric,
+    i18nMemoryUsage: PerformanceMetric
     }
 
 /**
  * i18nパフォーマンス設定の型定義
  */
 export interface I18nPerformanceConfig { enabled: boolean;
-    metrics: PerformanceMetrics;
-   , alerts: Record<string, any>, }
+    metrics: PerformanceMetrics,
+    alerts: Record<string, any>, }
 
 /**
  * 多言語対応パフォーマンス監視設定
@@ -31,12 +31,12 @@ export interface I18nPerformanceConfig { enabled: boolean;
 export const i18nPerformanceConfig: I18nPerformanceConfig = { enabled: true,
     metrics: {
         languageSwitchTime: {
-            threshold: 500;
-           , track: true ,};
-        translationLoadTime: { threshold: 200;
-           , track: true };
-        fontLoadTime: { threshold: 1000;
-           , track: true };
+            threshold: 500,
+    track: true ,};
+        translationLoadTime: { threshold: 200,
+    track: true };
+        fontLoadTime: { threshold: 1000,
+    track: true };
         i18nMemoryUsage: { threshold: 5242880, // 5MB in bytes
             track: true ,}
     };

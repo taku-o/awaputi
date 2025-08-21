@@ -11,8 +11,8 @@ interface DragParticle { x: number,
     vy: number;
     life: number;
     decay: number;
-    size: number;
-   , color: string ,}
+    size: number,
+    color: string ,}
 
 interface DragVisualization { isActive: boolean, }
     startPosition: { x: number;, y: number },
@@ -20,13 +20,13 @@ interface DragVisualization { isActive: boolean, }
     targetBubble: Bubble | null;
     forceIndicator: number;
     particles: DragParticle[];
-    duration: number;
-   , intensity: number;
+    duration: number,
+    intensity: number;
 }
 
 interface Bubble { x: number,
-    y: number;
-   , size: number ,}
+    y: number,
+    size: number ,}
 
 interface PlayerData {
     currentScore: number;
@@ -41,15 +41,15 @@ interface GameEngine { canvas: HTMLCanvasElement,
     timeStopRemaining: number;
     screenShakeRemaining: number;
     screenShakeIntensity: number;
-    playerData: PlayerData;
-   , bubbleManager: BubbleManager
+    playerData: PlayerData,
+    bubbleManager: BubbleManager
     ,}
 
 interface VisualizationStats { isDragging: boolean;
     dragParticles: number;
     forceIndicator: number;
-    screenShakeActive: boolean;
-   , screenShakeIntensity: number }
+    screenShakeActive: boolean,
+    screenShakeIntensity: number }
 
 export class GameVisualizationManager {
     private gameEngine: GameEngine;
@@ -66,8 +66,8 @@ export class GameVisualizationManager {
             targetBubble: null;
             forceIndicator: 0;
             particles: [];
-            duration: 0;
-           , intensity: 1;
+            duration: 0,
+    intensity: 1;
         },
     }
     
@@ -81,8 +81,8 @@ export class GameVisualizationManager {
             targetBubble: null;
             forceIndicator: 0;
             particles: [];
-            duration: 0;
-           , intensity: 1;
+            duration: 0,
+    intensity: 1;
         },
     }
     
@@ -159,9 +159,9 @@ export class GameVisualizationManager {
             vx: (Math.random() - 0.5) * 2;
             vy: (Math.random() - 0.5) * 2;
             life: 1.0;
-            decay: 0.02;
-           , size: 2 + Math.random() * 3, }
-            color: `hsl(${60 + Math.random(}) * 60}, 70%, 60%)`
+            decay: 0.02,
+    size: 2 + Math.random() * 3, }
+            color: `hsl(${60 + Math.random()) * 60}, 70%, 60%)`
         });
     }
     
@@ -193,7 +193,7 @@ export class GameVisualizationManager {
         
         // 時間に基づくグラデーション
         const timeRatio = this.gameEngine.timeRemaining / 300000; // 5分
-        const topColor = timeRatio > 0.5 ? '#000033' : timeRatio > 0.25 ? '#330000' : '#660000';''
+        const topColor = timeRatio > 0.5 ? '#000033' : timeRatio > 0.25 ? '#330000' : '#660000';
         const bottomColor = timeRatio > 0.5 ? '#000011' : timeRatio > 0.25 ? '#110000' : '#220000';
         
         const gradient = context.createLinearGradient(0, 0, 0, canvas.height);
@@ -270,7 +270,7 @@ export class GameVisualizationManager {
      * @param start - 開始位置
      * @param current - 現在位置
      */
-    private renderDragTrajectory(context: CanvasRenderingContext2D, start: { x: number;, y: number }, current: { x: number;, y: number ): void {
+    private renderDragTrajectory(context: CanvasRenderingContext2D, start: { x: number;, y: number }, current: { x: number,  y: number ): void {
         const alpha = 0.6 + 0.4 * Math.sin(Date.now() * 0.01);
         
         // グラデーション軌道線
@@ -295,7 +295,7 @@ export class GameVisualizationManager {
      * @param start - 開始位置
      * @param current - 現在位置
      */
-    private renderForceIndicator(context: CanvasRenderingContext2D, start: { x: number;, y: number }, current: { x: number;, y: number ): void {
+    private renderForceIndicator(context: CanvasRenderingContext2D, start: { x: number;, y: number }, current: { x: number,  y: number ): void {
         const intensity = this.dragVisualization.forceIndicator;
         if (intensity < 0.1) return;
         
@@ -361,32 +361,32 @@ export class GameVisualizationManager {
     public renderGameOver(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas;
         ';
         // 半透明オーバーレイ
-        context.fillStyle = 'rgba(0, 0, 0, 0.8)';''
+        context.fillStyle = 'rgba(0, 0, 0, 0.8)';
         context.fillRect(0, 0, canvas.width, canvas.height);
         ';
         // GAME OVER テキスト
-        context.fillStyle = '#FF0000';''
-        context.font = 'bold 48px Arial';''
-        context.textAlign = 'center';''
-        context.textBaseline = 'middle';''
+        context.fillStyle = '#FF0000';
+        context.font = 'bold 48px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
         context.shadowColor = 'rgba(0, 0, 0, 0.8)';
         context.shadowOffsetX = 3;
         context.shadowOffsetY = 3;
 
         context.shadowBlur = 6;''
-        context.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 50);
+        context.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 50';
         ';
         // 最終スコア
-        context.fillStyle = '#FFFFFF';''
+        context.fillStyle = '#FFFFFF';
         context.font = 'bold 24px Arial'; }
 
         context.fillText(`Final, Score: ${this.gameEngine.playerData.currentScore.toLocaleString(})`, ''
                         canvas.width / 2, canvas.height / 2 + 20');
         ';
         // 操作説明
-        context.fillStyle = '#CCCCCC';''
-        context.font = '18px Arial';''
-        context.fillText('Press ESC to return to menu', canvas.width / 2, canvas.height / 2 + 80);
+        context.fillStyle = '#CCCCCC';
+        context.font = '18px Arial';
+        context.fillText('Press ESC to return to menu', canvas.width / 2, canvas.height / 2 + 80';
     }
     
     /**
@@ -396,24 +396,24 @@ export class GameVisualizationManager {
     public renderPause(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas;
         ';
         // 半透明オーバーレイ
-        context.fillStyle = 'rgba(0, 0, 0, 0.6)';''
+        context.fillStyle = 'rgba(0, 0, 0, 0.6)';
         context.fillRect(0, 0, canvas.width, canvas.height);
         ';
         // PAUSE テキスト
-        context.fillStyle = '#FFFFFF';''
-        context.font = 'bold 36px Arial';''
-        context.textAlign = 'center';''
-        context.textBaseline = 'middle';''
+        context.fillStyle = '#FFFFFF';
+        context.font = 'bold 36px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
         context.shadowColor = 'rgba(0, 0, 0, 0.8)';
         context.shadowOffsetX = 2;
         context.shadowOffsetY = 2;
 
         context.shadowBlur = 4;''
-        context.fillText('PAUSED', canvas.width / 2, canvas.height / 2);
+        context.fillText('PAUSED', canvas.width / 2, canvas.height / 2';
         ';
         // 操作説明
-        context.fillStyle = '#CCCCCC';''
-        context.font = '18px Arial';''
+        context.fillStyle = '#CCCCCC';
+        context.font = '18px Arial';
         context.fillText('Press SPACE to resume', canvas.width / 2, canvas.height / 2 + 60); }
     
     /**
@@ -442,4 +442,4 @@ export class GameVisualizationManager {
      * 視覚化統計の取得
      * @returns 統計情報
      */''
-    public getVisualizationStats(');
+    public getVisualizationStats();

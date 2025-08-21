@@ -32,17 +32,17 @@ export interface LanguageSwitchOptions { animationType?: string;
 
 export interface AnimationSpec { element: HTMLElement,
     keyframes: AnimationKeyframe[];
-    options: AnimationOptions;
-   , delay: number ,}
+    options: AnimationOptions,
+    delay: number ,}
 
 export interface BatchAnimationOptions { animationType: string;
     duration: number;
-    staggerDelay: number;
-   , priority: ElementPriority
+    staggerDelay: number,
+    priority: ElementPriority
     }
 
-export interface BatchAnimationResult { success: boolean;
-   , elements: number;
+export interface BatchAnimationResult { success: boolean,
+    elements: number;
     duration?: number;
     priority?: ElementPriority;
     error?: string; }
@@ -58,31 +58,31 @@ export interface LanguageSwitchResult { success: boolean,
     elementsCount?: number; }
 
 export interface ActiveAnimationData { animation: Animation,
-    startTime: number;
-   , element: HTMLElement
+    startTime: number,
+    element: HTMLElement
     ,}
 
 export interface OptimizationStrategies { batchTransitions: boolean;
     useTransforms: boolean;
     avoidLayout: boolean;
     useWillChange: boolean;
-    preferOpacity: boolean;
-   , useCompositorLayers: boolean }
+    preferOpacity: boolean,
+    useCompositorLayers: boolean }
 
 export interface PerformanceMetrics { animationCount: number;
     droppedFrames: number;
     averageFrameTime: number;
     frameTimeHistory: number[];
-    animationTimes: number[];
-   , gpuMemoryUsage: number }
+    animationTimes: number[],
+    gpuMemoryUsage: number }
 
 export interface AnimationStats { totalAnimations: number;
     completedAnimations: number;
     cancelledAnimations: number;
     optimizedAnimations: number;
     batchedAnimations: number;
-    averageDuration: number;
-   , totalDuration: number;
+    averageDuration: number,
+    totalDuration: number;
     activeAnimations?: number;
     queuedAnimations?: number;
     averageFPS?: number;
@@ -92,18 +92,18 @@ export interface AnimationStats { totalAnimations: number;
     strategiesUsed?: string[]; }
 
 export interface FrameTimeDistribution { min: number,
-    max: number;
-   , average: number ,}
+    max: number,
+    average: number ,}
 
 export interface DetailedPerformanceStats extends AnimationStats { frameTimeDistribution: FrameTimeDistribution;
     animationTimeDistribution: FrameTimeDistribution;
-    presetUsage: string[];
-   , strategyEffectiveness: StrategyEffectiveness
+    presetUsage: string[],
+    strategyEffectiveness: StrategyEffectiveness
     }
 
 export interface StrategyEffectiveness { [strategy: string]: {
-        enable;d: boolean;
-       , estimatedImprovement: number }
+        enable;d: boolean,
+    estimatedImprovement: number }
 
 export interface AnimationConfiguration { enabled?: boolean;
     optimizationLevel?: OptimizationLevel;
@@ -111,8 +111,8 @@ export interface AnimationConfiguration { enabled?: boolean;
     strategies?: Partial<OptimizationStrategies>;
     }
 
-export type ElementPriority = 'critical' | 'high' | 'normal' | 'low';''
-export type OptimizationLevel = 'performance' | 'balanced' | 'quality';''
+export type ElementPriority = 'critical' | 'high' | 'normal' | 'low';
+export type OptimizationLevel = 'performance' | 'balanced' | 'quality';
 export type PlayState = 'idle' | 'running' | 'paused' | 'finished';
 
 export class AnimationOptimizer {
@@ -159,7 +159,7 @@ export class AnimationOptimizer {
         
         // フレーム管理
         this.frameScheduler = null;''
-        this.frameCallbacks = new Set<(deltaTime: number) => void>(');
+        this.frameCallbacks = new Set<(deltaTime: number) => void>();
         this.lastFrameTime = 0;
         this.targetFPS = 60;
         this.frameInterval = 1000 / this.targetFPS;
@@ -170,8 +170,8 @@ export class AnimationOptimizer {
             useTransforms: true;
             avoidLayout: true;
             useWillChange: true;
-            preferOpacity: true;
-           , useCompositorLayers: true ,}
+            preferOpacity: true,
+    useCompositorLayers: true ,}
         };
         // アニメーションプリセット
         this.presets = { fadeIn: {
@@ -217,16 +217,16 @@ export class AnimationOptimizer {
             droppedFrames: 0;
             averageFrameTime: 0;
             frameTimeHistory: [];
-            animationTimes: [];
-           , gpuMemoryUsage: 0 ,};
+            animationTimes: [],
+    gpuMemoryUsage: 0 ,};
         // 統計情報
         this.stats = { totalAnimations: 0,
             completedAnimations: 0;
             cancelledAnimations: 0;
             optimizedAnimations: 0;
             batchedAnimations: 0;
-            averageDuration: 0;
-           , totalDuration: 0 ,};
+            averageDuration: 0,
+    totalDuration: 0 ,};
         ;
         // 初期化
         this.initialize()';
@@ -255,7 +255,7 @@ export class AnimationOptimizer {
         const startTime = performance.now(''';
                 animationType = 'textChange',
                 duration = this.defaultDuration);
-                staggerDelay = 50)';
+                staggerDelay = 50'';
                 batchSize = 10,
                 priority = 'normal' } = options;
 
@@ -301,18 +301,18 @@ export class AnimationOptimizer {
                 elementsAnimated: elements.length;
                 totalTime,
                 batches: animationResults.length, };
-                stats: this.getAnimationStats(); }
-            };
+                stats: this.getAnimationStats(); 
+    };
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error as Error, 'ANIMATION_OPTIMIZER_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error as Error, 'ANIMATION_OPTIMIZER_ERROR', {''
                 operation: 'optimizeLanguageSwitchAnimation',);
                 elementCount: elements.length ,});
             
             return { success: false,
                 error: (error, as Error).message, };
-                totalTime: performance.now() - startTime }
-            }
+                totalTime: performance.now() - startTime 
+    }
     }
     
     /**
@@ -353,9 +353,9 @@ export class AnimationOptimizer {
         if(dataPriority) return dataPriority;
         ';
         // クラス名での判定
-        if(element.classList.contains('critical)) return 'critical';''
-        if(element.classList.contains('high-priority)) return 'high';''
-        if(element.classList.contains('low-priority)) return 'low';
+        if(element.classList.contains('critical)' return 'critical';
+        if(element.classList.contains('high-priority)' return 'high';
+        if(element.classList.contains('low-priority)' return 'low';
         
         // 要素タイプでの判定
         const tagPriority: Record<string, ElementPriority> = {'', 'H1': 'critical', 'H2': 'high', 'H3': 'high',
@@ -413,8 +413,8 @@ export class AnimationOptimizer {
             const batchTime = performance.now() - startTime;
             
             return { success: true,
-                elements: elements.length;
-               , duration: batchTime, };
+                elements: elements.length,
+    duration: batchTime, };
                 priority }
             } catch (error) {
             console.warn('Batch animation failed:', error);
@@ -454,8 +454,8 @@ export class AnimationOptimizer {
             easing: this.getOptimizedEasing(preset.options.easing),
             fill: 'both' ,};
         return { keyframes: optimizedKeyframes, };
-            options: optimizedOptions }
-        }
+            options: optimizedOptions 
+    }
     
     /**
      * レイアウト回避の最適化
@@ -481,14 +481,14 @@ export class AnimationOptimizer {
 
             if (optimized.width !== undefined || optimized.height !== undefined) { // サイズ変更はscaleに変換' }'
 
-                const scaleTransform = optimized.width ? ` scaleX(${parseFloat(optimized.width}) / 100}')` : '';''
+                const scaleTransform = optimized.width ? ` scaleX(${parseFloat(optimized.width}) / 100}')` : '';
                 optimized.transform = (optimized.transform || '') + scaleTransform;
                 delete optimized.width;
                 delete optimized.height;
             }
             
             return optimized;
-        });
+        }';
     }
     
     /**
@@ -499,7 +499,7 @@ export class AnimationOptimizer {
                 // transform を最適化（GPU アクセラレーション用）
                 let transform = frame.transform;
                 // translate3d を使用してGPUアクセラレーションを有効化
-                if (transform.includes('translate'') && !transform.includes('translate3d) {'
+                if (transform.includes('translate'') && !transform.includes('translate3d' {'
             }
 
                     transform = transform.replace(/translateX\(([^)]+)\')/, 'translate3d($1, 0, 0));' }
@@ -538,7 +538,7 @@ export class AnimationOptimizer {
         
         // Web Animations API でアニメーション作成
         const animation = element.animate(keyframes, { ...options,)'
-            delay)');
+            delay'');
         ';
         // アニメーション完了時のクリーンアップ
         animation.addEventListener('finish', () => { ''
@@ -588,8 +588,8 @@ export class AnimationOptimizer {
 
         }
 
-                'cubic-bezier(0.4, 0, 0.2, 1)': 'ease-out' }
-            };
+                'cubic-bezier(0.4, 0, 0.2, 1)': 'ease-out' 
+    };
             return simpleEasings[requestedEasing] || requestedEasing;
         }
         
@@ -605,8 +605,8 @@ export class AnimationOptimizer {
         return { success: true,
             skipped: true;
             reason, };
-            elementsCount: elements.length }
-        }
+            elementsCount: elements.length 
+    }
     
     /**
      * アニメーションを登録
@@ -614,8 +614,8 @@ export class AnimationOptimizer {
     private registerAnimation(animation: Animation): string { const id = this.generateAnimationId();
         this.activeAnimations.set(id, {)
             animation);
-            startTime: performance.now();
-           , element: animation.effect? .target as HTMLElement ,});
+            startTime: performance.now(),
+    element: animation.effect?.target as HTMLElement ,});
         this.runningAnimations.add(animation);
         
         return id;
@@ -639,7 +639,7 @@ export class AnimationOptimizer {
      * アニメーションIDを生成
      */
     private generateAnimationId(): string {
-        return `anim_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
+        return `anim_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
     }
     
     /**
@@ -666,7 +666,7 @@ export class AnimationOptimizer {
      * パフォーマンス監視を開始'
      */''
     private startPerformanceMonitoring()';
-        if(typeof, PerformanceObserver !== 'undefined) {'
+        if(typeof, PerformanceObserver !== 'undefined' {'
             try {
                 const observer = new PerformanceObserver((list) => { 
                     const entries = list.getEntries();
@@ -679,7 +679,7 @@ export class AnimationOptimizer {
 }''
                 }');
 
-                observer.observe({ entryTypes: ['measure] ),' }
+                observer.observe({ entryTypes: ['measure] ',' }
 
             } catch (error) { console.warn('Performance monitoring setup failed:', error }
 }
@@ -688,7 +688,7 @@ export class AnimationOptimizer {
      * Intersection Observer を設定'
      */''
     private setupIntersectionObserver()';
-        if(typeof, IntersectionObserver !== 'undefined) {'
+        if(typeof, IntersectionObserver !== 'undefined' {'
             this.intersectionObserver = new IntersectionObserver((entries) => { 
                 for (const, entry of, entries) {
                     const element = entry.target as HTMLElement;
@@ -770,7 +770,7 @@ export class AnimationOptimizer {
     private pauseElementAnimations(element: HTMLElement): void { ''
         for(const [id, data] of this.activeAnimations) {'
 
-            if(data.element === element && data.animation.playState === 'running) {'
+            if(data.element === element && data.animation.playState === 'running' {'
         }
                 data.animation.pause(); }
 }
@@ -782,7 +782,7 @@ export class AnimationOptimizer {
     private resumeElementAnimations(element: HTMLElement): void { ''
         for(const [id, data] of this.activeAnimations) {'
 
-            if(data.element === element && data.animation.playState === 'paused) {'
+            if(data.element === element && data.animation.playState === 'paused' {'
         }
                 data.animation.play(); }
 }
@@ -819,8 +819,8 @@ export class AnimationOptimizer {
             averageFPS: Math.round(fps * 10) / 10;
             droppedFrames: this.performanceMetrics.droppedFrames;
             optimizationLevel: this.optimizationLevel;
-            reducedMotionEnabled: this.reducedMotionEnabled;
-           , strategiesUsed: Object.entries(this.strategies);
+            reducedMotionEnabled: this.reducedMotionEnabled,
+    strategiesUsed: Object.entries(this.strategies);
                 .filter(([, enabled]) => enabled) };
                 .map(([strategy]) => strategy); }
         }
@@ -832,18 +832,17 @@ export class AnimationOptimizer {
         
         return { ...stats,
             frameTimeDistribution: {
-                min: Math.min(...this.performanceMetrics.frameTimeHistory) || 0;
-               , max: Math.max(...this.performanceMetrics.frameTimeHistory) || 0, };
-                average: this.performanceMetrics.averageFrameTime }
-            };
+                min: Math.min(...this.performanceMetrics.frameTimeHistory) || 0,
+    max: Math.max(...this.performanceMetrics.frameTimeHistory) || 0, };
+                average: this.performanceMetrics.averageFrameTime 
+    };
             animationTimeDistribution: { min: Math.min(...this.performanceMetrics.animationTimes) || 0;
-                max: Math.max(...this.performanceMetrics.animationTimes) || 0;
-               , average: this.performanceMetrics.animationTimes.length > 0;
+                max: Math.max(...this.performanceMetrics.animationTimes) || 0,
+    average: this.performanceMetrics.animationTimes.length > 0;
                     ? this.performanceMetrics.animationTimes.reduce((a, b) => a + b, 0) / this.performanceMetrics.animationTimes.length;
                     : 0 
             },
-            presetUsage: Object.keys(this.presets);
-           , strategyEffectiveness: this.calculateStrategyEffectiveness();
+            presetUsage: Object.keys(this.presets) strategyEffectiveness: this.calculateStrategyEffectiveness();
         }
     
     /**
@@ -851,14 +850,14 @@ export class AnimationOptimizer {
      */
     private calculateStrategyEffectiveness(): StrategyEffectiveness {
         const effectiveness: StrategyEffectiveness = {}
-        for(const [strategy, enabled] of Object.entries(this.strategies) {
+        for(const [strategy enabled] of Object.entries(this.strategies) {
             if (enabled) {
                 // 簡易的な効果測定（実際の実装ではより詳細な測定が必要）
                 effectiveness[strategy] = {
                     enabled: true;
         }
-                    estimatedImprovement: this.getStrategyImprovement(strategy); }
-                }
+                    estimatedImprovement: this.getStrategyImprovement(strategy'); 
+    }
         }
         
         return effectiveness;
@@ -872,8 +871,8 @@ export class AnimationOptimizer {
             useTransforms: 40;
             avoidLayout: 60;
             useWillChange: 20;
-            preferOpacity: 30;
-           , useCompositorLayers: 35 ,};
+            preferOpacity: 30,
+    useCompositorLayers: 35 ,};
         return improvements[strategy] || 10;
     }
     

@@ -9,8 +9,8 @@ export interface CustomTheme { id: string,
     name: string;
     author: string;
     created: string;
-    version: string;
-   , colors: {
+    version: string,
+    colors: {
         primar;y: string[];
         secondary?: string[];
         accent?: string[]; ,};
@@ -26,25 +26,25 @@ export interface CustomTheme { id: string,
 
 export interface ThemeHistoryEntry { action: 'save' | 'delete' | 'import' | 'export',
     themeName: string;
-    timestamp: string;
-   , themeId: string ,}
+    timestamp: string,
+    themeId: string ,}
 
 export interface ThemeListItem { name: string;
     displayName: string;
     author: string;
-    created: string;
-   , id: string }
+    created: string,
+    id: string }
 
-export interface ThemeStatistics { totalThemes: number;
-   , authorCounts: Record<string, number>,
+export interface ThemeStatistics { totalThemes: number,
+    authorCounts: Record<string, number>,
     oldestTheme?: CustomTheme;
     newestTheme?: CustomTheme;
     }
 
 export interface ThemeBackup { themes: [string, CustomTheme][],
     history: ThemeHistoryEntry[];
-    timestamp: string;
-   , version: string ,}
+    timestamp: string,
+    version: string ,}
 
 export interface StorageData { themes: [string, CustomTheme][],
     history: ThemeHistoryEntry[]
@@ -61,7 +61,7 @@ export class CustomThemeManager {
     ';
 
         this.customThemes = new Map<string, CustomTheme>();''
-        this.userThemes = new Map<string, CustomTheme>(');
+        this.userThemes = new Map<string, CustomTheme>();
         this.themeHistory = [];
 
         this.maxHistorySize = 50;
@@ -78,16 +78,16 @@ export class CustomThemeManager {
      * @param author - 作成者
      * @returns 保存成功かどうか'
      */''
-    saveCustomTheme(name: string, theme: Partial<CustomTheme>, author: string = 'user): boolean { try {'
+    saveCustomTheme(name: string, theme: Partial<CustomTheme>, author: string = 'user': boolean { try {'
             if(!this._validateTheme(theme)) {''
-                throw new Error('Invalid, theme data); }'
+                throw new Error('Invalid, theme data'; }'
             
             const themeData: CustomTheme = { ...theme as CustomTheme,
                 id: this._generateThemeId();
                 name,
                 author,
-                created: new Date().toISOString(''';
-               , version: '1.0.0' ,}))', ')';
+                created: new Date().toISOString(''',
+    version: '1.0.0' ,})'', ')';
             this.customThemes.set(name, themeData);''
             this._addToHistory('save', name, themeData);
             this._persistToStorage();
@@ -127,8 +127,8 @@ export class CustomThemeManager {
             name,
             displayName: theme.name;
             author: theme.author;
-            created: theme.created);
-           , id: theme.id ,}
+            created: theme.created),
+    id: theme.id ,}
         });
     }
     
@@ -159,12 +159,12 @@ export class CustomThemeManager {
             if(!this._validateTheme(theme)) {''
                 throw new Error('Invalid, theme format''); ,}
 
-            const name = newName || theme.name || 'Imported Theme';''
+            const name = newName || theme.name || 'Imported Theme';
             const uniqueName = this._generateUniqueName(name);
 
-            return this.saveCustomTheme(uniqueName, theme, theme.author || 'imported);''
+            return this.saveCustomTheme(uniqueName, theme, theme.author || 'imported';''
         } catch (error) {
-            console.error('Failed to import theme:', error);
+            console.error('Failed to import theme:', error';
             return false;
     
     /**
@@ -179,8 +179,8 @@ export class CustomThemeManager {
         const duplicatedTheme: Partial<CustomTheme> = {
             ...sourceTheme,
             name: newName,
-            author: sourceTheme.author + ' (copy')';
-           , created: new Date().toISOString( ,};
+            author: sourceTheme.author + ' (copy')',
+    created: new Date().toISOString( ,};
         
         return this.saveCustomTheme(newName, duplicatedTheme);
     }
@@ -252,7 +252,7 @@ export class CustomThemeManager {
         if (!hasRequiredFields) return false;
         
         // 色設定の検証
-        if(!theme.colors? .primary || !Array.isArray(theme.colors.primary) return false;
+        if(!theme.colors?.primary || !Array.isArray(theme.colors.primary) return false;
         
         // パーティクル設定の検証
         if(!theme.particles?.types || !Array.isArray(theme.particles.types) return false;
@@ -268,7 +268,7 @@ export class CustomThemeManager {
      * @private
      */ : undefined
     private _generateThemeId(): string {
-        return `theme_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
+        return `theme_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
     }
     
     /**
@@ -300,8 +300,8 @@ export class CustomThemeManager {
     private _addToHistory(action: ThemeHistoryEntry['action'], themeName: string, themeData: CustomTheme): void { const historyEntry: ThemeHistoryEntry = {
             action,
             themeName,
-            timestamp: new Date().toISOString();
-           , themeId: themeData.id ,};
+            timestamp: new Date().toISOString(),
+    themeId: themeData.id ,};
         this.themeHistory.push(historyEntry);
         
         // 履歴サイズ制限
@@ -314,8 +314,8 @@ export class CustomThemeManager {
      */
     private _persistToStorage(): void { try {
             const data: StorageData = {
-                themes: Array.from(this.customThemes.entries();
-               , history: this.themeHistory };
+                themes: Array.from(this.customThemes.entries(),
+    history: this.themeHistory };
             localStorage.setItem(this.storageKey, JSON.stringify(data);''
         } catch (error) { console.error('Failed to persist themes to storage:', error }
     }
@@ -327,8 +327,8 @@ export class CustomThemeManager {
     createBackup(): string { const backup: ThemeBackup = {
             themes: Array.from(this.customThemes.entries(),
             history: this.themeHistory,
-            timestamp: new Date().toISOString(''';
-           , version: '1.0.0' ,}))
+            timestamp: new Date().toISOString(''',
+    version: '1.0.0' ,}))
         );
         return JSON.stringify(backup, null, 2);
     }
@@ -354,6 +354,6 @@ export class CustomThemeManager {
 
             return true;''
         } catch (error) {
-            console.error('Failed to restore from backup:', error);
+            console.error('Failed to restore from backup:', error';
             return false;''
 }

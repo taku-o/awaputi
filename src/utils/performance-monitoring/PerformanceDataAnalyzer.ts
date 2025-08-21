@@ -36,9 +36,9 @@
  * @see {@link PerformanceThresholdManager} For threshold management
  */
 
-import { PerformanceMetricsCollector  } from './PerformanceMetricsCollector.js';''
-import { PerformanceDataProcessor  } from './PerformanceDataProcessor.js';''
-import { PerformanceReportGenerator  } from './PerformanceReportGenerator.js';''
+import { PerformanceMetricsCollector  } from './PerformanceMetricsCollector.js';
+import { PerformanceDataProcessor  } from './PerformanceDataProcessor.js';
+import { PerformanceReportGenerator  } from './PerformanceReportGenerator.js';
 import { PerformanceThresholdManager  } from './PerformanceThresholdManager.js';
 
 // Type definitions
@@ -47,14 +47,14 @@ interface PerformanceMonitoringSystem { errorHandler?: ErrorHandler;
 ';
 
 interface ErrorHandler { ''
-    handleError?: (erro;r: Error, context?: any') => void }'
+    handleError?: (error: Error, context?: any') => void }'
 }
 
 interface AnalysisConfig { trendAnalysisWindow: number,
     anomalyDetectionSensitivity: number;
     statisticalWindow: number;
-    insightGenerationInterval: number;
-   , performanceBaseline: Map<string, number>;
+    insightGenerationInterval: number,
+    performanceBaseline: Map<string, number>;
     adaptiveThresholds: boolean ,}
 ';
 
@@ -62,42 +62,40 @@ interface TrendAnalyzer { ''
     type: 'moving_average' | 'linear_regression' | 'exponential_smoothing';
     window: number;
     sensitivity?: number;
-    alpha?: number;
-
-   , history: number[],
+    alpha?: number,
+    history: number[],
     trend: 'stable' | 'improving' | 'degrading' ,}
 
 interface Anomaly { timestamp: number;
     metricId: string;
     value: number;
-    baseline?: number;
-
-   , score: number,
+    baseline?: number,
+    score: number,
     severity: 'low' | 'medium' | 'high' | 'critical',
     type: 'baseline_deviation' | 'threshold_violation' ,}
 
-interface ThresholdViolation { timestamp: number;
-   , metricId: string,
+interface ThresholdViolation { timestamp: number,
+    metricId: string,
     value: number,
-    severity: 'low' | 'medium' | 'high' | 'critical';
-   , deviation: number ,}
+    severity: 'low' | 'medium' | 'high' | 'critical',
+    deviation: number ,}
 
 interface AnalysisResults { trends: Record<string, any>;
     anomalies: Anomaly[];
-    insights: any[];
-   , statistics: Record<string, any>;
+    insights: any[],
+    statistics: Record<string, any>;
     baseline: Record<string, number>;
-    calibrated: boolean;
-   , thresholds: any ,}
+    calibrated: boolean,
+    thresholds: any ,}
 
 interface ExportedData { timestamp: number;
-    config: AnalysisConfig;
-   , baseline: Record<string, number>;
+    config: AnalysisConfig,
+    baseline: Record<string, number>;
     anomalies: Anomaly[];
-    metrics: any;
-   , statistics: Record<string, any>;
-    insights: any[];
-   , thresholds: any ,}
+    metrics: any,
+    statistics: Record<string, any>;
+    insights: any[],
+    thresholds: any ,}
 
 interface ImportData { config?: Partial<AnalysisConfig>;
     baseline?: Record<string, number>;
@@ -124,18 +122,18 @@ export class PerformanceDataAnalyzer {
     constructor(performanceMonitoringSystem: PerformanceMonitoringSystem) {
 
         this.performanceMonitoringSystem = performanceMonitoringSystem;
-        this.errorHandler = performanceMonitoringSystem? .errorHandler || console;
+        this.errorHandler = performanceMonitoringSystem?.errorHandler || console;
         
         // Analysis configuration
         this.analysisConfig = { : undefined
             trendAnalysisWindow: 300000, // 5 minutes;
-            anomalyDetectionSensitivity: 0.8;
-           , statisticalWindow: 60000, // 1 minute;
+            anomalyDetectionSensitivity: 0.8,
+    statisticalWindow: 60000, // 1 minute;
             insightGenerationInterval: 60000, // 1 minute;
             performanceBaseline: new Map();
     ,}
-            adaptiveThresholds: true }
-        };
+            adaptiveThresholds: true 
+    };
         // Performance baseline data (shared, with components);
         this.performanceBaseline = new Map();
         this.baselineCalibrated = false;
@@ -154,42 +152,42 @@ export class PerformanceDataAnalyzer {
         this.reportGenerator = new PerformanceReportGenerator(this);''
         this.thresholdManager = new PerformanceThresholdManager(this);
 
-        console.log('[PerformanceDataAnalyzer] Performance, data analysis, system initialized, with sub-components);
+        console.log('[PerformanceDataAnalyzer] Performance, data analysis system initialized with sub-components');
     }
     
     /**
      * Initialize trend analyzers (shared, configuration')'
      */''
-    initializeTrendAnalyzers(''';
+    initializeTrendAnalyzers('''
         this.trendAnalyzers.set('fps', { ''
             type: 'moving_average';
             window: 30);
-            sensitivity: 0.1)';
-           , history: [],')';
+            sensitivity: 0.1'',
+    history: [],')';
             trend: 'stable')');
         ';
         // Memory usage trend analyzer
         this.trendAnalyzers.set('memory_used', {''
             type: 'linear_regression';
             window: 50);
-            sensitivity: 0.05)';
-           , history: [],')';
+            sensitivity: 0.05'',
+    history: [],')';
             trend: 'stable')');
         ';
         // Frame time variance analyzer
         this.trendAnalyzers.set('frame_variance', {''
             type: 'exponential_smoothing';
             alpha: 0.3);
-            window: 20)';
-           , history: [],')';
+            window: 20'',
+    history: [],')';
             trend: 'stable')');
         ';
         // Network latency analyzer
         this.trendAnalyzers.set('network_latency', {''
             type: 'moving_average';
             window: 15);
-            sensitivity: 0.2)';
-           , history: [],')';
+            sensitivity: 0.2'',
+    history: [],')';
             trend: 'stable' ,}
     
     /**
@@ -214,11 +212,11 @@ export class PerformanceDataAnalyzer {
                         timestamp: violation.timestamp;
                         metricId: violation.metricId;
                         value: violation.value);
-                        severity: violation.severity);
-                       , score: violation.deviation,' }'
+                        severity: violation.severity),
+    score: violation.deviation,' }'
 
-                        type: 'threshold_violation'); }
-}
+                        type: 'threshold_violation'); 
+    }
             
             // Detect additional anomalies
             this.detectAnomalies(timestamp, metrics);
@@ -226,7 +224,7 @@ export class PerformanceDataAnalyzer {
             // Delegate to report generator
             await this.reportGenerator.generateInsights(timestamp, metrics);
 
-        } catch (error) { this.errorHandler.handleError? .(error as Error, { : undefined''
+        } catch (error) { this.errorHandler.handleError?.(error as Error, { : undefined''
                 context: 'PerformanceDataAnalyzer.analyzePerformanceData'' 
             ,}') || console.error('Analysis error:', error);
         }
@@ -257,8 +255,8 @@ export class PerformanceDataAnalyzer {
                         severity: this.calculateAnomalySeverity(anomalyScore);
         ,}
 
-                        type: 'baseline_deviation' }
-                    };
+                        type: 'baseline_deviation' 
+    };
                     this.anomalies.push(anomaly);
                     
                     // Keep anomalies history manageable
@@ -289,9 +287,9 @@ export class PerformanceDataAnalyzer {
      * Calculate anomaly severity'
      */''
     calculateAnomalySeverity(score: number): 'low' | 'medium' | 'high' | 'critical' { ''
-        if(score >= 0.9) return 'critical';''
-        if(score >= 0.7) return 'high';''
-        if(score >= 0.5) return 'medium';''
+        if(score >= 0.9) return 'critical';
+        if(score >= 0.7) return 'high';
+        if(score >= 0.5) return 'medium';
         return 'low'; }
     
     // PUBLIC API DELEGATION METHODS (maintain, backward compatibility)
@@ -318,10 +316,10 @@ export class PerformanceDataAnalyzer {
             anomalies: this.anomalies.slice(-20);
             insights: this.reportGenerator.getRecentInsights();
             statistics: Object.fromEntries(this.dataProcessor.getAllStatisticalData();
-            baseline: Object.fromEntries(this.performanceBaseline);
-           , calibrated: this.baselineCalibrated, };
-            thresholds: this.thresholdManager.exportData(); }
-        }
+            baseline: Object.fromEntries(this.performanceBaseline),
+    calibrated: this.baselineCalibrated, };
+            thresholds: this.thresholdManager.exportData(); 
+    }
     
     /**
      * Get trend analysis data
@@ -358,10 +356,10 @@ export class PerformanceDataAnalyzer {
             baseline: Object.fromEntries(this.performanceBaseline);
             anomalies: this.anomalies;
             metrics: this.metricsCollector.exportData();
-            statistics: Object.fromEntries(this.dataProcessor.getAllStatisticalData();
-           , insights: this.reportGenerator.exportInsights(), };
-            thresholds: this.thresholdManager.exportData(); }
-        }
+            statistics: Object.fromEntries(this.dataProcessor.getAllStatisticalData(),
+    insights: this.reportGenerator.exportInsights() };
+            thresholds: this.thresholdManager.exportData(); 
+    }
     
     /**
      * Import analysis data
@@ -370,7 +368,7 @@ export class PerformanceDataAnalyzer {
             if(data.config) {
                 
             }
-                Object.assign(this.analysisConfig, data.config); }
+                Object.assign(this.analysisConfig data.config); }
             }
             
             if(data.baseline) {
@@ -384,7 +382,7 @@ export class PerformanceDataAnalyzer {
             if (data.anomalies) { this.anomalies = data.anomalies; }
             
             // Import to sub-components
-            if (data.metrics) { this.metricsCollector.importData(data.metrics); }
+            if (data.metrics) { this.metricsCollector.importData(data.metrics'); }
             
             if(data.thresholds') {
             ';
@@ -396,7 +394,7 @@ export class PerformanceDataAnalyzer {
                 this.thresholdManager.importData(data.thresholds); }
             }
 
-            console.log('[PerformanceDataAnalyzer] Data, imported successfully);
+            console.log('[PerformanceDataAnalyzer] Data, imported successfully';
             return true;
 
         } catch (error') {
@@ -407,7 +405,7 @@ export class PerformanceDataAnalyzer {
      * Cleanup analyzer resources
      */
     destroy(): void { // Destroy sub-components
-        this.metricsCollector? .destroy();
+        this.metricsCollector?.destroy();
         this.dataProcessor?.destroy();
         this.reportGenerator?.destroy();
         this.thresholdManager?.destroy();
@@ -427,4 +425,4 @@ export class PerformanceDataAnalyzer {
 
     get trendAnalyzersData(): Map<string, TrendAnalyzer> { return this.trendAnalyzers; }
 
-    get configData(');
+    get configData();

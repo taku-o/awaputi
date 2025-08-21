@@ -7,8 +7,8 @@ interface BubbleData { id: string,
     x: number;
     y: number;
     radius: number;
-    color: string;
-   , type: string, }
+    color: string,
+    type: string, }
     velocity: { x: number;, y: number },
     timestamp: number;
 }
@@ -36,11 +36,11 @@ export class MockBubbleDataGenerator {
             y: Math.random() * bounds.height;
             radius: minRadius + Math.random() * (maxRadius - minRadius);
             color: colors[Math.floor(Math.random() * colors.length)];
-            type: types[Math.floor(Math.random() * types.length)];
-           , velocity: {
+            type: types[Math.floor(Math.random() * types.length)],
+    velocity: {
                 x: (Math.random() - 0.5) * 200, };
-                y: (Math.random() - 0.5) * 200 }
-            };
+                y: (Math.random() - 0.5) * 200 
+    };
             timestamp: Date.now();
         }
 ';
@@ -49,7 +49,7 @@ export class MockBubbleDataGenerator {
         return Array.from({ length: count ), () => this.generateBubble(options)) }
     }
 
-    public generateBubblePattern(pattern: 'grid' | 'circle' | 'random', count: number): BubbleData[] { ''
+    public generateBubblePattern(pattern: 'grid' | 'circle' | 'random', count: number': BubbleData[] { ''
         switch(pattern) {'
 
             case 'grid':'';
@@ -73,8 +73,8 @@ export class MockBubbleDataGenerator {
                 ...this.generateBubble(),
                 x: (col + 0.5) * (800 / cols);
         ,}
-                y: (row + 0.5) * (600 / rows); }
-            });
+                y: (row + 0.5) * (600 / rows); 
+    });
         }
 
         return bubbles;
@@ -106,7 +106,7 @@ export class MockBubbleDataGenerator {
 
     private generateId(): string { ' }'
 
-        return `bubble_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9'})`;
+        return `bubble_${Date.now())_${Math.random().toString(36).substr(2, 9'}'`;
 
     }''
 }

@@ -177,7 +177,7 @@ export class OverviewPanel {
      * アクティブシステムを更新
      */'
     private updateActiveSystems(): void { // パーティクル数
-        const particleCount = this.gameEngine.enhancedParticleManager? .getActiveParticleCount()';
+        const particleCount = this.gameEngine.enhancedParticleManager?.getActiveParticleCount()';
         this.setElementText('active-particles', particleCount.toString();
 ';
         // エフェクト数

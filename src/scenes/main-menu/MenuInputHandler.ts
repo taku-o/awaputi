@@ -1,4 +1,4 @@
-import { getErrorHandler  } from '../../utils/ErrorHandler.js';''
+import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 import type { MenuItem } from '../../types/game';
 
 // インターフェース定義
@@ -10,13 +10,13 @@ interface Coordinates { x: number,
 interface ClickableSlider { x: number;
     y: number;
     width: number;
-    height: number;
-   , settingKey: string }
+    height: number,
+    settingKey: string }
 
 interface ClickableButton { x: number;
     y: number;
-    width: number;
-   , height: number;
+    width: number,
+    height: number;
     settingKey?: string;
     isEnabled?: boolean;
     langCode?: string;
@@ -56,8 +56,8 @@ export class MenuInputHandler {
     handleMainMenuClick(;
         event: MouseEvent;
         selectedMenuIndex: number );
-        menuItems: MenuItemWithLabel[]);
-       , onSelectCallback: (index: number) => void;
+        menuItems: MenuItemWithLabel[]),
+    onSelectCallback: (index: number) => void;
     ): boolean { try {
             const canvas = this.gameEngine.canvas as HTMLCanvasElement,
             const coords = this.getClickCoordinates(event);
@@ -97,7 +97,7 @@ export class MenuInputHandler {
             ';
 
             return false;''
-        } catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {)'
+        } catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {''
                 context: 'MenuInputHandler.handleMainMenuClick' ,});
             return false;
     
@@ -105,8 +105,8 @@ export class MenuInputHandler {
      * ユーザー名入力のクリック処理
      */
     handleUsernameInputClick(;
-        event: MouseEvent);
-       , onConfirmCallback: () => void, ;
+        event: MouseEvent),
+    onConfirmCallback: () => void, ;
         onCancelCallback: () => void;
     ): boolean { try {
             const canvas = this.gameEngine.canvas as HTMLCanvasElement,
@@ -151,7 +151,7 @@ export class MenuInputHandler {
             ';
 
             return false;''
-        } catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {)'
+        } catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {''
                 context: 'MenuInputHandler.handleUsernameInputClick' ,});
             return false;
     
@@ -161,8 +161,8 @@ export class MenuInputHandler {
     handleSettingsClick(;
         event: MouseEvent
     );
-        clickableElements: ClickableElements);
-       , settingsCallbacks: SettingsCallbacks;
+        clickableElements: ClickableElements),
+    settingsCallbacks: SettingsCallbacks;
     ): boolean { try {
             const coords = this.getClickCoordinates(event),
             const x = coords.x;
@@ -193,7 +193,7 @@ export class MenuInputHandler {
             if(clickableElements.languageButtons) {
                 for (const, button of, clickableElements.languageButtons) {
                     if(x >= button.x && x <= button.x + button.width && '';
-                        y >= button.y && y <= button.y + button.height) {''
+                        y >= button.y && y <= button.y + button.height' {''
                         this.gameEngine.settingsManager.set('language', button.langCode!);
             }
                         return true;
@@ -203,7 +203,7 @@ export class MenuInputHandler {
             if(clickableElements.qualityButtons) {
                 for (const, button of, clickableElements.qualityButtons) {
                     if(x >= button.x && x <= button.x + button.width && '';
-                        y >= button.y && y <= button.y + button.height) {''
+                        y >= button.y && y <= button.y + button.height' {''
                         this.gameEngine.settingsManager.set('quality', button.qualityCode!);
             }
                         return true;
@@ -211,7 +211,7 @@ export class MenuInputHandler {
             
             // アクションボタンのクリック処理
             return this.handleSettingsActionButtons(x, y, settingsCallbacks);''
-        } catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {)'
+        } catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {''
                 context: 'MenuInputHandler.handleSettingsClick' ,});
             return false;
     
@@ -251,7 +251,7 @@ export class MenuInputHandler {
             ';
 
             return false;''
-        } catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {)'
+        } catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {''
                 context: 'MenuInputHandler.handleSettingsActionButtons' ,});
             return false;
     
@@ -259,8 +259,8 @@ export class MenuInputHandler {
      * データクリア確認画面のクリック処理
      */
     handleDataClearConfirmationClick(;
-        event: MouseEvent);
-       , onDeleteCallback: () => void, ;
+        event: MouseEvent),
+    onDeleteCallback: () => void, ;
         onCancelCallback: () => void;
     ): boolean { try {
             const canvas = this.gameEngine.canvas as HTMLCanvasElement,
@@ -290,7 +290,7 @@ export class MenuInputHandler {
             ';
 
             return false;''
-        } catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {)'
+        } catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {''
                 context: 'MenuInputHandler.handleDataClearConfirmationClick' ,});
             return false;
     
@@ -298,8 +298,8 @@ export class MenuInputHandler {
      * 戻るボタンのクリック処理（汎用）
      */
     handleBackButtonClick(;
-        event: MouseEvent);
-       , onBackCallback: () => void, ;
+        event: MouseEvent),
+    onBackCallback: () => void, ;
         buttonY: number | null = null;
     ): boolean { try {
             const canvas = this.gameEngine.canvas as HTMLCanvasElement,
@@ -321,7 +321,7 @@ export class MenuInputHandler {
             ';
 
             return false;''
-        } catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {)'
+        } catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {''
                 context: 'MenuInputHandler.handleBackButtonClick' ,});
             return false;
     
@@ -338,11 +338,11 @@ export class MenuInputHandler {
                 return this.gameEngine.responsiveCanvasManager.screenToCanvas(event.clientX, event.clientY); else {  // フォールバック: 従来の方法
                 const rect = canvas.getBoundingClientRect(); }
                 return { x: event.clientX - rect.left, };
-                    y: event.clientY - rect.top }
-                };''
+                    y: event.clientY - rect.top 
+    };''
             } catch (error) {
-            this.errorHandler.handleError(error, 'INPUT_ERROR', {)'
-                context: 'MenuInputHandler.getClickCoordinates),' }
+            this.errorHandler.handleError(error, 'INPUT_ERROR', {''
+                context: 'MenuInputHandler.getClickCoordinates',' }
 
             }');
             return { x: 0, y: 0 ,}

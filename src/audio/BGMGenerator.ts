@@ -3,20 +3,20 @@ import { getErrorHandler  } from '../utils/ErrorHandler.js';
 // 音楽スケール型定義
 interface Scales { major: number[],
     minor: number[];
-    pentatonic: number[];
-   , blues: number[] ,}
+    pentatonic: number[],
+    blues: number[] ,}
 
 // 和音進行型定義
 interface ChordProgressions { pop: string[];
     jazz: string[];
-    classical: string[];
-   , ambient: string[] }
+    classical: string[],
+    ambient: string[] }
 
 // リズムパターン型定義
 interface RhythmPatterns { simple: number[];
     complex: number[];
-    syncopated: number[];
-   , ambient: number[] }
+    syncopated: number[],
+    ambient: number[] }
 
 // トラック設定型定義
 interface TrackConfig { style?: string;
@@ -28,14 +28,14 @@ interface TrackConfig { style?: string;
 // メロディ音符型定義
 interface MelodyNote { frequency: number,
     scaleIndex: number;
-    duration: number;
-   , velocity: number ,}
+    duration: number,
+    velocity: number ,}
 
 // ハーモニー音符型定義
 interface HarmonyNote { frequency: number;
     scaleIndex: number;
-    duration: number;
-   , velocity: number }
+    duration: number,
+    velocity: number }
 
 // メロディデータ型定義
 type MelodyData = (MelodyNote | null)[];
@@ -117,15 +117,15 @@ export class BGMGenerator {
                 case 'energetic':'';
                     return, this.generateEnergeticTrack(buffer, trackConfig);''
                 case 'exciting':'';
-                    return, this.generateExcitingTrack(buffer, trackConfig};''
-                case 'dramatic':;
+                    return, this.generateExcitingTrack(buffer, trackConfig}''
+                case 'dramatic': ;
                     return this.generateDramaticTrack(buffer, trackConfig}
                 default: }
                     return this.generateAmbientTrack(buffer, trackConfig});
 
-            } catch (error) { getErrorHandler(').handleError(error as Error, 'BGM_GENERATOR_ERROR', {)'
+            } catch (error) { getErrorHandler().handleError(error as Error, 'BGM_GENERATOR_ERROR', {''
                 operation: 'generateTrack',);
-                trackConfig: trackConfig ,});
+                trackConfig: trackConfig ,}';
             return null;
     
     /**
@@ -193,7 +193,7 @@ export class BGMGenerator {
         // エネルギッシュな和声進行
         const progression = this.chordProgressions.pop;
         const scale = this.scales.major;''
-        const rootFreq = this.getFrequencyFromNote(config.key || 'G', 3);''
+        const rootFreq = this.getFrequencyFromNote(config.key || 'G', 3';''
         const bassRootFreq = this.getFrequencyFromNote(config.key || 'G', 2);
         
         for(let, i = 0; i < buffer.length; i++) {
@@ -258,7 +258,7 @@ export class BGMGenerator {
         // 高エネルギーな進行
         const progression = ['i', 'VI', 'III', 'VII']; // マイナーキーでのドラマチックな進行
         const scale = this.scales.minor;''
-        const rootFreq = this.getFrequencyFromNote(config.key || 'D', 3);''
+        const rootFreq = this.getFrequencyFromNote(config.key || 'D', 3';''
         const bassRootFreq = this.getFrequencyFromNote(config.key || 'D', 2);
         
         for(let, i = 0; i < buffer.length; i++) {
@@ -349,7 +349,7 @@ export class BGMGenerator {
                     // アタックエンベロープ（弦楽器風）
                     const noteLength = 4; // 4秒のノート
                     const noteProgress = (t % noteLength) / noteLength;
-                    const envelope = noteProgress < 0.1 ?   : undefined
+                    const envelope = noteProgress < 0.1 ? undefined : undefined
                         noteProgress * 10 : // 0.1秒でアタック;
                         Math.exp(-(noteProgress - 0.1) * 2); // その後指数減衰
         
@@ -419,7 +419,7 @@ export class BGMGenerator {
     
     /**'
      * 和音の周波数を取得''
-     * @param chordSymbol - 和音記号 ('I', 'ii', 'V' など)
+     * @param chordSymbol - 和音記号 ('I', 'ii', 'V' など'
      * @param rootFreq - 根音の周波数
      * @param scale - 使用するスケール
      * @returns 和音の周波数配列'
@@ -467,11 +467,11 @@ export class BGMGenerator {
                 const frequency = rootFreq * Math.pow(2, scale[scaleIndex] / 12);
                 
                 melody.push({)
-                    frequency: frequency);
-                   , scaleIndex: scaleIndex,);
+                    frequency: frequency),
+    scaleIndex: scaleIndex,);
                     duration: 1, // 相対的な長さ }
-                    velocity: 0.7 + Math.random() * 0.3 // ランダムなベロシティ }
-                });
+                    velocity: 0.7 + Math.random() * 0.3 // ランダムなベロシティ 
+    });
             } else { melody.push(null); // 休符 }
         }
         
@@ -532,8 +532,8 @@ export class BGMGenerator {
                     scaleIndex: harmonyNote;
             ,}
                     duration: note.duration, }
-                    velocity: note.velocity * 0.7 // ハーモニーは少し小さく }
-                });
+                    velocity: note.velocity * 0.7 // ハーモニーは少し小さく 
+    });
             } else { harmony.push(null); }
         });
         

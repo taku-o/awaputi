@@ -4,10 +4,10 @@
  * LocalizationManagerとの統合、言語フォールバック、コンテンツ同期を提供
  */
 
-import { getLocalizationManager  } from '../LocalizationManager.js';''
-import { LoggingSystem  } from '../LoggingSystem.js';''
-import { ErrorHandler  } from '../../utils/ErrorHandler.js';''
-import { ContentLoader, getContentLoader  } from './ContentLoader.js';''
+import { getLocalizationManager  } from '../LocalizationManager.js';
+import { LoggingSystem  } from '../LoggingSystem.js';
+import { ErrorHandler  } from '../../utils/ErrorHandler.js';
+import { ContentLoader, getContentLoader  } from './ContentLoader.js';
 import { SearchEngine, getSearchEngine  } from './SearchEngine.js';
 
 // 型定義
@@ -15,10 +15,10 @@ export interface LocalizationManager { getCurrentLanguage(): string;
     on?(event: string, callback: Function): void,
     // その他必要なメソッド 
 export interface MultilingualConfig { supportedLanguages: string[],
-    defaultLanguage: string;
-   , fallbackChain: Record<string, string[]>,
-    autoTranslateThreshold: number;
-   , contentSyncInterval: number ,}
+    defaultLanguage: string,
+    fallbackChain: Record<string, string[]>,
+    autoTranslateThreshold: number,
+    contentSyncInterval: number ,}
 
 export interface LanguageStats { contentCoverage: Map<string, number>,
     translationQuality: Map<string, number>,
@@ -28,26 +28,26 @@ export interface LanguageStats { contentCoverage: Map<string, number>,
 export interface ContentCoverageInfo { language: string,
     totalContent: number;
     availableContent: number;
-    coverage: number;
-   , missingContent: string[] ,}
+    coverage: number,
+    missingContent: string[] ,}
 
 export interface TranslationResult { success: boolean;
     translatedText: string;
     confidence: number;
     fallbackUsed: boolean;
-    sourceLanguage: string;
-   , targetLanguage: string }
+    sourceLanguage: string,
+    targetLanguage: string }
 
 export interface ContentSyncResult { language: string;
     synced: number;
-    failed: number;
-   , errors: string[] }
+    failed: number,
+    errors: string[] }
 
 export interface LanguageContent { helpContent: any;
     tutorialData: any[];
     faqData: any[];
-    lastUpdated: number;
-   , version: string }
+    lastUpdated: number,
+    version: string }
 
 /**
  * 多言語コンテンツ管理クラス
@@ -71,7 +71,7 @@ export class MultilingualContentManager {
         this.localizationManager = localizationManager || getLocalizationManager();
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         this.contentLoader = getContentLoader();''
-        this.searchEngine = getSearchEngine(''';
+        this.searchEngine = getSearchEngine('''
             supportedLanguages: ['ja', 'en', 'zh-CN', 'zh-TW', 'ko'],
             defaultLanguage: 'ja',
             fallbackChain: {'', 'ja': ['en'],
@@ -116,9 +116,9 @@ export class MultilingualContentManager {
             await this.loadLanguageContent(currentLanguage);
             // 言語変更イベントの監視
             this.setupLanguageChangeListeners()';
-            this.loggingSystem.info('MultilingualContentManager', 'Multilingual content manager initialized successfully);''
+            this.loggingSystem.info('MultilingualContentManager', 'Multilingual content manager initialized successfully';''
         } catch (error) {
-            this.loggingSystem.error('MultilingualContentManager', 'Failed to initialize multilingual content manager', error);''
+            this.loggingSystem.error('MultilingualContentManager', 'Failed to initialize multilingual content manager', error';''
             ErrorHandler.handle(error, 'MultilingualContentManager.initialize''); }
     }
 
@@ -128,9 +128,9 @@ export class MultilingualContentManager {
      * @param contentId - コンテンツID（オプション）
      * @returns ヘルプコンテンツ'
      */''
-    async getHelpContent(language: string = 'ja', contentId?: string): Promise<any> { try {
+    async getHelpContent(language: string = 'ja', contentId?: string': Promise<any> { try {
             // キャッシュから確認
-            const cached = this.getCachedContent(language, 'help);''
+            const cached = this.getCachedContent(language, 'help';''
             if(cached && (!contentId || this.hasContentId(cached, contentId)) {''
                 this.loggingSystem.debug('MultilingualContentManager', `Help content loaded from cache: ${language,}`}, }
                 return contentId ? this.extractContentById(cached, contentId}) : cached;
@@ -139,14 +139,14 @@ export class MultilingualContentManager {
             // コンテンツローダーから取得を試行
             try {'
                 const content = await this.contentLoader.loadHelpContent(language);''
-                this.setCachedContent(language, 'help', content);
+                this.setCachedContent(language, 'help', content';
                 ';
 
                 return contentId ? this.extractContentById(content, contentId) : content;' }'
 
             } catch (error) { }
 
-                this.loggingSystem.warn('MultilingualContentManager', `Failed to load help content for ${language}, trying fallback`);
+                this.loggingSystem.warn('MultilingualContentManager', `Failed to load help content for ${language}, trying fallback`';
                 ';
                 // フォールバック言語を試行
                 const fallbackContent = await this.tryFallbackLanguages(language, 'help', contentId);
@@ -159,7 +159,7 @@ export class MultilingualContentManager {
                 throw error;''
             } catch (error) { }
 
-            this.loggingSystem.error('MultilingualContentManager', `Failed to get help content: ${language}`, error);
+            this.loggingSystem.error('MultilingualContentManager', `Failed to get help content: ${language}`, error';
             throw error;
         }
     }
@@ -170,9 +170,9 @@ export class MultilingualContentManager {
      * @param tutorialId - チュートリアルID（オプション）
      * @returns チュートリアルコンテンツ'
      */''
-    async getTutorialContent(language: string = 'ja', tutorialId?: string): Promise<any> { try {
+    async getTutorialContent(language: string = 'ja', tutorialId?: string': Promise<any> { try {
             // キャッシュから確認
-            const cached = this.getCachedContent(language, 'tutorial);''
+            const cached = this.getCachedContent(language, 'tutorial';''
             if(cached && (!tutorialId || this.hasTutorialId(cached, tutorialId)) {''
                 this.loggingSystem.debug('MultilingualContentManager', `Tutorial content loaded from cache: ${language,}`}, }
                 return tutorialId ? this.extractTutorialById(cached, tutorialId}) : cached;
@@ -181,14 +181,14 @@ export class MultilingualContentManager {
             // コンテンツローダーから取得を試行
             try {'
                 const content = await this.contentLoader.loadTutorialData(language);''
-                this.setCachedContent(language, 'tutorial', content);
+                this.setCachedContent(language, 'tutorial', content';
                 ';
 
                 return tutorialId ? this.extractTutorialById(content, tutorialId) : content;' }'
 
             } catch (error) { }
 
-                this.loggingSystem.warn('MultilingualContentManager', `Failed to load tutorial content for ${language}, trying fallback`);
+                this.loggingSystem.warn('MultilingualContentManager', `Failed to load tutorial content for ${language}, trying fallback`';
                 ';
                 // フォールバック言語を試行
                 const fallbackContent = await this.tryFallbackLanguages(language, 'tutorial', tutorialId);
@@ -201,7 +201,7 @@ export class MultilingualContentManager {
                 throw error;''
             } catch (error) { }
 
-            this.loggingSystem.error('MultilingualContentManager', `Failed to get tutorial content: ${language}`, error);
+            this.loggingSystem.error('MultilingualContentManager', `Failed to get tutorial content: ${language}`, error';
             throw error;
         }
     }
@@ -212,9 +212,9 @@ export class MultilingualContentManager {
      * @param faqId - FAQ ID（オプション）
      * @returns FAQコンテンツ'
      */''
-    async getFAQContent(language: string = 'ja', faqId?: string): Promise<any> { try {
+    async getFAQContent(language: string = 'ja', faqId?: string': Promise<any> { try {
             // キャッシュから確認
-            const cached = this.getCachedContent(language, 'faq);''
+            const cached = this.getCachedContent(language, 'faq';''
             if(cached && (!faqId || this.hasFAQId(cached, faqId)) {''
                 this.loggingSystem.debug('MultilingualContentManager', `FAQ content loaded from cache: ${language,}`}, }
                 return faqId ? this.extractFAQById(cached, faqId}) : cached;
@@ -223,14 +223,14 @@ export class MultilingualContentManager {
             // コンテンツローダーから取得を試行
             try {'
                 const content = await this.contentLoader.loadFAQData(language);''
-                this.setCachedContent(language, 'faq', content);
+                this.setCachedContent(language, 'faq', content';
                 ';
 
                 return faqId ? this.extractFAQById(content, faqId) : content;' }'
 
             } catch (error) { }
 
-                this.loggingSystem.warn('MultilingualContentManager', `Failed to load FAQ content for ${language}, trying fallback`);
+                this.loggingSystem.warn('MultilingualContentManager', `Failed to load FAQ content for ${language}, trying fallback`';
                 ';
                 // フォールバック言語を試行
                 const fallbackContent = await this.tryFallbackLanguages(language, 'faq', faqId);
@@ -243,7 +243,7 @@ export class MultilingualContentManager {
                 throw error;''
             } catch (error) { }
 
-            this.loggingSystem.error('MultilingualContentManager', `Failed to get FAQ content: ${language}`, error);
+            this.loggingSystem.error('MultilingualContentManager', `Failed to get FAQ content: ${language}`, error';
             throw error;
         }
     }
@@ -296,11 +296,11 @@ export class MultilingualContentManager {
                 const info: ContentCoverageInfo = {
                     language,
                     totalContent: 0;
-                    availableContent: 0;
-                   , coverage: 0;
+                    availableContent: 0,
+    coverage: 0;
             ,}
-                    missingContent: [] }
-                };
+                    missingContent: [] 
+    };
                 ';
                 // 各コンテンツタイプの可用性をチェック
                 const contentTypes = ['help', 'tutorial', 'faq'];
@@ -322,7 +322,7 @@ export class MultilingualContentManager {
             this.loggingSystem.info('MultilingualContentManager', `Content coverage analysis completed for ${coverageInfo.length} languages`});
 
         } catch (error) {
-            this.loggingSystem.error('MultilingualContentManager', 'Failed to analyze content coverage', error); }
+            this.loggingSystem.error('MultilingualContentManager', 'Failed to analyze content coverage', error'; }
         
         return coverageInfo;
     }
@@ -335,8 +335,8 @@ export class MultilingualContentManager {
     async syncLanguageContent(language: string): Promise<ContentSyncResult> { const result: ContentSyncResult = {
             language,
             synced: 0;
-            failed: 0;
-           , errors: [] ,};
+            failed: 0,
+    errors: [] ,};
         ';
 
         try {'
@@ -378,10 +378,10 @@ export class MultilingualContentManager {
      * @returns 言語統計情報
      */
     getLanguageStatistics(): LanguageStats { return { contentCoverage: new Map(this.languageStats.contentCoverage),
-            translationQuality: new Map(this.languageStats.translationQuality);
-           , userPreferences: new Map(this.languageStats.userPreferences), };
-            fallbackUsage: new Map(this.languageStats.fallbackUsage); }
-        }
+            translationQuality: new Map(this.languageStats.translationQuality),
+    userPreferences: new Map(this.languageStats.userPreferences), };
+            fallbackUsage: new Map(this.languageStats.fallbackUsage); 
+    }
 
     // ---- プライベートメソッド ----
 
@@ -392,10 +392,10 @@ export class MultilingualContentManager {
     private async loadLanguageContent(language: string): Promise<void> { try {
             const languageContent: LanguageContent = {
                 helpContent: null;
-                tutorialData: [];
-               , faqData: [],
-                lastUpdated: Date.now(''';
-               , version: '1.0.0' ,}))
+                tutorialData: [],
+    faqData: [],
+                lastUpdated: Date.now(''',
+    version: '1.0.0' ,}))
             // 並行してコンテンツを読み込み)
             const [helpContent, tutorialData, faqData] = await Promise.allSettled([);
                 this.contentLoader.loadHelpContent(language),
@@ -409,7 +409,7 @@ export class MultilingualContentManager {
             if (tutorialData.status === 'fulfilled'') { languageContent.tutorialData = tutorialData.value; }
 
             }''
-            if(faqData.status === 'fulfilled) { languageContent.faqData = faqData.value; }'
+            if(faqData.status === 'fulfilled' { languageContent.faqData = faqData.value; }'
             
             this.contentCache.set(language, languageContent);
 
@@ -448,13 +448,13 @@ export class MultilingualContentManager {
     private setCachedContent(language: string, contentType: string, content: any): void { let languageContent = this.contentCache.get(language);
         if(!languageContent) {
             languageContent = {
-                helpContent: null;
-               , tutorialData: [],
+                helpContent: null,
+    tutorialData: [],
                 faqData: [],
                 lastUpdated: Date.now(''
         ,}
 
-                version: '1.0.0' }))
+                version: '1.0.0' })'
         }
 
         ')';
@@ -506,8 +506,8 @@ export class MultilingualContentManager {
                         break;
         
         }
-                    default: continue; }
-                }
+                    default: continue; 
+    }
                 
                 this.setCachedContent(fallbackLang, contentType, content);
                 
@@ -712,7 +712,7 @@ export class MultilingualContentManager {
 
                     this.loggingSystem.info('MultilingualContentManager', `Content loaded for new language: ${newLanguage}`);
 
-                });''
+                }';''
             } catch (error) {
             this.loggingSystem.warn('MultilingualContentManager', 'Failed to setup language change listeners', error); }
     }
@@ -726,7 +726,7 @@ export class MultilingualContentManager {
 
             this.contentVersions.clear();''
             this.syncQueue.clear()';
-            this.loggingSystem.info('MultilingualContentManager', 'Multilingual content manager destroyed);' }
+            this.loggingSystem.info('MultilingualContentManager', 'Multilingual content manager destroyed';' }
 
         } catch (error) {
             this.loggingSystem.error('MultilingualContentManager', 'Failed to destroy multilingual content manager', error); }

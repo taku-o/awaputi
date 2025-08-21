@@ -11,8 +11,8 @@ interface OnboardingConfig { enabled: boolean,
     showOnAccessibilityRequest: boolean;
     skipOption: boolean;
     progressTracking: boolean;
-    adaptiveContent: boolean;
-   , language: string ,}
+    adaptiveContent: boolean,
+    language: string ,}
 
 interface OnboardingStep { id: string;
     title: string;
@@ -20,10 +20,10 @@ interface OnboardingStep { id: string;
     actionRequired: boolean;
     completed: boolean;
     skippable: boolean;
-    duration: number;
-   , content: StepContent;
+    duration: number,
+    content: StepContent;
     validation?: () => boolean;''
-    action?: (') => void; }'
+    action?: () => void; }'
 }
 ';
 
@@ -40,16 +40,16 @@ interface UserPreferences { needsScreenReader: boolean,
     needsLargeText: boolean;
     needsReducedMotion: boolean;
     needsCaptions: boolean;
-    needsSimplifiedUI: boolean;
-   , preferredLanguage: string ,}
+    needsSimplifiedUI: boolean,
+    preferredLanguage: string ,}
 
 interface OnboardingProgress { currentStep: number;
     completedSteps: string[];
     skippedSteps: string[];
     startTime: number;
     lastActiveTime: number;
-    preferences: UserPreferences;
-   , assessmentResults: AssessmentResults
+    preferences: UserPreferences,
+    assessmentResults: AssessmentResults
     }
 ';
 
@@ -60,12 +60,12 @@ interface AssessmentResults { ''
     hearingAbility: 'normal' | 'impaired' | 'deaf' ,}
 
 interface AnimationState { currentAnimation: string | null;
-    isAnimating: boolean;
-   , animationQueue: string[] }
+    isAnimating: boolean,
+    animationQueue: string[] }
 
 // AccessibilityManager interface (minimal, definition);
-interface AccessibilityManager { applyProfile?: (profil;e: any) => void;
-    saveProfile?: (profil;e: any) => void;
+interface AccessibilityManager { applyProfile?: (profile: any) => void;
+    saveProfile?: (profile: any) => void;
     gameEngine?: any; ,}
 }
 
@@ -84,7 +84,7 @@ export class AccessibilityOnboarding {
 
     constructor(accessibilityManager: AccessibilityManager | null) {
         this.accessibilityManager = accessibilityManager;
-        this.gameEngine = accessibilityManager? .gameEngine;
+        this.gameEngine = accessibilityManager?.gameEngine;
         
         // オンボーディング設定
         this.config = { : undefined
@@ -92,13 +92,12 @@ export class AccessibilityOnboarding {
             showOnFirstVisit: true;
             showOnAccessibilityRequest: true;
             skipOption: true;
-            progressTracking: true;
-           , adaptiveContent: true;
-    }
+            progressTracking: true,
+    adaptiveContent: true;
     }
 
-            language: 'ja' }
-        };
+            language: 'ja' 
+    };
         // オンボーディングステップ
         this.onboardingSteps = this.createOnboardingSteps();
         // 進捗状況
@@ -109,14 +108,14 @@ export class AccessibilityOnboarding {
     /**
      * オンボーディングステップの作成'
      */''
-    private createOnboardingSteps(''';
+    private createOnboardingSteps('''
                 id: 'welcome',
                 title: 'アクセシビリティ機能へようこそ',
                 description: 'BubblePopをより快適にプレイするための機能をご案内します';
                 actionRequired: false;
                 completed: false;
-                skippable: false;
-               , duration: 5000,
+                skippable: false,
+    duration: 5000,
                 content: { ''
                     type: 'intro',
                     visual: 'welcome-animation',
@@ -129,28 +128,28 @@ export class AccessibilityOnboarding {
                 description: 'いくつかの質問に答えて、最適な設定を見つけます';
                 actionRequired: true;
                 completed: false;
-                skippable: true;
-               , duration: 60000,
-                content: {)'
-                    type: 'configuration');
-                   , interactive: true ,}
+                skippable: true,
+    duration: 60000,
+                content: {''
+                    type: 'configuration'),
+    interactive: true ,}
 
                 },''
-                action: () => this.runNeedsAssessment(''';
+                action: () => this.runNeedsAssessment('''
                 id: 'visual-support',
                 title: '視覚サポート機能',
                 description: 'コントラスト調整、拡大表示、色覚サポートなど';
                 actionRequired: false;
                 completed: false;
-                skippable: true;
-               , duration: 30000,
+                skippable: true,
+    duration: 30000,
                 content: { ''
-                    type: 'feature',)';
-                    visual: 'visual-features-demo');
-                   , interactive: true ,}
+                    type: 'feature','';
+                    visual: 'visual-features-demo'),
+    interactive: true ,}
 
                 },')'
-                validation: (') => this.progress.preferences.needsHighContrast || ;
+                validation: () => this.progress.preferences.needsHighContrast || ;
                                  this.progress.preferences.needsLargeText;
             },
             
@@ -161,13 +160,13 @@ export class AccessibilityOnboarding {
                 description: 'マウスを使わずにゲームを楽しむ方法';
                 actionRequired: true;
                 completed: false;
-                skippable: true;
-               , duration: 45000,
+                skippable: true,
+    duration: 45000,
                 content: {''
-                    type: 'practice';
-                   , interactive: true ,};
+                    type: 'practice',
+    interactive: true ,};
                 action: () => this.practiceKeyboardNavigation(),
-                validation: (') => this.progress.preferences.needsKeyboardNav;
+                validation: () => this.progress.preferences.needsKeyboardNav;
             },
             
             // スクリーンリーダー
@@ -177,15 +176,15 @@ export class AccessibilityOnboarding {
                 description: '音声読み上げ機能の使い方';
                 actionRequired: false;
                 completed: false;
-                skippable: true;
-               , duration: 40000,
+                skippable: true,
+    duration: 40000,
                 content: {''
                     type: 'feature',
-                    audio: 'screen-reader-guide';
-                   , interactive: true ,}
+                    audio: 'screen-reader-guide',
+    interactive: true ,}
 
                 },''
-                validation: (') => this.progress.preferences.needsScreenReader;
+                validation: () => this.progress.preferences.needsScreenReader;
             },
             
             // 音声・字幕設定
@@ -195,15 +194,15 @@ export class AccessibilityOnboarding {
                 description: '字幕表示と音の視覚化';
                 actionRequired: false;
                 completed: false;
-                skippable: true;
-               , duration: 25000,
+                skippable: true,
+    duration: 25000,
                 content: {''
                     type: 'feature',
-                    visual: 'caption-demo';
-                   , interactive: true ,}
+                    visual: 'caption-demo',
+    interactive: true ,}
 
                 },''
-                validation: (') => this.progress.preferences.needsCaptions;
+                validation: () => this.progress.preferences.needsCaptions;
             },
             
             // 簡素化UI
@@ -213,15 +212,15 @@ export class AccessibilityOnboarding {
                 description: '必要な情報だけを表示する簡素化インターフェース';
                 actionRequired: false;
                 completed: false;
-                skippable: true;
-               , duration: 20000,
+                skippable: true,
+    duration: 20000,
                 content: {''
                     type: 'feature',
-                    visual: 'simplified-ui-demo';
-                   , interactive: true ,}
+                    visual: 'simplified-ui-demo',
+    interactive: true ,}
 
                 },''
-                validation: (') => this.progress.preferences.needsSimplifiedUI;
+                validation: () => this.progress.preferences.needsSimplifiedUI;
             },
             
             // カスタマイズ
@@ -231,34 +230,33 @@ export class AccessibilityOnboarding {
                 description: 'さらに細かい設定を行います';
                 actionRequired: true;
                 completed: false;
-                skippable: true;
-               , duration: 60000,
+                skippable: true,
+    duration: 60000,
                 content: {''
-                    type: 'configuration';
-                   , interactive: true ,}
+                    type: 'configuration',
+    interactive: true ,}
 
                 },''
-                action: () => this.showCustomizationPanel(''';
+                action: () => this.showCustomizationPanel('''
                 id: 'practice',
                 title: '練習してみましょう',
                 description: '設定した機能を使って実際にプレイしてみます';
                 actionRequired: true;
                 completed: false;
-                skippable: true;
-               , duration: 120000,
+                skippable: true,
+    duration: 120000,
                 content: { ')'
-                    type: 'practice');
-                   , interactive: true }
-
-                },')'
-                action: () => this.startPracticeSession(''';
+                    type: 'practice'),
+    interactive: true 
+    },')'
+                action: () => this.startPracticeSession('''
                 id: 'completion',
                 title: '設定完了！',
                 description: 'いつでも設定を変更できます';
                 actionRequired: false;
                 completed: false;
-                skippable: false;
-               , duration: 10000,
+                skippable: false,
+    duration: 10000,
                 content: { ''
                     type: 'summary',
                     visual: 'completion-animation' ,}
@@ -270,13 +268,13 @@ export class AccessibilityOnboarding {
      * 初期進捗の作成
      */)
     private createInitialProgress(): OnboardingProgress { return { currentStep: 0,
-            completedSteps: [];
-           , skippedSteps: [],
+            completedSteps: [],
+    skippedSteps: [],
             startTime: Date.now(),
-            lastActiveTime: Date.now('' ,};
+            lastActiveTime: Date.now('' ,}
 
-                preferredLanguage: 'ja' }
-            };
+                preferredLanguage: 'ja' 
+    };
             assessmentResults: { ''
                 visualAcuity: 'normal',
                 motorControl: 'normal',
@@ -286,7 +284,7 @@ export class AccessibilityOnboarding {
     
     /**
      * オンボーディングの開始
-     */)'
+     */''
     async start(options: { onComplete?: () => void; onSkip?: () => void } = {}): Promise<void> { ''
         if(this.isActive) {'
 
@@ -315,12 +313,12 @@ export class AccessibilityOnboarding {
      */''
     private createOnboardingUI()';
         this.onboardingContainer = document.createElement('div'');''
-        this.onboardingContainer.className = 'accessibility-onboarding';''
+        this.onboardingContainer.className = 'accessibility-onboarding';
         this.onboardingContainer.setAttribute('role', 'dialog'');''
-        this.onboardingContainer.setAttribute('aria-label', 'アクセシビリティ設定ガイド);
+        this.onboardingContainer.setAttribute('aria-label', 'アクセシビリティ設定ガイド';
         ';
         // スタイル設定
-        this.applyOnboardingStyles(');
+        this.applyOnboardingStyles();
         ';
 
         // 基本構造')'
@@ -365,15 +363,15 @@ export class AccessibilityOnboarding {
     /**
      * スタイルの適用"
      */""
-    private applyOnboardingStyles("): void { ""
+    private applyOnboardingStyles(): void { ""
         const style = document.createElement('style);
         style.textContent = `;
             .accessibility-onboarding {
                 position: fixed;
                 top: 0;
                 left: 0;
-                right: 0;
-               , bottom: 0;
+                right: 0,
+    bottom: 0;
                 z-index: 10000,
                 display: flex;
                 align-items: center,
@@ -383,8 +381,8 @@ export class AccessibilityOnboarding {
                 top: 0;
                 left: 0;
                 right: 0;
-                bottom: 0;
-               , background: rgba(0, 0, 0, 0.8), }
+                bottom: 0,
+    background: rgba(0, 0, 0, 0.8), }
             
             .onboarding-content { position: relative,
                 background: white;
@@ -405,15 +403,15 @@ export class AccessibilityOnboarding {
                 font-size: 1.5rem,
                 color: #333 ,}
             
-            .onboarding-close { background: none;
-               , border: none;
+            .onboarding-close { background: none,
+    border: none;
                 font-size: 2rem,
                 cursor: pointer;
                 color: #666;
                 padding: 0;
                 width: 40px;
-                height: 40px;
-               , display: flex;
+                height: 40px,
+    display: flex;
                 align-items: center,
                 justify-content: center,
                 border-radius: 4px,
@@ -446,11 +444,11 @@ export class AccessibilityOnboarding {
                 margin-bottom: 0.5rem, }
             
             .progress-fill { height: 100%,
-                background: #4CAF50;
-               , transition: width 0.3s ease ,}
+                background: #4CAF50,
+    transition: width 0.3s ease ,}
             
-            .progress-text { font-size: 0.9rem;
-               , color: #666 }
+            .progress-text { font-size: 0.9rem,
+    color: #666 }
             
             .onboarding-controls { display: flex;
                 justify-content: space-between,
@@ -460,16 +458,16 @@ export class AccessibilityOnboarding {
                 border: none;
                 border-radius: 4px,
                 font-size: 1rem,
-                cursor: pointer;
-               , transition: all 0.2s ,}
+                cursor: pointer,
+    transition: all 0.2s ,}
             
-            .btn-primary { background: #2196F3;
-               , color: white }
+            .btn-primary { background: #2196F3,
+    color: white }
             
             .btn-primary:hover { background: #1976D2 }
             
-            .btn-secondary { background: #f0f0f0;
-               , color: #333 }
+            .btn-secondary { background: #f0f0f0,
+    color: #333 }
             
             .btn-secondary:hover { background: #e0e0e0 }
             
@@ -477,16 +475,16 @@ export class AccessibilityOnboarding {
             
             /* アクセシビリティ向けスタイル */
             @media (prefers-reduced-motion: reduce) { * {
-                    animation: none !important;
-                   , transition: none !important }
-            }
+                    animation: none !important,
+    transition: none !important 
+    }
             
             @media (prefers-contrast: high) { .onboarding-content {
                     border: 2px solid black }
                 
-                .btn-primary { background: black;
-                   , color: white }
-            }
+                .btn-primary { background: black,
+    color: white 
+    }
         `;
         document.head.appendChild(style);
     }
@@ -499,7 +497,7 @@ export class AccessibilityOnboarding {
         ';
         // 閉じるボタン
         const closeBtn = this.onboardingContainer.querySelector('.onboarding-close'');''
-        closeBtn? .addEventListener('click', () => this.close());
+        closeBtn?.addEventListener('click', () => this.close());
         ';
         // スキップボタン
         const skipBtn = this.onboardingContainer.querySelector('.btn-skip'');''
@@ -532,8 +530,8 @@ export class AccessibilityOnboarding {
 
             case 'Escape':';
                 if (this.config.skipOption) {''
-                    this.close(''';
-            case 'ArrowLeft':'';
+                    this.close('''
+            case 'ArrowLeft': '';
                 this.previousStep()';
             case 'ArrowRight':);
                 this.nextStep();
@@ -548,7 +546,7 @@ export class AccessibilityOnboarding {
         ';
         // フォーカストラップ
         const focusableElements = this.onboardingContainer.querySelectorAll()';
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]"';
         );
         
         if(focusableElements.length > 0) {
@@ -597,15 +595,15 @@ export class AccessibilityOnboarding {
         if(!this.onboardingContainer) return;
         ';
         // タイトル
-        const title = this.onboardingContainer.querySelector('.onboarding-title);''
+        const title = this.onboardingContainer.querySelector('.onboarding-title';''
         if(title) title.textContent = step.title;
         ';
         // 説明文
-        const description = this.onboardingContainer.querySelector('.onboarding-description);''
+        const description = this.onboardingContainer.querySelector('.onboarding-description';''
         if(description) description.textContent = step.description;
         ';
         // インタラクティブコンテンツ
-        const interactive = this.onboardingContainer.querySelector('.onboarding-interactive) as HTMLElement;''
+        const interactive = this.onboardingContainer.querySelector('.onboarding-interactive' as HTMLElement;''
         if(interactive) {'
 
             interactive.innerHTML = '';
@@ -617,7 +615,7 @@ export class AccessibilityOnboarding {
 }
         ';
         // ビジュアルコンテンツ
-        const visual = this.onboardingContainer.querySelector('.onboarding-visual) as HTMLElement;''
+        const visual = this.onboardingContainer.querySelector('.onboarding-visual' as HTMLElement;''
         if(visual) {'
 
             visual.innerHTML = '';
@@ -669,8 +667,8 @@ export class AccessibilityOnboarding {
         visual.style.cssText = `;
             width: 100%;
             height: 200px;
-            background: #f0f0f0;
-           , display: flex;
+            background: #f0f0f0,
+    display: flex;
             align-items: center,
             justify-content: center,
             border-radius: 4px,
@@ -740,9 +738,9 @@ export class AccessibilityOnboarding {
         ";
         // フォーム変更の監視""
         const form = container.querySelector('form'');''
-        form? .addEventListener('change', (event) => { '
+        form?.addEventListener('change', (event) => { '
             const target = event.target as HTMLInputElement;''
-            if(target.type === 'checkbox) { }'
+            if(target.type === 'checkbox' { }'
                 this.updatePreference(target.name, target.checked); }
 }
     
@@ -768,11 +766,11 @@ export class AccessibilityOnboarding {
         `;
         ";
         // ボタンイベントの設定""
-        const buttons = container.querySelectorAll('.practice-btn);''
+        const buttons = container.querySelectorAll('.practice-btn';''
         buttons.forEach(button => { ');''
             button.addEventListener('click', (event) => {''
                 const target = (event.target, as HTMLElement').getAttribute('data-target'');''
-                const resultSpan = container.querySelector('#selected-button); }'
+                const resultSpan = container.querySelector('#selected-button'; }'
                 if (resultSpan) { }
                     resultSpan.textContent = `ボタン ${target}`;
                 }
@@ -849,7 +847,7 @@ export class AccessibilityOnboarding {
 
         const backBtn = this.onboardingContainer.querySelector('.btn-back'') as HTMLButtonElement;''
         const nextBtn = this.onboardingContainer.querySelector('.btn-next'') as HTMLButtonElement;''
-        const skipBtn = this.onboardingContainer.querySelector('.btn-skip) as HTMLButtonElement;
+        const skipBtn = this.onboardingContainer.querySelector('.btn-skip' as HTMLButtonElement;
         ';
         // 戻るボタン
         if(backBtn) {'
@@ -857,8 +855,8 @@ export class AccessibilityOnboarding {
 
         }
 
-            backBtn.style.visibility = this.currentStepIndex === 0 ? 'hidden' : 'visible'; }
-        }
+            backBtn.style.visibility = this.currentStepIndex === 0 ? 'hidden' : 'visible'; 
+    }
         
         // 次へボタン
         if(nextBtn) {
@@ -879,8 +877,8 @@ export class AccessibilityOnboarding {
 
         }
 
-            skipBtn.style.display = currentStep.skippable && this.config.skipOption ? 'block' : 'none'; }
-}
+            skipBtn.style.display = currentStep.skippable && this.config.skipOption ? 'block' : 'none'; 
+    }
     
     /**
      * 進捗バーの更新
@@ -951,14 +949,14 @@ export class AccessibilityOnboarding {
         const currentStep = this.onboardingSteps[this.currentStepIndex];
         this.progress.skippedSteps.push(currentStep.id);
         
-        this.nextStep(');
+        this.nextStep();
     }
     
     /**
      * オンボーディングの完了'
      */''
     private async complete()';
-        console.log('Completing, accessibility onboarding);
+        console.log('Completing accessibility onboarding);
         
         // 設定の適用
         await this.applySettings();
@@ -971,7 +969,7 @@ export class AccessibilityOnboarding {
         if (this.onCompleteCallback) { this.onCompleteCallback(); }
         
         // UIのクリーンアップ
-        setTimeout(() => { this.cleanup(); }, 2000);
+        setTimeout(() => { this.cleanup(); } 2000);
     }
     
     /**
@@ -979,12 +977,12 @@ export class AccessibilityOnboarding {
      */
     private async applySettings(): Promise<void> { const profile = this.createAccessibilityProfile();
         
-        if(this.accessibilityManager? .applyProfile) {
+        if(this.accessibilityManager?.applyProfile) {
         
             
         
         }
-            await this.accessibilityManager.applyProfile(profile); }
+            await this.accessibilityManager.applyProfile(profile'); }
         }
         
         if (this.accessibilityManager?.saveProfile) { await this.accessibilityManager.saveProfile(profile'); }
@@ -993,12 +991,12 @@ export class AccessibilityOnboarding {
     /**
      * アクセシビリティプロファイルの作成
      */ : undefined''
-    private createAccessibilityProfile(''';
+    private createAccessibilityProfile('''
             name: 'Custom, Profile';
             preferences: this.progress.preferences);
             assessmentResults: this.progress.assessmentResults);
-            createdAt: Date.now();
-           , onboardingCompleted: true;
+            createdAt: Date.now(),
+    onboardingCompleted: true;
         },
     }
     
@@ -1048,7 +1046,7 @@ export class AccessibilityOnboarding {
 
             return saved ? JSON.parse(saved) : null;''
         } catch (error) {
-            console.warn('Failed to load onboarding progress:', error);
+            console.warn('Failed to load onboarding progress:', error';
             return null;
     
     // ステップ固有のアクション実装
@@ -1115,7 +1113,7 @@ export class AccessibilityOnboarding {
         
         // ステップのリセット
         this.onboardingSteps.forEach(step => {  ')'
-            step.completed = false)');
+            step.completed = false'');
 
         ' }'
 
@@ -1136,14 +1134,14 @@ export class AccessibilityOnboarding {
      */''
     setEnabled(enabled: boolean): void { this.config.enabled = enabled;' }'
 
-        console.log(`AccessibilityOnboarding ${enabled ? 'enabled' : 'disabled}`});
+        console.log(`AccessibilityOnboarding ${enabled ? 'enabled' : 'disabled}`}';
     }
     
     /**
      * クリーンアップ'
      */''
     destroy()';
-        console.log('Destroying, AccessibilityOnboarding...);
+        console.log('Destroying, AccessibilityOnboarding...';
         
         if(this.isActive') {
         ';

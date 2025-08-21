@@ -10,12 +10,12 @@ import { Achievement, AchievementProgressResult  } from '../../types/game.js';
 interface ProgressData { [key: string]: any, }
 
 interface ProgressHistoryEntry { timestamp: number,
-    eventType: string;
-   , data: any ,}
+    eventType: string,
+    data: any ,}
 
-interface EventListener { event: string;
-   , callback: (dat;a: any) => void }
-}
+interface EventListener { event: string,
+    callback: (data: any) => void 
+    }
 
 export class ProgressTracker {
     private progressData: ProgressData;
@@ -53,12 +53,12 @@ export class ProgressTracker {
             stagesCleared: 0;
             perfectClears: 0;
             // アイテム関連
-            itemsUsed: 0;
-           , itemsUsedByType: {};
+            itemsUsed: 0,
+    itemsUsedByType: {};
             // その他の統計
             achievementsUnlocked: 0;
-            lastPlayedDate: null;
-           , streakDays: 0;
+            lastPlayedDate: null,
+    streakDays: 0;
         },
     }
 
@@ -227,8 +227,8 @@ export class ProgressTracker {
             
             return { isComplete: result,
                 progress: progress, };
-                achievementId: achievement.id }
-            } catch (error) {
+                achievementId: achievement.id 
+    } catch (error) {
             console.error(`Error evaluating achievement ${achievement.id}:`, error);
             return null;
 
@@ -331,10 +331,10 @@ export class ProgressTracker {
      * 複合条件を評価
      */
     private evaluateCompositeCondition(condition: any): boolean { if (condition.all) {
-            return condition.all.every((subCondition: any) => this.evaluateCondition(subCondition) }
-        }
-        if (condition.any) { return condition.any.some((subCondition: any) => this.evaluateCondition(subCondition) }
-        }
+            return condition.all.every((subCondition: any) => this.evaluateCondition(subCondition) 
+    }
+        if (condition.any) { return condition.any.some((subCondition: any) => this.evaluateCondition(subCondition) 
+    }
         return false;
     }
 

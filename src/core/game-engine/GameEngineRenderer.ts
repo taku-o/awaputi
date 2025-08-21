@@ -24,12 +24,11 @@ export class GameEngineRenderer { private gameEngine: GameEngine }
         this.gameEngine = gameEngine;
         this.screenShake = {
             active: false;
-            duration: 0;
-           , intensity: 0
+            duration: 0,
+    intensity: 0
 }
             elapsed: 0 ;
-}
-        },
+    },
     }
     
     /**
@@ -43,10 +42,10 @@ export class GameEngineRenderer { private gameEngine: GameEngine }
             return; }
         // Canvas をクリア
         this.gameEngine.context.save();
-        this.gameEngine.context.clearRect(0, 0, this.gameEngine.canvas.width, this.gameEngine.canvas.height);
+        this.gameEngine.context.clearRect(0, 0 this.gameEngine.canvas.width this.gameEngine.canvas.height);
         
         // レンダリング最適化開始
-        if (this.gameEngine.renderOptimizer? .optimize) { this.gameEngine.renderOptimizer.optimize(); }
+        if (this.gameEngine.renderOptimizer?.optimize) { this.gameEngine.renderOptimizer.optimize(); }
         // 画面揺れ効果を適用
         if(this.isScreenShakeActive() { this.applyScreenShake(); }
         // エフェクトマネージャーの前処理エフェクト
@@ -65,7 +64,7 @@ export class GameEngineRenderer { private gameEngine: GameEngine }
         // パフォーマンスモニタリング
         if (this.gameEngine.performanceMonitor?.recordRenderTime) { this.gameEngine.performanceMonitor.recordRenderTime(); }
         // デバッグ情報の描画
-        if (this.gameEngine.debugMode && this.gameEngine.debugInterface?.render) { this.gameEngine.debugInterface.render(this.gameEngine.context); }
+        if (this.gameEngine.debugMode && this.gameEngine.debugInterface?.render) { this.gameEngine.debugInterface.render(this.gameEngine.context'); }
     }
     
     /**

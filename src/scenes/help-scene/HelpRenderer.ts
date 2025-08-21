@@ -3,11 +3,11 @@
  * ヘルプレンダラー - ヘルプシーンの描画処理統合管理
  */
 
-import { GameEngine  } from '../../core/GameEngine';''
-import { ResponsiveCanvasManager  } from '../../utils/ResponsiveCanvasManager';''
-import { LocalizationManager  } from '../../i18n/LocalizationManager';''
-import { HelpAccessibilityManager  } from './HelpAccessibilityManager';''
-import { HelpAnimationManager  } from './HelpAnimationManager';''
+import { GameEngine  } from '../../core/GameEngine';
+import { ResponsiveCanvasManager  } from '../../utils/ResponsiveCanvasManager';
+import { LocalizationManager  } from '../../i18n/LocalizationManager';
+import { HelpAccessibilityManager  } from './HelpAccessibilityManager';
+import { HelpAnimationManager  } from './HelpAnimationManager';
 import { HelpTransitionRenderer  } from './HelpAnimationManager';
 
 // レイアウト情報インターフェース
@@ -30,15 +30,15 @@ interface HelpColors { background: string,
     buttonBackground: string;
     buttonHover: string;
     scrollbar: string;
-    scrollbarHover: string;
-   , scrollbarTrack: string ,}
+    scrollbarHover: string,
+    scrollbarTrack: string ,}
 
 // フォントサイズインターフェース
 interface HelpFontSizes { title: number;
     header: number;
     normal: number;
-    small: number;
-   , tiny: number }
+    small: number,
+    tiny: number }
 
 // スクロール状態インターフェース
 interface ScrollState { offset: number;
@@ -47,8 +47,8 @@ interface ScrollState { offset: number;
     viewHeight: number;
     scrollbarWidth: number;
     isDragging: boolean;
-    dragStartY: number;
-   , dragStartOffset: number }
+    dragStartY: number,
+    dragStartOffset: number }
 
 // コンテンツデータインターフェース
 interface ContentData { title?: string;
@@ -61,8 +61,8 @@ interface HelpState { searchQuery: string,
     selectedCategory: string;
     selectedTopicIndex: number;
     isSearching: boolean;
-    searchResults: any[];
-   , currentContent: ContentData | null ,}
+    searchResults: any[],
+    currentContent: ContentData | null ,}
 
 /**
  * Help Renderer
@@ -102,13 +102,13 @@ export class HelpRenderer {
             scrollbarHover: '#777';
     ,}
 
-            scrollbarTrack: '#333' }
-        };
+            scrollbarTrack: '#333' 
+    };
         this.fontSizes = { title: 28,
             header: 20;
             normal: 16;
-            small: 14;
-           , tiny: 12 ,};
+            small: 14,
+    tiny: 12 ,};
         // サイドバースクロール状態
         this.sidebarScroll = { offset: 0,
             maxOffset: 0;
@@ -116,8 +116,8 @@ export class HelpRenderer {
             viewHeight: 0;
             scrollbarWidth: 8;
             isDragging: false;
-            dragStartY: 0;
-           , dragStartOffset: 0 ,};
+            dragStartY: 0,
+    dragStartOffset: 0 ,};
         // レイアウトは動的に計算する
         this.layout = this.getDefaultLayout();
         this.calculateLayout();
@@ -184,21 +184,21 @@ export class HelpRenderer {
         this.layout = { sidebar: {
                 x: margin;
                 y: 110;
-                width: sidebarWidth;
-               , height: contentHeight };
+                width: sidebarWidth,
+    height: contentHeight };
             content: { x: margin + sidebarWidth + spacing;
                 y: 110;
-                width: contentWidth;
-               , height: contentHeight };
+                width: contentWidth,
+    height: contentHeight };
             searchBar: { x: margin;
-                y: 60;
-               , width: sidebarWidth + spacing + contentWidth, // サイドバー左端からコンテンツ右端まで;
+                y: 60,
+    width: sidebarWidth + spacing + contentWidth, // サイドバー左端からコンテンツ右端まで;
                 height: 40 ,};
             backButton: { x: margin;
                 y: backButtonY;
-                width: 100;
-               , height: backButtonHeight }
-        }
+                width: 100,
+    height: backButtonHeight 
+    }
 
     /**
      * メイン描画処理
@@ -208,8 +208,8 @@ export class HelpRenderer {
         state: HelpState;
         accessibilityManager: HelpAccessibilityManager
     );
-        animationManager: HelpAnimationManager);
-       , transitionRenderer: HelpTransitionRenderer;
+        animationManager: HelpAnimationManager),
+    transitionRenderer: HelpTransitionRenderer;
     ): void { ctx.save(),
         
         // レイアウトを再計算（キャンバスサイズ変更に対応）
@@ -246,8 +246,8 @@ export class HelpRenderer {
             this.renderAccessibilityElements(ctx, accessibilityManager);
 
         } catch (error) {
-            console.error('Render error in HelpRenderer:', error);''
-            this.renderErrorMessage(ctx, 'レンダリングエラーが発生しました); }'
+            console.error('Render error in HelpRenderer:', error';''
+            this.renderErrorMessage(ctx, 'レンダリングエラーが発生しました'; }'
 
         ctx.restore();
     }
@@ -258,7 +258,7 @@ export class HelpRenderer {
     private renderTitle(ctx: CanvasRenderingContext2D): void { ctx.fillStyle = this.colors.text; }
 
         ctx.font = `bold ${this.fontSizes.title}px Arial, sans-serif`;''
-        ctx.textAlign = 'center';''
+        ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
 
         const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);''
@@ -300,7 +300,7 @@ export class HelpRenderer {
         // プレースホルダーまたは検索テキスト
         ctx.fillStyle = this.colors.text;
         ctx.font = `${this.fontSizes.normal}px Arial, sans-serif`;''
-        ctx.textAlign = 'left';''
+        ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
 
         const displayText = searchQuery || 'ヘルプを検索... (/')';
@@ -362,7 +362,7 @@ export class HelpRenderer {
         ctx.beginPath();
         ctx.rect(contentArea.x, contentArea.y, contentArea.width, contentArea.height);''
         ctx.clip()';
-            animationManager.getAnimationState('categoryTransition)? .isActive;
+            animationManager.getAnimationState('categoryTransition)?.isActive;
 
         let currentY = sidebar.y + 10 - this.sidebarScroll.offset;
         
@@ -385,7 +385,7 @@ export class HelpRenderer {
 
             if(hasCategoryTransition) {'
 
-                const transition = animationManager.getAnimationState('categoryTransition);''
+                const transition = animationManager.getAnimationState('categoryTransition';''
                 if(transition) {
                     const fromIndex = transition.fromIndex;
 
@@ -415,7 +415,7 @@ export class HelpRenderer {
             // カテゴリ名
             ctx.fillStyle = isSelected ? this.colors.text: this.colors.textSecondary,
             ctx.font = `${isSelected ? 'bold ' : ''}${this.fontSizes.normal}px Arial, sans-serif`;''
-            ctx.textAlign = 'left';''
+            ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
             
             const categoryName = this.gameEngine.localizationManager.t(category.key, category.id);
@@ -483,7 +483,7 @@ export class HelpRenderer {
     /**
      * スクロールバーの描画
      */
-    private renderScrollbar(ctx: CanvasRenderingContext2D, sidebar: { x: number; y: number; width: number;, height: number ): void {
+    private renderScrollbar(ctx: CanvasRenderingContext2D, sidebar: { x: number; y: number; width: number,  height: number ): void {
         const scrollbar = this.sidebarScroll;
         const trackX = sidebar.x + sidebar.width - scrollbar.scrollbarWidth - 3;
         const trackY = sidebar.y + 10;
@@ -532,7 +532,7 @@ export class HelpRenderer {
     /**
      * コンテンツデータ描画
      */
-    public renderContentData(ctx: CanvasRenderingContext2D, contentArea: { x: number; y: number; width: number;, height: number ), contentData: ContentData): void {
+    public renderContentData(ctx: CanvasRenderingContext2D, contentArea: { x: number; y: number; width: number,  height: number ), contentData: ContentData): void {
         let currentY = contentArea.y + 20;
         const maxWidth = contentArea.width - 40;
         // タイトル
@@ -542,7 +542,7 @@ export class HelpRenderer {
             ctx.fillStyle = this.colors.text; }
 
             ctx.font = `bold ${this.fontSizes.header}px Arial, sans-serif`;''
-            ctx.textAlign = 'left';''
+            ctx.textAlign = 'left';
             ctx.textBaseline = 'top';
             
             const titleLines = this.wrapText(ctx, contentData.title, maxWidth);
@@ -620,9 +620,9 @@ export class HelpRenderer {
         // 検索結果ヘッダー
         ctx.fillStyle = this.colors.text;
         ctx.font = `bold ${this.fontSizes.header}px Arial, sans-serif`;''
-        ctx.textAlign = 'left';''
-        ctx.textBaseline = 'top';''
-        ctx.fillText(`検索結果: "${state.searchQuery"}"`, contentArea.x + 20, contentArea.y + 20});
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(`検索結果: "${state.searchQuery"}"`, contentArea.x + 20, contentArea.y + 20}";
         
         ctx.fillStyle = this.colors.textSecondary;
         ctx.font = `${this.fontSizes.small}px Arial, sans-serif`;
@@ -631,12 +631,12 @@ export class HelpRenderer {
         // 検索結果リスト
         let currentY = contentArea.y + 80;
         const itemHeight = 40;", " }"
-        for (let i = 0; i < Math.min(state.searchResults.length, 8); i++"}) { const result = state.searchResults[i];
+        for (let i = 0; i < Math.min(state.searchResults.length, 8); i++"}" { const result = state.searchResults[i];
             // 検索結果では選択状態を表示しない（クリックで直接選択）
             
             // SearchEngineの結果構造に対応"
             const resultData = result.content || result;""
-            const title = resultData.title || result.title || 'Untitled';''
+            const title = resultData.title || result.title || 'Untitled';
             const categoryId = resultData.categoryId || result.categoryId || resultData.category || 'unknown';
             
             // カテゴリ名を翻訳 }
@@ -687,7 +687,7 @@ export class HelpRenderer {
         // ボタンテキスト
         ctx.fillStyle = this.colors.text;
         ctx.font = `bold ${this.fontSizes.normal}px Arial, sans-serif`;''
-        ctx.textAlign = 'center';''
+        ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
         const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);''
@@ -699,31 +699,31 @@ export class HelpRenderer {
     /**
      * コンテンツなしメッセージ'
      */''
-    private renderNoContentMessage(ctx: CanvasRenderingContext2D, contentArea: { x: number; y: number; width: number;, height: number )): void {
+    private renderNoContentMessage(ctx: CanvasRenderingContext2D, contentArea: { x: number; y: number; width: number,  height: number )): void {
         ctx.fillStyle = this.colors.textSecondary }
 
         ctx.font = `${this.fontSizes.normal}px Arial, sans-serif`;''
-        ctx.textAlign = 'center';''
+        ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ';
 
-        ctx.fillText(')';
+        ctx.fillText()';
             'カテゴリとトピックを選択してください');
             contentArea.x + contentArea.width / 2,);
-            contentArea.y + contentArea.height / 2);
+            contentArea.y + contentArea.height / 2';
     }
 
     /**
      * エラーメッセージ描画'
      */''
     private renderErrorMessage(ctx: CanvasRenderingContext2D, message: string): void { ''
-        ctx.fillStyle = 'rgba(255, 0, 0, 0.8)';''
+        ctx.fillStyle = 'rgba(255, 0, 0, 0.8)';
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         
         ctx.fillStyle = this.colors.text; }
 
         ctx.font = `bold ${this.fontSizes.header}px Arial, sans-serif`;''
-        ctx.textAlign = 'center';''
+        ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         
         // Transform行列のスケールを考慮した中央位置
@@ -751,7 +751,7 @@ export class HelpRenderer {
 
             if(ariaInfo) {'
                 // アクセシビリティ情報のオーバーレイ
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';''
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
                 ctx.fillRect(10, ctx.canvas.height - 60, 400, 50);
                 
         
@@ -759,7 +759,7 @@ export class HelpRenderer {
                 ctx.fillStyle = this.colors.text; }
 
                 ctx.font = `${this.fontSizes.small}px Arial, sans-serif`;''
-                ctx.textAlign = 'left';''
+                ctx.textAlign = 'left';
                 ctx.textBaseline = 'top';
                 
                 ctx.fillText(ariaInfo.label, 15, ctx.canvas.height - 55);
@@ -813,13 +813,13 @@ export class HelpRenderer {
      * 角丸矩形描画
      */
     private roundRect(;
-        ctx: CanvasRenderingContext2D;
-       , x: number, ;
+        ctx: CanvasRenderingContext2D,
+    x: number, ;
         y: number, ;
         width: number, ;
         height: number );
-        radius: number);
-       , fill: boolean = true;
+        radius: number),
+    fill: boolean = true;
     ): void { ctx.beginPath(),
         ctx.moveTo(x + radius, y);
         ctx.lineTo(x + width - radius, y);
@@ -985,7 +985,7 @@ export class HelpRenderer {
     /**
      * 点が矩形内にあるかチェック
      */''
-    public isPointInRect(x: number, y: number, rect: { x: number; y: number; width: number;, height: number )): boolean {
+    public isPointInRect(x: number, y: number, rect: { x: number; y: number; width: number,  height: number )): boolean {
         return x >= rect.x && x <= rect.x + rect.width &&;
                y >= rect.y && y <= rect.y + rect.height; }
 

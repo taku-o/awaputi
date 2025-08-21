@@ -3,31 +3,31 @@
  * ヘルプシーンアクセシビリティ管理 - アクセシビリティ機能の統合管理
  */
 
-import { GameEngine  } from '../../core/GameEngine';''
-import { LocalizationManager  } from '../../i18n/LocalizationManager';''
+import { GameEngine  } from '../../core/GameEngine';
+import { LocalizationManager  } from '../../i18n/LocalizationManager';
 import { AccessibilityManager  } from '../../accessibility/AccessibilityManager';
 
 // フォーカス可能要素インターフェース
 interface FocusableElement { id: string,''
-    type: 'input' | 'list' | 'region' | 'button';
-   , label: string ,}
+    type: 'input' | 'list' | 'region' | 'button',
+    label: string ,}
 
 // ARIAラベル情報インターフェース
 interface AriaLabelInfo { label: string;
-    role: string;
-   , description: string }
+    role: string,
+    description: string }
 
 // アクセシビリティ状態インターフェース
 interface AccessibilityState { screenReaderMode: boolean;
     highContrastMode: boolean;
     largeTextMode: boolean;
-    currentFocusIndex: number;
-   , announcementQueueLength: number }
+    currentFocusIndex: number,
+    announcementQueueLength: number }
 
 // アナウンスメント情報インターフェース
 interface Announcement { message: string,''
-    priority: 'polite' | 'assertive';
-   , timestamp: number ,}
+    priority: 'polite' | 'assertive',
+    timestamp: number ,}
 
 /**
  * Help Accessibility Manager
@@ -76,7 +76,7 @@ export class HelpAccessibilityManager {
         this.initialize(); }
     }
 
-    private async initialize(''';
+    private async initialize('''
                 { id: 'searchBar', type: 'input', label: 'help.searchBar.label' ,},''
                 { id: 'categoryList', type: 'list', label: 'help.categoryList.label' ,},''
                 { id: 'topicList', type: 'list', label: 'help.topicList.label' ,},''
@@ -88,7 +88,7 @@ export class HelpAccessibilityManager {
             this.setupAriaLabels();
             // スクリーンリーダー対応の準備
             this.prepareScreenReaderSupport()';
-            console.log('HelpAccessibilityManager, initialized);
+            console.log('HelpAccessibilityManager, initialized';
 
         } catch (error') { console.error('Failed to initialize HelpAccessibilityManager:', error }
     }
@@ -99,31 +99,31 @@ export class HelpAccessibilityManager {
     private setupAriaLabels(): void { ''
         const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
 
-        this.ariaLabels.set('searchBar', {);''
+        this.ariaLabels.set('searchBar', {';''
             label: t('help.accessibility.searchBar', 'ヘルプを検索するための入力フィールド''),
             role: 'searchbox',
-            description: t('help.accessibility.searchBarDesc', 'キーワードを入力してヘルプコンテンツを検索できます);' }
+            description: t('help.accessibility.searchBarDesc', 'キーワードを入力してヘルプコンテンツを検索できます';' }
 
         }');
 
         this.ariaLabels.set('categoryList', { ');''
             label: t('help.accessibility.categoryList', 'ヘルプカテゴリ一覧''),
             role: 'listbox',
-            description: t('help.accessibility.categoryListDesc', '矢印キーで移動、Enterで選択);' }
+            description: t('help.accessibility.categoryListDesc', '矢印キーで移動、Enterで選択';' }
 
         }');
 
         this.ariaLabels.set('topicList', { ');''
             label: t('help.accessibility.topicList', 'トピック一覧''),
             role: 'listbox',
-            description: t('help.accessibility.topicListDesc', '選択されたカテゴリのトピック一覧);' }
+            description: t('help.accessibility.topicListDesc', '選択されたカテゴリのトピック一覧';' }
 
         }');
 
         this.ariaLabels.set('contentArea', { ');''
             label: t('help.accessibility.contentArea', 'ヘルプコンテンツ表示エリア''),
             role: 'region',
-            description: t('help.accessibility.contentAreaDesc', '選択されたトピックの詳細情報);' }
+            description: t('help.accessibility.contentAreaDesc', '選択されたトピックの詳細情報';' }
 
         }');
 
@@ -166,7 +166,7 @@ export class HelpAccessibilityManager {
         // UI調整
         this.enableHighContrastMode();''
         this.enableLargeTextMode()';
-    public announceToScreenReader(message: string, priority: 'polite' | 'assertive' = 'polite): void { ''
+    public announceToScreenReader(message: string, priority: 'polite' | 'assertive' = 'polite': void { ''
         if(this.screenReaderMode && this.accessibilityManager) {', ';
 
         }
@@ -180,7 +180,7 @@ export class HelpAccessibilityManager {
      * Safe method call - prevents errors from undefined methods'
      */''
     private safeCall(obj: any, methodName: string, ...args: any[]): any { try {'
-            if(obj && typeof, obj[methodName] === 'function) {'
+            if(obj && typeof, obj[methodName] === 'function' {'
                 
             }
                 return obj[methodName](...args);
@@ -195,10 +195,10 @@ export class HelpAccessibilityManager {
      * アクセシビリティキーの処理'
      */''
     public handleAccessibilityKeys(event: KeyboardEvent): boolean { // F1: アクセシビリティヘルプ
-        if(event.key === 'F1) {'
+        if(event.key === 'F1' {'
             event.preventDefault();''
             this.showAccessibilityHelp()';
-        if(event.altKey && event.key === 'h) {'
+        if(event.altKey && event.key === 'h' {'
             event.preventDefault();''
             this.announceKeyboardShortcuts()';
         if (event.ctrlKey && event.shiftKey && event.key === '? ') {
@@ -218,10 +218,9 @@ export class HelpAccessibilityManager {
         categories: any[], ;
         selectedCategory: string, ;
         selectedTopicIndex: number );
-        isSearching: boolean);
-
-       , searchResults: any[]';
-    ): void { ''
+        isSearching: boolean),
+    searchResults: any[]';
+    ': void { ''
         if(!this.announceNavigation) return,
 
         let message = '';
@@ -270,7 +269,7 @@ export class HelpAccessibilityManager {
 
             const ariaInfo = this.ariaLabels.get(currentElement.id)!;' }'
 
-            this.announceToScreenReader(`${ariaInfo.label}。${ariaInfo.description}`, 'polite'});
+            this.announceToScreenReader(`${ariaInfo.label}。${ariaInfo.description}`, 'polite'}';
         }
     }
 
@@ -281,9 +280,9 @@ export class HelpAccessibilityManager {
             'Tab：フォーカス移動',
             '/：検索',
             'F1：ヘルプ'')';
-        ].join('、);
+        ].join('、';
 
-        this.announceToScreenReader(`キーボードショートカット：${shortcuts}`, 'polite'});
+        this.announceToScreenReader(`キーボードショートカット：${shortcuts}`, 'polite'}';
     }
 ';
 
@@ -297,7 +296,7 @@ export class HelpAccessibilityManager {
 
         }
 
-            this.safeCall(this.accessibilityManager, 'enableScreenReaderSupport); }'
+            this.safeCall(this.accessibilityManager, 'enableScreenReaderSupport'; }'
         }
         ';
 
@@ -315,7 +314,7 @@ export class HelpAccessibilityManager {
 
         }
 
-            this.safeCall(this.accessibilityManager, 'disableAudioCues); }'
+            this.safeCall(this.accessibilityManager, 'disableAudioCues'; }'
         }
         
         this.disableHighContrastMode();
@@ -375,10 +374,10 @@ export class HelpAccessibilityManager {
     // 状態取得
     public getAccessibilityState(): AccessibilityState { return { screenReaderMode: this.screenReaderMode,
             highContrastMode: this.highContrastMode;
-            largeTextMode: this.largeTextMode;
-           , currentFocusIndex: this.currentFocusIndex, };
-            announcementQueueLength: this.announcementQueue.length }
-        }
+            largeTextMode: this.largeTextMode,
+    currentFocusIndex: this.currentFocusIndex, };
+            announcementQueueLength: this.announcementQueue.length 
+    }
 
     // クリーンアップ
     public destroy(): void { this.disableAccessibilityFeatures();
@@ -400,14 +399,14 @@ export class HelpAccessibilityRenderer {
      * フォーカスインジケーターの描画
      */
     public renderFocusIndicator(;
-        ctx: CanvasRenderingContext2D);
-       , rect: { x: number; y: number; width: number;, height: number ), 
+        ctx: CanvasRenderingContext2D),
+    rect: { x: number; y: number; width: number;, height: number ), 
         focused: boolean = false;
     ): void {
         const state = this.accessibilityManager.getAccessibilityState(),
         if (!focused || !state.screenReaderMode) return;
 
-        ctx.save(''';
+        ctx.save('''
         ctx.strokeStyle = state.highContrastMode ? '#FFFF00' : '#4A90E2';)
         ctx.lineWidth = 3;)
         ctx.setLineDash([5, 5]);
@@ -424,11 +423,11 @@ export class HelpAccessibilityRenderer {
         switch(type) {'
 
         case 'text':'';
-            return '#FFFFFF';''
+            return '#FFFFFF';
         case 'background':'';
-            return '#000000';''
+            return '#000000';
         case 'selected':'';
-            return '#FFFF00';''
+            return '#FFFF00';
         case 'border':'';
             return '#FFFFFF';
         }
@@ -449,27 +448,26 @@ export class HelpAccessibilityRenderer {
      * アクセシブルなテキスト描画
      */
     public renderAccessibleText(;
-        ctx: CanvasRenderingContext2D;
-       , text: string, ;
+        ctx: CanvasRenderingContext2D,
+    text: string, ;
         x: number, ;
-        y: number );
-       , options: { fontSize?: number)
+        y: number ),
+    options: { fontSize?: number)
             color?: string;
             bold?: boolean;
             align?: CanvasTextAlign;
             baseline?: CanvasTextBaseline;
-            outline?: boolean; }
-
-        } = { ): void {''
+            outline?: boolean; 
+    } = { ): void {''
         const fontSize = this.getAccessibleFontSize(options.fontSize || 16);''
-        const color = this.getAccessibleColor(options.color || '#FFFFFF', 'text);
+        const color = this.getAccessibleColor(options.color || '#FFFFFF', 'text';
 
         ctx.save('' }
 
         ctx.font = `${options.bold ? 'bold ' : ''}${fontSize}px Arial, sans-serif`;
 
         ctx.fillStyle = color;''
-        ctx.textAlign = options.align || 'left';''
+        ctx.textAlign = options.align || 'left';
         ctx.textBaseline = options.baseline || 'top';
         );
         // 高コントラストモードでの縁取り)
@@ -484,4 +482,4 @@ export class HelpAccessibilityRenderer {
         ';
 
         ctx.fillText(text, x, y);''
-        ctx.restore(');
+        ctx.restore();

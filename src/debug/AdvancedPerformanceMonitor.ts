@@ -12,7 +12,7 @@ interface GameEngine { performanceOptimizer?: PerformanceOptimizer;
     enhancedEffectManager?: EnhancedEffectManager;
     bubbleManager?: BubbleManager;
     audioManager?: AudioManager;
-    render?: (ct;x: CanvasRenderingContext2D) => void ,}
+    render?: (ctx: CanvasRenderingContext2D) => void ,}
 }
 
 interface PerformanceOptimizer { getCurrentFPS(): number | undefined;
@@ -36,18 +36,18 @@ interface Thresholds { fps: ThresholdValue,
     frameTime: ThresholdValue;
     memory: ThresholdValue;
     gcFrequency: ThresholdValue;
-    drawCalls: ThresholdValue;
-   , updateTime: ThresholdValue
+    drawCalls: ThresholdValue,
+    updateTime: ThresholdValue
     ,}
 
-interface ThresholdValue { warning: number;
-   , critical: number }
+interface ThresholdValue { warning: number,
+    critical: number }
 
 interface Alert { metric: string;
     level: 'warning' | 'critical';
     value: number;
-    timestamp: number;
-   , message: string }
+    timestamp: number,
+    message: string }
 
 interface Metrics { timestamp: number;
     fps: number;
@@ -60,47 +60,47 @@ interface Metrics { timestamp: number;
     particleCount: number;
     effectCount: number;
     entityCount: number;
-    textureMemory: number;
-   , audioNodes: number }
+    textureMemory: number,
+    audioNodes: number }
 ';
 
 interface Chart { ''
     update?(metrics: Metrics'): void,
 
 interface PerformanceIssue { type: string,''
-    severity: 'warning' | 'critical';
-   , description: string;
+    severity: 'warning' | 'critical',
+    description: string;
     autoFix?: string ,}
 
-interface PerformanceSuggestion { type: string;
-   , description: string,
+interface PerformanceSuggestion { type: string,
+    description: string,
     impact: 'low' | 'medium' | 'high' ,}
 ';
 
 interface TrendData { value: number,''
-    direction: 'increasing' | 'decreasing' | 'stable';
-   , percentage: number ,}
+    direction: 'increasing' | 'decreasing' | 'stable',
+    percentage: number ,}
 
 interface PerformanceBottleneck { type: string;
-    ratio: number;
-   , description: string }
+    ratio: number,
+    description: string }
 
 interface PerformancePattern { type: string;
-    period?: number;
-   , description: string }
+    period?: number,
+    description: string }
 
 interface PerformanceAnalysis { issues: PerformanceIssue[];
-    suggestions: PerformanceSuggestion[];
-   , trends: Record<string, TrendData>;
-    bottlenecks: PerformanceBottleneck[];
-   , patterns: PerformancePattern[]
+    suggestions: PerformanceSuggestion[],
+    trends: Record<string, TrendData>;
+    bottlenecks: PerformanceBottleneck[],
+    patterns: PerformancePattern[]
     ,}
 
 interface Statistics { [key: string]: {
         mi;n: number;
         max: number;
-        avg: number;
-       , current: number }
+        avg: number,
+    current: number }
 
 type AlertCallback = (alert: Alert) => void;
 
@@ -257,10 +257,10 @@ export class AdvancedPerformanceMonitor {
         
         }
 
-                this.triggerAlert(metric, 'critical', value);' }
+                this.triggerAlert(metric, 'critical', value';' }
 
             } else if(value > threshold.warning) { ''
-                this.triggerAlert(metric, 'warning', value); }
+                this.triggerAlert(metric, 'warning', value'; }
 
             } else { }'
 
@@ -334,7 +334,7 @@ export class AdvancedPerformanceMonitor {
      */
     private generateSuggestions(suggestions: PerformanceSuggestion[]): void { for (const, suggestion of, suggestions) {' }'
 
-            console.log(`Performance, suggestion: ${suggestion.description}`'});
+            console.log(`Performance, suggestion: ${suggestion.description}`'}';
         }
     }
 
@@ -375,7 +375,7 @@ export class AdvancedPerformanceMonitor {
         if(this.gameEngine.deviceDetector) {
 
             const deviceType = this.gameEngine.deviceDetector.getDeviceType()';
-            if(deviceType === 'mobile) {'
+            if(deviceType === 'mobile' {'
                 this.thresholds.fps.warning = 25;
         }
                 this.thresholds.fps.critical = 15; }
@@ -476,8 +476,8 @@ class MetricsCollector { private monitor: AdvancedPerformanceMonitor
             particleCount: this.getParticleCount();
             effectCount: this.getEffectCount();
             entityCount: this.getEntityCount();
-            textureMemory: this.getTextureMemory();
-           , audioNodes: this.getAudioNodeCount( };
+            textureMemory: this.getTextureMemory(),
+    audioNodes: this.getAudioNodeCount( };
         
         return, metrics;
     }
@@ -598,18 +598,18 @@ class PerformanceAnalyzer { private monitor: AdvancedPerformanceMonitor
      * パフォーマンスの分析
      */
     analyze(metricsHistory: Metrics[]): PerformanceAnalysis { if (metricsHistory.length < 2) { }
-            return { issues: [], suggestions: [], trends: {,}, bottlenecks: [], patterns: [] }
-        }
+            return { issues: [], suggestions: [], trends: {,}, bottlenecks: [], patterns: [] 
+    }
         
         const recentMetrics = metricsHistory.slice(-this.analysisWindow);
         
         const analysis: PerformanceAnalysis = { issues: this.detectIssues(recentMetrics,
             suggestions: this.generateSuggestions(recentMetrics);
             trends: this.analyzeTrends(recentMetrics);
-            bottlenecks: this.identifyBottlenecks(recentMetrics);
-           , patterns: this.detectPatterns(recentMetrics ,};
+            bottlenecks: this.identifyBottlenecks(recentMetrics),
+    patterns: this.detectPatterns(recentMetrics ,};
         
-        return analysis;
+        return analysis
     }
 
     /**
@@ -617,38 +617,38 @@ class PerformanceAnalyzer { private monitor: AdvancedPerformanceMonitor
      */''
     private detectIssues(metrics: Metrics[]): PerformanceIssue[] { const issues: PerformanceIssue[] = [],
         // FPS低下の検出
-        const avgFPS = this.calculateAverage(metrics, 'fps);''
+        const avgFPS = this.calculateAverage(metrics, 'fps';''
         if(avgFPS < 30) {'
             issues.push({)'
                 type: 'low_fps',' }
 
                 severity: avgFPS < 20 ? 'critical' : 'warning'),' 
-                description: `平均FPSが低下しています: ${avgFPS.toFixed(1'}) FPS`;''
+                description: `平均FPSが低下しています: ${avgFPS.toFixed(1'}' FPS`;''
                 autoFix: 'reduce_quality''';
             }'),
         }
         ';
         // メモリリークの可能性
-        const memoryTrend = this.calculateTrend(metrics, 'memory);''
+        const memoryTrend = this.calculateTrend(metrics, 'memory';''
         if(memoryTrend > 0.1) { // 10%以上の増加傾向
             issues.push({''
                 type: 'memory_leak',
-                severity: 'warning',)';
+                severity: 'warning','';
                 description: 'メモリ使用量が継続的に増加しています',' }
 
-                autoFix: 'force_gc')'); }
-        }
+                autoFix: 'force_gc')'); 
+    }
         ';
         // 高い描画負荷
-        const avgDrawCalls = this.calculateAverage(metrics, 'drawCalls);''
+        const avgDrawCalls = this.calculateAverage(metrics, 'drawCalls';''
         if(avgDrawCalls > 100) { '
             issues.push({)'
                 type: 'high_draw_calls',' }
 
                 severity: avgDrawCalls > 200 ? 'critical' : 'warning'),' 
-                description: `描画呼び出しが多すぎます: ${avgDrawCalls.toFixed(0'})`;''
+                description: `描画呼び出しが多すぎます: ${avgDrawCalls.toFixed(0'}'`;''
                 autoFix: 'enable_batching';
-            }),
+            }',
         }
         
         return issues;
@@ -659,24 +659,24 @@ class PerformanceAnalyzer { private monitor: AdvancedPerformanceMonitor
      */''
     private generateSuggestions(metrics: Metrics[]): PerformanceSuggestion[] { const suggestions: PerformanceSuggestion[] = [],
         // パーティクル数に基づく提案
-        const avgParticles = this.calculateAverage(metrics, 'particleCount);''
+        const avgParticles = this.calculateAverage(metrics, 'particleCount';''
         if(avgParticles > 1000) {'
             suggestions.push({''
-                type: 'reduce_particles',)';
+                type: 'reduce_particles','';
                 description: 'パーティクル数を削減することでパフォーマンスが改善される可能性があります',' }
 
-                impact: 'high')'); }
-        }
+                impact: 'high')'); 
+    }
         ';
         // レンダリング時間に基づく提案
-        const avgRenderTime = this.calculateAverage(metrics, 'renderTime);''
+        const avgRenderTime = this.calculateAverage(metrics, 'renderTime';''
         if(avgRenderTime > 10) { '
             suggestions.push({''
-                type: 'optimize_rendering',)';
+                type: 'optimize_rendering','';
                 description: 'レンダリング最適化を有効にすることを推奨します',' }
 
-                impact: 'medium'); }
-        }
+                impact: 'medium'); 
+    }
         
         return suggestions;
     }
@@ -701,8 +701,8 @@ class PerformanceAnalyzer { private monitor: AdvancedPerformanceMonitor
                 direction,
         
         }
-                percentage: trend * 100 }
-            }
+                percentage: trend * 100 
+    }
         
         return trends;
     }
@@ -715,14 +715,13 @@ class PerformanceAnalyzer { private monitor: AdvancedPerformanceMonitor
         // レンダリング vs アップデート
         if(latest.renderTime > latest.updateTime * 2) {'
             bottlenecks.push({)'
-                type: 'rendering')';
-               , ratio: latest.renderTime / latest.updateTime,' }'
+                type: 'rendering')',
+    ratio: latest.renderTime / latest.updateTime,' }'
 
-                description: 'レンダリングがボトルネックになっています');' }
-
-        } else if(latest.updateTime > latest.renderTime * 2) { bottlenecks.push({)'
-                type: 'game_logic')';
-               , ratio: latest.updateTime / latest.renderTime,')';
+                description: 'レンダリングがボトルネックになっています');' 
+    } else if(latest.updateTime > latest.renderTime * 2) { bottlenecks.push({)'
+                type: 'game_logic')',
+    ratio: latest.updateTime / latest.renderTime,')';
                 description: 'ゲームロジックがボトルネックになっています' ,}
         
         return bottlenecks;
@@ -801,12 +800,12 @@ class PerformanceAnalyzer { private monitor: AdvancedPerformanceMonitor
             if (values.length > 0) {
                 stats[key] = {
                     min: Math.min(...values);
-                    max: Math.max(...values);
-                   , avg: this.calculateAverage(metricsHistory, key),
+                    max: Math.max(...values),
+    avg: this.calculateAverage(metricsHistory, key),
         
         }
-                    current: values[values.length - 1] }
-                }
+                    current: values[values.length - 1] 
+    }
         }
         
         return stats;
@@ -819,31 +818,31 @@ interface Profile { component: string,
     startTime: number;
     endTime?: number;
     duration?: number;
-    samples: ProfileSample[];
-   , options: ProfileOptions
+    samples: ProfileSample[],
+    options: ProfileOptions
     ,}
 
 interface ProfileSample { operation: string;
     duration: number;
-    timestamp: number;
-   , memory: number }
+    timestamp: number,
+    memory: number }
 
 interface ProfileOperation { count: number;
     totalTime: number;
     minTime: number;
-    maxTime: number;
-   , avgTime: number }
+    maxTime: number,
+    avgTime: number }
 
 interface ProfileResult { component: string;
     duration: number;
-    sampleCount: number;
-   , operations: Record<string, ProfileOperation>;
+    sampleCount: number,
+    operations: Record<string, ProfileOperation>;
     timeline: TimelineBucket[]
     ,}
 
 interface TimelineBucket { start: number;
-    end: number;
-   , samples: ProfileSample[];
+    end: number,
+    samples: ProfileSample[];
     avgDuration?: number }
 
 /**
@@ -886,10 +885,10 @@ class DetailedProfiler { private monitor: AdvancedPerformanceMonitor
         this.isRunning = true;
         this.currentProfile = { component,
             startTime: performance.now(;
-            samples: [];
-           , options: {
-                sampleRate: this.sampleRate);
-               , maxSamples: this.maxSamples);
+            samples: [],
+    options: {
+                sampleRate: this.sampleRate),
+    maxSamples: this.maxSamples);
                 ...options
         ,};
         
@@ -919,8 +918,8 @@ class DetailedProfiler { private monitor: AdvancedPerformanceMonitor
             // 結果の保存
             this.profiles.set(this.currentProfile.component, this.currentProfile);
             
-            console.log(`Profiling, stopped for ${this.currentProfile.component}`}
-            const, results = this.analyzeProfile(this.currentProfile});
+            console.log(`Profiling stopped for ${this.currentProfile.component}`}
+            const results = this.analyzeProfile(this.currentProfile}');
             this.currentProfile = null;
             
             return results;
@@ -936,8 +935,8 @@ class DetailedProfiler { private monitor: AdvancedPerformanceMonitor
         switch(component') {'
 
             case 'rendering':'';
-                this.hookRenderingFunctions(''';
-            case 'update':'';
+                this.hookRenderingFunctions('''
+            case 'update': '';
                 this.hookUpdateFunctions(''';
             case 'particles':'';
                 this.hookParticleFunctions()';
@@ -945,8 +944,8 @@ class DetailedProfiler { private monitor: AdvancedPerformanceMonitor
                 this.hookCollisionFunctions();
                 break;
         }
-            default: this.hookGenericFunctions(component); }
-}
+            default: this.hookGenericFunctions(component); 
+    }
 
     /**
      * プロファイリングフックの削除
@@ -972,16 +971,16 @@ class DetailedProfiler { private monitor: AdvancedPerformanceMonitor
             }
     }
 
-    private hookUpdateFunctions(): void { // Update functions hook implementation }
+    private hookUpdateFunctions(): void { // Update functions hook implementation 
     }
 
-    private hookParticleFunctions(): void { // Particle functions hook implementation }
+    private hookParticleFunctions(): void { // Particle functions hook implementation 
     }
 
-    private hookCollisionFunctions(): void { // Collision functions hook implementation }
+    private hookCollisionFunctions(): void { // Collision functions hook implementation 
     }
 
-    private hookGenericFunctions(component: string): void { // Generic functions hook implementation }
+    private hookGenericFunctions(component: string): void { // Generic functions hook implementation 
     }
 
     /**
@@ -992,8 +991,8 @@ class DetailedProfiler { private monitor: AdvancedPerformanceMonitor
         const sample: ProfileSample = {
             operation,
             duration,
-            timestamp: performance.now() - this.currentProfile.startTime;
-           , memory: (performance, as any).memory ? (performance, as any).memory.usedJSHeapSize : 0 ,};
+            timestamp: performance.now() - this.currentProfile.startTime,
+    memory: (performance, as any).memory ? (performance, as any).memory.usedJSHeapSize : 0 ,};
         this.currentProfile.samples.push(sample);
         
         // サンプル数の制限
@@ -1012,11 +1011,11 @@ class DetailedProfiler { private monitor: AdvancedPerformanceMonitor
                 operations[sample.operation] = {
                     count: 0;
                     totalTime: 0;
-                    minTime: Infinity;
-                   , maxTime: 0;
+                    minTime: Infinity,
+    maxTime: 0;
         }
-                    avgTime: 0 }
-                }
+                    avgTime: 0 
+    }
             
             const op = operations[sample.operation];
             op.count++;
@@ -1029,11 +1028,11 @@ class DetailedProfiler { private monitor: AdvancedPerformanceMonitor
         for(const, op of, Object.values(operations) { op.avgTime = op.totalTime / op.count; }
         
         return { component: profile.component,
-            duration: profile.duration || 0;
-           , sampleCount: profile.samples.length;
+            duration: profile.duration || 0,
+    sampleCount: profile.samples.length;
             operations, };
-            timeline: this.generateTimeline(profile); }
-        }
+            timeline: this.generateTimeline(profile); 
+    }
 
     /**
      * タイムラインの生成
@@ -1047,8 +1046,8 @@ class DetailedProfiler { private monitor: AdvancedPerformanceMonitor
         
             const bucket: TimelineBucket = {
                 start: i;
-                end: i + bucketSize;
-               , samples: profile.samples.filter(s => )
+                end: i + bucketSize,
+    samples: profile.samples.filter(s => )
         ,}
                     s.timestamp >= i && s.timestamp < i + bucketSize), }
             };

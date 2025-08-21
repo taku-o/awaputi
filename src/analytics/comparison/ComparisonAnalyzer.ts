@@ -6,7 +6,7 @@
 
 // TypeScript interfaces and types
 export interface AnalysisOptions {
-    timeRange?: { star;t: Date, end: Date 
+    timeRange?: { start: Date, end: Date 
 ,}
     filters?: Record<string, any>;
     metrics?: string[];
@@ -26,12 +26,11 @@ export class ComparisonAnalyzer {
             priorityWeights: {
                 score: 3;
                 accuracy: 2;
-                completionRate: 2;
-               , playTime: 1
+                completionRate: 2,
+    playTime: 1
 ,}
                 maxCombo: 1 ;
-}
-        },
+    },
         
         // 改善提案設定
         this.suggestionTemplates = { score: {
@@ -67,8 +66,8 @@ export class ComparisonAnalyzer {
             timeHorizon = 7 // days } = options;
 
         const suggestions = { summary: this.generateSuggestionSummary(comparisonResult),
-            targetAreas: this.identifyWeakAreas(comparisonResult);
-           , strongAreas: this.identifyStrongAreas(comparisonResult ,};
+            targetAreas: this.identifyWeakAreas(comparisonResult),
+    strongAreas: this.identifyStrongAreas(comparisonResult ,};
 
         if(includeActionPlan) {
 
@@ -115,8 +114,8 @@ export class ComparisonAnalyzer {
                     weakAreas.push({''
                         type: 'past_comparison';
                         metric: metric);
-                        currentValue: data.current);
-                       , previousValue: data.past,)
+                        currentValue: data.current),
+    previousValue: data.past,)
     }
                         decline: data.changePercent);
 }
@@ -130,13 +129,13 @@ export class ComparisonAnalyzer {
         if(comparisonResult.benchmarkComparison && comparisonResult.benchmarkComparison.available) {
 
             Object.entries(comparisonResult.benchmarkComparison.metrics).forEach(([metric, data]) => { ''
-                if(data.performance === 'below_average' && data.percentileRank < 25) {'
+                if(data.performance === 'below_average' && data.percentileRank < 25' {'
                     weakAreas.push({''
                         type: 'benchmark_comparison';
                         metric: metric;
                         currentValue: data.current);
-                        benchmarkValue: data.benchmark.median);
-                       , percentileRank: data.percentileRank,)
+                        benchmarkValue: data.benchmark.median),
+    percentileRank: data.percentileRank,)
         }
                         improvementPotential: data.differencePercent);
 }
@@ -150,20 +149,20 @@ export class ComparisonAnalyzer {
         if(comparisonResult.stageComparison && comparisonResult.stageComparison.stageComparisons) {
 
             Object.entries(comparisonResult.stageComparison.stageComparisons).forEach(([stageId, stageData]) => { ''
-                if(stageData.performance && stageData.performance.grade === 'D) {'
+                if(stageData.performance && stageData.performance.grade === 'D' {'
                     const worstMetric = this.findWorstStageMetric(stageData);''
                     if(worstMetric) {'
                         weakAreas.push({''
                             type: 'stage_performance';
                             stageId: stageId;
-                            metric: worstMetric.metric);
-                           , currentValue: worstMetric.value)
+                            metric: worstMetric.metric),
+    currentValue: worstMetric.value'
         ,}
 
                             weakness: worstMetric.weakness,') }'
 
-                            priority: 'high'); }
-});
+                            priority: 'high'); 
+    });
         }
         
         // 優先度でソート
@@ -189,12 +188,12 @@ export class ComparisonAnalyzer {
             Object.entries(comparisonResult.pastComparison.metrics).forEach(([metric, data]) => { ''
                 if (data.trend === 'improved' && Math.abs(data.changePercent) > this.analysisConfig.strongAreaThreshold) {'
                     strongAreas.push({''
-                        type: 'past_comparison);
-                       , metric: metric)
+                        type: 'past_comparison),
+    metric: metric)
     ,}
                         currentValue: data.current,) }
-                        improvement: data.changePercent); }
-                    });
+                        improvement: data.changePercent); 
+    });
                 }
             });
         }
@@ -203,14 +202,14 @@ export class ComparisonAnalyzer {
         if(comparisonResult.benchmarkComparison && comparisonResult.benchmarkComparison.available) {
 
             Object.entries(comparisonResult.benchmarkComparison.metrics).forEach(([metric, data]) => { ''
-                if(data.performance === 'above_average' && data.percentileRank > 75) {'
+                if(data.performance === 'above_average' && data.percentileRank > 75' {'
                     strongAreas.push({''
-                        type: 'benchmark_comparison);
-                       , metric: metric)
+                        type: 'benchmark_comparison),
+    metric: metric)
         ,}
                         currentValue: data.current,) }
-                        percentileRank: data.percentileRank); }
-                    });
+                        percentileRank: data.percentileRank); 
+    });
                 }
             });
         }
@@ -229,12 +228,11 @@ export class ComparisonAnalyzer {
     createActionPlan(targetAreas, strongAreas, difficultyPreference, timeHorizon) {
         const plan = {
             immediate: [];
-            shortTerm: [];
-           , longTerm: []
+            shortTerm: [],
+    longTerm: []
 }
             leverage: [] ;
-}
-        },
+    },
         
         // 弱点改善アクション
         targetAreas.slice(0, 3).forEach((area, index) => {  const metricInfo = this.getMetricInfo(area.metric);
@@ -244,8 +242,8 @@ export class ComparisonAnalyzer {
                 metric: area.metric;
                 priority: area.priority;
                 currentValue: area.currentValue;
-                targetImprovement: this.calculateTargetImprovement(area);
-               , actions: this.generateMetricSpecificActions(area, metricInfo, difficultyPreference, timeHorizon),
+                targetImprovement: this.calculateTargetImprovement(area),
+    actions: this.generateMetricSpecificActions(area, metricInfo, difficultyPreference, timeHorizon),
                 estimatedEffort: this.estimateEffort(area, difficultyPreference), }
                 expectedTimeframe: this.calculateActionTimeframe(difficultyPreference, timeHorizon); }
             };
@@ -273,35 +271,34 @@ export class ComparisonAnalyzer {
         if(template) {
             // 基本アクション
             actions.push({)'
-                type: 'practice',)';
+                type: 'practice','';
                 description: template[difficultyPreference]),
                 frequency: this.calculatePracticeFrequency(difficultyPreference, difficultyPreference),
 
     }
 
                 duration: '15-30分' ;
-}
-            }),
+    }),
             // 追加アクション（メトリック別）
             switch(area.metric) { '
 
                 case 'score':';
                     actions.push({''
-                        type: 'technique',)';
+                        type: 'technique','';
                         description: 'コンボボーナスを意識したプレイ',')';
                         focus: 'コンボ継続とスコア倍率の理解')');
                     break;
 
                 case 'accuracy':';
                     actions.push({''
-                        type: 'drill',)';
+                        type: 'drill','';
                         description: 'タイミング精度向上ドリル',')';
                         focus: '音楽に合わせたリズム感の向上')');
                     break;
 
                 case 'completionRate':';
                     actions.push({''
-                        type: 'strategy',)';
+                        type: 'strategy','';
                         description: '難関セクションの段階的攻略',')';
                         focus: 'パターン認識と対策の習得' ,}
                     break; }
@@ -336,8 +333,8 @@ export class ComparisonAnalyzer {
                 currentValue: area.currentValue;
 }
                 expectedImprovement: `${improvementRate}%`;
-                weeklyMilestone: weeklyProgress;
-               , confidence: this.calculateConfidence(area, timeHorizon);
+                weeklyMilestone: weeklyProgress,
+    confidence: this.calculateConfidence(area, timeHorizon);
             });
         
         return outcomes;
@@ -375,8 +372,7 @@ export class ComparisonAnalyzer {
                 rapidImprovement: '予想以上の改善が見られた場合は、目標を上方修正',' };
 
                 plateau: '成長が停滞した場合は、新しいチャレンジを追加' ;
-}
-        },
+    },
     }
     
     /**
@@ -388,12 +384,11 @@ export class ComparisonAnalyzer {
      */
     generateMotivationalElements(strongAreas, targetAreas, comparisonResult) {
         const elements = {
-            achievements: [];
-           , encouragement: []
+            achievements: [],
+    encouragement: []
 }
             milestones: [] ;
-}
-        },
+    },
         
         // 達成事項の認識
         if(strongAreas.length > 0) {
@@ -488,7 +483,7 @@ export class ComparisonAnalyzer {
         const weight = this.analysisConfig.priorityWeights[metric] || 1;
         const score = Math.abs(changePercent) * weight;
 
-        if(score >= 30) return 'high';''
+        if(score >= 30) return 'high';
         if(score >= 15) return 'medium';
 
     }
@@ -517,7 +512,7 @@ export class ComparisonAnalyzer {
      */''
     calculateTargetImprovement(area) {'
 
-        if(area.type === 'benchmark_comparison) {'
+        if(area.type === 'benchmark_comparison' {'
     }
 
             return Math.abs(area.improvementPotential) * 0.5; // 差の50%を目標' }'
@@ -542,7 +537,7 @@ export class ComparisonAnalyzer {
         
         const totalEffort = baseEffort * difficultyMultiplier;
 
-        if(totalEffort <= 1.5) return 'low';''
+        if(totalEffort <= 1.5) return 'low';
         if(totalEffort >= 3) return 'high';
 
     }
@@ -556,7 +551,7 @@ export class ComparisonAnalyzer {
      */''
     calculatePracticeFrequency(difficulty, difficultyPreference) {'
 
-        if (difficultyPreference === 'high'') return '毎日';''
+        if (difficultyPreference === 'high'') return '毎日';
         if (difficultyPreference === 'low'') return '週2-3回';
 
     }
@@ -570,7 +565,7 @@ export class ComparisonAnalyzer {
      */
     calculateActionTimeframe(difficulty, timeHorizon) {'
 
-        if(timeHorizon <= 7) return '1週間';''
+        if(timeHorizon <= 7) return '1週間';
         if(timeHorizon <= 14) return '2週間';
 
     }
@@ -659,8 +654,7 @@ export class ComparisonAnalyzer {
     ,}
 
             maxCombo: 'コンボ継続スキルを活かして、パーフェクトプレイを目指す' ;
-}
-        },
+    },
 
         return actionMap[metric] || '強みを活かした新しいチャレンジ';
     }

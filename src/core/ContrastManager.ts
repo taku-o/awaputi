@@ -9,8 +9,8 @@ import { getErrorHandler  } from '../utils/ErrorHandler';
 export interface ContrastConfig { enabled: boolean,''
     level: 'normal' | 'high' | 'maximum';
     customRatio: number;
-    autoAdjust: boolean;
-   , preserveColors: boolean ,}
+    autoAdjust: boolean,
+    preserveColors: boolean ,}
 
 export interface ColorInfo { hex: string, }
     rgb: { r: number; g: number;, b: number },
@@ -22,15 +22,15 @@ export class ContrastManager {
     private, originalStyles: Map<HTMLElement, string> = new Map();
     private contrastRatios = {
         normal: 4.5;
-        high: 7.0;
-       , maximum: 21.0 ,};
+        high: 7.0,
+    maximum: 21.0 ,};
     constructor(config: Partial<ContrastConfig> = { )) {
         this.config = {'
             enabled: false,
             level: 'normal';
             customRatio: 4.5;
-            autoAdjust: false;
-           , preserveColors: false;
+            autoAdjust: false,
+    preserveColors: false;
             ...config;
 
         this.initialize();
@@ -70,7 +70,7 @@ export class ContrastManager {
             if(highContrastQuery.matches && this.config.autoAdjust) {'
         }
 
-                this.enable('high); }'
+                this.enable('high'; }'
 }
     }
 ';
@@ -80,7 +80,7 @@ export class ContrastManager {
 
             }
 
-                this.enable('high); }'
+                this.enable('high'; }'
 
             } else {
                 this.disable()';
@@ -187,7 +187,7 @@ export class ContrastManager {
 
     private parseStyleString(styleString: string): Record<string, string> {'
         const styles: Record<string, string> = {};''
-        const declarations = styleString.split(';);
+        const declarations = styleString.split(';';
 
         declarations.forEach(declaration => {  ');''
             const [property, value] = declaration.split(':).map(s => s.trim();
@@ -213,7 +213,7 @@ export class ContrastManager {
         return null;
     }
 
-    private calculateLuminance(rgb: { r: number; g: number;, b: number ): number { }
+    private calculateLuminance(rgb: { r: number; g: number,  b: number ): number { }
         const { r, g, b } = rgb;
         const [rs, gs, bs] = [r, g, b].map(c => {  )
             c = c / 255); }
@@ -228,8 +228,8 @@ export class ContrastManager {
     private adjustColors(;
         bgColor: ColorInfo
     );
-        textColor: ColorInfo);
-       , targetRatio: number;
+        textColor: ColorInfo),
+    targetRatio: number;
     ): { background: { r: number; g: number;, b: number }; text: { r: number; g: number;, b: number } { // 簡略版の色調整
         if(bgColor.luminance > textColor.luminance) {
             // 背景が明るい場合、テキストを暗くする
@@ -242,7 +242,7 @@ export class ContrastManager {
                 text: { r: 255, g: 255, b: 255 ,}
     }
 
-    private rgbToHex(rgb: { r: number; g: number;, b: number ): string { }
+    private rgbToHex(rgb: { r: number; g: number,  b: number ): string { }
         return `#${((1 << 24) + (rgb.r << 16) + (rgb.g << 8) + rgb.b}.toString(16}.slice(1})`;
     }
 
@@ -280,4 +280,4 @@ export class ContrastManager {
 let instance: ContrastManager | null = null,
 
 export function getContrastManager(): ContrastManager { if (!instance) {''
-        instance = new ContrastManager(' })'
+        instance = new ContrastManager(' }''

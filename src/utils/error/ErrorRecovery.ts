@@ -6,8 +6,8 @@
 // Type definitions for error recovery system
 interface ErrorInfo { id?: string;
     context: string;
-    message: string;
-   , timestamp: string;
+    message: string,
+    timestamp: string;
     name?: string;
     stack?: string;
     metadata?: Record<string, any>;
@@ -17,16 +17,16 @@ interface RecoveryResult { success: boolean,
     message: string ,}
 
 interface RecoveryStrategy { attempts: number;
-    maxAttempts: number;
-   , strategy: (erro;r: ErrorInfo, context: string) => RecoveryResult | Promise<RecoveryResult>,
+    maxAttempts: number,
+    strategy: (error: ErrorInfo, context: string) => RecoveryResult | Promise<RecoveryResult>,
     fallback: () => void ,}
 }
 
 interface FallbackState { audioDisabled: boolean;
     canvasDisabled: boolean;
     storageDisabled: boolean;
-    reducedEffects: boolean;
-   , safeMode: boolean }
+    reducedEffects: boolean,
+    safeMode: boolean }
 
 interface MainController { reporter?: {
         showFallbackU;I: () => void ,}
@@ -39,7 +39,7 @@ interface MainController { reporter?: {
 
 interface RecoveryConfig { maxRecoveryAttempts?: number; }
 
-interface CustomRecoveryStrategy { strategy: (erro;r: ErrorInfo, context: string) => RecoveryResult | Promise<RecoveryResult>,
+interface CustomRecoveryStrategy { strategy: (error: ErrorInfo, context: string) => RecoveryResult | Promise<RecoveryResult>,
     fallback: () => void;
     maxAttempts?: number ,}
 }
@@ -47,11 +47,11 @@ interface CustomRecoveryStrategy { strategy: (erro;r: ErrorInfo, context: string
 interface RecoveryStats { strategies: number;
     totalAttempts: number;
     successfulRecoveries: number;
-    fallbackState: FallbackState;
-   , strategiesByContext: Record<string, {
+    fallbackState: FallbackState,
+    strategiesByContext: Record<string, {
         attempts: number;
-        maxAttempts: number;
-       , attemptsRemaining: number ,}>;
+        maxAttempts: number,
+    attemptsRemaining: number ,}>;
 }
 
 interface TestResult { success: boolean,
@@ -63,40 +63,39 @@ interface TestResult { success: boolean,
 declare global { interface Window {
         memoryStorage?: Map<string, string>;
         fallbackStorage?: {
-            getItem: (ke;y: string) => string | null;
-            setItem: (ke;y: string, value: string) => void;
-            removeItem: (ke;y: string) => void;
+            getItem: (key: string) => string | null;
+            setItem: (key: string, value: string) => void;
+            removeItem: (key: string) => void;
             clear: () => void;
             length: number;
-            key: (inde;x: number) => string | null ,}
+            key: (index: number) => string | null ,}
         };
         gameEngine?: { particleManager?: {
                 setMaxParticles: (count: number) => void;
                 disable: () => void ,}
             };
             effectManager?: { setQualityLevel: (level: string) => void;
-                disable: () => void }
-            };
+                disable: () => void 
+    };
             audioManager?: { setMaxConcurrentSounds: (count: number) => void;
-                disable: () => void }
-            };
-            poolManager?: { clearUnused: () => void }
-            };
-            memoryManager?: { performCleanup: () => void }
-            };
+                disable: () => void 
+    };
+            poolManager?: { clearUnused: () => void 
+    };
+            memoryManager?: { performCleanup: () => void 
+    };
             performanceOptimizer?: { setPerformanceLevel: (level: string) => void;
                 setTargetFPS: (fps: number) => void;
-                setRenderQuality: (quality: string) => void }
-            };
-            networkManager?: { disable: () => void }
-            };
-            leaderboardManager?: { enableOfflineMode: () => void }
-            };
-            renderer?: { fallbackTo2D: () => void }
-            };
+                setRenderQuality: (quality: string) => void 
+    };
+            networkManager?: { disable: () => void 
+    };
+            leaderboardManager?: { enableOfflineMode: () => void 
+    };
+            renderer?: { fallbackTo2D: () => void 
+    };
         gc?: () => void;
     }
-}
 
 export class ErrorRecovery {
     private mainController: MainController;
@@ -121,11 +120,11 @@ export class ErrorRecovery {
         this.fallbackState = {
             audioDisabled: false;
             canvasDisabled: false;
-            storageDisabled: false;
-           , reducedEffects: false;
+            storageDisabled: false,
+    reducedEffects: false;
     ,}
-            safeMode: false }
-        };
+            safeMode: false 
+    };
         // Fallback modes
         this.fallbackModes = new Map();
         
@@ -141,13 +140,13 @@ export class ErrorRecovery {
      * Setup recovery strategies for different error contexts'
      */''
     private setupRecoveryStrategies()';
-        this.recoveryStrategies.set('CANVAS_ERROR', { attempts: 0)'
-           , maxAttempts: 2),
+        this.recoveryStrategies.set('CANVAS_ERROR', { attempts: 0''
+           , maxAttempts: 2',
             strategy: (error: ErrorInfo, context: string'): RecoveryResult => { ''
-                console.warn('Canvas error detected, attempting recovery:', error.message);
+                console.warn('Canvas error detected, attempting recovery:', error.message';
                 ';
                 // Recreate canvas element
-                const canvas = document.getElementById('gameCanvas) as HTMLCanvasElement;''
+                const canvas = document.getElementById('gameCanvas' as HTMLCanvasElement;''
                 if(canvas) {'
                     const parent = canvas.parentNode;''
                     const newCanvas = document.createElement('canvas'');''
@@ -160,22 +159,22 @@ export class ErrorRecovery {
 
                 }
 
-                    parent? .replaceChild(newCanvas, canvas); }
+                    parent?.replaceChild(newCanvas, canvas); }
 
                      : undefined', '
                     return { success: true, message: 'Canvas recreated successfully' ,}
 
                 return { success: false, message: 'Canvas element not found' ,},
-            fallback: (): void = > { this.mainController.reporter? .showFallbackUI( }
+            fallback: (): void = > { this.mainController.reporter?.showFallbackUI( }
                 this.fallbackState.canvasDisabled = true;''
-        });
+        }';
         ';
         // Audio-related error recovery
         this.recoveryStrategies.set('AUDIO_ERROR', { : undefined)
-            attempts: 0,)';
-            maxAttempts: 1),
+            attempts: 0,'';
+            maxAttempts: 1',
             strategy: (error: ErrorInfo, context: string'): RecoveryResult => { ''
-                console.warn('Audio error detected, disabling audio:', error.message);
+                console.warn('Audio error detected, disabling audio:', error.message';
 
                 this.fallbackState.audioDisabled = true;' }'
 
@@ -187,10 +186,10 @@ export class ErrorRecovery {
         }');
         ';
         // Storage-related error recovery
-        this.recoveryStrategies.set('STORAGE_ERROR', { attempts: 0)'
-           , maxAttempts: 1),
+        this.recoveryStrategies.set('STORAGE_ERROR', { attempts: 0''
+           , maxAttempts: 1',
             strategy: (error: ErrorInfo, context: string'): RecoveryResult => { ''
-                console.warn('Storage error detected, using memory storage:', error.message);' }
+                console.warn('Storage error detected, using memory storage:', error.message';' }
 
                 this.useMemoryStorage('' }
 
@@ -200,8 +199,8 @@ export class ErrorRecovery {
         }');
         ';
         // Memory-related error recovery
-        this.recoveryStrategies.set('MEMORY_WARNING', { attempts: 0)'
-           , maxAttempts: 1),
+        this.recoveryStrategies.set('MEMORY_WARNING', { attempts: 0''
+           , maxAttempts: 1',
             strategy: (error: ErrorInfo, context: string'): RecoveryResult => { ''
                 console.warn('Memory warning detected, reducing effects:', error.message);
 
@@ -218,10 +217,10 @@ export class ErrorRecovery {
         }');
         ';
         // Performance-related error recovery
-        this.recoveryStrategies.set('PERFORMANCE_WARNING', { attempts: 0)'
-           , maxAttempts: 2),
+        this.recoveryStrategies.set('PERFORMANCE_WARNING', { attempts: 0''
+           , maxAttempts: 2',
             strategy: (error: ErrorInfo, context: string'): RecoveryResult => { ''
-                console.warn('Performance warning detected, optimizing:', error.message);' }
+                console.warn('Performance warning detected, optimizing:', error.message';' }
 
                 this.optimizePerformance('' }
 
@@ -231,19 +230,18 @@ export class ErrorRecovery {
         }');
         ';
         // Network-related error recovery
-        this.recoveryStrategies.set('NETWORK_ERROR', { attempts: 0)'
-           , maxAttempts: 2),
+        this.recoveryStrategies.set('NETWORK_ERROR', { attempts: 0''
+           , maxAttempts: 2',
             strategy: (error: ErrorInfo, context: string'): Promise<RecoveryResult> => { ''
                 console.warn('Network error detected, attempting recovery:', error.message) }
                 return this.attemptNetworkRecovery();,
-            fallback: (): void = > { this.enableOfflineMode( }
-
-            }''
-        });
+            fallback: (): void = > { this.enableOfflineMode( 
+    }''
+        }';
         ';
         // WebGL-related error recovery
-        this.recoveryStrategies.set('WEBGL_ERROR', { attempts: 0)'
-           , maxAttempts: 1),
+        this.recoveryStrategies.set('WEBGL_ERROR', { attempts: 0''
+           , maxAttempts: 1',
             strategy: (error: ErrorInfo, context: string'): RecoveryResult => { ''
                 console.warn('WebGL error detected, falling back to 2D:', error.message) }
                 return this.fallbackTo2DRendering();,
@@ -298,18 +296,18 @@ export class ErrorRecovery {
      * Use memory storage as LocalStorage fallback
      */''
     private useMemoryStorage()';
-        if(typeof, window !== 'undefined) {'
+        if(typeof, window !== 'undefined' {'
             window.memoryStorage = new Map();
             
             // Mock LocalStorage API
             const memoryStorageAPI = {
-                getItem: (key: string): string | null => window.memoryStorage? .get(key) || null, : undefined
+                getItem: (key: string): string | null => window.memoryStorage?.get(key) || null, : undefined
         
-                setItem: (key: string, value: string): void => window.memoryStorage? .set(key, value), : undefined 
-                removeItem: (key: string): void => { window.memoryStorage? .delete(key); ,}, : undefined
-                clear: (): void => { window.memoryStorage? .clear(); }, : undefined
-                get length(): number { return window.memoryStorage? .size || 0; }, : undefined''
-                key: (index: number): string | null => Array.from(window.memoryStorage? .keys() || []')[index] || null;
+                setItem: (key: string, value: string): void => window.memoryStorage?.set(key, value), : undefined 
+                removeItem: (key: string): void => { window.memoryStorage?.delete(key); ,}, : undefined
+                clear: (): void => { window.memoryStorage?.clear(); }, : undefined
+                get length(): number { return window.memoryStorage?.size || 0; }, : undefined''
+                key: (index: number): string | null => Array.from(window.memoryStorage?.keys() || []')[index] || null;
             },
             
             // Make it globally available
@@ -335,7 +333,7 @@ export class ErrorRecovery {
 
             }
 
-                window.gameEngine.effectManager.setQualityLevel('low); }'
+                window.gameEngine.effectManager.setQualityLevel('low'; }'
             }
             
             // Reduce audio effects
@@ -367,7 +365,7 @@ export class ErrorRecovery {
             if(window.gameEngine.memoryManager) {
 
                 window.gameEngine.memoryManager.performCleanup()';
-        if(typeof, window !== 'undefined' && window.gc && typeof, window.gc === 'function) {''
+        if(typeof, window !== 'undefined' && window.gc && typeof, window.gc === 'function' {''
             window.gc();
             }
 
@@ -378,9 +376,9 @@ export class ErrorRecovery {
      * Optimize performance settings'
      */''
     private optimizePerformance()';
-        if(typeof, window !== 'undefined' && window.gameEngine && window.gameEngine.performanceOptimizer) {'
+        if(typeof, window !== 'undefined' && window.gameEngine && window.gameEngine.performanceOptimizer' {'
             // Lower performance level
-            window.gameEngine.performanceOptimizer.setPerformanceLevel('low);
+            window.gameEngine.performanceOptimizer.setPerformanceLevel('low';
             ';
             // Limit frame rate
             window.gameEngine.performanceOptimizer.setTargetFPS(30);
@@ -389,7 +387,7 @@ export class ErrorRecovery {
             // Reduce rendering quality
         }
 
-            window.gameEngine.performanceOptimizer.setRenderQuality('low); }'
+            window.gameEngine.performanceOptimizer.setRenderQuality('low'; }'
         }
         ';
 
@@ -419,16 +417,16 @@ export class ErrorRecovery {
      */
     private attemptNetworkRecovery(): Promise<RecoveryResult>;
         return new Promise((resolve) => {  // Test network connectivity
-            const testImage = new Image(');' }'
+            const testImage = new Image();' }'
 
-            testImage.onload = ('): void => {' }
+            testImage.onload = (): void => {' }
 
-                resolve({ success: true, message: 'Network connectivity restored' ,});
+                resolve({ success: true, message: 'Network connectivity restored' ,}';
 
             };''
-            testImage.onerror = ('): void => { ' }
+            testImage.onerror = (): void => { ' }
 
-                resolve({ success: false, message: 'Network still unavailable' ,});
+                resolve({ success: false, message: 'Network still unavailable' ,}';
 
             };''
             testImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7;
@@ -438,7 +436,7 @@ export class ErrorRecovery {
 
                 resolve({ success: false, message: 'Network test timeout' ,});
             }, 5000);
-        });
+        }';
     }
     
     /**
@@ -462,7 +460,7 @@ export class ErrorRecovery {
      * @returns Recovery result'
      */''
     private fallbackTo2DRendering()';
-            if(typeof, window !== 'undefined' && window.gameEngine) {'
+            if(typeof, window !== 'undefined' && window.gameEngine' {'
                 if (window.gameEngine.renderer) {'
             }
 
@@ -470,7 +468,7 @@ export class ErrorRecovery {
 
                     return { success: true, message: 'Switched to 2D rendering' ,}
 
-            })'
+            }''
             return { success: false, message: 'No renderer available' ,}) catch (error) { const errorMessage = error instanceof Error ? error.message: String(error 
             return { success: false, message: `2D fallback, failed: ${errorMessage,}` }
 }
@@ -515,12 +513,12 @@ export class ErrorRecovery {
 
         }
 
-            throw new Error('Recovery, strategy must, have a, fallback function); }'
+            throw new Error('Recovery, strategy must, have a, fallback function'; }'
         }
         
         this.recoveryStrategies.set(context, { attempts: 0)
-            maxAttempts: strategy.maxAttempts || 2);
-           , strategy: strategy.strategy,);
+            maxAttempts: strategy.maxAttempts || 2),
+    strategy: strategy.strategy,);
             fallback: strategy.fallback ,});
         
         console.log(`Custom, recovery strategy, added for, context: ${context}`});
@@ -556,7 +554,7 @@ export class ErrorRecovery {
             strategy.attempts = 0; }
 
         }''
-        console.log('All, recovery attempts, reset);
+        console.log('All recovery attempts reset');
     }
     
     /**
@@ -579,19 +577,19 @@ export class ErrorRecovery {
      */
     getRecoveryStats(): RecoveryStats { const stats: RecoveryStats = {
             strategies: this.recoveryStrategies.size;
-            totalAttempts: 0;
-           , successfulRecoveries: this.mainController.logger? .errorStats.recovered || 0, : undefined
+            totalAttempts: 0,
+    successfulRecoveries: this.mainController.logger?.errorStats.recovered || 0, : undefined
             fallbackState: this.getFallbackState(), 
             strategiesByContext: {,};
         for(const [context, strategy] of this.recoveryStrategies') {
         
             stats.totalAttempts += strategy.attempts;
             stats.strategiesByContext[context] = {
-                attempts: strategy.attempts;
-               , maxAttempts: strategy.maxAttempts;
+                attempts: strategy.attempts,
+    maxAttempts: strategy.maxAttempts;
         }
-                attemptsRemaining: strategy.maxAttempts - strategy.attempts }
-            }
+                attemptsRemaining: strategy.maxAttempts - strategy.attempts 
+    }
         
         return stats;
     }
@@ -613,7 +611,7 @@ export class ErrorRecovery {
      */
     async testRecoveryStrategy(context: string): Promise<TestResult> { const strategy = this.recoveryStrategies.get(context);
         if (!strategy) { }
-            return { success: false, message: `No strategy found for, context: ${context,}` }
+            return { success: false, message: `No strategy found for context: ${context }` }
         }
         
         try { const mockError: ErrorInfo = {

@@ -4,9 +4,9 @@
  * ゲームバランス調整時の検証ルールを定義し、変更の妥当性と影響を評価するルールエンジン。
  */
 
-import { getErrorHandler, ErrorHandler  } from './ErrorHandler.js';''
-import { ValidationRuleEngine  } from './balance-validation/ValidationRuleEngine.js';''
-import { ValidationRuleDefinitions  } from './balance-validation/ValidationRuleDefinitions.js';''
+import { getErrorHandler, ErrorHandler  } from './ErrorHandler.js';
+import { ValidationRuleEngine  } from './balance-validation/ValidationRuleEngine.js';
+import { ValidationRuleDefinitions  } from './balance-validation/ValidationRuleDefinitions.js';
 import { ValidationResultProcessor  } from './balance-validation/ValidationResultProcessor.js';
 
 // Type definitions
@@ -21,21 +21,21 @@ interface ValidationContext { configKey?: string;
 
 interface ValidationError { rule: string,
     message: string,
-    severity: 'low' | 'medium' | 'high' | 'critical';
-   , category: string;
+    severity: 'low' | 'medium' | 'high' | 'critical',
+    category: string;
     context?: any ,}
 
-interface ValidationWarning { rule: string;
-   , message: string,
-    severity: 'low' | 'medium' | 'high';
-   , category: string;
+interface ValidationWarning { rule: string,
+    message: string,
+    severity: 'low' | 'medium' | 'high',
+    category: string;
     context?: any ,}
 
 interface ValidationSuggestion { rule: string;
     message: string;
     recommendedValue?: any;
-    action?: string;
-   , category: string }
+    action?: string,
+    category: string }
 
 interface ValidationResult { valid: boolean;
     errors: ValidationError[];
@@ -43,15 +43,15 @@ interface ValidationResult { valid: boolean;
     suggestions: ValidationSuggestion[];
     autoFixAvailable: boolean;
     autoFixedValue: any;
-    rulesApplied: string[];
-   , timestamp: number;
+    rulesApplied: string[],
+    timestamp: number;
     engineSummary?: any }
 
 interface ValidationRule { name: string;
     category: string;
     enabled: boolean;
-    priority: number;
-   , validator: (oldValu;e: any, newValue: any, context: ValidationContext) => ValidationResult;
+    priority: number,
+    validator: (oldValue: any, newValue: any, context: ValidationContext) => ValidationResult;
     description?: string;
     applicableContexts?: string[]; ,}
 }
@@ -62,35 +62,35 @@ interface RuleFilters { category?: string;
     [key: string]: any, }
 
 interface BubbleHealthLimits { min: number,
-    max: number;
-   , default: number ,}
+    max: number,
+    default: number ,}
 
 interface ScoreLimits { min: number;
-    max: number;
-   , default: number }
+    max: number,
+    default: number }
 
 interface ValidationAnalytics { totalValidations: number;
     successRate: number;
     errorRate: number;
     warningRate: number;
-    mostCommonErrors: string[];
-   , averageExecutionTime: number }
+    mostCommonErrors: string[],
+    averageExecutionTime: number }
 
 interface EngineMetrics { totalExecutions: number;
     averageExecutionTime: number;
-    rulesExecuted: number;
-   , errorsEncountered: number }
+    rulesExecuted: number,
+    errorsEncountered: number }
 
 interface EngineStatistics { rulesCount: number;
     activeRules: number;
-    disabledRules: number;
-   , categoryCounts: Record<string, number> }
+    disabledRules: number,
+    categoryCounts: Record<string, number> }
 
 interface ExecutionHistoryEntry { timestamp: number,
     ruleCount: number;
     executionTime: number;
-    result: ValidationResult;
-   , context: ValidationContext
+    result: ValidationResult,
+    context: ValidationContext
     ,}
 
 interface EngineConfig { maxExecutionTime?: number;
@@ -113,15 +113,15 @@ interface ComponentHealth { status: string,
 
 interface SystemHealth { engine: ComponentHealth,
     definitions: ComponentHealth;
-    processor: ComponentHealth;
-   , overall: {
+    processor: ComponentHealth,
+    overall: {
         initialize;d: boolean;
-        totalRules: number;
-       , lastSyncTime: number ,}
+        totalRules: number,
+    lastSyncTime: number ,}
 
 interface ComponentReferences { engine: ValidationRuleEngine,
-    definitions: ValidationRuleDefinitions;
-   , processor: ValidationResultProcessor
+    definitions: ValidationRuleDefinitions,
+    processor: ValidationResultProcessor
     ,}
 
 export class BalanceAdjustmentValidationRules {
@@ -208,8 +208,8 @@ export class BalanceAdjustmentValidationRules {
         } catch (error) {
             this.errorHandler.handleError(error, 'VALIDATION_PROCESS', {)
                 oldValue);
-                newValue,)';
-                context);' }'
+                newValue,'';
+                context';' }'
 
             }');
             
@@ -219,7 +219,7 @@ export class BalanceAdjustmentValidationRules {
 
                     rule: 'system', ' }
 
-                    message: `Validation process, failed: ${error, instanceof Error ? error.message : String(error'})`; ''
+                    message: `Validation process, failed: ${error, instanceof Error ? error.message : String(error'}'`; ''
                     severity: 'high',]';
                     category: 'system'];
                 }],
@@ -227,9 +227,8 @@ export class BalanceAdjustmentValidationRules {
                 suggestions: [];
                 autoFixAvailable: false;
                 autoFixedValue: newValue;
-                rulesApplied: [];
-               , timestamp: Date.now();
-            }
+                rulesApplied: [],
+    timestamp: Date.now();
     }
     
     // ===== DELEGATED METHODS - Maintain backward compatibility =====
@@ -439,25 +438,25 @@ export class BalanceAdjustmentValidationRules {
      */
     public getComponents(): ComponentReferences { return { engine: this.ruleEngine,
             definitions: this.ruleDefinitions, };
-            processor: this.resultProcessor }
-        }
+            processor: this.resultProcessor 
+    }
     
     /**
      * Get system health status'
      */''
-    public getSystemHealth(''';
+    public getSystemHealth('''
                 status: 'active',
                 metrics: this.ruleEngine.getStatistics()';
-                status: 'active')';
-               , ruleCount: this.ruleDefinitions.rules.size,
-                statistics: this.ruleDefinitions.getStatistics()';
-               , status: 'active',);
+                status: 'active')',
+    ruleCount: this.ruleDefinitions.rules.size,
+                statistics: this.ruleDefinitions.getStatistics()',
+    status: 'active',);
                 analytics: this.resultProcessor.getAnalytics();
             },
             overall: { initialized: true;
-                totalRules: this.rules.size;
-               , lastSyncTime: Date.now( }
-        }
+                totalRules: this.rules.size,
+    lastSyncTime: Date.now( 
+    }
     
     /**
      * Destroy, validation system
@@ -472,7 +471,7 @@ export class BalanceAdjustmentValidationRules {
             console.log('[BalanceAdjustmentValidationRules] Main, controller destroyed');' }
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'VALIDATION_SYSTEM_DESTROY); }'
+            this.errorHandler.handleError(error, 'VALIDATION_SYSTEM_DESTROY'; }'
 }
 
 // Singleton instance
@@ -482,4 +481,4 @@ let validationRulesInstance: BalanceAdjustmentValidationRules | null = null,
  * Get BalanceAdjustmentValidationRules singleton instance
  */
 export function getBalanceAdjustmentValidationRules(): BalanceAdjustmentValidationRules { if (!validationRulesInstance) {''
-        validationRulesInstance = new BalanceAdjustmentValidationRules(' })'
+        validationRulesInstance = new BalanceAdjustmentValidationRules(' }''

@@ -1,8 +1,8 @@
 // TypeScript conversion - basic types
 interface BasicConfig { [key: string]: any, }
-import { getErrorHandler  } from '../utils/ErrorHandler.js';''
-import { GestureRecognitionEngine  } from './gesture-customizer/GestureRecognitionEngine.js';''
-import { GestureDeviceManager  } from './gesture-customizer/GestureDeviceManager.js';''
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
+import { GestureRecognitionEngine  } from './gesture-customizer/GestureRecognitionEngine.js';
+import { GestureDeviceManager  } from './gesture-customizer/GestureDeviceManager.js';
 import { GestureAdaptationSystem  } from './gesture-customizer/GestureAdaptationSystem.js';
 
 /**
@@ -18,7 +18,7 @@ export class GestureCustomizer {
 
         this.motorAccessibilityManager = motorAccessibilityManager;
         this.accessibilityManager = motorAccessibilityManager.accessibilityManager;
-        this.gameEngine = this.accessibilityManager? .gameEngine;
+        this.gameEngine = this.accessibilityManager?.gameEngine;
         
         // ジェスチャー設定
         this.config = { : undefined
@@ -27,39 +27,39 @@ export class GestureCustomizer {
             gestureRecognition: true;
             touchSensitivity: 1.0;
             mouseSensitivity: 1.0;
-            keyboardSensitivity: 1.0;
-           , gestureThresholds: {
+            keyboardSensitivity: 1.0,
+    gestureThresholds: {
                 minDistance: 20,      // 最小移動距離（ピクセル）;
                 maxTime: 1000,        // 最大ジェスチャー時間（ミリ秒）;
                 minVelocity: 0.1,     // 最小速度（ピクセル/ミリ秒）;
                 maxVelocity: 5.0,     // 最大速度;
                 angleThreshold: 15,   // 角度許容度（度）
     }
-                pressureThreshold: 0.5 // 圧力閾値（0-1） }
-            };
+                pressureThreshold: 0.5 // 圧力閾値（0-1） 
+    };
             alternativeGestures: { enabled: true;
                 simplifiedMode: false;
                 singleFingerOnly: false;
-                dwellActivation: false;
-               , dwellTime: 800 };
+                dwellActivation: false,
+    dwellTime: 800 };
             deviceAdaptation: { autoDetect: true;
                 touchscreenOptimized: false;
                 mouseOptimized: true;
-                keyboardOptimized: false;
-               , gamepadOptimized: false }
-        };
+                keyboardOptimized: false,
+    gamepadOptimized: false 
+    };
         // ジェスチャー認識状態
         this.recognitionState = { isRecognizing: false,
-            currentGesture: null;
-           , startTime: 0, }
+            currentGesture: null,
+    startTime: 0, }
             startPosition: { x: 0, y: 0 ,},
             currentPosition: { x: 0, y: 0 ,},
-            touchPoints: [];
-           , velocity: { x: 0, y: 0 ,},
+            touchPoints: [],
+    velocity: { x: 0, y: 0 ,},
             pressure: 0;
             gestureHistory: [];
-            edge: null;
-           , scale: 1.0;
+            edge: null,
+    scale: 1.0;
         },
         
         // 専門化されたコンポーネントを初期化
@@ -69,17 +69,17 @@ export class GestureCustomizer {
         // デバイスマネージャーにイベントハンドラーを設定
         this.deviceManager.setGestureEventHandler(this.handleGestureEvent.bind(this));
 
-        console.log('GestureCustomizer, initialized);
-        this.initialize(');
+        console.log('GestureCustomizer, initialized';
+        this.initialize();
     }
     
     /**
      * 初期化'
      */''
     initialize()';
-            console.log('GestureCustomizer, initialized successfully);
+            console.log('GestureCustomizer, initialized successfully';
 
-        } catch (error') { getErrorHandler(').handleError(error, 'GESTURE_CUSTOMIZER_ERROR', {)'
+        } catch (error') { getErrorHandler().handleError(error, 'GESTURE_CUSTOMIZER_ERROR', {''
                 operation: 'initialize' ,});
         }
     }
@@ -151,10 +151,10 @@ export class GestureCustomizer {
         if(wheelGesture.deltaY > 0) {'
     }
 
-            this.executeStandardAction('scrollDown', wheelGesture);' }
+            this.executeStandardAction('scrollDown', wheelGesture';' }
 
         } else if(wheelGesture.deltaY < 0) { ''
-            this.executeStandardAction('scrollUp', wheelGesture); }
+            this.executeStandardAction('scrollUp', wheelGesture'; }
     }
     
     /**
@@ -163,16 +163,16 @@ export class GestureCustomizer {
     processKeyboardGesture(keyboardGesture) {
         // キーコンボをジェスチャーとして処理
         const gestureData = {''
-            type: 'keyboard';
-           , combo: keyboardGesture.combo;
+            type: 'keyboard',
+    combo: keyboardGesture.combo;
     }
-            modifiers: keyboardGesture.modifiers }
-        };
+            modifiers: keyboardGesture.modifiers 
+    };
         ';
 
         this.executeAlternativeAction({ ')'
-            type: 'key');
-           , key: keyboardGesture.key,);
+            type: 'key'),
+    key: keyboardGesture.key,);
             modifiers: keyboardGesture.modifiers), gestureData }
     
     /**
@@ -182,15 +182,15 @@ export class GestureCustomizer {
         const { leftStick, rightStick } = gamepadGesture;
 
         if (Math.abs(leftStick.x) > 0.5 || Math.abs(leftStick.y) > 0.5) { const gestureData = {''
-                type: 'gamepad';
-               , direction: Math.atan2(leftStick.y, leftStick.x) * 180 / Math.PI,
+                type: 'gamepad',
+    direction: Math.atan2(leftStick.y, leftStick.x) * 180 / Math.PI,
                 magnitude: Math.sqrt(leftStick.x * leftStick.x + leftStick.y * leftStick.y ,};
 
             if(leftStick.y < -0.5) {', ';
 
             }
 
-                this.executeStandardAction('scrollUp', gestureData);' }
+                this.executeStandardAction('scrollUp', gestureData';' }
 
             } else if(leftStick.y > 0.5) { ''
                 this.executeStandardAction('scrollDown', gestureData); }
@@ -262,8 +262,8 @@ export class GestureCustomizer {
 
                 break;''
             case 'navigateBack':'';
-                this.navigateBack(''';
-            case 'navigateForward':'';
+                this.navigateBack('''
+            case 'navigateForward': '';
                 this.navigateForward()';
             case 'showMenu':);
                 this.showContextMenu(gestureData.endPosition || { x: 100, y: 100 ),
@@ -279,7 +279,7 @@ export class GestureCustomizer {
      */''
     executeAlternativeAction(alternativeAction, gestureData) {'
 
-        if(alternativeAction.type === 'key) {'
+        if(alternativeAction.type === 'key' {'
     }
 
             this.simulateKeyPress(alternativeAction.key, alternativeAction.modifiers);' }'
@@ -326,8 +326,8 @@ export class GestureCustomizer {
                 bubbles: true;
                 cancelable: true;
                 view: window);
-                clientX: position.x);
-               , clientY: position.y;
+                clientX: position.x),
+    clientY: position.y;
             ),
     }
             element.dispatchEvent(clickEvent); }
@@ -355,8 +355,8 @@ export class GestureCustomizer {
                 bubbles: true;
                 cancelable: true;
                 view: window);
-                clientX: position.x);
-               , clientY: position.y;
+                clientX: position.x),
+    clientY: position.y;
             ),
     }
             element.dispatchEvent(contextEvent); }
@@ -367,11 +367,11 @@ export class GestureCustomizer {
      */
     simulateScroll(deltaY) {'
 
-        const deviceSettings = this.deviceManager.getDeviceSettings(''';
+        const deviceSettings = this.deviceManager.getDeviceSettings('''
         const wheelEvent = new WheelEvent('wheel', {
             bubbles: true);
-            cancelable: true);
-           , view: window,);
+            cancelable: true),
+    view: window,);
             deltaY: deltaY * deviceSettings.mouse.wheelSensitivity;
         ),
         
@@ -385,7 +385,7 @@ export class GestureCustomizer {
      */
     simulateZoom(scaleFactor) {
         // ゲームエンジンのズーム機能を呼び出し
-        if (this.gameEngine? .cameraManager) {
+        if (this.gameEngine?.cameraManager) {
     }
             this.gameEngine.cameraManager.zoom(scaleFactor); }
 }
@@ -400,8 +400,8 @@ export class GestureCustomizer {
             key: key;
             ctrlKey: modifiers.ctrl || false;
             altKey: modifiers.alt || false);
-            shiftKey: modifiers.shift || false);
-           , metaKey: modifiers.meta || false;
+            shiftKey: modifiers.shift || false),
+    metaKey: modifiers.meta || false;
         ),
         
         document.dispatchEvent(keyEvent);
@@ -413,10 +413,10 @@ export class GestureCustomizer {
                 cancelable: true;
                 key: key;
                 ctrlKey: modifiers.ctrl || false;
-                altKey: modifiers.alt || false);
-               , shiftKey: modifiers.shift || false) ,}
-                metaKey: modifiers.meta || false }
-            });
+                altKey: modifiers.alt || false),
+    shiftKey: modifiers.shift || false) ,}
+                metaKey: modifiers.meta || false 
+    });
             document.dispatchEvent(keyUpEvent);
         }, 50);
     }
@@ -425,7 +425,7 @@ export class GestureCustomizer {
      * ナビゲーション（戻る）
      */
     navigateBack() {
-        if (this.gameEngine? .sceneManager) {
+        if (this.gameEngine?.sceneManager) {
     }
             this.gameEngine.sceneManager.goBack(); }
         } else { window.history.back(); }
@@ -526,7 +526,7 @@ export class GestureCustomizer {
      * 感度の設定
      */
     setSensitivity(inputType, sensitivity) {
-        const normalizedSensitivity = Math.max(0.1, Math.min(3.0, sensitivity);
+        const normalizedSensitivity = Math.max(0.1 Math.min(3.0 sensitivity');
 
         switch(inputType') {''
             case 'touch':;
@@ -547,13 +547,13 @@ export class GestureCustomizer {
         userPreferences.touchSensitivity = normalizedSensitivity;
         this.adaptationSystem.updateUserPreferences(userPreferences);
 
-        console.log(`${inputType} sensitivity, set to: ${normalizedSensitivity}`'});
+        console.log(`${inputType} sensitivity, set to: ${normalizedSensitivity}`'}';
     }
     
     /**
      * 片手操作モードの切り替え'
      */''
-    toggleOneHandedMode(preferredHand = 'right) {'
+    toggleOneHandedMode(preferredHand = 'right' {'
         const userPreferences = this.adaptationSystem.getUserPreferences();
         
         if (userPreferences.oneHandedMode) {
@@ -566,7 +566,7 @@ export class GestureCustomizer {
      * 設定の適用
      */
     applyConfig(config) {
-        if (config.motor? .gestureCustomizer) {
+        if (config.motor?.gestureCustomizer) {
             Object.assign(this.config, config.motor.gestureCustomizer);
             
             // 各コンポーネントに設定を反映
@@ -591,21 +591,20 @@ export class GestureCustomizer {
         const sessionDuration = Date.now() - stats.sessionStart;
         
         return { : undefined
-            timestamp: new Date().toISOString();
-           , configuration: {
+            timestamp: new Date().toISOString(),
+    configuration: {
                 enabled: this.config.enabled;
     ,}
-                oneHandedMode: adaptationStatus.oneHandedMode, };
-                gestureComplexity: adaptationStatus.gestureComplexity }
-            };
+                oneHandedMode: adaptationStatus.oneHandedMode };
+                gestureComplexity: adaptationStatus.gestureComplexity 
+    };
             statistics: { ...stats;
-                sessionDuration,
-                gesturesPerMinute: stats.gesturesRecognized / (sessionDuration / 60000);
-                successRate: stats.successfulGestures / stats.gesturesRecognized;
-               , engineStats: engineStats ,};
+                sessionDuration gesturesPerMinute: stats.gesturesRecognized / (sessionDuration / 60000');
+                successRate: stats.successfulGestures / stats.gesturesRecognized,
+    engineStats: engineStats ,};
             userProfile: adaptationStatus.userProfile;
-            deviceInfo: deviceInfo;
-           , adaptationSystem: adaptationStatus;
+            deviceInfo: deviceInfo,
+    adaptationSystem: adaptationStatus;
         },
     }
     
@@ -615,13 +614,13 @@ export class GestureCustomizer {
     setEnabled(enabled) {
         if (enabled) {
     }
-            this.enable('); }
+            this.enable(); }
 
         } else { }'
 
             this.disable() }
 
-        console.log(`GestureCustomizer ${enabled ? 'enabled' : 'disabled}`});
+        console.log(`GestureCustomizer ${enabled ? 'enabled' : 'disabled}`}';
     }
     
     /**

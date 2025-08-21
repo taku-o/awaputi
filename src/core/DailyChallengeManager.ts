@@ -7,21 +7,21 @@ import { getErrorHandler  } from '../utils/ErrorHandler';
 ';
 
 export interface DailyChallengeConfig { maxDailyChallenges: number,''
-    resetTime: number, // 日本時間5:00 (UTC, 20:00);
-   , difficultyAdjustmentPeriod: number, // 7日間の実績で難易度調整;
-    storageKey: string;
-   , progressStorageKey: string ,}
+    resetTime: number, // 日本時間5:00 (UTC, 20: 00),
+    difficultyAdjustmentPeriod: number, // 7日間の実績で難易度調整;
+    storageKey: string,
+    progressStorageKey: string ,}
 
-export type DifficultyLevel = 'easy' | 'normal' | 'hard' | 'expert';''
-export type ChallengeCategory = 'score' | 'play' | 'action' | 'skill' | 'endurance' | 'progress';''
-export type ProgressType = 'SCORE' | 'PLAY_COUNT' | 'BUBBLE_POP' | 'COMBO' | 'TIME_PLAYED' | 'STAGE_CLEAR';''
+export type DifficultyLevel = 'easy' | 'normal' | 'hard' | 'expert';
+export type ChallengeCategory = 'score' | 'play' | 'action' | 'skill' | 'endurance' | 'progress';
+export type ProgressType = 'SCORE' | 'PLAY_COUNT' | 'BUBBLE_POP' | 'COMBO' | 'TIME_PLAYED' | 'STAGE_CLEAR';
 export type RewardType = 'ap' | 'item' | 'title' | 'theme';
 
 export interface ChallengeTemplate { category: ChallengeCategory,
     progressType: ProgressType;
     titles: string[];
-    descriptions: string[];
-   , baseDifficulty: Record<DifficultyLevel, number>, }
+    descriptions: string[],
+    baseDifficulty: Record<DifficultyLevel, number>, }
 
 export interface RewardItem { type: RewardType,
     amount?: number;
@@ -48,24 +48,24 @@ export interface DailyChallengeData { id: string,''
     endTime: number;
     isActive: boolean;
     category: ChallengeCategory;
-    difficulty: DifficultyLevel;
-   , metadata: {
+    difficulty: DifficultyLevel,
+    metadata: {
         dat;e: string;
-        template: ChallengeTemplate;
-       , dailyIndex: number ,}
+        template: ChallengeTemplate,
+    dailyIndex: number ,}
 
 export interface PlayerPerformance { averageScore: number,
     averagePlayCount: number;
     averageCombo: number;
-    lastWeekCompleted: number;
-   , difficultyPreference: DifficultyLevel
+    lastWeekCompleted: number,
+    difficultyPreference: DifficultyLevel
     ,}
 
 export interface ChallengeProgress { current: number;
     target: number;
     percentage: number;
-    completed: boolean;
-   , rewardClaimed: boolean }
+    completed: boolean,
+    rewardClaimed: boolean }
 
 export interface DailyChallengeWithProgress extends DailyChallengeData { progress: ChallengeProgress | null }
 
@@ -73,8 +73,8 @@ export interface DailyStats { date: string;
     totalChallenges: number;
     completedChallenges: number;
     totalProgress: number;
-    averageProgress: number;
-   , difficulty: DifficultyLevel
+    averageProgress: number,
+    difficulty: DifficultyLevel
     }
 
 export interface GameStats { averageScore?: number;
@@ -112,14 +112,13 @@ export class DailyChallengeManager {
         // 設定
         this.config = {
             maxDailyChallenges: 3,
-            resetTime: 5, // 日本時間5:00(UTC, 20:00);
-
-           , difficultyAdjustmentPeriod: 7, // 7日間の実績で難易度調整;
+            resetTime: 5, // 日本時間5:00(UTC, 20: 00),
+    difficultyAdjustmentPeriod: 7, // 7日間の実績で難易度調整;
             storageKey: 'awaputi_daily_challenges';
     ,}
 
-            progressStorageKey: 'awaputi_daily_progress' }
-        };
+            progressStorageKey: 'awaputi_daily_progress' 
+    };
         // チャレンジテンプレート定義
         this.challengeTemplates = { // スコア系チャレンジ
             highScore: {''
@@ -134,9 +133,9 @@ export class DailyChallengeManager {
                 ],
                 baseDifficulty: { easy: 1000;
                     normal: 5000;
-                    hard: 15000;
-                   , expert: 30000 }
-            };
+                    hard: 15000,
+    expert: 30000 
+    };
             // プレイ回数系チャレンジ
             playCount: { ''
                 category: 'play',
@@ -150,9 +149,9 @@ export class DailyChallengeManager {
                 ],
                 baseDifficulty: { easy: 3;
                     normal: 5;
-                    hard: 10;
-                   , expert: 15 }
-            };
+                    hard: 10,
+    expert: 15 
+    };
             // 泡破壊系チャレンジ
             bubblePop: { ''
                 category: 'action',
@@ -166,9 +165,9 @@ export class DailyChallengeManager {
                 ],
                 baseDifficulty: { easy: 50;
                     normal: 150;
-                    hard: 300;
-                   , expert: 500 }
-            };
+                    hard: 300,
+    expert: 500 
+    };
             // コンボ系チャレンジ
             maxCombo: { ''
                 category: 'skill',
@@ -182,9 +181,9 @@ export class DailyChallengeManager {
                 ],
                 baseDifficulty: { easy: 10;
                     normal: 25;
-                    hard: 50;
-                   , expert: 100 }
-            };
+                    hard: 50,
+    expert: 100 
+    };
             // プレイ時間系チャレンジ
             playTime: { ''
                 category: 'endurance',
@@ -198,9 +197,9 @@ export class DailyChallengeManager {
                 ],
                 baseDifficulty: { easy: 15;
                     normal: 30;
-                    hard: 60;
-                   , expert: 120 }
-            };
+                    hard: 60,
+    expert: 120 
+    };
             // ステージクリア系チャレンジ
             stageClear: { ''
                 category: 'progress',
@@ -214,9 +213,9 @@ export class DailyChallengeManager {
                 ],
                 baseDifficulty: { easy: 2;
                     normal: 5;
-                    hard: 10;
-                   , expert: 15 }
-};
+                    hard: 10,
+    expert: 15 
+    };
         // 報酬テーブル
         this.rewardTables = { easy: [' }'
 
@@ -250,8 +249,8 @@ export class DailyChallengeManager {
         // 内部状態
         this.playerPerformance = { averageScore: 0,
             averagePlayCount: 0;
-            averageCombo: 0;
-           , lastWeekCompleted: 0,
+            averageCombo: 0,
+    lastWeekCompleted: 0,
             difficultyPreference: 'normal' ,};
         console.log('[DailyChallengeManager] 初期化完了);
     }
@@ -263,12 +262,12 @@ export class DailyChallengeManager {
             // プレイヤー実績データを読み込み
             await this.loadPlayerPerformance();
             // 今日のチャレンジをチェック・生成
-            await this.checkAndGenerateTodaysChallenges(');
+            await this.checkAndGenerateTodaysChallenges();
 
-            console.log('[DailyChallengeManager] 初期化完了);
+            console.log('[DailyChallengeManager] 初期化完了';
              }
 
-        } catch (error') { getErrorHandler(').handleError(error, 'DAILY_CHALLENGE_INIT_ERROR', {)'
+        } catch (error') { getErrorHandler().handleError(error, 'DAILY_CHALLENGE_INIT_ERROR', {''
                 component: 'DailyChallengeManager' ,});
         }
     }
@@ -300,10 +299,10 @@ export class DailyChallengeManager {
      * 期限切れのチャレンジをクリーンアップ
      */
     async cleanupExpiredChallenges(): Promise<void> { const yesterday = this.getYesterdayString();
-        const expiredChallenges = Array.from(this.challengeSystem.challenges.entries(')'';
+        const expiredChallenges = Array.from(this.challengeSystem.challenges.entries()'';
             .filter(([id, challenge]) => '';
                 challenge.type === 'daily' && ;
-                challenge.metadata? .date === yesterday;
+                challenge.metadata?.date === yesterday;
             );
         
         for(const [challengeId] of, expiredChallenges) {
@@ -355,7 +354,7 @@ export class DailyChallengeManager {
             ';
 
         } catch (error) {
-            getErrorHandler(').handleError(error, 'DAILY_CHALLENGE_GENERATION_ERROR); }
+            getErrorHandler().handleError(error, 'DAILY_CHALLENGE_GENERATION_ERROR); }
     }
 
     /**
@@ -365,8 +364,8 @@ export class DailyChallengeManager {
         template: ChallengeTemplate;
         difficulty: DifficultyLevel
     );
-        date: string);
-       , index: number;
+        date: string),
+    index: number;
     ): Promise<any | null>,
         try { const targetValue = this.calculateTargetValue(template, difficulty);''
             const reward = this.selectReward(difficulty);
@@ -376,7 +375,7 @@ export class DailyChallengeManager {
                 id: `daily_${date}_${index}`,''
                 type: 'daily',
                 title: this.selectRandomFromArray(template.titles),
-                description: this.selectRandomFromArray(template.descriptions).replace('{ target)', targetValue.toString(),
+                description: this.selectRandomFromArray(template.descriptions).replace('{ target'', targetValue.toString(),
                 progressType: template.progressType;
                 targetValue: targetValue;
                 reward: reward;
@@ -384,11 +383,11 @@ export class DailyChallengeManager {
                 endTime: this.getTomorrowStartTime();
                 isActive: true;
                 category: template.category;
-                difficulty: difficulty;
-               , metadata: {
+                difficulty: difficulty,
+    metadata: {
                     date: date;
-                    template: template;
-                   , dailyIndex: index ,}
+                    template: template,
+    dailyIndex: index ,}
             };
             // チャレンジシステムに登録
             return this.challengeSystem.createChallenge(challengeData);
@@ -396,7 +395,7 @@ export class DailyChallengeManager {
 
         } catch (error) { }
 
-            getErrorHandler(').handleError(error, 'CHALLENGE_TEMPLATE_CREATION_ERROR', { template, difficulty });
+            getErrorHandler().handleError(error, 'CHALLENGE_TEMPLATE_CREATION_ERROR', { template, difficulty });
             return null;
 
     /**
@@ -436,7 +435,7 @@ export class DailyChallengeManager {
 
         }
 
-                        this.playerPerformance.averageScore / template.baseDifficulty.normal)'); }'
+                        this.playerPerformance.averageScore / template.baseDifficulty.normal''); }'
                 }
                 break;
 
@@ -473,21 +472,21 @@ export class DailyChallengeManager {
             currentWeight += reward.weight;
             if (random <= currentWeight) {
                 return { type: reward.type,
-                    amount: reward.amount;
-                   , itemId: reward.itemId;
+                    amount: reward.amount,
+    itemId: reward.itemId;
         ,}
                     titleId: reward.titleId, };
-                    themeId: reward.themeId }
-                }
+                    themeId: reward.themeId 
+    }
         }
         
         // フォールバック
         return { type: rewardTable[0].type,
             amount: rewardTable[0].amount;
-            itemId: rewardTable[0].itemId;
-           , titleId: rewardTable[0].titleId, };
-            themeId: rewardTable[0].themeId }
-        }
+            itemId: rewardTable[0].itemId,
+    titleId: rewardTable[0].titleId, };
+            themeId: rewardTable[0].themeId 
+    }
 
     /**
      * ランダムテンプレート選択
@@ -508,11 +507,11 @@ export class DailyChallengeManager {
             return { ...challenge,
                 progress: progress ? { : undefined
                     current: progress.currentValue;
-                    target: challenge.targetValue;
-                   , percentage: Math.min(100, (progress.currentValue / challenge.targetValue) * 100), }
+                    target: challenge.targetValue,
+    percentage: Math.min(100, (progress.currentValue / challenge.targetValue) * 100), }
                     completed: progress.completed, };
-                    rewardClaimed: progress.rewardClaimed }
-                } : null
+                    rewardClaimed: progress.rewardClaimed 
+    } : null
             });
     }
 
@@ -555,7 +554,7 @@ export class DailyChallengeManager {
             }
                 this.updatePerformanceFromStats(stats); }
             } catch (error) {
-            getErrorHandler(').handleError(error, 'DAILY_PERFORMANCE_LOAD_ERROR); }
+            getErrorHandler().handleError(error, 'DAILY_PERFORMANCE_LOAD_ERROR); }
     }
 
     /**
@@ -583,26 +582,26 @@ export class DailyChallengeManager {
     async saveGenerationData(): Promise<void> { try {
             const data = {
                 lastGenerationDate: this.lastGenerationDate;
-                performance: this.playerPerformance;
-               , timestamp: Date.now( };
+                performance: this.playerPerformance,
+    timestamp: Date.now( };
             
             localStorage.setItem(this.config.progressStorageKey, JSON.stringify(data);
             ';
 
         } catch (error) {
-            getErrorHandler(').handleError(error, 'DAILY_GENERATION_SAVE_ERROR); }
+            getErrorHandler().handleError(error, 'DAILY_GENERATION_SAVE_ERROR'; }
     }
 
     /**
      * 日付ユーティリティ
      */'
     getTodayString(): string { const now = new Date();''
-        return now.toISOString(').split('T)[0]; }
+        return now.toISOString().split('T)[0]; }
 
     getYesterdayString(): string { const yesterday = new Date();
 
         yesterday.setDate(yesterday.getDate() - 1);''
-        return yesterday.toISOString(').split('T)[0]; }
+        return yesterday.toISOString().split('T)[0]; }
 
     getTodayStartTime(): number { const today = new Date();
         today.setHours(this.config.resetTime, 0, 0, 0);

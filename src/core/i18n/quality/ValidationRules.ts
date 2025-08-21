@@ -12,28 +12,28 @@ export interface ValidationContext { targetLanguage?: string;
 export interface ValidationResult { passed: boolean,
     message: string;
     details?: any;
-    suggestion?: string;
-   , severity: 'error' | 'warning' ,}
+    suggestion?: string,
+    severity: 'error' | 'warning' ,}
 
-export interface ParameterDetails { expected: string[];
-   , actual: string[];
+export interface ParameterDetails { expected: string[],
+    actual: string[];
     missing?: string[];
     extra?: string[]; }
 
 export interface LengthDetails { sourceLength: number,
     translationLength: number;
     minLength: number;
-    maxLength: number;
-   , language: string ,}
+    maxLength: number,
+    language: string ,}
 
 export interface LengthTolerance { min: number;
-    max: number;
-   , name: string }
+    max: number,
+    name: string }
 ';
 
 export interface FormatIssue {;
-    type: 'html_tags' | 'markdown' | 'special_characters';
-   , message: string;
+    type: 'html_tags' | 'markdown' | 'special_characters',
+    message: string;
     expected?: any;
     actual?: any;
     missing?: any;
@@ -43,25 +43,25 @@ export interface MarkdownElement { type: string,
     content: string ,}
 
 export interface CulturalRule { term: string;
-    reason: string;
-   , suggestion: string }
+    reason: string,
+    suggestion: string }
 
-export interface CulturalRules { inappropriate: CulturalRule[];
-   , sensitive: CulturalRule[]
+export interface CulturalRules { inappropriate: CulturalRule[],
+    sensitive: CulturalRule[]
     }
 ';
 
 export interface CulturalIssue {;
     type: 'inappropriate' | 'sensitive';
-    term: string;
-   , reason: string,
+    term: string,
+    reason: string,
     suggestion: string,
     severity: 'error' | 'warning' ,}
 ';
 
 export interface CompletenessIssue {;
-    type: 'untranslated_markers' | 'potential_untranslated' | 'too_short';
-   , message: string;
+    type: 'untranslated_markers' | 'potential_untranslated' | 'too_short',
+    message: string;
     markers?: string[];
     commonWords?: string[]; }
 
@@ -87,7 +87,7 @@ export interface PolitenessResult { passed: boolean;
 ';
 
 export interface ValidationRuleConstructor {;
-    new ('): IValidationRule;
+    new (): IValidationRule;
     }
 
 export interface IValidationRule { name: string,
@@ -108,7 +108,7 @@ export class ParameterConsistencyRule implements IValidationRule { public name: 
     constructor(''';
         this.name = 'パラメータ整合性ルール';' }
 
-        this.description = '翻訳文中のパラメータ（{param}）が原文と一致するかチェック';''
+        this.description = '翻訳文中のパラメータ（{param}）が原文と一致するかチェック';
         this.severity = 'error';
     }
     
@@ -145,8 +145,8 @@ export class ParameterConsistencyRule implements IValidationRule { public name: 
 
         
                 message: '検証に必要なテキストが不足しています', };
-                severity: this.severity }
-            }
+                severity: this.severity 
+    }
         
         const sourceParams = this.extractParameters(sourceText);
         const translationParams = this.extractParameters(translationText);
@@ -155,10 +155,9 @@ export class ParameterConsistencyRule implements IValidationRule { public name: 
         if(sourceParams.length !== translationParams.length) { return {  };
                 passed: false, }
                 message: `パラメータ数不一致（元: ${sourceParams.length}, 翻訳: ${translationParams.length}）`,
-                details: { expected: sourceParams;
-                   , actual: translationParams }
-
-                } as ParameterDetails,''
+                details: { expected: sourceParams,
+    actual: translationParams 
+    } as ParameterDetails,''
                 suggestion: `必要なパラメータ: ${sourceParams.join(', '})`,
                 severity: this.severity;
             },
@@ -177,25 +176,24 @@ export class ParameterConsistencyRule implements IValidationRule { public name: 
 
             if(missingParams.length > 0) {' }'
 
-                issues.push(`不足: ${missingParams.join(', '})`);
+                issues.push(`不足: ${missingParams.join(', '})`';
 
             }''
             if(extraParams.length > 0) { ' }'
 
-                issues.push(`余分: ${extraParams.join(', '})`');
+                issues.push(`余分: ${extraParams.join(', '}'`');
             }
             ';
 
             return { passed: false,' }'
 
-                message: `パラメータ不一致（${issues.join(', ''})）`,
+                message: `パラメータ不一致（${issues.join(', ''}'）`,
                 details: { missing: missingParams;
                     extra: extraParams;
-                    expected: sourceParams;
-                   , actual: translationParams }
-
-                } as ParameterDetails,''
-                suggestion: `正しいパラメータ: ${sourceParams.join(', ''})`,
+                    expected: sourceParams,
+    actual: translationParams 
+    } as ParameterDetails,''
+                suggestion: `正しいパラメータ: ${sourceParams.join(', ''}'`,
                 severity: this.severity;
             },
         }
@@ -203,8 +201,8 @@ export class ParameterConsistencyRule implements IValidationRule { public name: 
 
         return { passed: true,''
             message: 'パラメータが正しく含まれています', };
-            severity: this.severity }
-        }
+            severity: this.severity 
+    }
 }
 
 /**
@@ -217,16 +215,16 @@ export class LengthValidationRule implements IValidationRule { public name: stri
     private lengthTolerances: Record<string, LengthTolerance>;
 
     constructor(''';
-        this.name = '翻訳長制限ルール';''
-        this.description = '翻訳文の長さが適切な範囲内かチェック';''
-        this.severity = 'warning';
+        this.name = '翻訳長制限ルール';
+        this.description = '翻訳文の長さが適切な範囲内かチェック';
+        this.severity = 'warning'
         
         // 言語別の長さ許容率
         this.lengthTolerances = {' }', 'en': { min: 0.7, max: 1.5, name: '英語' ,},'', 'zh-CN': { min: 0.5, max: 1.2, name: '中国語簡体字' ,},'', 'zh-TW': { min: 0.5, max: 1.2, name: '中国語繁体字' ,},'', 'ko': { min: 0.8, max: 1.4, name: '韓国語' ,},'', 'default': { min: 0.6, max: 1.8, name: 'その他' ,}
     
     /**
      * 実際の文字数を計算（絵文字や特殊文字を考慮）'
-     */)'
+     */''
     calculateTextLength(text: string): number { // Unicode正規化
         const normalized = text.normalize('NFC'');
         ';
@@ -246,8 +244,8 @@ export class LengthValidationRule implements IValidationRule { public name: stri
         }
 
                 message: '検証に必要なテキストが不足しています', };
-                severity: this.severity }
-            }
+                severity: this.severity 
+    }
 
         const targetLanguage = context.targetLanguage || 'default';
         const tolerance = this.lengthTolerances[targetLanguage] || this.lengthTolerances.default;
@@ -265,12 +263,11 @@ export class LengthValidationRule implements IValidationRule { public name: stri
                 details: { sourceLength: sourceLength;
                     translationLength: translationLength;
                     minLength: minLength;
-                    maxLength: maxLength;
-                   , language: tolerance.name }
-
-                } as LengthDetails,''
-                suggestion: '翻訳が完全で、重要な情報が欠けていないか確認してください';
-               , severity: this.severity;
+                    maxLength: maxLength,
+    language: tolerance.name 
+    } as LengthDetails,''
+                suggestion: '翻訳が完全で、重要な情報が欠けていないか確認してください',
+    severity: this.severity;
             },
         }
         ';
@@ -281,20 +278,19 @@ export class LengthValidationRule implements IValidationRule { public name: stri
                 details: { sourceLength: sourceLength;
                     translationLength: translationLength;
                     minLength: minLength;
-                    maxLength: maxLength;
-                   , language: tolerance.name }
-
-                } as LengthDetails,''
-                suggestion: 'より簡潔で自然な表現を検討してください';
-               , severity: this.severity;
+                    maxLength: maxLength,
+    language: tolerance.name 
+    } as LengthDetails,''
+                suggestion: 'より簡潔で自然な表現を検討してください',
+    severity: this.severity;
             },
         }
         
         return { passed: true, }
             message: `適切な長さです（${translationLength}文字, 範囲: ${minLength}-${maxLength}文字）`,
             details: { sourceLength: sourceLength;
-                translationLength: translationLength;
-               , language: tolerance.name };
+                translationLength: translationLength,
+    language: tolerance.name };
             severity: this.severity;
         },
     }
@@ -309,8 +305,8 @@ export class FormatValidationRule implements IValidationRule { public name: stri
     public severity: 'error' | 'warning',
 
     constructor(''';
-        this.name = 'フォーマット検証ルール';''
-        this.description = 'HTML要素、マークダウン記法等のフォーマットが保持されているかチェック';''
+        this.name = 'フォーマット検証ルール';
+        this.description = 'HTML要素、マークダウン記法等のフォーマットが保持されているかチェック';
         this.severity = 'error'; }
     
     /**
@@ -368,8 +364,8 @@ export class FormatValidationRule implements IValidationRule { public name: stri
         }
 
                 message: '検証に必要なテキストが不足しています', };
-                severity: this.severity }
-            }
+                severity: this.severity 
+    }
         
         const issues: FormatIssue[] = [],
         
@@ -390,12 +386,12 @@ export class FormatValidationRule implements IValidationRule { public name: stri
 
             if(missingTags.length > 0 || extraTags.length > 0) {'
                 issues.push({''
-                    type: 'html_tags',)';
+                    type: 'html_tags','';
                     message: 'HTMLタグが一致しません')
             ,}
                     missing: missingTags,) }
-                    extra: extraTags); }
-}
+                    extra: extraTags); 
+    }
         
         // マークダウン記法の検証
         const sourceMarkdown = this.extractMarkdownElements(sourceText);
@@ -405,9 +401,9 @@ export class FormatValidationRule implements IValidationRule { public name: stri
         const translationMarkdownTypes = translationMarkdown.map(md => md.type).sort();
 
         if (JSON.stringify(sourceMarkdownTypes) !== JSON.stringify(translationMarkdownTypes)) { issues.push({''
-                type: 'markdown',)';
-                message: 'マークダウン記法が一致しません');
-               , expected: sourceMarkdownTypes,);
+                type: 'markdown','';
+                message: 'マークダウン記法が一致しません'),
+    expected: sourceMarkdownTypes,);
                 actual: translationMarkdownTypes ,}
         
         // 特殊記号の検証
@@ -415,25 +411,25 @@ export class FormatValidationRule implements IValidationRule { public name: stri
         const translationSpecialChars = this.extractSpecialCharacters(translationText);
 
         if (JSON.stringify(sourceSpecialChars) !== JSON.stringify(translationSpecialChars)) { issues.push({''
-                type: 'special_characters',)';
-                message: '括弧や特殊記号が一致しません');
-               , expected: sourceSpecialChars,);
+                type: 'special_characters','';
+                message: '括弧や特殊記号が一致しません'),
+    expected: sourceSpecialChars,);
                 actual: translationSpecialChars ,}
 
         if(issues.length > 0) { return {  };
                 passed: false, }
                 message: `フォーマット検証で${issues.length}個の問題が見つかりました`;
                 details: issues,
-                suggestion: '原文のフォーマット要素を正確に翻訳に反映してください';
-               , severity: this.severity;
+                suggestion: '原文のフォーマット要素を正確に翻訳に反映してください',
+    severity: this.severity;
             },
         }
         ';
 
         return { passed: true,''
             message: 'フォーマットが正しく保持されています', };
-            severity: this.severity }
-        }
+            severity: this.severity 
+    }
 }
 
 /**
@@ -446,8 +442,8 @@ export class CulturalAppropriatenessRule implements IValidationRule { public nam
     private culturalRules: Record<string, CulturalRules>;
 
     constructor(''';
-        this.name = '文化的適切性ルール';''
-        this.description = '文化的に不適切な表現や誤解を招く表現がないかチェック';''
+        this.name = '文化的適切性ルール';
+        this.description = '文化的に不適切な表現や誤解を招く表現がないかチェック';
         this.severity = 'warning';
         );
         this.culturalRules = this.initializeCulturalRules(); }
@@ -455,7 +451,7 @@ export class CulturalAppropriatenessRule implements IValidationRule { public nam
     /**
      * 文化的配慮ルールを初期化'
      */''
-    private initializeCulturalRules(''';
+    private initializeCulturalRules('''
             'en': { inappropriate: [' }
 
                     { term: 'jap', reason: '差別的表現', suggestion: 'Japanese' ,},''
@@ -487,7 +483,7 @@ export class CulturalAppropriatenessRule implements IValidationRule { public nam
                     { term: '왜놈', reason: '差別的表現', suggestion: '일본인' ,},''
                     { term: '쪽발이', reason: '差別的表現', suggestion: '일본인' ,},]'
                     { term: '짱깨', reason: '差別的表現', suggestion: '중국인' ,}])
-                ])';
+                ]'';
                 sensitive: [']';
                     { term: '위안부', reason: '歴史的に敏感', suggestion: '慰安婦 문제（適切な文脈で）' ,}]
                 ];
@@ -504,8 +500,8 @@ export class CulturalAppropriatenessRule implements IValidationRule { public nam
         }
 
                 message: '翻訳テキストが不足しています', };
-                severity: this.severity }
-            }
+                severity: this.severity 
+    }
         
         const targetLanguage = context.targetLanguage;
         const rules = targetLanguage ? this.culturalRules[targetLanguage] : undefined
@@ -526,11 +522,11 @@ export class CulturalAppropriatenessRule implements IValidationRule { public nam
                 issues.push({''
                     type: 'inappropriate';
                     term: rule.term);
-                    reason: rule.reason)';
-                   , suggestion: rule.suggestion,' }'
+                    reason: rule.reason'',
+    suggestion: rule.suggestion,' }'
 
-                    severity: 'error'); }
-                });
+                    severity: 'error'); 
+    });
             }
         });
         
@@ -540,11 +536,11 @@ export class CulturalAppropriatenessRule implements IValidationRule { public nam
                 issues.push({''
                     type: 'sensitive';
                     term: rule.term);
-                    reason: rule.reason)';
-                   , suggestion: rule.suggestion,' }'
+                    reason: rule.reason'',
+    suggestion: rule.suggestion,' }'
 
-                    severity: 'warning'); }
-                });
+                    severity: 'warning'); 
+    });
             }
         });
 
@@ -578,8 +574,8 @@ export class CulturalAppropriatenessRule implements IValidationRule { public nam
 
         return { passed: true,''
             message: '文化的に適切な表現です', };
-            severity: this.severity }
-        }
+            severity: this.severity 
+    }
     
     /**
      * 新しい文化的ルールを追加'
@@ -603,8 +599,8 @@ export class CompletenessValidationRule implements IValidationRule { public name
     private untranslatedMarkers: string[]';
 
     constructor(''';
-        this.name = '翻訳完成度ルール';''
-        this.description = '空文字や未翻訳の項目がないかチェック';''
+        this.name = '翻訳完成度ルール';
+        this.description = '空文字や未翻訳の項目がないかチェック';
         this.severity = 'error';
         ';
 
@@ -625,8 +621,8 @@ export class CompletenessValidationRule implements IValidationRule { public name
             return { passed: false,''
                 message: '翻訳が空です',
                 suggestion: '翻訳を追加してください', };
-                severity: this.severity }
-            }
+                severity: this.severity 
+    }
         
         // 未翻訳マーカーのチェック
         const foundMarkers = this.untranslatedMarkers.filter(marker => );
@@ -669,23 +665,23 @@ export class CompletenessValidationRule implements IValidationRule { public name
             issues.push({)'
                 type: 'too_short',' }
 
-                message: '翻訳が極端に短すぎます'); }
-        }
+                message: '翻訳が極端に短すぎます'); 
+    }
 
         if(issues.length > 0) { return {  };
                 passed: false, }
                 message: `翻訳完成度で${issues.length}個の問題が見つかりました`;
                 details: issues,
-                suggestion: '翻訳を完成させ、未翻訳マーカーを除去してください';
-               , severity: this.severity;
+                suggestion: '翻訳を完成させ、未翻訳マーカーを除去してください',
+    severity: this.severity;
             },
         }
         ';
 
         return { passed: true,''
             message: '翻訳が適切に完成しています', };
-            severity: this.severity }
-        }
+            severity: this.severity 
+    }
     
     /**
      * 未翻訳マーカーを追加
@@ -703,16 +699,16 @@ export class ConsistencyValidationRule implements IValidationRule { public name:
     public severity: 'error' | 'warning',
 
     constructor(''';
-        this.name = '翻訳一貫性ルール';''
-        this.description = '翻訳の一貫性をチェック';''
+        this.name = '翻訳一貫性ルール';
+        this.description = '翻訳の一貫性をチェック';
         this.severity = 'warning'; }
     
     /**
      * 大文字化パターンをチェック（英語）'
-     */)'
+     */''
     private checkCapitalizationConsistency(text: string, language?: string): CapitalizationResult { ' }'
 
-        if(language !== 'en) return { passed: true }'
+        if(language !== 'en' return { passed: true }'
         const sentences = text.split(/[.!? ]+/).map(s => s.trim().filter(s => s.length > 0);
         const inconsistentSentences = sentences.filter(sentence => {  ); }
             return sentence.length > 0 && !/^[A-Z]/.test(sentence););
@@ -726,8 +722,8 @@ export class ConsistencyValidationRule implements IValidationRule { public name:
 
                 examples: inconsistentSentences.slice(0, 3),' };
 
-                suggestion: '各文の始まりを大文字にしてください' }
-            }
+                suggestion: '各文の始まりを大文字にしてください' 
+    }
         
         return { passed: true }
     
@@ -744,11 +740,11 @@ export class ConsistencyValidationRule implements IValidationRule { public name:
 
         if(sourceEndsWithPeriod && !translationEndsWithPeriod) { '
             issues.push({ : undefined''
-                type: 'missing_end_punctuation',)';
+                type: 'missing_end_punctuation','';
                 message: '文末の句読点が不足しています',' }
 
-                suggestion: '原文に合わせて適切な句読点を追加してください'); }
-        }
+                suggestion: '原文に合わせて適切な句読点を追加してください'); 
+    }
         
         // 疑問符・感嘆符のチェック
         const sourceQuestions = (sourceText.match(/[？? ]/g) || []).length;
@@ -757,7 +753,7 @@ export class ConsistencyValidationRule implements IValidationRule { public name:
         if(sourceQuestions !== translationQuestions) {'
             issues.push({ : undefined'
         
-                type: 'question_mark_mismatch', })'
+                type: 'question_mark_mismatch', }''
                 message: `疑問符の数が一致しません（元: ${sourceQuestions}, 翻訳: ${translationQuestions}）`,')'
                 suggestion: '疑問文は適切に疑問符で終わらせてください');
         }
@@ -769,7 +765,7 @@ export class ConsistencyValidationRule implements IValidationRule { public name:
             issues.push({'
         }
 
-                type: 'exclamation_mark_mismatch', })'
+                type: 'exclamation_mark_mismatch', }''
                 message: `感嘆符の数が一致しません（元: ${sourceExclamations}, 翻訳: ${translationExclamations}）`,')'
                 suggestion: '感嘆文は適切に感嘆符で終わらせてください');
         }
@@ -782,7 +778,7 @@ export class ConsistencyValidationRule implements IValidationRule { public name:
     private checkPolitenessConsistency(text: string, language?: string): PolitenessResult { ' }'
 
         if(!language || !['ja', 'ko].includes(language)) return { passed: true }''
-        if(language === 'ja) {'
+        if(language === 'ja' {'
             const politeEndings = text.match(/[です、ます、でした、ました]/g) || [];
             const casualEndings = text.match(/[だ、である、する]/g) || [];
 
@@ -793,8 +789,8 @@ export class ConsistencyValidationRule implements IValidationRule { public name:
 
                     message: '敬語レベルが一貫していません（丁寧語と普通語が混在）',' };
 
-                    suggestion: 'どちらか一方の敬語レベルに統一してください' }
-                }
+                    suggestion: 'どちらか一方の敬語レベルに統一してください' 
+    }
         }
         
         return { passed: true }
@@ -809,8 +805,8 @@ export class ConsistencyValidationRule implements IValidationRule { public name:
         }
 
                 message: '翻訳テキストが不足しています', };
-                severity: this.severity }
-            }
+                severity: this.severity 
+    }
 
         const targetLanguage = context.targetLanguage || 'unknown';
         const issues: (CapitalizationResult | ConsistencyIssue | PolitenessResult)[] = [],
@@ -831,16 +827,16 @@ export class ConsistencyValidationRule implements IValidationRule { public name:
                 passed: false, }
                 message: `翻訳一貫性で${issues.length}個の問題が見つかりました`;
                 details: issues,
-                suggestion: '翻訳全体の一貫性を確認し、統一された表現を使用してください';
-               , severity: this.severity;
+                suggestion: '翻訳全体の一貫性を確認し、統一された表現を使用してください',
+    severity: this.severity;
             },
         }
         ';
 
         return { passed: true,''
             message: '翻訳の一貫性に問題ありません', };
-            severity: this.severity }
-        }
+            severity: this.severity 
+    }
 }
 
 /**
@@ -881,4 +877,4 @@ export class ValidationRuleFactory {
 }
 ';
 // デフォルトファクトリーインスタンス
-export const validationRuleFactory = new ValidationRuleFactory(');
+export const validationRuleFactory = new ValidationRuleFactory();

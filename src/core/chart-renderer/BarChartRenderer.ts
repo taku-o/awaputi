@@ -31,14 +31,14 @@ export interface RawChartData { [key: string]: any,
     color?: string; }
 
 export interface ProcessedChartData extends ChartData { index: number,
-    normalizedValue: number;
-   , position: DataPosition
+    normalizedValue: number,
+    position: DataPosition
     ,}
 
 export interface DataPosition { x: number;
     y: number;
-    width: number;
-   , height: number }
+    width: number,
+    height: number }
 
 export interface ChartOptions { padding?: number;
     showAxes?: boolean;
@@ -68,13 +68,13 @@ export interface ThemeColors { primary: string,
     light: string;
     background: string;
     text: string;
-    grid: string;
-   , axis: string ,}
+    grid: string,
+    axis: string ,}
 
 export interface FontTheme { family: string;
     size: number;
-    weight: string;
-   , color: string }
+    weight: string,
+    color: string }
 
 export interface BarOptions { width?: number;
     gap?: number;
@@ -106,7 +106,7 @@ export interface LabelOptions { show?: boolean;
     font?: FontConfiguration;
     color?: string;
     rotation?: number;
-    format?: (valu;e: any) => string ,}
+    format?: (value: any) => string ,}
 }
 
 export interface AxisTitleOptions { text?: string;
@@ -156,11 +156,11 @@ export interface HoverOptions { enabled?: boolean;
     cursor?: string; }
 
 export interface ClickOptions { enabled?: boolean;
-    callback?: (dat;a: ProcessedChartData, event: MouseEvent) => void ,}
+    callback?: (data: ProcessedChartData, event: MouseEvent) => void ,}
 }
 
 export interface TooltipOptions { enabled?: boolean;
-    format?: (dat;a: ProcessedChartData) => string;
+    format?: (data: ProcessedChartData) => string;
     style?: TooltipStyle;
     ,}
 }
@@ -175,14 +175,14 @@ export interface TooltipStyle { background?: string;
 
 export interface ChartArea { x: number,
     y: number;
-    width: number;
-   , height: number ,}
+    width: number,
+    height: number ,}
 
 export interface ChartScales { xScale: number;
     yScale: number;
     yMin: number;
-    yMax: number;
-   , yRange: number;
+    yMax: number,
+    yRange: number;
     xMin?: number;
     xMax?: number;
     xRange?: number; }
@@ -192,8 +192,8 @@ export interface BarData { x: number,
     width: number;
     height: number;
     value: number;
-    color: string;
-   , data: ProcessedChartData
+    color: string,
+    data: ProcessedChartData
     ,}
 
 export interface ChartRenderResult { type: ChartType;
@@ -201,65 +201,65 @@ export interface ChartRenderResult { type: ChartType;
     min: number;
     max: number;
     bars: BarData[];
-    chartArea: ChartArea;
-   , scales: ChartScales;
+    chartArea: ChartArea,
+    scales: ChartScales;
     performance?: RenderPerformance;
     error?: string; }
 
 export interface RenderPerformance { renderTime: number,
-    dataProcessingTime: number;
-   , drawTime: number;
+    dataProcessingTime: number,
+    drawTime: number;
     memoryUsage?: number ,}
 
 export interface LegendItem { label: string;
     color: string;
-    series?: string;
-   , visible: boolean }
+    series?: string,
+    visible: boolean }
 
 export interface AxisLabel { text: string;
-    x: number;
-   , y: number;
+    x: number,
+    y: number;
     rotation?: number }
 
 export interface GridLine { x1: number;
     y1: number;
     x2: number;
-    y2: number;
-   , type: GridLineType
+    y2: number,
+    type: GridLineType
     }
 
 export interface ChartBounds { minX: number;
     maxX: number;
-    minY: number;
-   , maxY: number }
+    minY: number,
+    maxY: number }
 
 export interface ValidationResult { isValid: boolean;
-    errors: ValidationError[];
-   , warnings: ValidationWarning[]
+    errors: ValidationError[],
+    warnings: ValidationWarning[]
     }
 
 export interface ValidationError { field: string;
-    message: string;
-   , code: string }
+    message: string,
+    code: string }
 
 export interface ValidationWarning { field: string;
-    message: string;
-   , suggestion: string }
+    message: string,
+    suggestion: string }
 
 // 列挙型
-export type ChartType = 'bar' | 'line' | 'pie' | 'area' | 'scatter' | 'bubble';''
-export type EasingFunction = 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out';''
-export type LegendPosition = 'top' | 'bottom' | 'left' | 'right';''
-export type LegendAlignment = 'start' | 'center' | 'end';''
-export type TitlePosition = 'start' | 'center' | 'end';''
+export type ChartType = 'bar' | 'line' | 'pie' | 'area' | 'scatter' | 'bubble';
+export type EasingFunction = 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out';
+export type LegendPosition = 'top' | 'bottom' | 'left' | 'right';
+export type LegendAlignment = 'start' | 'center' | 'end';
+export type TitlePosition = 'start' | 'center' | 'end';
 export type GridLineType = 'horizontal' | 'vertical';
 
 // 定数
 export const DEFAULT_CHART_OPTIONS: Partial<ChartOptions> = { padding: 20,
     showAxes: true;
     showGrid: true;
-    showLegend: false;
-   , fontSize: 12,
+    showLegend: false,
+    fontSize: 12,
     fontFamily: 'Arial, sans-serif' } as const;
 ';
 
@@ -282,51 +282,51 @@ export const DEFAULT_THEME: ChartTheme = { colors: {''
 
 export const BAR_CONFIG = { DEFAULT_WIDTH_RATIO: 0.8,
     DEFAULT_GAP_RATIO: 0.1;
-    MIN_BAR_HEIGHT: 1;
-   , MAX_BARS_FOR_LABELS: 20 ,} as const;
+    MIN_BAR_HEIGHT: 1,
+    MAX_BARS_FOR_LABELS: 20 ,} as const;
 ';
 
 export const GRID_CONFIG = { DEFAULT_STEPS: 5,''
-    DEFAULT_COLOR: '#E5E7EB';
-   , DEFAULT_WIDTH: 0.5 ,} as const;
+    DEFAULT_COLOR: '#E5E7EB',
+    DEFAULT_WIDTH: 0.5 ,} as const;
 ';
 
 export const AXIS_CONFIG = {;
     DEFAULT_COLOR: '#6B7280';
     DEFAULT_WIDTH: 1;
-    TICK_LENGTH: 5;
-   , LABEL_OFFSET: 15 } as const;
+    TICK_LENGTH: 5,
+    LABEL_OFFSET: 15 } as const;
 // ユーティリティ関数
 export function validateChartData(data: any[]): ValidationResult { const errors: ValidationError[] = [],
     const warnings: ValidationWarning[] = [],
 
     if(!Array.isArray(data)) {'
         errors.push({''
-            field: 'data',)';
+            field: 'data','';
             message: 'Chart data must be an array',')';
             code: 'INVALID_DATA_TYPE' ,});
         return { isValid: false, errors, warnings }
 
     if(data.length === 0) { '
         errors.push({''
-            field: 'data',)';
+            field: 'data','';
             message: 'Chart data cannot be empty',' }
 
-            code: 'EMPTY_DATA')'); }
+            code: 'EMPTY_DATA')'); 
     }
     ';
 
     const hasInvalidValues = data.some(item => {  ')'
-        const value = typeof item === 'number' ? item: item? .value),' 
+        const value = typeof item === 'number' ? item: item?.value',' 
         return typeof value !== 'number' || !isFinite(value););
 
     if(hasInvalidValues) { '
         errors.push({ : undefined''
-            field: 'data.value',)';
+            field: 'data.value','';
             message: 'All data items must have valid numeric values',' }
 
-            code: 'INVALID_VALUES'); }
-        });
+            code: 'INVALID_VALUES'); 
+    });
     }
 
     if(data.length > 100) {'
@@ -335,8 +335,8 @@ export function validateChartData(data: any[]): ValidationResult { const errors:
             message: 'Large dataset detected(>100, items)';
     ,}
 
-            suggestion: 'Consider data aggregation for better performance' }
-        });
+            suggestion: 'Consider data aggregation for better performance' 
+    });
     }
     
     return { isValid: errors.length === 0,
@@ -376,11 +376,11 @@ export class BarChartRenderer {
     constructor() {
 
         this.performance = {
-            renderTime: 0;
-           , dataProcessingTime: 0;
+            renderTime: 0,
+    dataProcessingTime: 0;
     }
-            drawTime: 0 }
-        }
+            drawTime: 0 
+    }
 
     /**
      * メインレンダリング関数
@@ -423,23 +423,23 @@ export class BarChartRenderer {
             ';
 
             this.performance.drawTime = performance.now() - drawStartTime;''
-            this.performance.renderTime = performance.now(''';
+            this.performance.renderTime = performance.now('''
                 type: 'bar';
                 dataPoints: processedData.length;
-                min: scales.yMin;
-               , max: scales.yMax;
+                min: scales.yMin,
+    max: scales.yMax;
                 bars,
                 chartArea,
                 scales,
-                performance: { ...this.performance))', ')';
+                performance: { ...this.performance)'', ')';
         } catch (error) {
-            console.error('Bar chart rendering failed:', error);
+            console.error('Bar chart rendering failed:', error';
 
             return { ''
                 type: 'bar', ;
                 dataPoints: 0;
-                min: 0;
-               , max: 0, };
+                min: 0,
+    max: 0, };
                 bars: [], }
                 chartArea: { x: 0, y: 0, width: 0, height: 0 ,},
                 scales: { xScale: 0, yScale: 0, yMin: 0, yMax: 0, yRange: 0 ,},
@@ -453,10 +453,10 @@ export class BarChartRenderer {
      */
     private calculateChartArea(canvas: HTMLCanvasElement, options: ChartOptions): ChartArea { const padding = options.padding || DEFAULT_CHART_OPTIONS.padding!;
         return { x: padding,
-            y: padding;
-           , width: canvas.width - (padding * 2), };
-            height: canvas.height - (padding * 2); }
-        }
+            y: padding,
+    width: canvas.width - (padding * 2), };
+            height: canvas.height - (padding * 2); 
+    }
 
     /**
      * データの前処理
@@ -465,24 +465,24 @@ export class BarChartRenderer {
         return data.map((item, index) => { 
             let processedItem: ProcessedChartData,
 
-            if(typeof, item === 'number) {'
+            if(typeof, item === 'number' {'
                 
             }
                 processedItem = { }
                     value: item, }
                     label: `Item ${index + 1}`;
                     index,
-                    normalizedValue: 0;
-                   , position: { x: 0, y: 0, width: 0, height: 0 ,} else {  processedItem = { }
+                    normalizedValue: 0,
+    position: { x: 0, y: 0, width: 0, height: 0 ,} else {  processedItem = { }
                     value: item.value || 0, }
                     label: item.label || `Item ${index + 1}`;
                     color: item.color;
                     series: item.series;
-                    category: item.category;
-                   , metadata: item.metadata;
+                    category: item.category,
+    metadata: item.metadata;
                     index,
-                    normalizedValue: 0;
-                   , position: { x: 0, y: 0, width: 0, height: 0 ,}
+                    normalizedValue: 0,
+    position: { x: 0, y: 0, width: 0, height: 0 ,}
             
             return processedItem;
         });
@@ -579,7 +579,7 @@ export class BarChartRenderer {
         context.lineWidth = width;
         
         // 水平グリッド線
-        if(gridOptions.y? .show !== false) {
+        if(gridOptions.y?.show !== false) {
             const ySteps = gridOptions.y?.count || GRID_CONFIG.DEFAULT_STEPS;
             for (let, i = 0; i <= ySteps; i++) {
                 const y = chartArea.y + (chartArea.height / ySteps) * i;
@@ -651,11 +651,11 @@ export class BarChartRenderer {
             // 位置情報の更新
             item.position = { x, y, width: barWidth, height: barHeight ,}
             bars.push({ x, 
-                y, ;
+                y, 
                 width: barWidth, ;
                 height: barHeight );
-                value: item.value);
-               , color: barColor,);
+                value: item.value),
+    color: barColor,);
                 data: item ,});
         
         return bars;
@@ -666,7 +666,7 @@ export class BarChartRenderer {
      */
     private renderLegend(context: ChartContext, data: ProcessedChartData[], chartArea: ChartArea, options: ChartOptions): void {
         const legendOptions = options.legend || {};
-        const fontSize = legendOptions.font? .size || options.fontSize || DEFAULT_CHART_OPTIONS.fontSize!;
+        const fontSize = legendOptions.font?.size || options.fontSize || DEFAULT_CHART_OPTIONS.fontSize!;
         const fontFamily = legendOptions.font?.family || options.fontFamily || DEFAULT_CHART_OPTIONS.fontFamily!;
         
         // 凡例項目の抽出 : undefined
@@ -723,7 +723,7 @@ export class BarChartRenderer {
 
         if(options.padding && (options.padding < 0 || options.padding > 100)) {'
             errors.push({''
-                field: 'padding',)';
+                field: 'padding','';
                 message: 'Padding must be between 0 and 100',')';
                 code: 'INVALID_PADDING' ,}
 

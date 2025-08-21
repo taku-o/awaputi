@@ -31,21 +31,21 @@ export type EasingType = '';
 export interface AnimationEngineSettings { enabled: boolean,
     globalSpeed: number;
     quality: AnimationQuality;
-    enableEasing: boolean;
-   , enableParallax: boolean ,}
+    enableEasing: boolean,
+    enableParallax: boolean ,}
 
 /**
  * Performance metrics interface
  */
 export interface PerformanceMetrics { activeAnimations: number;
-    frameTime: number;
-   , droppedFrames: number }
+    frameTime: number,
+    droppedFrames: number }
 
 /**
  * Animation progress result interface
  */
-export interface AnimationProgress { progress: number;
-   , easedProgress: number }
+export interface AnimationProgress { progress: number,
+    easedProgress: number }
 
 /**
  * Animation target interface
@@ -55,7 +55,7 @@ export interface AnimationTarget { [key: string]: any, }
 /**
  * Animation options interface
  */
-export interface AnimationOptions { onComplete?: (animatio;n: Animation) => void;
+export interface AnimationOptions { onComplete?: (animation: Animation) => void;
     [key: string]: any, }
 }
 
@@ -64,8 +64,8 @@ export interface AnimationOptions { onComplete?: (animatio;n: Animation) => void
  */
 export interface Animation { type?: string;
     target?: AnimationTarget;
-    duration: number;
-   , elapsed: number;
+    duration: number,
+    elapsed: number;
     easing?: EasingType;
     endValues?: Record<string, any>;
     options?: AnimationOptions;
@@ -75,16 +75,16 @@ export interface Animation { type?: string;
  * Quality level settings interface
  */
 export interface QualityLevelSettings { particleCount: number,
-    effectIntensity: number;
-   , complexAnimations: boolean ,}
+    effectIntensity: number,
+    complexAnimations: boolean ,}
 
 /**
  * Quality levels configuration interface
  */
 export interface QualityLevels { low: QualityLevelSettings;
     medium: QualityLevelSettings;
-    high: QualityLevelSettings;
-   , ultra: QualityLevelSettings
+    high: QualityLevelSettings,
+    ultra: QualityLevelSettings
     }
 
 /**
@@ -101,14 +101,14 @@ export class AnimationEngineCore {
     private settings: AnimationEngineSettings;
     private performanceMetrics: PerformanceMetrics';
 
-    constructor(''';
+    constructor('''
             quality: 'high';
-            enableEasing: true;
-           , enableParallax: true };
+            enableEasing: true,
+    enableParallax: true };
         // パフォーマンス監視
         this.performanceMetrics = { activeAnimations: 0,
-            frameTime: 0;
-           , droppedFrames: 0 ,}))
+            frameTime: 0,
+    droppedFrames: 0 ,}))
     }
     
     /**
@@ -207,13 +207,13 @@ export class AnimationEngineCore {
         }
         
         // コールバック実行
-        if(animation.options? .onComplete) {
+        if(animation.options?.onComplete) {
             try {
         }
                 animation.options.onComplete(animation); }
             } catch (error) {
                 getErrorHandler()';
-                    context: 'AnimationEngineCore.completeAnimation),' 
+                    context: 'AnimationEngineCore.completeAnimation',' 
                 }');
             }
         }
@@ -276,8 +276,8 @@ export class AnimationEngineCore {
     calculateAnimationProgress(animation: Animation): AnimationProgress { ''
         const progress = Math.min(animation.elapsed / animation.duration, 1);
 
-        const easedProgress = this.settings.enableEasing ?   : undefined'';
-            this.ease(progress, animation.easing || 'linear) : progress; }'
+        const easedProgress = this.settings.enableEasing ? undefined : undefined'';
+            this.ease(progress, animation.easing || 'linear' : progress; }'
         return { progress, easedProgress }
     
     /**
@@ -295,16 +295,16 @@ export class AnimationEngineCore {
     /**
      * クリーンアップ'
      */''
-    dispose(''';
+    dispose('''
             quality: 'high';
-            enableEasing: true;
-           , enableParallax: true;
+            enableEasing: true,
+    enableParallax: true;
         },
         
         // メトリクスリセット
         this.performanceMetrics = { activeAnimations: 0,
-            frameTime: 0;
-           , droppedFrames: 0 ,}
+            frameTime: 0,
+    droppedFrames: 0 ,}
 }
 
 /**
@@ -315,7 +315,7 @@ export class AnimationQualityController {
     private qualityLevels: QualityLevels;
     private currentQuality: AnimationQuality;
     private frameTimeHistory: number[]);
-    private readonly, maxHistorySize: number);
+    private readonly, maxHistorySize: number';
 
     constructor(''';
         this.currentQuality = 'high';
@@ -358,7 +358,7 @@ export class AnimationQualityController {
     /**
      * 品質を下げる
      */''
-    private downgradeQuality(''';
+    private downgradeQuality('''
         const qualityOrder: AnimationQuality[] = ['ultra', 'high', 'medium', 'low'];)
         const currentIndex = qualityOrder.indexOf(this.currentQuality);
         
@@ -370,7 +370,7 @@ export class AnimationQualityController {
     /**
      * 品質を上げる'
      */''
-    private upgradeQuality(''';
+    private upgradeQuality('''
         const qualityOrder: AnimationQuality[] = ['low', 'medium', 'high', 'ultra'];)
         const currentIndex = qualityOrder.indexOf(this.currentQuality);
         

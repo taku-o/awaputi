@@ -3,16 +3,16 @@ import { BaseComponent  } from '../BaseComponent.js';
 // Type definitions
 interface FailureHistoryEntry { timestamp: number,
     sessionId: string;
-    testName: string;
-   , pattern: {
+    testName: string,
+    pattern: {
         i;d: string;
         name: string;
-        category: string;
-       , severity: string ,} | null;
+        category: string,
+    severity: string ,} | null;
     error: string;
     component: string | null;
-    recoverability: string | null;
-   , suggestions: string[];
+    recoverability: string | null,
+    suggestions: string[];
 }
 
 interface Test { name: string,
@@ -23,58 +23,58 @@ interface Analysis { test: Test,
     pattern?: {
         i;d: string;
         name: string;
-        category: string;
-       , severity: string ,};
+        category: string,
+    severity: string ,};
     component?: string;
     recoverability?: string;
     suggestions?: string[];
 }
 
 interface FrequencyAnalysis { frequency: number,
-    recentFailures: number;
-   , weeklyFailures: number,
+    recentFailures: number,
+    weeklyFailures: number,
     trend: 'stable' | 'increasing' | 'decreasing';
-    firstFailure: Date | null;
-   , lastFailure: Date | null ,}
+    firstFailure: Date | null,
+    lastFailure: Date | null ,}
 
 interface HistoryStatistics { totalFailures: number;
-    uniqueTests: number;
-   , patternBreakdown: Record<string, number>;
+    uniqueTests: number,
+    patternBreakdown: Record<string, number>;
     componentBreakdown: Record<string, number>;
     severityBreakdown: Record<string, number>;
     timeRange: {
         earlies;t: Date;
-        latest: Date;
-       , spanDays: number ,} | null;
+        latest: Date,
+    spanDays: number ,} | null;
 }
 
 interface Suggestion { action: string,
 
     description: string,
     priority: 'low' | 'medium' | 'high';
-    category: string;
-   , source: string ,}
+    category: string,
+    source: string ,}
 
 interface CommonPattern { id: string;
-    name: string;
-   , count: number }
+    name: string,
+    count: number }
 ';
 
 interface TrendAnalysis { ''
     trend: 'no_data' | 'low' | 'medium' | 'high';
     totalFailures: number;
-    dailyAverage: number;
-   , mostCommonPattern: {
-        patter;n: string;
-       , count: number } | null;
-    mostProblematicTest: { testName: string;
-       , count: number } | null;
+    dailyAverage: number,
+    mostCommonPattern: {
+        patter;n: string,
+    count: number } | null;
+    mostProblematicTest: { testName: string,
+    count: number } | null;
 }
 
 interface ExportData { version: string,
     exportDate: string;
-    totalFailures: number;
-   , history: FailureHistoryEntry[]
+    totalFailures: number,
+    history: FailureHistoryEntry[]
     ,}
 
 interface MainController { [key: string]: any, }
@@ -150,19 +150,18 @@ export class FailureHistoryManager extends BaseComponent { private failureHistor
                 const historyEntry: FailureHistoryEntry = {
                     timestamp,
                     sessionId,
-                    testName: analysis.test.name;
-                   , pattern: analysis.pattern ? { : undefined
+                    testName: analysis.test.name,
+    pattern: analysis.pattern ? { : undefined
                         id: analysis.pattern.id;
-                        name: analysis.pattern.name;
-                       , category: analysis.pattern.category;
+                        name: analysis.pattern.name,
+    category: analysis.pattern.category;
         ,}
-                        severity: analysis.pattern.severity }
-
-                    } : null,''
+                        severity: analysis.pattern.severity 
+    } : null,''
                     error: analysis.test.error || '';
                     component: analysis.component || null;
-                    recoverability: analysis.recoverability || null;
-                   , suggestions: analysis.suggestions ? analysis.suggestions.slice(0, 3) : [];
+                    recoverability: analysis.recoverability || null,
+    suggestions: analysis.suggestions ? analysis.suggestions.slice(0, 3) : [];
                 };
 
                 this.failureHistory.push(historyEntry);
@@ -269,8 +268,8 @@ export class FailureHistoryManager extends BaseComponent { private failureHistor
      * @returns 統計情報
      */
     getHistoryStatistics(): HistoryStatistics { const stats: HistoryStatistics = {
-            totalFailures: this.failureHistory.length;
-           , uniqueTests: new Set(this.failureHistory.map(f = > f.testName).size }
+            totalFailures: this.failureHistory.length,
+    uniqueTests: new Set(this.failureHistory.map(f = > f.testName).size }
             patternBreakdown: {};
             componentBreakdown: {};
             severityBreakdown: {};
@@ -282,8 +281,8 @@ export class FailureHistoryManager extends BaseComponent { private failureHistor
         // 時間範囲
         const timestamps = this.failureHistory.map(f => f.timestamp).sort((a, b) => a - b);
         stats.timeRange = { earliest: new Date(timestamps[0]),
-            latest: new Date(timestamps[timestamps.length - 1]);
-           , spanDays: (timestamps[timestamps.length - 1] - timestamps[0]) / (24 * 60 * 60 * 1000 ,};
+            latest: new Date(timestamps[timestamps.length - 1]),
+    spanDays: (timestamps[timestamps.length - 1] - timestamps[0]) / (24 * 60 * 60 * 1000 ,};
 
         // パターン別統計
         for(const failure of this.failureHistory) {
@@ -325,7 +324,7 @@ export class FailureHistoryManager extends BaseComponent { private failureHistor
                 action: 'Review test stability', }
 
                 description: `このテストは過去${frequencyAnalysis.frequency}回失敗しています。テストの安定性を見直すことを推奨します。`,''
-                priority: 'high',)';
+                priority: 'high','';
                 category: 'stability',')';
                 source: 'history')');
         }
@@ -335,11 +334,11 @@ export class FailureHistoryManager extends BaseComponent { private failureHistor
             suggestions.push({''
                 action: 'Investigate recent changes',
                 description: '最近失敗が増加しています。関連するコード変更を調査してください。',
-                priority: 'high',)';
+                priority: 'high','';
                 category: 'investigation',' }
 
-                source: 'history'); }
-        }
+                source: 'history'); 
+    }
 
         // 同じパターンでの失敗が多い場合
         const commonPatterns = this.getCommonPatternsFromHistory(relatedFailures);
@@ -353,8 +352,7 @@ export class FailureHistoryManager extends BaseComponent { private failureHistor
                     priority: 'medium',
                     category: 'pattern_analysis',')';
                     source: 'history');
-            }
-        }
+    }
 
         return suggestions.slice(0, 5); // 最大5件
     }
@@ -373,11 +371,11 @@ export class FailureHistoryManager extends BaseComponent { private failureHistor
                 const key = failure.pattern.id;
                 if (!patternCounts[key]) {
                     patternCounts[key] = {
-                        id: failure.pattern.id;
-                       , name: failure.pattern.name;
+                        id: failure.pattern.id,
+    name: failure.pattern.name;
         }
-                        count: 0 }
-                    }
+                        count: 0 
+    }
                 patternCounts[key].count++;
             }
         }
@@ -400,12 +398,12 @@ export class FailureHistoryManager extends BaseComponent { private failureHistor
         if(recentFailures.length === 0) {'
             return { ''
                 trend: 'no_data';
-                totalFailures: 0;
-               , dailyAverage: 0;
+                totalFailures: 0,
+    dailyAverage: 0;
         }
                 mostCommonPattern: null, };
-                mostProblematicTest: null }
-            }
+                mostProblematicTest: null 
+    }
 
         // 日別の失敗数を計算
         const dailyFailures: Record<number, number> = {};
@@ -452,11 +450,11 @@ export class FailureHistoryManager extends BaseComponent { private failureHistor
             dailyAverage,
             mostCommonPattern: mostCommonPattern ? { : undefined
                 pattern: mostCommonPattern[0], };
-                count: mostCommonPattern[1] }
-            } : null;
+                count: mostCommonPattern[1] 
+    } : null;
             mostProblematicTest: mostProblematicTest ? { : undefined
-                testName: mostProblematicTest[0];
-               , count: mostProblematicTest[1] ,} : null
+                testName: mostProblematicTest[0],
+    count: mostProblematicTest[1] ,} : null
         }
 
     /**
@@ -467,7 +465,7 @@ export class FailureHistoryManager extends BaseComponent { private failureHistor
             localStorage.removeItem(this.storageKey);' }'
 
         } catch (error) {
-            this._handleError('Failed to clear failure history', error); }
+            this._handleError('Failed to clear failure history', error'; }
     }
 
     /**
@@ -477,8 +475,8 @@ export class FailureHistoryManager extends BaseComponent { private failureHistor
     exportHistory()';
             version: '1.0);
             exportDate: new Date().toISOString();
-            totalFailures: this.failureHistory.length;
-           , history: this.failureHistory;
+            totalFailures: this.failureHistory.length,
+    history: this.failureHistory;
         } as ExportData, null, 2);
     }
 

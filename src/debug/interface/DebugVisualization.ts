@@ -8,21 +8,21 @@ interface ThemeColors { primary: string,
     error: string;
     background: string;
     surface: string;
-    text: string;
-   , textSecondary: string ,}
+    text: string,
+    textSecondary: string ,}
 
 interface ThemeFonts { primary: string;
-    size: string;
-   , lineHeight: string }
+    size: string,
+    lineHeight: string }
 
 interface Theme { name: string;
-    colors: ThemeColors;
-   , fonts: ThemeFonts
+    colors: ThemeColors,
+    fonts: ThemeFonts
     }
 
 interface Breakpoints { mobile: number;
-    tablet: number;
-   , desktop: number }
+    tablet: number,
+    desktop: number }
 ';
 
 interface OrientationData { ''
@@ -30,17 +30,17 @@ interface OrientationData { ''
     supported: ('portrait' | 'landscape')[] ,}
 
 interface ResponsiveLayout { currentBreakpoint: string;
-    isTouchDevice: boolean;
-   , orientation: string }
+    isTouchDevice: boolean,
+    orientation: string }
 
 interface PerformanceData { fps: number;
     memory: number;
-    cpu: number;
-   , network: NetworkData
+    cpu: number,
+    network: NetworkData
     }
 
-interface NetworkData { download: number;
-   , upload: number }
+interface NetworkData { download: number,
+    upload: number }
 
 interface MainController { container?: HTMLElement;
     }
@@ -60,15 +60,15 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
         super(mainController, 'DebugVisualization);
 
         this.charts = new Map<string, HTMLElement>();''
-        this.themes = new Map<string, Theme>(');''
+        this.themes = new Map<string, Theme>();''
         this.currentTheme = 'default';
         this.responsiveLayout = null;
         this.breakpoints = {
-            mobile: 768;
-           , tablet: 1024;
+            mobile: 768,
+    tablet: 1024;
     ,}
-            desktop: 1200 }
-        };
+            desktop: 1200 
+    };
         this.orientationData = {;
             current: 'landscape',
             supported: ['portrait', 'landscape] }
@@ -81,7 +81,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
     /**
      * テーマを設定'
      */''
-    setupThemes(''';
+    setupThemes('''
         this.themes.set('default', { ''
             name: 'Default',
             colors: {''
@@ -93,13 +93,13 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                 background: '#252526',
                 surface: '#2d2d30',
                 text: '#cccccc',
-                textSecondary: '#969696' ,}))'
+                textSecondary: '#969696' ,})''
             fonts: { ''
                 primary: 'Consolas, Monaco, monospace',
                 size: '12px',
                 lineHeight: '1.4'' ,}
 
-            })');
+            }'');
 ';
         // ダークテーマ
         this.themes.set('dark', { ''
@@ -113,13 +113,13 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                 background: '#121212',
                 surface: '#1e1e1e',
                 text: '#ffffff',
-                textSecondary: '#a0a0a0' ,}))'
+                textSecondary: '#a0a0a0' ,})''
             fonts: { ''
                 primary: 'Roboto Mono, monospace',
                 size: '12px',
                 lineHeight: '1.5'' ,}
 
-            })');
+            }'');
 ';
         // ライトテーマ
         this.themes.set('light', { ''
@@ -133,7 +133,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                 background: '#ffffff',
                 surface: '#f8f9fa',
                 text: '#212121',
-                textSecondary: '#666666' ,}))'
+                textSecondary: '#666666' ,})''
             fonts: { ''
                 primary: 'Source Code Pro, monospace',
                 size: '12px',
@@ -162,9 +162,8 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
      * 視覚化イベントをバインド'
      */''
     bindVisualizationEvents()';
-        document.addEventListener('themeChange', (event: CustomEvent) => { this.setTheme(event.detail.theme);' }
-
-        }');
+        document.addEventListener('themeChange', (event: CustomEvent) => { this.setTheme(event.detail.theme);' 
+    }');
 ';
         // パフォーマンス監視イベント
         document.addEventListener('performanceUpdate', (event: CustomEvent) => { this.updatePerformanceVisualization(event.detail); });
@@ -174,7 +173,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
      * デバッグスタイルを作成'
      */''
     createDebugStyles()';
-        if(document.getElementById('debug-visualization-styles)) return;
+        if(document.getElementById('debug-visualization-styles)' return;
 
         const style = document.createElement('style'');''
         style.id = 'debug-visualization-styles';
@@ -224,8 +223,8 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
             .debug-tab { background-color: var(--surface-color),
                 color: var(--text-secondary-color);
                 border: none;
-                padding: 8px 16px;
-               , cursor: pointer, }
+                padding: 8px 16px,
+    cursor: pointer, }
                 border-right: 1px solid var(--primary-color})
                 transition: all 0.2s ease);
             }
@@ -233,8 +232,8 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
             .debug-tab:hover { background-color: var(--primary-color),
                 color: var(--text-color ,}
 
-            .debug-tab.active { background-color: var(--primary-color);
-               , color: var(--text-color);
+            .debug-tab.active { background-color: var(--primary-color),
+    color: var(--text-color);
                 font-weight: bold, }
 
             .debug-content {
@@ -273,8 +272,8 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
             .console-input { width: 100%,
                 background-color: var(--surface-color),
                 color: var(--text-color);
-                border: 1px solid var(--primary-color);
-               , padding: 8px;
+                border: 1px solid var(--primary-color),
+    padding: 8px;
                 border-radius: 4px,
                 font-family: var(--font-family), }
 
@@ -284,8 +283,8 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                 font-size: 10px,
                 color: var(--text-secondary-color ,}
 
-            .panel-statistics { display: flex;
-               , gap: 16px;
+            .panel-statistics { display: flex,
+    gap: 16px;
                 font-size: 10px,
                 color: var(--text-secondary-color ,}
         `;
@@ -304,8 +303,8 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                     height: 50vh !important;
                     bottom: 0 !important;
                     right: 0 !important;
-                    top: auto !important;
-                   , left: 0 !important;
+                    top: auto !important,
+    left: 0 !important;
                     border-radius: 8px 8px 0 0, }
 
                 .debug-tabs { overflow-x: auto,
@@ -325,16 +324,16 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
 
             /* Tablet styles */
             @media (min-width: ${this.breakpoints.mobile + 1)px} and (max-width: ${this.breakpoints.tablet}px}) { .debug-interface {
-                    width: 80vw !important;
-                   , height: 60vh !important }
+                    width: 80vw !important,
+    height: 60vh !important }
 
                 .performance-charts { grid-template-columns: repeat(2, 1fr }
             }
 
             /* Desktop styles */
             @media (min-width: ${this.breakpoints.desktop}px}) { .debug-interface {
-                    width: 60vw;
-                   , height: 70vh }
+                    width: 60vw,
+    height: 70vh }
 
                 .performance-charts { grid-template-columns: repeat(3, 1fr }
             }
@@ -344,8 +343,8 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                     height: 40vh !important }
 
                 .debug-tabs { flex-direction: column;
-                    width: 120px;
-                   , float: left }
+                    width: 120px,
+    float: left }
 
                 .debug-content { margin-left: 120px, }
             }
@@ -356,8 +355,8 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
                     padding: 12px 16px ,}
 
                 .console-input { min-height: 44px;
-                    font-size: 16px; /* Prevent zoom on iOS */ }
-            }
+                    font-size: 16px; /* Prevent zoom on iOS */ 
+    }
         `;
         
         document.head.appendChild(responsiveStyle);
@@ -377,7 +376,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
      * @param fps - FPS値'
      */''
     updateFPSChart(fps: number): void { ''
-        const chart = this.charts.get('fps'') || this.createChart('fps', 'FPS);''
+        const chart = this.charts.get('fps'') || this.createChart('fps', 'FPS';''
         if(!chart) return;
 
         const color = fps > 50 ? 'var(--success-color)' : fps > 30 ? 'var(--warning-color)' : 'var(--error-color)';
@@ -386,7 +385,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
         chart.innerHTML = `' }'
 
             <div style="color: ${color}">""
-                <div style="font-size: 24px;">${fps.toFixed(1"})</div>""
+                <div style="font-size: 24px;">${fps.toFixed(1"}"</div>""
                 <div style="font-size: 12px;">FPS</div>
             </div>;
         `;
@@ -407,7 +406,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
         chart.innerHTML = `' }'
 
             <div style="color: ${color}">""
-                <div style="font-size: 18px;">${memory.toFixed(1"})MB</div>""
+                <div style="font-size: 18px;">${memory.toFixed(1"}"MB</div>""
                 <div style="font-size: 12px;">Memory Usage</div>""
                 <div style="width: 100%; height: 4px; background: var(--surface-color); margin: 4px 0;">""
                     <div style="width: ${percentage}%; height: 100%;, background: ${color};"></div>
@@ -421,7 +420,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
      * @param cpu - CPU使用率（%）"
      */""
     updateCPUChart(cpu: number): void { ""
-        const chart = this.charts.get('cpu'') || this.createChart('cpu', 'CPU);''
+        const chart = this.charts.get('cpu'') || this.createChart('cpu', 'CPU';''
         if(!chart) return;
 
         const color = cpu > 80 ? 'var(--error-color)' : cpu > 60 ? 'var(--warning-color)' : 'var(--success-color)';
@@ -430,7 +429,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
         chart.innerHTML = `' }'
 
             <div style="color: ${color}">""
-                <div style="font-size: 18px;">${cpu.toFixed(1"})%</div>""
+                <div style="font-size: 18px;">${cpu.toFixed(1"}"%</div>""
                 <div style="font-size: 12px;">CPU Usage</div>""
                 <div style="width: 100%; height: 4px; background: var(--surface-color); margin: 4px 0;">""
                     <div style="width: ${cpu}%; height: 100%;, background: ${color};"></div>
@@ -444,14 +443,14 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
      * @param network - ネットワークデータ"
      */""
     updateNetworkChart(network: NetworkData): void { ""
-        const chart = this.charts.get('network'') || this.createChart('network', 'Network);''
+        const chart = this.charts.get('network'') || this.createChart('network', 'Network';''
         if(!chart) return;
         
         chart.innerHTML = `';
             <div>' }'
 
-                <div style="font-size: 14px;">↓ ${(network.download / 1024}.toFixed(1"})KB/s</div>""
-                <div style="font-size: 14px;">↑ ${(network.upload / 1024}.toFixed(1"})KB/s</div>""
+                <div style="font-size: 14px;">↓ ${(network.download / 1024}.toFixed(1"}"KB/s</div>""
+                <div style="font-size: 14px;">↑ ${(network.upload / 1024}.toFixed(1"}"KB/s</div>""
                 <div style="font-size: 12px;">Network</div>
             </div>;
         `;
@@ -464,7 +463,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
      * @returns チャート要素
      */"
     createChart(id: string, title: string): HTMLElement | null { ""
-        const chartsContainer = (this.mainController, as MainController").container? .querySelector('.performance-charts);''
+        const chartsContainer = (this.mainController, as MainController").container?.querySelector('.performance-charts';''
         if(!chartsContainer) return null;
 
         const chart = document.createElement('div'');''
@@ -506,7 +505,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
         if(!container || !this.responsiveLayout) return;
 ';
         // ブレークポイントクラスを更新
-        container.classList.remove('mobile', 'tablet', 'desktop);''
+        container.classList.remove('mobile', 'tablet', 'desktop';''
         container.classList.add(this.responsiveLayout.currentBreakpoint);
 ';
         // オリエンテーションクラスを更新
@@ -518,7 +517,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
 
         }
 
-            container.classList.add('touch-device); }'
+            container.classList.add('touch-device'; }'
 }
 
     // === 公開API ===
@@ -528,8 +527,8 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
      * @returns ブレークポイント名
      */
     getCurrentBreakpoint(): string { const width = window.innerWidth;''
-        if(width <= this.breakpoints.mobile) return 'mobile';''
-        if(width <= this.breakpoints.tablet) return 'tablet';''
+        if(width <= this.breakpoints.mobile) return 'mobile';
+        if(width <= this.breakpoints.tablet) return 'tablet';
         return 'desktop'; }
 
     /**
@@ -544,7 +543,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
      * 画面の向きを取得
      * @returns 向き'
      */''
-    getOrientation(''';
+    getOrientation('''
         return, window.innerHeight > window.innerWidth ? 'portrait' : 'landscape';
     }
 
@@ -562,7 +561,7 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
      */'
     setTheme(themeName: string): void { if(!this.themes.has(themeName) {' }'
 
-            console.warn(`Theme, not found: ${themeName}`'});
+            console.warn(`Theme, not found: ${themeName}`'}';
             return;
         }
 ';
@@ -620,12 +619,12 @@ export class DebugVisualization extends BaseComponent { private charts: Map<stri
      * クリーンアップ'
      */''
     cleanup()';
-        document.getElementById('debug-visualization-styles)? .remove()';
+        document.getElementById('debug-visualization-styles)?.remove()';
         document.getElementById('debug-responsive-styles)?.remove();
 ';
         // チャートをクリア
         this.clearAllCharts()';
-        window.removeEventListener('resize', this.handleResize);''
-        window.removeEventListener('orientationchange', this.handleOrientationChange);
+        window.removeEventListener('resize', this.handleResize';''
+        window.removeEventListener('orientationchange', this.handleOrientationChange';
 
-        super.cleanup(');
+        super.cleanup();

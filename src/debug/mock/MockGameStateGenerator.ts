@@ -7,15 +7,15 @@ interface GameState { id: string,
     level: number;
     score: number;
     lives: number;
-    bubbles: any[];
-   , player: {
+    bubbles: any[],
+    player: {
         ;x: number;
-        y: number;
-       , angle: number ,};
+        y: number,
+    angle: number ,};
     gameMode: string;
     timeRemaining: number;
-    powerUps: string[];
-   , timestamp: number;
+    powerUps: string[],
+    timestamp: number;
 }
 
 interface StateGenerationOptions { level?: number;
@@ -38,16 +38,16 @@ export class MockGameStateGenerator {
             level,
             score: minScore + Math.random() * (maxScore - minScore);
             lives: Math.floor(Math.random() * 5) + 1;
-            bubbles: this.generateMockBubbles(bubbleCount);
-           , player: {
-                x: 400;
-               , y: 550, };
-                angle: Math.random() * Math.PI - Math.PI / 2 }
-            };
+            bubbles: this.generateMockBubbles(bubbleCount),
+    player: {
+                x: 400,
+    y: 550, };
+                angle: Math.random() * Math.PI - Math.PI / 2 
+    };
             gameMode: options.gameMode || this.gameModes[Math.floor(Math.random() * this.gameModes.length)];
             timeRemaining: Math.random() * 300;
-            powerUps: this.generateRandomPowerUps();
-           , timestamp: Date.now();
+            powerUps: this.generateRandomPowerUps(),
+    timestamp: Date.now();
         }
 
     public generateProgressiveStates(count: number): GameState[] { const states: GameState[] = [],
@@ -60,29 +60,29 @@ export class MockGameStateGenerator {
             states.push(this.generateGameState({)
                 level);
                 minScore: score, }
-                maxScore: score + 1000))); }
-        }
+                maxScore: score + 1000))); 
+    }
 
         return states;
     }
 
     public generateEndGameState(): GameState { return { ...this.generateGameState(),
-            lives: 0;
-           , timeRemaining: 0, };
-            bubbles: [] }
-        }
+            lives: 0,
+    timeRemaining: 0, };
+            bubbles: [] 
+    }
 
     public generateWinState(level: number): GameState { return { ...this.generateGameState({ level ),
             bubbles: [], };
-            score: level * 5000 + Math.random() * 2000 }
-        }
+            score: level * 5000 + Math.random() * 2000 
+    }
 
     private generateMockBubbles(count: number): any[] { return Array.from({ length: count ), (_, i) => ({ }
             id: `bubble_${i}`)
             x: Math.random() * 800,
             y: Math.random() * 400 + 50,
-            color: this.getRandomColor()';
-           , type: 'normal');
+            color: this.getRandomColor()',
+    type: 'normal');
         }),
     }
 
@@ -98,7 +98,7 @@ export class MockGameStateGenerator {
 
     private generateId(): string { ' }'
 
-        return `gamestate_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9'})`;
+        return `gamestate_${Date.now())_${Math.random().toString(36).substr(2, 9'}'`;
 
     }''
 }

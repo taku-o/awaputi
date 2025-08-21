@@ -3,8 +3,8 @@
  * イベントステージ関連のデータ管理と通知機能を担当
  */
 
-import type { StageSelectScene } from '../StageSelectScene';''
-import type { EventStageManager } from '../../core/EventStageManager';''
+import type { StageSelectScene } from '../StageSelectScene';
+import type { EventStageManager } from '../../core/EventStageManager';
 import type { AchievementNotificationSystem } from '../../core/achievements/AchievementNotificationSystem';
 
 // Interfaces for Event Stage Data
@@ -39,21 +39,21 @@ export interface EventNotification {;
     eventId: string;
     title: string;
     message: string;
-    timestamp: number;
-   , read: boolean }
+    timestamp: number,
+    read: boolean }
 
 export interface EventParticipationRecord { eventId: string;
-    playerId: string;
-   , timestamp: number }
+    playerId: string,
+    timestamp: number }
 
 export interface NotificationData { type: string;
     title: string;
     message: string;
-    icon: string;
-   , duration: number }
+    icon: string,
+    duration: number }
 
-export interface EventAccessResult { canAccess: boolean;
-   , reason: string }
+export interface EventAccessResult { canAccess: boolean,
+    reason: string }
 
 // Extended interfaces for game engine components
 interface ExtendedGameEngine { canvas: HTMLCanvasElement;
@@ -127,8 +127,8 @@ export class EventStageDataManager {
                 schedule: event.schedule;
                 activatedAt: event.activatedAt || event.startTime;
                 requirements: event.requirements;
-                limits: event.limits);
-               , rewards: event.rewards ,}
+                limits: event.limits),
+    rewards: event.rewards ,}
             });
         } else { this.availableEvents = []; }
     }
@@ -146,7 +146,7 @@ export class EventStageDataManager {
         
         // 新規イベントの通知を生成
         const newEvents = this.availableEvents.filter(event => {  )
-            const eventStartTime = event.schedule? .activatedAt || event.activatedAt);
+            const eventStartTime = event.schedule?.activatedAt || event.activatedAt);
             const now = Date.now();
             
             // 24時間以内に開始されたイベント }
@@ -162,20 +162,20 @@ export class EventStageDataManager {
         
         // 通知リストを更新
         this.eventNotifications = [...newEvents.map(event => ({ : undefined)'
-                type: 'new_event' as const)';
-               , eventId: event.id,')';
-                title: '新しいイベント開始！');
-               , message: `${event.name,}が開始されました`, }
-                timestamp: event.schedule? .activatedAt || event.activatedAt || Date.now(}), : undefined'
+                type: 'new_event' as const'',
+    eventId: event.id,')';
+                title: '新しいイベント開始！'),
+    message: `${event.name,}が開始されました`, }
+                timestamp: event.schedule?.activatedAt || event.activatedAt || Date.now()), : undefined'
                 read: false'';
             }'),
 
             ...endingSoonEvents.map(event => ({ ')'
-                type: 'ending_soon' as const)';
-               , eventId: event.id,')';
-                title: 'イベント終了間近！');
-               , message: `${event.name,}まもなく終了`, }
-                timestamp: Date.now(});
+                type: 'ending_soon' as const'',
+    eventId: event.id,')';
+                title: 'イベント終了間近！'),
+    message: `${event.name,}まもなく終了`, }
+                timestamp: Date.now());
                 read: false];
             })]
         ],
@@ -226,10 +226,10 @@ export class EventStageDataManager {
 
         context.lineWidth = 2;''
         context.stroke(''';
-        context.fillStyle = '#FFFFFF';''
-        context.font = 'bold, 12px Arial';''
-        context.textAlign = 'center';''
-        context.textBaseline = 'middle';)', ')';
+        context.fillStyle = '#FFFFFF';
+        context.font = 'bold, 12px Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';'', ')';
         const displayCount = this.unreadNotificationCount > 99 ? '99+' : this.unreadNotificationCount.toString();
         context.fillText(displayCount, badgeX, badgeY);
         
@@ -273,14 +273,14 @@ export class EventStageDataManager {
                 // 通知メッセージをユーザーに表示
                 if(this.gameEngine.achievementNotificationSystem) {'
                     this.gameEngine.achievementNotificationSystem.queueNotification({''
-                        type: 'info',)';
-                        title: 'イベント通知')';
-                       , message: latestNotification.message;
+                        type: 'info','';
+                        title: 'イベント通知')',
+    message: latestNotification.message;
         ,}
 
                         icon: '📢',) }
-                        duration: 3000); }
-}
+                        duration: 3000); 
+    }
             
             return true; // クリック処理済み
         }
@@ -321,22 +321,22 @@ export class EventStageDataManager {
     private selectEventStage(event: EventStage): void { ''
         if(!event) {'
 
-            console.warn('Invalid, event provided, to selectEventStage);
+            console.warn('Invalid event provided to selectEventStage';
         }
             return; }
         }
         
         // イベント参加条件をチェック
-        const accessResult = this.validateEventStageAccess(event);
+        const accessResult = this.validateEventStageAccess(event');
         if(!accessResult.canAccess) { // アクセス拒否メッセージを表示
             if(this.gameEngine.achievementNotificationSystem') {'
                 this.gameEngine.achievementNotificationSystem.queueNotification({''
-                    type: 'warning',)';
-                    title: 'イベント参加不可')';
-                   , message: accessResult.reason,
+                    type: 'warning','';
+                    title: 'イベント参加不可')',
+    message: accessResult.reason,
                     icon: '⚠️', }
-                    duration: 4000); }
-            }
+                    duration: 4000); 
+    }
             return;
         }
         
@@ -370,7 +370,7 @@ export class EventStageDataManager {
             return result;
         
         // プレイヤーレベル制限のチェック（もしある場合）
-        if(event.requirements? .minLevel && this.gameEngine.playerData?.getLevel) {
+        if(event.requirements?.minLevel && this.gameEngine.playerData?.getLevel) {
             const playerLevel = this.gameEngine.playerData.getLevel();
             if (playerLevel < event.requirements.minLevel) {
         }
@@ -379,7 +379,7 @@ export class EventStageDataManager {
                 return result;
         
         // 必要APのチェック（もしある場合）
-        if(event.requirements? .minAP && this.gameEngine.playerData?.getAP) {
+        if(event.requirements?.minAP && this.gameEngine.playerData?.getAP) {
             const currentAP = this.gameEngine.playerData.getAP();
             if (currentAP < event.requirements.minAP) {
         }
@@ -388,7 +388,7 @@ export class EventStageDataManager {
                 return result;
         
         // 前提ステージクリア条件のチェック（もしある場合）
-        if(event.requirements? .clearedStages && this.gameEngine.playerData?.getClearedStages) {
+        if(event.requirements?.clearedStages && this.gameEngine.playerData?.getClearedStages) {
             const clearedStages = this.gameEngine.playerData.getClearedStages();
             const requiredStages = event.requirements.clearedStages;
             
@@ -429,7 +429,7 @@ export class EventStageDataManager {
 
             }
 
-                throw new Error('EventStageManager, not available); }'
+                throw new Error('EventStageManager, not available'; }'
             }
             
             // イベントステージの開始を試行
@@ -445,22 +445,22 @@ export class EventStageDataManager {
 
                         title: 'イベント開始！', }
 
-                        message: `${event.name}に参加しました`,)'
+                        message: `${event.name}に参加しました`,''
                         icon: '🎯',);
-                        duration: 3000);
+                        duration: 3000';
                 }
                 ';
                 // ゲームシーンに遷移
                 if(this.gameEngine.sceneManager) { '
 
-                    this.gameEngine.sceneManager.switchScene('game', {)'
-                        stageType: 'event');
-                       , eventId: event.id, }
-                        eventConfig: event); }
-                }
+                    this.gameEngine.sceneManager.switchScene('game', {''
+                        stageType: 'event'),
+    eventId: event.id, }
+                        eventConfig: event); 
+    }
                 
                 // 参加統計を記録
-                if(this.gameEngine.playerData? .getPlayerId) {
+                if(this.gameEngine.playerData?.getPlayerId) {
                     this.gameEngine.eventStageManager.recordEventParticipation();
                         event.id);
                 }
@@ -471,22 +471,21 @@ export class EventStageDataManager {
                         type: 'error',
                         title: 'イベント開始失敗',
                         message: 'イベントを開始できませんでした';
-                ,})'
+                ,}''
                         icon: '❌',) }
-                        duration: 4000); }
-
-                }''
-            } catch (error) { console.error('Failed to start event stage:', error);
+                        duration: 4000'; 
+    }''
+            } catch (error) { console.error('Failed to start event stage:', error';
             ';
             // エラー通知
             if(this.gameEngine.achievementNotificationSystem) {'
                 this.gameEngine.achievementNotificationSystem.queueNotification({''
                     type: 'error',
                     title: 'エラー',
-                    message: 'イベントの開始中にエラーが発生しました',)';
+                    message: 'イベントの開始中にエラーが発生しました','';
                     icon: '⚠️', }
-                    duration: 4000); }
-                });
+                    duration: 4000); 
+    });
             }
 }
 
@@ -501,7 +500,7 @@ export class EventStageDataManager {
         ';
         // イベントセクションの背景
         context.save()';
-        context.fillStyle = 'rgba(255, 215, 0, 0.1)';''
+        context.fillStyle = 'rgba(255, 215, 0, 0.1)';
         context.strokeStyle = '#FFD700';
         context.lineWidth = 2;
 
@@ -509,10 +508,10 @@ export class EventStageDataManager {
         context.strokeRect(sectionX, sectionStartY, sectionWidth, sectionHeight);
         ';
         // イベントセクションタイトル
-        context.fillStyle = '#FFD700';''
-        context.font = 'bold 24px Arial';''
-        context.textAlign = 'left';''
-        context.textBaseline = 'top';''
+        context.fillStyle = '#FFD700';
+        context.font = 'bold 24px Arial';
+        context.textAlign = 'left';
+        context.textBaseline = 'top';
         context.fillText('🎉 期間限定イベント', sectionX + 10, sectionStartY + 10);
         
         context.restore();
@@ -521,11 +520,11 @@ export class EventStageDataManager {
         if(this.availableEvents.length === 0) {
 
             context.save(''';
-            context.fillStyle = '#CCCCCC';''
-            context.font = '18px, Arial';''
-            context.textAlign = 'center';)'
+            context.fillStyle = '#CCCCCC';
+            context.font = '18px, Arial';
+            context.textAlign = 'center';''
             context.textBaseline = 'middle';')'
-            context.fillText('現在開催中のイベントはありません);''
+            context.fillText('現在開催中のイベントはありません';''
                 canvas.width / 2, sectionStartY + sectionHeight / 2');''
             context.fillText('次回イベントをお楽しみに！);
                 canvas.width / 2, sectionStartY + sectionHeight / 2 + 25);
@@ -555,24 +554,24 @@ export class EventStageDataManager {
      */
     private renderEventStageItem(;
         context: CanvasRenderingContext2D;
-        event: EventStage;
-       , x: number, ;
+        event: EventStage,
+    x: number, ;
         y: number, ;
         width: number );
-        height: number);
-       , isSelected: boolean;
+        height: number),
+    isSelected: boolean;
     ): void { context.save(),
         ;
         // アイテム背景
         if(isSelected) {'
 
-            context.fillStyle = 'rgba(255, 215, 0, 0.3)';''
+            context.fillStyle = 'rgba(255, 215, 0, 0.3)';
             context.strokeStyle = '#FFD700';
         }
             context.lineWidth = 2; }
 
         } else {
-            context.fillStyle = 'rgba(255, 255, 255, 0.1)';''
+            context.fillStyle = 'rgba(255, 255, 255, 0.1)';
             context.strokeStyle = '#888888'; }
             context.lineWidth = 1; }
         }
@@ -587,15 +586,15 @@ export class EventStageDataManager {
         ';
 
         context.font = `${iconSize}px Arial`;''
-        context.textAlign = 'left';''
+        context.textAlign = 'left';
         context.textBaseline = 'middle';
         ';
         // タイプに応じたアイコン
-        let icon = '🎪';''
+        let icon = '🎪';
         if(event.type === 'seasonal'') {'
 
-            if (event.season === 'spring'') icon = '🌸';''
-            else if (event.season === 'summer'') icon = '🎆';''
+            if (event.season === 'spring'') icon = '🌸';
+            else if (event.season === 'summer'') icon = '🎆';
             else if (event.season === 'autumn'') icon = '🍂';
 
         }
@@ -614,9 +613,9 @@ export class EventStageDataManager {
         const nameX = iconX + iconSize + 10;
         const nameY = y + height / 2 - 5;
 
-        context.fillStyle = isSelected ? '#FFD700' : '#FFFFFF';''
-        context.font = 'bold 16px Arial';''
-        context.textAlign = 'left';''
+        context.fillStyle = isSelected ? '#FFD700' : '#FFFFFF';
+        context.font = 'bold 16px Arial';
+        context.textAlign = 'left';
         context.textBaseline = 'middle';
         context.fillText(event.name, nameX, nameY);
         
@@ -630,12 +629,12 @@ export class EventStageDataManager {
         
         // 新規バッジ（最近開始されたイベント）
         const now = Date.now();
-        const eventStartTime = event.schedule? .activatedAt || event.activatedAt;''
+        const eventStartTime = event.schedule?.activatedAt || event.activatedAt;''
         if (eventStartTime && (now - eventStartTime) < 24 * 60 * 60 * 1000') { // 24時間以内'
-            context.fillStyle = '#FF4444';''
-            context.font = 'bold 12px Arial';''
-            context.textAlign = 'right';''
-            context.textBaseline = 'top';''
+            context.fillStyle = '#FF4444';
+            context.font = 'bold 12px Arial';
+            context.textAlign = 'right';
+            context.textBaseline = 'top';
             context.fillText('NEW!', x + width - 10, y + 5); }
         
         context.restore();
@@ -645,12 +644,12 @@ export class EventStageDataManager {
      * イベント残り時間を表示
      */
     private renderEventTimer( : undefined
-        context: CanvasRenderingContext2D;
-       , timeRemaining: number, ;
+        context: CanvasRenderingContext2D,
+    timeRemaining: number, ;
         x: number, ;
         y: number );
-        width: number);
-       , height: number;
+        width: number),
+    height: number;
     ): void { context.save(),
         
         // 残り時間の計算
@@ -658,7 +657,7 @@ export class EventStageDataManager {
         const minutes = Math.floor((timeRemaining % (1000 * 60 * 60) / (1000 * 60);''
         const seconds = Math.floor((timeRemaining % (1000 * 60) / 1000');
 
-        let timeText = '';''
+        let timeText = '';
         let urgencyLevel: 'normal' | 'warning' | 'critical' = 'normal',
         
         if(hours > 24) {
@@ -671,12 +670,12 @@ export class EventStageDataManager {
 
         } else if (hours > 0) { ' }'
 
-            timeText = `残り ${hours}:${minutes.toString('}.padStart(2, '0'})`;''
+            timeText = `残り ${hours}:${minutes.toString('}.padStart(2, '0'}'`;''
             if(hours < 6) urgencyLevel = 'warning';
 
         } else { }'
 
-            timeText = `残り ${minutes}:${seconds.toString('}.padStart(2, '0''})`;''
+            timeText = `残り ${minutes}:${seconds.toString('}.padStart(2, '0''}'`;''
             urgencyLevel = 'critical';
         }
         
@@ -685,12 +684,12 @@ export class EventStageDataManager {
         switch(urgencyLevel) {'
 
             case 'critical':'';
-                bgColor = 'rgba(255, 68, 68, 0.8)';''
+                bgColor = 'rgba(255, 68, 68, 0.8)';
                 textColor = '#FFFFFF';
 
                 break;''
             case 'warning':'';
-                bgColor = 'rgba(255, 165, 0, 0.8)';''
+                bgColor = 'rgba(255, 165, 0, 0.8)';
                 textColor = '#FFFFFF';
                 break;
 
@@ -708,8 +707,8 @@ export class EventStageDataManager {
         
         // タイマーテキスト
         context.fillStyle = textColor;''
-        context.font = 'bold 12px Arial';''
-        context.textAlign = 'center';''
+        context.font = 'bold 12px Arial';
+        context.textAlign = 'center';
         context.textBaseline = 'middle';
         context.fillText(timeText, x + width / 2, y + height / 2);
         
@@ -723,17 +722,17 @@ export class EventStageDataManager {
             selectedEventIndex: this.selectedEventIndex;
             showingEvents: this.showingEvents;
             eventScrollOffset: this.eventScrollOffset;
-            maxVisibleEvents: this.maxVisibleEvents;
-           , eventNotifications: this.eventNotifications, };
-            unreadNotificationCount: this.unreadNotificationCount }
-        }
+            maxVisibleEvents: this.maxVisibleEvents,
+    eventNotifications: this.eventNotifications, };
+            unreadNotificationCount: this.unreadNotificationCount 
+    }
 
     /**
      * イベント状態の設定
      */
     public setEventState(state: Partial<{ selectedEventIndex: number)
-        showingEvents: boolean);
-       , eventScrollOffset: number)>): void {
+        showingEvents: boolean),
+    eventScrollOffset: number)>): void {
         if(state.selectedEventIndex !== undefined) {
             
         }

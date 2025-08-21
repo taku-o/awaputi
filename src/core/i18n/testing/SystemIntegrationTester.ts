@@ -1,21 +1,21 @@
-import { getErrorHandler  } from '../../../utils/ErrorHandler.js';''
-import { getEnhancedLocalizationManager  } from '../LocalizationManager.js';''
-import { getAdvancedFormatterEngine  } from '../advanced/AdvancedFormatterEngine.js';''
-import { getCulturalAdaptationSystem  } from '../cultural/CulturalAdaptationSystem.js';''
+import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
+import { getEnhancedLocalizationManager  } from '../LocalizationManager.js';
+import { getAdvancedFormatterEngine  } from '../advanced/AdvancedFormatterEngine.js';
+import { getCulturalAdaptationSystem  } from '../cultural/CulturalAdaptationSystem.js';
 import { getRTLLanguageDetector  } from '../rtl/RTLLanguageDetector.js';
 
 // インターフェース定義
 interface TestResult { name: string,''
     status: 'passed' | 'failed' | 'skipped';
-    error?: string;
-   , duration: number ,}
+    error?: string,
+    duration: number ,}
 
 interface TestStats { totalTests: number;
     passedTests: number;
     failedTests: number;
     skippedTests: number;
-    startTime: Date | null;
-   , endTime: Date | null }
+    startTime: Date | null,
+    endTime: Date | null }
 
 interface TestOptions { suites?: string[];
     failFast?: boolean;
@@ -24,14 +24,14 @@ interface TestOptions { suites?: string[];
 
 interface TestSummary { totalTests: number,
     passedTests: number;
-    failedTests: number;
-   , successRate: string ,}
+    failedTests: number,
+    successRate: string ,}
 
 interface SuiteResult { passed: number;
     failed: number;
     totalTests: number;
-    averageDuration: number;
-   , tests: TestResult[]
+    averageDuration: number,
+    tests: TestResult[]
     }
 
 interface TestReport { summary: {
@@ -40,8 +40,8 @@ interface TestReport { summary: {
         failedTests: number;
         successRate: string;
         duration: string;
-        startTime: string;
-       , endTime: string };
+        startTime: string,
+    endTime: string };
     suiteResults: { [suiteName: string]: SuiteResult };
     recommendations: string[];
 }
@@ -90,11 +90,11 @@ export class SystemIntegrationTester { private localizationManager: any;
         
         // モックファクトリ
         this.mockFactory = {
-            gameEngine: this.createGameEngineMock.bind(this);
-           , settingsManager: this.createSettingsManagerMock.bind(this, }
+            gameEngine: this.createGameEngineMock.bind(this),
+    settingsManager: this.createSettingsManagerMock.bind(this, }
 
-            domElement: this.createDOMElementMock.bind(this); }
-        };
+            domElement: this.createDOMElementMock.bind(this); 
+    };
 
         console.log('SystemIntegrationTester, initialized);
     }
@@ -108,18 +108,18 @@ export class SystemIntegrationTester { private localizationManager: any;
             generateReport = true,
             cleanup = true } = options;
 
-        this.testStats.startTime = new Date(')';
+        this.testStats.startTime = new Date()';
         console.log('🚀 Starting, system integration, tests...);
         
         try { // テスト環境の準備
             await this.setupTestEnvironment();
             
             // 各テストスイートを実行
-            for(const, suiteName of, suites) {
+            for(const, suiteName of suites) {
                 
             }
                 if(!this.testSuites.has(suiteName) { }
-                    console.warn(`Unknown, test suite: ${suiteName}`});
+                    console.warn(`Unknown test suite: ${suiteName}`}');
                     continue;
                 }
                 
@@ -149,8 +149,8 @@ export class SystemIntegrationTester { private localizationManager: any;
                     console.error(`❌ Suite ${suiteName} failed with error:`, error);
                     this.testResults.set(suiteName, [{)'
                         name: `${suiteName}-suite-error`;')'
-                        status: 'failed');
-                       , error: (error, as Error).message];
+                        status: 'failed'),
+    error: (error, as Error).message];
                         duration: 0];
                     }]),
                     this.testStats.failedTests++;
@@ -169,14 +169,14 @@ export class SystemIntegrationTester { private localizationManager: any;
             if(generateReport) {
 
                 const report = this.generateTestReport()';
-                console.log('\n📊 Test, Report Generated);
+                console.log('\n📊 Test, Report Generated';
             }
                 return report;
             
-            return this.getTestSummary(');
+            return this.getTestSummary();
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'INTEGRATION_TEST_ERROR', {);''
+        } catch (error) { getErrorHandler().handleError(error, 'INTEGRATION_TEST_ERROR', {';''
                 suites: suites.join(', ' });
             throw error;
         }
@@ -199,8 +199,8 @@ export class SystemIntegrationTester { private localizationManager: any;
 
         } catch (error) { results.push({ })'
                 name: `${suiteName}-execution`;')'
-                status: 'failed');
-               , error: (error, as Error).message;
+                status: 'failed'),
+    error: (error, as Error).message;
                 duration: Date.now() - startTime;
             }),
         }
@@ -218,7 +218,7 @@ export class SystemIntegrationTester { private localizationManager: any;
 
             const translation = this.localizationManager.t('common.ok'');' }
 
-            this.assert(translation === 'OK', `Expected 'OK', got '${translation}'`);''
+            this.assert(translation === 'OK', `Expected 'OK', got '${translation}'`';''
         }');
         ';
         // 翻訳キャッシュテスト
@@ -229,15 +229,15 @@ export class SystemIntegrationTester { private localizationManager: any;
             const firstCall = this.localizationManager.t(key);''
             const secondCall = this.localizationManager.t(key);' }'
 
-            this.assert(firstCall === secondCall, 'Cache should return same result);' }
+            this.assert(firstCall === secondCall, 'Cache should return same result';' }
 
         }');
         ';
         // パラメータ置換テスト
         results.push(await this.runSingleTest('parameter-substitution', async () => { ' };
 
-            const result = this.localizationManager.t('common.score', { score: 1000 });''
-            this.assert(result.includes('1000), `Score parameter not substituted: ${result}`);''
+            const result = this.localizationManager.t('common.score', { score: 1000 }';''
+            this.assert(result.includes('1000), `Score parameter not substituted: ${result}`';''
         }');
         ';
         // フォールバック機能テスト
@@ -247,7 +247,7 @@ export class SystemIntegrationTester { private localizationManager: any;
             const translation = this.localizationManager.t('common.ok'');' }
 
             this.assert(translation !== 'common.ok', 'Should fallback to default language); }
-        });
+        }';
         
         return results;
     }
@@ -260,7 +260,7 @@ export class SystemIntegrationTester { private localizationManager: any;
 
             const success = await this.localizationManager.setLanguage('ja'');' }
 
-            this.assert(success, 'Async language loading should succeed);' }
+            this.assert(success, 'Async language loading should succeed';' }
 
         }');
         ';
@@ -271,7 +271,7 @@ export class SystemIntegrationTester { private localizationManager: any;
             const commonTrans = this.localizationManager.t('common.start'');''
             const gameTrans = this.localizationManager.t('game.score'');' }
 
-            this.assert(commonTrans && gameTrans, 'Multiple categories should be loaded);' }
+            this.assert(commonTrans && gameTrans, 'Multiple categories should be loaded';' }
 
         }');
         ';
@@ -283,11 +283,11 @@ export class SystemIntegrationTester { private localizationManager: any;
                 // エラーが発生しても処理が継続されることを確認
                 const translation = this.localizationManager.t('common.ok'');' }
 
-                this.assert(translation !== null, 'Should handle loading errors gracefully);' }
+                this.assert(translation !== null, 'Should handle loading errors gracefully';' }
 
             } catch (error) { // エラーが適切にハンドリングされることを確認
-                this.assert(true, 'Error handling works correctly); }'
-        });
+                this.assert(true, 'Error handling works correctly'; }'
+        }';
         
         return results;
     }
@@ -301,7 +301,7 @@ export class SystemIntegrationTester { private localizationManager: any;
             const singular = this.formatterEngine.formatPlural('item', 1, 'en'');''
             const plural = this.formatterEngine.formatPlural('item', 5, 'en'');' }
 
-            this.assert(singular !== plural, 'Plural formatting should differ for 1 vs 5 items);' }
+            this.assert(singular !== plural, 'Plural formatting should differ for 1 vs 5 items';' }
 
         }');
         ';
@@ -311,12 +311,12 @@ export class SystemIntegrationTester { private localizationManager: any;
             const casual = this.formatterEngine.formatContextual('greeting.hello', 'casual', 'ja'');''
             const formal = this.formatterEngine.formatContextual('greeting.hello', 'formal', 'ja'');' }
 
-            this.assert(casual !== formal, 'Contextual translation should differ by context);' }
+            this.assert(casual !== formal, 'Contextual translation should differ by context';' }
 
         }');
         ';
         // 動的翻訳生成テスト
-        results.push(await this.runSingleTest('dynamic-generation', async () => {  const numberExpression = this.formatterEngine.generateDynamicTranslation(')', 'number-expression', 1500000, 'en')';
+        results.push(await this.runSingleTest('dynamic-generation', async () => {  const numberExpression = this.formatterEngine.generateDynamicTranslation()', 'number-expression', 1500000, 'en')';
 
             ');''
             this.assert(numberExpression.includes('million'') || numberExpression.includes('千''), ' }
@@ -328,10 +328,10 @@ export class SystemIntegrationTester { private localizationManager: any;
         // 翻訳メモリテスト
         results.push(await this.runSingleTest('translation-memory', async () => {  ';
 
-            const query = 'test query';''
-            const results = this.formatterEngine.searchTranslationMemory(query, 'en);' }
+            const query = 'test query';
+            const results = this.formatterEngine.searchTranslationMemory(query, 'en';' }
 
-            this.assert(Array.isArray(results), 'Translation memory should return array'););
+            this.assert(Array.isArray(results), 'Translation memory should return array');';
         
         return results;
     }
@@ -344,7 +344,7 @@ export class SystemIntegrationTester { private localizationManager: any;
 
             const success = this.culturalSystem.setCulturalAdaptation('ja'');' }
 
-            this.assert(success, 'Cultural adaptation setting should succeed);' }
+            this.assert(success, 'Cultural adaptation setting should succeed';' }
 
         }');
         ';
@@ -352,11 +352,11 @@ export class SystemIntegrationTester { private localizationManager: any;
         results.push(await this.runSingleTest('color-adaptation', async () => {  ';
 
             const element = document.createElement('div'');''
-            element.id = 'test-color-element';''
-            this.culturalSystem.setCulturalAdaptation('ja);''
+            element.id = 'test-color-element';
+            this.culturalSystem.setCulturalAdaptation('ja';''
             const adapted = this.culturalSystem.adaptColors(element);' }'
 
-            this.assert(typeof adapted === 'boolean', 'Color adaptation should return boolean);' }
+            this.assert(typeof adapted === 'boolean', 'Color adaptation should return boolean';' }
 
         }');
         ';
@@ -365,10 +365,10 @@ export class SystemIntegrationTester { private localizationManager: any;
 
             const element = document.createElement('div'');''
             element.textContent = 'Number: 4',
-            this.culturalSystem.setCulturalAdaptation('ja);''
+            this.culturalSystem.setCulturalAdaptation('ja';''
             const adapted = this.culturalSystem.adaptNumbers(element);' }'
 
-            this.assert(typeof adapted === 'boolean', 'Number adaptation should return boolean);' }
+            this.assert(typeof adapted === 'boolean', 'Number adaptation should return boolean';' }
 
         }');
         ';
@@ -378,7 +378,7 @@ export class SystemIntegrationTester { private localizationManager: any;
             this.culturalSystem.setCulturalAdaptation('ja'');''
             const validation = this.culturalSystem.validateAgainstTaboos('content with 4', 'content'') as ValidationResult;' }
 
-            this.assert(validation.hasOwnProperty('valid''), 'Taboo validation should return validation object'););
+            this.assert(validation.hasOwnProperty('valid''), 'Taboo validation should return validation object');';
         
         return results;
     }
@@ -394,7 +394,7 @@ export class SystemIntegrationTester { private localizationManager: any;
 
             const isLTR = this.rtlDetector.isRTLLanguage('en'');' }
 
-            this.assert(isLTR === false, 'English should not be detected as RTL);' }
+            this.assert(isLTR === false, 'English should not be detected as RTL';' }
 
         }');
         ';
@@ -406,7 +406,7 @@ export class SystemIntegrationTester { private localizationManager: any;
 
             const englishDirection = this.rtlDetector.detectTextDirection('Hello'');' }
 
-            this.assert(englishDirection.direction === 'ltr', 'English text should be detected as LTR);' }
+            this.assert(englishDirection.direction === 'ltr', 'English text should be detected as LTR';' }
 
         }');
         ';
@@ -415,7 +415,7 @@ export class SystemIntegrationTester { private localizationManager: any;
 
             const hasRTL = this.rtlDetector.containsRTLCharacters('Hello مرحبا'');' }
 
-            this.assert(hasRTL === true, 'Mixed text should contain RTL characters);' }
+            this.assert(hasRTL === true, 'Mixed text should contain RTL characters';' }
 
         }');
         ';
@@ -426,7 +426,7 @@ export class SystemIntegrationTester { private localizationManager: any;
             this.assert(controlChars.hasOwnProperty('LRM''), 'Should provide LRM control character'');' }
 
             this.assert(controlChars.hasOwnProperty('RLM''), 'Should provide RLM control character'); }
-        });
+        }';
         
         return results;
     }
@@ -462,7 +462,7 @@ export class SystemIntegrationTester { private localizationManager: any;
 
             const results = await Promise.all(switches);''
             const successCount = results.filter(r => r === true).length;''
-            this.assert(successCount >= 8, 'Most rapid switches should succeed);''
+            this.assert(successCount >= 8, 'Most rapid switches should succeed';''
         }');
         ';
         // 翻訳整合性テスト
@@ -475,7 +475,7 @@ export class SystemIntegrationTester { private localizationManager: any;
             const japaneseTranslation = this.localizationManager.t('common.ok);
 
             this.assert(englishTranslation !== japaneseTranslation)' }', 'Translations should differ between languages'); }
-        });
+        }';
         
         return results;
     }
@@ -488,7 +488,7 @@ export class SystemIntegrationTester { private localizationManager: any;
 
             for(let, i = 0; i < 1000; i++) {' }'
 
-                this.localizationManager.t('common.ok); }'
+                this.localizationManager.t('common.ok'; }'
             }
             
             const endTime = performance.now();
@@ -538,10 +538,10 @@ export class SystemIntegrationTester { private localizationManager: any;
                 // エラーが発生してもシステムが継続すること
                 const translation = this.localizationManager.t('common.ok'');' }
 
-                this.assert(translation !== null, 'Should handle invalid language gracefully);' }
+                this.assert(translation !== null, 'Should handle invalid language gracefully';' }
 
             } catch (error) {
-                this.assert(true, 'Error handling works correctly); }'
+                this.assert(true, 'Error handling works correctly'; }'
 
             }''
         }');
@@ -551,7 +551,7 @@ export class SystemIntegrationTester { private localizationManager: any;
 
             const result = this.localizationManager.t('non.existent.key'');' }
 
-            this.assert(result !== null, 'Should handle non-existent keys gracefully);' }
+            this.assert(result !== null, 'Should handle non-existent keys gracefully';' }
 
         }');
         ';
@@ -560,11 +560,11 @@ export class SystemIntegrationTester { private localizationManager: any;
 
                 this.culturalSystem.setCulturalAdaptation('invalid-culture'');' }
 
-                this.assert(true, 'Should handle invalid culture gracefully);' }
+                this.assert(true, 'Should handle invalid culture gracefully';' }
 
             } catch (error) {
-                this.assert(true, 'Error handling works correctly); }'
-        });
+                this.assert(true, 'Error handling works correctly'; }'
+        }';
         
         return results;
     }
@@ -580,12 +580,12 @@ export class SystemIntegrationTester { private localizationManager: any;
             }
             ';
             // メモリクリーンアップを実行
-            if(typeof, this.localizationManager.clearCache === 'function) {'
+            if(typeof, this.localizationManager.clearCache === 'function' {'
 
                 this.localizationManager.clearCache();
             }
 
-            this.assert(true, 'Cache cleanup should not throw errors);' }
+            this.assert(true, 'Cache cleanup should not throw errors';' }
 
         }');
         ';
@@ -597,8 +597,8 @@ export class SystemIntegrationTester { private localizationManager: any;
 
             const clearedStats = this.formatterEngine.getStats( }
 
-            this.assert(clearedStats.memorySize === 0, 'Translation memory should be cleared); }'
-        });
+            this.assert(clearedStats.memorySize === 0, 'Translation memory should be cleared'; }'
+        }';
         
         return results;
     }
@@ -611,13 +611,13 @@ export class SystemIntegrationTester { private localizationManager: any;
 
             for(let, i = 0; i < 50; i++) {' }'
 
-                promises.push(Promise.resolve(this.localizationManager.t('common.ok)); }'
+                promises.push(Promise.resolve(this.localizationManager.t('common.ok)'; }'
             }
             ';
 
             const translationResults = await Promise.all(promises);''
             const allSame = translationResults.every(r => r === translationResults[0]);''
-            this.assert(allSame, 'Concurrent translations should be consistent);''
+            this.assert(allSame, 'Concurrent translations should be consistent';''
         }');
         ';
         // 並行言語切り替えテスト
@@ -631,8 +631,8 @@ export class SystemIntegrationTester { private localizationManager: any;
             const switchResults = await Promise.all(promises);''
             const successCount = switchResults.filter(r => r === true).length;' }'
 
-            this.assert(successCount >= 2, 'Most concurrent switches should succeed); }'
-        });
+            this.assert(successCount >= 2, 'Most concurrent switches should succeed'; }'
+        }';
         
         return results;
     }
@@ -642,44 +642,44 @@ export class SystemIntegrationTester { private localizationManager: any;
      */'
 
     private async setupTestEnvironment()';
-        if(!document.getElementById('test-container)) { ''
+        if(!document.getElementById('test-container)' { ''
             const container = document.createElement('div'');''
-            container.id = 'test-container';''
-            container.style.display = 'none';''
+            container.id = 'test-container';
+            container.style.display = 'none';
             document.body.appendChild(container); }
         ';
         // 初期言語を設定
         await this.localizationManager.setLanguage('ja'');
 
-        console.log('✅ Test, environment setup, complete);
+        console.log('✅ Test environment setup complete');
     }
 
-    private async cleanupTestEnvironment(')';
+    private async cleanupTestEnvironment()';
         const container = document.getElementById('test-container);
         if(container) {'
 
             container.remove()';
-        if(typeof, this.localizationManager.clearCache === 'function) {'
+        if(typeof, this.localizationManager.clearCache === 'function' {'
         }
             this.localizationManager.clearCache(); }
         }
 
         this.formatterEngine.clearMemory()';
-        console.log('✅ Test, environment cleanup, complete);
+        console.log('✅ Test environment cleanup complete');
     }
     
-    private async runSingleTest(name: string, testFunction: () => Promise<void>): Promise<TestResult> { const startTime = Date.now(');
+    private async runSingleTest(name: string, testFunction: () => Promise<void>): Promise<TestResult> { const startTime = Date.now();
         ';
 
         try {'
             await testFunction()';
-                status: 'passed');
-               , duration: Date.now() - startTime };''
+                status: 'passed'),
+    duration: Date.now() - startTime };''
         } catch (error) { return { name: name,''
-                status: 'failed';
-               , error: (error, as Error).message, };
-                duration: Date.now() - startTime }
-            }
+                status: 'failed',
+    error: (error, as Error).message, };
+                duration: Date.now() - startTime 
+    }
     }
     ';
 
@@ -688,7 +688,7 @@ export class SystemIntegrationTester { private localizationManager: any;
 
         }
 
-            throw new Error(message || 'Assertion, failed); }'
+            throw new Error(message || 'Assertion, failed'; }'
 }
     
     private getMemoryUsage(): number { if (performance.memory) {
@@ -698,18 +698,18 @@ export class SystemIntegrationTester { private localizationManager: any;
     
     private generateTestReport(): TestReport { const duration = this.testStats.endTime!.getTime() - this.testStats.startTime!.getTime();
 
-        const successRate = this.testStats.totalTests > 0 ?   : undefined'';
+        const successRate = this.testStats.totalTests > 0 ? undefined : undefined'';
             (this.testStats.passedTests / this.testStats.totalTests * 100).toFixed(2) : '0';
         
         const report: TestReport = {
             summary: {
                 totalTests: this.testStats.totalTests;
-                passedTests: this.testStats.passedTests;
-               , failedTests: this.testStats.failedTests, }
+                passedTests: this.testStats.passedTests,
+    failedTests: this.testStats.failedTests, }
                 successRate: `${successRate}%`;
                 duration: `${duration}ms`;
-                startTime: this.testStats.startTime!.toISOString();
-               , endTime: this.testStats.endTime!.toISOString();
+                startTime: this.testStats.startTime!.toISOString(),
+    endTime: this.testStats.endTime!.toISOString();
             },
             suiteResults: {};
             recommendations: [];
@@ -724,8 +724,8 @@ export class SystemIntegrationTester { private localizationManager: any;
             report.suiteResults[suiteName] = {
                 passed: passed;
                 failed: failed;
-                totalTests: results.length;
-               , averageDuration: Math.round(avgDuration;
+                totalTests: results.length,
+    averageDuration: Math.round(avgDuration
         ,}
                 tests: results }))
         }
@@ -736,33 +736,33 @@ export class SystemIntegrationTester { private localizationManager: any;
 
         }
 
-            report.recommendations.push('失敗したテストの詳細を確認し、問題を修正してください。); }'
+            report.recommendations.push('失敗したテストの詳細を確認し、問題を修正してください。'; }'
         }
 
         if(this.testStats.passedTests / this.testStats.totalTests < 0.95) {', ';
 
         }
 
-            report.recommendations.push('テスト成功率が95%未満です。システムの安定性を改善してください。); }'
+            report.recommendations.push('テスト成功率が95%未満です。システムの安定性を改善してください。'; }'
         }
         
         return report;
     }
     
     private getTestSummary(): TestSummary { return { totalTests: this.testStats.totalTests,
-            passedTests: this.testStats.passedTests;
-           , failedTests: this.testStats.failedTests,
-            successRate: this.testStats.totalTests > 0 ?   : undefined' ,};
+            passedTests: this.testStats.passedTests,
+    failedTests: this.testStats.failedTests,
+            successRate: this.testStats.totalTests > 0 ? undefined : undefined' ,};
 
-                (this.testStats.passedTests / this.testStats.totalTests * 100).toFixed(2) + '%' : '0%' }
-        },
+                (this.testStats.passedTests / this.testStats.totalTests * 100).toFixed(2) + '%' : '0%' 
+    },
     }
     
     // モック作成ヘルパー
     private createGameEngineMock(): any { return {' }'
 
-            getCurrentScene: (') => ({ name: 'TestScene' },''
-            getAllScenes: (') => ['MainMenuScene', 'GameScene', 'SettingsScene'],
+            getCurrentScene: () => ({ name: 'TestScene' },''
+            getAllScenes: () => ['MainMenuScene', 'GameScene', 'SettingsScene'],
             updateLocalization: () => true;
         },
     }
@@ -773,7 +773,7 @@ export class SystemIntegrationTester { private localizationManager: any;
 
             setSetting: (key: string, value: any) => true,' }'
 
-            getAllSettings: (') => ({ language: 'ja', theme: 'default' ,});
+            getAllSettings: () => ({ language: 'ja', theme: 'default' ,});
         }
 
     private createDOMElementMock()';
@@ -797,7 +797,7 @@ export class SystemIntegrationTester { private localizationManager: any;
     /**
      * テスト結果を取得
      */
-    getTestResults(): { results: { [suiteName: string]: TestResult[] ,}; stats: TestStats } { return { results: Object.fromEntries(this.testResults, };
+    getTestResults(): { results: { [suiteName: string]: TestResult[] ,}; stats: TestStats } { return { results: Object.fromEntries(this.testResults, }
             stats: this.testStats }))
     }
     
@@ -805,10 +805,10 @@ export class SystemIntegrationTester { private localizationManager: any;
      * 統計情報を取得
      */)
     getStats(): { availableTestSuites: string[]; testStats: TestStats;, lastRunResults: { [suiteName: string]: TestResult[] } | null } { return { availableTestSuites: Array.from(this.testSuites.keys(),
-            testStats: this.testStats;
-           , lastRunResults: this.testResults.size > 0 ?   : undefined ,};
-                Object.fromEntries(this.testResults) : null }
-        },
+            testStats: this.testStats,
+    lastRunResults: this.testResults.size > 0 ? undefined : undefined ,};
+                Object.fromEntries(this.testResults) : null 
+    },
     }
 }
 
@@ -819,4 +819,4 @@ let systemIntegrationTesterInstance: SystemIntegrationTester | null = null,
  * SystemIntegrationTesterのシングルトンインスタンスを取得
  */
 export function getSystemIntegrationTester(): SystemIntegrationTester { if (!systemIntegrationTesterInstance) {''
-        systemIntegrationTesterInstance = new SystemIntegrationTester(' })'
+        systemIntegrationTesterInstance = new SystemIntegrationTester(' }''

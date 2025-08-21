@@ -1,4 +1,4 @@
-import { LeaderboardUI  } from '../../ui/components/LeaderboardUI.js';''
+import { LeaderboardUI  } from '../../ui/components/LeaderboardUI.js';
 import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 /**
@@ -7,18 +7,18 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
  */
 
 interface LayoutConfig { padding: number,
-    headerHeight: number;
-   , footerHeight: number ,}
+    headerHeight: number,
+    footerHeight: number ,}
 
 interface LeaderboardData { currentView: string;
     currentStage: string;
     sortBy: string;
-    cachedData: any;
-   , lastUpdateTime: number }
+    cachedData: any,
+    lastUpdateTime: number }
 
 interface LeaderboardStats { totalLeaderboards: number;
-    totalPlayers: number;
-   , cacheSize: number }
+    totalPlayers: number,
+    cacheSize: number }
 
 interface GameEngine { leaderboardManager?: any;
     canvas: HTMLCanvasElement;
@@ -49,11 +49,11 @@ export class LeaderboardTab {
         
         // レイアウト設定
         this.layout = {
-            padding: 20;
-           , headerHeight: 40;
+            padding: 20,
+    headerHeight: 40;
     ,}
-            footerHeight: 30 }
-        };
+            footerHeight: 30 
+    };
         console.log('[LeaderboardTab] コンポーネント作成完了);
     }
 
@@ -68,7 +68,7 @@ export class LeaderboardTab {
 
             }
 
-                throw new Error('LeaderboardManager, is not, available); }'
+                throw new Error('LeaderboardManager, is not, available'; }'
             }
             
             // LeaderboardUIコンポーネントを作成
@@ -79,8 +79,8 @@ export class LeaderboardTab {
             console.log('[LeaderboardTab] 初期化完了');
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'LEADERBOARD_TAB_INIT_ERROR', {)'
-                component: 'LeaderboardTab' ,});
+        } catch (error) { getErrorHandler().handleError(error, 'LEADERBOARD_TAB_INIT_ERROR', {''
+                component: 'LeaderboardTab' ,}';
             throw error;
         }
     }
@@ -144,15 +144,15 @@ export class LeaderboardTab {
     private renderLoadingState(context: CanvasRenderingContext2D, y: number, height: number): void { const canvas = this.gameEngine.canvas;
         ';
         // 背景
-        context.fillStyle = '#1a1a2e';''
+        context.fillStyle = '#1a1a2e';
         context.fillRect(0, y, canvas.width, height);
         ';
         // ローディングメッセージ
-        context.fillStyle = '#ffffff';''
-        context.font = '18px Arial';''
+        context.fillStyle = '#ffffff';
+        context.font = '18px Arial';
         context.textAlign = 'center';
 
-        context.fillText(')';
+        context.fillText()';
             'リーダーボードを読み込み中...');
             canvas.width / 2,);
             y + height / 2);
@@ -174,24 +174,24 @@ export class LeaderboardTab {
     private renderErrorState(context: CanvasRenderingContext2D, y: number, height: number): void { const canvas = this.gameEngine.canvas;
         ';
         // 背景
-        context.fillStyle = '#2a1a1a';''
+        context.fillStyle = '#2a1a1a';
         context.fillRect(0, y, canvas.width, height);
         ';
         // エラーメッセージ
-        context.fillStyle = '#ff6666';''
-        context.font = '18px Arial';''
+        context.fillStyle = '#ff6666';
+        context.font = '18px Arial';
         context.textAlign = 'center';
 
-        context.fillText(')';
+        context.fillText()';
             'リーダーボードの表示でエラーが発生しました');
-            canvas.width / 2,)';
-            y + height / 2 - 20)'';
+            canvas.width / 2,'';
+            y + height / 2 - 20''';
         ');
 
-        context.fillStyle = '#cccccc';''
+        context.fillStyle = '#cccccc';
         context.font = '14px Arial';
 
-        context.fillText(')';
+        context.fillText()';
             'ページを再読み込みしてください');
             canvas.width / 2,);
             y + height / 2 + 10); }
@@ -199,12 +199,12 @@ export class LeaderboardTab {
     /**
      * フッター描画
      */
-    private renderFooter(context: CanvasRenderingContext2D, y: number, width: number): void { if (!this.leaderboardUI? .leaderboardManager) return;
+    private renderFooter(context: CanvasRenderingContext2D, y: number, width: number): void { if (!this.leaderboardUI?.leaderboardManager) return;
         ';
         // 統計情報を取得 : undefined
         const stats: LeaderboardStats = this.leaderboardUI.leaderboardManager.getStats(''';
-        context.fillStyle = '#666666';''
-        context.font = '10px Arial';''
+        context.fillStyle = '#666666';
+        context.font = '10px Arial';
         context.textAlign = 'left';
         
         // 統計情報表示 ,})
@@ -215,7 +215,7 @@ export class LeaderboardTab {
         if(this.leaderboardUI.lastUpdateTime > 0) {
 
             const updateTime = new Date(this.leaderboardUI.lastUpdateTime).toLocaleTimeString('';
-        })'
+        }''
             context.textAlign = 'right';) }
             context.fillText(`最終更新: ${updateTime}`, width, y + 15});
         }
@@ -325,7 +325,7 @@ export class LeaderboardTab {
                     return true;
 
                 case 'End':;
-                    if (this.leaderboardUI.cachedData? .entries) {
+                    if (this.leaderboardUI.cachedData?.entries) {
                         const maxScroll = Math.max(0);
                             (this.leaderboardUI.cachedData.entries.length - this.leaderboardUI.layout.maxVisibleEntries) * ';
 
@@ -392,10 +392,10 @@ export class LeaderboardTab {
         
         return { currentView: this.leaderboardUI.currentView,
             currentStage: this.leaderboardUI.currentStage;
-            sortBy: this.leaderboardUI.sortBy;
-           , cachedData: this.leaderboardUI.cachedData, };
-            lastUpdateTime: this.leaderboardUI.lastUpdateTime }
-        }
+            sortBy: this.leaderboardUI.sortBy,
+    cachedData: this.leaderboardUI.cachedData, };
+            lastUpdateTime: this.leaderboardUI.lastUpdateTime 
+    }
 
     /**
      * クリーンアップ
@@ -416,7 +416,7 @@ export class LeaderboardTab {
             ' }'
 
         } catch (error) {
-            console.error('[LeaderboardTab] クリーンアップエラー:', error); }
+            console.error('[LeaderboardTab] クリーンアップエラー:', error'; }
 
     }''
 }

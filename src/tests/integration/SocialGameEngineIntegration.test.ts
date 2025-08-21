@@ -7,8 +7,8 @@ import { jest, describe, test, beforeAll, beforeEach, afterEach, expect  } from 
 interface MockGameEngine { canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D;
     isRunning: boolean;
-    currentScene: any;
-   , systems: Map<string, any>;
+    currentScene: any,
+    systems: Map<string, any>;
     start(): void;
     stop(): void;
     getCanvas(): HTMLCanvasElement;
@@ -20,21 +20,21 @@ interface GameEngineStatisticsManager { gameStats: {
         totalScor;e: number;
         highScore: number;
         gamesPlayed: number;
-        totalPlayTime: number;
-       , averageScore: number };
+        totalPlayTime: number,
+    averageScore: number };
     getTotalScore(): number;
     getHighScore(): number;
     getGamesPlayed(): number;
     getDetailedStatistics(): { totalScore: number,
         highScore: number;
         gamesPlayed: number;
-        totalPlayTime: number;
-       , averageScore: number ,}
+        totalPlayTime: number,
+    averageScore: number ,}
 interface Achievement { id: string,
     name: string;
     description: string;
-    unlocked: boolean;
-   , rare: boolean ,}
+    unlocked: boolean,
+    rare: boolean ,}
 interface GameEngineAchievementManager { achievements: Achievement[];
     getAchievements(): Achievement[];
     getUnlockedAchievements(): Achievement[];
@@ -46,8 +46,8 @@ interface SocialSharingManager { gameEngine: MockGameEngine,
     isInitialized: boolean;
     shareContentGenerator: any;
     screenshotCapture: any;
-    leaderboardManager: any;
-   , challengeSystem: any;
+    leaderboardManager: any,
+    challengeSystem: any;
     initialize(): Promise<void>;
     checkShareSuggestion(gameEndData: GameEndData): Promise<ShareSuggestion>,
     captureGameScreen(options?: CaptureOptions): Promise<string | null>;
@@ -57,18 +57,18 @@ interface SocialSharingManager { gameEngine: MockGameEngine,
 interface GameEndData { score: number,
     isHighScore: boolean;
     stage: string;
-    playTime: number;
-   , combo: number ,}
+    playTime: number,
+    combo: number ,}
 interface ShareSuggestion { shouldSuggestShare: boolean;
-    reason: string;
-   , shareData: {
+    reason: string,
+    shareData: {
         typ;e: string;
-        score: number;
-       , isHighScore: boolean }
+        score: number,
+    isHighScore: boolean }
 interface CaptureOptions { includeOverlay?: boolean;
     overlayData?: {
-        scor;e: number;
-       , stage: string ,}
+        scor;e: number,
+    stage: string ,}
 interface AchievementShareData { type: string,
     achievement: {
         nam;e: string ,};
@@ -76,23 +76,23 @@ interface AchievementShareData { type: string,
 }
 interface AchievementProgress { total: number,
     unlocked: number;
-    percentage: number;
-   , rare: number ,}
+    percentage: number,
+    rare: number ,}
 interface MockNavigator { share: jest.Mock<() => Promise<void>>;
     userAgent: string;
-    canShare: jest.Mock<() => boolean> }
-}
-interface MockLocalStorage { getItem: jest.Mock<(ke;y: string) => string | null>;
-    setItem: jest.Mock<(ke;y: string, value: string) => void>;
-    removeItem: jest.Mock<(ke;y: string) => void>;
+    canShare: jest.Mock<() => boolean> 
+    }
+interface MockLocalStorage { getItem: jest.Mock<(key: string) => string | null>;
+    setItem: jest.Mock<(key: string, value: string) => void>;
+    removeItem: jest.Mock<(key: string) => void>;
     clear: jest.Mock<() => void> ,}
 }
 // テスト用のモッククラス
 class MockGameEngine implements MockGameEngine { canvas: HTMLCanvasElement;
     context: CanvasRenderingContext2D;
     isRunning: boolean;
-    currentScene: any;
-   , systems: Map<string, any>;''
+    currentScene: any,
+    systems: Map<string, any>;''
     constructor()';
         this.canvas = document.createElement('canvas'');
         this.canvas.width = 800;
@@ -114,25 +114,25 @@ class GameEngineMockStatisticsManager implements GameEngineStatisticsManager { g
         totalScore: number;
         highScore: number;
         gamesPlayed: number;
-        totalPlayTime: number;
-       , averageScore: number };
+        totalPlayTime: number,
+    averageScore: number };
     constructor() {
         this.gameStats = {
             totalScore: 50000;
             highScore: 75000;
-            gamesPlayed: 100;
-           , totalPlayTime: 180000;
+            gamesPlayed: 100,
+    totalPlayTime: 180000;
     }
-            averageScore: 25000 }
-        }
+            averageScore: 25000 
+    }
     getTotalScore(): number { return this.gameStats.totalScore; }
     getHighScore(): number { return this.gameStats.highScore; }
     getGamesPlayed(): number { return this.gameStats.gamesPlayed; }
     getDetailedStatistics(): { totalScore: number,
         highScore: number;
         gamesPlayed: number;
-        totalPlayTime: number;
-       , averageScore: number ,} {
+        totalPlayTime: number,
+    averageScore: number ,} {
         return { ...this.gameStats;
 
 class GameEngineMockAchievementManager implements GameEngineAchievementManager { achievements: Achievement[],''
@@ -173,10 +173,10 @@ describe('SocialGameEngineIntegration', () => {  let mockGameEngine: MockGameEng
         // LocalStorageモック
         (global, as any).localStorage = {
             getItem: jest.fn();
-            setItem: jest.fn();
-           , removeItem: jest.fn(), }
-        clear: jest.fn(); }
-        } as MockLocalStorage;
+            setItem: jest.fn(),
+    removeItem: jest.fn(), }
+        clear: jest.fn(); 
+    } as MockLocalStorage;
     });
     afterEach(() => { jest.clearAllMocks();' }'
 
@@ -217,38 +217,38 @@ describe('SocialGameEngineIntegration', () => {  let mockGameEngine: MockGameEng
                 mockGameEngine);
                 mockStatisticsManager);
                 mockAchievementManager';
-            );''
-            await socialManager.initialize(''';
-                stage: 'normal);
-               , playTime: 300000) ,}
+            ';''
+            await socialManager.initialize('''
+                stage: 'normal),
+    playTime: 300000) ,}
                 combo: 15 };)
             const shareSuggestion = await socialManager.checkShareSuggestion(gameEndData);
 
             expect(shareSuggestion.shouldSuggestShare).toBe(true);''
-            expect(shareSuggestion.reason).toBe('high_score);''
+            expect(shareSuggestion.reason).toBe('high_score';''
             expect(shareSuggestion.shareData).toMatchObject({ ')'
-                type: 'score')';
-               , score: 75000,')';
-                isHighScore: true)' ,}'
+                type: 'score')',
+    score: 75000,')';
+                isHighScore: true'' ,}'
 
         }''
         test('Canvas状態からスクリーンショットが生成できる', async () => {  const socialManager: SocialSharingManager = new SocialSharingManagerClass(
                 mockGameEngine);
                 mockStatisticsManager);
                 mockAchievementManager';
-            );''
-            await socialManager.initialize('';)'
+            ';''
+            await socialManager.initialize('';''
             ctx.fillStyle = '#0066cc';')'
             ctx.fillRect(0, 0, 800, 600);''
-            ctx.fillStyle = '#ffffff';''
-            ctx.font = '48px Arial';''
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '48px Arial';
             ctx.fillText('Test Game Screen', 200, 300);
             const screenshot = await socialManager.captureGameScreen({)
-                includeOverlay: true);
-               , overlayData: {'
+                includeOverlay: true),
+    overlayData: {'
                     score: 50000,' }'
 
-                    stage: 'normal') });''
+                    stage: 'normal') }';''
             expect(screenshot).toBeDefined()';
             expect((screenshot || ''').startsWith('data: image/).toBe(true),
         }');
@@ -260,15 +260,15 @@ describe('SocialGameEngineIntegration', () => {  let mockGameEngine: MockGameEng
                 mockGameEngine);
                 mockStatisticsManager);
                 mockAchievementManager';
-            );''
+            ';''
             await socialManager.initialize()';
                , stage: 'normal',);
-                timestamp: Date.now();
-               , metadata: {
-                    combo: 18;
-                   , accuracy: 0.85, }
-                    playTime: 240000 }
-                };''
+                timestamp: Date.now(),
+    metadata: {
+                    combo: 18,
+    accuracy: 0.85, }
+                    playTime: 240000 
+    };''
             await socialManager.leaderboardManager.updateScore(scoreData);''
             const rankings = await socialManager.leaderboardManager.getRanking('allTime);
             expect(rankings.length).toBeGreaterThan(0);
@@ -283,10 +283,10 @@ describe('SocialGameEngineIntegration', () => {  let mockGameEngine: MockGameEng
             await socialManager.initialize();
             const shareMessage = await socialManager.shareContentGenerator.generateScoreMessage({)
                 score: 50000,)';
-                isHighScore: false),' }'
+                isHighScore: false',' }'
 
                 totalGames: mockStatisticsManager.getGamesPlayed() }, 'twitter');''
-            expect(shareMessage).toContain('50000);''
+            expect(shareMessage).toContain('50000';''
             expect(shareMessage).toContain('BubblePop);
 
             expect(shareMessage.length).toBeLessThanOrEqual(280); // Twitter文字数制限
@@ -299,17 +299,17 @@ describe('SocialGameEngineIntegration', () => {  let mockGameEngine: MockGameEng
                 mockGameEngine);
                 mockStatisticsManager);
                 mockAchievementManager';
-            );''
-            await socialManager.initialize(''';
+            ';''
+            await socialManager.initialize('''
                , id: 'perfect_round',
                 name: 'パーフェクトラウンド',
                 description: '1ラウンドでミスなし);
-                unlocked: true);
-               , rare: true,) }
+                unlocked: true),
+    rare: true,) }
         unlockedAt: Date.now(), };
 
             const shareData = await socialManager.generateAchievementShareData(newAchievement);''
-            expect(shareData.type).toBe('achievement);''
+            expect(shareData.type).toBe('achievement';''
             expect(shareData.achievement.name).toBe('パーフェクトラウンド);
 
             expect(shareData.shouldHighlight).toBe(true); // rare achievement
@@ -345,8 +345,8 @@ describe('SocialGameEngineIntegration', () => {  let mockGameEngine: MockGameEng
         }''
         test('Canvas取得失敗時のフォールバック動作', async () => {  const gameEngineWithoutCanvas = {
                 getCanvas: () => null }
-                getCurrentScene: () => null }
-            };
+                getCurrentScene: () => null 
+    };
             const socialManager: SocialSharingManager = new SocialSharingManagerClass(;
                 gameEngineWithoutCanvas);
                 mockStatisticsManager);

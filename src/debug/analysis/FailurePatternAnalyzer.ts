@@ -2,16 +2,16 @@ import { BaseComponent  } from '../BaseComponent.js';
 
 // Type definitions
 interface FailurePattern { name: string,
-    keywords: string[];
-   , category: string,
-    severity: 'low' | 'medium' | 'high' | 'critical';
-   , description: string ,}
+    keywords: string[],
+    category: string,
+    severity: 'low' | 'medium' | 'high' | 'critical',
+    description: string ,}
 
-interface IdentifiedPattern extends FailurePattern { id: string;
-   , confidence: number }
+interface IdentifiedPattern extends FailurePattern { id: string,
+    confidence: number }
 
-interface PatternStatistics { totalPatterns: number;
-   , patternsByCategory: Record<string, number>;
+interface PatternStatistics { totalPatterns: number,
+    patternsByCategory: Record<string, number>;
     patternsBySeverity: Record<string, number> }
 
 interface MainController { [key: string]: any, }
@@ -33,25 +33,25 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
     /**
      * 失敗パターンの定義を設定'
      */''
-    setupFailurePatterns(''';
+    setupFailurePatterns('''
         this.failurePatterns.set('null_reference', { ''
             name: 'Null Reference Error',
             keywords: ['null', 'undefined', 'cannot read property', 'is not defined],
-            category: 'runtime_error',)';
+            category: 'runtime_error','';
             severity: 'high',')';
             description: 'オブジェクトまたはプロパティがnullまたはundefinedです')'),
 
         this.failurePatterns.set('type_error', {''
             name: 'Type Error',
             keywords: ['is not a function', 'is not a constructor', 'type error],
-            category: 'type_error',)';
+            category: 'type_error','';
             severity: 'high',')';
             description: '型の不一致またはメソッドの呼び出しエラーです')'),
 
         this.failurePatterns.set('assertion_failure', {''
             name: 'Assertion Failure',
             keywords: ['expected', 'to equal', 'to be', 'assertion failed],
-            category: 'assertion',)';
+            category: 'assertion','';
             severity: 'medium',')';
             description: 'テストの期待値と実際の値が一致しません'),' }
 
@@ -60,35 +60,35 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
         this.failurePatterns.set('timeout_error', { ''
             name: 'Timeout Error',
             keywords: ['timeout', 'exceeded', 'timed out],
-            category: 'performance',)';
+            category: 'performance','';
             severity: 'medium',')';
             description: 'テストの実行時間が制限を超えました')'),
 
         this.failurePatterns.set('async_error', {''
             name: 'Async Operation Error',
             keywords: ['promise', 'async', 'await', 'callback'],
-            category: 'async',)';
+            category: 'async','';
             severity: 'medium',')';
             description: '非同期処理に関連するエラーです')'),
 
         this.failurePatterns.set('memory_error', {''
             name: 'Memory Error',
             keywords: ['out of memory', 'heap', 'stack overflow],
-            category: 'memory',)';
+            category: 'memory','';
             severity: 'high',')';
             description: 'メモリ関連のエラーです')'),
 
         this.failurePatterns.set('network_error', {''
             name: 'Network Error',
             keywords: ['network', 'fetch', 'xhr', 'cors', 'connection'],
-            category: 'network',)';
+            category: 'network','';
             severity: 'medium',')';
             description: 'ネットワーク通信に関連するエラーです')'),
 
         this.failurePatterns.set('configuration_error', {''
             name: 'Configuration Error',
             keywords: ['config', 'configuration', 'settings', 'invalid parameter],
-            category: 'configuration',)';
+            category: 'configuration','';
             severity: 'medium',')';
             description: '設定またはパラメータに関連するエラーです' ,}
 
@@ -98,7 +98,7 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
      * @returns 識別されたパターン情報'
      */''
     identifyPattern(error: string): IdentifiedPattern | null { ''
-        if(!error || typeof, error !== 'string) {'
+        if(!error || typeof, error !== 'string' {'
             
         }
             return null;

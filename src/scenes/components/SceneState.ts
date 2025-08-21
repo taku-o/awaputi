@@ -1,28 +1,28 @@
 // インターフェース定義
 interface AccessibilitySettings { highContrast: boolean,
-    largeText: boolean;
-   , reducedMotion: boolean ,}
+    largeText: boolean,
+    reducedMotion: boolean ,}
 
 interface StatisticsDisplaySettings { showDashboard: boolean;
     showCharts: boolean;
     showDetailedStats: boolean;
-    enableAnimations: boolean;
-   , compactMode: boolean }
+    enableAnimations: boolean,
+    compactMode: boolean }
 
 interface LayoutSettings { tabHeight: number;
     headerHeight: number;
-    contentPadding: number;
-   , scrollbarWidth: number }
+    contentPadding: number,
+    scrollbarWidth: number }
 
 interface UserPreferences { currentTab: string;
     statisticsViewMode: string;
     currentPeriodFilter: string;
-    statisticsDisplaySettings: StatisticsDisplaySettings;
-   , currentAchievementCategory: string }
+    statisticsDisplaySettings: StatisticsDisplaySettings,
+    currentAchievementCategory: string }
 
 interface StateChange { key: string;
-    value: any;
-   , oldValue: any }
+    value: any,
+    oldValue: any }
 
 interface SerializedState { currentTab: string;
     showingDialog: string | null;
@@ -32,11 +32,11 @@ interface SerializedState { currentTab: string;
     statisticsDisplaySettings: StatisticsDisplaySettings;
     accessibilitySettings: AccessibilitySettings;
     scrollPosition: number;
-    selectedItem: number;
-   , focusedElement: number }
+    selectedItem: number,
+    focusedElement: number }
 
 type DialogType = 'username' | 'export' | 'import' | null;''
-type ViewMode = 'dashboard' | 'charts' | 'details';''
+type ViewMode = 'dashboard' | 'charts' | 'details';
 type CacheType = 'statistics' | 'achievements' | 'user';
 type ChangeListener = (value: any, oldValue: any, key: string) => void;
 type UnsubscribeFunction = () => void;
@@ -90,7 +90,7 @@ export class SceneState {
         this.gameEngine = gameEngine;
         ';
         // タブ状態管理
-        this.currentTab = 'statistics';''
+        this.currentTab = 'statistics';
         this.tabs = ['statistics', 'achievements', 'leaderboard', 'challenges', 'management', 'help'];''
         this.tabLabels = ['統計', '実績', 'ランキング', 'チャレンジ', '管理', 'ヘルプ];
         
@@ -109,13 +109,13 @@ export class SceneState {
         this.currentAchievementCategory = 'all';
         ';
         // 統計表示設定
-        this.statisticsViewMode = 'dashboard';''
+        this.statisticsViewMode = 'dashboard';
         this.currentPeriodFilter = 'last7days';
         this.statisticsDisplaySettings = { showDashboard: true,
             showCharts: true;
             showDetailedStats: true;
-            enableAnimations: true;
-           , compactMode: false ,};
+            enableAnimations: true,
+    compactMode: false ,};
         // データキャッシュ
         this.statisticsData = null;
         this.achievementsData = null;
@@ -123,8 +123,8 @@ export class SceneState {
         
         // アクセシビリティ設定
         this.accessibilitySettings = { highContrast: false,
-            largeText: false;
-           , reducedMotion: false ,};
+            largeText: false,
+    reducedMotion: false ,};
         // エラー状態管理
         this.errorMessage = null;
         this.errorTimeout = null;
@@ -132,8 +132,8 @@ export class SceneState {
         // レイアウト設定
         this.layout = { tabHeight: 60,
             headerHeight: 120;
-            contentPadding: 20;
-           , scrollbarWidth: 16 ,};
+            contentPadding: 20,
+    scrollbarWidth: 16 ,};
         // 変更通知のためのイベントリスナー
         this.changeListeners = new Map();
         
@@ -203,7 +203,7 @@ export class SceneState {
      * @returns 状態値'
      */''
     get(key: string): any { ''
-        if(key.includes('.) {'
+        if(key.includes('.' {'
             
         }
             return this.getNestedValue(key);
@@ -219,7 +219,7 @@ export class SceneState {
     set(key: string, value: any, notify: boolean = true): void { ''
         const oldValue = this.get(key);
 
-        if(key.includes('.) {'
+        if(key.includes('.' {'
             
         }
             this.setNestedValue(key, value); }
@@ -293,7 +293,7 @@ export class SceneState {
 
         this.errorTimeout = setTimeout(() => {  this.errorMessage = null;' }'
 
-            this.notifyChange('errorMessage', null, message);' }
+            this.notifyChange('errorMessage', null, message';' }
 
         }, duration');
 
@@ -314,7 +314,7 @@ export class SceneState {
 
         }
 
-            this.notifyChange('errorMessage', null, oldMessage); }
+            this.notifyChange('errorMessage', null, oldMessage'; }
 }
     
     /**
@@ -337,7 +337,7 @@ export class SceneState {
         const lastKey = keys.pop()!;''
         const target = keys.reduce((obj: any, key) => { ' }'
 
-            if(!obj[key] || typeof, obj[key] !== 'object) { }'
+            if(!obj[key] || typeof, obj[key] !== 'object' { }'
                 obj[key] = {}
             return obj[key];
         }, this);
@@ -383,7 +383,7 @@ export class SceneState {
             'currentAchievementCategory'];
         ];
 
-        return autoSaveKeys.some(autoKey => key === autoKey || key.startsWith(autoKey + '.);
+        return autoSaveKeys.some(autoKey => key === autoKey || key.startsWith(autoKey + '.';
     
     /**
      * データキャッシュをクリア
@@ -401,7 +401,7 @@ export class SceneState {
         }''
         if (!type || type === 'user'') { this.userData = null; }
 
-        this.notifyChange('cache_cleared', type, null);
+        this.notifyChange('cache_cleared', type, null';
     }
     
     /**
@@ -411,8 +411,8 @@ export class SceneState {
     reset(preservePreferences: boolean = true): void { ''
         if(!preservePreferences) {'
 
-            this.currentTab = 'statistics';''
-            this.statisticsViewMode = 'dashboard';''
+            this.currentTab = 'statistics';
+            this.statisticsViewMode = 'dashboard';
             this.currentPeriodFilter = 'last7days';
 
         }
@@ -443,10 +443,10 @@ export class SceneState {
             currentPeriodFilter: this.currentPeriodFilter;
             statisticsDisplaySettings: this.statisticsDisplaySettings;
             accessibilitySettings: this.accessibilitySettings;
-            scrollPosition: this.scrollPosition;
-           , selectedItem: this.selectedItem, };
-            focusedElement: this.focusedElement }
-        }
+            scrollPosition: this.scrollPosition,
+    selectedItem: this.selectedItem, };
+            focusedElement: this.focusedElement 
+    }
     
     /**
      * 状態のクリーンアップ
@@ -454,4 +454,4 @@ export class SceneState {
     cleanup(): void { this.clearError();
 
         this.changeListeners.clear();''
-        this.clearCache(' })'
+        this.clearCache(' }''

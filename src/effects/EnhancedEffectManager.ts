@@ -1,15 +1,15 @@
-import { EffectManager  } from './EffectManager.js';''
-import { getEffectsConfig  } from '../config/EffectsConfig.js';''
-import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { EffectManager  } from './EffectManager.js';
+import { getEffectsConfig  } from '../config/EffectsConfig.js';
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 import { AccessibilityEffectIntegrator  } from './accessibility/AccessibilityEffectIntegrator.js';
 ';
 // サブコンポーネントのインポート
-import { EffectTransitionRenderer  } from './enhanced-effect-manager/EffectTransitionRenderer.js';''
-import { LightingSystemRenderer  } from './enhanced-effect-manager/LightingSystemRenderer.js';''
-import { ReflectionRenderer  } from './enhanced-effect-manager/ReflectionRenderer.js';''
-import { BackgroundEffectRenderer  } from './enhanced-effect-manager/BackgroundEffectRenderer.js';''
-import { PostProcessingRenderer  } from './enhanced-effect-manager/PostProcessingRenderer.js';''
-import { EnhancedEffectController  } from './enhanced-effect-manager/EnhancedEffectController.js';''
+import { EffectTransitionRenderer  } from './enhanced-effect-manager/EffectTransitionRenderer.js';
+import { LightingSystemRenderer  } from './enhanced-effect-manager/LightingSystemRenderer.js';
+import { ReflectionRenderer  } from './enhanced-effect-manager/ReflectionRenderer.js';
+import { BackgroundEffectRenderer  } from './enhanced-effect-manager/BackgroundEffectRenderer.js';
+import { PostProcessingRenderer  } from './enhanced-effect-manager/PostProcessingRenderer.js';
+import { EnhancedEffectController  } from './enhanced-effect-manager/EnhancedEffectController.js';
 import { EffectApiManager  } from './enhanced-effect-manager/EffectApiManager.js';
 
 // Type definitions for enhanced effect management and coordination
@@ -30,20 +30,20 @@ interface TransitionOptions { easing?: string;
 
 interface ShadowObject { x: number,
     y: number;
-    width: number;
-   , height: number ,}
+    width: number,
+    height: number ,}
 
 interface LightSource { x: number;
     y: number;
     intensity: number;
     color: string;
-    radius: number;
-   , type: string }
+    radius: number,
+    type: string }
 
 interface ReflectionObject { x: number;
     y: number;
-    width: number;
-   , height: number }
+    width: number,
+    height: number }
 
 interface BackgroundEffectOptions { intensity?: number;
     color?: string;
@@ -54,30 +54,30 @@ interface RenderSettings { enableLighting: boolean,
     enableShadows: boolean;
     enableReflections: boolean;
     enablePostProcessing: boolean;
-    quality: string;
-   , optimization: boolean ,}
+    quality: string,
+    optimization: boolean ,}
 
-interface EnhancedTransform { scale: number;
-   , rotation: number, }
+interface EnhancedTransform { scale: number,
+    rotation: number, }
     translate: { x: number;, y: number }
 
 interface TransitionEffect { id: string,
     type: string;
     duration: number;
-    startTime: number;
-   , options: TransitionOptions
+    startTime: number,
+    options: TransitionOptions
     ,}
 
 interface Shadow { id: string;
-    object: ShadowObject;
-   , lightSource: LightSource
+    object: ShadowObject,
+    lightSource: LightSource
     }
 
 interface Reflection { id: string;
     object: ReflectionObject;
     surfaceY: number;
-    intensity: number;
-   , distortion: number }
+    intensity: number,
+    distortion: number }
 
 interface WaterRipple { id: string;
     x: number;
@@ -85,21 +85,21 @@ interface WaterRipple { id: string;
     maxRadius: number;
     speed: number;
     intensity: number;
-    currentRadius: number;
-   , startTime: number }
+    currentRadius: number,
+    startTime: number }
 
 interface BackgroundEffect { id: string;
-    type: string;
-   , options: BackgroundEffectOptions
+    type: string,
+    options: BackgroundEffectOptions
     }
 
 interface PerformanceMetrics { renderTime: number;
-    effectCount: number;
-   , fps: number }
+    effectCount: number,
+    fps: number }
 
 interface CurrentSettings { renderSettings: RenderSettings;
-    effectCount: number;
-   , quality: string }
+    effectCount: number,
+    quality: string }
 
 /**
  * 拡張画面効果管理クラス (Main, Controller Pattern)
@@ -156,7 +156,7 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
             console.log('[EnhancedEffectManager] レンダリングコンポーネントを初期化しました'); }'
 
         } catch (error) { getErrorHandler()';
-                context: 'EnhancedEffectManager._initializeRenderers' });
+                context: 'EnhancedEffectManager._initializeRenderers' }';
         }
     }
     
@@ -166,8 +166,8 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
     private _initializeAccessibility()';
             console.log('[EnhancedEffectManager] アクセシビリティ統合を準備しました);
 
-        } catch (error) { getErrorHandler(')';
-                context: 'EnhancedEffectManager._initializeAccessibility' });
+        } catch (error) { getErrorHandler()';
+                context: 'EnhancedEffectManager._initializeAccessibility' }';
         }
     }
     
@@ -179,13 +179,13 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
     public addTransitionEffect(type: string, duration: number, options: TransitionOptions = { ): string {''
         return this.apiManager.addTransitionEffect(type, duration, options); }
 
-    public addFadeTransition(duration: number, color: string = '#000000', direction: string = 'out): string { ''
+    public addFadeTransition(duration: number, color: string = '#000000', direction: string = 'out': string { ''
         return this.apiManager.addFadeTransition(duration, color, direction); }
 
-    public addSlideTransition(duration: number, direction: string = 'left', easing: string = 'easeInOut): string { ''
+    public addSlideTransition(duration: number, direction: string = 'left', easing: string = 'easeInOut': string { ''
         return this.apiManager.addSlideTransition(duration, direction, easing); }
 
-    public addZoomTransition(duration: number, zoomType: string = 'in', center: { x: number;, y: number ) | null = null): string {''
+    public addZoomTransition(duration: number, zoomType: string = 'in', center: { x: number,  y: number ) | null = null': string {''
         return this.apiManager.addZoomTransition(duration, zoomType, center }
 
     public addWipeTransition(duration: number, pattern: string = 'horizontal', direction: string = 'left): string { return this.apiManager.addWipeTransition(duration, pattern, direction); }
@@ -330,6 +330,6 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
     ;
     // Issue #106対応: テスト互換性メソッド
     public setGradientProfiles(profiles: any): void { ''
-        console.log('[EnhancedEffectManager] Gradient profiles設定:', profiles);
+        console.log('[EnhancedEffectManager] Gradient profiles設定:', profiles';
         // 実装はテスト互換性のため }''
 }

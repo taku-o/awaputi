@@ -1,11 +1,11 @@
-import { BaseComponent  } from './BaseComponent.js';''
-import { StateManipulationCommands  } from './state/StateManipulationCommands.js';''
-import { SafetyValidator  } from './state/SafetyValidator.js';''
-import { CommandHistoryManager  } from './state/CommandHistoryManager.js';''
-import { UndoOperationManager  } from './state/UndoOperationManager.js';''
+import { BaseComponent  } from './BaseComponent.js';
+import { StateManipulationCommands  } from './state/StateManipulationCommands.js';
+import { SafetyValidator  } from './state/SafetyValidator.js';
+import { CommandHistoryManager  } from './state/CommandHistoryManager.js';
+import { UndoOperationManager  } from './state/UndoOperationManager.js';
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
-interface ErrorHandler { handleError: (erro;r: Error, context: string) => void ,}
+interface ErrorHandler { handleError: (error: Error, context: string) => void ,}
 }
 
 interface GameEngine { scoreManager?: ScoreManager;
@@ -20,57 +20,57 @@ interface GameEngine { scoreManager?: ScoreManager;
 interface SceneManager { currentScene?: string; }
 
 interface ScoreManager { getScore?: () => number;
-    getCurrentCombo?: () => number; }
-}
+    getCurrentCombo?: () => number; 
+    }
 
 interface BubbleManager { getActiveBubbleCount?: () => number;
-    spawnBubble?: (typ;e: string) => void ,}
+    spawnBubble?: (type: string) => void ,}
 }
 
 interface PlayerData { getName?: () => string;
     getLevel?: () => number;
     getAP?: () => number;
     getTAP?: () => number;
-    getHighScore?: () => number; }
-}
+    getHighScore?: () => number; 
+    }
 
 interface StageManager { // Stage manager interface }
 
-interface DebugConsole { registerCommand: (nam;e: string, config: CommandConfig) => void ,}
+interface DebugConsole { registerCommand: (name: string, config: CommandConfig) => void ,}
 }
 
 interface CommandConfig { description: string,
     usage: string;
-    category: string;
-   , execute: (arg;s: string[]) => string;
+    category: string,
+    execute: (args: string[]) => string;
     getCompletions?: () => string[] ,}
 }
 
 interface GameState { timestamp: number;
     running: boolean;
-    paused: boolean;
-   , currentScene: string | null;
+    paused: boolean,
+    currentScene: string | null;
     score?: {
-        curren;t: number;
-       , combo: number };
+        curren;t: number,
+    combo: number };
     bubbles?: { count: number }
 
 interface PlayerDataSnapshot { name: string,
     level: number;
     ap: number;
-    tap: number;
-   , highScore: number ,}
+    tap: number,
+    highScore: number ,}
 
 interface BackupData { id: string;
-    timestamp: number;
-   , data: PlayerDataSnapshot | null }
+    timestamp: number,
+    data: PlayerDataSnapshot | null }
 
-interface ComponentWithInitialize { initialize?: () => Promise<void> | void; }
-}
+interface ComponentWithInitialize { initialize?: () => Promise<void> | void; 
+    }
 ';
 
 interface ComponentWithCleanup { ''
-    cleanup?: (') => void; }'
+    cleanup?: () => void; }'
 }
 
 interface ExecutionStatistics { [key: string]: any,
@@ -82,13 +82,13 @@ interface SafetySettings { [key: string]: any, }
 
 interface ExecutionState { lastCommand: any,
     commandHistory: any[];
-    undoStack: any[];
-   , maxUndoSize: number ,}
+    undoStack: any[],
+    maxUndoSize: number ,}
 
 interface SafetyChecks { confirmDestructive: boolean;
     preventDataLoss: boolean;
-    validateInputs: boolean;
-   , logAllChanges: boolean }
+    validateInputs: boolean,
+    logAllChanges: boolean }
 
 type TestScenario = 'stress' | 'memory' | 'performance' | 'bubbles' | 'scoring';
 
@@ -158,21 +158,21 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
      * 状態操作コンポーネントを取得'
      */''
     public getStateManipulation()';
-        return this.components.get('stateManipulation);
+        return this.components.get('stateManipulation';
     }
 
     /**
      * 安全性検証コンポーネントを取得'
      */''
     public getSafetyValidator()';
-        return this.components.get('safetyValidator);
+        return this.components.get('safetyValidator';
     }
 
     /**
      * 履歴管理コンポーネントを取得'
      */''
     public getHistoryManager()';
-        return this.components.get('historyManager);
+        return this.components.get('historyManager';
     }
 
     /**
@@ -223,9 +223,9 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
     /**
      * 統合コマンド登録
      */''
-    private registerIntegratedCommands(''';
+    private registerIntegratedCommands('''
         this.console.registerCommand('run-test', { ''
-            description: 'Run test scenario',)';
+            description: 'Run test scenario','';
             usage: 'run-test <scenario>',')';
             category: 'debug'),
             execute: (args: string[]) => { ''
@@ -234,18 +234,18 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
                 try { ,}
                     return this.runTestScenario(scenario); catch (error) {
                     return `Test failed: ${(error, as, Error}).message}`;,''
-            getCompletions: (') => ['stress', 'memory', 'performance', 'bubbles', 'scoring]'';
+            getCompletions: () => ['stress', 'memory', 'performance', 'bubbles', 'scoring]'';
         }');
 ';
         // ゲーム状態ダンプ
         this.console.registerCommand('dump-state', { ''
-            description: 'Dump current game state',)';
+            description: 'Dump current game state','';
             usage: 'dump-state [--json]',')';
-            category: 'debug');
-           , execute: (args: string[]) => { '
+            category: 'debug'),
+    execute: (args: string[]) => { '
                 try {'
                     const state = this.captureGameState()';
-                    if(args.includes('--json) { ,}'
+                    if(args.includes('--json' { ,}'
                         return JSON.stringify(state, null, 2); else { return this.formatGameState(state); } catch (error) {
                     return `Failed to dump state: ${(error, as, Error}).message}`;);
     }
@@ -255,22 +255,22 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
     /**
      * ゲームマネージャー取得
      */
-    public getScoreManager(): ScoreManager | undefined { return this.gameEngine? .scoreManager; }
+    public getScoreManager(): ScoreManager | undefined { return this.gameEngine?.scoreManager; }
  : undefined
-    public getBubbleManager(): BubbleManager | undefined { return this.gameEngine? .bubbleManager; }
+    public getBubbleManager(): BubbleManager | undefined { return this.gameEngine?.bubbleManager; }
  : undefined
-    public getPlayerData(): PlayerData | undefined { return this.gameEngine? .playerData; }
+    public getPlayerData(): PlayerData | undefined { return this.gameEngine?.playerData; }
  : undefined
-    public getStageManager(): StageManager | undefined { return this.gameEngine? .stageManager; }
+    public getStageManager(): StageManager | undefined { return this.gameEngine?.stageManager; }
 
     /**
      * ゲーム状態キャプチャ
      */ : undefined
     public captureGameState(): GameState { const state: GameState = {
-            timestamp: Date.now(;
-           , running: this.gameEngine? .isRunning || false, : undefined
-            paused: this.gameEngine? .isPaused || false, : undefined
-            currentScene: this.gameEngine? .sceneManager?.currentScene || null ,}))
+            timestamp: Date.now(,
+    running: this.gameEngine?.isRunning || false, : undefined
+            paused: this.gameEngine?.isPaused || false, : undefined
+            currentScene: this.gameEngine?.sceneManager?.currentScene || null ,}))
         // スコア情報)
         const scoreManager = this.getScoreManager();
         if(scoreManager) {
@@ -298,10 +298,10 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
         ';
 
         return { ''
-            name: playerData.getName ? playerData.getName(') : '';
+            name: playerData.getName ? playerData.getName() : '';
             level: playerData.getLevel ? playerData.getLevel() : 1;
-            ap: playerData.getAP ? playerData.getAP() : 0;
-           , tap: playerData.getTAP ? playerData.getTAP() : 0, };
+            ap: playerData.getAP ? playerData.getAP() : 0,
+    tap: playerData.getTAP ? playerData.getTAP() : 0, };
             highScore: playerData.getHighScore ? playerData.getHighScore() : 0 
         }
 
@@ -325,7 +325,7 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
                 return 'Stress test: Spawned 100 bubbles',
             },
 
-            memory: (') => {  ''
+            memory: () => {  ''
                 if (typeof, window !== 'undefined' && (window, as any).gc) {''
                     (window, as any).gc('' }
 
@@ -341,11 +341,11 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
                 return `Performance test: ${(end - start}.toFixed(2})ms for 10k operations`;
             },
 
-            bubbles: (') => {  ' }
+            bubbles: () => {  ' }
 
                 return 'Bubbles test: Not implemented yet';,
 
-            scoring: (') => {  ' }
+            scoring: () => {  ' }
 
                 return 'Scoring test: Not implemented yet';
         
@@ -382,7 +382,7 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
 
         if (state.bubbles) { ' }'
 
-            lines.push(`Bubbles: ${state.bubbles.count}`'});
+            lines.push(`Bubbles: ${state.bubbles.count}`'}';
         }
 
         return lines.join('\n);
@@ -392,9 +392,9 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
      * プレイヤーデータバックアップ作成
      */
     public createPlayerDataBackup(): BackupData { const backup: BackupData = { }
-            id: `backup_${Date.now(})`;
-            timestamp: Date.now();
-           , data: this.capturePlayerData();
+            id: `backup_${Date.now())`;
+            timestamp: Date.now(),
+    data: this.capturePlayerData();
         };
         
         // LocalStorageに保存
@@ -424,8 +424,8 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
         const historyStats = historyManager ? historyManager.getExecutionStatistics() : {};
         const undoStats: UndoRedoStatistics = undoManager ? undoManager.getUndoRedoStatistics() : {
         return { ...historyStats, };
-            undo: undoStats }
-        }
+            undo: undoStats 
+    }
 
     /**
      * 安全性設定更新（メインコントローラー統制）
@@ -448,8 +448,8 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
         const undoManager = this.getUndoManager();
         
         return { lastCommand: historyManager ? historyManager.executionState.lastCommand : null,
-            commandHistory: historyManager ? historyManager.getCommandHistory() : [];
-           , undoStack: undoManager ? undoManager.getUndoStackSummary() : [], };
+            commandHistory: historyManager ? historyManager.getCommandHistory() : [],
+    undoStack: undoManager ? undoManager.getUndoStackSummary() : [], };
             maxUndoSize: undoManager ? undoManager.maxUndoSize : 10 
         }
 
@@ -457,24 +457,24 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
         return safetyValidator ? safetyValidator.getSafetySettings() : {
             confirmDestructive: true;
             preventDataLoss: true;
-            validateInputs: true;
-           , logAllChanges: true ,}
+            validateInputs: true,
+    logAllChanges: true  }
 
     /**
      * 破棄処理
      */
     public destroy(): void { try {
             // 各コンポーネントのクリーンアップ
-            for(const [name, component] of this.components) {
+            for(const [name component] of this.components) {
                 if (component.cleanup) {
             }
                     component.cleanup(); }
 }
 
-            this.components.clear(')';
+            this.components.clear()';
             console.log('[GameStateCommands] Destroyed');''
         } catch (error) {
-            this._handleError('Error during destroy', error as Error); }
+            this._handleError('Error during destroy', error as Error'; }
     }
 
     /**

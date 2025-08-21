@@ -8,35 +8,35 @@ interface PerformanceSettings { updateInterval: number,
     chartHeight: number;
     gridColor: string;
     textColor: string;
-    backgroundColor: string;
-   , colors: {
+    backgroundColor: string,
+    colors: {
         fp;s: string;
         memory: string;
         frameTime: string;
         drawCalls: string;
         entityCount: string;
-        warning: string;
-       , critical: string ,}
+        warning: string,
+    critical: string ,}
 
 interface ChartState { lastUpdate: number,
     viewportOffset: number;
     zoomLevel: number;
-    selectedMetric: string | null;
-   , hoverPoint: HoverPoint | null ,}
+    selectedMetric: string | null,
+    hoverPoint: HoverPoint | null ,}
 
 interface HoverPoint { x: number;
     y: number;
     metric: string;
     value: number;
     unit: string;
-    timestamp: number;
-   , status: string }
+    timestamp: number,
+    status: string }
 
 interface PerformanceMetrics { frame: {
-        currentFP;S: number;
-       , frameTime: number };
-    memory: { usedMemory: number;
-       , pressureLevel: number };
+        currentFP;S: number,
+    frameTime: number };
+    memory: { usedMemory: number,
+    pressureLevel: number };
     render: { drawCalls: number };
     game: { entityCount: number }
 
@@ -44,8 +44,8 @@ interface PerformanceMonitor { getCurrentMetrics(): PerformanceMetrics;
     getHistoryData(): any;
     getStatistics(): {
         uptime: number;
-        totalSamples: number;
-       , samplesPerSecond: number;
+        totalSamples: number,
+    samplesPerSecond: number;
         totalErrors?: number ,};
     getAnalysisResults(): { anomalies: Array<{
             severity: 'critical' | 'warning' }>;
@@ -53,16 +53,16 @@ interface PerformanceMonitor { getCurrentMetrics(): PerformanceMetrics;
 
 interface ChartPosition { x: number,
     y: number;
-    width: number;
-   , height: number ,}
+    width: number,
+    height: number ,}
 
 interface ChartConfig { name: string;
     color: string;
     backgroundColor?: string;
     minValue: number;
     maxValue: number;
-    unit: string;
-   , position: ChartPosition;
+    unit: string,
+    position: ChartPosition;
     showGrid?: boolean;
     showThresholds?: boolean; }
 
@@ -74,11 +74,11 @@ interface DataPoint { timestamp: number,
 
 interface HeatmapData { fps: number,
     memory: number;
-    frameTime: number;
-   , timestamp: number ,}
+    frameTime: number,
+    timestamp: number ,}
 
-interface HeatmapConfig { name: string;
-   , position: ChartPosition;
+interface HeatmapConfig { name: string,
+    position: ChartPosition;
     cellSize?: number;
     maxAge?: number; }
 
@@ -111,14 +111,14 @@ export class PerformanceVisualizer {
                 warning: '#ffa500';
     ,}
 
-                critical: '#ff0000' }
-};
+                critical: '#ff0000' 
+    };
         // チャート状態
         this.chartState = { lastUpdate: 0,
             viewportOffset: 0;
             zoomLevel: 1;
-            selectedMetric: null;
-           , hoverPoint: null ,};
+            selectedMetric: null,
+    hoverPoint: null ,};
         this.initialize();
     }
 
@@ -135,10 +135,10 @@ export class PerformanceVisualizer {
         this.canvas.width = 800;
 
         this.canvas.height = 600;''
-        this.canvas.style.position = 'absolute';''
-        this.canvas.style.top = '10px';''
-        this.canvas.style.right = '10px';''
-        this.canvas.style.zIndex = '10000';''
+        this.canvas.style.position = 'absolute';
+        this.canvas.style.top = '10px';
+        this.canvas.style.right = '10px';
+        this.canvas.style.zIndex = '10000';
         this.canvas.style.border = '2px solid #333';
 
         this.canvas.style.backgroundColor = this.settings.backgroundColor;''
@@ -186,52 +186,52 @@ export class PerformanceVisualizer {
     /**
      * チャート設定'
      */''
-    private setupCharts(''';
+    private setupCharts('''
         this.charts.set('fps', new PerformanceChart({ ''
             name: 'FPS';
             color: this.settings.colors.fps);
-            minValue: 0)';
-           , maxValue: 120,
+            minValue: 0'',
+    maxValue: 120,
             unit: 'fps', }
 
-            position: { x: 10, y: 10, width: 380, height: this.settings.chartHeight ,});''
+            position: { x: 10, y: 10, width: 380, height: this.settings.chartHeight ,}';''
         }');
 
         this.charts.set('memory', new PerformanceChart({ ''
             name: 'Memory Usage';
             color: this.settings.colors.memory);
-            minValue: 0)';
-           , maxValue: 200, // MB;
+            minValue: 0'',
+    maxValue: 200, // MB;
             unit: 'MB',' }
 
-            position: { x: 410, y: 10, width: 380, height: this.settings.chartHeight ,}))');
+            position: { x: 410, y: 10, width: 380, height: this.settings.chartHeight ,})'');
 
         this.charts.set('frameTime', new PerformanceChart({ ''
             name: 'Frame Time';
             color: this.settings.colors.frameTime);
-            minValue: 0)';
-           , maxValue: 50, // ms;
+            minValue: 0'',
+    maxValue: 50, // ms;
             unit: 'ms',' }
 
-            position: { x: 10, y: 180, width: 380, height: this.settings.chartHeight ,}))');
+            position: { x: 10, y: 180, width: 380, height: this.settings.chartHeight ,})'');
 
         this.charts.set('drawCalls', new PerformanceChart({ ''
             name: 'Draw Calls';
             color: this.settings.colors.drawCalls);
-            minValue: 0)';
-           , maxValue: 500,
+            minValue: 0'',
+    maxValue: 500,
             unit: 'calls',' }
 
-            position: { x: 410, y: 180, width: 380, height: this.settings.chartHeight ,}))');
+            position: { x: 410, y: 180, width: 380, height: this.settings.chartHeight ,})'');
 
         this.charts.set('entities', new PerformanceChart({ ''
             name: 'Entity Count';
             color: this.settings.colors.entityCount);
-            minValue: 0)';
-           , maxValue: 1000,
+            minValue: 0'',
+    maxValue: 1000,
             unit: 'entities',' }
 
-            position: { x: 10, y: 350, width: 380, height: this.settings.chartHeight ,}))');
+            position: { x: 10, y: 350, width: 380, height: this.settings.chartHeight ,})'');
 
         this.charts.set('heatmap', new PerformanceHeatmap({ ')'
             name: 'Performance Heatmap', }
@@ -244,8 +244,8 @@ export class PerformanceVisualizer {
     private startRendering(): void { if (this.animationId) {
             cancelAnimationFrame(this.animationId); }
 
-        const render = ('): void => {  ''
-            if(this.canvas && this.canvas.style.display !== 'none) {'
+        const render = (): void => {  ''
+            if(this.canvas && this.canvas.style.display !== 'none' {'
                 
             }
                 this.updateCharts(); }
@@ -281,7 +281,7 @@ export class PerformanceVisualizer {
 
                 value: metrics.frame.currentFPS || 0,') }'
 
-                threshold: { warning: 45, critical: 30 ,})');
+                threshold: { warning: 45, critical: 30 ,}'');
         }
         ';
         // メモリチャート更新
@@ -291,7 +291,7 @@ export class PerformanceVisualizer {
 
                 value: metrics.memory.usedMemory || 0,') }'
 
-                threshold: { warning: 150, critical: 180 ,})');
+                threshold: { warning: 150, critical: 180 ,}'');
         }
         ';
         // フレーム時間チャート更新
@@ -301,7 +301,7 @@ export class PerformanceVisualizer {
 
                 value: metrics.frame.frameTime || 0,') }'
 
-                threshold: { warning: 20, critical: 33 ,})');
+                threshold: { warning: 20, critical: 33 ,}'');
         }
         ';
         // 描画コールチャート更新
@@ -311,7 +311,7 @@ export class PerformanceVisualizer {
 
                 value: metrics.render.drawCalls || 0,') }'
 
-                threshold: { warning: 300, critical: 400 ,})');
+                threshold: { warning: 300, critical: 400 ,}'');
         }
         ';
         // エンティティ数チャート更新
@@ -321,17 +321,17 @@ export class PerformanceVisualizer {
 
                 value: metrics.game.entityCount || 0,') }'
 
-                threshold: { warning: 500, critical: 800 ,})');
+                threshold: { warning: 500, critical: 800 ,}'');
         }
         ';
         // ヒートマップ更新
         const heatmap = this.charts.get('heatmap) as PerformanceHeatmap;
         if(heatmap) { heatmap.updateHeatmap({
                 fps: metrics.frame.currentFPS || 0);
-                memory: metrics.memory.pressureLevel || 0);
-               , frameTime: metrics.frame.frameTime || 0, }
-                timestamp: now); }
-        }
+                memory: metrics.memory.pressureLevel || 0),
+    frameTime: metrics.frame.frameTime || 0, }
+                timestamp: now); 
+    }
         
         // 古いデータのクリーンアップ
         this.cleanupOldData(now);
@@ -386,12 +386,12 @@ export class PerformanceVisualizer {
 ';
 
         ctx.fillStyle = this.settings.textColor;''
-        ctx.font = 'bold 16px Arial';''
-        ctx.textAlign = 'center';''
-        ctx.fillText('Real-time Performance Monitor', this.canvas.width / 2, 25);
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Real-time Performance Monitor', this.canvas.width / 2, 25';
         ';
         // 時間窓表示
-        ctx.font = '12px Arial';''
+        ctx.font = '12px Arial';
         ctx.textAlign = 'right'; }
         ctx.fillText(`Time Window: ${this.settings.timeWindow / 1000}s`, this.canvas.width - 10, 45});
     }
@@ -402,7 +402,7 @@ export class PerformanceVisualizer {
     private renderStatistics(ctx: CanvasRenderingContext2D): void { if (!this.canvas) return;
 
         const stats = this.monitor.getStatistics(''';
-        ctx.font = '12px, Arial';''
+        ctx.font = '12px, Arial';
         ctx.textAlign = 'left';
         );
         const statsText = [ }
@@ -438,7 +438,7 @@ export class PerformanceVisualizer {
         
         // テキスト描画
         ctx.fillStyle = this.settings.textColor;''
-        ctx.font = '12px Arial';''
+        ctx.font = '12px Arial';
         ctx.textAlign = 'left';
         
         const lines = [}
@@ -462,7 +462,7 @@ export class PerformanceVisualizer {
         const criticalAnomalies = analysis.anomalies.filter(a => a.severity === 'critical'');''
         const warningAnomalies = analysis.anomalies.filter(a => a.severity === 'warning'');
 
-        ctx.font = 'bold 12px Arial';''
+        ctx.font = 'bold 12px Arial';
         ctx.textAlign = 'left';
         
         // 重要なアラート
@@ -491,8 +491,8 @@ export class PerformanceVisualizer {
                 if (dataPoint) {
                     foundHover = {
                         x: x;
-                        y: y;
-                       , metric: name,
+                        y: y,
+    metric: name,
                         value: dataPoint.value,
                         unit: (chart, as PerformanceChart').config.unit || '';
             ,}
@@ -510,8 +510,8 @@ export class PerformanceVisualizer {
     private handleMouseClick(x: number, y: number): void { // チャート選択処理
         this.charts.forEach((chart, name) => { ''
             if('isPointInChart' in chart && chart.isPointInChart(x, y) { }
-                this.chartState.selectedMetric = this.chartState.selectedMetric === name ? null: name; }
-});
+                this.chartState.selectedMetric = this.chartState.selectedMetric === name ? null: name; 
+    });
     }
 
     /**
@@ -529,8 +529,8 @@ export class PerformanceVisualizer {
     private getStatusFromValue(value: number, threshold?: { warning?: number; critical?: number ): string {''
         if(!threshold) return 'normal';
 
-        if(threshold.critical && value >= threshold.critical) return 'critical';''
-        if(threshold.warning && value >= threshold.warning) return 'warning';''
+        if(threshold.critical && value >= threshold.critical) return 'critical';
+        if(threshold.warning && value >= threshold.warning) return 'warning';
         return 'normal'; }
 
     /**
@@ -539,7 +539,7 @@ export class PerformanceVisualizer {
     public toggle(): void { ''
         if(!this.canvas) return;
 
-        const isVisible = this.canvas.style.display !== 'none';''
+        const isVisible = this.canvas.style.display !== 'none';
         this.canvas.style.display = isVisible ? 'none' : 'block';
 
         ' }'
@@ -570,8 +570,8 @@ export class PerformanceVisualizer {
         if(!this.canvas) return;
 
         const dataURL = this.canvas.toDataURL('image/png'');''
-        const link = document.createElement('a); }'
-        link.download = `performance-${Date.now(}).png`;
+        const link = document.createElement('a'; }'
+        link.download = `performance-${Date.now()).png`;
 
         link.href = dataURL;''
         link.click()';
@@ -587,8 +587,8 @@ export class PerformanceVisualizer {
         
         if (this.canvas && this.canvas.parentNode) { this.canvas.parentNode.removeChild(this.canvas); }
 
-        this.charts.clear(')';
-        console.log('[PerformanceVisualizer] Destroyed);
+        this.charts.clear()';
+        console.log('[PerformanceVisualizer] Destroyed';
     }
 }
 
@@ -610,14 +610,14 @@ class PerformanceChart { public config: ChartConfig,
 
             unit: '', }
             position: { x: 0, y: 0, width: 300, height: 150 ,},
-            showGrid: true;
-           , showThresholds: true;
+            showGrid: true,
+    showThresholds: true;
             ...config;
     }
 
     public addDataPoint(dataPoint: DataPoint): void { this.data.push({)
-            timestamp: dataPoint.timestamp);
-           , value: dataPoint.value,);
+            timestamp: dataPoint.timestamp),
+    value: dataPoint.value,);
             threshold: dataPoint.threshold);
         // データポイント数制限
         if(this.data.length > this.maxDataPoints) {
@@ -638,7 +638,7 @@ class PerformanceChart { public config: ChartConfig,
         
         // タイトル描画
         ctx.fillStyle = globalSettings.textColor;''
-        ctx.font = 'bold 12px Arial';''
+        ctx.font = 'bold 12px Arial';
         ctx.textAlign = 'left';
         ctx.fillText(this.config.name, pos.x + 5, pos.y + 15);
         
@@ -648,7 +648,7 @@ class PerformanceChart { public config: ChartConfig,
         }
             const currentValue = this.data[this.data.length - 1].value;' }'
 
-            const valueText = `${currentValue.toFixed(1'}) ${this.config.unit}`;''
+            const valueText = `${currentValue.toFixed(1'}' ${this.config.unit}`;''
             ctx.textAlign = 'right';
             ctx.fillText(valueText, pos.x + pos.width - 5, pos.y + 15);
         }
@@ -711,7 +711,7 @@ class PerformanceChart { public config: ChartConfig,
             ctx.moveTo(pos.x, y);
             ctx.lineTo(pos.x + pos.width, y);''
             ctx.stroke(''';
-            ctx.font = '10px, Arial';)'
+            ctx.font = '10px, Arial';''
             ctx.textAlign = 'left';) }
             ctx.fillText(label, pos.x + 5, y - 3); }
         };
@@ -720,14 +720,14 @@ class PerformanceChart { public config: ChartConfig,
 
         }
 
-            drawThresholdLine(lastDataPoint.threshold.warning, globalSettings.colors.warning, 'Warning); }'
+            drawThresholdLine(lastDataPoint.threshold.warning, globalSettings.colors.warning, 'Warning'; }'
         }
 
         if(lastDataPoint.threshold.critical) {', ';
 
         }
 
-            drawThresholdLine(lastDataPoint.threshold.critical, globalSettings.colors.critical, 'Critical); }'
+            drawThresholdLine(lastDataPoint.threshold.critical, globalSettings.colors.critical, 'Critical'; }'
         }
         
         ctx.setLineDash([]);
@@ -796,7 +796,7 @@ class PerformanceChart { public config: ChartConfig,
         return closestPoint;
     }
 
-    public cleanupOldData(cutoffTime: number): void { this.data = this.data.filter(point => point.timestamp > cutoffTime); }
+    public cleanupOldData(cutoffTime: number): void { this.data = this.data.filter(point => point.timestamp > cutoffTime); 
     }
 
     public updateSettings(settings: PerformanceSettings): void { // 設定更新処理
@@ -822,8 +822,8 @@ class PerformanceHeatmap { public config: HeatmapConfig,
 
             name: 'Heatmap', }
             position: { x: 0, y: 0, width: 300, height: 150 ,},
-            cellSize: 5;
-           , maxAge: 60000, // 1分;
+            cellSize: 5,
+    maxAge: 60000, // 1分;
             ...config;
     }
 
@@ -831,8 +831,8 @@ class PerformanceHeatmap { public config: HeatmapConfig,
         const normalizedScore = this.calculatePerformanceScore(data);
         
         this.heatmapData.push({)
-            timestamp: data.timestamp);
-           , score: normalizedScore,);
+            timestamp: data.timestamp),
+    score: normalizedScore,);
             details: data);
         // 古いデータのクリーンアップ
         const cutoffTime = data.timestamp - (this.config.maxAge || 60000);
@@ -865,7 +865,7 @@ class PerformanceHeatmap { public config: HeatmapConfig,
         
         // タイトル
         ctx.fillStyle = globalSettings.textColor;''
-        ctx.font = 'bold 12px Arial';''
+        ctx.font = 'bold 12px Arial';
         ctx.textAlign = 'left';
         ctx.fillText(this.config.name, pos.x + 5, pos.y + 15);
         
@@ -954,16 +954,16 @@ class PerformanceHeatmap { public config: HeatmapConfig,
         }
             ctx.fillStyle = `rgb(${color[0]}, ${color[1]}, ${ color[2]}`;' }'
 
-            ctx.fillRect(scaleX + i, scaleY, 1, scaleHeight'});
+            ctx.fillRect(scaleX + i, scaleY, 1, scaleHeight'}';
         }
         
         // ラベル
         ctx.fillStyle = globalSettings.textColor;''
-        ctx.font = '10px Arial';''
-        ctx.textAlign = 'left';''
-        ctx.fillText('Good', scaleX, scaleY - 3);''
-        ctx.textAlign = 'right';''
-        ctx.fillText('Poor', scaleX + scaleWidth, scaleY - 3);
+        ctx.font = '10px Arial';
+        ctx.textAlign = 'left';
+        ctx.fillText('Good', scaleX, scaleY - 3';''
+        ctx.textAlign = 'right';
+        ctx.fillText('Poor', scaleX + scaleWidth, scaleY - 3';
     }
 ';
 

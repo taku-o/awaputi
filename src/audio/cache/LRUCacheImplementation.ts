@@ -12,8 +12,8 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
  */
 export interface CacheStats { hits: number,
     misses: number;
-    evictions: number;
-   , totalAccesses: number;
+    evictions: number,
+    totalAccesses: number;
     hitRate?: number;
     currentSize?: number;
     maxSize?: number;
@@ -26,15 +26,15 @@ export interface CacheStats { hits: number,
 export interface CacheEntryInfo { key: string,
     hitCount: number;
     accessTime: number;
-    size: number;
-   , score: number ,}
+    size: number,
+    score: number ,}
 
 /**
  * Result of cache removal operations
  */
 export interface RemovalResult { removedCount: number;
-    removedSize: number;
-   , removedKeys: string[] }
+    removedSize: number,
+    removedKeys: string[] }
 
 /**
  * LRUキャッシュノード
@@ -74,7 +74,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
         this.maxSize = maxSize;
         this.currentSize = 0;''
         this.cache = new Map()';
-        this.head = new CacheNode('', null as any, 0);''
+        this.head = new CacheNode('', null as any, 0';''
         this.tail = new CacheNode('', null as any, 0);
         this.head.next = this.tail;
         this.tail.prev = this.head;
@@ -82,11 +82,11 @@ export class LRUCache<T = any> { private readonly maxSize: number,
         // 統計情報
         this.stats = {
             hits: 0;
-            misses: 0;
-           , evictions: 0;
+            misses: 0,
+    evictions: 0;
     ,}
-            totalAccesses: 0 }
-        }
+            totalAccesses: 0 
+    }
     
     /**
      * キャッシュから値を取得
@@ -171,8 +171,8 @@ export class LRUCache<T = any> { private readonly maxSize: number,
         this.stats = {
             hits: 0;
             misses: 0;
-            evictions: 0;
-           , totalAccesses: 0 }
+            evictions: 0,
+    totalAccesses: 0 }
     
     /**
      * ノードを先頭に移動
@@ -217,16 +217,16 @@ export class LRUCache<T = any> { private readonly maxSize: number,
      * キャッシュ統計を取得
      * @returns 統計情報
      */
-    getStats(): CacheStats { const hitRate = this.stats.totalAccesses > 0 ?   : undefined
+    getStats(): CacheStats { const hitRate = this.stats.totalAccesses > 0 ? undefined : undefined
             this.stats.hits / this.stats.totalAccesses: 0,
             
         return { ...this.stats,
             hitRate: hitRate;
             currentSize: this.currentSize;
-            maxSize: this.maxSize;
-           , entryCount: this.cache.size, };
-            memoryUsageRatio: this.currentSize / this.maxSize }
-        }
+            maxSize: this.maxSize,
+    entryCount: this.cache.size, };
+            memoryUsageRatio: this.currentSize / this.maxSize 
+    }
     
     /**
      * 削除スコアを計算
@@ -273,12 +273,12 @@ export class LRUCache<T = any> { private readonly maxSize: number,
         for(const [key, node] of this.cache) {
             entries.push({
                 key: key);
-                hitCount: node.hitCount);
-               , accessTime: node.accessTime,);
+                hitCount: node.hitCount),
+    accessTime: node.accessTime,);
                 size: node.size);
         ,}
-                score: this.calculateEvictionScore(node); }
-            });
+                score: this.calculateEvictionScore(node); 
+    });
         }
         
         // スコアの低い順にソート（削除候補）

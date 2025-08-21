@@ -14,37 +14,36 @@ interface CacheStats { hits: number,
     totalRequests: number;
     heavyCalculations: number;
     optimizedCalculations: number;
-    averageCalculationTime: number;
-   , totalCalculationTime: number ,}
+    averageCalculationTime: number,
+    totalCalculationTime: number ,}
 
 interface PerformanceStats { count: number;
     totalTime: number;
     avgTime: number;
-    minTime: number;
-   , maxTime: number }
+    minTime: number,
+    maxTime: number }
 
 interface CacheConfig { maxSize: number;
     ttl: number;
     heavyCalculationTtl: number;
     cleanupInterval: number;
     intelligentCaching: boolean;
-    preloadThreshold: number;
-   , heavyCalculationThreshold: number }
+    preloadThreshold: number,
+    heavyCalculationThreshold: number }
 
 interface OptimizationConfig { batchProcessing: boolean;
     memoization: boolean;
-    parallelProcessing: boolean;
-   , adaptiveCaching: boolean }
+    parallelProcessing: boolean,
+    adaptiveCaching: boolean }
 
 interface BatchRequest { params: any[];
-    resolve: (valu;e: any) => void;
-    reject: (reaso;n?: any) => void;
+    resolve: (value: any) => void;
+    reject: (reason?: any) => void;
     options: CalculationOptions
     }
-}
 
-interface BatchQueue { requests: BatchRequest[];
-   , timeout: NodeJS.Timeout | null }
+interface BatchQueue { requests: BatchRequest[],
+    timeout: NodeJS.Timeout | null }
 
 interface CalculationOptions { batchable?: boolean;
     priority?: 'high' | 'medium' | 'low';
@@ -52,8 +51,8 @@ interface CalculationOptions { batchable?: boolean;
     heavyCalculation?: boolean; }
 
 interface CacheEntry { value: any,
-    expiry: number;
-   , timestamp: number;
+    expiry: number,
+    timestamp: number;
     calculationTime?: number;
     accessCount?: number;
     lastAccess?: number;
@@ -83,11 +82,11 @@ export class CalculationEngine {
             misses: 0;
             totalRequests: 0;
             heavyCalculations: 0;
-            optimizedCalculations: 0;
-           , averageCalculationTime: 0;
+            optimizedCalculations: 0,
+    averageCalculationTime: 0;
     ,}
-            totalCalculationTime: 0 }
-        };
+            totalCalculationTime: 0 
+    };
         // 計算パフォーマンス統計
         this.performanceStats = new Map<string, PerformanceStats>();
         
@@ -96,9 +95,9 @@ export class CalculationEngine {
         
         // キャッシュ設定（最適化版）
         this.cacheConfig = { maxSize: 2000,           // 最大キャッシュサイズ（増加）
-            ttl: 300000,            // TTL: 5分（延長）;
-           , heavyCalculationTtl: 600000, // 重い計算のTTL: 10分;
-           , cleanupInterval: 60000,  // クリーンアップ間隔: 1分;
+            ttl: 300000,            // TTL: 5分（延長）,
+    heavyCalculationTtl: 600000, // 重い計算のTTL: 10分,
+    cleanupInterval: 60000,  // クリーンアップ間隔: 1分;
             intelligentCaching: true, // インテリジェントキャッシュ有効;
             preloadThreshold: 5,     // プリロード閾値（アクセス回数）;
             heavyCalculationThreshold: 10 // 重い計算の閾値（ミリ秒） ,};
@@ -127,7 +126,7 @@ export class CalculationEngine {
 
         }
 
-            throw new Error('計算タイプと計算処理クラスは必須です); }'
+            throw new Error('計算タイプと計算処理クラスは必須です'; }'
         }
         
         this.calculators.set(type, calculator);
@@ -169,7 +168,7 @@ export class CalculationEngine {
         const calculator = this.calculators.get(type);''
         if(!calculator) { ' }'
 
-            throw new Error(`計算タイプ '${type}' が登録されていません`'});
+            throw new Error(`計算タイプ '${type}' が登録されていません`'}';
         }
         ';
         // メソッドの存在確認
@@ -355,8 +354,8 @@ export class CalculationEngine {
         
         const expiry = Date.now() + this.cacheConfig.ttl;
         this.cache.set(key, { value: result)
-            expiry: expiry);
-           , timestamp: Date.now( });
+            expiry: expiry),
+    timestamp: Date.now( });
     }
     
     /**
@@ -446,8 +445,8 @@ export class CalculationEngine {
             : 0;
             
         return { size: this.cache.size,
-            maxSize: this.cacheConfig.maxSize;
-           , hits: this.cacheStats.hits;
+            maxSize: this.cacheConfig.maxSize,
+    hits: this.cacheStats.hits;
     ,}
             misses: this.cacheStats.misses, };
             totalRequests: this.cacheStats.totalRequests, }
@@ -475,8 +474,8 @@ export class CalculationEngine {
         return { registeredCalculators: this.getRegisteredCalculators(),
     }
             cacheStats: this.getCacheStats(), };
-            cacheConfig: this.cacheConfig }
-        }
+            cacheConfig: this.cacheConfig 
+    }
     
     /**
      * インテリジェントキャッシュから結果を取得
@@ -528,8 +527,8 @@ export class CalculationEngine {
             timestamp: now);
             calculationTime);
            , accessCount: 1,);
-            lastAccess: now);
-           , priority: this._calculateCachePriority(key, calculationTime });
+            lastAccess: now),
+    priority: this._calculateCachePriority(key, calculationTime });
     }
     
     /**
@@ -638,10 +637,10 @@ export class CalculationEngine {
         if(!this.performanceStats.has(key) { this.performanceStats.set(key, {
                 count: 0;
                 totalTime: 0);
-                avgTime: 0);
-               , minTime: Infinity; ,}
-                maxTime: 0); }
-        }
+                avgTime: 0),
+    minTime: Infinity; ,}
+                maxTime: 0); 
+    }
         
         const stats = this.performanceStats.get(key);
         stats.count++;
@@ -777,10 +776,10 @@ export class CalculationEngine {
 
         for(const, method of, targetMethods) {'
 
-            if(typeof, calculator[method] === 'function) {'
+            if(typeof, calculator[method] === 'function' {'
         }
 
-                calculator._memoized[method] = new Map('' })'
+                calculator._memoized[method] = new Map('' }''
         console.log(`Memoization enabled for ${type}: ${targetMethods.join(', '})`);
     }
     
@@ -814,8 +813,8 @@ export class CalculationEngine {
             ...this.cacheStats, }
             averageCalculationTime: `${this.cacheStats.averageCalculationTime.toFixed(2})ms`;
             cacheConfig: this.cacheConfig;
-            optimizationConfig: this.optimizationConfig;
-           , topPerformingMethods: performanceSummary;
+            optimizationConfig: this.optimizationConfig,
+    topPerformingMethods: performanceSummary;
             frequentCalculations,
             batchQueueSize: this.batchQueue.size;
         },
@@ -850,14 +849,14 @@ let calculationEngineInstance = null;
  * @returns {CalculationEngine} CalculationEngineインスタンス
  */
 export function getCalculationEngine() { if (!calculationEngineInstance') {''
-        calculationEngineInstance = new CalculationEngine('' })'
+        calculationEngineInstance = new CalculationEngine('' }''
         import('./ScoreCalculator.js).then(({ getScoreCalculator }) => {  ' }
 
             calculationEngineInstance.registerCalculator('score', getScoreCalculator();' }
 
-        }).catch(error => {  ');' }
+        }'.catch(error => {  ');' }
 
-            console.warn('ScoreCalculator registration failed:', error);' }
+            console.warn('ScoreCalculator registration failed:', error';' }
 
         }');
 
@@ -865,9 +864,9 @@ export function getCalculationEngine() { if (!calculationEngineInstance') {''
 
             calculationEngineInstance.registerCalculator('balance', getBalanceCalculator();' }
 
-        }).catch(error => {  ');' }
+        }'.catch(error => {  ');' }
 
-            console.warn('BalanceCalculator registration failed:', error);' }
+            console.warn('BalanceCalculator registration failed:', error';' }
 
         }');
 
@@ -875,9 +874,9 @@ export function getCalculationEngine() { if (!calculationEngineInstance') {''
 
             calculationEngineInstance.registerCalculator('effects', getEffectsCalculator();' }
 
-        }).catch(error => {  ');' }
+        }'.catch(error => {  ');' }
 
-            console.warn('EffectsCalculator registration failed:', error);' }
+            console.warn('EffectsCalculator registration failed:', error';' }
 
         }');
     }

@@ -4,9 +4,9 @@
  */
 
 // Type definitions
-type ConflictType = 'class' | 'file';''
-type SeverityLevel = 'high' | 'medium' | 'low';''
-type ConflictStatus = 'pending' | 'in_progress' | 'completed' | 'failed';''
+type ConflictType = 'class' | 'file';
+type SeverityLevel = 'high' | 'medium' | 'low';
+type ConflictStatus = 'pending' | 'in_progress' | 'completed' | 'failed';
 type OperationType = 'file' | 'class';
 
 interface ConflictSummary { name: string,
@@ -14,8 +14,8 @@ interface ConflictSummary { name: string,
     severity: SeverityLevel;
     status: ConflictStatus;
     filesCount: number;
-    progress: string;
-   , canResolve: boolean ,}
+    progress: string,
+    canResolve: boolean ,}
 
 interface ConflictJSON { name: string;
     type: ConflictType;
@@ -23,15 +23,15 @@ interface ConflictJSON { name: string;
     severity: SeverityLevel;
     strategy: string | null;
     newNames: string[];
-    status: ConflictStatus;
-   , dependencies: Array<{
+    status: ConflictStatus,
+    dependencies: Array<{
         nam;e: string;
-        type: ConflictType;
-       , status: ConflictStatus
+        type: ConflictType,
+    status: ConflictStatus
     }>;
     progress: number;
-    createdAt: string;
-   , updatedAt: string;
+    createdAt: string,
+    updatedAt: string;
 }
 
 interface RenameOperationJSON { type: OperationType,
@@ -42,8 +42,8 @@ interface RenameOperationJSON { type: OperationType,
     error: string | null;
     canExecute: boolean;
     dependenciesCount: number;
-    createdAt: string;
-   , executedAt: string | null ,}
+    createdAt: string,
+    executedAt: string | null ,}
 
 export class ConflictInfo {
     public name: string;
@@ -100,7 +100,7 @@ export class ConflictInfo {
      * 解決可能かどうかチェック
      */''
     canResolve()';
-        return this.dependencies.every(dep => dep.status === 'completed);
+        return this.dependencies.every(dep => dep.status === 'completed';
     }
 
     /**
@@ -125,28 +125,27 @@ export class ConflictInfo {
             severity: this.severity;
             strategy: this.strategy;
             newNames: this.newNames;
-            status: this.status;
-           , dependencies: this.dependencies.map(dep => ({)
-                name: dep.name);
-               , type: dep.type,);
+            status: this.status,
+    dependencies: this.dependencies.map(dep => ({)
+                name: dep.name),
+    type: dep.type,);
                 status: dep.status)));
-            progress: this.getProgress();
-           , createdAt: this.createdAt.toISOString(), };
-            updatedAt: this.updatedAt.toISOString(); }
-        }
+            progress: this.getProgress(),
+    createdAt: this.createdAt.toISOString(), };
+            updatedAt: this.updatedAt.toISOString(); 
+    }
 
     /**
      * 競合情報のサマリーを生成
      */
     getSummary(): ConflictSummary { return { name: this.name,
             type: this.type;
-            severity: this.severity;
-           , status: this.status, };
+            severity: this.severity,
+    status: this.status, };
             filesCount: Array.isArray(this.files) ? this.files.length : 0, 
             progress: `${this.getProgress(})%`;
             canResolve: this.canResolve();
-        }
-}
+    }
 
 /**
  * リネーム操作情報を管理するデータモデル
@@ -216,8 +215,8 @@ export class RenameOperation {
             filePath: this.filePath;
             status: this.status;
             error: this.error;
-            canExecute: this.canExecute();
-           , dependenciesCount: this.dependencies.length,
+            canExecute: this.canExecute(),
+    dependenciesCount: this.dependencies.length,
             createdAt: this.createdAt.toISOString(),' };
 
-            executedAt: this.executedAt ? this.executedAt.toISOString(') }'
+            executedAt: this.executedAt ? this.executedAt.toISOString() }'

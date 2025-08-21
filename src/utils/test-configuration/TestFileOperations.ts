@@ -1,30 +1,30 @@
-import { BaseComponent  } from '../../debug/BaseComponent.js';''
-import fs from 'fs';''
+import { BaseComponent  } from '../../debug/BaseComponent.js';
+import fs from 'fs';
 import path from 'path';
 
 // Type definitions
 interface MainController { testsDir: string,
     projectRoot: string;
     backupEnabled: boolean;
-    dryRun: boolean;
-   , testFilePatterns: Record<string, string>;
+    dryRun: boolean,
+    testFilePatterns: Record<string, string>;
     [key: string]: any, }
 
 interface FileOperationOptions { silent?: boolean;
     encoding?: BufferEncoding;
     force?: boolean;
     recursive?: boolean;
-    filter?: (fil;e: FileInfo) => boolean ,}
+    filter?: (file: FileInfo) => boolean ,}
 }
 
 interface FileInfo { name: string;
     path: string;
     size: number;
-    modified: Date;
-   , extension: string }
+    modified: Date,
+    extension: string }
 
-interface BackupInfo extends FileInfo { originalFile: string;
-   , backupDate: Date | null }
+interface BackupInfo extends FileInfo { originalFile: string,
+    backupDate: Date | null }
 
 interface OperationDetails { filePath?: string;
     size?: number;
@@ -34,15 +34,15 @@ interface OperationDetails { filePath?: string;
     targetPath?: string; ,}
 
 interface OperationRecord { operation: string,
-    details: OperationDetails;
-   , timestamp: number ,}
+    details: OperationDetails,
+    timestamp: number ,}
 
-interface FileOperations { read: (filePat;h: string, options?: FileOperationOptions) => string | null;
-    write: (filePat;h: string, content: string, options?: FileOperationOptions) => boolean;
-    backup: (filePat;h: string) => string | null;
-    restore: (backupPat;h: string, targetPath: string) => boolean,
-    delete: (filePat;h: string, options?: FileOperationOptions) => boolean }
-}
+interface FileOperations { read: (filePath: string, options?: FileOperationOptions) => string | null;
+    write: (filePath: string, content: string, options?: FileOperationOptions) => boolean;
+    backup: (filePath: string) => string | null;
+    restore: (backupPath: string, targetPath: string) => boolean,
+    delete: (filePath: string, options?: FileOperationOptions) => boolean 
+    }
 
 interface TestFileUpdateResult { success: boolean,
     testType: string;
@@ -58,8 +58,8 @@ interface OperationStatistics { totalOperations: number,
 
 interface DirectorySizeInfo { totalFiles: number;
     totalSize: number;
-    formattedSize: string;
-   , files: FileInfo[]
+    formattedSize: string,
+    files: FileInfo[]
     }
 
 /**
@@ -95,8 +95,8 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
             read: this.readFile.bind(this);
             write: this.writeFile.bind(this);
             backup: this.createBackup.bind(this);
-            restore: this.restoreBackup.bind(this);
-           , delete: this.deleteFile.bind(this }
+            restore: this.restoreBackup.bind(this),
+    delete: this.deleteFile.bind(this }
 
     /**
      * ディレクトリ構造を確保'
@@ -138,7 +138,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
 
                 if (!options.silent) {' }'
 
-                    console.warn(`[TestFileOperations] File, not found: ${filePath}`'});
+                    console.warn(`[TestFileOperations] File, not found: ${filePath}`'}';
                 }
                 return null;
             }
@@ -146,8 +146,8 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
             const content = fs.readFileSync(filePath, options.encoding || 'utf8'');
 
             this.recordOperation('read', { filePath)
-                size: content.length);
-               , timestamp: Date.now( });
+                size: content.length),
+    timestamp: Date.now( });
 
             return content;
 
@@ -210,7 +210,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
                 return null;
             }
 
-            const timestamp = new Date().toISOString(').replace(/[:.]/g, '-);
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-);
             const backupPath = `${filePath}.backup.${timestamp}`;
 
             if(this.dryRun) {
@@ -325,18 +325,18 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
 
             if (!testFilename) {' ,}'
 
-                throw new Error(`Unknown, test type: ${testType}`'});
+                throw new Error(`Unknown, test type: ${testType}`'}';
             }
 
-            const testFilePath = path.join(this.testsDir, 'unit', testFilename);''
+            const testFilePath = path.join(this.testsDir, 'unit', testFilename';''
             const success = this.writeFile(testFilePath, content, options);
 
             return { success,
                 testType,
                 testFilePath,
                 linesGenerated: content.split('\n).length, };
-                dryRun: this.dryRun }
-            } catch (error) { return { success: false,
+                dryRun: this.dryRun 
+    } catch (error) { return { success: false,
                 testType, };
                 error: (error, as Error).message }
             }
@@ -372,8 +372,8 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
                         name: file;
                         path: filePath;
                         size: stat.size;
-                        modified: stat.mtime;
-                       , extension: path.extname(file };
+                        modified: stat.mtime,
+    extension: path.extname(file };
 
                     // フィルター適用
                     if(options.filter) {
@@ -386,7 +386,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
             return fileList;
 
         } catch (error) {
-            this._handleError('file listing', error);
+            this._handleError('file listing', error';
             return [];
 
     /**
@@ -401,7 +401,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
         });
 
         return backupFiles.map(file => ({ )'
-            ...file);'
+            ...file';'
 
             originalFile: file.name.replace(/\.backup\.\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}-\d{ 3)Z$/, ''),
             backupDate: this.parseBackupDate(file.name ,});
@@ -514,13 +514,13 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
                 files }
 
             } catch (error) {
-            this._handleError('directory size calculation', error);
+            this._handleError('directory size calculation', error';
             return { totalFiles: 0,
 
                 totalSize: 0,
                 formattedSize: '0 Bytes', };
-                files: [] }
-            }
+                files: [] 
+    }
     }
 
     /**

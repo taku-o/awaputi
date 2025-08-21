@@ -10,23 +10,23 @@ export class StatisticsExporter {
         this.exportConfig = {
             formats: ['json', 'csv', 'txt'],
             includeMetadata: true;
-            includeSensitiveData: false;
-           , compressData: false,
+            includeSensitiveData: false,
+    compressData: false,
             maxFileSize: 50 * 1024 * 1024, // 50MB制限
     }
 
-            dateFormat: 'YYYY-MM-DD, HH:mm:ss' }
-        };
+            dateFormat: 'YYYY-MM-DD, HH: mm:ss' 
+    };
         // プライバシー設定
         this.privacySettings = { excludePersonalInfo: true,
             anonymizeUserData: true;
-            excludeIpAddresses: true;
-           , excludeDeviceInfo: false ,};
+            excludeIpAddresses: true,
+    excludeDeviceInfo: false ,};
         // データ変換設定
         this.transformSettings = { roundNumbers: true,
             decimals: 2;
-            normalizeTimestamps: true;
-           , includeCalculatedFields: true ,};
+            normalizeTimestamps: true,
+    includeCalculatedFields: true ,};
         // インポート設定
         this.importConfig = { validateSchema: true,''
             mergeStrategy: 'append', // 'overwrite', 'append', 'merge''';
@@ -36,8 +36,8 @@ export class StatisticsExporter {
         this.exportState = { isExporting: false,
             isImporting: false;
             lastExportTime: null;
-            lastImportTime: null;
-           , exportHistory: [] ,};
+            lastImportTime: null,
+    exportHistory: [] ,};
         // データ検証スキーマ
         this.validationSchema = this.createValidationSchema();
     }
@@ -55,12 +55,12 @@ export class StatisticsExporter {
             
             // JSONデータの構築
             const jsonData = {''
-                metadata: this.generateMetadata(mergedOptions);
-               , statistics: statisticsData,
+                metadata: this.generateMetadata(mergedOptions),
+    statistics: statisticsData,
                 schema: {''
                     version: '1.0',
-                    format: 'json';
-                   , exported: new Date().toISOString( ,}
+                    format: 'json',
+    exported: new Date().toISOString( ,}
             };
             
             // データのサニタイゼーション
@@ -72,7 +72,7 @@ export class StatisticsExporter {
             // ファイルサイズチェック
             if (jsonString.length > mergedOptions.maxFileSize) { ' }'
 
-                throw new Error(`エクスポートデータサイズが制限を超過しています (${jsonString.length} bytes}`'});
+                throw new Error(`エクスポートデータサイズが制限を超過しています (${jsonString.length} bytes}`'}';
             }
             ';
 
@@ -81,8 +81,8 @@ export class StatisticsExporter {
                 data: jsonString,
                 filename: this.generateFilename('json', mergedOptions),
                 size: jsonString.length;
-                recordCount: this.countRecords(sanitizedData.statistics);
-               , timestamp: Date.now( ,};
+                recordCount: this.countRecords(sanitizedData.statistics),
+    timestamp: Date.now( ,};
             
             this.recordExportHistory(exportResult);
             return exportResult;
@@ -111,7 +111,7 @@ export class StatisticsExporter {
 
             }
 
-                csvSections.push(this.generateCSVSection('Game Play Statistics', statisticsData.gamePlayStats); }
+                csvSections.push(this.generateCSVSection('Game Play Statistics', statisticsData.gamePlayStats'; }
             }
             ';
             // スコア統計セクション
@@ -119,7 +119,7 @@ export class StatisticsExporter {
 
             }
 
-                csvSections.push(this.generateCSVSection('Score Statistics', statisticsData.scoreStats); }
+                csvSections.push(this.generateCSVSection('Score Statistics', statisticsData.scoreStats'; }
             }
             ';
             // バブル統計セクション
@@ -127,7 +127,7 @@ export class StatisticsExporter {
 
             }
 
-                csvSections.push(this.generateCSVSection('Bubble Statistics', statisticsData.bubbleStats); }
+                csvSections.push(this.generateCSVSection('Bubble Statistics', statisticsData.bubbleStats'; }
             }
             ';
             // コンボ統計セクション
@@ -156,8 +156,8 @@ export class StatisticsExporter {
                 data: csvString,
                 filename: this.generateFilename('csv', mergedOptions),
                 size: csvString.length;
-                recordCount: this.countRecords(statisticsData);
-               , timestamp: Date.now( ,};
+                recordCount: this.countRecords(statisticsData),
+    timestamp: Date.now( ,};
             
             this.recordExportHistory(exportResult);
             return exportResult;
@@ -208,8 +208,8 @@ export class StatisticsExporter {
                 data: textString,
                 filename: this.generateFilename('txt', mergedOptions),
                 size: textString.length;
-                recordCount: this.countRecords(statisticsData);
-               , timestamp: Date.now( ,};
+                recordCount: this.countRecords(statisticsData),
+    timestamp: Date.now( ,};
             
             this.recordExportHistory(exportResult);
             return exportResult;
@@ -266,8 +266,8 @@ export class StatisticsExporter {
                 recordsImported: this.countRecords(parsedData);
                 mergeStrategy: mergedOptions.mergeStrategy;
                 conflicts: mergeResult.conflicts || [];
-                backup: backupData ? backupData.id : null;
-               , timestamp: Date.now( ,};
+                backup: backupData ? backupData.id : null,
+    timestamp: Date.now( ,};
             
             this.exportState.lastImportTime = Date.now();
             return importResult;
@@ -320,21 +320,21 @@ export class StatisticsExporter {
             startDate.setDate(startDate.getDate() - 90'); // 過去90日'
             
             // 日別データ
-            timeSeriesData.daily = await this.statisticsManager.timeSeriesDataManager.getDataInRange(')';
-                'daily', startDate, endDate)';
+            timeSeriesData.daily = await this.statisticsManager.timeSeriesDataManager.getDataInRange()';
+                'daily', startDate, endDate'';
 
             ');
 
             // 週別データ
-            timeSeriesData.weekly = await this.statisticsManager.timeSeriesDataManager.getDataInRange(')';
-                'weekly', startDate, endDate)';
+            timeSeriesData.weekly = await this.statisticsManager.timeSeriesDataManager.getDataInRange()';
+                'weekly', startDate, endDate'';
 
             ');
 
             // 月別データ
-            timeSeriesData.monthly = await this.statisticsManager.timeSeriesDataManager.getDataInRange(');
+            timeSeriesData.monthly = await this.statisticsManager.timeSeriesDataManager.getDataInRange();
 
-                'monthly', startDate, endDate);
+                'monthly', startDate, endDate';
 
             ' }'
 
@@ -367,7 +367,7 @@ export class StatisticsExporter {
 
         }
 
-            this.removeField(filteredData, 'clientIP); }'
+            this.removeField(filteredData, 'clientIP'; }'
         }
         
         // デバイス情報の除去
@@ -403,20 +403,20 @@ export class StatisticsExporter {
 
         const lines = [`# ${title}`, '];
 
-        if(typeof, data === 'object' && data !== null) {'
+        if(typeof, data === 'object' && data !== null' {'
             // ヘッダー行
             const headers = Object.keys(data);''
-            lines.push(headers.join(',);
+            lines.push(headers.join(',';
             ';
             // データ行
             const values = headers.map(key => this.formatCSVValue(data[key]));
 
         }
 
-            lines.push(values.join(',)); }'
+            lines.push(values.join(',)'; }'
         }
 
-        return lines.join('\n);
+        return lines.join('\n';
     }
     
     /**
@@ -436,20 +436,20 @@ export class StatisticsExporter {
                     day.date || '',
                     day.totalScore || 0,
                     day.gamesPlayed || 0);
-                    day.playTime || 0)]';
+                    day.playTime || 0']';
                     day.avgAccuracy || 0')];
     }
 
                 ]');' }
 
-                lines.push(row.join(',);' }
+                lines.push(row.join(',';' }
 
             }');
 
             lines.push(''');
         }
 
-        return lines.join('\n);
+        return lines.join('\n';
     }
     
     /**
@@ -462,12 +462,12 @@ export class StatisticsExporter {
 
             '=' * 50,' }
 
-            `エクスポート日時: ${new, Date('}.toLocaleString('ja-JP''})`,
+            `エクスポート日時: ${new, Date('}.toLocaleString('ja-JP''}'`,
             `フォーマット: テキスト`];
             `バージョン: 1.0`];
         ];
 
-        return lines.join('\n);
+        return lines.join('\n';
     }
     
     /**
@@ -520,7 +520,7 @@ export class StatisticsExporter {
         if(data.gamePlayStats) {'
     }
 
-            sections.push(this.generateTextSection('ゲームプレイ統計', data.gamePlayStats); }
+            sections.push(this.generateTextSection('ゲームプレイ統計', data.gamePlayStats'; }
         }
         ';
         // スコア統計
@@ -528,7 +528,7 @@ export class StatisticsExporter {
 
         }
 
-            sections.push(this.generateTextSection('スコア統計', data.scoreStats); }
+            sections.push(this.generateTextSection('スコア統計', data.scoreStats'; }
         }
         ';
         // バブル統計
@@ -536,10 +536,10 @@ export class StatisticsExporter {
 
         }
 
-            sections.push(this.generateTextSection('バブル統計', data.bubbleStats)); }
+            sections.push(this.generateTextSection('バブル統計', data.bubbleStats)'; }
         }
 
-        return sections.join('\n\n);
+        return sections.join('\n\n';
     }
     
     /**
@@ -567,11 +567,11 @@ export class StatisticsExporter {
      */
     generateMetadata(options) {'
         return { ''
-            exportedAt: new Date().toISOString(''';
-           , version: '1.0',
+            exportedAt: new Date().toISOString(''',
+    version: '1.0',
             gameVersion: 'Awaputi v1.0',
-            format: options.format || 'unknown';
-           , includeMetadata: options.includeMetadata;
+            format: options.format || 'unknown',
+    includeMetadata: options.includeMetadata;
     ,}
             privacySettings: this.privacySettings, };
             recordCount: null // 後で設定 }))
@@ -618,7 +618,7 @@ export class StatisticsExporter {
             if(!data.statistics) {'
     }
 
-                throw new Error('統計データが見つかりません); }'
+                throw new Error('統計データが見つかりません'; }'
             }
             
             return data;
@@ -634,7 +634,7 @@ export class StatisticsExporter {
         // 簡単なCSV解析（実際の実装ではより堅牢な解析が必要）
     }
 
-        const lines = csvString.split('\n); }'
+        const lines = csvString.split('\n'; }'
         const data = { statistics: {}
         // CSV解析ロジック
         // 実装の詳細は省略
@@ -650,7 +650,7 @@ export class StatisticsExporter {
         if(!this.validationSchema.validate(data)) {'
     }
 
-            throw new Error('データスキーマが無効です); }'
+            throw new Error('データスキーマが無効です'; }'
         }
         
         // データ整合性チェック
@@ -661,7 +661,7 @@ export class StatisticsExporter {
      * バックアップの作成
      */
     async createBackup() { const backupData = await this.exportToJSON({ includeMetadata: true };
-        const, backupId = `backup_${Date.now(})`;
+        const, backupId = `backup_${Date.now())`;
         
         // LocalStorageに保存（実際の実装では適切なストレージを使用）
         localStorage.setItem(`statistics_backup_${backupId}`, backupData.data});
@@ -690,7 +690,7 @@ export class StatisticsExporter {
      */
     recordExportHistory(result) { this.exportState.exportHistory.push({ }
             ...result);
-            id: `export_${Date.now(})`
+            id: `export_${Date.now())`
         });
         // 履歴の制限（最新20件まで）
         if (this.exportState.exportHistory.length > 20) { this.exportState.exportHistory = this.exportState.exportHistory.slice(-20); }
@@ -705,9 +705,9 @@ export class StatisticsExporter {
 
     }
 
-        if(typeof value === 'string' && value.includes(',)) {' }
+        if(typeof value === 'string' && value.includes(',)' {' }
 
-            return `"${value.replace(/"/g, '""''})"`;
+            return `"${value.replace(/"/g, '""''}'"`;
         }
         return String(value);
     }
@@ -726,7 +726,7 @@ export class StatisticsExporter {
 
     formatValue(value) {"
 
-        if(typeof, value === 'number) {'
+        if(typeof, value === 'number' {'
     }
             return value.toLocaleString();
         return String(value);
@@ -743,13 +743,13 @@ export class StatisticsExporter {
 
     removeField(obj, fieldName) {'
 
-        if (typeof, obj === 'object' && obj !== null) {'
+        if (typeof, obj === 'object' && obj !== null' {'
             delete obj[fieldName];''
             Object.values(obj).forEach(value => { ');
 
     }
 
-                if(typeof, value === 'object) { }'
+                if(typeof, value === 'object' { }'
                     this.removeField(value, fieldName); }
 });
         }
@@ -762,7 +762,7 @@ export class StatisticsExporter {
 
     }
 
-            if(typeof, obj[key] === 'number) {' }
+            if(typeof, obj[key] === 'number' {' }
 
                 obj[key] = Number(obj[key].toFixed(decimals));' }'
 
@@ -774,11 +774,11 @@ export class StatisticsExporter {
     ';
 
         Object.keys(obj).forEach(key => { ');''
-            if (key.includes('timestamp'') || key.includes('Time'') || key.includes('Date)) {'
+            if (key.includes('timestamp'') || key.includes('Time'') || key.includes('Date)' {'
     
     }
 
-                if(typeof, obj[key] === 'number) {' }
+                if(typeof, obj[key] === 'number' {' }
 
                     obj[key] = new Date(obj[key]).toISOString() }
 

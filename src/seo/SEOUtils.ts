@@ -3,7 +3,7 @@
  * 
  * SEO関連の共通処理とヘルパー関数
  */
-import { SEOConfig, LanguageCode  } from './SEOConfig';''
+import { SEOConfig, LanguageCode  } from './SEOConfig';
 import { seoLogger  } from './SEOLogger';
 
 // 画像最適化オプションインターフェース
@@ -23,8 +23,8 @@ interface Schema { required?: string[];
 
 // スキーマ検証結果インターフェース
 interface ValidationResult<T = any> { isValid: boolean,
-    errors: string[];
-   , data: T
+    errors: string[],
+    data: T
     ,}
 
 /**
@@ -38,7 +38,7 @@ export function normalizeUrl(url: string): string { try {'
         
         // 末尾のスラッシュを削除
         let pathname = urlObj.pathname;''
-        if(pathname.length > 1 && pathname.endsWith('/) {', ';
+        if(pathname.length > 1 && pathname.endsWith('/' {', ';
 
         }
 
@@ -47,14 +47,14 @@ export function normalizeUrl(url: string): string { try {'
         urlObj.pathname = pathname;
         ';
         // HTTPSを強制
-        if(urlObj.protocol === 'http:' && !urlObj.hostname.includes('localhost)) { ''
+        if(urlObj.protocol === 'http:' && !urlObj.hostname.includes('localhost)' { ''
             urlObj.protocol = 'https: ' }
 
         ';
 
         return urlObj.toString();''
     } catch (error) {
-        seoLogger.error('URL normalization failed', error);
+        seoLogger.error('URL normalization failed', error';
         return url;
 
 /**
@@ -65,15 +65,15 @@ export function createMetaTag(property: string, content: string): HTMLMetaElemen
 
         seoLogger.warn('Invalid meta tag parameters', { property, content };
         return null;
-    })', ')';
+    }'', ')';
     const meta = document.createElement('meta'');
 
-    if (property.startsWith('og:'') || property.startsWith('article:)) { ''
-        meta.setAttribute('property', property); }
+    if (property.startsWith('og:'') || property.startsWith('article:)' { ''
+        meta.setAttribute('property', property'; }
 
     } else { }'
 
-        meta.setAttribute('name', property); }
+        meta.setAttribute('name', property'; }
     }
 
     meta.setAttribute('content', sanitizeMetaContent(content);
@@ -85,7 +85,7 @@ export function createMetaTag(property: string, content: string): HTMLMetaElemen
  * メタコンテンツのサニタイズ'
  */''
 export function sanitizeMetaContent(content: string | number | boolean): string {;
-    if(typeof, content !== 'string) {', ';
+    if(typeof, content !== 'string' {', ';
 
     }
 
@@ -106,7 +106,7 @@ export function sanitizeMetaContent(content: string | number | boolean): string 
 export function normalizeLanguageCode(lang: string): LanguageCode { if (!lang) return SEOConfig.defaultLanguage;
     ';
     // 言語コードの正規化
-    const normalized = lang.toLowerCase(').replace('_', '-);
+    const normalized = lang.toLowerCase().replace('_', '-);
     
     // サポート言語の確認
     if(SEOConfig.supportedLanguages.includes(normalized, as LanguageCode) {
@@ -135,12 +135,12 @@ export function generateJsonLd(data: any): string { try {
 
         return JSON.stringify(data, null, 2);' }'
 
-    } catch (error) { seoLogger.error('JSON-LD generation failed', error);
+    } catch (error) { seoLogger.error('JSON-LD generation failed', error';
         
         // 最小限のスキーマを返す
-        return JSON.stringify({'', '@context': 'https://schema.org',)';
+        return JSON.stringify({'', '@context': 'https://schema.org','';
             '@type': 'WebSite');
-            name: SEOConfig.siteName,);
+            name: SEOConfig.siteName,';
             url: SEOConfig.baseUrl ,}
 }
 
@@ -152,17 +152,17 @@ export function optimizeImageUrl(imagePath: string, options: ImageOptimizationOp
     const { width, height, format = 'webp', quality = 85 } = options;
     ';
     // 絶対URLの場合はそのまま返す
-    if (imagePath.startsWith('http://) || imagePath.startsWith('https://)) { return imagePath; }
+    if (imagePath.startsWith('http://' || imagePath.startsWith('https://)' { return imagePath; }
     ';
     // 相対パスを絶対URLに変換
     const baseUrl = SEOConfig.baseUrl || (typeof, window !== 'undefined' ? window.location.origin: '''),
-    const fullUrl = `${baseUrl}${imagePath.startsWith('/''}) ? '' : '/'}${imagePath}`;
+    const fullUrl = `${baseUrl}${imagePath.startsWith('/''}' ? '' : '/'}${imagePath}`;
     
     // 画像最適化サービスのURLパラメータ追加（将来的な実装用）
     const params = new URLSearchParams();''
     if(width) params.append('w', String(width);''
     if(height) params.append('h', String(height));''
-    if (format !== 'webp'') params.append('f', format);''
+    if (format !== 'webp'') params.append('f', format';''
     if(quality !== 85) params.append('q', String(quality);
 
     const queryString = params.toString()';
@@ -248,8 +248,8 @@ export function debounce<T extends (...args: any[]) => any>(;
  */
 export function measurePerformance(operation: string) { return function(
         target: any);
-        propertyKey: string);
-       , descriptor: PropertyDescriptor;
+        propertyKey: string),
+    descriptor: PropertyDescriptor;
     ): PropertyDescriptor {
         const originalMethod = descriptor.value,
         
@@ -307,7 +307,6 @@ export function validateSchema<T = any>(data: any, schema: Schema): ValidationRe
     
     return { isValid: errors.length === 0,
         errors, };
-        data: validated as T }
-
+        data: validated as T 
     };''
 }

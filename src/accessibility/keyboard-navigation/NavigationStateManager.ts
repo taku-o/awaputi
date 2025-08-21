@@ -13,91 +13,91 @@ import { getErrorHandler  } from '../../core/ErrorHandler.js';
 interface StateManagerConfig { enabled: boolean,
     trackFocusHistory: boolean;
     validateTabOrder: boolean;
-    monitorContainment: boolean;
-   , maxHistoryLength: number ,}
+    monitorContainment: boolean,
+    maxHistoryLength: number ,}
 
 interface FocusTracking { enabled: boolean;
     history: FocusEvent[];
     currentElement: Element | null;
     lastFocusTime: number;
-    focusStack: Element[];
-   , trapAttempts: number }
+    focusStack: Element[],
+    trapAttempts: number }
 
 interface FocusEvent { element: Element;
     type: string;
     timestamp: number;
     tagName: string;
     id: string | null;
-    className: string | null;
-   , role: string | null }
+    className: string | null,
+    role: string | null }
 
 interface TabOrderData { elements: TabElement[];
-    issues: TabOrderIssue[];
-   , lastValidation: number | null }
+    issues: TabOrderIssue[],
+    lastValidation: number | null }
 
 interface TabElement { element: Element;
     position: number;
     tabIndex: string | null;
     computedTabIndex: number;
-    isVisible: boolean;
-   , rect: DOMRect
+    isVisible: boolean,
+    rect: DOMRect
     }
 
 interface TabOrderIssue { element?: Element;
     type: string,
-    severity: 'error' | 'warning';
-   , message: string;
+    severity: 'error' | 'warning',
+    message: string;
     suggestion?: string;
     details?: any; ,}
 
 interface ContainmentState { activeContainers: Set<Element>,
-    containerStack: Element[];
-   , escapeAttempts: number ,}
+    containerStack: Element[],
+    escapeAttempts: number ,}
 
 interface NavigationStats { totalFocusChanges: number;
     tabNavigations: number;
     focusRestorations: number;
-    containmentViolations: number;
-   , sessionStart: number }
+    containmentViolations: number,
+    sessionStart: number }
 
-interface TabOrderValidationResult { passed: boolean;
-   , issues: TabOrderIssue[];
+interface TabOrderValidationResult { passed: boolean,
+    issues: TabOrderIssue[];
     tabOrder?: TabElement[];
     summary?: {
         totalElement;s: number;
         visibleElements: number;
-        elementsWithTabIndex: number;
-       , positiveTabIndex: number }
+        elementsWithTabIndex: number,
+    positiveTabIndex: number }
 
 interface ContainmentResult { element: Element,
     passed: boolean;
-    details: any;
-   , focusableElements: Element[]
+    details: any,
+    focusableElements: Element[]
     ,}
 
 interface ContainmentTestResults { passed: boolean;
     issues: TabOrderIssue[];
-    warnings: TabOrderIssue[];
-   , containers: ContainmentResult[]
+    warnings: TabOrderIssue[],
+    containers: ContainmentResult[]
     }
 
 interface RestorationTestResult { element: Element;
-    passed: boolean;
-   , details: any }
+    passed: boolean,
+    details: any }
 
 interface RestorationTestResults { passed: boolean;
-    issues: TabOrderIssue[];
-   , restorationTests: RestorationTestResult[]
+    issues: TabOrderIssue[],
+    restorationTests: RestorationTestResult[]
     }
 
 interface FocusInfo { element: Element | null;
-    lastFocusTime: number;
-   , activeElement: Element | null }
+    lastFocusTime: number,
+    activeElement: Element | null }
 
 interface TabOrderInfo { elements: TabElement[];
     issues: TabOrderIssue[];
-    lastValidation: number | null;
-   , isValid: boolean }
+    lastValidation: number | null,
+    isValid: boolean }
 
 interface NavigationStatsInfo { totalFocusChanges: number;
     tabNavigations: number;
@@ -105,8 +105,8 @@ interface NavigationStatsInfo { totalFocusChanges: number;
     containmentViolations: number;
     sessionStart: number;
     focusHistoryLength: number;
-    currentFocus: string;
-   , activeContainers: number }
+    currentFocus: string,
+    activeContainers: number }
 
 interface SimulationResult { success: boolean;
     activeElement?: Element | null }
@@ -123,8 +123,8 @@ export class NavigationStateManager {
             enabled: true;
             trackFocusHistory: true;
             validateTabOrder: true;
-            monitorContainment: true;
-           , maxHistoryLength: 100;
+            monitorContainment: true,
+    maxHistoryLength: 100;
     }
             ...config
         };
@@ -134,21 +134,21 @@ export class NavigationStateManager {
             history: [];
             currentElement: null;
             lastFocusTime: 0;
-            focusStack: [];
-           , trapAttempts: 0 ,};
+            focusStack: [],
+    trapAttempts: 0 ,};
         // タブ順序管理
         this.tabOrderData = { elements: [],
-            issues: [];
-           , lastValidation: null ,};
+            issues: [],
+    lastValidation: null ,};
         // フォーカス包含状態
         this.containmentState = { activeContainers: new Set(),
-            containerStack: [];
-           , escapeAttempts: 0 ,};
+            containerStack: [],
+    escapeAttempts: 0 ,};
         // ナビゲーション統計
         this.stats = { totalFocusChanges: 0,
             tabNavigations: 0;
-            focusRestorations: 0;
-           , containmentViolations: 0,
+            focusRestorations: 0,
+    containmentViolations: 0,
             sessionStart: Date.now()';
         console.log('NavigationStateManager, initialized'), }'
     
@@ -165,7 +165,7 @@ export class NavigationStateManager {
             document.addEventListener('focus', (event) => { ''
                 if(event.target) {' }'
 
-                    this.handleFocusChange(event.target as Element, 'focus); }'
+                    this.handleFocusChange(event.target as Element, 'focus'; }'
 
                 }''
             }, true');
@@ -173,7 +173,7 @@ export class NavigationStateManager {
             document.addEventListener('blur', (event) => {  ''
                 if(event.target) {' }'
 
-                    this.handleFocusChange(event.target as Element, 'blur); }'
+                    this.handleFocusChange(event.target as Element, 'blur'; }'
 
                 }''
             }, true');
@@ -181,7 +181,7 @@ export class NavigationStateManager {
             console.log('Focus, tracking started');
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'FOCUS_TRACKING_START_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'FOCUS_TRACKING_START_ERROR', {''
                 component: 'NavigationStateManager' ,});
         }
     }
@@ -206,8 +206,8 @@ export class NavigationStateManager {
                 type,
                 timestamp: now;
                 tagName: element.tagName;
-                id: element.id || null;
-               , className: element.className || null,
+                id: element.id || null,
+    className: element.className || null,
                 role: element.getAttribute('role) || null ,};
             this.focusTracking.history.push(focusEvent);
             
@@ -215,11 +215,11 @@ export class NavigationStateManager {
             if(this.focusTracking.history.length > this.config.maxHistoryLength) {
 
                 this.focusTracking.history.shift()';
-            if(type === 'focus) {'
+            if(type === 'focus' {'
             }
                 this.checkFocusContainment(element); }
 
-            } catch (error) { getErrorHandler(').handleError(error, 'FOCUS_CHANGE_HANDLING_ERROR', {)'
+            } catch (error) { getErrorHandler().handleError(error, 'FOCUS_CHANGE_HANDLING_ERROR', {''
                 component: 'NavigationStateManager');
                 type,);
                 element: element.tagName ,});
@@ -243,11 +243,11 @@ export class NavigationStateManager {
                 const tabData: TabElement = {
                     element,
                     position: index;
-                    tabIndex: tabIndex;
-                   , computedTabIndex: computedTabIndex;
+                    tabIndex: tabIndex,
+    computedTabIndex: computedTabIndex;
                     isVisible, }
-                    rect: element.getBoundingClientRect(); }
-                };
+                    rect: element.getBoundingClientRect(); 
+    };
                 
                 tabOrder.push(tabData);
                 ';
@@ -255,7 +255,7 @@ export class NavigationStateManager {
                 if (tabIndex && parseInt(tabIndex) > 0') { tabOrderIssues.push({'
                         element,
                         type: 'positive-tabindex',
-                        severity: 'warning', })'
+                        severity: 'warning', }''
                         message: `Positive tabindex, found: ${tabIndex}`,')'
                         suggestion: 'Use tabindex = "0" or rely on natural tab order') }
                 ';
@@ -263,11 +263,11 @@ export class NavigationStateManager {
                 if(!isVisible && computedTabIndex >= 0) { tabOrderIssues.push({'
                         element,
                         type: 'hidden-focusable',
-                        severity: 'error',)';
+                        severity: 'error','';
                         message: 'Hidden element is focusable',' }
 
-                        suggestion: 'Add tabindex="-1" to hidden focusable elements'); }
-});
+                        suggestion: 'Add tabindex="-1" to hidden focusable elements'); 
+    });
             
             // 論理的タブ順序の検証
             const logicalOrderIssues = this.validateLogicalTabOrder(tabOrder);
@@ -289,7 +289,7 @@ export class NavigationStateManager {
             ';
 
         } catch (error) {
-            getErrorHandler(').handleError(error, 'TAB_ORDER_VALIDATION_ERROR', {)'
+            getErrorHandler().handleError(error, 'TAB_ORDER_VALIDATION_ERROR', {''
                 component: 'NavigationStateManager'),' }
 
             }');
@@ -325,11 +325,11 @@ export class NavigationStateManager {
                         type: 'tab-order-mismatch',
                         severity: 'warning',
                         message: 'Tab order does not follow DOM order',
-                        suggestion: 'Consider reordering elements in DOM or using tabindex carefully';
-                       , details: {)
+                        suggestion: 'Consider reordering elements in DOM or using tabindex carefully',
+    details: {)
                             currentElement: current.element.tagName ,}
-                            nextElement: next.element.tagName) }
-                        });
+                            nextElement: next.element.tagName) 
+    });
                 }
                 
                 // 視覚的な位置関係のチェック（左から右、上から下）
@@ -371,8 +371,8 @@ export class NavigationStateManager {
 
                         message: 'Tab order may not follow visual layout(right, to left)',' };
 
-                        suggestion: 'Review tab order to match visual layout' }
-                    }
+                        suggestion: 'Review tab order to match visual layout' 
+    }
 
             } else {  // 新しい行で上から下ではない場合
                 if(currentRect.top > nextRect.top + verticalThreshold) {'
@@ -384,8 +384,8 @@ export class NavigationStateManager {
 
                         message: 'Tab order may not follow visual layout(bottom, to top)',' };
 
-                        suggestion: 'Review tab order to match visual layout' }
-                    }
+                        suggestion: 'Review tab order to match visual layout' 
+    }
             } catch (error) { // 視覚的チェックのエラーは無視（測定できない場合がある） }
         
         return null;
@@ -407,10 +407,10 @@ export class NavigationStateManager {
                             element: modal,
                             type: 'focus-containment-failure',
                             severity: 'error',
-                            message: 'Modal does not properly contain focus',)';
+                            message: 'Modal does not properly contain focus','';
                             suggestion: 'Implement focus trapping for modal dialogs',' }
 
-                            details: containmentResult.details)'); }'
+                            details: containmentResult.details''); }'
 }
             }
             ';
@@ -425,11 +425,11 @@ export class NavigationStateManager {
                         results.issues.push({'
                             element: container,
                             type: 'focus-containment-failure',
-                            severity: 'error',)';
+                            severity: 'error','';
                             message: 'Container does not properly contain focus',' }
 
-                            suggestion: 'Implement proper focus management for container'); }
-}''
+                            suggestion: 'Implement proper focus management for container'); 
+    }''
             } catch (error) { results.passed = false;
 
             results.issues.push({)'
@@ -446,15 +446,15 @@ export class NavigationStateManager {
      * モーダルフォーカス包含テスト
      */
     private async testModalFocusContainment(modal: Element): Promise<ContainmentResult> { const result: ContainmentResult = {
-            element: modal;
-           , passed: true, }
+            element: modal,
+    passed: true, }
             details: {};
             focusableElements: [];
         },
 
         try {'
             const focusableInModal = modal.querySelectorAll()';
-                'a[href], button, input, textarea, select, [tabindex]:not([tabindex="-1"])';
+                'a[href], button, input, textarea, select, [tabindex]:not([tabindex="-1"]"';
             );
             
             result.focusableElements = Array.from(focusableInModal);
@@ -490,8 +490,8 @@ export class NavigationStateManager {
             result.details = { focusMovedToLast,
                 focusMovedToFirst,
                 firstElement: firstFocusable.tagName;
-                lastElement: lastFocusable.tagName;
-               , totalFocusableElements: focusableInModal.length ,} catch (error) { result.passed = false;
+                lastElement: lastFocusable.tagName,
+    totalFocusableElements: focusableInModal.length ,} catch (error) { result.passed = false;
             result.details.error = (error, as Error).message; }
         
         return result;
@@ -517,11 +517,11 @@ export class NavigationStateManager {
                         results.issues.push({'
                             element: trigger,
                             type: 'focus-restoration-failure',
-                            severity: 'error',)';
+                            severity: 'error','';
                             message: 'Focus not properly restored after interaction',' }
 
-                            suggestion: 'Store and restore focus when closing modal/popup'); }
-}''
+                            suggestion: 'Store and restore focus when closing modal/popup'); 
+    }''
             } catch (error) { results.passed = false;
 
             results.issues.push({)'
@@ -538,8 +538,8 @@ export class NavigationStateManager {
      * 要素のフォーカス復元テスト
      */
     private async testElementFocusRestoration(trigger: Element, initialFocus: Element | null): Promise<RestorationTestResult> { const result: RestorationTestResult = {
-            element: trigger;
-           , passed: true, }
+            element: trigger,
+    passed: true, }
             details: {};
         try { // トリガー要素にフォーカス
             (trigger, as HTMLElement).focus();
@@ -561,8 +561,8 @@ export class NavigationStateManager {
             
             result.passed = focusRestored;
             result.details = {
-                focusBeforeInteraction: focusBeforeInteraction? .tagName, : undefined
-                focusAfterInteraction: focusAfterInteraction? .tagName;
+                focusBeforeInteraction: focusBeforeInteraction?.tagName, : undefined
+                focusAfterInteraction: focusAfterInteraction?.tagName;
                 focusRestored ,}
             } catch (error) { result.passed = false;
             result.details.error = (error, as Error).message; }
@@ -584,10 +584,10 @@ export class NavigationStateManager {
 
                     console.warn('Focus escaped from containment container:', {)
                         container: container.tagName, }
-                        element: element.tagName); }
-} catch (error) { getErrorHandler(').handleError(error, 'FOCUS_CONTAINMENT_CHECK_ERROR', {)'
+                        element: element.tagName); 
+    } catch (error) { getErrorHandler().handleError(error, 'FOCUS_CONTAINMENT_CHECK_ERROR', {''
                 component: 'NavigationStateManager',);
-                element: element.tagName ,});
+                element: element.tagName ,}';
         }
     }
     
@@ -597,12 +597,12 @@ export class NavigationStateManager {
      * フォーカス可能要素の取得
      */''
     private getFocusableElements(''';
-            'a[href]',)';
+            'a[href]','';
             'button:not([disabled])',
             'input:not([disabled])',
             'textarea:not([disabled])',
             'select:not([disabled])',
-            '[tabindex]:not([tabindex="-1"])',
+            '[tabindex]:not([tabindex="-1"]"',
             '[contenteditable="true"]',
             'audio[controls]',
             'video[controls]',
@@ -621,7 +621,7 @@ export class NavigationStateManager {
      * 要素の可視性判定'
      */''
     private isElementVisible(element: Element): boolean { const htmlElement = element as HTMLElement;''
-        if(!htmlElement.offsetParent && element.tagName !== 'BODY) {'
+        if(!htmlElement.offsetParent && element.tagName !== 'BODY' {'
             
         }
             return false;
@@ -639,8 +639,8 @@ export class NavigationStateManager {
         const tabEvent = new KeyboardEvent('keydown', {''
             key: 'Tab';
             keyCode: 9);
-            bubbles: true);
-           , cancelable: true;
+            bubbles: true),
+    cancelable: true;
         ),
         
         element.dispatchEvent(tabEvent);
@@ -656,8 +656,8 @@ export class NavigationStateManager {
             key: 'Tab';
             keyCode: 9;
             shiftKey: true);
-            bubbles: true);
-           , cancelable: true;
+            bubbles: true),
+    cancelable: true;
         ),
         
         element.dispatchEvent(shiftTabEvent);
@@ -672,8 +672,8 @@ export class NavigationStateManager {
         const enterEvent = new KeyboardEvent('keydown', {''
             key: 'Enter';
             keyCode: 13);
-            bubbles: true);
-           , cancelable: true;
+            bubbles: true),
+    cancelable: true;
         ),
         
         element.dispatchEvent(enterEvent);
@@ -684,12 +684,12 @@ export class NavigationStateManager {
     /**
      * Escapeキーシミュレーション'
      */''
-    private async simulateEscape(''';
+    private async simulateEscape('''
         const escapeEvent = new KeyboardEvent('keydown', { ''
             key: 'Escape';
             keyCode: 27);
-            bubbles: true);
-           , cancelable: true;
+            bubbles: true),
+    cancelable: true;
         ),
         
         document.dispatchEvent(escapeEvent);
@@ -709,8 +709,8 @@ export class NavigationStateManager {
      */
     getCurrentFocus(): FocusInfo { return { element: this.focusTracking.currentElement,
             lastFocusTime: this.focusTracking.lastFocusTime, };
-            activeElement: document.activeElement }
-        }
+            activeElement: document.activeElement 
+    }
     
     /**
      * タブ順序データの取得
@@ -724,10 +724,10 @@ export class NavigationStateManager {
     /**
      * ナビゲーション統計の取得
      */''
-    getNavigationStats(''';
-            currentFocus: this.focusTracking.currentElement? .tagName || 'none', : undefined
+    getNavigationStats('''
+            currentFocus: this.focusTracking.currentElement?.tagName || 'none', : undefined
             activeContainers: this.containmentState.activeContainers.size);
-        })
+        }'
     
     /**
      * フォーカス包含コンテナの追加
@@ -748,7 +748,7 @@ export class NavigationStateManager {
             this.containmentState.containerStack.splice(index, 1); }
 
         }''
-        console.log('Focus container removed:', container.tagName);
+        console.log('Focus container removed:', container.tagName';
     }
     
     /**
@@ -757,7 +757,7 @@ export class NavigationStateManager {
     updateConfig(newConfig: Partial<StateManagerConfig>): void {
         this.config = { ...this.config, ...newConfig;
 
-        if(newConfig.hasOwnProperty('enabled) {'
+        if(newConfig.hasOwnProperty('enabled' {'
             if (newConfig.enabled && !this.focusTracking.enabled) {
         }
 
@@ -786,10 +786,10 @@ export class NavigationStateManager {
         
         this.stats = {
             totalFocusChanges: 0;
-            tabNavigations: 0;
-           , focusRestorations: 0,
+            tabNavigations: 0,
+    focusRestorations: 0,
             containmentViolations: 0,
-            sessionStart: Date.now(')';
+            sessionStart: Date.now()';
         console.log('NavigationStateManager, state reset'), }'
     
     /**

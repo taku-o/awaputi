@@ -5,8 +5,8 @@
  * エラー復旧機能を提供します。
  */
 
-import { getErrorHandler  } from '../utils/ErrorHandler';''
-import { getLoggingSystem  } from './LoggingSystem';''
+import { getErrorHandler  } from '../utils/ErrorHandler';
+import { getLoggingSystem  } from './LoggingSystem';
 import { getValidationSystem  } from './ValidationSystem';
 ';
 
@@ -20,23 +20,23 @@ export enum ConfigErrorType {;
     DEPENDENCY_ERROR = 'DEPENDENCY_ERROR' }
 
 interface RecoveryStrategy { maxAttempts: number,
-    strategy: (erro;r: Error, context: any) => RecoveryResult ,}
+    strategy: (error: Error, context: any) => RecoveryResult ,}
 }
 
 interface RecoveryResult { success: boolean,
     value?: any;
     message: string ,}
 
-interface ErrorStats { total: number;
-   , byType: Map<string, number>;
+interface ErrorStats { total: number,
+    byType: Map<string, number>;
     recovered: number;
-    failed: number;
-   , lastReset: number ,}
+    failed: number,
+    lastReset: number ,}
 
 interface FallbackState { useDefaultValues: boolean;
     disableValidation: boolean;
-    disableCache: boolean;
-   , safeMode: boolean }
+    disableCache: boolean,
+    safeMode: boolean }
 
 export class ConfigurationErrorHandler {
     private errorTypes = ConfigErrorType;
@@ -52,16 +52,16 @@ export class ConfigurationErrorHandler {
         this.errorStats = {
             total: 0;
             byType: new Map();
-            recovered: 0;
-           , failed: 0;
+            recovered: 0,
+    failed: 0;
     ,}
-            lastReset: Date.now(); }
-        };
+            lastReset: Date.now(); 
+    };
         this.recoveryAttempts = new Map();
         this.fallbackState = { useDefaultValues: false,
             disableValidation: false;
-            disableCache: false;
-           , safeMode: false ,};
+            disableCache: false,
+    safeMode: false ,};
         this.logger = getLoggingSystem();
         this._initialize();
     }
@@ -73,8 +73,8 @@ export class ConfigurationErrorHandler {
 
     private _setupRecoveryStrategies(): void { // 設定アクセスエラーの復旧
         this.recoveryStrategies.set(ConfigErrorType.CONFIGURATION_ACCESS, {)
-            maxAttempts: 3);
-           , strategy: (error: Error, context: any) => { ,}
+            maxAttempts: 3),
+    strategy: (error: Error, context: any) => { ,}
                 const { category, key, defaultValue } = context;
                 
                 if(defaultValue !== undefined && defaultValue !== null) {
@@ -91,31 +91,31 @@ export class ConfigurationErrorHandler {
 
                         value: defaultValue,' };
 
-                        message: 'デフォルト値を使用' }
-                    }
+                        message: 'デフォルト値を使用' 
+    }
                 
                 const fallbackValue = this._generateFallbackValue(category, key);
                 
                 this.logger.warn(`設定アクセスエラー、フォールバック値を生成: ${category}.${key}`, { error: error.message)'
-                    fallbackValue)'';
+                    fallbackValue''';
                 '), 'ConfigurationErrorHandler'');
                 
                 return { success: true,
 
                     value: fallbackValue,' };
 
-                    message: 'フォールバック値を生成' }
-                }
+                    message: 'フォールバック値を生成' 
+    }
         });
     }
 
     private _setupErrorMonitoring(): void { // エラー監視の設定 }
 
     private _generateFallbackValue(category: string, key: string): any { // 基本的なフォールバック値の生成
-        if (key.includes('time'') || key.includes('interval)) {
+        if (key.includes('time'') || key.includes('interval)' {
             return 1000; // 1秒 }''
-        if (key.includes('count'') || key.includes('max)) { return 10;''
-        if(key.includes('enabled) { return false; }'
+        if (key.includes('count'') || key.includes('max)' { return 10;''
+        if(key.includes('enabled' { return false; }'
         return null;
     }
 
@@ -139,16 +139,16 @@ export class ConfigurationErrorHandler {
 
                 return { success: false,' };
 
-                    message: '復旧に失敗' }
-                }
+                    message: '復旧に失敗' 
+    }
         }
 
         this.errorStats.failed++;
 
         return { success: false,' };
 
-            message: '復旧戦略なし' }
-        }
+            message: '復旧戦略なし' 
+    }
 
     getErrorStats(): ErrorStats {
         return { ...this.errorStats;
@@ -158,11 +158,11 @@ export class ConfigurationErrorHandler {
             total: 0;
             byType: new Map();
             recovered: 0;
-            failed: 0;
-           , lastReset: Date.now( }
-}
+            failed: 0,
+    lastReset: Date.now( 
+    }
 
 let instance: ConfigurationErrorHandler | null = null,
 
 export function getConfigurationErrorHandler(): ConfigurationErrorHandler { if (!instance) {''
-        instance = new ConfigurationErrorHandler(' })'
+        instance = new ConfigurationErrorHandler(' }''

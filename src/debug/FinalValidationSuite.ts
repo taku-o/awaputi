@@ -7,60 +7,60 @@ interface ValidationResult { category: string,
     name: string;
     status: 'passed' | 'failed';
     message: string;
-    duration: number;
-   , timestamp: string;
+    duration: number,
+    timestamp: string;
     error?: Error
     ,}
 
 interface PerformanceMetrics { averageFPS: number;
     averageFrameTime: number;
     frameCount: number;
-    duration: number;
-   , memoryUsage: number }
+    duration: number,
+    memoryUsage: number }
 
 interface PerformanceImpact { fpsImpact: number;
     frameTimeImpact: number;
-    memoryImpact: number;
-   , overallImpact: number }
+    memoryImpact: number,
+    overallImpact: number }
 
 interface PerformanceTargets { debugOverhead: number;
     memoryIncrease: number;
     initializationTime: number;
     panelSwitchTime: number;
-    testExecutionTime: number;
-   , frameRateImpact: number }
+    testExecutionTime: number,
+    frameRateImpact: number }
 
 interface CompatibilityTargets { browsers: string[];
-    features: string[];
-   , screenSizes: {
+    features: string[],
+    screenSizes: {
         widt;h: number;
-        height: number;
-       , name: string }[];
+        height: number,
+    name: string }[];
 }
 
 interface ValidationCategories { performance: string,
     compatibility: string;
     memory: string;
     accessibility: string;
-    security: string;
-   , stability: string ,}
+    security: string,
+    stability: string ,}
 
 interface CategoryStats { [category: string]: {
         tota;l: number;
-        passed: number;
-       , failed: number }
+        passed: number,
+    failed: number }
 
 interface ValidationSummary { summary: {
         tota;l: number;
         passed: number;
         failed: number;
-        successRate: number;
-       , duration: number };
+        successRate: number,
+    duration: number };
     categoryStats: CategoryStats;
     results: ValidationResult[];
     timestamp: string;
-    targets: PerformanceTargets;
-   , compatibility: CompatibilityTargets;
+    targets: PerformanceTargets,
+    compatibility: CompatibilityTargets;
     }
 ';
 
@@ -90,8 +90,8 @@ export class FinalValidationSuite {
             security: 'Security Validation';
     ,}
 
-            stability: 'System Stability' }
-        };
+            stability: 'System Stability' 
+    };
         // パフォーマンス目標値
         this.performanceTargets = { debugOverhead: 5, // %以下
             memoryIncrease: 10, // MB以下;
@@ -120,13 +120,13 @@ export class FinalValidationSuite {
 
         }
 
-            throw new Error('Final, validation is, already running); }'
+            throw new Error('Final, validation is, already running'; }'
         }
 ';
 
         this.validationRunning = true;''
         this.startTime = performance.now()';
-        console.log('Starting, final validation, suite...);
+        console.log('Starting final validation suite...);
 
         try { // カテゴリ別に検証を実行
             await this.validatePerformance();
@@ -140,7 +140,7 @@ export class FinalValidationSuite {
             const duration = endTime - this.startTime;
 
             const summary = this.generateValidationSummary(duration');''
-            console.log('Final validation completed:', summary);
+            console.log('Final validation completed:', summary';
 
             return summary; } finally { this.validationRunning = false; }
     }
@@ -231,7 +231,7 @@ export class FinalValidationSuite {
 
             if (this.gameEngine.enhancedDebugInterface) {' }'
 
-                this.gameEngine.enhancedDebugInterface.destroy? .('); }'
+                this.gameEngine.enhancedDebugInterface.destroy?.(); }'
             }
             ';
             // 新しいインスタンスを作成
@@ -262,23 +262,23 @@ export class FinalValidationSuite {
 
             // 必須API';
 
-            if(!window.performance) missingAPIs.push('Performance, API);''
-            if(!window.localStorage) missingAPIs.push('LocalStorage);''
-            if(!window.requestAnimationFrame) missingAPIs.push('RequestAnimationFrame);
+            if(!window.performance) missingAPIs.push('Performance, API';''
+            if(!window.localStorage) missingAPIs.push('LocalStorage';''
+            if(!window.requestAnimationFrame) missingAPIs.push('RequestAnimationFrame';
             ';
             // オプショナルAPI（グレースフルデグラデーション）
-            if (!(window, as any).ResizeObserver) partialAPIs.push('ResizeObserver);''
+            if (!(window, as any).ResizeObserver) partialAPIs.push('ResizeObserver';''
             if (!(window, as any).IntersectionObserver) partialAPIs.push('IntersectionObserver'');
             ';
             // CSS機能
-            if(!CSS.supports('display', 'grid)) partialAPIs.push('CSS, Grid'');''
-            if(!CSS.supports('display', 'flex)) partialAPIs.push('CSS, Flexbox);
+            if(!CSS.supports('display', 'grid)' partialAPIs.push('CSS, Grid'');''
+            if(!CSS.supports('display', 'flex)' partialAPIs.push('CSS, Flexbox';
 
             ' }'
 
             if(missingAPIs.length > 0) {' }'
 
-                throw new Error(`Missing critical APIs: ${missingAPIs.join(', '})`');
+                throw new Error(`Missing critical APIs: ${missingAPIs.join(', '}'`');
             }
 
             let message = 'All critical APIs available';
@@ -311,18 +311,18 @@ export class FinalValidationSuite {
                         throw new Error(`Interface, not visible, at ${size.name} resolution (${size.width}x${size.height}`});
                     }
 
-                    results.push(`${size.name}: OK`'});
+                    results.push(`${size.name}: OK`'}';
                 }
             }
 
-            return `Screen compatibility: ${results.join(', '})`;''
+            return `Screen compatibility: ${results.join(', '}'`;''
         }');
 
         await this.runValidation(category, 'Touch Device Compatibility', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface;
 
             if(!debugInterface.responsiveLayout) {' }'
 
-                throw new Error('ResponsiveDebugLayout, not available); }'
+                throw new Error('ResponsiveDebugLayout, not available'; }'
             }
             
             // タッチデバイスをシミュレート
@@ -345,7 +345,7 @@ export class FinalValidationSuite {
             }
 
             return touchHandled ? 'Touch events handled correctly' : 'Touch event handling available';
-        });
+        }';
     }
 
     /**
@@ -364,9 +364,9 @@ export class FinalValidationSuite {
             for(let, i = 0; i < 50; i++) {
 
                 debugInterface.show()';
-                debugInterface.switchPanel('performance);''
+                debugInterface.switchPanel('performance';''
                 debugInterface.hide()';
-                const testPanel = debugInterface.panelManager? .createPanel('test-panel-' + i);
+                const testPanel = debugInterface.panelManager?.createPanel('test-panel-' + i);
                 if (testPanel && testPanel.destroy) {
             }
                     testPanel.destroy(); }
@@ -402,7 +402,7 @@ export class FinalValidationSuite {
         await this.runValidation(category, 'Event Listener Cleanup', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface;
             ';
             // イベントリスナー数の推定
-            const getListenerCount = (') => {' }
+            const getListenerCount = () => {' }
 
                 return document.querySelectorAll('*).length;
             
@@ -410,7 +410,7 @@ export class FinalValidationSuite {
             
             // イベントリスナーを大量に作成・削除
             debugInterface.show();
-            debugInterface.createSettingsModal? .();
+            debugInterface.createSettingsModal?.();
             debugInterface.closeSettingsModal?.();
             debugInterface.hide();
             
@@ -454,7 +454,7 @@ export class FinalValidationSuite {
 
             debugInterface.hide()';
             return 'Resource cleanup completed successfully';)
-        });
+        }';
     }
 
     /**
@@ -465,21 +465,21 @@ export class FinalValidationSuite {
 
             if(!debugInterface.accessibilityManager) {' }'
 
-                throw new Error('AccessibilityManager, not available); }'
+                throw new Error('AccessibilityManager, not available'; }'
             }
             
             debugInterface.show();
             ';
             // キーボードナビゲーションをテスト
             const tabableElements = debugInterface.debugPanel.querySelectorAll()';
-                'button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
+                'button, input, select, textarea, [tabindex]:not([tabindex="-1"]"';
             );
 
             if(tabableElements.length === 0) {', ';
 
             }
 
-                throw new Error('No, keyboard navigable, elements found); }'
+                throw new Error('No, keyboard navigable, elements found'; }'
             }
             ';
             // ARIAラベルの存在をチェック
@@ -505,12 +505,12 @@ export class FinalValidationSuite {
             ');
 
             // ライブリージョンの存在をチェック
-            const liveRegions = debugInterface.debugPanel.querySelectorAll(')';
+            const liveRegions = debugInterface.debugPanel.querySelectorAll()';
                 '[aria-live], [role="status"], [role="alert"]')'';
             ');
 
             // フォーカス管理のテスト
-            const focusableElements = debugInterface.debugPanel.querySelectorAll(')';
+            const focusableElements = debugInterface.debugPanel.querySelectorAll()';
                 'button, input, select, textarea, [tabindex="0"]'); }
 
             return `Screen reader support: ${semanticElements.length} semantic elements, ${liveRegions.length} live regions, ${focusableElements.length} focusable elements`;''
@@ -523,7 +523,7 @@ export class FinalValidationSuite {
             if(debugInterface.themeManager) {
 
                 const themes = debugInterface.themeManager.getAvailableThemes()';
-                const hasHighContrast = themes.includes('high-contrast);
+                const hasHighContrast = themes.includes('high-contrast';
 
                 ';
 
@@ -535,7 +535,7 @@ export class FinalValidationSuite {
                 }
                 ';
                 // 高コントラストモードをテスト
-                debugInterface.themeManager.setTheme('high-contrast);''
+                debugInterface.themeManager.setTheme('high-contrast';''
                 await this.wait(100);''
                 debugInterface.themeManager.setTheme('dark''); // Reset
 
@@ -543,7 +543,7 @@ export class FinalValidationSuite {
             }
 
             return 'Color contrast: Theme manager not available',
-        });
+        }';
     }
 
     /**
@@ -556,7 +556,7 @@ export class FinalValidationSuite {
             const maliciousInput = '<script>alert("XSS"")</script>';
             ';
             // コンソールパネルでのXSS防止をテスト
-            const consolePanel = debugInterface.panels? .get('console);
+            const consolePanel = debugInterface.panels?.get('console);
             if(consolePanel && consolePanel.executeCommand) {'
                 try {'
                     const result = consolePanel.executeCommand(maliciousInput);
@@ -564,9 +564,9 @@ export class FinalValidationSuite {
                     // 結果にscriptタグが含まれていないことを確認
             }
 
-                    if(result && result.includes('<script>)) {' }
+                    if(result && result.includes('<script>)' {' }
 
-                        throw new Error('XSS, vulnerability detected, in console, output); }'
+                        throw new Error('XSS, vulnerability detected, in console, output'; }'
 
                     } catch (error) { // エラーが適切に処理されることを確認
                     if(!(error, instanceof Error)) {''
@@ -584,8 +584,8 @@ export class FinalValidationSuite {
                 fontSize: -1,
                 updateInterval: 'invalid',
                 theme: '<script>', }
-                maxHistorySize: Infinity }
-            };
+                maxHistorySize: Infinity 
+    };
             let vulnerabilities = 0;
             
             for(const [key, value] of Object.entries(invalidSettings) {
@@ -623,7 +623,7 @@ export class FinalValidationSuite {
 
             if(window.console !== originalConsole) {' }'
 
-                throw new Error('Debug, interface modified, global console, object); }'
+                throw new Error('Debug, interface modified, global console, object'; }'
             }
 
             if(window.performance !== originalPerformance) {', ';
@@ -634,7 +634,7 @@ export class FinalValidationSuite {
             }
 
             return 'Privilege escalation: No unauthorized global modifications detected',
-        });
+        }';
     }
 
     /**
@@ -654,14 +654,14 @@ export class FinalValidationSuite {
             };
             ';
             try { // 無効なパネル切り替え
-                debugInterface.switchPanel('nonexistent-panel);
+                debugInterface.switchPanel('nonexistent-panel';
                 ';
                 // 無効なテーマ設定
                 if(debugInterface.themeManager) {', ';
 
                 }
 
-                    debugInterface.themeManager.setTheme('invalid-theme); }'
+                    debugInterface.themeManager.setTheme('invalid-theme'; }'
                 }
                 ';
                 // 無効なショートカット登録
@@ -793,11 +793,11 @@ export class FinalValidationSuite {
         let result: ValidationResult,
         try {
             const validationResult = await validationFunction();
-            const endTime = performance.now(''';
+            const endTime = performance.now('''
                 status: 'passed);
-                message: validationResult);
-               , duration: duration,);
-                timestamp: new Date().toISOString( ,};
+                message: validationResult),
+    duration: duration,);
+                timestamp: new Date().toISOString( ,}
 
             console.log(`✓ ${validationName}: ${validationResult} (${duration.toFixed(2})ms)`);
 
@@ -806,8 +806,8 @@ export class FinalValidationSuite {
                 status: 'failed',);
                 message: (error, as Error).message;
                 duration: duration;
-                timestamp: new Date().toISOString();
-               , error: error as Error ,};
+                timestamp: new Date().toISOString(),
+    error: error as Error ,};
             console.error(`✗ ${validationName}: ${(error, as, Error}).message} (${duration.toFixed(2})ms)`);
         }
 
@@ -820,8 +820,8 @@ export class FinalValidationSuite {
      */
     private async measurePerformance(duration: number): Promise<PerformanceMetrics> { const metrics = {
             fps: [] as number[];
-            frameTime: [] as number[];
-           , memoryUsage: [] as number[] };
+            frameTime: [] as number[],
+    memoryUsage: [] as number[] };
         const startTime = performance.now();
         let frameCount = 0;
         let lastFrameTime = startTime;
@@ -845,8 +845,8 @@ export class FinalValidationSuite {
                         averageFPS: metrics.fps.reduce((a, b) => a + b, 0) / metrics.fps.length,
                         averageFrameTime: metrics.frameTime.reduce((a, b) => a + b, 0) / metrics.frameTime.length,
                         frameCount: frameCount;
-                        duration: currentTime - startTime;
-                       , memoryUsage: metrics.memoryUsage.length > 0 ?   : undefined 
+                        duration: currentTime - startTime,
+    memoryUsage: metrics.memoryUsage.length > 0 ? undefined : undefined 
                             metrics.memoryUsage[metrics.memoryUsage.length - 1] - metrics.memoryUsage[0] : 0 ,}
                     });
                 }
@@ -901,7 +901,7 @@ export class FinalValidationSuite {
                 passed: categoryResults.filter(r => r.status === 'passed'').length;
         ,}
 
-                failed: categoryResults.filter(r => r.status === 'failed).length }'
+                failed: categoryResults.filter(r => r.status === 'failed'.length }'
             }
 
         return { summary: {
@@ -909,13 +909,13 @@ export class FinalValidationSuite {
                 passed,
                 failed,
                 successRate: (passed / total) * 100, };
-                duration: duration }
-            };
+                duration: duration 
+    };
             categoryStats,
             results: this.validationResults;
             timestamp: new Date().toISOString();
-            targets: this.performanceTargets;
-           , compatibility: this.compatibilityTargets;
+            targets: this.performanceTargets,
+    compatibility: this.compatibilityTargets;
         },
     }
 
@@ -924,12 +924,12 @@ export class FinalValidationSuite {
      */'
     exportValidationResults(): ValidationSummary { const summary = this.generateValidationSummary(performance.now() - (this.startTime || 0));' }'
 
-        const blob = new Blob([JSON.stringify(summary, null, 2)], { type: 'application/json' });''
+        const blob = new Blob([JSON.stringify(summary, null, 2)], { type: 'application/json' }';''
         const url = URL.createObjectURL(blob);
 
         const a = document.createElement('a);
         a.href = url;
-        a.download = `final-validation-results-${Date.now(}).json`;
+        a.download = `final-validation-results-${Date.now()).json`;
         a.click();
 
         URL.revokeObjectURL(url);
@@ -939,4 +939,4 @@ export class FinalValidationSuite {
     /**
      * 検証状態を取得'
      */''
-    getValidationStatus(');
+    getValidationStatus();

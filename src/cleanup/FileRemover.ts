@@ -1,4 +1,4 @@
-import fs from 'fs';''
+import fs from 'fs';
 import path from 'path';
 
 interface BackupRecord { originalPath: string,
@@ -7,18 +7,18 @@ interface BackupRecord { originalPath: string,
     fileSize: number;
     lastModified: Date | null;
     backupTimestamp: string;
-    backupCreated: boolean;
-   , error: string | null ,}
+    backupCreated: boolean,
+    error: string | null ,}
 
 interface RemovalResult { deleted: boolean;
+    error: string | null,
+    timestamp: string }
+
+interface VerificationResult { verified: boolean,
+    error: string | null }
+
+interface RollbackResult { rolledBack: boolean,
     error: string | null;
-   , timestamp: string }
-
-interface VerificationResult { verified: boolean;
-   , error: string | null }
-
-interface RollbackResult { rolledBack: boolean;
-   , error: string | null;
     restoredPath?: string }
 
 interface SafeRemovalResult { filePath: string;
@@ -28,19 +28,19 @@ interface SafeRemovalResult { filePath: string;
     error: string | null;
     timestamp: string;
     backupRecord: BackupRecord | null;
-    removalResult: RemovalResult | null;
-   , verificationResult: VerificationResult | null;
+    removalResult: RemovalResult | null,
+    verificationResult: VerificationResult | null;
     rollbackResult?: RollbackResult
     }
 
 export interface DeletionResults { results: SafeRemovalResult[];
     totalFiles: number;
     successCount: number;
-    failureCount: number;
-   , timestamp: string }
+    failureCount: number,
+    timestamp: string }
 
-interface BackupCleanupResult { cleanedCount: number;
-   , totalOld: number;
+interface BackupCleanupResult { cleanedCount: number,
+    totalOld: number;
     cutoffDate?: string;
     error?: string; }
 
@@ -65,7 +65,7 @@ export class FileRemover {
 ';
 
     async createBackupRecord(filePath: string): Promise<BackupRecord> { ''
-        const timestamp = new Date().toISOString(').replace(/[:.]/g, '-);
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-);
         const fileName = path.basename(filePath); }
         const backupFileName = `${timestamp}_${fileName}.backup`;
         const backupPath = path.join(this.backupDirectory, backupFileName);
@@ -81,8 +81,8 @@ export class FileRemover {
                 fileSize: stats.size;
                 lastModified: stats.mtime;
                 backupTimestamp: new Date().toISOString();
-                backupCreated: true;
-               , error: null ,};
+                backupCreated: true,
+    error: null ,};
             // Save backup metadata
             const metadataPath = path.join(this.backupDirectory, `${timestamp}_${ fileName}.meta.json`}
             await fs.promises.writeFile(metadataPath, JSON.stringify(backupRecord, null, 2)});
@@ -95,8 +95,8 @@ export class FileRemover {
                 backupPath: null;
                 fileName: path.basename(filePath);
                 fileSize: 0;
-                lastModified: null;
-               , backupTimestamp: new Date().toISOString(), };
+                lastModified: null,
+    backupTimestamp: new Date().toISOString(), };
                 backupCreated: false, }
                 error: `Failed to create, backup: ${errorMessage}`
             }
@@ -106,16 +106,14 @@ export class FileRemover {
             await fs.promises.unlink(filePath);
             return { deleted: true,
                 error: null, };
-                timestamp: new Date().toISOString(); }
-
-            };''
+                timestamp: new Date().toISOString(); 
+    };''
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',
             return {  };
                 deleted: false, }
                 error: `Failed to delete, file: ${errorMessage}`;
                 timestamp: new Date().toISOString();
-            }
     }
 ';
 
@@ -124,16 +122,15 @@ export class FileRemover {
 
             return { verified: false,' };
 
-                error: 'File still exists after deletion attempt' }
-
-            };''
+                error: 'File still exists after deletion attempt' 
+    };''
         } catch(error: any) {
-            if(error? .code === 'ENOENT'') {
+            if(error?.code === 'ENOENT'') {
                 return { : undefined
             
                     verified: true, };
-                    error: null }
-                }''
+                    error: null 
+    }''
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',
             return { verified: false, 
                 error: `Error verifying, removal: ${errorMessage,}`
@@ -147,15 +144,14 @@ export class FileRemover {
 
             return { rolledBack: false,' };
 
-                error: 'No backup available for rollback' }
-            }
+                error: 'No backup available for rollback' 
+    }
 
         try { await fs.promises.copyFile(backupRecord.backupPath, backupRecord.originalPath);
             return { rolledBack: true,
                 error: null, };
-                restoredPath: backupRecord.originalPath }
-
-            };''
+                restoredPath: backupRecord.originalPath 
+    };''
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',
             return {  };
@@ -172,8 +168,8 @@ export class FileRemover {
             error: null;
             timestamp: new Date().toISOString();
             backupRecord: null;
-            removalResult: null;
-           , verificationResult: null ,};
+            removalResult: null,
+    verificationResult: null ,};
         try { // Step 1: Create backup
             const backupRecord = await this.createBackupRecord(filePath);
             result.backupRecord = backupRecord;
@@ -240,8 +236,8 @@ export class FileRemover {
             totalFiles: filePaths.length;
             successCount,
             failureCount, };
-            timestamp: new Date().toISOString(); }
-        }
+            timestamp: new Date().toISOString(); 
+    }
 ';
 
     async listBackups(): Promise<BackupRecord[]> { try {'
@@ -297,9 +293,8 @@ export class FileRemover {
 
             return { cleanedCount,
                 totalOld: oldBackups.length, };
-                cutoffDate: cutoffDate.toISOString(); }
-
-            };''
+                cutoffDate: cutoffDate.toISOString(); 
+    };''
         } catch (error) { const errorMessage = error instanceof Error ? error.message: 'Unknown error',
             console.error('Error cleaning old backups:', error }
             return { cleanedCount: 0, totalOld: 0, error: errorMessage ,}

@@ -12,8 +12,8 @@ export interface Position { x: number,
 /**
  * Loading animation options interface
  */
-export interface LoadingAnimationOptions { color: string;
-   , thickness: number;
+export interface LoadingAnimationOptions { color: string,
+    thickness: number;
     elements?: number;
     progress?: number;
     backgroundColor?: string;
@@ -26,8 +26,8 @@ export interface LoadingAnimationOptions { color: string;
  */
 export interface LoadingAnimation { position: Position,
     size: number;
-    options: LoadingAnimationOptions;
-   , loadingType: 'spinner' | 'dots' | 'pulse' | 'wave' | 'progress';
+    options: LoadingAnimationOptions,
+    loadingType: 'spinner' | 'dots' | 'pulse' | 'wave' | 'progress';
     rotation?: number;
     dotPhases?: number[];
     phase?: number;
@@ -44,16 +44,16 @@ export interface RippleEffectOptions { color: string,
  */
 export interface RippleAnimation { position: Position;
     startRadius?: number;
-    endRadius?: number;
-   , options: RippleEffectOptions
+    endRadius?: number,
+    options: RippleEffectOptions
     }
 
 /**
  * Focus glow state interface
  */
 export interface FocusGlowState { active: boolean;
-    intensity: number;
-   , color: string;
+    intensity: number,
+    color: string;
     phase?: number }
 
 /**
@@ -67,8 +67,8 @@ export interface HoverState { active: boolean;
  */
 export interface ElementBounds { x: number;
     y: number;
-    width: number;
-   , height: number;
+    width: number,
+    height: number;
     focusGlow?: FocusGlowState;
     hoverState?: HoverState;
     }
@@ -92,22 +92,22 @@ export interface Particle { startX: number,
     gravity: number;
     size: number;
     growth: number;
-    alpha: number;
-   , color: string ,}
+    alpha: number,
+    color: string ,}
 
 /**
  * Explosion animation interface
  */
 export interface ExplosionAnimation { particles?: Particle[];
-    duration: number;
-   , options: ParticleOptions
+    duration: number,
+    options: ParticleOptions
     ,}
 
 /**
  * Trail point interface
  */
-export interface TrailPoint { x: number;
-   , y: number }
+export interface TrailPoint { x: number,
+    y: number }
 
 /**
  * Trail animation interface
@@ -130,8 +130,8 @@ export interface SparkleParticle { x: number;
     size: number;
     alpha: number;
     phase: number;
-    speed: number;
-   , color: string }
+    speed: number,
+    color: string }
 
 /**
  * Sparkle animation interface
@@ -179,7 +179,7 @@ export class LoadingAnimationRenderer {
         const options = animation.options;
 
         context.save(''';
-        context.lineCap = 'round';)', ')';
+        context.lineCap = 'round';'', ')';
         switch(animation.loadingType) {'
 
             case 'spinner':'';
@@ -315,7 +315,7 @@ export class LoadingAnimationRenderer {
             context.fillStyle = options.color; }
 
             context.font = `${size * 0.3}px Arial`;''
-            context.textAlign = 'center';''
+            context.textAlign = 'center';
             context.textBaseline = 'middle';
             context.fillText(`${Math.round(progress * 100})%`, pos.x, pos.y + size * 0.8);
         }
@@ -391,7 +391,7 @@ export class InteractiveEffectRenderer {
         }
         ;
         // 追加の視覚効果（影、グロー等）
-        if(hoverOptions? .shadow) {'
+        if(hoverOptions?.shadow) {'
 
             context.shadowColor = hoverOptions.shadowColor || '#000000';
             context.shadowBlur = hoverOptions.shadowBlur || 10;
@@ -534,14 +534,14 @@ export class TransitionEffectRenderer {
             context.globalAlpha = progress;
             this.renderElement(context, toElement);''
             context.restore()';
-    static renderSlideTransition(context: CanvasRenderingContext2D, fromElement: RenderableElement | null, toElement: RenderableElement | null, progress: number, direction: 'horizontal' | 'vertical' = 'horizontal): void {
+    static renderSlideTransition(context: CanvasRenderingContext2D, fromElement: RenderableElement | null, toElement: RenderableElement | null, progress: number, direction: 'horizontal' | 'vertical' = 'horizontal': void {
         const canvasWidth = context.canvas.width;
         const canvasHeight = context.canvas.height;
         ';
 
         if (fromElement) {''
             context.save()';
-            if(direction === 'horizontal) {'
+            if(direction === 'horizontal' {'
         
         ,}
                 context.translate(-canvasWidth * progress, 0); }
@@ -554,7 +554,7 @@ export class TransitionEffectRenderer {
         ';
 
             context.save()';
-            if(direction === 'horizontal) {'
+            if(direction === 'horizontal' {'
         
         }
                 context.translate(canvasWidth * (1 - progress), 0); }
@@ -600,7 +600,7 @@ export class TransitionEffectRenderer {
      * 要素を描画（プレースホルダー）
      */
     static renderElement(context: CanvasRenderingContext2D, element: RenderableElement): void { // 実際の要素描画ロジックは使用側で実装
-        if(element? .render) {
+        if(element?.render) {
             
         }
             element.render(context); }
@@ -631,8 +631,8 @@ export class AnimationEffectUtils {
                 gravity: options.gravity || 98;
                 size: Math.random() * 3 + 1;
                 growth: Math.random() * 2;
-                alpha: Math.random() * 0.5 + 0.5;
-               , color: options.colors ?   : undefined'';
+                alpha: Math.random() * 0.5 + 0.5,
+    color: options.colors ? undefined : undefined'';
                        options.colors[Math.floor(Math.random() * options.colors.length)] : ';
 
         ,}
@@ -661,9 +661,9 @@ export class AnimationEffectUtils {
                 y: centerY + Math.sin(angle) * distance;
                 size: Math.random() * 4 + 2;
                 alpha: Math.random() * 0.8 + 0.2;
-                phase: Math.random() * Math.PI * 2;
-               , speed: Math.random() * 0.1 + 0.05,
-                color: options.colors ?   : undefined'';
+                phase: Math.random() * Math.PI * 2,
+    speed: Math.random() * 0.1 + 0.05,
+                color: options.colors ? undefined : undefined'';
                        options.colors[Math.floor(Math.random() * options.colors.length)] : ';
 
         ,}
@@ -692,7 +692,7 @@ export class AnimationEffectUtils {
 
         ' }'
 
-        return `#${r.toString(16}.padStart(2, '0'})${g.toString(16}.padStart(2, '0'})${b.toString(16}.padStart(2, '0'})`;
+        return `#${r.toString(16}.padStart(2, '0'}'${g.toString(16}.padStart(2, '0'}'${b.toString(16}.padStart(2, '0'}'`;
     }
     
     /**
@@ -705,6 +705,6 @@ export class AnimationEffectUtils {
         const t3 = t2 * t;
         
         return { x: mt3 * p0.x + 3 * mt2 * t * p1.x + 3 * mt * t2 * p2.x + t3 * p3.x };
-            y: mt3 * p0.y + 3 * mt2 * t * p1.y + 3 * mt * t2 * p2.y + t3 * p3.y }
-        }''
+            y: mt3 * p0.y + 3 * mt2 * t * p1.y + 3 * mt * t2 * p2.y + t3 * p3.y 
+    }''
 }

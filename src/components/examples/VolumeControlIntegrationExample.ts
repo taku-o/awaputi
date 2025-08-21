@@ -32,14 +32,14 @@ export class VolumeControlIntegrationExample {
         this.volumeControl = new VolumeControlComponent(this.gameEngine);
         ';
         // 音響設定セクションに追加
-        const audioSection = document.getElementById('audio-settings-section);''
+        const audioSection = document.getElementById('audio-settings-section';''
         if(!audioSection) {'
 
-            console.error('Audio, settings section, not found);
+            console.error('Audio settings section not found';
         }
             return false;
         
-        const success = this.volumeControl.initialize(audioSection);
+        const success = this.volumeControl.initialize(audioSection');
 
         if(!success') {'
 
@@ -121,8 +121,8 @@ export class VolumeControlIntegrationExample {
         
         return { isEnabled: this.volumeControl.isEnabled(),
             currentVolume: this.volumeControl.getCurrentVolume(), };
-            stats: this.volumeControl.getStats(); }
-        }
+            stats: this.volumeControl.getStats(); 
+    }
     
     /**
      * 音量制御の表示/非表示切り替え
@@ -171,7 +171,7 @@ export class VolumeControlIntegrationExample {
                 this.container = null; }
             }
 
-            console.log('[VolumeControlIntegration] Integration, disposed);
+            console.log('[VolumeControlIntegration] Integration, disposed';
 
         } catch (error') { console.error('[VolumeControlIntegration] Disposal error:', error }
     }

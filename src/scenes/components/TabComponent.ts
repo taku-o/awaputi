@@ -3,13 +3,13 @@
  * UserInfoSceneのタブ機能を分離するための基底クラス
  */
 
-import { GameEngine  } from '../../core/GameEngine';''
-import { ComponentEventBus  } from './ComponentEventBus';''
+import { GameEngine  } from '../../core/GameEngine';
+import { ComponentEventBus  } from './ComponentEventBus';
 import { SceneState  } from './SceneState';
 
 export interface AccessibilitySettings { highContrast: boolean,
-    largeText: boolean;
-   , reducedMotion: boolean ,}
+    largeText: boolean,
+    reducedMotion: boolean ,}
 
 export abstract class TabComponent { protected gameEngine: GameEngine;
     protected, eventBus: ComponentEventBus,
@@ -33,11 +33,11 @@ export abstract class TabComponent { protected gameEngine: GameEngine;
         
         // アクセシビリティ設定
         this.accessibilitySettings = state.accessibilitySettings || {
-            highContrast: false;
-           , largeText: false;
+            highContrast: false,
+    largeText: false;
     ,}
-            reducedMotion: false }
-        }
+            reducedMotion: false 
+    }
     
     /**
      * コンポーネントの初期化
@@ -103,19 +103,19 @@ export abstract class TabComponent { protected gameEngine: GameEngine;
      * @param error - 発生したエラー
      */
     protected renderErrorFallback(;
-        context: CanvasRenderingContext2D;
-       , x: number, ;
+        context: CanvasRenderingContext2D,
+    x: number, ;
         y: number, ;
         width: number );
-        height: number);
-       , error: Error'';
+        height: number),
+    error: Error'';
     '): void { // エラーメッセージを表示'
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#FF0000' : '#FF6B6B';''
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#FF0000' : '#FF6B6B';
         context.fillRect(x, y, width, height);
 
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#333333';''
-        context.font = this.accessibilitySettings.largeText ? '18px sans-serif' : '16px sans-serif';''
-        context.textAlign = 'center';''
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#333333';
+        context.font = this.accessibilitySettings.largeText ? '18px sans-serif' : '16px sans-serif';
+        context.textAlign = 'center';
         context.textBaseline = 'middle';
 
         const errorText = 'コンポーネントの読み込みでエラーが発生しました';
@@ -132,4 +132,4 @@ export abstract class TabComponent { protected gameEngine: GameEngine;
     /**
      * コンポーネントのクリーンアップ'
      */''
-    cleanup(');
+    cleanup();

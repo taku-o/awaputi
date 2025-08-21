@@ -6,26 +6,26 @@
 // Type definitions
 interface ExecutionConfig { timeout: number,
     retries: number;
-    concurrent: boolean;
-   , parallelLimit: number ,}
+    concurrent: boolean,
+    parallelLimit: number ,}
 
 interface ExecutionState { isRunning: boolean;
     currentSuite: string | null;
     currentTest: string | null;
-    startTime: number | null;
-   , abortController: AbortController | null }
+    startTime: number | null,
+    abortController: AbortController | null }
 
 interface ExecutionStats { totalTestsRun: number;
     averageTestTime: number;
     suitesExecuted: number;
-    timeouts: number;
-   , retries: number }
+    timeouts: number,
+    retries: number }
 
-interface TestFunction { name: string;
-   , run: (contex;t?: TestContext) => Promise<TestResult>;
-    setup?: (contex;t: TestContext) => Promise<void>;
-    cleanup?: (contex;t: TestContext) => Promise<void>;
-    errorCleanup?: (contex;t: TestContext, error: Error) => Promise<void> ,}
+interface TestFunction { name: string,
+    run: (context?: TestContext) => Promise<TestResult>;
+    setup?: (context: TestContext) => Promise<void>;
+    cleanup?: (context: TestContext) => Promise<void>;
+    errorCleanup?: (context: TestContext, error: Error) => Promise<void> ,}
 }
 
 interface TestResult { passed: boolean,
@@ -35,8 +35,8 @@ interface TestResult { passed: boolean,
 
 interface TestContext { testSuite: any,
     deviceSimulator: any;
-    utils: any;
-   , startTime: number ,}
+    utils: any,
+    startTime: number ,}
 
 interface TestSuiteInterface { getTests(): TestFunction[];
     }
@@ -46,13 +46,13 @@ interface ExecutionStateWithStats { isRunning: boolean,
     currentTest: string | null;
     startTime: number | null;
     abortController: AbortController | null;
-    stats: ExecutionStats;
-   , duration: number ,}
+    stats: ExecutionStats,
+    duration: number ,}
 
 interface DebugInfo { config: ExecutionConfig;
     state: ExecutionState;
-    stats: ExecutionStats;
-   , isRunning: boolean }
+    stats: ExecutionStats,
+    isRunning: boolean }
 
 export class MobileTestRunner {
     private mobileTestSuite: any; // MobileTestSuite type would create circular dependency
@@ -66,34 +66,34 @@ export class MobileTestRunner {
         // 実行設定
         this.executionConfig = {
             timeout: 30000, // 30秒;
-            retries: 3;
-           , concurrent: false;
+            retries: 3,
+    concurrent: false;
     ,}
-            parallelLimit: 2 }
-        };
+            parallelLimit: 2 
+    };
         // 実行状態
         this.executionState = { isRunning: false,
             currentSuite: null;
             currentTest: null;
-            startTime: null;
-           , abortController: null ,};
+            startTime: null,
+    abortController: null ,};
         // 実行統計
         this.executionStats = { totalTestsRun: 0,
             averageTestTime: 0;
             suitesExecuted: 0;
-            timeouts: 0;
-           , retries: 0 ,}
+            timeouts: 0,
+    retries: 0 ,}
     
     /**
      * 全テスト実行
      */
-    async runAllTests(): Promise<any> { console.log('[MobileTestRunner] 全テスト実行開始);
+    async runAllTests(): Promise<any> { console.log('[MobileTestRunner] 全テスト実行開始';
 
         if(this.executionState.isRunning') {', ';
 
         }
 
-            throw new Error('Tests, are already, running); }'
+            throw new Error('Tests, are already, running'; }'
         }
         
         this.startExecution();
@@ -146,7 +146,7 @@ export class MobileTestRunner {
      */'
     private async runTestsSequentially(suiteName: string, tests: TestFunction[]): Promise<void> { for (const, test of, tests) {''
             if(this.isExecutionAborted()) {''
-                throw new Error('Test, execution aborted); }'
+                throw new Error('Test, execution aborted'; }'
             
             await this.runSingleTest(suiteName, test);
         }
@@ -164,7 +164,7 @@ export class MobileTestRunner {
         
         }
 
-                throw new Error('Test, execution aborted); }'
+                throw new Error('Test, execution aborted'; }'
             }
             
             const promises = chunk.map(test => this.runSingleTest(suiteName, test);
@@ -226,7 +226,7 @@ export class MobileTestRunner {
 
                 console.warn(`[MobileTestRunner] ${test.name} リトライ (残り${ retries)回}`};' }'
 
-                await this.wait(1000'}); // 1秒待機してリトライ'
+                await this.wait(1000'}'; // 1秒待機してリトライ'
             }
         }
         
@@ -241,8 +241,8 @@ export class MobileTestRunner {
     private async executeTestWithContext(test: TestFunction): Promise<TestResult> { const context: TestContext = {
             testSuite: this.mobileTestSuite;
             deviceSimulator: this.mobileTestSuite.deviceSimulator;
-            utils: this.mobileTestSuite.utils;
-           , startTime: Date.now( };
+            utils: this.mobileTestSuite.utils,
+    startTime: Date.now( };
         
         // テスト前処理
         await this.preTestSetup(test, context);
@@ -263,7 +263,7 @@ export class MobileTestRunner {
      * テスト前セットアップ
      */''
     private async preTestSetup(test: TestFunction, context: TestContext): Promise<void> { // テスト固有の環境セットアップ
-        if(test.setup && typeof, test.setup === 'function) {'
+        if(test.setup && typeof, test.setup === 'function' {'
             
         }
             await test.setup(context); }
@@ -277,7 +277,7 @@ export class MobileTestRunner {
      * テスト後クリーンアップ
      */''
     private async postTestCleanup(test: TestFunction, context: TestContext): Promise<void> { // テスト固有のクリーンアップ
-        if(test.cleanup && typeof, test.cleanup === 'function) {'
+        if(test.cleanup && typeof, test.cleanup === 'function' {'
             
         }
             await test.cleanup(context); }
@@ -288,7 +288,7 @@ export class MobileTestRunner {
      */''
     private async errorTestCleanup(test: TestFunction, context: TestContext, error: Error): Promise<void> { try {
             // エラー時の緊急クリーンアップ
-            if(test.errorCleanup && typeof, test.errorCleanup === 'function) {'
+            if(test.errorCleanup && typeof, test.errorCleanup === 'function' {'
                 
             }
                 await test.errorCleanup(context, error); }
@@ -309,7 +309,7 @@ export class MobileTestRunner {
         return new Promise((_, reject) => {  ''
             setTimeout(() => {' }'
 
-                reject(new, Error('Test, timeout);, this.executionConfig.timeout);
+                reject(new, Error('Test, timeout);, this.executionConfig.timeout';
         }
     
     /**
@@ -399,8 +399,8 @@ export class MobileTestRunner {
             totalTestsRun: 0;
             averageTestTime: 0;
             suitesExecuted: 0;
-            timeouts: 0;
-           , retries: 0 }
+            timeouts: 0,
+    retries: 0 }
     
     /**
      * 実行完了処理
@@ -425,7 +425,7 @@ export class MobileTestRunner {
     /**
      * 実行中断チェック
      */
-    private isExecutionAborted(): boolean { return this.executionState.abortController? .signal.aborted || false; }
+    private isExecutionAborted(): boolean { return this.executionState.abortController?.signal.aborted || false; }
     
     /**
      * 実行統計更新
@@ -442,7 +442,7 @@ export class MobileTestRunner {
     getExecutionState(): ExecutionStateWithStats { return {  };
             ...this.executionState, }
             stats: { ...this.executionStats;
-            duration: this.executionState.startTime ?   : undefined
+            duration: this.executionState.startTime ? undefined : undefined
                 Date.now() - this.executionState.startTime : 0;
         },
     }
@@ -456,10 +456,10 @@ export class MobileTestRunner {
      * 配列チャンク化
      */
     private chunkArray<T>(array: T[], chunkSize: number): T[][] { const chunks: T[][] = [],
-        for(let, i = 0; i < array.length; i += chunkSize) {
+        for(let i = 0; i < array.length; i += chunkSize) {
             
         }
-            chunks.push(array.slice(i, i + chunkSize); }
+            chunks.push(array.slice(i i + chunkSize'); }
         }
         return chunks;
     }
@@ -472,4 +472,4 @@ export class MobileTestRunner {
     /**
      * デバッグ情報取得
      */''
-    getDebugInfo(');
+    getDebugInfo();

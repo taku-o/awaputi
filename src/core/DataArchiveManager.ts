@@ -11,42 +11,42 @@ export interface ArchiveConfig { archiving: {
         enable;d: boolean;
         autoArchive: boolean;
         archiveThreshold: number;
-        batchSize: number;
-       , compressionEnabled: boolean 
+        batchSize: number,
+    compressionEnabled: boolean 
 };
     retention: { activeDays: number;
         archiveDays: number;
-        maxArchiveDays: number;
-       , permanentDelete: boolean 
+        maxArchiveDays: number,
+    permanentDelete: boolean 
 };
     storage: { maxArchiveSize: number;
         indexEnabled: boolean;
-        encryptionEnabled: boolean;
-       , backupEnabled: boolean 
+        encryptionEnabled: boolean,
+    backupEnabled: boolean 
 };
     performance: { maxConcurrentOperations: number;
-        operationTimeout: number;
-       , indexRebuildThreshold: number }
+        operationTimeout: number,
+    indexRebuildThreshold: number }
 
 export type ArchiveStrategy = 'age' | 'size' | 'frequency' | 'importance';
 
 export interface ArchiveStatistics { totalArchived: number,
     totalRestored: number;
     totalSize: number;
-    lastArchive: number | null;
-   , lastRestore: number | null ,}
+    lastArchive: number | null,
+    lastRestore: number | null ,}
 export interface ArchiveState { isArchiving: boolean,
     isRestoring: boolean;
-    operationQueue: ArchiveOperation[];
-   , statistics: ArchiveStatistics
+    operationQueue: ArchiveOperation[],
+    statistics: ArchiveStatistics
     ,}
 ';
 
 export interface ArchiveOperation {;
-    operation: 'archive' | 'restore';
-   , params: any,
-    resolve: (valu;e: any) => void,
-    reject: (erro;r: Error') => void;
+    operation: 'archive' | 'restore',
+    params: any,
+    resolve: (value: any) => void,
+    reject: (error: Error') => void;
     timestamp: number ,}
 export interface ArchiveMetadata { id: string,
     dataType: string;
@@ -56,18 +56,18 @@ export interface ArchiveMetadata { id: string,
     archivedSize: number;
     compressionRatio: number;
     recordCount: number;
-    version: string;
-   , options: Record<string, any>,
+    version: string,
+    options: Record<string, any>,
     checksums: {
-        origina;l: string;
-       , archived: string 
+        origina;l: string,
+    archived: string 
 ,};
-    dateRange: DateRange | null;
-   , tags: string[];
+    dateRange: DateRange | null,
+    tags: string[];
 }
 export interface DateRange { start: number,
-    end: number;
-   , count: number ,}
+    end: number,
+    count: number ,}
 export interface SearchQuery { dataType?: string;
     dateRange?: {;
         start?: number;
@@ -81,25 +81,25 @@ export interface SearchQuery { dataType?: string;
 }
 
 export interface SearchResult { archiveId: string,
-    metadata: ArchiveMetadata;
-   , score: number ,}
+    metadata: ArchiveMetadata,
+    score: number ,}
 export interface SearchResults { total: number,
-    results: SearchResult[];
-   , query: SearchQuery
+    results: SearchResult[],
+    query: SearchQuery
     ,}
 export interface ArchiveResult { archiveId: string,
     success: boolean;
     metadata: ArchiveMetadata;
     originalSize: number;
     archivedSize: number;
-    compressionRatio: number;
-   , processingTime: number ,}
+    compressionRatio: number,
+    processingTime: number ,}
 export interface RestoreResult { archiveId: string,
     success: boolean;
     data: any;
     metadata: ArchiveMetadata;
-    restoredSize: number;
-   , processingTime: number ,}
+    restoredSize: number,
+    processingTime: number ,}
 export interface PartitionResult { archive: any[] | null,
     keep: any[] | null ,}
 export interface SearchIndex { byDate: Map<string, string[]>,
@@ -111,8 +111,8 @@ export type SizeCategory = 'tiny' | 'small' | 'medium' | 'large' | 'huge';
 
 export interface BackupData { archiveId: string,
     data: any;
-    metadata: ArchiveMetadata;
-   , backupCreated: number ,}
+    metadata: ArchiveMetadata,
+    backupCreated: number ,}
 ';
 
 export interface CompressedData {;
@@ -137,13 +137,12 @@ export class DataArchiveManager {
         this.config = {
             archiving: {
                 enabled: true;
-                autoArchive: true;
-               , archiveThreshold: 30000, // 30000レコード以上でアーカイブ;
+                autoArchive: true,
+    archiveThreshold: 30000, // 30000レコード以上でアーカイブ;
                 batchSize: 5000
 ,}
                 compressionEnabled: true ;
-}
-            },
+    },
             retention: { activeDays: 90, // 90日間はアクティブデータ
                 archiveDays: 365, // 365日間はアーカイブ保持;
                 maxArchiveDays: 1095, // 最大3年間保持;
@@ -151,11 +150,11 @@ export class DataArchiveManager {
 ,};
             storage: { maxArchiveSize: 500 * 1024 * 1024, // 500MB
                 indexEnabled: true;
-                encryptionEnabled: false;
-               , backupEnabled: true 
+                encryptionEnabled: false,
+    backupEnabled: true 
 ,};
-            performance: { maxConcurrentOperations: 3;
-               , operationTimeout: 300000, // 5分;
+            performance: { maxConcurrentOperations: 3,
+    operationTimeout: 300000, // 5分;
                 indexRebuildThreshold: 1000 
 ,}
         },
@@ -163,18 +162,18 @@ export class DataArchiveManager {
         // アーカイブ状態管理
         this.archiveState = { isArchiving: false,
             isRestoring: false;
-            operationQueue: [];
-           , statistics: {
+            operationQueue: [],
+    statistics: {
                 totalArchived: 0;
                 totalRestored: 0;
                 totalSize: 0;
-                lastArchive: null;
-               , lastRestore: null 
+                lastArchive: null,
+    lastRestore: null 
 ,}
         },
         
         // アーカイブ戦略
-        this.archiveStrategies = new Map(['])';
+        this.archiveStrategies = new Map([']'';
             ['age', this.archiveByAge.bind(this)],
             ['size', this.archiveBySize.bind(this)],
             ['frequency', this.archiveByFrequency.bind(this)],
@@ -184,8 +183,8 @@ export class DataArchiveManager {
         // 検索インデックス
         this.searchIndex = { byDate: new Map(),
             byType: new Map();
-            bySize: new Map();
-           , byMetadata: new Map( ,};
+            bySize: new Map(),
+    byMetadata: new Map( ,};
         
         this.initialize();
     }
@@ -210,15 +209,15 @@ export class DataArchiveManager {
 
                     const data = JSON.parse(localStorage.getItem(key) || '{}'');
 
-                    if(key.startsWith('archive_index_)) { ''
+                    if(key.startsWith('archive_index_)' { ''
                         const archiveId = key.replace('archive_index_', '');''
                         this.archiveIndex.set(archiveId, data);' }'
 
-                    } else if(key.startsWith('archive_meta_)) { ''
+                    } else if(key.startsWith('archive_meta_)' { ''
                         const archiveId = key.replace('archive_meta_', '');''
                         this.archiveMetadata.set(archiveId, data);' }'
 
-                    } else if(key.startsWith('archive_)) { ''
+                    } else if(key.startsWith('archive_)' { ''
                         const archiveId = key.replace('archive_', '');
                         this.archiveStorage.set(archiveId, data); } catch (error) {
                     console.warn(`Failed to load archive data ${key}:`, error);
@@ -317,8 +316,8 @@ export class DataArchiveManager {
                 metadata,
                 originalSize: this.calculateDataSize(data);
                 archivedSize: this.calculateDataSize(archiveData);
-                compressionRatio: this.calculateDataSize(archiveData) / this.calculateDataSize(data);
-               , processingTime: Date.now() - startTime 
+                compressionRatio: this.calculateDataSize(archiveData) / this.calculateDataSize(data),
+    processingTime: Date.now() - startTime 
 ,};
             console.debug(`Archived, data ${archiveId}: ${result.originalSize} -> ${result.archivedSize} bytes`});
             return result;
@@ -358,10 +357,10 @@ export class DataArchiveManager {
     hasTimestampData(data: any): boolean { ''
         if(Array.isArray(data)) {'
             return data.some(item => ')';
-                item && typeof item === 'object' && );''
+                item && typeof item === 'object' && ';''
                 Object.keys(item).some(key => ');''
                     key.includes('timestamp'') || key.includes('date'') || key.includes('time);
-            ); }
+            '; }
         return false;
     }
     
@@ -401,7 +400,7 @@ export class DataArchiveManager {
     cleanDataForArchive(data: any): any { if(Array.isArray(data) {''
             return data.filter(item => item != null).map(item => this.cleanDataForArchive(item));
 
-        if(typeof, data === 'object' && data !== null) {
+        if(typeof, data === 'object' && data !== null' {
             
         }
 
@@ -479,24 +478,24 @@ export class DataArchiveManager {
         dataType: string, ;
         originalData: any, ;
         archivedData: any );
-        strategy: ArchiveStrategy);
-       , options: Record<string, any>;
+        strategy: ArchiveStrategy),
+    options: Record<string, any>;
     ): ArchiveMetadata { return { id: archiveId,
             dataType,
             strategy,
             createdAt: Date.now();
-            originalSize: this.calculateDataSize(originalData);
-           , archivedSize: this.calculateDataSize(archivedData),
+            originalSize: this.calculateDataSize(originalData),
+    archivedSize: this.calculateDataSize(archivedData),
             compressionRatio: this.calculateDataSize(archivedData) / this.calculateDataSize(originalData),
             recordCount: this.countRecords(originalData),' };
 
             version: '1.0';
 }
             options: { ...options;
-            checksums: { original: this.calculateChecksum(originalData);
-               , archived: this.calculateChecksum(archivedData };
-            dateRange: this.extractDateRange(originalData);
-           , tags: this.generateTags(originalData, dataType);
+            checksums: { original: this.calculateChecksum(originalData),
+    archived: this.calculateChecksum(archivedData }
+            dateRange: this.extractDateRange(originalData),
+    tags: this.generateTags(originalData, dataType);
         }
     
     /**
@@ -549,8 +548,7 @@ export class DataArchiveManager {
         return { start: Math.min(...timestamps),
             end: Math.max(...timestamps), };
             count: timestamps.length ;
-}
-        },
+    },
     }
     
     /**
@@ -563,10 +561,10 @@ export class DataArchiveManager {
 
                 obj.forEach(item => extract(item));' }'
 
-            } else if (typeof, obj === 'object' && obj !== null) { ''
+            } else if (typeof, obj === 'object' && obj !== null' { ''
                 Object.entries(obj).forEach(([key, value]) => { ''
-                    if ((key.includes('timestamp'') || key.includes('date'') || key.includes('time)) &&'';
-                        typeof value === 'number' && value > 1000000000000) {' }
+                    if ((key.includes('timestamp'') || key.includes('date'') || key.includes('time)' &&'';
+                        typeof value === 'number' && value > 1000000000000' {' }
 
                         timestamps.push(value);' }'
 
@@ -586,7 +584,7 @@ export class DataArchiveManager {
         ';
         // データ構造に基づくタグ
         if(Array.isArray(data)) {''
-            tags.push('array);''
+            tags.push('array';''
             if(data.length > 1000) tags.push('large); }
         // 日付に基づくタグ
         const dateRange = this.extractDateRange(data);
@@ -594,8 +592,8 @@ export class DataArchiveManager {
             const now = Date.now();
             const daysDiff = (now - dateRange.end) / (24 * 60 * 60 * 1000);
 
-            if(daysDiff < 7) tags.push('recent);''
-            else if(daysDiff < 30) tags.push('current);''
+            if(daysDiff < 7) tags.push('recent';''
+            else if(daysDiff < 30) tags.push('current';''
             else if(daysDiff < 90) tags.push('old'');
 
         }
@@ -748,11 +746,11 @@ export class DataArchiveManager {
             this.updateArchiveStatistics(metadata, 'restore);
             
             const result: RestoreResult = { archiveId,
-                success: true;
-               , data: restoredData;
+                success: true,
+    data: restoredData;
                 metadata,
-                restoredSize: this.calculateDataSize(restoredData);
-               , processingTime: Date.now() - startTime 
+                restoredSize: this.calculateDataSize(restoredData),
+    processingTime: Date.now() - startTime 
 ,};
             console.debug(`Restored, archive ${archiveId}: ${result.restoredSize} bytes`});
             return result;
@@ -786,7 +784,7 @@ export class DataArchiveManager {
         const { data, dictionary } = compressed;
 
         const decompress = (obj: any'): any => {  ''
-            if(typeof, obj !== 'object' || obj === null) {' }
+            if(typeof, obj !== 'object' || obj === null' {' }
 
                 return typeof obj === 'string' && obj.startsWith('#) && dictionary ? dictionary[obj] || obj: obj;
             if(Array.isArray(obj) { return obj.map(item => decompress(item);
@@ -883,8 +881,8 @@ export class DataArchiveManager {
      */''
     queueArchiveOperation(operation: 'archive' | 'restore', params: any): Promise<any> { return new Promise((resolve, reject) => { 
             this.archiveState.operationQueue.push({); }
-                operation, params, resolve, reject, timestamp: Date.now(); }
-            });
+                operation, params, resolve, reject, timestamp: Date.now(); 
+    });
         });
     }
     
@@ -901,7 +899,7 @@ export class DataArchiveManager {
             
             try {
                 let result;''
-                if(job.operation === 'archive) {', ';
+                if(job.operation === 'archive' {', ';
 
                 }
 
@@ -927,7 +925,7 @@ export class DataArchiveManager {
     updateSearchIndex(archiveId: string, metadata: ArchiveMetadata): void { // 日付インデックス
         if(metadata.dateRange) {
 
-            const dateKey = new Date(metadata.dateRange.start).toISOString(').split('T)[0];
+            const dateKey = new Date(metadata.dateRange.start).toISOString().split('T)[0];
             if(!this.searchIndex.byDate.has(dateKey) {
         }
                 this.searchIndex.byDate.set(dateKey, []); }
@@ -948,10 +946,10 @@ export class DataArchiveManager {
      * サイズカテゴリの取得
      */
     getSizeCategory(size: number): SizeCategory { ''
-        if(size < 1024) return 'tiny';''
-        if(size < 1024 * 1024) return 'small';''
-        if(size < 10 * 1024 * 1024) return 'medium';''
-        if(size < 100 * 1024 * 1024) return 'large';''
+        if(size < 1024) return 'tiny';
+        if(size < 1024 * 1024) return 'small';
+        if(size < 10 * 1024 * 1024) return 'medium';
+        if(size < 100 * 1024 * 1024) return 'large';
         return 'huge'; }
     /**
      * 定期アーカイブの実行'
@@ -979,7 +977,7 @@ export class DataArchiveManager {
             this.optimizeSearchIndex();
             
             // ストレージの最適化
-            await this.optimizeStorage(');
+            await this.optimizeStorage();
             ' }'
 
         } catch (error) { console.error('Archive maintenance failed:', error }
@@ -1062,7 +1060,7 @@ export class DataArchiveManager {
      */''
     updateArchiveStatistics(metadata: ArchiveMetadata, operation: 'archive' | 'restore''): void { const stats = this.archiveState.statistics;
 
-        if(operation === 'archive) {'
+        if(operation === 'archive' {'
             stats.totalArchived++;
 
             stats.totalSize += metadata.archivedSize;
@@ -1082,13 +1080,12 @@ export class DataArchiveManager {
             archiveCount: this.archiveStorage.size;
             queueLength: this.archiveState.operationQueue.length;
             isArchiving: this.archiveState.isArchiving;
-            isRestoring: this.archiveState.isRestoring;
-           , indexSizes: {
-                byDate: this.searchIndex.byDate.size;
-               , byType: this.searchIndex.byType.size, };
+            isRestoring: this.archiveState.isRestoring,
+    indexSizes: {
+                byDate: this.searchIndex.byDate.size,
+    byType: this.searchIndex.byType.size, };
                 bySize: this.searchIndex.bySize.size ;
-}
-        },
+    },
     }
     
     /**

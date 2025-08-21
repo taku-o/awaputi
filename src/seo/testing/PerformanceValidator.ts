@@ -5,7 +5,7 @@
  * SEOTester のサブコンポーネント
  */
 
-import { seoLogger  } from '../SEOLogger.js';''
+import { seoLogger  } from '../SEOLogger.js';
 import { seoErrorHandler  } from '../SEOErrorHandler.js';
 
 interface MainController {
@@ -13,27 +13,27 @@ interface MainController {
 }
 
 interface TestResult { name: string,
-    passed: boolean;
-   , message: string ,}
+    passed: boolean,
+    message: string ,}
 
 interface ValidationResults { category: string;
     tests: TestResult[];
     passed: number;
-    failed: number;
-   , warnings: number }
+    failed: number,
+    warnings: number }
 
 interface CoreWebVitalsResults extends ValidationResults { vitals: {
         LCP: number;
         FID: number;
-        CLS: number;
-       , timestamp: string }
+        CLS: number,
+    timestamp: string }
 
 interface ImageInfo { src: string,
     alt: string ,}
 
 interface HeadingStructure { isValid: boolean;
-    levels: number[];
-   , issues: string[] }
+    levels: number[],
+    issues: string[] }
 
 export class PerformanceValidator {
     private mainController: MainController;
@@ -50,19 +50,19 @@ export class PerformanceValidator {
      * パフォーマンス最適化の検証
      * @returns Promise<ValidationResults>'
      */''
-    async validatePerformanceOptimization(''';
+    async validatePerformanceOptimization('''
                 category: 'Performance Optimization';
                 tests: [];
                 passed: 0;
-                failed: 0;
-               , warnings: 0;
+                failed: 0,
+    warnings: 0;
             },
             
             // WebP対応の確認
             const webpTest: TestResult = { ''
                 name: 'WebP support detection',
                 passed: false,
-                message: '' ,}))'
+                message: '' ,})''
             const webpSupported = await this._checkWebPSupport();''
             if(webpSupported) {'
                 webpTest.passed = true;''
@@ -109,25 +109,25 @@ export class PerformanceValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'validatePerformanceOptimization);
+            return seoErrorHandler.handle(error, 'validatePerformanceOptimization';
 
     /**
      * アクセシビリティ準拠の検証
      * @returns Promise<ValidationResults>'
      */''
-    async validateAccessibilityCompliance(''';
+    async validateAccessibilityCompliance('''
                 category: 'Accessibility Compliance';
                 tests: [];
                 passed: 0;
-                failed: 0;
-               , warnings: 0;
+                failed: 0,
+    warnings: 0;
             ,},
             
             // alt属性の確認
             const altTest: TestResult = { ''
                 name: 'Image alt attributes',
                 passed: false,
-                message: '' ,}))'
+                message: '' ,})''
             const images = await this._extractImages();''
             const imagesWithAlt = images.filter(img => img.alt && img.alt.trim() !== '').length;
             const totalImages = images.length;
@@ -193,14 +193,14 @@ export class PerformanceValidator {
                 // 実際の実装では web-vitals ライブラリを使用することを推奨
                 vitals.LCP = this._measureLCP(),;
                 vitals.FID = this._measureFID();''
-                vitals.CLS = this._measureCLS(''';
+                vitals.CLS = this._measureCLS('''
                 category: 'Core Web Vitals';
                 tests: [];
                 passed: 0;
-                failed: 0;
-               , warnings: 0;
+                failed: 0,
+    warnings: 0;
             ,}
-                vitals: vitals }))
+                vitals: vitals })'
             // LCP検証
             const lcpTest: TestResult = { ')'
                 name: 'Largest Contentful Paint(LCP)';
@@ -238,25 +238,25 @@ export class PerformanceValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'trackCoreWebVitals);
+            return seoErrorHandler.handle(error, 'trackCoreWebVitals';
 
     /**
      * サイトマップの検証
      * @returns Promise<ValidationResults>'
      */''
-    async validateSitemap(''';
+    async validateSitemap('''
                 category: 'Sitemap Validation';
                 tests: [];
                 passed: 0;
-                failed: 0;
-               , warnings: 0;
+                failed: 0,
+    warnings: 0;
             ,},
             
             // サイトマップの存在確認
             const sitemapTest: TestResult = { ''
                 name: 'Sitemap accessibility',
                 passed: false,
-                message: '' ,}))'
+                message: '' ,})''
             const sitemapExists = await this._checkSitemapExists();''
             if(sitemapExists) {'
                 sitemapTest.passed = true;''
@@ -274,25 +274,25 @@ export class PerformanceValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'validateSitemap);
+            return seoErrorHandler.handle(error, 'validateSitemap';
 
     /**
      * robots.txtの検証
      * @returns Promise<ValidationResults>'
      */''
-    async validateRobotsTxt(''';
+    async validateRobotsTxt('''
                 category: 'Robots.txt Validation';
                 tests: [];
                 passed: 0;
-                failed: 0;
-               , warnings: 0;
+                failed: 0,
+    warnings: 0;
             ,},
             
             // robots.txtの存在確認
             const robotsTest: TestResult = { ''
                 name: 'Robots.txt accessibility',
                 passed: false,
-                message: '' ,}))'
+                message: '' ,})''
             const robotsExists = await this._checkRobotsExists();''
             if(robotsExists) {'
                 robotsTest.passed = true;''
@@ -310,7 +310,7 @@ export class PerformanceValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'validateRobotsTxt);
+            return seoErrorHandler.handle(error, 'validateRobotsTxt';
 
     // プライベートメソッド
     
@@ -318,7 +318,7 @@ export class PerformanceValidator {
      * 画像の抽出
      * @private
      */''
-    private async _extractImages(''';
+    private async _extractImages('''
             { src: '/assets/images/game-screenshot.png', alt: 'ゲームスクリーンショット' ,},''
             { src: '/assets/images/logo.png', alt: 'BubblePopロゴ' ,}
         ];
@@ -345,9 +345,9 @@ export class PerformanceValidator {
      * テスト用キャッシュヘッダーの生成
      * @private'
      */''
-    private _generateTestCacheHeaders(''';
-            'Cache-Control': 'public, max-age=31536000',)';
-            'Expires': new Date(Date.now() + 31536000000).toUTCString(''';
+    private _generateTestCacheHeaders('''
+            'Cache-Control': 'public, max-age=31536000','';
+            'Expires': new Date(Date.now() + 31536000000).toUTCString('''
             'ETag': '"test-etag"';
         }
     
@@ -358,8 +358,8 @@ export class PerformanceValidator {
     private async _analyzeHeadingStructure(): Promise<HeadingStructure> { // 実際の実装では document から見出し要素を抽出して階層を分析
         return { isValid: true,
             levels: [1, 2, 3], };
-            issues: [] }
-        }
+            issues: [] 
+    }
     
     /**
      * サイトマップの存在確認
@@ -402,7 +402,7 @@ export class PerformanceValidator {
      * 圧縮設定の検証
      * @private
      */''
-    private async _validateCompressionSettings(''';
+    private async _validateCompressionSettings('''
             name: 'Compression settings validation',
             passed: false,
             message: '');
@@ -432,7 +432,7 @@ export class PerformanceValidator {
      * リソース最適化の検証
      * @private'
      */''
-    private async _validateResourceOptimization(''';
+    private async _validateResourceOptimization('''
             name: 'Resource optimization validation',
             passed: false,
             message: '');
@@ -458,7 +458,7 @@ export class PerformanceValidator {
      * キーボードナビゲーションの検証
      * @private'
      */''
-    private async _validateKeyboardNavigation(''';
+    private async _validateKeyboardNavigation('''
             name: 'Keyboard navigation validation',
             passed: false,
             message: '');
@@ -488,7 +488,7 @@ export class PerformanceValidator {
      * カラーコントラストの検証
      * @private'
      */''
-    private async _validateColorContrast(''';
+    private async _validateColorContrast('''
             name: 'Color contrast validation',
             passed: false,
             message: '');

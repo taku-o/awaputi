@@ -12,12 +12,12 @@ import { getErrorHandler  } from '../utils/ErrorHandler.js';
 export class ProceduralSoundGenerator {
     // プロパティ宣言
     isInitialized: boolean;
-    audioContext: any;
-   , soundBuffers: Map<string, any>,
+    audioContext: any,
+    soundBuffers: Map<string, any>,
     soundParams: any;
     isGenerating: boolean;
-    generationProgress: number;
-   , lastGenerationTime: number;
+    generationProgress: number,
+    lastGenerationTime: number;
     constructor() {
 
         // 初期化状態
@@ -70,7 +70,7 @@ export class ProceduralSoundGenerator {
     async generateAllSounds() { ''
         if(!this.audioContext) {'
 
-            console.warn('AudioContext, not available, for sound, generation);
+            console.warn('AudioContext, not available for sound generation');
         }
             return false;
         
@@ -115,7 +115,7 @@ export class ProceduralSoundGenerator {
             return true;
             ';
 
-        } catch (error) { getErrorHandler(').handleError(error, 'AUDIO_ERROR', { ')'
+        } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', { ')'
                 component: 'ProceduralSoundGenerator',')';
                 operation: 'generateAllSounds' ,});
             this.isGenerating = false;
@@ -513,7 +513,7 @@ export class ProceduralSoundGenerator {
         const baseBuffer = this.soundBuffers.get(baseSoundName);''
         if(!baseBuffer) {' }'
 
-            console.warn(`Base, sound '${baseSoundName}' not, found`'});
+            console.warn(`Base, sound '${baseSoundName}' not, found`'}';
             return null;
         }
 
@@ -617,4 +617,4 @@ export function getProceduralSoundGenerator(): ProceduralSoundGenerator { if (!p
  */
 export function reinitializeProceduralSoundGenerator(): ProceduralSoundGenerator { if (proceduralSoundGeneratorInstance) {
         proceduralSoundGeneratorInstance.dispose(); }''
-    proceduralSoundGeneratorInstance = new ProceduralSoundGenerator(');
+    proceduralSoundGeneratorInstance = new ProceduralSoundGenerator();

@@ -1,10 +1,10 @@
-import { getErrorHandler  } from '../ErrorHandler.js';''
-import fs from 'fs';''
+import { getErrorHandler  } from '../ErrorHandler.js';
+import fs from 'fs';
 import path from 'path';
 
 // Type definitions
-interface ErrorHandler { handleError: (erro;r: Error, context?: any) => void }
-}
+interface ErrorHandler { handleError: (error: Error, context?: any) => void 
+    }
 
 interface ValidationConfig { projectRoot?: string;
     validateSyntax?: boolean;
@@ -19,22 +19,22 @@ interface ValidationStats { totalFiles: number,
     validFiles: number;
     errorFiles: number;
     warningFiles: number;
-    startTime: number | null;
-   , endTime: number | null ,}
+    startTime: number | null,
+    endTime: number | null ,}
 
-interface SyntaxValidation { valid: boolean;
-   , errors: string[] }
+interface SyntaxValidation { valid: boolean,
+    errors: string[] }
 
 interface ImportValidation { valid: boolean;
-    errors: string[];
-   , missing: string[] }
+    errors: string[],
+    missing: string[] }
 
-interface ExportValidation { valid: boolean;
-   , errors: string[] }
+interface ExportValidation { valid: boolean,
+    errors: string[] }
 
 interface ReferenceValidation { valid: boolean;
-    errors: string[];
-   , unreferenced: string[] }
+    errors: string[],
+    unreferenced: string[] }
 
 interface FileValidationResult { filePath: string;
     isValid: boolean;
@@ -42,37 +42,37 @@ interface FileValidationResult { filePath: string;
     warnings: string[];
     syntax: SyntaxValidation;
     imports: ImportValidation;
-    exports: ExportValidation;
-   , references: ReferenceValidation
+    exports: ExportValidation,
+    references: ReferenceValidation
     }
 
 interface CheckResult { isValid: boolean;
     error?: string }
 
-interface ImportInfo { path: string;
-   , names: string[] }
+interface ImportInfo { path: string,
+    names: string[] }
 
 interface ValidationSummary { totalFiles: number;
     validFiles: number;
     errorFiles: number;
     warningFiles: number;
-    successRate: number;
-   , duration: string }
+    successRate: number,
+    duration: string }
 
-interface ErrorInfo { file: string;
-   , error: string }
+interface ErrorInfo { file: string,
+    error: string }
 
-interface WarningInfo { file: string;
-   , warning: string }
+interface WarningInfo { file: string,
+    warning: string }
 
 interface ValidationReport { summary: ValidationSummary;
     results: FileValidationResult[];
-    errors: ErrorInfo[];
-   , warnings: WarningInfo[]
+    errors: ErrorInfo[],
+    warnings: WarningInfo[]
     }
 
-interface SavedReport { timestamp: string;
-   , validation: ValidationReport
+interface SavedReport { timestamp: string,
+    validation: ValidationReport
     }
 
 /**
@@ -89,7 +89,7 @@ export class ValidationEngine {
 
         this.errorHandler = getErrorHandler();
         this.projectRoot = config.projectRoot || process.cwd();''
-        this.validationResults = new Map(''';
+        this.validationResults = new Map('''
             allowedFileExtensions: config.allowedFileExtensions || ['.js', '.mjs],
             excludePatterns: config.excludePatterns || [/node_modules/;
                 /\.test\.js$/,
@@ -105,8 +105,8 @@ export class ValidationEngine {
             validFiles: 0;
             errorFiles: 0;
             warningFiles: 0;
-            startTime: null;
-           , endTime: null ,}))
+            startTime: null,
+    endTime: null ,}))
     }
     
     /**
@@ -185,8 +185,8 @@ export class ValidationEngine {
     private async validateFile(filePath: string): Promise<void> { const result: FileValidationResult = {
             filePath,
             isValid: true;
-            errors: [];
-           , warnings: [], }
+            errors: [],
+    warnings: [], }
             syntax: { valid: true, errors: [] ,},
             imports: { valid: true, errors: [], missing: [] ,},
             exports: { valid: true, errors: [] ,},
@@ -379,7 +379,7 @@ export class ValidationEngine {
                 continue; }
             }
 
-            if(char === '\\) {'
+            if(char === '\\' {'
                 escaped = true;
             }
                 continue; }
@@ -392,8 +392,8 @@ export class ValidationEngine {
 
             }
 
-                case '`': backQuotes = (backQuotes + 1) % 2; break; }
-}
+                case '`': backQuotes = (backQuotes + 1) % 2; break; 
+    }
 
         if(singleQuotes !== 0 || doubleQuotes !== 0 || backQuotes !== 0) { ' }'
 
@@ -495,12 +495,12 @@ export class ValidationEngine {
      * インポートパスを解決'
      */''
     private resolveImportPath(fromFile: string, importPath: string): string | null { try {'
-            if(importPath.startsWith('.) {'
+            if(importPath.startsWith('.' {'
                 // 相対パス
                 const dirname = path.dirname(fromFile);
                 let resolved = path.resolve(dirname, importPath);
                 // .js拡張子を追加してチェック
-                if(!fs.existsSync(resolved) && !resolved.endsWith('.js)) {'
+                if(!fs.existsSync(resolved) && !resolved.endsWith('.js)' {'
             }
 
                     resolved += '.js'; }
@@ -531,7 +531,7 @@ export class ValidationEngine {
 
                     result.imports.valid = false;' }'
 
-                    result.imports.errors.push(`'${importedName}' is, not exported, from ${importInfo.path}`);''
+                    result.imports.errors.push(`'${importedName}' is, not exported, from ${importInfo.path}`';''
                     result.warnings.push(`Import '${importedName}' not, found in ${importInfo.path}`});
                 }
             } catch (error) {
@@ -549,14 +549,14 @@ export class ValidationEngine {
                 totalFiles: this.stats.totalFiles;
                 validFiles: this.stats.validFiles;
                 errorFiles: this.stats.errorFiles;
-                warningFiles: this.stats.warningFiles;
-               , successRate: this.stats.totalFiles > 0 ?   : undefined
+                warningFiles: this.stats.warningFiles,
+    successRate: this.stats.totalFiles > 0 ? undefined : undefined
                     Math.round((this.stats.validFiles / this.stats.totalFiles) * 100) : 0, 
                 duration: `${duration,}ms`
             };
             results: Array.from(this.validationResults.values();
-            errors: [];
-           , warnings: [];
+            errors: [],
+    warnings: [];
         },
         
         // エラーと警告を集計
@@ -573,12 +573,12 @@ export class ValidationEngine {
      */
     async saveReport(report: ValidationReport, outputPath: string): Promise<void> { try {
             const reportContent: SavedReport = {
-                timestamp: new Date().toISOString();
-               , validation: report };
+                timestamp: new Date().toISOString(),
+    validation: report };
             await fs.promises.writeFile(outputPath, JSON.stringify(reportContent, null, 2);
             console.log(`[ValidationEngine] Report, saved to ${outputPath}`});''
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
-                context: 'ValidationEngine.saveReport),' }
+                context: 'ValidationEngine.saveReport',' }
 
             }');
         }

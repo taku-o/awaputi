@@ -26,18 +26,18 @@ export interface SessionData { sessionId: string,
     bubblesMissed: number;
     maxCombo: number;
     completed: boolean;
-    exitReason: string | null;
-   , playerSettings: {
+    exitReason: string | null,
+    playerSettings: {
         difficult;y: string;
-        soundEnabled: boolean;
-       , effectsEnabled: boolean ,}
+        soundEnabled: boolean,
+    effectsEnabled: boolean ,}
 
 export interface BubblePosition { x: number,
     y: number ,}
 
 export interface BubbleContextInfo { remainingBubbles: number;
-    currentHP: number;
-   , timeRemaining: number }
+    currentHP: number,
+    timeRemaining: number }
 ';
 
 export interface BubbleData { bubbleType: string,''
@@ -57,17 +57,17 @@ export interface BubbleInteractionData { sessionId: string,
     reactionTime: number | null;
     position: BubblePosition | null;
     scoreGained: number;
-    comboCount: number;
-   , contextInfo: BubbleContextInfo
+    comboCount: number,
+    contextInfo: BubbleContextInfo
     ,}
 
 export interface MemoryUsage { used: number;
-    total: number;
-   , limit: number }
+    total: number,
+    limit: number }
 
 export interface LoadTimes { assets: number;
-    scripts: number;
-   , total: number }
+    scripts: number,
+    total: number }
 
 export interface PerformanceMetrics { fps?: number | null;
     memoryUsage?: MemoryUsage | null;
@@ -78,22 +78,22 @@ export interface PerformanceData { sessionId: string | null,
     timestamp: number;
     fps: number | null;
     memoryUsage: MemoryUsage | null;
-    loadTimes: LoadTimes | null;
-   , errors: string[] ,}
+    loadTimes: LoadTimes | null,
+    errors: string[] ,}
 
 export interface GameBalanceData { [key: string]: any, }
 
 export interface ScoreContextInfo { comboCount: number,
-    timeRemaining: number;
-   , activeItems: string[] ,}
+    timeRemaining: number,
+    activeItems: string[] ,}
 ';
 
 export interface ScoreData {;
     type: 'bubble' | 'combo' | 'bonus' | 'penalty';
     amount: number;
     totalScore: number;
-    multiplier?: number;
-   , source: string;
+    multiplier?: number,
+    source: string;
     comboCount?: number;
     timeRemaining?: number;
     activeItems?: string[]; }
@@ -105,13 +105,13 @@ export interface ScoreEventData { sessionId: string,
     amount: number;
     totalScore: number;
     multiplier: number;
-    source: string;
-   , contextInfo: ScoreContextInfo
+    source: string,
+    contextInfo: ScoreContextInfo
     ,}
 
 export interface ItemContextInfo { playerAP: number;
-    stageProgress: number;
-   , currentScore: number }
+    stageProgress: number,
+    currentScore: number }
 ';
 
 export interface ItemData { itemType: string,''
@@ -129,26 +129,26 @@ export interface ItemUsageEventData { sessionId: string,
     action: 'purchased' | 'used' | 'expired';
     cost: number;
     duration: number | null;
-    effectiveness: number | null;
-   , contextInfo: ItemContextInfo
+    effectiveness: number | null,
+    contextInfo: ItemContextInfo
     ,}
 ';
 
 export interface AnalyticsEvent {;
     type: 'session' | 'bubbleInteraction' | 'performance' | 'gameBalance' | 'score' | 'itemUsage';
     timestamp: number;
-    sessionId?: string;
-   , data: SessionData | BubbleInteractionData | PerformanceData | GameBalanceData | ScoreEventData | ItemUsageEventData }
+    sessionId?: string,
+    data: SessionData | BubbleInteractionData | PerformanceData | GameBalanceData | ScoreEventData | ItemUsageEventData }
 
 export interface EventStats { collected: number;
     processed: number;
-    errors: number;
-   , dropped: number }
+    errors: number,
+    dropped: number }
 
 export interface EventStatsExtended extends EventStats { queueSize: number;
     currentSessionId: string | null;
-    isEnabled: boolean;
-   , isPaused: boolean }
+    isEnabled: boolean,
+    isPaused: boolean }
 
 export interface PrivacyManager { checkConsent(): boolean;
     isOptedOut(feature: string): boolean,
@@ -160,7 +160,7 @@ export interface StorageManager {;
     saveData(storeName: string, data: any[]): Promise<void>
     ,}
 
-export type FeatureType = 'sessionTracking' | 'behaviorAnalysis' | 'performanceTracking';''
+export type FeatureType = 'sessionTracking' | 'behaviorAnalysis' | 'performanceTracking';
 export type EventType = 'session' | 'bubbleInteraction' | 'performance' | 'gameBalance' | 'score' | 'itemUsage';
 
 export class DataCollector {
@@ -199,11 +199,11 @@ export class DataCollector {
         // イベント統計
         this.eventStats = {
             collected: 0;
-            processed: 0;
-           , errors: 0;
+            processed: 0,
+    errors: 0;
     ,}
-            dropped: 0 }
-        };
+            dropped: 0 
+    };
         // エラーハンドリング
         this.maxRetries = 3;
         this.retryDelay = 1000;
@@ -233,18 +233,18 @@ export class DataCollector {
      * セッション開始
      */
     startSession(sessionInfo: SessionInfo): void { this.currentSessionId = this.generateSessionId();''
-        this.sessionStartTime = Date.now(''';
+        this.sessionStartTime = Date.now('''
             stageId: sessionInfo.stageId || 'unknown';
             finalScore: null;
             bubblesPopped: 0;
             bubblesMissed: 0;
             maxCombo: 0;
-            completed: false;
-           , exitReason: null,
+            completed: false,
+    exitReason: null,
             playerSettings: {''
                 difficulty: sessionInfo.difficulty || 'normal';
-                soundEnabled: sessionInfo.soundEnabled !== false;
-               , effectsEnabled: sessionInfo.effectsEnabled !== false ,}))
+                soundEnabled: sessionInfo.soundEnabled !== false,
+    effectsEnabled: sessionInfo.effectsEnabled !== false ,}))
         );
         this.collectSessionData(sessionData);
     }
@@ -254,18 +254,18 @@ export class DataCollector {
      */
     endSession(endInfo: SessionEndInfo): void { if (!this.currentSessionId || !this.sessionStartTime) return;
 
-        const endTime = Date.now(''';
+        const endTime = Date.now('''
             stageId: 'unknown', // Will be set from original session data;
             finalScore: endInfo.finalScore || 0;
             bubblesPopped: endInfo.bubblesPopped || 0;
             bubblesMissed: endInfo.bubblesMissed || 0;
-            maxCombo: endInfo.maxCombo || 0;
-           , completed: endInfo.completed || false,
+            maxCombo: endInfo.maxCombo || 0,
+    completed: endInfo.completed || false,
             exitReason: endInfo.exitReason || 'unknown',
             playerSettings: {''
                 difficulty: 'normal';
-                soundEnabled: true;
-               , effectsEnabled: true ,}))
+                soundEnabled: true,
+    effectsEnabled: true ,}))
         );
         this.collectSessionData(sessionData);
         
@@ -278,13 +278,13 @@ export class DataCollector {
      * セッションデータ収集
      */''
     private collectSessionData(sessionInfo: SessionData): void { ''
-        if(!this.shouldCollectData('sessionTracking)) return;
+        if(!this.shouldCollectData('sessionTracking)' return;
         ';
 
         const event: AnalyticsEvent = {''
             type: 'session';
-            timestamp: Date.now();
-           , data: sessionInfo };
+            timestamp: Date.now(),
+    data: sessionInfo };
         this.addToQueue(event);
     }
     
@@ -297,10 +297,10 @@ export class DataCollector {
         
         const interactionData: BubbleInteractionData = {'
             sessionId: this.currentSessionId,
-            timestamp: Date.now()';
-           , type: 'bubbleInteraction',);
-            timestamp: Date.now();
-           , data: interactionData ,};
+            timestamp: Date.now()',
+    type: 'bubbleInteraction',);
+            timestamp: Date.now(),
+    data: interactionData ,};
         this.addToQueue(event);
         this.eventStats.collected++;
     }
@@ -309,14 +309,14 @@ export class DataCollector {
      * パフォーマンスデータ収集'
      */''
     collectPerformanceData(performanceMetrics: PerformanceMetrics): void { ''
-        if(!this.shouldCollectData('performanceTracking) return;
+        if(!this.shouldCollectData('performanceTracking' return;
         
         const performanceData: PerformanceData = {'
             sessionId: this.currentSessionId,
-            timestamp: Date.now()';
-           , type: 'performance',);
-            timestamp: Date.now();
-           , data: performanceData ,};
+            timestamp: Date.now()',
+    type: 'performance',);
+            timestamp: Date.now(),
+    data: performanceData ,};
         this.addToQueue(event);
     }
     
@@ -324,15 +324,15 @@ export class DataCollector {
      * ゲームバランス関連データ収集'
      */''
     collectGameBalanceData(balanceData: GameBalanceData): void { ''
-        if(!this.shouldCollectData('behaviorAnalysis) return;''
+        if(!this.shouldCollectData('behaviorAnalysis' return;''
         if(!this.currentSessionId) return;
         ';
 
         const event: AnalyticsEvent = {''
             type: 'gameBalance';
             timestamp: Date.now();
-            sessionId: this.currentSessionId;
-           , data: balanceData };
+            sessionId: this.currentSessionId,
+    data: balanceData };
         this.addToQueue(event);
     }
     
@@ -345,10 +345,10 @@ export class DataCollector {
         
         const scoreEvent: ScoreEventData = {'
             sessionId: this.currentSessionId,
-            timestamp: Date.now()';
-           , type: 'score',);
-            timestamp: Date.now();
-           , data: scoreEvent ,};
+            timestamp: Date.now()',
+    type: 'score',);
+            timestamp: Date.now(),
+    data: scoreEvent ,};
         this.addToQueue(event);
     }
     
@@ -361,10 +361,10 @@ export class DataCollector {
         
         const itemEvent: ItemUsageEventData = {'
             sessionId: this.currentSessionId,
-            timestamp: Date.now()';
-           , type: 'itemUsage',);
-            timestamp: Date.now();
-           , data: itemEvent ,};
+            timestamp: Date.now()',
+    type: 'itemUsage',);
+            timestamp: Date.now(),
+    data: itemEvent ,};
         this.addToQueue(event);
     }
     
@@ -531,10 +531,9 @@ export class DataCollector {
      */
     getEventStats(): EventStatsExtended { return { ...this.eventStats,
             queueSize: this.eventQueue.length;
-            currentSessionId: this.currentSessionId;
-           , isEnabled: this.isEnabled, };
-            isPaused: this.isPaused }
-        }
+            currentSessionId: this.currentSessionId isEnabled: this.isEnabled };
+            isPaused: this.isPaused 
+    }
     
     /**
      * キューのクリア
@@ -553,5 +552,5 @@ export class DataCollector {
     /**
      * データコレクターの破棄
      */
-    destroy(): void { this.stopBatchProcessing(');''
-        this.flushQueue(' })'
+    destroy(): void { this.stopBatchProcessing();''
+        this.flushQueue(' }''

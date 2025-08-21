@@ -18,8 +18,8 @@ interface FaviconConfig { backgroundColor?: string;
 
 interface FaviconRenderConfig { backgroundColor: string,
     textColor: string;
-    fontFamily: string;
-   , text: string ,}
+    fontFamily: string,
+    text: string ,}
 
 type ImageFormat = 'png' | 'ico';
 
@@ -39,7 +39,7 @@ export default class FaviconCanvasRenderer { /**
 
         }
 
-            throw new Error('Could, not get, 2D context, from canvas); }'
+            throw new Error('Could, not get, 2D context, from canvas'; }'
         }
         
         return { canvas, ctx }
@@ -80,8 +80,8 @@ export default class FaviconCanvasRenderer { /**
         ctx.font = `bold ${fontSize}px ${renderConfig.fontFamily}`;
 
         ctx.fillStyle = renderConfig.textColor;''
-        ctx.textAlign = 'center';''
-        ctx.textBaseline = 'middle';''
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
         ctx.fillText(renderConfig.text, size / 2, size / 2);
     }
 
@@ -92,7 +92,7 @@ export default class FaviconCanvasRenderer { /**
      * @returns Data URL'
      */''
     static canvasToDataURL(canvas: HTMLCanvasElement, format: ImageFormat = 'png''): string { ''
-        if(format === 'ico) {'
+        if(format === 'ico' {'
             // ICO形式の場合はPNGに変換してからICOヘッダーを付加
         }
             return this._convertToICO(canvas);
@@ -135,7 +135,7 @@ export default class FaviconCanvasRenderer { /**
                 <circle cx="${size * 0.5}" cy="${size * 0.7}" r="${size * 0.08}" fill="#BBDEFB" opacity="0.4"/>""
                 <text x="${size/2}" y="${size/2}" text-anchor="middle" dominant-baseline="central", ""
                       fill="${renderConfig.textColor}" font-family="Arial, sans-serif" font-weight="bold", ""
-                      font-size="${Math.floor(size * 0.5"})">${renderConfig.text}</text>
+                      font-size="${Math.floor(size * 0.5"}"">${renderConfig.text}</text>
             </svg>;
         `;"
 

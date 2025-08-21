@@ -1,4 +1,4 @@
-import { getErrorHandler  } from '../utils/ErrorHandler.js';''
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
 import { getEffectsConfig  } from '../config/EffectsConfig.js';
 
 // Animation Manager types
@@ -31,10 +31,10 @@ export interface Animation { id: number,
     startValues: AnimationTarget;
     endValues: AnimationTarget;
     duration: number;
-    elapsed: number;
-   , easing: string,
+    elapsed: number,
+    easing: string,
     options?: AnimationOptions;''
-    onComplete?: (') => void; }
+    onComplete?: () => void; }
 ';
 
 export type AnimationType = '';
@@ -52,14 +52,14 @@ export interface TypeSettings { enabled: boolean,
 export interface PerformanceMetrics { frameTime: number,
     activeAnimations: number;
     totalAnimations: number;
-    averageFrameTime: number;
-   , maxFrameTime: number;
+    averageFrameTime: number,
+    maxFrameTime: number;
     memoryUsage?: number ,}
 ';
 
 export interface AnimationChainConfig {;
-    type: 'bubble' | 'ui';
-   , target: AnimationTarget;
+    type: 'bubble' | 'ui',
+    target: AnimationTarget;
     spawnType?: string;
     animationType?: string;
     duration?: number;
@@ -70,8 +70,8 @@ export interface AnimationChainConfig {;
 export interface QualitySettings {;
     quality: 'high' | 'medium' | 'low';
     maxAnimations: number;
-    frameSkipping: boolean;
-   , reducedEffects: boolean }
+    frameSkipping: boolean,
+    reducedEffects: boolean }
 /**
  * アニメーション管理クラス (Refactored)
  * アニメーション統合管理システム - サブコンポーネント化により責任を分離し、保守性を向上
@@ -116,17 +116,17 @@ export class AnimationManager {
         // イージング関数の設定 }
         this.easingFunctions = {};
         // サブコンポーネントの初期化
-        this._initializeSubComponents(''';
+        this._initializeSubComponents('''
             types: ['fade', 'scale', 'slide'];
         };
 
         ')';
-        console.log('Animation configuration:', { queueSize: this.animationQueue.length)'
+        console.log('Animation configuration:', { queueSize: this.animationQueue.length''
            , maxConcurrent: this.maxConcurrentAnimations,')';
-            subtleConfig: this.subtleAnimations )'),
+            subtleConfig: this.subtleAnimations ''),
 
-        console.log('[AnimationManager] アニメーション管理システムを初期化しました);
-        this._initializeFromConfig('); }
+        console.log('[AnimationManager] アニメーション管理システムを初期化しました';
+        this._initializeFromConfig(); }
     /**
      * サブコンポーネント初期化（Stub実装）'
      */''
@@ -148,8 +148,8 @@ export class AnimationManager {
                 getPerformanceMetrics: (): PerformanceMetrics => ({ frameTime: 16.67, // 60fps target
                     activeAnimations: this.animations.length;
                     totalAnimations: this.animationId;
-                    averageFrameTime: 16.67);
-                   , maxFrameTime: 33.33 
+                    averageFrameTime: 16.67),
+    maxFrameTime: 33.33 
 ,});
                 setEasingFunctions: (_functions: any) => {};
                 dispose: () => {;
@@ -157,22 +157,22 @@ export class AnimationManager {
             
             this.qualityController = {
                 recordFrameTime: (_frameTime: number) => {},''
-                getCurrentQualitySettings: ('): QualitySettings => ({;
+                getCurrentQualitySettings: (): QualitySettings => ({
                     quality: 'high';
                     maxAnimations: 50;
-                    frameSkipping: false);
-                   , reducedEffects: false 
-});
+                    frameSkipping: false),
+    reducedEffects: false 
+}';
             };
             ';
 
             this.bubbleHandler = {;
                 createBubbleSpawnAnimation: (bubble: any, spawnType: string, options: AnimationOptions'): Animation => { ' ,}
 
-                    return this._createBasicAnimation('bubbleSpawn', bubble, spawnType, options);,''
+                    return this._createBasicAnimation('bubbleSpawn', bubble, spawnType, options';,''
                 createBubbleDestroyAnimation: (bubble: any, destroyType: string, options: AnimationOptions'): Animation => {  ' }
 
-                    return this._createBasicAnimation('bubbleDestroy', bubble, destroyType, options);,''
+                    return this._createBasicAnimation('bubbleDestroy', bubble, destroyType, options';,''
                 createBubbleMovementAnimation: (bubble: any, _targetPosition: Position, duration: number, options: AnimationOptions'): Animation => { ' }
 
                     return this._createBasicAnimation('bubbleMovement', bubble, 'move', { ...options, duration });
@@ -184,7 +184,7 @@ export class AnimationManager {
             this.uiHandler = {;
                 createUIElementAnimation: (element: any, animationType: string, duration: number, options: AnimationOptions'): Animation => {' ,}
 
-                    return this._createBasicAnimation('uiElement', element, animationType, { ...options, duration });
+                    return this._createBasicAnimation('uiElement', element, animationType, { ...options, duration }';
 
                 },''
                 createScoreChangeAnimation: (_oldScore: number, _newScore: number, element: any, duration: number, options: AnimationOptions'): Animation => { ' }
@@ -198,7 +198,7 @@ export class AnimationManager {
             this.menuHandler = { ''
                 createMenuTransitionAnimations: (fromMenu: any, toMenu: any, transitionType: string, options: AnimationOptions'): Animation[] => {;
                     return ['';
-                        this._createBasicAnimation('menuExit', fromMenu, transitionType, options),]';
+                        this._createBasicAnimation('menuExit', fromMenu, transitionType, options',]';
                         this._createBasicAnimation('menuEnter', toMenu, transitionType, options)] }
                     ]; }
                 },
@@ -209,16 +209,15 @@ export class AnimationManager {
             this.loadingHandler = { ''
                 createLoadingAnimation: (type: string, position: Position | null, size: number, options: AnimationOptions'): Animation => {;
                     const target = {
-                        x: position? .x || this.canvas.width / 2, : undefined
-                        y: position? .y || this.canvas.height / 2, : undefined
+                        x: position?.x || this.canvas.width / 2, : undefined
+                        y: position?.y || this.canvas.height / 2, : undefined
                         width: size;
-                        height: size;
-                       , scale: 1
+                        height: size,
+    scale: 1
 ,}
-                        alpha: 1 }
-
-                    };''
-                    return this._createBasicAnimation('loading', target, type, options);
+                        alpha: 1 
+    };''
+                    return this._createBasicAnimation('loading', target, type, options';
 
                 },''
                 createProgressLoadingAnimation: (position: Position, size: number, options: AnimationOptions'): Animation => {  ' }
@@ -230,11 +229,11 @@ export class AnimationManager {
                 updateLoadingProgress: (animation: Animation, progress: number'): boolean => {  animation.target.alpha = progress; }'
                     return progress >= 1.0;
 
-            console.log('[AnimationManager] サブコンポーネントを初期化しました（Stub実装）);
+            console.log('[AnimationManager] サブコンポーネントを初期化しました（Stub実装）';
 
-        } catch (error') { console.error('AnimationManager サブコンポーネント初期化に失敗:', error);''
-            getErrorHandler(').handleError(error, 'ANIMATION_INIT_ERROR', {)'
-                context: 'AnimationManager._initializeSubComponents' ,});
+        } catch (error') { console.error('AnimationManager サブコンポーネント初期化に失敗:', error';''
+            getErrorHandler().handleError(error, 'ANIMATION_INIT_ERROR', {''
+                context: 'AnimationManager._initializeSubComponents' ,}';
         }
     /**
      * 基本アニメーション作成（Stub実装）'
@@ -252,11 +251,10 @@ export class AnimationManager {
             startValues: startValues;
             endValues: endValues;
             duration: duration;
-            elapsed: 0;
-           , easing: easing, };
+            elapsed: 0,
+    easing: easing, };
             options: options ;
-}
-        },
+    },
     }
     
     /**
@@ -281,8 +279,8 @@ export class AnimationManager {
             width: target.width || 100;
             height: target.height || 50;
             alpha: target.alpha || 1;
-            scale: target.scale || 1;
-           , rotation: target.rotation || 0 
+            scale: target.scale || 1,
+    rotation: target.rotation || 0 
 };
         switch(animationType) {', ';
 
@@ -313,8 +311,8 @@ export class AnimationManager {
             width: target.width || 100;
             height: target.height || 50;
             alpha: target.alpha || 1;
-            scale: target.scale || 1;
-           , rotation: target.rotation || 0 
+            scale: target.scale || 1,
+    rotation: target.rotation || 0 
 };
         switch(animationType) {', ';
 
@@ -334,7 +332,7 @@ export class AnimationManager {
      * 設定から初期化
      */
     private _initializeFromConfig(): void { try {
-            const animationConfig = this.effectsConfig.getAnimationConfig? .();''
+            const animationConfig = this.effectsConfig.getAnimationConfig?.();''
             if(animationConfig) {
                 : undefined
                 const settings: AnimationConfig = {
@@ -343,11 +341,10 @@ export class AnimationManager {
             ,}
 
                     quality: animationConfig.quality || 'high' ;
-}
-                },
+    },
                 this.engineCore.updateSettings(settings);
 
-            } catch (error) { getErrorHandler(').handleError(error, 'ANIMATION_CONFIG_ERROR', {)'
+            } catch (error) { getErrorHandler().handleError(error, 'ANIMATION_CONFIG_ERROR', {''
                 context: 'AnimationManager._initializeFromConfig' ,});
         }
     /**
@@ -575,8 +572,8 @@ export class AnimationManager {
             { 
                 x: loadingAnimation.target.x || 0, ;
                 y: loadingAnimation.target.y || 0 );
-                alpha: 0);
-               , scale: 1  ,},'', 'pulse',')';
+                alpha: 0),
+    scale: 1  ,},'', 'pulse',')';
             300')'';
             { intensity: 2.0, color: '#00FF00' )
         );
@@ -599,7 +596,7 @@ export class AnimationManager {
         let totalDelay = 0;
         animationChain.forEach((animConfig) => {  // 個別アニメーション作成（タイプに応じて適切なハンドラーを使用）
             setTimeout(() => {''
-                if(animConfig.type === 'bubble) {' }
+                if(animConfig.type === 'bubble' {' }
 
                     this.animateBubbleSpawn(animConfig.target, animConfig.spawnType, animConfig.options);' }'
 
@@ -620,7 +617,7 @@ export class AnimationManager {
         const parallelId = `parallel_${this.animationId++}`;
 
         animationList.forEach((animConfig) => {  // 並列でアニメーション実行
-            if(animConfig.type === 'bubble) {' }
+            if(animConfig.type === 'bubble' {' }
 
                 this.animateBubbleSpawn(animConfig.target, animConfig.spawnType, animConfig.options);' }'
 
@@ -721,9 +718,9 @@ export class AnimationManager {
         switch(interactionType) {'
 
             case 'hover':'';
-                return this.animateUIElement(element, 'pulse', 200, { intensity: 1.1, ...options ));''
+                return this.animateUIElement(element, 'pulse', 200, { intensity: 1.1, ...options )';''
             case 'click':'';
-                return this.animateUIElement(element, 'bounce', 150, { intensity: 0.95, ...options ));''
+                return this.animateUIElement(element, 'bounce', 150, { intensity: 0.95, ...options )';''
             case 'focus':'';
                 return this.animateUIElement(element, 'pulse', 300, { intensity: 1.05, ...options }
             default: return -1;
@@ -734,11 +731,11 @@ export class AnimationManager {
     public applyAnimationPreset(target: AnimationTarget, presetName: string, options: AnimationOptions = { ): number { }
 
         const presets: { [key: string]: () => number } = { ''
-            attention: (') => this.animateUIElement(target, 'pulse', 400, { intensity: 1.2, ...options ),''
-            gentleEnter: (') => this.animateUIElement(target, 'fadeIn', 300, options),
-            dynamicExit: (') => this.animateUIElement(target, 'fadeOut', 200, options),
-            error: (') => this.animateUIElement(target, 'shake', 300, { intensity: 1.0, ...options ),''
-            success: (') => this.animateUIElement(target, 'bounce', 400, options) }
+            attention: () => this.animateUIElement(target, 'pulse', 400, { intensity: 1.2, ...options ',''
+            gentleEnter: () => this.animateUIElement(target, 'fadeIn', 300, options',
+            dynamicExit: () => this.animateUIElement(target, 'fadeOut', 200, options',
+            error: () => this.animateUIElement(target, 'shake', 300, { intensity: 1.0, ...options ',''
+            success: () => this.animateUIElement(target, 'bounce', 400, options) }
         };
         
         const preset = presets[presetName];

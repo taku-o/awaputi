@@ -48,7 +48,7 @@ export class LanguageDetector {
 
                 if(language && this.isSupported(language) {' }'
 
-                    console.log(`Language, detected: ${language} via ${method.name}`'});
+                    console.log(`Language, detected: ${language} via ${method.name}`'}';
                     return language;
             ';
             // Ultimate fallback
@@ -56,7 +56,7 @@ export class LanguageDetector {
             return 'en';
 
         } catch (error) {
-            getErrorHandler(').handleError(error, 'LANGUAGE_DETECTION_ERROR', {)'
+            getErrorHandler().handleError(error, 'LANGUAGE_DETECTION_ERROR', {''
                 operation: 'detect'),
                 supportedLanguages: Array.from(this.supportedLanguages),' }'
 
@@ -83,7 +83,7 @@ export class LanguageDetector {
 
             return null;''
         } catch (error) {
-            console.warn('Failed to detect language from URL:', error);
+            console.warn('Failed to detect language from URL:', error';
             return null;
     
     /**
@@ -137,7 +137,7 @@ export class LanguageDetector {
 
             return null;''
         } catch (error) {
-            console.warn('Failed to detect language from browser:', error);
+            console.warn('Failed to detect language from browser:', error';
             return null;
     
     /**
@@ -152,13 +152,13 @@ export class LanguageDetector {
      * 言語コードを正規化'
      */''
     private normalizeLanguageCode(langCode: string | null): string | null { ''
-        if(!langCode || typeof, langCode !== 'string) {'
+        if(!langCode || typeof, langCode !== 'string' {'
             
         }
             return null;
         ';
         // 小文字に変換し、地域コードを除去
-        const normalized = langCode.toLowerCase(').split('-'')[0].split('_'')[0];
+        const normalized = langCode.toLowerCase().split('-'')[0].split('_'')[0];
         
         // 特殊なケースの処理
         const mapping: Record<string, string> = { '', 'zh-cn': 'zh-CN',
@@ -204,7 +204,7 @@ export class LanguageDetector {
             }
             return false;
 
-        } catch (error) { getErrorHandler(').handleError(error, 'LANGUAGE_DETECTION_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'LANGUAGE_DETECTION_ERROR', {''
                 operation: 'addSupportedLanguage',);
                 language: language ,});
             return false;
@@ -223,7 +223,7 @@ export class LanguageDetector {
             }
             return false;
 
-        } catch (error) { getErrorHandler(').handleError(error, 'LANGUAGE_DETECTION_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'LANGUAGE_DETECTION_ERROR', {''
                 operation: 'removeSupportedLanguage',);
                 language: language ,});
             return false;
@@ -245,7 +245,7 @@ export class LanguageDetector {
             }
             return false;
 
-        } catch (error) { getErrorHandler(').handleError(error, 'LANGUAGE_DETECTION_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'LANGUAGE_DETECTION_ERROR', {''
                 operation: 'saveLanguagePreference',);
                 language: language ,});
             return false;
@@ -263,10 +263,10 @@ export class LanguageDetector {
                 userLanguage: (navigator, as any').userLanguage || null }'
             };
             storageSettings: { ''
-                stored: localStorage.getItem('bubblePop_language };
+                stored: localStorage.getItem('bubblePop_language }
             urlSettings: { ''
-                params: new, URLSearchParams(window.location.search).get('lang) || '';
-                       new URLSearchParams(window.location.search).get('language), }'
+                params: new, URLSearchParams(window.location.search).get('lang' || '';
+                       new URLSearchParams(window.location.search).get('language', }'
         }
     
     /**
@@ -275,9 +275,9 @@ export class LanguageDetector {
     debug(): any { ''
         const stats = this.getDetectionStats()';
         console.group('Language, Detection Debug, Info'');''
-        console.log('Supported Languages:', stats.supportedLanguages);''
-        console.log('Current Detected:', stats.currentDetectedLanguage);''
-        console.log('Browser Settings:', stats.browserSettings);''
-        console.log('Storage Settings:', stats.storageSettings);''
-        console.log('URL Settings:', stats.urlSettings);''
+        console.log('Supported Languages:', stats.supportedLanguages';''
+        console.log('Current Detected:', stats.currentDetectedLanguage';''
+        console.log('Browser Settings:', stats.browserSettings';''
+        console.log('Storage Settings:', stats.storageSettings';''
+        console.log('URL Settings:', stats.urlSettings';''
         console.groupEnd(' }'

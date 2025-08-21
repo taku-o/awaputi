@@ -15,48 +15,48 @@ export interface OptimizerConfig { batchSize: number,
     cacheTimeout: number;
     maxNotifications: number;
     enableCaching: boolean;
-    enableBatching: boolean;
-   , enableThrottling: boolean ,}
+    enableBatching: boolean,
+    enableThrottling: boolean ,}
 
-export interface CacheEntry<T = any> { value: T;
-   , timestamp: number }
+export interface CacheEntry<T = any> { value: T,
+    timestamp: number }
 
 export interface BatchEvent { eventType: string;
     data: any;
     processor: EventProcessor;
-    resolve: (valu;e: any) => void;
-    reject: (reaso;n: any) => void;
-    timestamp: number }
-}
+    resolve: (value: any) => void;
+    reject: (reason: any) => void;
+    timestamp: number 
+    }
 
 export interface ThrottledEvent { eventType: string;
     data: any;
     processor: EventProcessor;
-    resolve: (valu;e: any) => void;
-    reject: (reaso;n: any) => void;
-    timestamp?: number }
-}
+    resolve: (value: any) => void;
+    reject: (reason: any) => void;
+    timestamp?: number 
+    }
 
 export interface PerformanceStats { updateCount: number;
     averageUpdateTime: number;
     cacheHits: number;
     cacheMisses: number;
     batchProcessingCount: number;
-    throttledEvents: number;
-   , totalProcessingTime: number }
+    throttledEvents: number,
+    totalProcessingTime: number }
 
 export interface ExtendedPerformanceStats extends PerformanceStats { cacheEfficiency: number;
-    cacheSize: number;
-   , queueSize: number }
+    cacheSize: number,
+    queueSize: number }
 
-export interface OptimizedBubbleData { totalBubbles: number;
-   , bubbleTypeCounts: Record<string, number>,
+export interface OptimizedBubbleData { totalBubbles: number,
+    bubbleTypeCounts: Record<string, number>,
     timestamp: number ,}
 
 export interface OptimizedScoreData { totalScore: number;
     maxScore: number;
-    updateCount: number;
-   , timestamp: number }
+    updateCount: number,
+    timestamp: number }
 
 export interface EventData { bubbleType?: string;
     score?: number;
@@ -88,11 +88,11 @@ export class AchievementPerformanceOptimizer {
             throttleDelay: 100, // スロットリング遅延（ms）;
             cacheTimeout: 5000, // キャッシュタイムアウト（ms）;
             maxNotifications: 5, // 最大通知数;
-            enableCaching: true;
-           , enableBatching: true;
+            enableCaching: true,
+    enableBatching: true;
     ,}
-            enableThrottling: true }
-        };
+            enableThrottling: true 
+    };
         // キャッシュとスロットリング
         this.cache = new Map<string, CacheEntry>();
         this.updateQueue = [];
@@ -109,8 +109,8 @@ export class AchievementPerformanceOptimizer {
             cacheHits: 0;
             cacheMisses: 0;
             batchProcessingCount: 0;
-            throttledEvents: 0;
-           , totalProcessingTime: 0 ,}
+            throttledEvents: 0,
+    totalProcessingTime: 0 ,}
 
     /**
      * パフォーマンス最適化を初期化
@@ -167,8 +167,8 @@ export class AchievementPerformanceOptimizer {
                 processor);
                 resolve,);
                 reject); }
-                timestamp: Date.now(); }
-            });
+                timestamp: Date.now(); 
+    });
 
             // バッチサイズに達したら即座に処理
             if (this.batchQueue.length >= this.config.batchSize) { this.processBatchQueue(); }
@@ -267,8 +267,8 @@ export class AchievementPerformanceOptimizer {
         
         return { totalBubbles,
             bubbleTypeCounts, };
-            timestamp: Date.now(); }
-        }
+            timestamp: Date.now(); 
+    }
 
     /**
      * スコアイベントを最適化
@@ -281,8 +281,8 @@ export class AchievementPerformanceOptimizer {
         return { totalScore,
             maxScore,
             updateCount: events.length, };
-            timestamp: Date.now(); }
-        }
+            timestamp: Date.now(); 
+    }
 
     /**
      * スロットリング更新
@@ -430,8 +430,8 @@ export class AchievementPerformanceOptimizer {
         return { ...this.performanceStats,
             cacheEfficiency,
             cacheSize: this.cache.size, };
-            queueSize: this.updateQueue.length + this.batchQueue.length }
-        }
+            queueSize: this.updateQueue.length + this.batchQueue.length 
+    }
 
     /**
      * パフォーマンス統計をリセット
@@ -442,8 +442,8 @@ export class AchievementPerformanceOptimizer {
             cacheHits: 0;
             cacheMisses: 0;
             batchProcessingCount: 0;
-            throttledEvents: 0;
-           , totalProcessingTime: 0 }
+            throttledEvents: 0,
+    totalProcessingTime: 0 }
 
     /**
      * 設定を更新
@@ -501,8 +501,8 @@ export class AchievementPerformanceOptimizer {
      */
     getQueueStatus(): { batchQueue: number; updateQueue: number;, isProcessing: boolean } { return { batchQueue: this.batchQueue.length,
             updateQueue: this.updateQueue.length, };
-            isProcessing: this.batchProcessor !== null || this.throttleTimer !== null }
-        }
+            isProcessing: this.batchProcessor !== null || this.throttleTimer !== null 
+    }
 
     /**
      * 最適化システムを破棄
@@ -511,4 +511,4 @@ export class AchievementPerformanceOptimizer {
         this.cache.clear();
         this.updateQueue = [];
         this.batchQueue = [];''
-        this.resetPerformanceStats(' })'
+        this.resetPerformanceStats(' }''

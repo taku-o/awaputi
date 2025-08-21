@@ -1,22 +1,22 @@
-import { getErrorHandler  } from '../utils/ErrorHandler.js';''
-import { FocusManager  } from './FocusManager.js';''
-import { KeyboardAccessibilityManager  } from './KeyboardAccessibilityManager.js';''
+import { getErrorHandler  } from '../utils/ErrorHandler.js';
+import { FocusManager  } from './FocusManager.js';
+import { KeyboardAccessibilityManager  } from './KeyboardAccessibilityManager.js';
 import { VisualFocusManager  } from './VisualFocusManager.js';
 
 // インターフェース定義
 interface GameEngine { keyboardShortcutManager?: any;
     isDebugMode?: () => boolean;''
-    addEventListener?: (even;t: string, callback: (even;t: any) => void') => void ,}'
+    addEventListener?: (event: string, callback: (event: any) => void') => void ,}'
 }
 
 interface SystemPreferences { reducedMotion: boolean,
-    highContrast: boolean;
-   , largeText: boolean,
+    highContrast: boolean,
+    largeText: boolean,
     screenReader: boolean,
     colorScheme: 'light' | 'dark' ,}
 
-interface Manager { applyConfig?: (confi;g: any) => void | Promise<void>;
-    setEnabled?: (enable;d: boolean) => void;
+interface Manager { applyConfig?: (config: any) => void | Promise<void>;
+    setEnabled?: (enabled: boolean) => void;
     generateReport?: () => any;
     destroy?: () => void; ,}
 }
@@ -37,8 +37,8 @@ interface ComplianceResult { compliant: boolean,
 
 interface TestingFramework { runFullAudit: () => Promise<{
         overallComplianc;e: boolean;
-        issues: any[];
-       , score: number }
+        issues: any[],
+    score: number 
     }>;
     destroy?: () => void;
 }
@@ -81,7 +81,7 @@ export class CoreAccessibilityManager {
         // 初期化される後続のプロパティ
         this.managerRegistry = new Map();''
         this.managerDependencies = new Map('';
-    ,})'
+    ,}''
         console.log('AccessibilityManager, initialized'); }'
     }
     
@@ -104,9 +104,9 @@ export class CoreAccessibilityManager {
             this.setupEventListeners();
             
             // テストフレームワークの初期化（開発時のみ）
-            if(this.gameEngine.isDebugMode? .() {
+            if(this.gameEngine.isDebugMode?.() {
 
-                await this.initializeTestingFramework(');
+                await this.initializeTestingFramework();
 
             console.log('Accessibility, system initialized, successfully');
             ';
@@ -124,9 +124,9 @@ export class CoreAccessibilityManager {
                 detectedPreferences: this.state.systemPreferences);
             return true ,}
 
-        } catch (error) { getErrorHandler(').handleError(error, 'ACCESSIBILITY_ERROR', {)'
+        } catch (error) { getErrorHandler().handleError(error, 'ACCESSIBILITY_ERROR', {''
                 operation: 'initialize',')';
-                phase: 'core_setup' ,});
+                phase: 'core_setup' ,}';
             return false;
     
     /**
@@ -136,8 +136,8 @@ export class CoreAccessibilityManager {
         console.log('Detecting, system accessibility, preferences...'');
         
         const preferences: SystemPreferences = { reducedMotion: false,
-            highContrast: false;
-           , largeText: false,
+            highContrast: false,
+    largeText: false,
             screenReader: false,
             colorScheme: 'light' ,};
         ';
@@ -154,7 +154,7 @@ export class CoreAccessibilityManager {
                 reducedMotionQuery.addEventListener('change', (e) => { ' }
 
                     this.handleSystemPreferenceChange('reducedMotion', e.matches); }
-                });
+                }';
             }
             ';
             // High Contrast の検出
@@ -170,7 +170,7 @@ export class CoreAccessibilityManager {
                 highContrastQuery.addEventListener('change', (e) => { ' }
 
                     this.handleSystemPreferenceChange('highContrast', e.matches); }
-                });
+                }';
             }
             ';
             // Color Scheme の検出
@@ -185,8 +185,8 @@ export class CoreAccessibilityManager {
 
                 darkSchemeQuery.addEventListener('change', (e) => { ' }
 
-                    this.handleSystemPreferenceChange('colorScheme', e.matches ? 'dark' : 'light); }
-                });
+                    this.handleSystemPreferenceChange('colorScheme', e.matches ? 'dark' : 'light); 
+    });
             }
             
             // Screen Reader の検出（推定）
@@ -199,7 +199,7 @@ export class CoreAccessibilityManager {
             // 検出された設定を自動適用
             await this.applySystemPreferences(preferences);
 
-            console.log('System preferences detected:', preferences);''
+            console.log('System preferences detected:', preferences';''
         } catch (error) { console.warn('Failed to detect some system preferences:', error }
     }
     
@@ -270,8 +270,8 @@ export class CoreAccessibilityManager {
 
             }
 
-                this.config.visual.motion.level = preferences.reducedMotion ? 'minimal' : 'none'; }
-            }
+                this.config.visual.motion.level = preferences.reducedMotion ? 'minimal' : 'none'; 
+    }
             ';
             // High Contrast
             if(preferences.highContrast !== undefined) {'
@@ -279,15 +279,15 @@ export class CoreAccessibilityManager {
 
             }
 
-                this.config.visual.highContrast.level = preferences.highContrast ? 'aaa' : 'aa'; }
-            }
+                this.config.visual.highContrast.level = preferences.highContrast ? 'aaa' : 'aa'; 
+    }
             
             // Large Text
             if(preferences.largeText !== undefined) {
                 this.config.visual.textScaling.enabled = preferences.largeText;
             }
-                this.config.visual.textScaling.scale = preferences.largeText ? 1.2 : 1.0; }
-            }
+                this.config.visual.textScaling.scale = preferences.largeText ? 1.2 : 1.0; 
+    }
             ;
             // Screen Reader
             if(preferences.screenReader !== undefined) {'
@@ -295,8 +295,8 @@ export class CoreAccessibilityManager {
                 this.config.screenReader.enabled = preferences.screenReader ? true: 'auto',
 
             
-                this.config.screenReader.verbosity = preferences.screenReader ? 'normal' : 'minimal'; }
-            }
+                this.config.screenReader.verbosity = preferences.screenReader ? 'normal' : 'minimal'; 
+    }
             
             // Color Scheme
             if (preferences.colorScheme !== undefined) { this.config.visual.colorScheme = preferences.colorScheme; }
@@ -306,9 +306,9 @@ export class CoreAccessibilityManager {
             ';
 
         } catch (error) {
-            getErrorHandler(').handleError(error, 'ACCESSIBILITY_ERROR', {)'
+            getErrorHandler().handleError(error, 'ACCESSIBILITY_ERROR', {''
                 operation: 'applySystemPreferences',);
-                preferences); });
+                preferences); }';
         }
     }
     
@@ -326,7 +326,7 @@ export class CoreAccessibilityManager {
             ['audio', null],
             ['motor', null],
             ['cognitive', null],
-            ['testing', null])';
+            ['testing', null]'';
         ]');
         
         // マネージャー間の依存関係定義
@@ -338,7 +338,7 @@ export class CoreAccessibilityManager {
             ['motor', ['keyboard]],
             ['cognitive', ['keyboard', 'screenReader]],
             ['testing', ['keyboard', 'screenReader', 'visual', 'audio]]);
-        ]);
+        ]';
     }
     
     /**
@@ -385,7 +385,7 @@ export class CoreAccessibilityManager {
             resolved.push(managerType);
         };
         
-        for(const, managerType of, this.managerRegistry.keys() { resolve(managerType); }
+        for(const managerType of this.managerRegistry.keys() { resolve(managerType); }
         
         return resolved;
     }
@@ -393,7 +393,7 @@ export class CoreAccessibilityManager {
     /**
      * 個別マネージャーの初期化
      */
-    async initializeManager(managerType) { console.log(`Initializing ${managerType) manager...`);
+    async initializeManager(managerType) { console.log(`Initializing ${managerType) manager...`');
         
         try {
             let, manager = null;
@@ -411,7 +411,7 @@ export class CoreAccessibilityManager {
                     );
                     
                     // VisualFocusManagerを初期化
-                    const, visualFocusManager = new, VisualFocusManager(this, focusManager};
+                    const, visualFocusManager = new, VisualFocusManager(this, focusManager}
                     
                     // 統合管理オブジェクトを作成
                     manager = {
@@ -421,25 +421,25 @@ export class CoreAccessibilityManager {
                         // 統一インターフェース
                        , applyConfig: (config} => { 
             }
-                            focusManager.applyConfig? .(config), }
+                            focusManager.applyConfig?.(config), }
                             keyboardAccessibilityManager.applyConfig?.(config); }
                             visualFocusManager.applyConfig?.(config});
                         },
                          : undefined
-                        setEnabled: (enabled) => {  focusManager.setEnabled? .(enabled);
+                        setEnabled: (enabled) => {  focusManager.setEnabled?.(enabled);
                             keyboardAccessibilityManager.setEnabled?.(enabled); }
                             visualFocusManager.setEnabled?.(enabled); }
                         },
                          : undefined
                         generateReport: () => ({
-                            focus: focusManager.generateReport? .() || {}, : undefined
-                            accessibility: keyboardAccessibilityManager.generateReport? .() || {}, : undefined
-                            visual: visualFocusManager.generateReport? .() || {});
+                            focus: focusManager.generateReport?.() || {}, : undefined
+                            accessibility: keyboardAccessibilityManager.generateReport?.() || {}, : undefined
+                            visual: visualFocusManager.generateReport?.() || {});
                          : undefined
-                        destroy: () => {  focusManager.destroy? .();
+                        destroy: () => {  focusManager.destroy?.();
                             keyboardAccessibilityManager.destroy?.();' }'
 
-                            visualFocusManager.destroy?.('); }'
+                            visualFocusManager.destroy?.(); }'
 };
                     break;
 
@@ -471,7 +471,7 @@ export class CoreAccessibilityManager {
 
                 case 'testing':';
                     // デバッグモードでのみ初期化
-                    if(this.gameEngine.isDebugMode? .()) { ''
+                    if(this.gameEngine.isDebugMode?.()) { ''
                         console.log('AccessibilityTestingFramework, will be, implemented in, subsequent tasks'); }'
                     break;
             }
@@ -514,7 +514,7 @@ export class CoreAccessibilityManager {
             // シーン変更の監視
         }
 
-            this.gameEngine.addEventListener? .('sceneChanged', (event) => {  }
+            this.gameEngine.addEventListener?.('sceneChanged', (event) => {  }
 
                 this.handleSceneChange(event);' }'
 
@@ -547,7 +547,7 @@ export class CoreAccessibilityManager {
     async applyConfiguration(config) { ''
         if(!this.isInitialized) {'
 
-            console.warn('AccessibilityManager not initialized, configuration will be applied after initialization);
+            console.warn('AccessibilityManager not initialized, configuration will be applied after initialization';
             this.pendingConfiguration = config;
         }
             if (config') { }
@@ -559,21 +559,21 @@ export class CoreAccessibilityManager {
         try { // 各マネージャーに設定を適用
             for(const [type, manager] of this.managers) {'
 
-                if(manager && typeof, manager.applyConfig === 'function) {'
+                if(manager && typeof, manager.applyConfig === 'function' {'
             }
 
                     await manager.applyConfig(config); }
 }
             ';
             // 設定適用イベントを発行
-            this.emit('configurationApplied', { config });
+            this.emit('configurationApplied', { config }';
 
-            console.log('Configuration, applied successfully);
+            console.log('Configuration, applied successfully';
 
         } catch (error') {
-            getErrorHandler(').handleError(error, 'ACCESSIBILITY_ERROR', {)'
+            getErrorHandler().handleError(error, 'ACCESSIBILITY_ERROR', {''
                 operation: 'applyConfiguration',);
-                config); });
+                config); }';
         }
     }
     
@@ -591,14 +591,14 @@ export class CoreAccessibilityManager {
         ';
 
         try {'
-            console.log('Validating, WCAG 2.1, AA compliance...);
-            const results = await this.testingFramework.runFullAudit(');
+            console.log('Validating WCAG 2.1 AA compliance...');
+            const results = await this.testingFramework.runFullAudit();
             
             this.state.complianceStatus = {'
                 wcag21AA: results.overallCompliance,
                 lastCheck: new Date()';
             console.log('WCAG compliance validation, completed:', this.state.complianceStatus);
-            return results; catch (error) { getErrorHandler(').handleError(error, 'ACCESSIBILITY_ERROR', {)'
+            return results; catch (error) { getErrorHandler().handleError(error, 'ACCESSIBILITY_ERROR', {''
                 operation: 'validateCompliance' ,});
             return { compliant: false, error: error.message ,}
     }
@@ -608,30 +608,30 @@ export class CoreAccessibilityManager {
      */
     generateReport() {
         const report = {
-            timestamp: new Date().toISOString();
-           , system: {
+            timestamp: new Date().toISOString(),
+    system: {
                 userAgent: navigator.userAgent;
-                systemPreferences: this.state.systemPreferences;
-               , screenSize: {
+                systemPreferences: this.state.systemPreferences,
+    screenSize: {
                     width: window.screen.width;
     }
-                    height: window.screen.height }
-};
+                    height: window.screen.height 
+    };
             configuration: { keyboard: this.config.keyboard;
                 screenReader: this.config.screenReader;
                 visual: this.config.visual;
                 audio: this.config.audio;
-                motor: this.config.motor;
-               , cognitive: this.config.cognitive };
+                motor: this.config.motor,
+    cognitive: this.config.cognitive };
             managers: {};
-            compliance: this.state.complianceStatus;
-           , statistics: this.getUsageStatistics();
+            compliance: this.state.complianceStatus,
+    statistics: this.getUsageStatistics();
         };
         ';
         // 各マネージャーからレポートデータを収集
         for(const [type, manager] of this.managers) {'
 
-            if(manager && typeof, manager.generateReport === 'function) {'
+            if(manager && typeof, manager.generateReport === 'function' {'
         }
                 report.managers[type] = manager.generateReport(); }
 }
@@ -644,12 +644,12 @@ export class CoreAccessibilityManager {
      */
     getUsageStatistics() {
         return { initializationTime: this.state.initializationTime,
-            managersCount: this.managers.size;
-           , eventsEmitted: this.state.eventsEmitted || 0;
+            managersCount: this.managers.size,
+    eventsEmitted: this.state.eventsEmitted || 0;
     ,}
             errorsHandled: this.state.errorsHandled || 0, };
-            configChanges: this.state.configChanges || 0 }
-        }
+            configChanges: this.state.configChanges || 0 
+    }
     
     // イベントエミッター機能
     
@@ -761,13 +761,13 @@ export class CoreAccessibilityManager {
         this.isEnabled = enabled;
         // 各マネージャーに状態を通知
         for(const [type, manager] of this.managers) {''
-            if(manager && typeof, manager.setEnabled === 'function) {'
+            if(manager && typeof, manager.setEnabled === 'function' {'
     }
 
                 manager.setEnabled(enabled); }
 }
 
-        this.emit('enabledChanged', { enabled });''
+        this.emit('enabledChanged', { enabled }';''
         console.log(`AccessibilityManager ${enabled ? 'enabled' : 'disabled'}`);
     }
     
@@ -865,12 +865,12 @@ export class CoreAccessibilityManager {
     }
 
     enableScreenReaderSupport(''';
-        this.config.screenReader.verbosity = 'normal';)'
+        this.config.screenReader.verbosity = 'normal';''
         this.applyConfiguration(this.config);''
         console.log('Screen, reader support, enabled'');
     }
 
-    announce(message, priority = 'polite) {'
+    announce(message, priority = 'polite' {'
         // スクリーンリーダー向けアナウンスの実装
         if (this.config.screenReader.enabled) {
             // ARIA live region を使用してアナウンス
@@ -882,18 +882,18 @@ export class CoreAccessibilityManager {
 
     createAriaLiveAnnouncement(message, priority) {'
         // ARIA live region の作成とアナウンス
-        let liveRegion = document.getElementById('accessibility-live-region);''
+        let liveRegion = document.getElementById('accessibility-live-region';''
         if(!liveRegion) {''
             liveRegion = document.createElement('div'');''
-            liveRegion.id = 'accessibility-live-region';''
-            liveRegion.setAttribute('aria-live', priority);''
+            liveRegion.id = 'accessibility-live-region';
+            liveRegion.setAttribute('aria-live', priority';''
             liveRegion.setAttribute('aria-atomic', 'true);
             liveRegion.style.cssText = `;
                 position: absolute;
                 left: -10000px;
                 width: 1px;
-                height: 1px;
-               , overflow: hidden,
+                height: 1px,
+    overflow: hidden,
             `;
 
     }
@@ -934,19 +934,19 @@ export class CoreAccessibilityManager {
     ';
 
         const help = this.generateAccessibilityHelp()';
-        console.log('Accessibility Help:', help);
+        console.log('Accessibility Help:', help';
 
     }
 
-        this.emit('accessibilityHelpRequested', { help ); }
+        this.emit('accessibilityHelpRequested', { help '; }
 
-    generateAccessibilityHelp(''';
+    generateAccessibilityHelp('''
                 'Alt+Shift+S: スクリーンリーダー切り替え',
                 'Ctrl+Plus: テキストサイズ拡大',
                 'Ctrl+Minus: テキストサイズ縮小',
                 'Ctrl+Alt+H: ハイコントラスト切り替え',
                 'Alt+Shift+H: このヘルプを表示);
-            ])';
+            ]'';
            , features: ['';
                 'キーボードナビゲーション対応',
                 'スクリーンリーダー対応',
@@ -966,7 +966,7 @@ export class CoreAccessibilityManager {
         // 各マネージャーのクリーンアップ
         for(const [type, manager] of this.managers) {'
 
-            if(manager && typeof, manager.destroy === 'function) {'
+            if(manager && typeof, manager.destroy === 'function' {'
                 try {
         }
                     manager.destroy(); }
@@ -982,7 +982,7 @@ export class CoreAccessibilityManager {
         this.managers.clear();
         this.managerRegistry.clear();''
         this.managerDependencies.clear()';
-        if(this.testingFramework && typeof, this.testingFramework.destroy === 'function) {'
+        if(this.testingFramework && typeof, this.testingFramework.destroy === 'function' {'
 
             this.testingFramework.destroy();
         }
@@ -1003,10 +1003,10 @@ export class AccessibilityConfiguration {
     public testing: any,
     public compliance: any,
 
-    constructor(''';
+    constructor('''
             navigationMode: '2d', // '1d', '2d', 'custom''';
-            shortcuts: new Map(''';
-           , tabOrder: 'logical' // 'logical', 'dom', 'custom' };
+            shortcuts: new Map(''',
+    tabOrder: 'logical' // 'logical', 'dom', 'custom' };
         ';
 
         this.screenReader = {;
@@ -1015,8 +1015,8 @@ export class AccessibilityConfiguration {
             announcements: {
                 gameState: true;
                 score: true;
-                actions: true;
-               , errors: true ,};
+                actions: true,
+    errors: true ,};
             speechRate: 1.0,
             language: 'auto';
         },
@@ -1025,13 +1025,13 @@ export class AccessibilityConfiguration {
                 enabled: false,
                 level: 'aa', // 'aa', 'aaa';
                 customColors: null ,};
-            textScaling: { enabled: false;
-               , scale: 1.0, // 0.8 - 2.0;
+            textScaling: { enabled: false,
+    scale: 1.0, // 0.8 - 2.0;
                 lineHeight: 1.4 ,};
             colorBlindness: { enabled: false,''
                 type: 'none', // 'protanopia', 'deuteranopia', 'tritanopia';
-                patterns: true;
-               , shapes: true ,};
+                patterns: true,
+    shapes: true ,};
             motion: { reduced: false,''
                 level: 'none' // 'none', 'reduced', 'minimal' }
 
@@ -1046,32 +1046,32 @@ export class AccessibilityConfiguration {
 
             captions: { enabled: false,''
                 position: 'bottom', // 'top', 'bottom', 'overlay''';
-                size: 'medium';
-               , background: true ,};
-            vibration: { enabled: false;
-               , intensity: 0.5, // 0.0 - 1.0;
-                patterns: new Map(''';
-               , dominantHand: 'right' // 'left', 'right' },
+                size: 'medium',
+    background: true ,};
+            vibration: { enabled: false,
+    intensity: 0.5, // 0.0 - 1.0;
+                patterns: new Map(''',
+    dominantHand: 'right' // 'left', 'right' },
             sensitivity: { mouse: 1.0;
-                touch: 1.0;
-               , keyboard: 1.0 };
+                touch: 1.0,
+    keyboard: 1.0 };
             timing: { clickDelay: 0;
-                holdDuration: 500;
-               , doubleClickInterval: 300 };
+                holdDuration: 500,
+    doubleClickInterval: 300 };
             alternativeInput: { switches: false;
-                eyeTracking: false;
-               , voiceControl: false }
-        };
+                eyeTracking: false,
+    voiceControl: false 
+    };
         this.cognitive = { simplification: {'
                 enabled: false,
                 level: 'basic' // 'basic', 'intermediate', 'advanced' },
             help: { contextual: true;
-                tooltips: true;
-               , tutorials: true };
+                tooltips: true,
+    tutorials: true };
             errorHandling: { recovery: true;
-                suggestions: true;
-               , prevention: true }
-        }
+                suggestions: true,
+    prevention: true 
+    }
 }
 
 /**
@@ -1100,8 +1100,8 @@ export class AccessibilityState {
         this.userPreferences = new Map(); }
         this.systemPreferences = {};
         this.complianceStatus = { wcag21AA: false,
-            lastCheck: null;
-           , issues: [] ,}
+            lastCheck: null,
+    issues: [] ,}
 
         };''
-        this.initializationTime = Date.now(');
+        this.initializationTime = Date.now();

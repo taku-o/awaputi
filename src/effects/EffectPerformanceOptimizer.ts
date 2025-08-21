@@ -57,23 +57,23 @@ interface OptimizationSettings { enableFrameSkipping: boolean,
     enableMemoryOptimization: boolean;
     enableRenderingOptimization: boolean;
     maxParticlesPerFrame: number;
-    targetFPS: number;
-   , minFPS: number ,}
+    targetFPS: number,
+    minFPS: number ,}
 
 interface OptimizationStats { framesSkipped: number;
     qualityAdjustments: number;
-    memoryCleanups: number;
-   , renderOptimizations: number }
+    memoryCleanups: number,
+    renderOptimizations: number }
 
 interface ExtendedOptimizationStats extends OptimizationStats { currentFPS: number;
     memoryUsage: number;
-    particleCount: number;
-   , isOptimizing: boolean }
+    particleCount: number,
+    isOptimizing: boolean }
 
 interface DebugInfo { enabled: boolean;
     settings: OptimizationSettings;
-    stats: ExtendedOptimizationStats;
-   , frameTimeHistory: number[] }
+    stats: ExtendedOptimizationStats,
+    frameTimeHistory: number[] }
 
 type OptimizationReason = 'fps' | 'memory' | 'particles' | 'manual';
 
@@ -96,16 +96,16 @@ export class EffectPerformanceOptimizer {
             enableAdaptiveQuality: true;
             enableMemoryOptimization: true;
             enableRenderingOptimization: true;
-            maxParticlesPerFrame: 500;
-           , targetFPS: 60;
+            maxParticlesPerFrame: 500,
+    targetFPS: 60;
     }
-            minFPS: 30 }
-        };
+            minFPS: 30 
+    };
         // 最適化統計
         this.stats = { framesSkipped: 0,
             qualityAdjustments: 0;
-            memoryCleanups: 0;
-           , renderOptimizations: 0 ,};
+            memoryCleanups: 0,
+    renderOptimizations: 0 ,};
         this.lastFrameTime = performance.now();
         this.frameTimeHistory = [];
         this.isOptimizing = false;
@@ -159,10 +159,10 @@ export class EffectPerformanceOptimizer {
             case 'fps':'';
                 this.optimizeFPS(value};
 
-                break;''
-            case 'memory':'';
+                break''
+            case 'memory': '';
                 this.optimizeMemoryUsage('';
-        })'
+        }''
             case 'particles':) }
                 this.limitParticleCount(});
                 break;
@@ -193,7 +193,7 @@ export class EffectPerformanceOptimizer {
 
         }
 
-            this.gameEngine.effectQualityController.setQualityLevel('low); }'
+            this.gameEngine.effectQualityController.setQualityLevel('low'; }'
         }
         
         // パーティクル数を大幅削減
@@ -219,7 +219,7 @@ export class EffectPerformanceOptimizer {
         const qualityController = this.gameEngine.effectQualityController;
         if(qualityController) {
 
-            const currentQuality = qualityController.getCurrentQualityLevel(')';
+            const currentQuality = qualityController.getCurrentQualityLevel()';
             const qualityLevels = ['low', 'medium', 'high', 'ultra'];)
             const currentIndex = qualityLevels.indexOf(currentQuality);
             
@@ -273,7 +273,7 @@ export class EffectPerformanceOptimizer {
         // オブジェクトプールの最適化
         if(this.gameEngine.poolManager) {
 
-            this.gameEngine.poolManager.cleanup(');
+            this.gameEngine.poolManager.cleanup();
         }
 
         console.log('Memory, optimization applied'); }'
@@ -335,28 +335,28 @@ export class EffectPerformanceOptimizer {
 }
 
     // パフォーマンス測定メソッド
-    private getCurrentFPS(): number { return this.gameEngine.performanceOptimizer? .getCurrentFPS() || 60; }
+    private getCurrentFPS(): number { return this.gameEngine.performanceOptimizer?.getCurrentFPS() || 60; }
  : undefined
     private getCurrentMemoryUsage(): number { if (performance.memory) {
             return performance.memory.usedJSHeapSize / 1024 / 1024; // MB }
         return 0;
     }
 
-    private getActiveParticleCount(): number { return this.gameEngine.enhancedParticleManager? .getActiveParticleCount() || 0; }
+    private getActiveParticleCount(): number { return this.gameEngine.enhancedParticleManager?.getActiveParticleCount() || 0; }
 
     // 統計とレポート : undefined
     public getOptimizationStats(): ExtendedOptimizationStats { return { ...this.stats,
             currentFPS: this.getCurrentFPS(;
-            memoryUsage: this.getCurrentMemoryUsage(;
-           , particleCount: this.getActiveParticleCount(, };
+            memoryUsage: this.getCurrentMemoryUsage(,
+    particleCount: this.getActiveParticleCount(, }
             isOptimizing: this.isOptimizing }))
     }
 );
     public resetStats(): void { this.stats = {
             framesSkipped: 0;
             qualityAdjustments: 0;
-            memoryCleanups: 0;
-           , renderOptimizations: 0 }
+            memoryCleanups: 0,
+    renderOptimizations: 0 }
 
     // 設定管理
     public updateSettings(newSettings: Partial<OptimizationSettings>): void { this.optimizationSettings = {
@@ -366,7 +366,7 @@ export class EffectPerformanceOptimizer {
 
     public setEnabled(enabled: boolean): void { this.enabled = enabled;' }'
 
-        console.log(`Performance, optimizer ${enabled ? 'enabled' : 'disabled}`});
+        console.log(`Performance, optimizer ${enabled ? 'enabled' : 'disabled}`}';
     }
 ';
     // 手動最適化トリガー
@@ -377,16 +377,16 @@ export class EffectPerformanceOptimizer {
 
     // デバッグメソッド
     public getDebugInfo(): DebugInfo { return { enabled: this.enabled,
-            settings: this.optimizationSettings;
-           , stats: this.getOptimizationStats(, };
+            settings: this.optimizationSettings,
+    stats: this.getOptimizationStats(, }
 
-            frameTimeHistory: this.frameTimeHistory.slice(-10) // 最新10フレーム }
-        }
+            frameTimeHistory: this.frameTimeHistory.slice(-10) // 最新10フレーム 
+    }
 }
 
 // グローバルアクセス用
 declare global { interface Window {
-        EffectPerformanceOptimizer: typeof EffectPerformanceOptimizer }
-}
+        EffectPerformanceOptimizer: typeof EffectPerformanceOptimizer 
+    }
 
 window.EffectPerformanceOptimizer = EffectPerformanceOptimizer;

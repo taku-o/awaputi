@@ -9,44 +9,44 @@ import path from 'path';
 interface DuplicateFile { fileName: string,
     paths: string[] ,}
 
-interface DuplicateClass { className: string;
-   , locations: ClassLocation[]
+interface DuplicateClass { className: string,
+    locations: ClassLocation[]
     }
 
-interface ClassLocation { file: string;
-   , line: number;
+interface ClassLocation { file: string,
+    line: number;
     column?: number }
 
 interface FileNameResolution { originalPath: string;
     newPath: string;
-    newFileName: string;
-   , reason: string }
+    newFileName: string,
+    reason: string }
 
 interface ClassNameResolution { location: ClassLocation;
-    newClassName: string;
-   , reason: string }
+    newClassName: string,
+    reason: string }
 
 interface FileNameStrategy { originalName: string;
-    conflicts: string[];
-   , resolutions: FileNameResolution[]
+    conflicts: string[],
+    resolutions: FileNameResolution[]
     }
 
 interface ClassNameStrategy { originalClassName: string;
-    conflicts: ClassLocation[];
-   , resolutions: ClassNameResolution[]
+    conflicts: ClassLocation[],
+    resolutions: ClassNameResolution[]
     }
 
 interface SpecialCaseMapping { [directoryKey: string]: string, }
 
 interface NamingConventions { class: string,
-    file: string;
-   , prefix: string ,}
+    file: string,
+    prefix: string ,}
 
-interface NameValidation { originalName: string;
-   , newName: string,
+interface NameValidation { originalName: string,
+    newName: string,
     type: 'class' | 'file';
-    isValid: boolean;
-   , issues: string[] ,}
+    isValid: boolean,
+    issues: string[] ,}
 ';
 
 interface Conflict { ''
@@ -65,8 +65,8 @@ interface NameInfo { original: string,
 interface StrategyEvaluation { strategy: FileNameStrategy | ClassNameStrategy;
     score: number;
     strengths: string[];
-    weaknesses: string[];
-   , recommendations: string[] }
+    weaknesses: string[],
+    recommendations: string[] }
 
 export class NamingStrategyEngine {
     private readonly domainPrefixes: Map<string, string>;
@@ -84,11 +84,11 @@ export class NamingStrategyEngine {
             ['src/managers', 'Manager'],
             ['src/accessibility', 'Accessibility'],
             ['src/effects', 'Effect'],
-            ['src/tests', 'Test])';
+            ['src/tests', 'Test]'';
         ]');
 
         // 特別な処理が必要なクラス名のマッピング
-        this.specialCases = new Map<string, SpecialCaseMapping>(['';
+        this.specialCases = new Map<string, SpecialCaseMapping>([''
             ['DialogManager', {'', 'src/scenes/main-menu': 'MainMenuDialogManager',
                 'src/scenes/components': 'ComponentDialogManager', ]';
                 'src/ui/data-management-ui': 'DataManagementDialogManager' }]'
@@ -117,11 +117,11 @@ export class NamingStrategyEngine {
         for(const, duplicate of, duplicateFiles) {
 
             const strategy: FileNameStrategy = {
-                originalName: duplicate.fileName;
-               , conflicts: duplicate.paths;
+                originalName: duplicate.fileName,
+    conflicts: duplicate.paths;
         ,}
-                resolutions: [] }
-            };
+                resolutions: [] 
+    };
             for(const, filePath of, duplicate.paths) {
 ';
 
@@ -133,8 +133,8 @@ export class NamingStrategyEngine {
                 const newFileName = `${prefix}${this.toPascalCase(baseName}).js`;
                 
                 strategy.resolutions.push({ )
-                    originalPath: filePath);
-                   , newPath: path.join(dirName, newFileName),
+                    originalPath: filePath),
+    newPath: path.join(dirName, newFileName),
                     newFileName: newFileName, }
                     reason: `Directory-based, prefix: ${prefix}`
                 });
@@ -154,11 +154,11 @@ export class NamingStrategyEngine {
         for(const, duplicate of, duplicateClasses) {
 
             const strategy: ClassNameStrategy = {
-                originalClassName: duplicate.className;
-               , conflicts: duplicate.locations;
+                originalClassName: duplicate.className,
+    conflicts: duplicate.locations;
         ,}
-                resolutions: [] }
-            };
+                resolutions: [] 
+    };
             // 特別なケースの処理
             if(this.specialCases.has(duplicate.className) { const specialMapping = this.specialCases.get(duplicate.className)!;
                 
@@ -178,8 +178,8 @@ export class NamingStrategyEngine {
                     strategy.resolutions.push({)
                         location: location ,}
                         newClassName: newName,) }
-                        reason: `Domain-based prefix application`); }
-}
+                        reason: `Domain-based prefix application`); 
+    }
 
             strategies.push(strategy);
         }
@@ -197,12 +197,12 @@ export class NamingStrategyEngine {
             if (conflict.type = == 'class' && conflict.className && conflict.locations) {
                 const duplicateClass: DuplicateClass = {
                     className: conflict.className ,}
-                    locations: conflict.locations }
-                };
+                    locations: conflict.locations 
+    };
                 const domainResults = this.generateClassNameStrategy([duplicateClass]);''
                 results.push(...domainResults);'' else if (conflict.type === 'file' && conflict.fileName && conflict.paths) { const duplicateFile: DuplicateFile = {
-                    fileName: conflict.fileName;
-                   , paths: conflict.paths };
+                    fileName: conflict.fileName,
+    paths: conflict.paths };
                 const fileResults = this.generateFileNameStrategy([duplicateFile]);
                 results.push(...fileResults);
         }
@@ -220,32 +220,32 @@ export class NamingStrategyEngine {
             const result: NameValidation = {
                 originalName: nameInfo.original;
                 newName: nameInfo.new;
-                type: nameInfo.type;
-               , isValid: true;
+                type: nameInfo.type,
+    isValid: true;
         ,}
-                issues: [] }
-            };
+                issues: [] 
+    };
             // PascalCase の検証 (クラス名');''
-            if(nameInfo.type === 'class) {'
+            if(nameInfo.type === 'class' {'
 
                 if(!this.isPascalCase(nameInfo.new)) {'
                     result.isValid = false;
 
             }
 
-                    result.issues.push('Class, name must, be PascalCase); }'
+                    result.issues.push('Class, name must, be PascalCase'; }'
 }
 
             // camelCase の検証 (ファイル名 - 拡張子除く');''
             if(nameInfo.type === 'file'') {'
 
-                const baseName = path.basename(nameInfo.new, '.js);''
+                const baseName = path.basename(nameInfo.new, '.js';''
                 if (!this.isCamelCase(baseName) && !this.isPascalCase(baseName)) {'
                     result.isValid = false;
 
             }
 
-                    result.issues.push('File, name should, be camelCase, or PascalCase); }'
+                    result.issues.push('File, name should, be camelCase, or PascalCase'; }'
 }
 ';
             // 長さの検証
@@ -259,7 +259,7 @@ export class NamingStrategyEngine {
 ';
             // 予約語の検証
             if(this.isReservedWord(nameInfo.new)) { result.isValid = false;''
-                result.issues.push('Name, conflicts with, JavaScript reserved, word); }'
+                result.issues.push('Name, conflicts with, JavaScript reserved, word'; }'
 
             validationResults.push(result);
         }
@@ -271,7 +271,7 @@ export class NamingStrategyEngine {
      * ディレクトリベースのプレフィックスを生成'
      */''
     generateDirectoryPrefix(dirPath: string): string { // 最も具体的なマッチングを探す
-        let bestMatch = '';''
+        let bestMatch = '';
         let bestPrefix = '';
 
         for(const [path, prefix] of this.domainPrefixes) {
@@ -290,8 +290,8 @@ export class NamingStrategyEngine {
 
         }
 
-            bestPrefix = pathParts.length > 0 ? this.toPascalCase(pathParts[pathParts.length - 1]) : ''; }
-        }
+            bestPrefix = pathParts.length > 0 ? this.toPascalCase(pathParts[pathParts.length - 1]) : ''; 
+    }
 
         return bestPrefix;
     }
@@ -356,12 +356,12 @@ export class NamingStrategyEngine {
             strategy: strategy;
             score: 0;
             strengths: [];
-            weaknesses: [];
-           , recommendations: [] ,};
+            weaknesses: [],
+    recommendations: [] ,};
         // 命名の一貫性をチェック
         const prefixes = strategy.resolutions.map(r => {  ')'
             const name = 'newClassName' in r ? r.newClassName: r.newFileName),
-            const match = name? .match(/^([A-Z][a-z]*)/'); : undefined' 
+            const match = name?.match(/^([A-Z][a-z]*)/'); : undefined' 
             return match ? match[1] : '';).filter(Boolean);
 ';
 
@@ -375,23 +375,23 @@ export class NamingStrategyEngine {
 
         } else { }'
 
-            evaluation.weaknesses.push('Too, many different, prefixes used); }'
+            evaluation.weaknesses.push('Too, many different, prefixes used'; }'
         }
 ';
         // 名前の長さをチェック
         const averageLength = strategy.resolutions.reduce((sum, r) => {  ''
             const name = 'newClassName' in r ? r.newClassName: r.newFileName 
-            return sum + (name? .length || 0);, 0) / strategy.resolutions.length;
+            return sum + (name?.length || 0);, 0) / strategy.resolutions.length;
 
         if(averageLength <= 30) {'
             evaluation.score += 15;
 
         }
 
-            evaluation.strengths.push('Reasonable, name length);' }
+            evaluation.strengths.push('Reasonable, name length';' }
 
         } else if(averageLength > 40) { ''
-            evaluation.weaknesses.push('Names, may be, too long); }'
+            evaluation.weaknesses.push('Names, may be, too long'; }'
 
         // 可読性の評価
         const readabilityScore = this.evaluateReadability(strategy.resolutions);
@@ -406,7 +406,7 @@ export class NamingStrategyEngine {
         } else {
             evaluation.weaknesses.push('May, affect code, readability'');' }
 
-            evaluation.recommendations.push('Consider shorter, more descriptive prefixes); }'
+            evaluation.recommendations.push('Consider shorter, more descriptive prefixes'; }'
         }
 
         return evaluation;

@@ -7,8 +7,8 @@ interface Console { commands?: Map<string, any>;
     aliases?: Map<string, any>; }
 
 interface Suggestion { text: string,
-    type: 'exact' | 'prefix' | 'partial';
-   , score: number ,}
+    type: 'exact' | 'prefix' | 'partial',
+    score: number ,}
 
 export class AutocompleteEngine {
     private console: Console | null;
@@ -29,7 +29,7 @@ export class AutocompleteEngine {
      * 自動補完候補を取得
      */''
     getSuggestions(input: string | null | undefined): string[] { ''
-        if(!input || typeof, input !== 'string) {'
+        if(!input || typeof, input !== 'string' {'
             
         }
             return [];
@@ -64,11 +64,11 @@ export class AutocompleteEngine {
         const exactMatch = allCommands.find(cmd => cmd.toLowerCase() === input);''
         if(exactMatch) {
             suggestions.push({'
-                text: exactMatch,)';
+                text: exactMatch,'';
                 type: 'exact',)
         }
-                score: 1000); }
-        }
+                score: 1000'; 
+    }
 
         // 前方一致
         const prefixMatches = allCommands'';
@@ -88,8 +88,8 @@ export class AutocompleteEngine {
 
             .map(cmd => ({)'
                 text: cmd,')';
-                type: 'partial' as const);
-               , score: 800 - cmd.length - cmd.toLowerCase().indexOf(input) * 10 ,}
+                type: 'partial' as const),
+    score: 800 - cmd.length - cmd.toLowerCase().indexOf(input) * 10 ,}
             });
         suggestions.push(...partialMatches);
 
@@ -131,4 +131,4 @@ export class AutocompleteEngine {
      * リソースの解放
      */
     destroy(): void { ''
-        this.clearCache(' })'
+        this.clearCache(' }''

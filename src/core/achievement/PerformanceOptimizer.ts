@@ -8,8 +8,8 @@
 interface PerformanceConfig { enableCache: boolean,
     cacheSize: number;
     cacheTTL: number; // キャッシュ有効期限（ミリ秒）
-    batchSize: number;
-   , throttleDelay: number; // スロットル遅延（ミリ秒） ,}
+    batchSize: number,
+    throttleDelay: number; // スロットル遅延（ミリ秒） ,}
 
 interface CacheEntry { value: any,
     timestamp: number ,}
@@ -17,8 +17,8 @@ interface CacheEntry { value: any,
 interface PerformanceStats { cacheHits: number;
     cacheMisses: number;
     totalProcessed: number;
-    averageProcessTime: number;
-   , throttledEvents: number }
+    averageProcessTime: number,
+    throttledEvents: number }
 
 export class PerformanceOptimizer {
     private cache: Map<string, CacheEntry>;
@@ -37,17 +37,17 @@ export class PerformanceOptimizer {
         
         this.config = {
             enableCache: true;
-            cacheSize: 1000;
-           , cacheTTL: 60000, // 1分;
+            cacheSize: 1000,
+    cacheTTL: 60000, // 1分;
             batchSize: 10;
     ,}
-            throttleDelay: 100 // 100ms }
-        };
+            throttleDelay: 100 // 100ms 
+    };
         this.stats = { cacheHits: 0,
             cacheMisses: 0;
             totalProcessed: 0;
-            averageProcessTime: 0;
-           , throttledEvents: 0 ,}
+            averageProcessTime: 0,
+    throttledEvents: 0 ,}
 
     /**
      * 初期化
@@ -160,8 +160,8 @@ export class PerformanceOptimizer {
             cacheHits: 0;
             cacheMisses: 0;
             totalProcessed: 0;
-            averageProcessTime: 0;
-           , throttledEvents: 0 }
+            averageProcessTime: 0,
+    throttledEvents: 0 }
 
     /**
      * 統計をロード

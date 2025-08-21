@@ -8,11 +8,11 @@ interface GameEngine { developerConsole?: DeveloperConsole;
     start: () => void ,}
 }
 
-interface DeveloperConsole { executeCommand: (comman;d: string) => string }
-}
+interface DeveloperConsole { executeCommand: (command: string) => string 
+    }
 
-interface ConfigManager { get: (ke;y: string) => any }
-}
+interface ConfigManager { get: (key: string) => any 
+    }
 
 interface DebugInterface { // Debug interface methods }
 
@@ -54,9 +54,9 @@ export class ConsolePanel {
             <div class="console-section">";
                 <h4>よく使うコマンド</h4>"";
                 <div class="common-commands">"";
-                    <button class="cmd-btn" data-cmd="game.pause(")">ゲーム一時停止</button>"";
-                    <button class="cmd-btn" data-cmd="game.resume(")">ゲーム再開</button>"";
-                    <button class="cmd-btn" data-cmd="debug.showHitboxes(")">当たり判定表示</button>"";
+                    <button class="cmd-btn" data-cmd="game.pause()">ゲーム一時停止</button>"";
+                    <button class="cmd-btn" data-cmd="game.resume()">ゲーム再開</button>"";
+                    <button class="cmd-btn" data-cmd="debug.showHitboxes()">当たり判定表示</button>"";
                     <button class="cmd-btn" data-cmd="config.get('performance'')">パフォーマンス設定取得</button>"";
                     <button class="cmd-btn" data-cmd="test.generateBubbles(10)">テスト用バブル生成</button>;
                 </div>;
@@ -94,16 +94,16 @@ export class ConsolePanel {
                 input.value = ''; }
 };
 
-        executeBtn.addEventListener('click', executeCommand);''
+        executeBtn.addEventListener('click', executeCommand';''
         input.addEventListener('keypress', (e: KeyboardEvent) => {  ''
-            if(e.key === 'Enter) { }'
+            if(e.key === 'Enter' { }'
                 executeCommand(); }
 
             }''
         }');
 ';
         // よく使うコマンドボタン
-        this.element.querySelectorAll('.cmd-btn).forEach(btn => {  ')'
+        this.element.querySelectorAll('.cmd-btn'.forEach(btn => {  ')'
             const button = btn as HTMLButtonElement');''
             button.addEventListener('click', () => {
                 const command = button.dataset.cmd;
@@ -116,7 +116,7 @@ export class ConsolePanel {
 
                     input.value = ''; }
 });
-        });
+        }';
     }
 
     /**
@@ -139,7 +139,7 @@ export class ConsolePanel {
             } else {  // フォールバック：基本的なコマンド処理
                 const result = this.executeBasicCommand(command);' }'
 
-                this.addOutput(result, 'result); }'
+                this.addOutput(result, 'result'; }'
             }
             
             this.addToHistory(command);
@@ -147,7 +147,7 @@ export class ConsolePanel {
 
         } catch (error) { }
 
-            this.addOutput(`エラー: ${(error, as, Error'}).message}`, 'error');
+            this.addOutput(`エラー: ${(error, as, Error'}'.message}`, 'error');
         }
     }
 
@@ -155,16 +155,16 @@ export class ConsolePanel {
      * 基本的なコマンドを実行'
      */''
     private executeBasicCommand(command: string): string { // 簡単なコマンド解析
-        if(command.startsWith('game.) {', ';
+        if(command.startsWith('game.' {', ';
 
         }
 
             return this.executeGameCommand(command);' }'
 
-        } else if(command.startsWith('debug.) { ''
+        } else if(command.startsWith('debug.' { ''
             return this.executeDebugCommand(command);' }'
 
-        } else if(command.startsWith('config.) { ''
+        } else if(command.startsWith('config.' { ''
             return this.executeConfigCommand(command);' }'
 
         } else if(command.startsWith('test.) { return this.executeTestCommand(command); } else {  }'
@@ -176,12 +176,12 @@ export class ConsolePanel {
     private executeGameCommand(command: string): string { ''
         switch(command) {'
 
-            case 'game.pause(')':'';
+            case 'game.pause()':'';
                 this.gameEngine.stop()';
                 return 'ゲームを一時停止しました';')'
-            case 'game.resume(')':'';
+            case 'game.resume()':'';
                 this.gameEngine.start(''';
-                return 'ゲームを再開しました';
+                return 'ゲームを再開しました'
         }
             default: })
                 return `未知のゲームコマンド: ${command}`)
@@ -190,11 +190,11 @@ export class ConsolePanel {
 
     /**
      * デバッグコマンドを実行
-     */)'
+     */''
     private executeDebugCommand(command: string): string { ''
         switch(command) {'
 
-            case 'debug.showHitboxes(')':'';
+            case 'debug.showHitboxes()':'';
                 return 'デバッグ表示機能（未実装）';
         }
             default: }
@@ -205,7 +205,7 @@ export class ConsolePanel {
      */''
     private executeConfigCommand(command: string): string { ''
         if(command.includes('get()) {''
-            const key = command.match(/get\(['"]([^'"]+)['"]\)/)? .[1];
+            const key = command.match(/get\(['"]([^'"]+"['"]\)/)?.[1];
             if(key && this.gameEngine.configManager) {
                 
             }
@@ -218,11 +218,11 @@ export class ConsolePanel {
      * テストコマンドを実行"
      */""
     private executeTestCommand(command: string): string { ""
-        if(command.includes('generateBubbles) {', ';
+        if(command.includes('generateBubbles' {', ';
 
         }
 
-            const count = command.match(/generateBubbles\((\d+)\)/')? .[1]; }'
+            const count = command.match(/generateBubbles\((\d+)\)/')?.[1]; }'
             return `${count || 1}個のテスト用バブルを生成しました（シミュレーション）`;
         } : undefined
         return `テストコマンド実行結果（未実装）: ${command}`;
@@ -231,15 +231,15 @@ export class ConsolePanel {
     /**
      * 出力エリアにメッセージを追加'
      */''
-    private addOutput(message: string, type: OutputType = 'info): void { ''
+    private addOutput(message: string, type: OutputType = 'info': void { ''
         if(!this.element) return;
 
-        const output = this.element.querySelector('#console-output) as HTMLElement;''
+        const output = this.element.querySelector('#console-output' as HTMLElement;''
         if(output) {', ';
 
         }
 
-            const div = document.createElement('div); }'
+            const div = document.createElement('div'; }'
             div.className = `console-line console-${type}`;
             div.textContent = message;
             output.appendChild(div);
@@ -253,7 +253,7 @@ export class ConsolePanel {
     private addToHistory(command: string): void { ''
         if(!this.element) return;
 
-        const history = this.element.querySelector('#command-history) as HTMLElement;''
+        const history = this.element.querySelector('#command-history' as HTMLElement;''
         if(history) {'
 
             const div = document.createElement('div'');''
@@ -261,7 +261,7 @@ export class ConsolePanel {
 
             div.textContent = command;''
             div.addEventListener('click', () => { ''
-                const input = this.element? .querySelector('#console-input) as HTMLInputElement;
+                const input = this.element?.querySelector('#console-input) as HTMLInputElement;
         }
                 if (input) { }
                     input.value = command; }

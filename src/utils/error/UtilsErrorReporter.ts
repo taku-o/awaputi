@@ -6,8 +6,8 @@
 // Type definitions for error reporter system
 interface ErrorInfo { id: string,
     context: string;
-    message: string;
-   , timestamp: string;
+    message: string,
+    timestamp: string;
     name?: string;
     stack?: string;
     metadata?: Record<string, any>;
@@ -17,15 +17,15 @@ interface NotificationConfig { autoHide: boolean,
     hideDelay: number;
     maxConcurrentNotifications: number;
     position: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
-    showReloadButton: boolean;
-   , showCloseButton: boolean ,}
+    showReloadButton: boolean,
+    showCloseButton: boolean ,}
 ';
 
 interface MainController { ''
-    determineSeverity?: (errorInf;o: ErrorInfo') => string ,}'
+    determineSeverity?: (errorInfo: ErrorInfo') => string ,}'
 }
 
-type NotificationAction = 'dismiss' | 'reload' | 'report';''
+type NotificationAction = 'dismiss' | 'reload' | 'report';
 type SeverityLevel = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
 
 interface SeverityConfig { [key: string]: string }
@@ -44,18 +44,18 @@ export class UtilsErrorReporter {
         
         // Notification configuration
         this.notificationConfig = {
-            autoHide: true;
-           , hideDelay: 10000, // 10 seconds;
+            autoHide: true,
+    hideDelay: 10000, // 10 seconds;
             maxConcurrentNotifications: 3,
-            position: 'top-right';
-           , showReloadButton: true;
+            position: 'top-right',
+    showReloadButton: true;
     ,}
-            showCloseButton: true }
-        };
+            showCloseButton: true 
+    };
         ';
         // Active notifications tracking
         this.activeNotifications = new Set()';
-        console.log('[ErrorReporter] Error, reporting component, initialized);
+        console.log('[ErrorReporter] Error reporting component initialized');
     }
     
     /**
@@ -78,16 +78,16 @@ export class UtilsErrorReporter {
         const { context, message } = errorInfo;
         ';
         // Canvas-related critical errors
-        if(context === 'CANVAS_ERROR' && message.includes('Canvas)) { return true; }
+        if(context === 'CANVAS_ERROR' && message.includes('Canvas)' { return true; }
         ';
         // Browser compatibility issues
-        if (message.includes('not, supported'') || message.includes('not, available)) { return true; }
+        if (message.includes('not, supported'') || message.includes('not, available)' { return true; }
         ';
         // Network-related issues
-        if (message.includes('network'') || message.includes('fetch)) { return true; }
+        if (message.includes('network'') || message.includes('fetch)' { return true; }
         ';
         // Memory issues
-        if(context === 'MEMORY_WARNING' && message.includes('memory)) { return true; }
+        if(context === 'MEMORY_WARNING' && message.includes('memory)' { return true; }
         ';
         // Performance issues
         if(context === 'PERFORMANCE_WARNING' && message.includes('FPS) { return true; }
@@ -135,16 +135,16 @@ export class UtilsErrorReporter {
         notification.className = 'error-notification';
         notification.dataset.errorId = errorInfo.id;
 
-        const severity = this.mainController.determineSeverity? .(errorInfo') || 'MEDIUM';
+        const severity = this.mainController.determineSeverity?.(errorInfo') || 'MEDIUM';
         notification.dataset.severity = severity;
         ';
 
         notification.innerHTML = `'';
             <div class="error-notification-content">"";
                 <div class="error-notification-header">"";
-                    <span class="error-notification-icon">${this.getSeverityIcon(severity"})</span>""
-                    <h3 class="error-notification-title">${this.getSeverityTitle(severity"})</h3>"
-                    ${ this.notificationConfig.showCloseButton ?  : undefined" }"
+                    <span class="error-notification-icon">${this.getSeverityIcon(severity"}"</span>""
+                    <h3 class="error-notification-title">${this.getSeverityTitle(severity"}"</h3>"
+                    ${ this.notificationConfig.showCloseButton ? undefined : undefined" }"
                         '<button class="error-notification-close" aria-label="閉じる">×</button>' : ''}
 
                 </div>'';
@@ -152,14 +152,14 @@ export class UtilsErrorReporter {
                     <p class="error-notification-message">${this.getUserFriendlyMessage(errorInfo})</p>""
                     ${ errorInfo.metadata && Object.keys(errorInfo.metadata"}.length > 0 ? `<details class="error-notification-details">"
                             <summary>詳細情報</summary>" }"
-                            <pre>${JSON.stringify(errorInfo.metadata, null, 2"})</pre> : undefined""
+                            <pre>${JSON.stringify(errorInfo.metadata, null, 2"}"</pre> : undefined""
                         </details>` : ''
                 </div>'';
                 <div class="error-notification-actions">";
-                    ${ this.notificationConfig.showCloseButton ?   : undefined" }"
+                    ${ this.notificationConfig.showCloseButton ? undefined : undefined" }"
                         '<button class="error-btn error-btn-secondary" data-action="dismiss">閉じる</button>' : ''}
 
-                    ${ this.notificationConfig.showReloadButton ?   : undefined', '
+                    ${ this.notificationConfig.showReloadButton ? undefined : undefined', '
                         '<button, class="error-btn, error-btn-primary" data-action="reload">再読み込み</button>' : ''}
                 </div>;
             </div>;
@@ -265,54 +265,54 @@ export class UtilsErrorReporter {
             min-width: 300px,
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             z-index: 10000,
-            opacity: 0;
-           , transform: translateX(100%),
+            opacity: 0,
+    transform: translateX(100%),
             transition: all 0.3s ease-out,
-            border-left: 4px solid ${this.getSeverityColor(severity'})'
+            border-left: 4px solid ${this.getSeverityColor(severity'}''
         `;
         
         notification.style.cssText = baseStyles;
         ';
         // Content styles
-        const content = notification.querySelector('.error-notification-content) as HTMLElement;''
+        const content = notification.querySelector('.error-notification-content' as HTMLElement;''
         if(content) {', ';
 
         }
 
-            content.style.cssText = 'padding: 16px;'; }
-        }
+            content.style.cssText = 'padding: 16px;'; 
+    }
         ';
         // Header styles
-        const header = notification.querySelector('.error-notification-header) as HTMLElement;''
+        const header = notification.querySelector('.error-notification-header' as HTMLElement;''
         if(header) {', ';
 
         }
 
-            header.style.cssText = 'display: flex; align-items: center;, gap: 8px; margin-bottom: 12px;'; }
-        }
+            header.style.cssText = 'display: flex; align-items: center;, gap: 8px; margin-bottom: 12px;'; 
+    }
         ';
         // Title styles
-        const title = notification.querySelector('.error-notification-title) as HTMLElement;''
+        const title = notification.querySelector('.error-notification-title' as HTMLElement;''
         if(title) {', ';
 
         }
 
-            title.style.cssText = 'margin: 0; font-size: 16px; font-weight: 600; color: #333;, flex: 1;'; }
-        }
+            title.style.cssText = 'margin: 0; font-size: 16px; font-weight: 600; color: #333;, flex: 1;'; 
+    }
         ';
         // Close button styles
-        const closeBtn = notification.querySelector('.error-notification-close) as HTMLElement;''
+        const closeBtn = notification.querySelector('.error-notification-close' as HTMLElement;''
         if(closeBtn) {
             closeBtn.style.cssText = `;
-                background: none;
-               , border: none;
+                background: none,
+    border: none;
                 font-size: 20px,
                 color: #666;
                 cursor: pointer;
                 padding: 0;
                 width: 24px;
-                height: 24px;
-               , display: flex;
+                height: 24px,
+    display: flex;
                 align-items: center,
                 justify-content: center,
         }
@@ -320,50 +320,50 @@ export class UtilsErrorReporter {
         }
         ';
         // Message styles
-        const messageEl = notification.querySelector('.error-notification-message) as HTMLElement;''
+        const messageEl = notification.querySelector('.error-notification-message' as HTMLElement;''
         if(messageEl) {', ';
 
         }
 
-            messageEl.style.cssText = 'margin: 0 0 16px 0;, color: #555; line-height: 1.4;'; }
-        }
+            messageEl.style.cssText = 'margin: 0 0 16px 0;, color: #555; line-height: 1.4;'; 
+    }
         ';
         // Actions styles
-        const actions = notification.querySelector('.error-notification-actions) as HTMLElement;''
+        const actions = notification.querySelector('.error-notification-actions' as HTMLElement;''
         if(actions) {', ';
 
         }
 
-            actions.style.cssText = 'display: flex;, gap: 8px; justify-content: flex-end;'; }
-        }
+            actions.style.cssText = 'display: flex;, gap: 8px; justify-content: flex-end;'; 
+    }
         ';
         // Button styles
-        notification.querySelectorAll('.error-btn).forEach(btn => {  ')'
+        notification.querySelectorAll('.error-btn'.forEach(btn => {  ')'
             const button = btn as HTMLElement');''
-            const isPrimary = button.classList.contains('error-btn-primary);
+            const isPrimary = button.classList.contains('error-btn-primary';
             button.style.cssText = `;
-                padding: 8px 16px;
-               , border: none;
+                padding: 8px 16px,
+    border: none;
                 border-radius: 4px,
                 cursor: pointer;
                 font-size: 14px,
                 font-weight: 500,
                 transition: background-color 0.2s, }
 
-                ${isPrimary ?   : undefined', '
-                    `background: ${this.getSeverityColor(severity',}); color: white;` :'', 'background: #f5f5f5;, color: #333;
+                ${isPrimary ? undefined : undefined', '
+                    `background: ${this.getSeverityColor(severity',}'; color: white;` :'', 'background: #f5f5f5;, color: #333;
 
                 }
             `;
-        });
+        }';
     }
     
     /**
      * Get position styles based on configuration
      * @returns CSS position styles'
      */''
-    private getPositionStyles(''';
-            'top-right': 'top: 20px;, right: 20px;','', 'top-left': 'top: 20px;, left: 20px;','', 'bottom-right': 'bottom: 20px;, right: 20px;','', 'bottom-left': 'bottom: 20px;, left: 20px;',)', 'top-center': 'top: 20px; left: 50%;, transform: translateX(-50%);','', 'bottom-center': 'bottom: 20px; left: 50%;, transform: translateX(-50%);
+    private getPositionStyles('''
+            'top-right': 'top: 20px;, right: 20px;','', 'top-left': 'top: 20px;, left: 20px;','', 'bottom-right': 'bottom: 20px;, right: 20px;','', 'bottom-left': 'bottom: 20px,  left: 20px;','', 'top-center': 'top: 20px; left: 50%;, transform: translateX(-50%);','', 'bottom-center': 'bottom: 20px; left: 50%;, transform: translateX(-50%);
 
         };
 
@@ -388,7 +388,7 @@ export class UtilsErrorReporter {
      * @param notification - Notification element'
      */''
     private attachNotificationEventListeners(notification: HTMLElement): void { // Close button
-        const closeBtn = notification.querySelector('.error-notification-close) as HTMLElement;''
+        const closeBtn = notification.querySelector('.error-notification-close' as HTMLElement;''
         if(closeBtn) {', ';
 
         }
@@ -397,7 +397,7 @@ export class UtilsErrorReporter {
         }
         ';
         // Action buttons
-        notification.querySelectorAll('[data-action]).forEach(btn => {  ');''
+        notification.querySelectorAll('[data-action]'.forEach(btn => {  ');''
             btn.addEventListener('click', (e) => {
                 const target = e.target as HTMLElement;
                 const action = target.dataset.action as NotificationAction; }
@@ -457,7 +457,7 @@ export class UtilsErrorReporter {
 
                 break;''
             case 'reload':'';
-                if(confirm('ページを再読み込みしますか？未保存の変更は失われる可能性があります。) {''
+                if(confirm('ページを再読み込みしますか？未保存の変更は失われる可能性があります。' {''
                     location.reload()';
             case 'report':')';
                 this.showReportDialog(notification.dataset.errorId || '');
@@ -483,7 +483,7 @@ export class UtilsErrorReporter {
     private dismissNotification(notification: HTMLElement): void { ''
         if(!notification || !notification.parentNode) return;
 
-        notification.style.opacity = '0';''
+        notification.style.opacity = '0';
         notification.style.transform = 'translateX(100%)';
         
         setTimeout(() => { 
@@ -503,7 +503,7 @@ export class UtilsErrorReporter {
         notifications.forEach((notification, index) => { '
             const offset = index * 90; // 90px gap between notifications' }'
 
-            if(this.notificationConfig.position.includes('top) { }'
+            if(this.notificationConfig.position.includes('top' { }'
                 notification.style.top = `${20 + offset}px`;
             } else {  }
                 notification.style.bottom = `${20 + offset}px`;
@@ -535,10 +535,10 @@ export class UtilsErrorReporter {
             <div style=";
                 position: fixed;
                 top: 50%;
-                left: 50%;
-               , transform: translate(-50%, -50%),
-                background: white;
-               , padding: 30px,
+                left: 50%,
+    transform: translate(-50%, -50%),
+                background: white,
+    padding: 30px,
                 border-radius: 10px,
                 box-shadow: 0 4px 20px rgba(0,0,0,0.3);
                 text-align: center,
@@ -556,31 +556,31 @@ export class UtilsErrorReporter {
                     <li>Safari (iOS/macOS")</li>";
                 </ul>"";
                 <div style="margin-top: 20px;">""
-                    <button onclick="this.parentElement.parentElement.remove("); console.log('[Game] Continuing, with limited, compatibility mode'');" style="
+                    <button onclick="this.parentElement.parentElement.remove(); console.log('[Game] Continuing, with limited, compatibility mode'');" style="
                         padding: 10px 20px;
                         background: #28a745;
-                        color: white;
-                       , border: none;
+                        color: white,
+    border: none;
                         border-radius: 5px,
                         cursor: pointer;
                         font-size: 16px,
                         margin-right: 10px,
                     ">このまま続行</button>"";
-                    <button onclick="location.reload(")" style=";
+                    <button onclick="location.reload()" style=";
                         padding: 10px 20px;
                         background: #007bff;
-                        color: white;
-                       , border: none;
+                        color: white,
+    border: none;
                         border-radius: 5px,
                         cursor: pointer;
                         font-size: 16px,
                         margin-right: 10px,
                     ">再試行</button>"";
-                    <button onclick="this.parentElement.parentElement.remove(")" style=";
+                    <button onclick="this.parentElement.parentElement.remove()" style=";
                         padding: 10px 20px;
                         background: #6c757d;
-                        color: white;
-                       , border: none;
+                        color: white,
+    border: none;
                         border-radius: 5px,
                         cursor: pointer,
                         font-size: 16px,

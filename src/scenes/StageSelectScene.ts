@@ -1,5 +1,5 @@
-import { Scene  } from '../core/Scene';''
-import { EventStageDataManager  } from './stage-select/EventStageDataManager';''
+import { Scene  } from '../core/Scene';
+import { EventStageDataManager  } from './stage-select/EventStageDataManager';
 import { StageSelectDataManager  } from './stage-select/StageSelectDataManager';
 
 /**
@@ -53,9 +53,9 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
         ';
         // タイトル
         context.save(''';
-        context.fillStyle = '#FFFFFF';''
-        context.font = 'bold, 32px Arial';''
-        context.textAlign = 'center';)'
+        context.fillStyle = '#FFFFFF';
+        context.font = 'bold, 32px Arial';
+        context.textAlign = 'center';''
         context.textBaseline = 'top';')'
         context.fillText('ステージ選択', canvas.width / 2, 20);
         context.restore();
@@ -80,7 +80,7 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
      * 入力処理
      */''
     handleInput(event: Event): void { ''
-        if(event.type === 'keydown) {'
+        if(event.type === 'keydown' {'
             const keyEvent = event as KeyboardEvent;
             // ステージ関連のキー入力を処理
             if(this.stageSelectDataManager.handleStageKeyInput(keyEvent) {
@@ -161,17 +161,17 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
      * デバッグ情報の取得
      */
     getDebugInfo(): any { return { stage: this.stageSelectDataManager.getDebugInfo(), };
-            event: this.eventStageDataManager.getEventData(); }
-        }
+            event: this.eventStageDataManager.getEventData(); 
+    }
 
     /**
      * 状態のリセット
      */
     resetState(): void { this.stageSelectDataManager.resetStageSelection();
         this.eventStageDataManager.setEventState({)
-            selectedEventIndex: -1);
-           , showingEvents: false,')';
-            eventScrollOffset: 0)' ,}'
+            selectedEventIndex: -1),
+    showingEvents: false,')';
+            eventScrollOffset: 0'' ,}'
 
     }''
 }

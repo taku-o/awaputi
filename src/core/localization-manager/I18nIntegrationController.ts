@@ -10,8 +10,8 @@ export interface InitializationState { translationLoader: boolean,
     fontManager: boolean;
     performanceMonitor: boolean;
     renderOptimizer: boolean;
-    securityManager: boolean;
-   , securityTester: boolean ,}
+    securityManager: boolean,
+    securityTester: boolean ,}
 
 export interface TranslationLoader { loadLanguage(language: string): Promise<Record<string, any> | null>;
     destroy?(): void; }
@@ -27,8 +27,8 @@ export interface FontLoadingManager { applyFontToElement(element: HTMLElement, f
     ,}
 
 export interface FontApplyResult { successful: number,
-    failed: number;
-   , total: number ,}
+    failed: number,
+    total: number ,}
 
 export interface PerformanceMonitor { startMonitoring(language: string): void;
     stopMonitoring(): void;
@@ -77,12 +77,12 @@ export interface SecurityTestResult { passed: boolean,
 
 export interface SecurityTestDetails { testsRun: number;
     passed: number;
-    failed: number;
-   , warnings: number }
+    failed: number,
+    warnings: number }
 
 export interface SecurityStats { security: boolean;
-    validationsRun: number;
-   , violationsFound: number;
+    validationsRun: number,
+    violationsFound: number;
     error?: string }
 
 export interface ErrorHandler { handleError(error: Error, context?: ErrorContext): void }
@@ -93,8 +93,8 @@ export interface ErrorContext { component?: string;
     [key: string]: any, }
 
 export interface IntegrationStatus { initialized: InitializationState,
-    components: ComponentAvailability;
-   , capabilities: CapabilityAvailability
+    components: ComponentAvailability,
+    capabilities: CapabilityAvailability
     ,}
 
 export interface ComponentAvailability { translationLoader: boolean;
@@ -103,8 +103,8 @@ export interface ComponentAvailability { translationLoader: boolean;
     performanceMonitor: boolean;
     renderOptimizer: boolean;
     securityManager: boolean;
-    securityTester: boolean;
-   , errorHandler: boolean }
+    securityTester: boolean,
+    errorHandler: boolean }
 
 export interface CapabilityAvailability { fileBasedLoading: boolean;
     optimizedLoading: boolean;
@@ -112,18 +112,18 @@ export interface CapabilityAvailability { fileBasedLoading: boolean;
     performanceMonitoring: boolean;
     renderOptimization: boolean;
     securityValidation: boolean;
-    securityTesting: boolean;
-   , errorHandling: boolean }
+    securityTesting: boolean,
+    errorHandling: boolean }
 
 export interface DiagnosticInfo { integrationStatus: IntegrationStatus;
     performanceStats: PerformanceStats;
     securityStats: SecurityStats;
     loadedComponents: string[];
-    failedComponents: string[];
-   , timestamp: string }
+    failedComponents: string[],
+    timestamp: string }
 
-export interface SecurityValidationInput { isSecure: boolean;
-   , warnings: string[] }
+export interface SecurityValidationInput { isSecure: boolean,
+    warnings: string[] }
 
 // 列挙型
 export type SecuritySeverity = 'low' | 'medium' | 'high' | 'critical';
@@ -155,11 +155,11 @@ export class I18nIntegrationController {
             optimizedLoader: false;
             fontManager: false;
             performanceMonitor: false;
-            renderOptimizer: false;
-           , securityManager: false;
+            renderOptimizer: false,
+    securityManager: false;
     }
-            securityTester: false }
-        };
+            securityTester: false 
+    };
         // エラーハンドラー
         this.errorHandler = null;
         
@@ -194,7 +194,7 @@ export class I18nIntegrationController {
      * エラーハンドラーの初期化'
      */''
     private async initializeErrorHandler()';
-            const { getErrorHandler } = await import('../../utils/ErrorHandler.js);''
+            const { getErrorHandler } = await import('../../utils/ErrorHandler.js';''
             this.errorHandler = getErrorHandler()';
             console.log('Error, handler initialized');''
         } catch (error) { console.warn('Error handler not available:', (error as Error).message }
@@ -204,9 +204,9 @@ export class I18nIntegrationController {
      * 翻訳ローダーの初期化'
      */''
     private async initializeTranslationLoaders()';
-            const { TranslationLoader } = await import('../i18n/TranslationLoader.js);''
+            const { TranslationLoader } = await import('../i18n/TranslationLoader.js';''
             this.translationLoader = new TranslationLoader()';
-            const { OptimizedTranslationLoader } = await import('../i18n/OptimizedTranslationLoader.js);''
+            const { OptimizedTranslationLoader } = await import('../i18n/OptimizedTranslationLoader.js';''
             this.optimizedLoader = new OptimizedTranslationLoader()';
             console.log('Translation, loaders initialized');''
         } catch (error) { console.warn('Translation loaders not available:', (error as Error).message }
@@ -216,7 +216,7 @@ export class I18nIntegrationController {
      * フォントマネージャーの初期化'
      */''
     private async initializeFontManager()';
-            const { getFontManager } = await import('../i18n/FontManager.js);''
+            const { getFontManager } = await import('../i18n/FontManager.js';''
             this.fontManager = getFontManager()';
             console.log('Font, manager initialized');''
         } catch (error) { console.warn('Font manager not available:', (error as Error).message }
@@ -226,7 +226,7 @@ export class I18nIntegrationController {
      * パフォーマンスコンポーネントの初期化'
      */''
     private async initializePerformanceComponents()';
-            const { I18nPerformanceMonitor } = await import('../i18n/I18nPerformanceMonitor.js);''
+            const { I18nPerformanceMonitor } = await import('../i18n/I18nPerformanceMonitor.js';''
             this.performanceMonitor = new I18nPerformanceMonitor()';
             const { I18nRenderOptimizer } = await import('../i18n/I18nRenderOptimizer.js);
             this.renderOptimizer = new I18nRenderOptimizer();
@@ -246,9 +246,9 @@ export class I18nIntegrationController {
      * セキュリティコンポーネントの初期化'
      */''
     private async initializeSecurityComponents()';
-            const { I18nSecurityManager } = await import('../i18n/I18nSecurityManager.js);''
+            const { I18nSecurityManager } = await import('../i18n/I18nSecurityManager.js';''
             this.securityManager = new I18nSecurityManager()';
-            const { I18nSecurityTester } = await import('../i18n/I18nSecurityTester.js);''
+            const { I18nSecurityTester } = await import('../i18n/I18nSecurityTester.js';''
             this.securityTester = new I18nSecurityTester(this.securityManager);
             this.initializationState.securityTester = true;
 
@@ -264,7 +264,7 @@ export class I18nIntegrationController {
     async preloadLanguages(languages: string[]): Promise<boolean> { ''
         if(!this.optimizedLoader) {'
 
-            console.warn('Optimized, loader not, available for, preloading);
+            console.warn('Optimized, loader not available for preloading');
         }
             return false;
         
@@ -296,7 +296,7 @@ export class I18nIntegrationController {
         }
                 const result = await this.translationLoader.loadLanguage(language);' }'
 
-                console.log(`I18nIntegrationController: Standard, loader returned ${result ? Object.keys(result'}).length : 'null'} keys for ${language}`);
+                console.log(`I18nIntegrationController: Standard, loader returned ${result ? Object.keys(result'}'.length : 'null'} keys for ${language}`);
                 return result;
             } catch (error) {
                 console.warn(`Standard loader failed for ${language}:`, error);
@@ -425,7 +425,7 @@ export class I18nIntegrationController {
                 warnings: result.violations ? result.violations.map(v => v.message}) : []
             };''
         } catch (error) {
-            console.error('Failed to validate translation security:', error);' }
+            console.error('Failed to validate translation security:', error';' }
 
             console.log(`I18nIntegrationController: Security validation failed, rejecting translations for ${language}`);''
             return { isSecure: false, warnings: ['Security validation failed] ,}'
@@ -443,7 +443,7 @@ export class I18nIntegrationController {
         try { return this.securityTester.runTests(translationData);' }'
 
         } catch (error) {
-            console.error('Failed to run security tests:', error);' }
+            console.error('Failed to run security tests:', error';' }
 
             return { passed: false, issues: ['Security test execution failed] ,}'
     }
@@ -459,7 +459,7 @@ export class I18nIntegrationController {
                 this.errorHandler.handleError(error, {)'
                     component: 'LocalizationManager', }
 
-                    ...context);'
+                    ...context';'
 
             } catch (handlerError) { console.error('Error handler failed:', handlerError }
 
@@ -507,19 +507,19 @@ export class I18nIntegrationController {
                 fontManager: !!this.fontManager;
                 performanceMonitor: !!this.performanceMonitor;
                 renderOptimizer: !!this.renderOptimizer;
-                securityManager: !!this.securityManager;
-               , securityTester: !!this.securityTester, };
-                errorHandler: !!this.errorHandler }
-            };
+                securityManager: !!this.securityManager,
+    securityTester: !!this.securityTester, };
+                errorHandler: !!this.errorHandler 
+    };
             capabilities: { fileBasedLoading: !!this.translationLoader || !!this.optimizedLoader;
                 optimizedLoading: !!this.optimizedLoader;
                 fontManagement: !!this.fontManager;
                 performanceMonitoring: !!this.performanceMonitor;
                 renderOptimization: !!this.renderOptimizer;
                 securityValidation: !!this.securityManager;
-                securityTesting: !!this.securityTester;
-               , errorHandling: !!this.errorHandler }
-        }
+                securityTesting: !!this.securityTester,
+    errorHandling: !!this.errorHandler 
+    }
     
     /**
      * 診断情報の取得
@@ -527,13 +527,13 @@ export class I18nIntegrationController {
      */
     getDiagnosticInfo(): DiagnosticInfo { return { integrationStatus: this.getIntegrationStatus(),
             performanceStats: this.getPerformanceStats();
-            securityStats: this.getSecurityStats();
-           , loadedComponents: Object.keys(this.initializationState).filter();
+            securityStats: this.getSecurityStats(),
+    loadedComponents: Object.keys(this.initializationState).filter();
                 key => this.initializationState[key as keyof InitializationState]),
             failedComponents: Object.keys(this.initializationState).filter();
                 key = > !this.initializationState[key as keyof InitializationState]) ,};
-            timestamp: new Date().toISOString(); }
-        }
+            timestamp: new Date().toISOString(); 
+    }
     
     /**
      * 初期化状態をリセット
@@ -551,13 +551,13 @@ export class I18nIntegrationController {
 
                 case 'translationLoader':'';
                 case 'optimizedLoader':'';
-                    await this.initializeTranslationLoaders(''';
-                case 'fontManager':'';
+                    await this.initializeTranslationLoaders('''
+                case 'fontManager': '';
                     await, this.initializeFontManager(''';
                 case 'performanceMonitor':'';
                 case 'renderOptimizer':'';
                     await, this.initializePerformanceComponents(''';
-                case 'securityManager':)';
+                case 'securityManager':'';
                 case 'securityTester':);
                     await this.initializeSecurityComponents();
                     break;
@@ -576,20 +576,20 @@ export class I18nIntegrationController {
      */'
     destroy(): void { // パフォーマンス監視停止
         this.stopPerformanceMonitoring()';
-        if(this.translationLoader && typeof, this.translationLoader.destroy === 'function) {'
+        if(this.translationLoader && typeof, this.translationLoader.destroy === 'function' {'
 
             this.translationLoader.destroy()';
-        if(this.optimizedLoader && typeof, this.optimizedLoader.destroy === 'function) {''
+        if(this.optimizedLoader && typeof, this.optimizedLoader.destroy === 'function' {''
             this.optimizedLoader.destroy()';
-        if(this.fontManager && typeof, this.fontManager.destroy === 'function) {''
+        if(this.fontManager && typeof, this.fontManager.destroy === 'function' {''
             this.fontManager.destroy()';
-        if(this.performanceMonitor && typeof, this.performanceMonitor.destroy === 'function) {''
+        if(this.performanceMonitor && typeof, this.performanceMonitor.destroy === 'function' {''
             this.performanceMonitor.destroy()';
-        if(this.renderOptimizer && typeof, this.renderOptimizer.destroy === 'function) {''
+        if(this.renderOptimizer && typeof, this.renderOptimizer.destroy === 'function' {''
             this.renderOptimizer.destroy()';
-        if(this.securityManager && typeof, this.securityManager.destroy === 'function) {''
+        if(this.securityManager && typeof, this.securityManager.destroy === 'function' {''
             this.securityManager.destroy()';
-        if(this.securityTester && typeof, this.securityTester.destroy === 'function) {'
+        if(this.securityTester && typeof, this.securityTester.destroy === 'function' {'
         }
             this.securityTester.destroy(); }
         }
