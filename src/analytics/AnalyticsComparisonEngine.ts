@@ -21,8 +21,8 @@ export class AnalyticsComparisonEngine {
         this.metrics = this.dataComparator.metrics;
         
         // キャッシュ設定
-        this.cache = new Map() };
-        this.cacheExpiry = 5 * 60 * 1000; // 5分 }
+        this.cache = new Map();
+        this.cacheExpiry = 5 * 60 * 1000; // 5分
     }
 
     /**
@@ -30,15 +30,16 @@ export class AnalyticsComparisonEngine {
      * @param {Object} options - 比較オプション
      * @returns {Promise<Object>} 比較結果
      */
-    async compareWithPastData(options: any = { ) {
+    async compareWithPastData(options: any = {}) {
         try {
-            return await this.dataComparator.compareWithPastData(options, this.storageManager),' }'
-
+            return await this.dataComparator.compareWithPastData(options, this.storageManager);
         } catch (error) {
             console.error('AnalyticsComparisonEngine.compareWithPastData error:', error);
-            return { success: false,
-                error: error.message 
-    }
+            return { 
+                success: false,
+                error: error.message
+            };
+        }
     }
 
     /**
