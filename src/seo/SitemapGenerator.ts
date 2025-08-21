@@ -3,45 +3,55 @@
  * 
  * 動的なsitemap.xml生成機能を提供
  */
-import { SEOConfig, getBaseUrl, getLocalizedUrl, LanguageCode  } from './SEOConfig';
-import { seoLogger  } from './SEOLogger';
-import { seoErrorHandler  } from './SEOErrorHandler';
-import { normalizeUrl, measurePerformance  } from './SEOUtils';
+import { SEOConfig, getBaseUrl, getLocalizedUrl, LanguageCode } from './SEOConfig.js';
+import { seoLogger } from './SEOLogger.js';
+import { seoErrorHandler } from './SEOErrorHandler.js';
+import { normalizeUrl, measurePerformance } from './SEOUtils.js';
 
 // URL情報インターフェース
-interface UrlData { loc: string;
+interface UrlData {
+    loc: string;
     priority: number;
-    changefreq: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never,
+    changefreq: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
     lastmod: string;
     hreflang?: string;
+}
 
 // 動的URL生成関数型
 type DynamicUrlGenerator = (options?: any) => Promise<UrlData[]>;
 
 // サイトマップ生成オプションインターフェース
-interface SitemapGenerationOptions { forceRegenerate?: boolean;
+interface SitemapGenerationOptions {
+    forceRegenerate?: boolean;
     includeAssets?: boolean;
     includeDynamic?: boolean;
     [key: string]: any;
+}
 
 // サイトマップサマリーインターフェース
-interface SitemapSummary { totalUrls: number;
-    lastGenerated: Date | null,
+interface SitemapSummary {
+    totalUrls: number;
+    lastGenerated: Date | null;
     urlsByPriority: Record<string, number>;
     urlsByChangeFreq: Record<string, number>;
     supportedLanguages: number;
     dynamicGenerators: number;
+}
 
 // サイトマップ検証結果インターフェース
-interface SitemapValidationResult { isValid: boolean;
-    issues: string[],
-    warnings: string[],
+interface SitemapValidationResult {
+    isValid: boolean;
+    issues: string[];
+    warnings: string[];
     urlCount: number;
     duplicateCount: number;
+}
 
 // LocalizationManager インターフェース
-interface LocalizationManager { getCurrentLanguage(): string;
-    t(key: string; defaultValue?: string): string;
+interface LocalizationManager {
+    getCurrentLanguage(): string;
+    t(key: string, defaultValue?: string): string;
+}
 
 // File System Access API拡張インターフェース
 interface ExtendedWindow extends Window { showSaveFilePicker?: (options?: {

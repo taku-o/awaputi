@@ -3,29 +3,28 @@
  * 
  * プラットフォーム別の最適化画像生成と共有コンテンツ管理
  */
-import { SEOConfig, getSocialImageUrl  } from './SEOConfig';
-import { seoLogger  } from './SEOLogger';
-import { seoErrorHandler  } from './SEOErrorHandler';
+import { SEOConfig, getSocialImageUrl } from './SEOConfig.js';
+import { seoLogger } from './SEOLogger.js';
+import { seoErrorHandler } from './SEOErrorHandler.js';
 import { optimizeImageUrl, 
     truncateText,
     measurePerformance,
-    generateCacheKey '  }'
-
-} from './SEOUtils';
+    generateCacheKey 
+} from './SEOUtils.js';
 
 // プラットフォーム仕様インターフェース
 interface PlatformSpec {
-    imageSize: { widt,h: number; height: number;
+    imageSize: { width: number; height: number; };
     titleLimit: number;
-    },
     descriptionLimit: number;
-    imageFormats: string[],
+    imageFormats: string[];
     cacheBustParam: string;
     defaultImage?: string;
 }
 
 // 基本コンテンツインターフェース
-interface BaseContent { title?: string;
+interface BaseContent {
+    title?: string;
     description?: string;
     image?: string;
     url?: string;
@@ -34,9 +33,11 @@ interface BaseContent { title?: string;
     imageVariant?: string;
     forceRefresh?: boolean;
     facebookAppId?: string;
+}
 
 // ゲーム状態インターフェース
-interface GameState { score?: number;
+interface GameState {
+    score?: number;
     level?: number;
     bubblesPopped?: number;
     achievements?: Achievement[];
@@ -44,27 +45,33 @@ interface GameState { score?: number;
     playTime?: number;
     highScore?: boolean;
     achievement?: string;
+}
 
 // 実績インターフェース
-interface Achievement { name: string;
+interface Achievement {
+    name: string;
     description?: string;
     unlockedAt?: Date;
+}
 
 // 最適化されたコンテンツインターフェース
-interface OptimizedContent { platform: string;
+interface OptimizedContent {
+    platform: string;
     title: string;
     description: string;
     image: string;
     url: string;
-    hashtags: string[],
+    hashtags: string[];
     metadata: PlatformMetadata;
     twitterCard?: TwitterCardData;
     facebookSpecific?: FacebookData;
     discordEmbed?: DiscordEmbed;
-    tweetText?: string }
+    tweetText?: string;
+}
 
 // プラットフォームメタデータインターフェース
-interface PlatformMetadata { imageWidth: number;
+interface PlatformMetadata {
+    imageWidth: number;
     imageHeight: number;
     platform: string;
     generatedAt: string;
@@ -72,66 +79,86 @@ interface PlatformMetadata { imageWidth: number;
     site?: string;
     type?: string;
     locale?: string;
-    richPins?: boolean }
+    richPins?: boolean;
+}
 
 // Twitter固有データインターフェース
-interface TwitterCardData { ''
-    card: 'summary' | 'summary_large_image' | 'app' | 'player,
+interface TwitterCardData {
+    card: 'summary' | 'summary_large_image' | 'app' | 'player';
     site: string;
     creator: string;
+}
 
 // Facebook固有データインターフェース
-interface FacebookData { appId?: string;
+interface FacebookData {
+    appId?: string;
     type: string;
     locale: string;
+}
 
 // Discord Embedインターフェース
-interface DiscordEmbed { title: string;
+interface DiscordEmbed {
+    title: string;
     description: string;
     color: number;
-    thumbnail?: { url: string;
+    thumbnail?: { url: string; };
     fields?: DiscordField[];
-    }
+}
 
 // Discord Fieldインターフェース
-interface DiscordField { name: string;
+interface DiscordField {
+    name: string;
     value: string;
     inline: boolean;
+}
 
 // 共有コンテンツインターフェース（Twitter用）
-interface TwitterShareContent { text: string;
+interface TwitterShareContent {
+    text: string;
     url: string;
-    hashtags: string[],
+    hashtags: string[];
     imageUrl: string;
+}
 
 // 共有コンテンツインターフェース（Facebook用）
-interface FacebookShareContent { title: string;
+interface FacebookShareContent {
+    title: string;
     description: string;
     url: string;
     imageUrl: string;
     quote?: string;
+}
 
 // 共有コンテンツインターフェース（LINE用）
-interface LineShareContent { message: string;
+interface LineShareContent {
+    message: string;
     url: string;
+}
 
 // 共有コンテンツインターフェース（Discord用）
-interface DiscordShareContent { embeds: DiscordEmbed[];
+interface DiscordShareContent {
+    embeds: DiscordEmbed[];
+}
 
 // フォールバック共有コンテンツインターフェース
-interface FallbackShareContent { title: string;
+interface FallbackShareContent {
+    title: string;
     description: string;
     url: string;
     text: string;
     imageUrl: string;
+}
 
 // LocalizationManagerインターフェース
-interface LocalizationManager { getCurrentLanguage(): string;
+interface LocalizationManager {
+    getCurrentLanguage(): string;
     t(key: string; defaultValue?: string): string;
+}
 
 // GameConfigインターフェース
-interface GameConfig { [key: string]: any;
-;
+interface GameConfig {
+    [key: string]: any;
+}
 // プラットフォーム名タイプ
 type PlatformName = 'facebook' | 'twitter' | 'linkedin' | 'pinterest' | 'discord';
     type SharePlatform = 'twitter' | 'facebook' | 'line' | 'discord';
