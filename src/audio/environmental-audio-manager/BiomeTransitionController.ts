@@ -1,6 +1,6 @@
-import { getErrorHandler  } from '../../utils/ErrorHandler';
-import { BiomeDefinition, WeatherEffect, TimeVariation, SoundLayer  } from './BiomeDefinitionManager';
-import { EnvironmentalSoundGenerator  } from './EnvironmentalSoundGenerator';
+import { getErrorHandler  } from '../../utils/ErrorHandler',
+import { BiomeDefinition, WeatherEffect, TimeVariation, SoundLayer  } from './BiomeDefinitionManager',
+import { EnvironmentalSoundGenerator  } from './EnvironmentalSoundGenerator',
 
 /**
  * Transition options interface
@@ -44,7 +44,7 @@ export interface ActiveLayerInfo { id: string,
  */
 interface AudioController { gainNodes: {
         bg,m?: GainNode;
-        [key: string]: GainNode | undefined } };
+        [key: string]: GainNode | undefined } 
 
 /**
  * Biome definition manager interface
@@ -66,10 +66,10 @@ export class BiomeTransitionController {
     private readonly activeSources: Map<string, ActiveSource>;
     
     // フェード管理
-    private readonly fadeManager: { activeTransitions: Map<string, any>  };
+    private readonly fadeManager: { activeTransitions: Map<string, any>  }
         crossfadeInProgress: boolean,
         crossfadeInProgress: boolean,
-        };
+        }
     constructor(;
         audioContext: AudioContext;
         audioController: AudioController;
@@ -89,7 +89,7 @@ export class BiomeTransitionController {
             activeTransitions: new Map(;
     crossfadeInProgress: false;
     crossfadeInProgress: false;
-        };
+        }
     /**
      * バイオームへの遷移を実行
      */
@@ -109,9 +109,9 @@ export class BiomeTransitionController {
             await this._fadeInEnvironment(newLayers, fadeTime);
             console.log(`Biome, transition completed: ${biome.name}`}
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: 'transitionToBiome',';
+                operation: 'transitionToBiome',',
                 component: 'BiomeTransitionController');
-                biome: biome.name      };
+                biome: biome.name      }
 }
     /**
      * バイオームレイヤーを準備
@@ -122,7 +122,7 @@ export class BiomeTransitionController {
     options: Partial<TransitionOptions> = { ): PreparedLayer[] {
         try { }
             const { weather, timeOfDay, intensity = 1.0 } = options;
-            const preparedLayers: PreparedLayer[] = [];
+            const preparedLayers: PreparedLayer[] = []
             
             // 基本レイヤーを準備
             for (const layer of biome.layers) {
@@ -131,7 +131,7 @@ export class BiomeTransitionController {
                     biomeId: biome.id;
     volume: layer.volume * intensity }
                     audioBuffer: this.soundGenerator.getOrGenerateSound(layer.type); 
-    };
+    }
                 
                 preparedLayers.push(layerData);
             }
@@ -160,7 +160,7 @@ export class BiomeTransitionController {
                                 biomeId: biome.id;
                                 timeOfDay: timeOfDay;
     audioBuffer: this.soundGenerator.getOrGenerateSound(timeLayer.type);
-                            };
+                            }
                             preparedLayers.push(layerData);
                             }
 }
@@ -169,8 +169,8 @@ export class BiomeTransitionController {
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 operation: '_prepareBiomeLayers,');
                 component: 'BiomeTransitionController
-            };
-            return [];
+            }
+            return []
     
     /**
      * 天候レイヤーを準備
@@ -183,8 +183,8 @@ export class BiomeTransitionController {
             const soundProfile = weatherEffect.soundProfile;
             const biomeModifier = weatherEffect.biomeModifiers[biome.id] || { 
                 volumeMultiplier: 1.0;
-                filterMultiplier: 1.0   };
-            return {  };
+                filterMultiplier: 1.0   }
+            return {  }
                 name: `${weatherEffect.name} (${biome.name}`;
                 type: soundProfile.type;
                 volume: soundProfile.volume * biomeModifier.volumeMultiplier * weatherEffect.intensity;
@@ -198,7 +198,7 @@ export class BiomeTransitionController {
             } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 operation: '_prepareWeatherLayer,');
                 component: 'BiomeTransitionController
-            };
+            }
             return null;
     
     /**
@@ -206,7 +206,7 @@ export class BiomeTransitionController {
      * @private
      */
     private async _fadeOutCurrentEnvironment(fadeTime: number = 2.0): Promise<void> { try {
-            const fadePromises: Promise<void>[] = [];
+            const fadePromises: Promise<void>[] = []
             
             for(const [layerId, source] of this.activeSources) {
             
@@ -227,7 +227,7 @@ export class BiomeTransitionController {
         } catch (e) { // Already stopped }
                             resolve();
                         }, fadeTime * 1000);
-                    };
+                    }
                     
                     fadePromises.push(promise);
                 }
@@ -291,7 +291,7 @@ export class BiomeTransitionController {
                     originalVolume: layer.volume || 0.5);
                     layer: layer;
                     layer: layer;
-        };
+        }
             console.log(`Faded, in ${layers.length} environmental, layers`}
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 operation: '_fadeInEnvironment,');
@@ -313,7 +313,7 @@ export class BiomeTransitionController {
         } catch (e) { // Already stopped }
             }
 
-            this.activeSources.clear()';
+            this.activeSources.clear(');
             console.log('All environmental audio stopped');
 
         } catch (error') { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
@@ -344,7 +344,7 @@ export class BiomeTransitionController {
     /**
      * アクティブレイヤー情報を取得
      */
-    getActiveLayerInfo(): ActiveLayerInfo[] { const layers: ActiveLayerInfo[] = [];
+    getActiveLayerInfo(): ActiveLayerInfo[] { const layers: ActiveLayerInfo[] = []
         for(const [layerId, source] of this.activeSources) {
             layers.push({
                 id: layerId;

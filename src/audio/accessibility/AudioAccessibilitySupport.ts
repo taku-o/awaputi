@@ -7,21 +7,21 @@
  * Refactored: Phase F.4 - Main Controller Pattern
  */
 
-import { getErrorHandler  } from '../../utils/ErrorHandler';
-import { getConfigurationManager  } from '../../core/ConfigurationManager';
-import { getLocalizationManager  } from '../../core/LocalizationManager';
+import { getErrorHandler  } from '../../utils/ErrorHandler',
+import { getConfigurationManager  } from '../../core/ConfigurationManager',
+import { getLocalizationManager  } from '../../core/LocalizationManager',
 // Import sub-components
-import { AudioDescriptionManager  } from './AudioDescriptionManager';
-import { AudioCueManager  } from './AudioCueManager';
-import { AudioFeedbackManager  } from './AudioFeedbackManager';
-import { AudioSettingsManager  } from './AudioSettingsManager';
-import { AudioEventManager  } from './AudioEventManager';
-import { AudioLegacyAdapter  } from './AudioLegacyAdapter';
+import { AudioDescriptionManager  } from './AudioDescriptionManager',
+import { AudioCueManager  } from './AudioCueManager',
+import { AudioFeedbackManager  } from './AudioFeedbackManager',
+import { AudioSettingsManager  } from './AudioSettingsManager',
+import { AudioEventManager  } from './AudioEventManager',
+import { AudioLegacyAdapter  } from './AudioLegacyAdapter',
 
 /**
  * 通知タイプ
  */
-type NotificationType = 'info' | 'warning' | 'error' | 'success';
+type NotificationType = 'info' | 'warning' | 'error' | 'success',
 
 /**
  * 通知オプションインターフェース
@@ -30,7 +30,7 @@ interface NotificationOptions {
     duration?: number,
     position?: string,
     priority?: number,
-    style?: any;
+    style?: any,
 }
 
 /**
@@ -39,7 +39,7 @@ interface NotificationOptions {
 interface CaptionOptions {
     duration?: number,
     position?: string,
-    style?: any;
+    style?: any,
 }
 
 /**
@@ -73,12 +73,12 @@ interface ColorIndicatorOptions {
  * コンポーネント状態インターフェース
  */
 interface ComponentStatus {
-    descriptionManager: any;
-    cueManager: any;
-    feedbackManager: any;
-    settingsManager: any;
-    eventManager: any;
-    legacyAdapter: any;
+    descriptionManager: any,
+    cueManager: any,
+    feedbackManager: any,
+    settingsManager: any,
+    eventManager: any,
+    legacyAdapter: any,
 }
 
 /**
@@ -88,8 +88,8 @@ interface SystemStatus {
     initialized: boolean,
     components: ComponentStatus;
     eventHistorySize: number,
-    capabilities: any;
-    settings: any;
+    capabilities: any,
+    settings: any,
 }
 
 /**
@@ -100,7 +100,7 @@ interface DeviceCapabilities {
     screenReader: boolean,
     reduceMotion: boolean,
     prefersContrast: boolean,
-    [key: string]: any;
+    [key: string]: any,
 }
 
 /**
@@ -109,7 +109,7 @@ interface DeviceCapabilities {
 interface Statistics {
     componentsActive: number,
     settingsConfigured: number,
-    [key: string]: any;
+    [key: string]: any,
 }
 
 /**
@@ -123,7 +123,7 @@ interface AudioManager {
  * ConfigurationManager インターフェース（型定義用）
  */
 interface ConfigurationManager {
-    get(category: string): any;
+    get(category: string): any,
     set(category: string, key: string, value: any): void;
 }
 
@@ -153,8 +153,8 @@ interface VibrationManager {
  */
 interface SettingsChangeEvent {
     key?: string,
-    value?: any;
-    oldValue?: any;
+    value?: any,
+    oldValue?: any,
     type?: string,
 }
 
@@ -176,7 +176,7 @@ export class ComponentAudioAccessibilitySupport {
     private legacyAdapter: AudioLegacyAdapter;
     // Legacy compatibility properties
     private vibrationManager: VibrationManager;
-    private visualNotifications: any[];
+    private visualNotifications: any[]
     constructor(audioManager: AudioManager) {
         this.audioManager = audioManager;
         this.configManager = getConfigurationManager();
@@ -193,7 +193,7 @@ export class ComponentAudioAccessibilitySupport {
         
         // Legacy compatibility properties
         this.vibrationManager = this.legacyAdapter.getVibrationManager();
-        this.visualNotifications = [];
+        this.visualNotifications = []
         
         console.log('AudioAccessibilitySupport initialized with Main Controller Pattern');
     }
@@ -211,7 +211,7 @@ export class ComponentAudioAccessibilitySupport {
             return true;
         } catch (error) {
             this.errorHandler.handleError(error, {
-                context: 'AudioAccessibilitySupport.initialize';
+                context: 'AudioAccessibilitySupport.initialize',
                 severity: 'high
             });
             return false;
@@ -401,9 +401,9 @@ export class ComponentAudioAccessibilitySupport {
                 cueManager: this.cueManager.getStatus();
                 feedbackManager: this.feedbackManager.getStatus();
                 settingsManager: this.settingsManager.getStatus(
-    eventManager: this.eventManager.getStatus() };
+    eventManager: this.eventManager.getStatus() }
                 legacyAdapter: this.legacyAdapter.getStatus();
-    };
+    }
             eventHistorySize: this.eventManager.getEventHistory().length;
             capabilities: this.getCapabilities(
     settings: this.getSettings();
@@ -421,7 +421,7 @@ export class ComponentAudioAccessibilitySupport {
      */
     getStatistics(): Statistics { const eventStats = this.eventManager.getStatistics();
         return { ...eventStats;
-            componentsActive: 6 };
+            componentsActive: 6 }
             settingsConfigured: Object.keys(this.getSettings().length; 
     }
 
@@ -460,4 +460,4 @@ export class ComponentAudioAccessibilitySupport {
      * 再初期化
      */
     async reinitialize(): Promise<void> { this.destroy();
-        await this.initialize(' }';
+        await this.initialize(' }',

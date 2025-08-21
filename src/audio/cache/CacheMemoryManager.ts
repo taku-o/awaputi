@@ -5,7 +5,7 @@
  * AudioCacheManager のサブコンポーネント
  */
 
-import { getErrorHandler  } from '../../utils/ErrorHandler';
+import { getErrorHandler  } from '../../utils/ErrorHandler',
 
 /**
  * Memory usage information interface
@@ -32,15 +32,15 @@ export interface MemoryUsageStatPoint extends MemoryUsageInfo { timestamp: numbe
  */
 export interface RemovalResult { removedCount: number,
     removedSize: number,
-    removedKeys: string[];
+    removedKeys: string[]
 /**
  * Memory statistics interface
  */
 export interface MemoryStats { currentUsage: MemoryUsageInfo;
-    alerts: MemoryAlert[];
+    alerts: MemoryAlert[]
     lastCleanup: number,
     cleanupOperations: number,
-    memoryHistory: MemoryUsageStatPoint[];
+    memoryHistory: MemoryUsageStatPoint[]
 /**
  * Cache settings interface
  */
@@ -48,14 +48,14 @@ interface CacheSettings { cleanupInterval: number,
     memoryPressureThreshold: number,
     maxAge: number,
     autoOptimization: { compressionThreshol,d: number,
-    };
+    }
 
 /**
  * Cache interface with memory management methods
  */
 interface Cache { currentSize: number,
     maxSize: number,
-    removeExpiredEntries(maxAge: number): string[];
+    removeExpiredEntries(maxAge: number): string[]
     removeByUsageFrequency(targetReduction: number): RemovalResult;
     delete(key: string): boolean,
 /**
@@ -73,15 +73,15 @@ export class CacheMemoryManager {
     // メモリ監視
     private memoryMonitor: { intervalId: NodeJS.Timeout | null  ;
         lastCleanup: number,
-        alerts: MemoryAlert[];
-    systemMemoryInfo: any;
-    systemMemoryInfo: any;
-        };
+        alerts: MemoryAlert[]
+    systemMemoryInfo: any,
+    systemMemoryInfo: any,
+        }
     // パフォーマンス統計
     public performanceStats: { cleanupOperations: number,
         memoryUsage: MemoryUsageStatPoint[]  ;
-        memoryUsage: MemoryUsageStatPoint[];
-        };
+        memoryUsage: MemoryUsageStatPoint[]
+        }
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
@@ -94,7 +94,7 @@ export class CacheMemoryManager {
     alerts: []
 }
             systemMemoryInfo: null ;
-    };
+    }
         
         // パフォーマンス統計
         this.performanceStats = { cleanupOperations: 0;
@@ -114,7 +114,7 @@ export class CacheMemoryManager {
 
             }, this.cacheSettings.cleanupInterval';
 
-            console.log('Memory, monitoring started';
+            console.log('Memory, monitoring started',
 
         } catch (error') { getErrorHandler().handleError(error, 'AUDIO_CACHE_ERROR', {
                 operation: 'startMemoryMonitoring,');
@@ -143,7 +143,7 @@ export class CacheMemoryManager {
 
             }, this.cacheSettings.cleanupInterval';
 
-            console.log('Auto, cleanup configured';
+            console.log('Auto, cleanup configured',
 
         } catch (error') { getErrorHandler().handleError(error, 'AUDIO_CACHE_ERROR', {
                 operation: 'setupAutoCleanup,');
@@ -253,8 +253,8 @@ export class CacheMemoryManager {
         // 対応するメタデータも削除
         audioExpiredKeys.forEach(key => { '),' }
 
-            this.mainController.metadataCache.delete(key + '_meta'; }
-        };
+            this.mainController.metadataCache.delete(key + '_meta', }
+        }
         
         // チャンクキャッシュからも期限切れを削除
         this.mainController.chunkCache.removeExpiredEntries(maxAge);
@@ -273,8 +273,8 @@ export class CacheMemoryManager {
         // 対応するメタデータも削除
         result.removedKeys.forEach(key => { '),' }
 
-            this.mainController.metadataCache.delete(key + '_meta'; }
-        };
+            this.mainController.metadataCache.delete(key + '_meta', }
+        }
         
         return result;
     }
@@ -291,7 +291,7 @@ export class CacheMemoryManager {
      * @returns フォーマット済みサイズ
      */
     formatSize(bytes: number): string { 
-        const units = ['B', 'KB', 'MB', 'GB'];
+        const units = ['B', 'KB', 'MB', 'GB']
         let size = bytes;
         let unitIndex = 0;
         
@@ -336,16 +336,16 @@ export class CacheMemoryManager {
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_CACHE_ERROR', {
                 operation: 'performSimpleOptimization,');
                 component: 'CacheMemoryManager
-            };
+            }
             return buffer;
     /**
      * メモリ統計を取得
      * @returns メモリ統計
      */
     getMemoryStats(): MemoryStats { return { currentUsage: this.getCurrentMemoryUsage(
-            alerts: [...this.memoryMonitor.alerts];
+            alerts: [...this.memoryMonitor.alerts]
             lastCleanup: this.memoryMonitor.lastCleanup;
-    cleanupOperations: this.performanceStats.cleanupOperations };
+    cleanupOperations: this.performanceStats.cleanupOperations }
             memoryHistory: [...this.performanceStats.memoryUsage] ;
     } }
     

@@ -47,13 +47,13 @@
  * Refactored: Phase F.4 - Main Controller Pattern
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler';
-import { getConfigurationManager } from '../core/ConfigurationManager';
+import { getErrorHandler } from '../utils/ErrorHandler',
+import { getConfigurationManager } from '../core/ConfigurationManager',
 // Import sub-components
-import { LRUCache } from './cache/LRUCacheImplementation';
-import { CacheMemoryManager } from './cache/CacheMemoryManager';
-import { CacheDataLoader } from './cache/CacheDataLoader';
-import { CacheStatistics } from './cache/CacheStatistics';
+import { LRUCache } from './cache/LRUCacheImplementation',
+import { CacheMemoryManager } from './cache/CacheMemoryManager',
+import { CacheDataLoader } from './cache/CacheDataLoader',
+import { CacheStatistics } from './cache/CacheStatistics',
 
 // エラーハンドラー型定義
 interface ErrorHandler {
@@ -62,7 +62,7 @@ interface ErrorHandler {
 
 // 設定管理型定義
 interface ConfigurationManager {
-    get(section: string, key: string): any;
+    get(section: string, key: string): any,
     set(section: string, key: string, value: any): void;
 }
 
@@ -73,21 +73,21 @@ interface CacheSettings {
     cleanupInterval: number,
     maxAge: number,
     memoryPressureThreshold: number,
-    lazyLoading: {;
+    lazyLoading: {
         enabled: boolean,
         chunkSize: number,
         preloadRadius: number,
-    };
-    autoOptimization: {;
+    }
+    autoOptimization: {
         enabled: boolean,
         compressionThreshold: number,
         qualityAdjustment: boolean,
-    };
+    }
 }
 // キャッシュエントリー型定義
 interface CacheEntry {
     buffer: AudioBuffer;
-    metadata: {;
+    metadata: {
         size: number,
         sampleRate: number,
         numberOfChannels: number,
@@ -95,33 +95,33 @@ interface CacheEntry {
         duration: number,
         cached: number,
         optimized?: boolean,
-        [key: string]: any;
-    };
+        [key: string]: any,
+    }
 }
 
 // キャッシュ統計型定義
 interface CacheStats {
-    audioBuffer: any;
-    metadata: any;
-    chunk: any;
-    memory: any;
-    performance: any;
-    detailed: any;
+    audioBuffer: any,
+    metadata: any,
+    chunk: any,
+    memory: any,
+    performance: any,
+    detailed: any,
     settings: CacheSettings;
 }
 // ステータス型定義
 interface AudioCacheManagerStatus {
     initialized: boolean,
-    components: {;
+    components: {
         memoryManager: string,
         dataLoader: string,
         statistics: string,
-    };
-    cacheInstances: {;
+    }
+    cacheInstances: {
         audioBuffer: string,
         metadata: string,
         chunk: string,
-    };
+    }
     settings: CacheSettings;
 }
 
@@ -159,14 +159,14 @@ export class AudioCacheManager {
                 enabled: true;
                 chunkSize: 4096, // サンプル数
                 preloadRadius: 2 // 前後のチャンク数
-            };
+            }
             // 自動最適化設定
             autoOptimization: {
                 enabled: true;
                 compressionThreshold: 0.7, // 70%以上で圧縮
                 qualityAdjustment: true
             }
-        };
+        }
         // キャッシュインスタンス
         this.audioBufferCache = new LRUCache(this.cacheSettings.maxMemorySize);
         this.metadataCache = new LRUCache(1024 * 1024); // 1MB for metadata
@@ -196,7 +196,7 @@ export class AudioCacheManager {
 
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_CACHE_ERROR', {
-                operation: 'initialize';
+                operation: 'initialize',
                 component: 'AudioCacheManager
             });
         }
@@ -225,7 +225,7 @@ export class AudioCacheManager {
                     duration: buffer.duration;
                     cached: Date.now()
                 }
-            };
+            }
             
             this.metadataCache.set(key + '_meta', cacheEntry.metadata;
                 JSON.stringify(cacheEntry.metadata).length);
@@ -244,7 +244,7 @@ export class AudioCacheManager {
             
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_CACHE_ERROR', {
-                operation: 'setAudioBuffer';
+                operation: 'setAudioBuffer',
                 key: key
             });
         }
@@ -285,7 +285,7 @@ export class AudioCacheManager {
             
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_CACHE_ERROR', {
-                operation: 'setMaxCacheSize';
+                operation: 'setMaxCacheSize',
                 maxSize: maxSize
             });
         }
@@ -304,7 +304,7 @@ export class AudioCacheManager {
             performance: this.dataLoader.getLoaderStats();
             detailed: this.statistics.generateSummary();
             settings: this.cacheSettings
-        };
+        }
     }
     
     clearCache(type: string = 'all'): void {
@@ -331,7 +331,7 @@ export class AudioCacheManager {
             
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_CACHE_ERROR', {
-                operation: 'clearCache';
+                operation: 'clearCache',
                 type: type
             });
         }
@@ -349,17 +349,17 @@ export class AudioCacheManager {
         return {
             initialized: true;
             components: {
-                memoryManager: this.memoryManager ? 'active' : 'inactive';
-                dataLoader: this.dataLoader ? 'active' : 'inactive';
+                memoryManager: this.memoryManager ? 'active' : 'inactive',
+                dataLoader: this.dataLoader ? 'active' : 'inactive',
                 statistics: this.statistics ? 'active' : 'inactive
-            };
+            }
             cacheInstances: {
-                audioBuffer: this.audioBufferCache ? 'active' : 'inactive';
-                metadata: this.metadataCache ? 'active' : 'inactive';
+                audioBuffer: this.audioBufferCache ? 'active' : 'inactive',
+                metadata: this.metadataCache ? 'active' : 'inactive',
                 chunk: this.chunkCache ? 'active' : 'inactive
-            };
+            }
             settings: { ...this.cacheSettings }
-        };
+        }
     }
     
     /**
@@ -389,7 +389,7 @@ export class AudioCacheManager {
      */
     private _loadCacheSettings(): void {
         try {
-            const cacheConfig = this.configManager.get('audio', 'cache') || {};
+            const cacheConfig = this.configManager.get('audio', 'cache') || {}
             
             // メモリ設定の更新
             if (cacheConfig.maxMemorySize) {
@@ -446,7 +446,7 @@ export class AudioCacheManager {
                     size: optimizedSize;
                     optimized: true
                 }
-            };
+            }
             
             this.audioBufferCache.set(key, cacheEntry, optimizedSize);
             
@@ -454,7 +454,7 @@ export class AudioCacheManager {
             
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_CACHE_ERROR', {
-                operation: '_optimizeAndCache';
+                operation: '_optimizeAndCache',
                 key: key
             });
         }

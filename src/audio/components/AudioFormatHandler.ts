@@ -4,11 +4,11 @@
  * AudioControllerから分離されたプリセット管理・環境音響・品質制御機能
  */
 
-import { getErrorHandler  } from '../../utils/ErrorHandler';
-import { getConfigurationManager  } from '../../core/ConfigurationManager';
-import { LoggingSystem  } from '../../core/LoggingSystem';
-import { PresetManager  } from '../PresetManager';
-import { EnvironmentalAudioManager  } from '../EnvironmentalAudioManager';
+import { getErrorHandler  } from '../../utils/ErrorHandler',
+import { getConfigurationManager  } from '../../core/ConfigurationManager',
+import { LoggingSystem  } from '../../core/LoggingSystem',
+import { PresetManager  } from '../PresetManager',
+import { EnvironmentalAudioManager  } from '../EnvironmentalAudioManager',
 
 /**
  * 品質管理インターフェース
@@ -24,7 +24,7 @@ interface QualityManager {
         low: number,
         medium: number,
         high: number,
-    };
+    }
     performanceMetrics: PerformanceMetrics;
 }
 
@@ -48,7 +48,7 @@ interface QualityConfig {
         high: number,
         medium: number,
         low: number,
-    };
+    }
     stabilityWindow: number,
 }
 
@@ -60,12 +60,12 @@ interface QualityPerformanceInfo {
     quality: {
         current: number,
         target: number,
-    };
+    }
     adjustmentInProgress: boolean,
     monitoring: {
         enabled: boolean,
         adjustmentTimer: boolean,
-    };
+    }
 }
 /**
  * 環境音響設定インターフェース
@@ -81,14 +81,14 @@ interface EnvironmentalAudioSettings {
  * 統合ステータスインターフェース
  */
 interface FormatHandlerStatus {
-    preset: any;
+    preset: any,
     environmental: {
         initialized: boolean,
         playing: boolean,
         settings: EnvironmentalAudioSettings | null;
-    };
+    }
     quality: QualityPerformanceInfo;
-    [key: string]: any;
+    [key: string]: any,
 }
 
 /**
@@ -98,19 +98,19 @@ interface PresetExportData {
     id: string,
     name: string,
     description: string,
-    tags: string[];
-    settings: any;
+    tags: string[]
+    settings: any,
     metadata: {
         version: string,
         created: number,
         modified: number,
-    };
+    }
 }
 /**
  * ConfigurationManager インターフェース（型定義用）
  */
 interface ConfigurationManager {
-    get(category: string, path?: string): any;
+    get(category: string, path?: string): any,
     set(category: string, path: string, value: any): void;
     watch(category: string, path: string, callback: (value: any) => void): string | null;
 }
@@ -169,14 +169,14 @@ interface AudioManager { soundEffectSystem?: {
                 low: 0.25,
                 medium: 0.6,
                 high: 1.0
-            },
+            
             performanceMetrics: {
                 cpuUsage: 0,
                 memoryUsage: 0,
                 audioProcessingLoad: 0,
                 activeAudioNodes: 0
             }
-        };
+        }
         // 品質調整設定
         this.qualityConfig = {
             adjustmentSteps: 10,
@@ -185,9 +185,9 @@ interface AudioManager { soundEffectSystem?: {
                 high: 0.8,
                 medium: 0.6,
                 low: 0.4
-            },
+            
             stabilityWindow: 5000 // ms
-        };
+        }
         
         this.initialize();
     }
@@ -202,7 +202,7 @@ interface AudioManager { soundEffectSystem?: {
             // 環境音響マネージャーを初期化
             this.initializeEnvironmentalAudio();
             // 品質管理を初期化
-            this.initializeQualityManagement()';
+            this.initializeQualityManagement(');
             this.loggingSystem.info('AudioFormatHandler', 'Audio format handler initialized',');
 
         } catch (error) {
@@ -226,7 +226,7 @@ interface AudioManager { soundEffectSystem?: {
      */
     private initializeEnvironmentalAudio(): void { try {
             this.environmentalAudioManager = new EnvironmentalAudioManager(
-                this.audioContext)';
+                this.audioContext');
                 this.audioManager',
             '),
 
@@ -242,7 +242,7 @@ interface AudioManager { soundEffectSystem?: {
     private initializeQualityManagement(): void {
         try {
             const audioQuality = this.configManager.get('performance', 'quality.audioQuality') || 1.0;
-            const performanceLevel = this.configManager.get('performance', 'level') || 'medium';
+            const performanceLevel = this.configManager.get('performance', 'level') || 'medium',
             const adaptiveMode = this.configManager.get('performance', 'adaptive') || false;
             
             this.qualityManager.currentQuality = audioQuality;
@@ -355,12 +355,12 @@ interface AudioManager { soundEffectSystem?: {
             if (!this.presetManager) {
 
                 this.loggingSystem.warn('AudioFormatHandler', 'PresetManager is not initialized');
-                return [];
+                return []
             ';
 
             return this.presetManager.getAllPresets(filterType);} catch (error) {
             this.errorHandler.handleError(error, 'AudioFormatHandler.getAllPresets;
-            return [];
+            return []
     
     /**
      * プリセットを削除
@@ -421,12 +421,12 @@ interface AudioManager { soundEffectSystem?: {
             if (!this.presetManager) {
 
                 this.loggingSystem.warn('AudioFormatHandler', 'PresetManager is not initialized');
-                return [];
+                return []
             ';
 
             return this.presetManager.getPresetHistory();} catch (error) {
             this.errorHandler.handleError(error, 'AudioFormatHandler.getPresetHistory),
-            return [];
+            return []
     
     /**
      * 現在のプリセットを取得
@@ -487,7 +487,7 @@ interface AudioManager { soundEffectSystem?: {
 
                     currentPreset: null,');;
 
-                    lastError: 'PresetManager is not initialized' 
+                    lastError: 'PresetManager is not initialized
     }
             ';
 
@@ -642,12 +642,12 @@ interface AudioManager { soundEffectSystem?: {
             if (!this.environmentalAudioManager) {
     
 }
-                return [];
+                return []
             ';
 
             return this.environmentalAudioManager.getAvailableBiomes();} catch (error) {
             this.errorHandler.handleError(error, 'AudioFormatHandler.getAvailableBiomes),
-            return [];
+            return []
     
     /**
      * 利用可能な天候効果一覧を取得
@@ -657,12 +657,12 @@ interface AudioManager { soundEffectSystem?: {
             if (!this.environmentalAudioManager) {
     
 }
-                return [];
+                return []
             ';
 
             return this.environmentalAudioManager.getAvailableWeatherEffects();} catch (error) {
             this.errorHandler.handleError(error, 'AudioFormatHandler.getAvailableWeatherEffects),
-            return [];
+            return []
     
     /**
      * 利用可能な時間帯一覧を取得
@@ -672,12 +672,12 @@ interface AudioManager { soundEffectSystem?: {
             if (!this.environmentalAudioManager) {
     
 }
-                return [];
+                return []
             ';
 
             return this.environmentalAudioManager.getAvailableTimesOfDay();} catch (error) {
             this.errorHandler.handleError(error, 'AudioFormatHandler.getAvailableTimesOfDay),
-            return [];
+            return []
     
     /**
      * 環境音響の現在設定を取得
@@ -714,7 +714,7 @@ interface AudioManager { soundEffectSystem?: {
 
             await this.adjustAudioQuality(quality);
 
-            this.loggingSystem.info('AudioFormatHandler', `Audio quality set to: ${quality}`}';} catch (error) {
+            this.loggingSystem.info('AudioFormatHandler', `Audio quality set to: ${quality}`}',} catch (error) {
             this.errorHandler.handleError(error, 'AudioFormatHandler.setAudioQuality');
     }
     
@@ -751,9 +751,9 @@ interface AudioManager { soundEffectSystem?: {
                 this.qualityManager.adjustmentTimer = null; }
             }
 
-            this.configManager.set('performance', 'adaptive', enabled';
+            this.configManager.set('performance', 'adaptive', enabled',
 
-            this.loggingSystem.info('AudioFormatHandler', `Automatic quality adjustment ${enabled ? 'enabled' : 'disabled}`}';} catch (error) {
+            this.loggingSystem.info('AudioFormatHandler', `Automatic quality adjustment ${enabled ? 'enabled' : 'disabled}`}',} catch (error) {
             this.errorHandler.handleError(error, 'AudioFormatHandler.setAutoQualityAdjustment');
     }
     
@@ -794,7 +794,7 @@ interface AudioManager { soundEffectSystem?: {
 
                 totalLoad: 0,');;
 
-                recommendation: 'medium' 
+                recommendation: 'medium
     }
     }
     
@@ -806,12 +806,12 @@ interface AudioManager { soundEffectSystem?: {
     private getQualityRecommendation(load: number): string { 
         if (load > this.qualityConfig.performanceThreshold.high) {', ');
 
-            return 'low'; }
+            return 'low', }
 
         } else if (load > this.qualityConfig.performanceThreshold.medium) { 
             return 'medium', else { }
 
-            return 'high';
+            return 'high',
     
     /**
      * 品質調整をトリガー
@@ -915,7 +915,7 @@ interface AudioManager { soundEffectSystem?: {
             }
             ';
             // BGMシステムの品質を調整
-            if (this.audioManager.bgmSystem && typeof, this.audioManager.bgmSystem.setQuality === 'function) { this.audioManager.bgmSystem.setQuality(quality) }', ';
+            if (this.audioManager.bgmSystem && typeof, this.audioManager.bgmSystem.setQuality === 'function) { this.audioManager.bgmSystem.setQuality(quality) }', ',
             // 低品質時はいくつかの機能を無効化
             if (quality < 0.5) {
                 // リバーブやエコーエフェクトを減らす
@@ -939,9 +939,9 @@ interface AudioManager { soundEffectSystem?: {
             const qualityPresets = {
                 low: this.configManager.get('performance', 'quality.presets.low');
                 medium: this.configManager.get('performance', 'quality.presets.medium');
-                high: this.configManager.get('performance', 'quality.presets.high };
+                high: this.configManager.get('performance', 'quality.presets.high }
             
-            const preset = qualityPresets[level];
+            const preset = qualityPresets[level]
             if (!preset) {
     
 }
@@ -950,7 +950,7 @@ interface AudioManager { soundEffectSystem?: {
 
             await this.setAudioQuality(preset.audioQuality || this.qualityManager.qualityLevels[level]);
 
-            this.loggingSystem.info('AudioFormatHandler', `Quality preset applied: ${level}`}';} catch (error) {
+            this.loggingSystem.info('AudioFormatHandler', `Quality preset applied: ${level}`}',} catch (error) {
             this.errorHandler.handleError(error, 'AudioFormatHandler.applyQualityPreset');
     }
     
@@ -964,7 +964,7 @@ interface AudioManager { soundEffectSystem?: {
     playing: this.isEnvironmentalAudioPlaying() ;
                 settings: this.getEnvironmentalAudioSettings();
                 ...(this.environmentalAudioManager ? this.environmentalAudioManager.getStatus() : {}
-            };
+            }
             quality: this.getQualityPerformanceInfo();
         }
     
@@ -991,7 +991,7 @@ interface AudioManager { soundEffectSystem?: {
                 this.qualityManager.adjustmentTimer = null; }
             }
 
-            this.loggingSystem.info('AudioFormatHandler', 'Audio format handler disposed';} catch (error) {
+            this.loggingSystem.info('AudioFormatHandler', 'Audio format handler disposed',} catch (error) {
             this.errorHandler.handleError(error, 'AudioFormatHandler.dispose');
 
     }'}

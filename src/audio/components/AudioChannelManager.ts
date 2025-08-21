@@ -4,14 +4,14 @@
  * AudioControllerから分離されたチャンネル管理・音量制御機能
  */
 
-import { getErrorHandler  } from '../../utils/ErrorHandler';
-import { getConfigurationManager  } from '../../core/ConfigurationManager';
-import { LoggingSystem  } from '../../core/LoggingSystem';
+import { getErrorHandler  } from '../../utils/ErrorHandler',
+import { getConfigurationManager  } from '../../core/ConfigurationManager',
+import { LoggingSystem  } from '../../core/LoggingSystem',
 
 /**
  * チャンネル名の型定義
  */
-type AudioChannel = 'master' | 'music' | 'sfx' | 'ui' | 'voice' | 'environmental';
+type AudioChannel = 'master' | 'music' | 'sfx' | 'ui' | 'voice' | 'environmental',
 
 /**
  * 音量マップインターフェース
@@ -59,12 +59,12 @@ interface ManagerState { volumes: VolumeMap;
     muteStates: MuteStateMap;
     effectiveVolumes: VolumeMap;
     channelConfig: ChannelConfig;
-    availableChannels: string[];
+    availableChannels: string[]
 
 /**
  * ConfigurationManager インターフェース（型定義用）
  */
-interface ConfigurationManager { get(category: string): any;
+interface ConfigurationManager { get(category: string): any,
     set(category: string, path: string, value: any): void;
     watch(category: string, path: string, callback: (value: any) => void): string | null  }
 }
@@ -116,7 +116,7 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
     sfx: 0.8;
     ui: 0.6;
     voice: 1.0;
-    environmental: 0.5  };
+    environmental: 0.5  }
         // ミュート状態
         this.muteStates = { master: false;
             music: false;
@@ -137,12 +137,12 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
                 sfx: 0.8;
                 ui: 0.6;
                 voice: 1.0;
-    environmental: 0.5 } };
+    environmental: 0.5 } }
             volumeStep: 0.1;
             minVolume: 0.0;
             maxVolume: 2.0;
     fadeStep: 0.02;
-        };
+        }
         
         this.initialize();
     }
@@ -157,7 +157,7 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
             // 初期音量を読み込み
             this.loadInitialVolumes();
             // 設定監視を設定
-            this.setupConfigWatchers()';
+            this.setupConfigWatchers(');
             this.loggingSystem.info('AudioChannelManager', 'Audio channel manager initialized',' }
 
         } catch (error) {
@@ -176,18 +176,18 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
                 if(channel !== 'master' { }
                     this.gainNodes[channel] = this.audioContext.createGain(); }
                     this.gainNodes[channel]!.connect(this.gainNodes.master!); }
-};
+}
             ';
             // 初期音量を設定
-            this.applyVolumeToGainNodes()';
-            this.loggingSystem.debug('AudioChannelManager', 'Gain node hierarchy created';} catch (error) {
+            this.applyVolumeToGainNodes(');
+            this.loggingSystem.debug('AudioChannelManager', 'Gain node hierarchy created',} catch (error) {
             this.errorHandler.handleError(error, 'AudioChannelManager.createGainNodeHierarchy' }
     }
     
     /**
      * 初期音量を読み込み
      */
-    private loadInitialVolumes()';
+    private loadInitialVolumes(');
             const audioConfig = this.configManager.get('audio);
             
             if (audioConfig && audioConfig.volumes) {
@@ -202,8 +202,8 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
                     if (audioConfig.mute[channel] !== undefined) { }
                         this.muteStates[channel] = audioConfig.mute[channel];     }
 }
-            this.applyVolumeToGainNodes()';
-            this.loggingSystem.debug('AudioChannelManager', 'Initial volumes loaded', this.volumes';} catch (error) {
+            this.applyVolumeToGainNodes(');
+            this.loggingSystem.debug('AudioChannelManager', 'Initial volumes loaded', this.volumes',} catch (error) {
             this.errorHandler.handleError(error, 'AudioChannelManager.loadInitialVolumes' }
     }
     
@@ -231,19 +231,19 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
                     if (newValue !== undefined) { }
                         this.setVolume(channel, newValue, false}; // 設定保存をスキップ
                     }
-                };
+                }
                 if (watcher) this.configWatchers.add(watcher);
-            };
+            }
             // ミュート設定の監視
             (Object.keys(this.muteStates) as AudioChannel[]).forEach(channel => {  '),
                 const watcher = this.configManager.watch('audio', `mute.${channel}`, (newValue: boolean, => { }
                     if (newValue !== undefined) { }
                         this.setMute(channel, newValue, false}; // 設定保存をスキップ
                     }
-                };
+                }
                 if (watcher) this.configWatchers.add(watcher);}');
 
-            this.loggingSystem.debug('AudioChannelManager', 'Config watchers setup completed';} catch (error) {
+            this.loggingSystem.debug('AudioChannelManager', 'Config watchers setup completed',} catch (error) {
             this.errorHandler.handleError(error, 'AudioChannelManager.setupConfigWatchers' }
     }
     
@@ -270,7 +270,7 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
                 this.saveVolumeToConfig(channel, clampedVolume); }
             }
 
-            this.loggingSystem.debug('AudioChannelManager', `Volume set: ${channel} = ${clampedVolume}`}';
+            this.loggingSystem.debug('AudioChannelManager', `Volume set: ${channel} = ${clampedVolume}`}',
             ';
 
             return clampedVolume;} catch (error) {
@@ -317,7 +317,7 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
                 this.saveMuteToConfig(channel, muted); }
             }
 
-            this.loggingSystem.debug('AudioChannelManager', `Mute set: ${channel} = ${muted}`}';
+            this.loggingSystem.debug('AudioChannelManager', `Mute set: ${channel} = ${muted}`}',
             ';
 
             return muted;} catch (error) {
@@ -385,7 +385,7 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
     resetVolume(channel: AudioChannel | null = null): void { try {
             if (channel) {
                 // 特定チャンネルをリセット
-                const defaultVolume = this.channelConfig.defaultVolumes[channel];
+                const defaultVolume = this.channelConfig.defaultVolumes[channel]
                 if (defaultVolume !== undefined) {
              }
                     this.setVolume(channel, defaultVolume); }
@@ -452,7 +452,7 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
      */
     private saveVolumeToConfig(channel: AudioChannel, volume: number): void { try { }
 
-            this.configManager.set('audio', `volumes.${channel}`, volume}';} catch (error) {
+            this.configManager.set('audio', `volumes.${channel}`, volume}',} catch (error) {
             this.errorHandler.handleError(error, 'AudioChannelManager.saveVolumeToConfig' }
     }
     
@@ -463,7 +463,7 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
      */
     private saveMuteToConfig(channel: AudioChannel, muted: boolean): void { try { }
 
-            this.configManager.set('audio', `mute.${channel}`, muted}';} catch (error) {
+            this.configManager.set('audio', `mute.${channel}`, muted}',} catch (error) {
             this.errorHandler.handleError(error, 'AudioChannelManager.saveMuteToConfig' }
     }
     
@@ -485,7 +485,7 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
                 audioManager.registerGainNodes(this.gainNodes); }
             }
 
-            this.loggingSystem.debug('AudioChannelManager', 'Integrated with AudioManager';} catch (error) {
+            this.loggingSystem.debug('AudioChannelManager', 'Integrated with AudioManager',} catch (error) {
             this.errorHandler.handleError(error, 'AudioChannelManager.integrateWithAudioManager' }
     }
     
@@ -497,14 +497,14 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
             this.configWatchers.forEach(watcher => { '),
                 if(typeof, watcher === 'function' { }
                     watcher(); // アンサブスクライブ }
-};
+}
             this.configWatchers.clear();
             
             // ゲインノードを切断
             Object.values(this.gainNodes).forEach(gainNode => {  );
                 if (gainNode && gainNode.disconnect) { }
                     gainNode.disconnect(); }
-};
+}
             
             // 状態をクリア
             (Object.keys(this.gainNodes) as AudioChannel[]).forEach(channel => {  }
@@ -512,7 +512,7 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
 
             }');
 
-            this.loggingSystem.info('AudioChannelManager', 'Audio channel manager disposed';} catch (error) {
+            this.loggingSystem.info('AudioChannelManager', 'Audio channel manager disposed',} catch (error) {
             this.errorHandler.handleError(error, 'AudioChannelManager.dispose');
 
     }'}

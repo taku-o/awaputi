@@ -1,4 +1,4 @@
-import { getErrorHandler  } from '../utils/ErrorHandler';
+import { getErrorHandler  } from '../utils/ErrorHandler',
 
 // BGMトラック型定義
 interface BGMTrack { id: string,
@@ -73,7 +73,7 @@ export class BGMPlayer {
     private playbackStats: PlaybackStats = {
         totalPlayTime: 0;
     loopCount: 0;
-    trackSwitches: 0 };
+    trackSwitches: 0 }
     constructor(audioContext: AudioContext, bgmGainNode: GainNode) {
         this.audioContext = audioContext;
         this.bgmGainNode = bgmGainNode;
@@ -94,7 +94,7 @@ export class BGMPlayer {
         try {
             if (!track || !track.buffer) {', ' }
 
-                throw new Error('Invalid, track or, missing buffer'; }
+                throw new Error('Invalid, track or, missing buffer', }
             }
             
             // 現在の再生を停止
@@ -149,9 +149,9 @@ export class BGMPlayer {
                 this._scheduleLoop(track.duration - startOffset); }
             }
 
-            console.log(`BGM "${track.name}" started, playing (loop: ${loop}`};
-            ";"
-        } catch (error) { (getErrorHandler() as ErrorHandler").handleError(error as Error, 'BGM_PLAYER_ERROR', {'"
+            console.log(`BGM "${track.name}" started, playing (loop: ${loop}`}
+            ";
+        } catch (error) { (getErrorHandler() as ErrorHandler").handleError(error as Error, 'BGM_PLAYER_ERROR', {'
                 operation: 'play',',
                 track: track?.name || 'unknown', : undefined);
                 options: options,);
@@ -237,9 +237,9 @@ export class BGMPlayer {
             // 統計更新
             this.playbackStats.loopCount++;
 
-            console.log(`Seamless, loop performed, for "${this.currentTrack.name"}"`}";
-            ";"
-        } catch (error) { (getErrorHandler() as ErrorHandler").handleError(error as Error, 'BGM_PLAYER_ERROR', {'"
+            console.log(`Seamless, loop performed, for "${this.currentTrack.name"}"`}",
+            ";
+        } catch (error) { (getErrorHandler() as ErrorHandler").handleError(error as Error, 'BGM_PLAYER_ERROR', {'
                 operation: 'performSeamlessLoop,');
                 track: this.currentTrack?.name || 'unknown
                 }
@@ -422,7 +422,7 @@ export class BGMPlayer {
             rate = Math.max(0.25, Math.min(4.0, rate);
             this.currentSource.playbackRate.setValueAtTime(rate, this.audioContext.currentTime);
             
-            console.log(`Playback, rate set, to ${rate}`};
+            console.log(`Playback, rate set, to ${rate}`}
             ';
 
         } catch (error) { (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_PLAYER_ERROR', {
@@ -443,9 +443,9 @@ export class BGMPlayer {
 
             ' }
 
-            console.log(`Next, track queued: "${track.name"}"`};
-            ";"
-        } catch (error) { (getErrorHandler() as ErrorHandler").handleError(error as Error, 'BGM_PLAYER_ERROR', {'"
+            console.log(`Next, track queued: "${track.name"}"`}
+            ";
+        } catch (error) { (getErrorHandler() as ErrorHandler").handleError(error as Error, 'BGM_PLAYER_ERROR', {'
                 operation: 'queueNext,');
                 track: track?.name || 'unknown
             }';
@@ -458,7 +458,7 @@ export class BGMPlayer {
      */ : undefined
     setLoop(enabled: boolean): void { this.loopEnabled = enabled,' }
 
-        console.log(`Loop ${enabled ? 'enabled' : 'disabled}`};
+        console.log(`Loop ${enabled ? 'enabled' : 'disabled}`}
     }
     
     /**
@@ -502,7 +502,7 @@ export class BGMPlayer {
     /**
      * 統計情報をリセット
      */
-    resetStats()';
+    resetStats(');
         console.log('Playback, statistics reset);
     }
     
@@ -518,7 +518,7 @@ export class BGMPlayer {
             }
             ;
             // 統計をリセット
-            this.resetStats()';
+            this.resetStats(');
             console.log('BGMPlayer, disposed');
             ';
 

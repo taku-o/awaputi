@@ -6,10 +6,10 @@
  */
 
 // Types for vibration patterns
-type VibrationPattern = number | number[];
+type VibrationPattern = number | number[]
 
 // Types for audio levels
-type AudioLevel = 'low' | 'medium' | 'high' | 'critical';
+type AudioLevel = 'low' | 'medium' | 'high' | 'critical',
 
 // Types for device capabilities
 interface DeviceCapabilities { vibrationSupported: boolean,
@@ -36,9 +36,9 @@ interface AccessibilitySettings { visualFeedback: boolean,
 
 // Types for settings change event
 interface SettingsChangeEvent { 
-    type: 'single' | 'batch';
+    type: 'single' | 'batch',
     key?: string,
-    value?: any;
+    value?: any,
     settings?: Record<string, any> }
 
 // Main controller interface
@@ -55,7 +55,7 @@ export class AudioLegacyAdapter {
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
-    this.vibrationManager = null };
+    this.vibrationManager = null }
         this.initializeVibrationManager(); }
     }
 
@@ -68,7 +68,7 @@ export class AudioLegacyAdapter {
                 const cue: AudioCue = { pattern: 'custom', vibrationPattern: pattern;
                 this.mainController.feedbackManager.applyTactileFeedback(cue);
 
-            },
+            
             isSupported: (): boolean => 'vibrate' in navigator;
         } }
 
@@ -103,7 +103,7 @@ export class AudioLegacyAdapter {
     captioning: enabled;
             colorIndication: enabled;
             hapticFeedback: enabled && 'vibrate' in navigator;
-            descriptionEnabled: enabled && 'speechSynthesis' in window  };
+            descriptionEnabled: enabled && 'speechSynthesis' in window  }
         await this.mainController.updateSettings(settings);
     }
 
@@ -125,7 +125,7 @@ export class AudioLegacyAdapter {
     public getCapabilities(
             vibrationSupported: 'vibrate' in navigator;
             speechSynthesisSupported: 'speechSynthesis' in window;
-            visualFeedbackSupported: typeof document !== 'undefined',';
+            visualFeedbackSupported: typeof document !== 'undefined',',
             highContrastSupported: window.matchMedia && window.matchMedia('(prefers-contrast: high)').matches;
             reducedMotionSupported: window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)).matches,
         } }
@@ -142,7 +142,7 @@ export class AudioLegacyAdapter {
             // 振動強度変更時の即座テスト
         }
 
-            this.mainController.triggerHapticFeedback('notification'; }
+            this.mainController.triggerHapticFeedback('notification', }
 }
 
     /**
@@ -156,7 +156,7 @@ export class AudioLegacyAdapter {
      * @returns コンポーネントステータス
      */
     public getStatus(): { vibrationManagerAvailable: boolean, capabilities: DeviceCapabilities; { return { vibrationManagerAvailable: this.vibrationManager !== null ;
-            capabilities: this.getCapabilities() } };
+            capabilities: this.getCapabilities() } }
 
     /**
      * クリーンアップ

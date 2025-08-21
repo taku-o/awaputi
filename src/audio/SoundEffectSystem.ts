@@ -4,12 +4,12 @@
  * 各種オーディオコンポーネントを統合管理
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler';
-import { getConfigurationManager } from '../core/ConfigurationManager';
-import { AudioEffectManager } from './effects/AudioEffectManager';
-import { SoundPoolManager } from './effects/SoundPoolManager';
-import { AudioEffectContextManager } from './effects/AudioEffectContextManager';
-import { SoundEffectRenderer } from './effects/SoundEffectRenderer';
+import { getErrorHandler } from '../utils/ErrorHandler',
+import { getConfigurationManager } from '../core/ConfigurationManager',
+import { AudioEffectManager } from './effects/AudioEffectManager',
+import { SoundPoolManager } from './effects/SoundPoolManager',
+import { AudioEffectContextManager } from './effects/AudioEffectContextManager',
+import { SoundEffectRenderer } from './effects/SoundEffectRenderer',
 
 /**
  * サウンドカテゴリ設定インターフェース
@@ -26,7 +26,7 @@ interface PlaybackOptions {
     volume?: number,
     pitch?: number,
     useVariation?: boolean,
-    [key: string]: any;
+    [key: string]: any,
 }
 
 /**
@@ -56,10 +56,10 @@ interface ErrorHandler {
  */
 interface SystemStatistics {
     categories: { [key: string]: SoundCategoryConfig };
-    bubbleTypes: number,
-    comboLevels: number,
-    achievementRarities: number,
-    components: {;
+    bubbleTypes: number;
+    comboLevels: number;
+    achievementRarities: number;
+    components: {
         pool?: any;
         effects?: any;
         context?: any;
@@ -73,27 +73,27 @@ interface SystemStatistics {
 type BubbleType = 'normal' | 'stone' | 'iron' | 'diamond' | 'rainbow' |
     'pink' | 'clock' | 'electric' | 'poison' | 'spiky' |
     'escaping' | 'boss' | 'golden' | 'frozen' | 'magnetic' |
-    'explosive' | 'phantom' | 'multiplier';
+    'explosive' | 'phantom' | 'multiplier',
 
 /**
  * UIサウンドタイプ
  */
-type UISoundType = 'click' | 'hover' | 'success' | 'error';
+type UISoundType = 'click' | 'hover' | 'success' | 'error',
 
 /**
  * 実績レアリティタイプ
  */
-type AchievementRarity = 'common' | 'rare' | 'epic' | 'legendary';
+type AchievementRarity = 'common' | 'rare' | 'epic' | 'legendary',
 
 /**
  * ゲーム状態タイプ
  */
-type GameState = 'start' | 'pause' | 'resume' | 'gameover' | 'levelup';
+type GameState = 'start' | 'pause' | 'resume' | 'gameover' | 'levelup',
 
 /**
  * サウンドカテゴリタイプ
  */
-type SoundCategory = 'bubble' | 'ui' | 'achievement' | 'gamestate' | 'combo';
+type SoundCategory = 'bubble' | 'ui' | 'achievement' | 'gamestate' | 'combo',
 
 export class SoundEffectSystem {
     private audioManager: AudioManager;
@@ -128,7 +128,7 @@ export class SoundEffectSystem {
     private readonly achievementRarities: AchievementRarity[];
     
     // 無効化フラグ
-    private disabled: boolean,
+    private disabled: boolean;
 
     constructor(audioManager: AudioManager) {
         this.audioManager = audioManager;
@@ -145,10 +145,10 @@ export class SoundEffectSystem {
         
         // 効果音カテゴリ管理
         this.soundCategories = {
-            bubble: { enabled: true, volume: 1.0 };
-            ui: { enabled: true, volume: 0.8 };
-            achievement: { enabled: true, volume: 1.2 };
-            gamestate: { enabled: true, volume: 0.9 };
+            bubble: { enabled: true, volume: 1.0 },
+            ui: { enabled: true, volume: 0.8 },
+            achievement: { enabled: true, volume: 1.2 },
+            gamestate: { enabled: true, volume: 0.9 },
             combo: { enabled: true, volume: 1.1 }
         };
         
@@ -161,10 +161,10 @@ export class SoundEffectSystem {
         
         // 泡タイプ定義
         this.bubbleTypes = [
-            'normal', 'stone', 'iron', 'diamond', 'rainbow';
-            'pink', 'clock', 'electric', 'poison', 'spiky';
-            'escaping', 'boss', 'golden', 'frozen', 'magnetic';
-            'explosive', 'phantom', 'multiplier
+            'normal', 'stone', 'iron', 'diamond', 'rainbow',
+            'pink', 'clock', 'electric', 'poison', 'spiky',
+            'escaping', 'boss', 'golden', 'frozen', 'magnetic',
+            'explosive', 'phantom', 'multiplier'
         ];
         
         // コンボレベル定義
@@ -330,7 +330,7 @@ export class SoundEffectSystem {
      * 泡タイプのバリエーションを生成
      */
     private async generateBubbleVariations(bubbleType: BubbleType): Promise<any[]> {
-        const variations = [];
+        const variations = []
         const variationCount = this.getBubbleVariationCount(bubbleType);
         
         for (let i = 0; i < variationCount; i++) {
@@ -364,7 +364,7 @@ export class SoundEffectSystem {
             'explosive': 3;
             'phantom': 2;
             'multiplier': 3
-        };
+        }
         
         return variationCounts[bubbleType] || 2;
     }
@@ -388,7 +388,7 @@ export class SoundEffectSystem {
             duration: 0.2;
             type: 'sine' as OscillatorType;
             volume: 0.5
-        };
+        }
         
         // 泡タイプ別のパラメータ調整
         switch (bubbleType) {
@@ -397,33 +397,33 @@ export class SoundEffectSystem {
                     ...baseParams;
                     frequency: 440 + (variation * 50);
                     duration: 0.15
-                };
+                }
             case 'stone':
                 return {
                     ...baseParams;
                     frequency: 200 + (variation * 30);
                     type: 'square' as OscillatorType;
                     duration: 0.3
-                };
+                }
             case 'diamond':
                 return {
                     ...baseParams;
                     frequency: 800 + (variation * 100);
                     duration: 0.25;
                     volume: 0.7
-                };
+                }
             case 'electric':
                 return {
                     ...baseParams;
                     frequency: 1000 + (variation * 200);
                     type: 'sawtooth' as OscillatorType;
                     duration: 0.1
-                };
+                }
             default:
                 return {
                     ...baseParams;
                     frequency: baseParams.frequency + (variation * 50)
-                };
+                }
         }
     }
     
@@ -434,7 +434,7 @@ export class SoundEffectSystem {
         try {
             if (!this.soundRenderer) return;
             
-            const uiSounds: UISoundType[] = ['click', 'hover', 'success', 'error'];
+            const uiSounds: UISoundType[] = ['click', 'hover', 'success', 'error']
             
             for (const soundType of uiSounds) {
                 const soundId = `ui_${soundType}`;
@@ -467,7 +467,7 @@ export class SoundEffectSystem {
             duration: 0.1;
             type: 'sine' as OscillatorType;
             volume: 0.3
-        };
+        }
         
         switch (soundType) {
             case 'click':
@@ -475,21 +475,21 @@ export class SoundEffectSystem {
                     ...baseParams;
                     frequency: 600;
                     duration: 0.05
-                };
+                }
             case 'hover':
                 return {
                     ...baseParams;
                     frequency: 400;
                     duration: 0.03;
                     volume: 0.2
-                };
+                }
             case 'success':
                 return {
                     ...baseParams;
                     frequency: 800;
                     duration: 0.2;
                     volume: 0.5
-                };
+                }
             case 'error':
                 return {
                     ...baseParams;
@@ -497,7 +497,7 @@ export class SoundEffectSystem {
                     type: 'square' as OscillatorType;
                     duration: 0.3;
                     volume: 0.4
-                };
+                }
         }
     }
     
@@ -539,7 +539,7 @@ export class SoundEffectSystem {
             duration: 0.5;
             type: 'sine' as OscillatorType;
             volume: 0.6
-        };
+        }
         
         switch (rarity) {
             case 'common':
@@ -547,26 +547,26 @@ export class SoundEffectSystem {
                     ...baseParams;
                     frequency: 500;
                     duration: 0.3
-                };
+                }
             case 'rare':
                 return {
                     ...baseParams;
                     frequency: 650;
                     duration: 0.4
-                };
+                }
             case 'epic':
                 return {
                     ...baseParams;
                     frequency: 800;
                     duration: 0.6
-                };
+                }
             case 'legendary':
                 return {
                     ...baseParams;
                     frequency: 1000;
                     duration: 0.8;
                     volume: 0.8
-                };
+                }
         }
     }
     
@@ -577,7 +577,7 @@ export class SoundEffectSystem {
         try {
             if (!this.soundRenderer) return;
             
-            const gameStates: GameState[] = ['start', 'pause', 'resume', 'gameover', 'levelup'];
+            const gameStates: GameState[] = ['start', 'pause', 'resume', 'gameover', 'levelup']
             
             for (const state of gameStates) {
                 const soundId = `gamestate_${state}`;
@@ -610,7 +610,7 @@ export class SoundEffectSystem {
             duration: 0.4;
             type: 'sine' as OscillatorType;
             volume: 0.5
-        };
+        }
         
         switch (state) {
             case 'start':
@@ -618,33 +618,33 @@ export class SoundEffectSystem {
                     ...baseParams;
                     frequency: 523, // C note
                     duration: 0.6
-                };
+                }
             case 'pause':
                 return {
                     ...baseParams;
                     frequency: 349, // F note
                     duration: 0.3
-                };
+                }
             case 'resume':
                 return {
                     ...baseParams;
                     frequency: 392, // G note
                     duration: 0.4
-                };
+                }
             case 'gameover':
                 return {
                     ...baseParams;
                     frequency: 261, // Low C
                     duration: 0.8;
                     type: 'triangle' as OscillatorType
-                };
+                }
             case 'levelup':
                 return {
                     ...baseParams;
                     frequency: 659, // E note
                     duration: 0.7;
                     volume: 0.7
-                };
+                }
         }
     }
     
@@ -686,7 +686,7 @@ export class SoundEffectSystem {
             duration: 0.2 + (level * 0.05);
             type: 'sine' as OscillatorType;
             volume: 0.4 + (level * 0.1)
-        };
+        }
     }
     
     /**
@@ -702,7 +702,7 @@ export class SoundEffectSystem {
             if (variations && variations.length > 0) {
                 const variation = options?.useVariation !== false 
                     ? variations[Math.floor(Math.random() * variations.length)]
-                    : variations[0];
+                    : variations[0]
                 
                 this.playSound(variation, 'bubble', options);
             }
@@ -790,7 +790,7 @@ export class SoundEffectSystem {
         if (!this.poolManager || !sound) return;
         
         try {
-            const categoryConfig = this.soundCategories[category];
+            const categoryConfig = this.soundCategories[category]
             const volume = (options?.volume ?? 1.0) * categoryConfig.volume;
             const pitch = options?.pitch ?? 1.0;
             
@@ -798,14 +798,14 @@ export class SoundEffectSystem {
                 ...options;
                 volume;
                 pitch
-            };
+            }
             
             const source = this.poolManager.playSound(sound, playbackOptions);
             if (source) {
                 this.activeSources.add(source);
                 source.onended = () => {
                     this.activeSources.delete(source);
-                };
+                }
             }
         } catch (error) {
             this.errorHandler.handleError(error, 'SoundEffectSystem.playSound', { category, options });
@@ -851,7 +851,7 @@ export class SoundEffectSystem {
      */
     getSystemStatistics(): SystemStatistics {
         return {
-            categories: { ...this.soundCategories };
+            categories: { ...this.soundCategories }
             bubbleTypes: this.bubbleTypes.length;
             comboLevels: this.comboLevels.length;
             achievementRarities: this.achievementRarities.length;
@@ -861,7 +861,7 @@ export class SoundEffectSystem {
                 context: this.audioContextManager;
                 renderer: this.soundRenderer
             }
-        };
+        }
     }
     
     /**

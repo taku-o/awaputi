@@ -4,7 +4,7 @@
  * 効果音再生エンジン、音量・ピッチ制御、アクティブソース管理を担当
  */
 
-import { getErrorHandler  } from '../utils/ErrorHandler';
+import { getErrorHandler  } from '../utils/ErrorHandler',
 
 /**
  * 再生オプションインターフェース
@@ -42,7 +42,7 @@ interface EffectConfig { maxPitchShift: number,
  */
 interface AudioEffects { reverb?: boolean,
     delay?: boolean,
-    filter?: any;
+    filter?: any,
     distortion?: boolean,
 /**
  * 泡タイプ
@@ -52,18 +52,18 @@ type BubbleType = string;
 /**
  * UIアクションタイプ
  */
-type UIActionType = 'click' | 'hover' | 'error' | 'success' | 'button' | 'switch' | 'tab' | 'menu_open' | 'menu_close';
+type UIActionType = 'click' | 'hover' | 'error' | 'success' | 'button' | 'switch' | 'tab' | 'menu_open' | 'menu_close',
 
 /**
  * 実績レアリティタイプ
  */
-type AchievementRarity = 'common' | 'rare' | 'epic' | 'legendary';
+type AchievementRarity = 'common' | 'rare' | 'epic' | 'legendary',
 
 /**
  * ゲーム状態タイプ
  */
-type GameStateType = 'game_start' | 'game_over' | 'warning' | 'levelup' | 'timeup' | ';
-    'stageclear' | 'bonus_start' | 'health_low' | 'powerup' | 'pause' | 'resume';
+type GameStateType = 'game_start' | 'game_over' | 'warning' | 'levelup' | 'timeup' | ',
+    'stageclear' | 'bonus_start' | 'health_low' | 'powerup' | 'pause' | 'resume',
 
 /**
  * 音響再生制御クラス
@@ -83,8 +83,8 @@ export class AudioPlaybackController {
     private playbackStats: PlaybackStats;
     // エフェクト設定
     private effectConfig: EffectConfig;
-    // 音響カテゴリ設定  };
-    private soundCategories: { [key: string]: SoundCategoryConfig;
+    // 音響カテゴリ設定  }
+    private soundCategories: { [key: string]: SoundCategoryConfig,
     constructor() {
         // AudioContext・ノード（外部から注入される）
         this.audioContext = null;
@@ -105,7 +105,7 @@ export class AudioPlaybackController {
     peakConcurrency: 0
 }
             errors: 0 ;
-    } };
+    } }
         
         // エフェクト設定
         this.effectConfig = { maxPitchShift: 2.0;
@@ -113,7 +113,7 @@ export class AudioPlaybackController {
             maxPan: 1.0;
             fadeInDuration: 0.01;
     fadeOutDuration: 0.1 
- };
+ }
         // 音響カテゴリ設定
         this.soundCategories = {
             bubble: { volume: 1.0, priority: 3  ;
@@ -157,7 +157,7 @@ export class AudioPlaybackController {
             const buffer = this.soundBuffers.get(soundName);
             if (!buffer) { }
 
-                console.warn(`Sound '${soundName}' not, found`};
+                console.warn(`Sound '${soundName}' not, found`}
                 return null;
             }
 
@@ -170,7 +170,7 @@ export class AudioPlaybackController {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 component: 'AudioPlaybackController',',
                 operation: 'playSound');
-                soundName };
+                soundName }
             return null;
     /**
      * 内部音響再生メソッド
@@ -248,7 +248,7 @@ export class AudioPlaybackController {
                     gainNode.disconnect();
                     if (pannerNode) pannerNode.disconnect(); }
         } catch (disconnectError) { // 既に切断済みの場合は無視 }
-            };
+            }
 
             return source;
 ';
@@ -274,7 +274,7 @@ export class AudioPlaybackController {
             ...options;
             category: 'bubble;
             pitch: 1.0 + (comboLevel * 0.1;
-    volume: (options.volume || 1.0) * (1.0 + comboLevel * 0.2  };
+    volume: (options.volume || 1.0) * (1.0 + comboLevel * 0.2  }
         
         return this.playSound(soundName, comboOptions);
     }
@@ -295,9 +295,9 @@ export class AudioPlaybackController {
             'switch': 'click;
             'tab': 'click;
             'menu_open': 'success;
-            'menu_close': 'click' } };
+            'menu_close': 'click' } }
 
-        const soundName = uiSoundMap[actionType] || 'click';
+        const soundName = uiSoundMap[actionType] || 'click',
         ';
 
         return this.playSound(soundName, { ...options)
@@ -314,9 +314,9 @@ export class AudioPlaybackController {
             ...options;
             category: 'combo;
             pitch: 1.0 + (comboLevel * 0.15;
-            volume: (options.volume || 1.0) * Math.min(2.0, 1.0 + comboLevel * 0.3 };
+            volume: (options.volume || 1.0) * Math.min(2.0, 1.0 + comboLevel * 0.3 }
 
-        return this.playSound('pop_combo', comboOptions';
+        return this.playSound('pop_combo', comboOptions',
     }
 
     /**
@@ -337,7 +337,7 @@ export class AudioPlaybackController {
             pitch: (options.pitch || 1.0) * config.pitch;
     volume: (options.volume || 1.0) * config.volume 
  }
-    } };
+    } }
 
     /**
      * ゲーム状態音を再生
@@ -357,9 +357,9 @@ export class AudioPlaybackController {
             'health_low': 'warning;
             'powerup': 'success;
             'pause': 'click;
-            'resume': 'click' } };
+            'resume': 'click' } }
 
-        const soundName = stateMap[stateType] || 'success';
+        const soundName = stateMap[stateType] || 'success',
         ';
 
         return this.playSound(soundName, { ...options)
@@ -373,7 +373,7 @@ export class AudioPlaybackController {
                 try {);
                     source.stop(); }
         } catch (error) { // 既に停止済みの場合は無視 }
-            };
+            }
             this.activeSources.clear();
             this.playbackStats.activeCount = 0;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
@@ -423,18 +423,18 @@ export class AudioPlaybackController {
      * アクティブソース管理
      */
     manageActiveSources(): void { // 無効なソースをクリーンアップ
-        const invalidSources: AudioBufferSourceNode[] = [];
+        const invalidSources: AudioBufferSourceNode[] = []
         this.activeSources.forEach(source => { )
             try {)
                 // プレイバック状態チェック);
                 if((source, as any).playbackState === 'finished') { }
                     invalidSources.push(source); }
         } catch (error) { invalidSources.push(source);
-        };
+        }
 
         invalidSources.forEach(source => {  );
             this.activeSources.delete(source); }
-        };
+        }
 
         this.playbackStats.activeCount = this.activeSources.size;
     }
@@ -471,7 +471,7 @@ export class AudioPlaybackController {
             maxConcurrent: this.maxConcurrentSounds;
     categories: Object.keys(this.soundCategories).map(category => ({)
                 name: category;
-    volume: this.soundCategories[category].volume,') };
+    volume: this.soundCategories[category].volume,') }
 
                 priority: this.soundCategories[category].priority)'); }
         }
@@ -514,7 +514,7 @@ let audioPlaybackControllerInstance: AudioPlaybackController | null = null;
  * @returns シングルトンインスタンス
  */
 export function getAudioPlaybackController(): AudioPlaybackController { if (!audioPlaybackControllerInstance) {
-        audioPlaybackControllerInstance = new AudioPlaybackController() };
+        audioPlaybackControllerInstance = new AudioPlaybackController() }
     return audioPlaybackControllerInstance;
 }
 

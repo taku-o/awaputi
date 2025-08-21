@@ -5,7 +5,7 @@
  * AudioCacheManager のサブコンポーネント
  */
 
-import { getErrorHandler  } from '../../utils/ErrorHandler';
+import { getErrorHandler  } from '../../utils/ErrorHandler',
 
 /**
  * Cache statistics interface
@@ -18,7 +18,7 @@ export interface CacheStats { hits: number,
     currentSize?: number,
     maxSize?: number,
     entryCount?: number,
-    memoryUsageRatio?: number };
+    memoryUsageRatio?: number }
 /**
  * Cache entry info for frequency-based removal
  */
@@ -33,7 +33,7 @@ export interface CacheEntryInfo { key: string,
  */
 export interface RemovalResult { removedCount: number,
     removedSize: number,
-    removedKeys: string[];
+    removedKeys: string[]
 
 /**
  * LRUキャッシュノード
@@ -53,7 +53,7 @@ class CacheNode<T = any> { key: string,
         this.accessTime = Date.now();
     this.hitCount = 1;
     this.prev = null
-};
+}
         this.next = null; }
 }
 
@@ -62,7 +62,7 @@ class CacheNode<T = any> { key: string,
  */
 export class LRUCache<T = any> { private readonly maxSize: number,
     private currentSize: number,
-    private readonly, cache: Map<string, CacheNode<T>>;
+    private readonly cache: Map<string, CacheNode<T>>;
     private readonly head: CacheNode<T>;
     private readonly tail: CacheNode<T>;
     private stats: CacheStats;
@@ -71,7 +71,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
         // デフォルト50MB
         this.maxSize = maxSize;
         this.currentSize = 0;
-        this.cache = new Map()';
+        this.cache = new Map(');
         this.head = new CacheNode(, null as any, 0';
         this.tail = new CacheNode(', null as any, 0),
         this.head.next = this.tail;
@@ -81,7 +81,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
         this.stats = {
             hits: 0;
             misses: 0;
-    evictions: 0 };
+    evictions: 0 }
             totalAccesses: 0 
     }
     
@@ -238,7 +238,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
      * @returns 削除されたキーの配列
      */
     removeExpiredEntries(maxAge: number): string[] { const now = Date.now();
-        const expiredKeys: string[] = [];
+        const expiredKeys: string[] = []
         
         // 期限切れエントリを検索
         for(const [key, node] of this.cache) {
@@ -258,7 +258,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
      * @param targetReduction - 目標削減率
      * @returns 削除結果
      */
-    removeByUsageFrequency(targetReduction: number): RemovalResult { const entries: CacheEntryInfo[] = [];
+    removeByUsageFrequency(targetReduction: number): RemovalResult { const entries: CacheEntryInfo[] = []
         
         // 全エントリの使用頻度情報を収集
         for(const [key, node] of this.cache) {
@@ -278,7 +278,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
         const targetSize = this.currentSize * targetReduction;
         let removedSize = 0;
         let removedCount = 0;
-        const removedKeys: string[] = [];
+        const removedKeys: string[] = []
         
         for (const entry of entries) {
         
@@ -296,6 +296,6 @@ export class LRUCache<T = any> { private readonly maxSize: number,
         }
         
         return { removedCount;
-            removedSize };
+            removedSize }
             removedKeys }
         }'}

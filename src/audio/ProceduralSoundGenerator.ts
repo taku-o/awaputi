@@ -4,7 +4,7 @@
  * 各種効果音のリアルタイム生成・バリエーション作成を担当
  */
 
-import { getErrorHandler  } from '../utils/ErrorHandler';
+import { getErrorHandler  } from '../utils/ErrorHandler',
 
 /**
  * プロシージャル音響生成クラス
@@ -12,9 +12,9 @@ import { getErrorHandler  } from '../utils/ErrorHandler';
 export class ProceduralSoundGenerator {
     // プロパティ宣言
     isInitialized: boolean,
-    audioContext: any;
+    audioContext: any,
     soundBuffers: Map<string, any>;
-    soundParams: any;
+    soundParams: any,
     isGenerating: boolean,
     generationProgress: number,
     lastGenerationTime: number,
@@ -34,7 +34,7 @@ export class ProceduralSoundGenerator {
         
         // 音響パラメーター
 
-     };
+     }
         this.soundParams = { }
             pop: { baseFreq: 400, duration: 0.1, decay: 8  ;
             pop_combo: { baseFreq: 800, duration: 0.1, decay: 8  ;
@@ -108,14 +108,14 @@ export class ProceduralSoundGenerator {
             this.isGenerating = false;
             this.generationProgress = 100;
             this.lastGenerationTime = Date.now();
-            console.log(`Generated ${this.soundBuffers.size} procedural, sounds`};
+            console.log(`Generated ${this.soundBuffers.size} procedural, sounds`}
             return true;
             ';
 
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', { ')
                 component: 'ProceduralSoundGenerator,');
                 operation: 'generateAllSounds
-            };
+            }
             this.isGenerating = false;
             return false;
 
@@ -195,9 +195,9 @@ export class ProceduralSoundGenerator {
             const progress = t / duration;
             
             // 優しい和音 (C5, E5, G5);
-            const freq1 = params.freqs[0];
-            const freq2 = params.freqs[1];
-            const freq3 = params.freqs[2];
+            const freq1 = params.freqs[0]
+            const freq2 = params.freqs[1]
+            const freq3 = params.freqs[2]
             
             const decay = Math.exp(-t * params.decay);
             const envelope = Math.sin(Math.PI * progress);
@@ -400,7 +400,7 @@ export class ProceduralSoundGenerator {
             // 上昇するアルペジオ (C, E, G, C);
             const frequencies = params.freqs;
             const noteIndex = Math.floor(progress * frequencies.length);
-            const freq = frequencies[Math.min(noteIndex, frequencies.length - 1)];
+            const freq = frequencies[Math.min(noteIndex, frequencies.length - 1)]
             
             const noteProgress = (progress * frequencies.length) % 1;
             const envelope = Math.sin(Math.PI * noteProgress);
@@ -469,9 +469,9 @@ export class ProceduralSoundGenerator {
         const baseBuffer = this.soundBuffers.get(baseSoundName);
         if (!baseBuffer) { }
 
-            console.warn(`Base, sound '${baseSoundName}' not, found`}';
+            console.warn(`Base, sound '${baseSoundName}' not, found`}',
             return null;
-        } };
+        } }
 
         const { pitchShift = 1.0;
             volumeScale = 1.0;
@@ -489,7 +489,7 @@ export class ProceduralSoundGenerator {
 
             const sourceIndex = Math.floor(i / timeStretch);
             if (sourceIndex < originalData.length) {
-                let sample = originalData[sourceIndex];
+                let sample = originalData[sourceIndex]
                 
                 // 音量調整
                 sample *= volumeScale;
@@ -558,7 +558,7 @@ let proceduralSoundGeneratorInstance: ProceduralSoundGenerator | null = null;
  * @returns {ProceduralSoundGenerator} シングルトンインスタンス
  */
 export function getProceduralSoundGenerator(): ProceduralSoundGenerator { if (!proceduralSoundGeneratorInstance) {
-        proceduralSoundGeneratorInstance = new ProceduralSoundGenerator() };
+        proceduralSoundGeneratorInstance = new ProceduralSoundGenerator() }
     return proceduralSoundGeneratorInstance;
 }
 

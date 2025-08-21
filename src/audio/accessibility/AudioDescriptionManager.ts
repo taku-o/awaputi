@@ -42,15 +42,15 @@ interface AudioDescription { category: string,
     timestamp: number,
 ;
 // Bubble types
-type BubbleType = 'normal' | 'stone' | 'iron' | 'diamond' | 'rainbow' | 'pink' | ';
-                  'clock' | 'electric' | 'poison' | 'spiky' | 'boss' | 'golden' | ';
-                  'frozen' | 'magnetic' | 'explosive';
+type BubbleType = 'normal' | 'stone' | 'iron' | 'diamond' | 'rainbow' | 'pink' | ',
+                  'clock' | 'electric' | 'poison' | 'spiky' | 'boss' | 'golden' | ',
+                  'frozen' | 'magnetic' | 'explosive',
 ';
 // Rarity types
-type RarityType = 'common' | 'rare' | 'epic' | 'legendary';
+type RarityType = 'common' | 'rare' | 'epic' | 'legendary',
 
 // Main controller interface
-interface MainController { errorHandler: any;
+interface MainController { errorHandler: any,
     settings: {
         visualFeedbac,k?: boolean,
     captioning?: boolean,
@@ -58,12 +58,12 @@ interface MainController { errorHandler: any;
 
 export class AudioDescriptionManager {
     private mainController: MainController;
-    private errorHandler: any;
-    private visualNotifications: HTMLElement[];
+    private errorHandler: any,
+    private visualNotifications: HTMLElement[]
     private notificationContainer: HTMLElement | null;
     private maxNotifications: number,
     private captionContainer: HTMLElement | null;
-    private captionQueue: string[];
+    private captionQueue: string[]
     private captionDuration: number,
     private enabled: boolean,
     constructor(mainController: MainController) {
@@ -78,15 +78,15 @@ export class AudioDescriptionManager {
     captioning: true;
                 audioDescriptions: true;
                 audioDescriptions: true;
-        };
+        }
         // 視覚的通知システム
-        this.visualNotifications = [];
+        this.visualNotifications = []
         this.notificationContainer = null;
         this.maxNotifications = 5;
         
         // 字幕システム
         this.captionContainer = null;
-        this.captionQueue = [];
+        this.captionQueue = []
         this.captionDuration = 3000; // 3秒間表示
         
         this.enabled = false;
@@ -95,9 +95,9 @@ export class AudioDescriptionManager {
     /**
      * 通知コンテナを作成
      */
-    public createNotificationContainer()';
+    public createNotificationContainer(');
         this.notificationContainer = document.createElement('div');
-        this.notificationContainer.className = 'audio-accessibility-notifications';
+        this.notificationContainer.className = 'audio-accessibility-notifications',
         this.notificationContainer.style.cssText = `;
             position: fixed;
             top: 10px;
@@ -114,9 +114,9 @@ export class AudioDescriptionManager {
     /**
      * 字幕コンテナを作成
      */
-    public createCaptionContainer()';
+    public createCaptionContainer(');
         this.captionContainer = document.createElement('div');
-        this.captionContainer.className = 'audio-accessibility-captions';
+        this.captionContainer.className = 'audio-accessibility-captions',
         this.captionContainer.style.cssText = `;
             position: fixed;
             bottom: 80px;
@@ -156,7 +156,7 @@ export class AudioDescriptionManager {
             duration = 3000 } = options;
         ';
         // 通知要素を作成
-        const notification = document.createElement('div';
+        const notification = document.createElement('div',
         notification.className = `notification notification-${type}`;
 
         notification.style.cssText = `';
@@ -177,10 +177,10 @@ export class AudioDescriptionManager {
         const content = document.createElement('div');
 
         content.innerHTML = `';
-            <div style="display: flex; align-items: center;, gap: 10px;">""
-                <span style="font-size: 20px;">${icon}</span>"
-                <div>"";
-                    <div style="font-weight: bold;">${title}</div>""
+            <div style="display: flex; align-items: center;, gap: 10px;">"
+                <span style="font-size: 20px;">${icon}</span>
+                <div>"",
+                    <div style="font-weight: bold;">${title}</div>"
                     ${message ? `<div, style="font-size: 12px, opacity: 0.8,">${message}</div>` : '}
                 </div>;
             </div>';
@@ -217,7 +217,7 @@ export class AudioDescriptionManager {
      * アニメーションスタイルを確保
      * @private
      */
-    private ensureAnimationStyles()';
+    private ensureAnimationStyles(');
         if(!document.querySelector('#audio-accessibility-animations)' { 
             const style = document.createElement('style');
             style.id = 'audio-accessibility-animations;
@@ -228,7 +228,7 @@ export class AudioDescriptionManager {
                         opacity: 0;
                     }
                     to {
-                        transform: translateX(0};
+                        transform: translateX(0}
                         opacity: 1;
     }
                 @keyframes, slideOutLeft { from { }
@@ -285,10 +285,10 @@ export class AudioDescriptionManager {
         }
 
         const text = this.captionQueue.shift(';
-        this.captionContainer.style.display = 'block';
+        this.captionContainer.style.display = 'block',
         ';
         // アクセシビリティ属性を更新')
-        this.captionContainer.setAttribute('aria-label', `字幕: ${ text)`};
+        this.captionContainer.setAttribute('aria-label', `字幕: ${ text)`}
         
         // 次の字幕表示までの時間
         setTimeout((} => { }
@@ -317,8 +317,8 @@ export class AudioDescriptionManager {
             frozen: '#87ceeb;
             magnetic: '#ff8c00;
             explosive: '#dc143c
-            };
-        return colorMap[bubbleType as BubbleType] || '#00ffff';
+            }
+        return colorMap[bubbleType as BubbleType] || '#00ffff',
     }
 
     /**
@@ -331,8 +331,8 @@ export class AudioDescriptionManager {
             rare: '#0080ff;
             epic: '#8000ff;
             legendary: '#ff8000
-            };
-        return colorMap[rarity as RarityType] || '#ffffff';
+            }
+        return colorMap[rarity as RarityType] || '#ffffff',
     }
 
     /**
@@ -433,7 +433,7 @@ export class AudioDescriptionManager {
     
 }
             this.notificationContainer.parentNode.removeChild(this.notificationContainer); }
-        } };
+        } }
         
         if (this.captionContainer && this.captionContainer.parentNode) {
         ',
@@ -444,6 +444,6 @@ export class AudioDescriptionManager {
         }
         
         // データをクリア
-        this.visualNotifications = [];
-        this.captionQueue = [];
+        this.visualNotifications = []
+        this.captionQueue = []
     }'}

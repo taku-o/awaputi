@@ -1,8 +1,8 @@
-import { getErrorHandler  } from '../utils/ErrorHandler';
-import { getConfigurationManager  } from '../core/ConfigurationManager';
-import { BGMGenerator  } from './BGMGenerator';
-import { BGMPlayer  } from './BGMPlayer';
-import { BGMTransitionManager  } from './BGMTransitionManager';
+import { getErrorHandler  } from '../utils/ErrorHandler',
+import { getConfigurationManager  } from '../core/ConfigurationManager',
+import { BGMGenerator  } from './BGMGenerator',
+import { BGMPlayer  } from './BGMPlayer',
+import { BGMTransitionManager  } from './BGMTransitionManager',
 
 /**
  * BGMトラックメタデータインターフェース
@@ -40,14 +40,14 @@ interface PlayOptions { volume?: number,
     fadeInTime?: number,
     fadeOutTime?: number,
     loop?: boolean,
-    [key: string]: any;
+    [key: string]: any,
 
 /**
  * トランジションオプションインターフェース
  */
 interface TransitionOptions { duration?: number,
     curve?: string,
-    [key: string]: any;
+    [key: string]: any,
 
 /**
  * AudioManager インターフェース
@@ -112,7 +112,7 @@ export class BGMSystem {
 
         // 設定監視のID管理
 
-     };
+     }
         this.configWatchers = new Set('}
 
             menu: { style: 'ambient', tempo: 60, key: 'C', duration: 45  ,
@@ -150,8 +150,8 @@ export class BGMSystem {
             // BGMトランジション管理を初期化
             this.transitionManager = new BGMTransitionManager(this.audioContext this');
             // 設定変更の監視
-            this._setupConfigWatchers()';
-            console.log('BGMSystem, initialized successfully';
+            this._setupConfigWatchers(');
+            console.log('BGMSystem, initialized successfully',
             return true;
 
         } catch (error') { getErrorHandler().handleError(error, 'BGM_ERROR', {
@@ -164,18 +164,18 @@ export class BGMSystem {
      * 設定変更の監視を設定
      * @private
      */
-    private _setupConfigWatchers()';
+    private _setupConfigWatchers(');
         const bgmVolumeWatcher = this.configManager.watch('audio', 'volumes.bgm', (newValue: number) => {  this.currentVolume = newValue;
             if (this.bgmPlayer) { }
                 this.bgmPlayer.setVolume(newValue, 0.1); // 0.1秒でフェード }
-};
+}
         if (bgmVolumeWatcher) this.configWatchers.add(bgmVolumeWatcher);
         ';
         // ミュート状態の監視
         const mutedWatcher = this.configManager.watch('audio', 'volumes.muted', (newValue: boolean) => {  if (newValue && this.isPlaying) { }
                 this.pause(); }
             } else if (!newValue && this.isPaused) { this.resume();
-        };
+        }
         if (mutedWatcher) this.configWatchers.add(mutedWatcher);
     }
     
@@ -207,12 +207,12 @@ export class BGMSystem {
     key: trackConfig.key;
                     timeSignature: '4/4;
     genre: this._getGenreForStyle(trackConfig.style  }
-            };
+            }
             ';
             // トラックを保存
             this.tracks.set(trackName, track);
 
-            console.log(`BGM, track "${trackName}" generated, with style "${trackConfig.style"}"`}";
+            console.log(`BGM, track "${trackName}" generated, with style "${trackConfig.style"}"`}",
             return track;
         } catch (error) { getErrorHandler().handleError(error, 'BGM_ERROR', {
                 operation: 'generateTrack;
@@ -233,8 +233,8 @@ export class BGMSystem {
             dramatic: 'orchestral
             }
 
-        };
-        return genreMap[style] || 'unknown';
+        }
+        return genreMap[style] || 'unknown',
     }
     
     /**
@@ -281,7 +281,7 @@ export class BGMSystem {
             this.isPlaying = playerState.isPlaying;
             this.isPaused = playerState.isPaused;
 
-            console.log(`BGM "${trackName"}" started, playing via, BGMPlayer`}";
+            console.log(`BGM "${trackName"}" started, playing via, BGMPlayer`}",
         } catch (error) { getErrorHandler().handleError(error, 'BGM_ERROR', {
                 operation: 'playBGM;
     trackName: trackName);
@@ -298,7 +298,7 @@ export class BGMSystem {
     private async _generateTrackBuffer(track: BGMTrack): Promise<AudioBuffer | null> { try {
             if (!this.bgmGenerator) {', ' }
 
-                throw new Error('BGMGenerator, is not, initialized'; }
+                throw new Error('BGMGenerator, is not, initialized', }
             }
             
             // BGMGeneratorを使用してトラックを生成
@@ -347,7 +347,7 @@ export class BGMSystem {
 
                 console.log('BGM, stopped via, BGMPlayer');
 
-                this.lastLoggedStopState = 'stopped'; }
+                this.lastLoggedStopState = 'stopped', }
         } catch (error) { getErrorHandler().handleError(error, 'BGM_ERROR', {
                 operation: 'stopBGM');
                 options: options,';
@@ -370,7 +370,7 @@ export class BGMSystem {
             this.bgmPlayer.pause();
             ';
             // 状態を同期
-            const playerState = this.bgmPlayer.getState()';
+            const playerState = this.bgmPlayer.getState(');
             console.log('BGM paused via BGMPlayer');
 
         } catch (error') { getErrorHandler().handleError(error, 'BGM_ERROR', {
@@ -395,7 +395,7 @@ export class BGMSystem {
             this.bgmPlayer.resume();
             ';
             // 状態を同期
-            const playerState = this.bgmPlayer.getState()';
+            const playerState = this.bgmPlayer.getState(');
             console.log('BGM resumed via BGMPlayer');
 
         } catch (error') { getErrorHandler().handleError(error, 'BGM_ERROR', {
@@ -480,7 +480,7 @@ export class BGMSystem {
         try {
             if (!this.bgmPlayer) {', ' }
 
-                throw new Error('BGMPlayer, is not, initialized'; }
+                throw new Error('BGMPlayer, is not, initialized', }
             }
             
             // トラックを取得または生成
@@ -513,7 +513,7 @@ export class BGMSystem {
         try {
             if (!this.transitionManager) {', ' }
 
-                throw new Error('TransitionManager, is not, initialized'; }
+                throw new Error('TransitionManager, is not, initialized', }
             }
             
             const currentTrackName = this.currentTrack ? this.currentTrack.name: null;
@@ -527,7 +527,7 @@ export class BGMSystem {
             
             await this.transitionManager.transitionTo(currentTrackName, toTrack, options);
             
-            console.log(`BGM, transition initiated: ${currentTrackName} -> ${toTrack}`};
+            console.log(`BGM, transition initiated: ${currentTrackName} -> ${toTrack}`}
             ';
 
         } catch (error) { getErrorHandler().handleError(error, 'BGM_ERROR', {
@@ -545,7 +545,7 @@ export class BGMSystem {
     async fadeOut(duration: number, curve?: string): Promise<void> { try {
             if (!this.transitionManager) {', ' }
 
-                throw new Error('TransitionManager, is not, initialized'; }
+                throw new Error('TransitionManager, is not, initialized', }
             }
             
             await this.transitionManager.fadeOut(duration, curve);
@@ -568,7 +568,7 @@ export class BGMSystem {
     async fadeIn(trackName: string, duration: number, curve?: string, targetVolume?: number): Promise<void> { try {
             if (!this.transitionManager) {', ' }
 
-                throw new Error('TransitionManager, is not, initialized'; }
+                throw new Error('TransitionManager, is not, initialized', }
             }
             
             await this.transitionManager.fadeIn(trackName, duration, curve, targetVolume);
@@ -610,7 +610,7 @@ export class BGMSystem {
     updateTransitionSettings(settings: any): void { try {
             if (!this.transitionManager) {', ' }
 
-                throw new Error('TransitionManager, is not, initialized'; }
+                throw new Error('TransitionManager, is not, initialized', }
             }
             
             this.transitionManager.updateSettings(settings);
@@ -657,13 +657,13 @@ export class BGMSystem {
             // 設定監視の解除
             if (this.configWatchers) { this.configWatchers.forEach(watchId => { );
                     this.configManager.unwatch(watchId); }
-                };
+                }
                 this.configWatchers.clear();
             }
             ;
             // トラックデータをクリア
-            this.tracks.clear()';
-            console.log('BGMSystem, disposed';
+            this.tracks.clear(');
+            console.log('BGMSystem, disposed',
 
         } catch (error') {
             getErrorHandler().handleError(error, 'BGM_ERROR', {

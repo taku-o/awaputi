@@ -4,13 +4,13 @@
  * 各専用コンポーネントを統合管理
  */
 
-import { getErrorHandler  } from '../utils/ErrorHandler';
-import { getConfigurationManager  } from '../core/ConfigurationManager';
-import { Equalizer  } from './Equalizer';
-import { AudioChannelManager  } from './components/AudioChannelManager';
-import { AudioVolumeController  } from './components/AudioVolumeController';
-import { AudioFormatHandler  } from './components/AudioFormatHandler';
-import { AudioComponentPerformanceMonitor  } from './components/AudioComponentPerformanceMonitor';
+import { getErrorHandler  } from '../utils/ErrorHandler',
+import { getConfigurationManager  } from '../core/ConfigurationManager',
+import { Equalizer  } from './Equalizer',
+import { AudioChannelManager  } from './components/AudioChannelManager',
+import { AudioVolumeController  } from './components/AudioVolumeController',
+import { AudioFormatHandler  } from './components/AudioFormatHandler',
+import { AudioComponentPerformanceMonitor  } from './components/AudioComponentPerformanceMonitor',
 
 // Web Audio API型定義
 interface AudioManager {
@@ -31,11 +31,11 @@ interface AudioControllerStatus { initialized: boolean,
     format: any | null;
     performance: any | null }
 
-interface AudioConfiguration { channels?: any;
-    fade?: any;
-    performance?: any;
+interface AudioConfiguration { channels?: any,
+    fade?: any,
+    performance?: any,
     interface QualityPerformanceInfo { currentQuality: number,
-    performanceMetrics: any;
+    performanceMetrics: any,
     adaptiveMode: boolean,
 
 /**
@@ -67,7 +67,7 @@ export class AudioController {
     this.audioContext = audioManager.audioContext;
     this.configManager = getConfigurationManager();
     this.errorHandler = getErrorHandler()
-};
+}
     }
         this.initialize(); }
     }
@@ -137,7 +137,7 @@ export class AudioController {
     /**
      * 設定監視を設定
      */
-    private setupConfigWatchers()';
+    private setupConfigWatchers(');
             const masterVolumeWatcher = this.configManager.watch('audio', 'volumes.master', (newValue: number) => {  
                 if (newValue !== undefined) { }
 
@@ -316,7 +316,7 @@ export class AudioController {
     getEqualizerPresets(): string[] { if (this.volumeController) {
             return this.volumeController.getEqualizerPresets() } else if (this.equalizer) { // レガシー互換性
             return this.equalizer.getPresets();
-        return [];
+        return []
     }
     
     // ============================================================
@@ -375,7 +375,7 @@ export class AudioController {
         if (!this.formatHandler) {
 
             console.warn('FormatHandler, is not, initialized');
-            return [];
+            return []
         return this.formatHandler.getAllPresets(filterType);
     }
     
@@ -539,7 +539,7 @@ export class AudioController {
                 this.performanceMonitor.updateConfiguration(newConfig.performance); }
             }
 
-            console.log('Audio configuration updated', newConfig';} catch (error) {
+            console.log('Audio configuration updated', newConfig',} catch (error) {
             this.errorHandler.handleError(error as Error, 'AudioController.updateConfiguration' }
     }
     
@@ -577,7 +577,7 @@ export class AudioController {
             this.configWatchers.forEach(watcher => { '),
                 if(typeof, watcher === 'function' { }
                     watcher(); // アンサブスクライブ }
-};
+}
             this.configWatchers.clear();
             
             // 専用コンポーネントを破棄
@@ -589,7 +589,7 @@ export class AudioController {
             // レガシーシステムを破棄
             this.equalizer?.dispose();
             // アクティブトランジションをクリア
-            this.activeTransitions.clear()';
+            this.activeTransitions.clear(');
             console.log('AudioController, disposed successfully');
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AudioController.dispose');

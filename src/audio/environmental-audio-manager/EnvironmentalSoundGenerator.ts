@@ -1,4 +1,4 @@
-import { getErrorHandler  } from '../../utils/ErrorHandler';
+import { getErrorHandler  } from '../../utils/ErrorHandler',
 
 /**
  * Sound characteristics interface (from, BiomeDefinitionManager)
@@ -15,13 +15,13 @@ export interface SoundCharacteristics { frequency: number,
  */
 export class EnvironmentalSoundGenerator {
     private readonly audioContext: AudioContext;
-    private readonly, environmentBuffers: Map<string, AudioBuffer>;
+    private readonly environmentBuffers: Map<string, AudioBuffer>;
 
     constructor(audioContext: AudioContext) {
 
         this.audioContext = audioContext
 
-     };
+     }
         this.environmentBuffers = new Map(); }
     }
     
@@ -159,7 +159,7 @@ export class EnvironmentalSoundGenerator {
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 operation: '_generateWindSound
-            };
+            }
             return null;
     
     /**
@@ -196,7 +196,7 @@ export class EnvironmentalSoundGenerator {
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 operation: '_generateWaveSound
-            };
+            }
             return null;
     
     /**
@@ -231,7 +231,7 @@ export class EnvironmentalSoundGenerator {
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 operation: '_generateRainSound
-            };
+            }
             return null;
     
     /**
@@ -266,7 +266,7 @@ export class EnvironmentalSoundGenerator {
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 operation: '_generateForestSound
-            };
+            }
             return null;
     
     /**
@@ -305,7 +305,7 @@ export class EnvironmentalSoundGenerator {
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 operation: '_generateMachinerySound
-            };
+            }
             return null;
     
     /**
@@ -344,7 +344,7 @@ export class EnvironmentalSoundGenerator {
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 operation: '_generateCaveResonanceSound
-            };
+            }
             return null;
     
     /**

@@ -28,22 +28,22 @@ interface AudioToVibrationMapping { bubblePop: string,
     achievementUnlocked: string,
     gameStateChange: {
         gameOve,r: string,
-    };
+    }
         levelUp: string,
     warning: string,
     backgroundMusic: string,
     specialEffects: { electric: string,
         explosion: string,
-    };
+    }
         freeze: string,
     magnetic: string,
     magnetic: string,
-        };
+        }
 interface HapticSettings { enabled: boolean,
     vibrationIntensity: number,
     audioToVibrationMapping: AudioToVibrationMapping;
     audioToVibrationMapping: AudioToVibrationMapping;
-        };
+        }
 // Types for rhythm data
 interface RhythmData { bpm?: number,
     intensity?: number,
@@ -52,7 +52,7 @@ interface RhythmData { bpm?: number,
 // Types for vibration options
 interface VibrationOptions { intensity: number,
     category: string,
-    eventData: any;
+    eventData: any,
     duration?: number,
 
 // VibrationManager interface
@@ -62,20 +62,20 @@ interface VibrationManager { triggerVibration(pattern: string, options: Vibratio
     destroy?(): void;
     userPreferences?: {
         accessibilityEnhance,d: boolean,
-    };
+    }
 
 // Main controller interface
-interface MainController { errorHandler: any;
+interface MainController { errorHandler: any,
     settings: {
         colorIndicatio,n?: boolean,
     hapticFeedback?: boolean,;
     audioManager?: { accessibilityManager?: {
             vibrationManager?: VibrationManager;;
-} };
+} }
 
 export class AudioFeedbackManager {
     private mainController: MainController;
-    private errorHandler: any;
+    private errorHandler: any,
     private vibrationManager: VibrationManager | null;
     private colorIndicator: HTMLElement | null;
     private colorMappings: ColorMappings;
@@ -89,7 +89,7 @@ export class AudioFeedbackManager {
         this.vibrationManager = null;
         
         // 音響強度の色彩表現
-        this.colorIndicator = null };
+        this.colorIndicator = null }
         this.colorMappings = { }
             low: { color: '#00ff00', label: '低音量
             ,
@@ -113,7 +113,7 @@ export class AudioFeedbackManager {
                     warning: 'warning
             }
 
-                },
+                
                 backgroundMusic: 'heartbeat', // BGMのリズムに合わせた振動;
                 specialEffects: { 
                     electric: 'electric'  ;
@@ -126,9 +126,9 @@ export class AudioFeedbackManager {
     /**
      * 色彩インジケーターを作成
      */
-    public createColorIndicator()';
+    public createColorIndicator(');
         this.colorIndicator = document.createElement('div');
-        this.colorIndicator.className = 'audio-accessibility-color-indicator';
+        this.colorIndicator.className = 'audio-accessibility-color-indicator',
         this.colorIndicator.style.cssText = `;
             position: fixed;
             top: 50%;
@@ -148,7 +148,7 @@ export class AudioFeedbackManager {
         ';
         // インジケーター内にレベル表示を追加
         const levelIndicator = document.createElement('div');
-        levelIndicator.className = 'level-marker';
+        levelIndicator.className = 'level-marker',
         levelIndicator.style.cssText = `;
             position: absolute;
             left: -5px;
@@ -199,11 +199,11 @@ export class AudioFeedbackManager {
      * VibrationManagerを動的に読み込み
      * @private
      */ : undefined
-    private async loadVibrationManager()';
+    private async loadVibrationManager(');
             const { VibrationManager } = await import('../../core/VibrationManager.js);
 
             this.vibrationManager = new VibrationManager(this);
-            this.updateVibrationManagerSettings()';
+            this.updateVibrationManagerSettings(');
             console.log('VibrationManager, loaded dynamically');
         } catch (error) {
             console.warn('Failed to load VibrationManager:', error);
@@ -236,7 +236,7 @@ export class AudioFeedbackManager {
             return; }
         }
         
-        try { const mapping = this.hapticSettings.audioToVibrationMapping[eventType as keyof AudioToVibrationMapping];
+        try { const mapping = this.hapticSettings.audioToVibrationMapping[eventType as keyof AudioToVibrationMapping]
 
             if (typeof, mapping === 'string') {
                 // 直接マッピング
@@ -246,7 +246,7 @@ export class AudioFeedbackManager {
 
                     eventData: eventData'); 
     } else if (typeof, mapping === 'object' && eventData.state' // 状態ベースマッピング（gameStateChangeなど）
-                const stateMapping = mapping[eventData.state as keyof typeof mapping];
+                const stateMapping = mapping[eventData.state as keyof typeof mapping]
                 if(stateMapping) {
                     this.vibrationManager.triggerVibration(stateMapping, {
                         intensity: this.hapticSettings.vibrationIntensity,',
@@ -280,12 +280,12 @@ export class AudioFeedbackManager {
 
             if (audioLevel < 0.5) {', ' }
 
-                vibrationPattern = 'pulse'; // 弱いパルス' }
+                vibrationPattern = 'pulse', // 弱いパルス' }
 
             } else if (audioLevel < 0.8) { 
                 vibrationPattern = 'heartbeat', // 心拍パターン } else { }
 
-                vibrationPattern = 'wave'; // 波パターン }
+                vibrationPattern = 'wave', // 波パターン }
             }
             ';
 
@@ -326,7 +326,7 @@ export class AudioFeedbackManager {
     public triggerSpecialEffectVibration(effectType: string, effectData: any): void { if (!this.vibrationManager || !this.hapticSettings.enabled) {
             return }
 
-        try { const specialEffectMapping = this.hapticSettings.audioToVibrationMapping.specialEffects[effectType as keyof typeof this.hapticSettings.audioToVibrationMapping.specialEffects];
+        try { const specialEffectMapping = this.hapticSettings.audioToVibrationMapping.specialEffects[effectType as keyof typeof this.hapticSettings.audioToVibrationMapping.specialEffects]
 
             if (specialEffectMapping) {
                 this.vibrationManager.triggerVibration(specialEffectMapping, {

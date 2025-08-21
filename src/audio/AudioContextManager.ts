@@ -4,7 +4,7 @@
  * AudioContextの初期化、ゲインノード管理、エフェクト管理を担当
  */
 
-import { getErrorHandler  } from '../utils/ErrorHandler';
+import { getErrorHandler  } from '../utils/ErrorHandler',
 
 /**
  * コンプレッサー設定インターフェース
@@ -40,18 +40,18 @@ interface ContextStatus { isInitialized: boolean,
     currentTime: number,
     volumes: {
         maste,r: number,
-    };
+    }
         sfx: number,
     bgm: number,
     effects: { compression: boolean,
     reverb: boolean,
-    };
+    }
     reverb: boolean,
-        };
+        }
 /**
  * ゲインノードタイプ
  */
-type GainNodeType = 'master' | 'sfx' | 'bgm';
+type GainNodeType = 'master' | 'sfx' | 'bgm',
 
 /**
  * AudioContext・ノード管理クラス
@@ -91,7 +91,7 @@ export class AudioContextManager {
         this.isInitialized = false;
         this.isEnabled = true;
         
-        // Audio Configuration (注入される) };
+        // Audio Configuration (注入される) }
         this.audioConfig = null; }
     }
 
@@ -110,11 +110,11 @@ export class AudioContextManager {
             const AudioContextConstructor = (window, as any).AudioContext || (window, as any).webkitAudioContext;
             if (!AudioContextConstructor) {', ' }
 
-                throw new Error('Web, Audio API, is not, supported'; }
+                throw new Error('Web, Audio API, is not, supported', }
             }
             ';
             // AudioContext作成
-            this.audioContext = new AudioContextConstructor()';
+            this.audioContext = new AudioContextConstructor(');
             if (this.audioContext.state === 'suspended') {', ' }
 
                 console.warn('AudioContext is suspended, will need user interaction to resume'); }
@@ -137,7 +137,7 @@ export class AudioContextManager {
                 component: 'AudioContextManager',',
                 operation: 'initializeAudioContext');
                 userAgent: navigator.userAgent;
-    audioContextSupport: !!((window, as any).AudioContext || (window, as any).webkitAudioContext  };
+    audioContextSupport: !!((window, as any).AudioContext || (window, as any).webkitAudioContext  }
             this.isEnabled = false;
             return false;
 
@@ -147,7 +147,7 @@ export class AudioContextManager {
     private createAudioNodes(): void { 
         if (!this.audioContext) {', ' }
 
-            throw new Error('AudioContext, not initialized'; }
+            throw new Error('AudioContext, not initialized', }
         }
 
         // マスターゲインノード
@@ -215,7 +215,7 @@ export class AudioContextManager {
     private setupAudioGraph(): void { 
         if (!this.masterGainNode || !this.compressor || !this.sfxGainNode || !this.bgmGainNode) {', ' }
 
-            throw new Error('Audio, nodes not, created'; }
+            throw new Error('Audio, nodes not, created', }
         }
 
         // コンプレッサーの接続（設定に基づく）
@@ -249,7 +249,7 @@ export class AudioContextManager {
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', { ')
                 component: 'AudioContextManager,');
                 operation: 'initializeReverb
-            };
+            }
             // リバーブなしで続行
         }
     }
@@ -265,7 +265,7 @@ export class AudioContextManager {
     private createReverbBuffer(channels: number, length: number, sampleRate: number, decay: number): AudioBuffer { 
         if (!this.audioContext) {', ' }
 
-            throw new Error('AudioContext, not initialized'; }
+            throw new Error('AudioContext, not initialized', }
         }
 
         const buffer = this.audioContext.createBuffer(channels, length, sampleRate);
@@ -333,7 +333,7 @@ export class AudioContextManager {
     /**
      * AudioContextを再開
      */
-    async resumeAudioContext()';
+    async resumeAudioContext(');
         if(this.audioContext && this.audioContext.state === 'suspended' {
             try {
                 await this.audioContext.resume();
@@ -358,7 +358,7 @@ export class AudioContextManager {
                 }
 
                 break;
-            case 'sfx':';
+            case 'sfx':',
                 if (this.sfxGainNode) { this.sfxGainNode.gain.value = clampedVolume }
 
                 break;
@@ -410,7 +410,7 @@ export class AudioContextManager {
             sampleRate: this.audioContext ? this.audioContext.sampleRate : 0);
             currentTime: this.audioContext ? this.audioContext.currentTime : 0',
     volumes: { 
-                master: this.getGainNodeVolume('master',','  };
+                master: this.getGainNodeVolume('master',','  }
                 sfx: this.getGainNodeVolume('sfx',',
                 bgm: this.getGainNodeVolume('bgm  }
             effects: { compression: this.isCompressionEnabled()
@@ -483,7 +483,7 @@ let audioContextManagerInstance: AudioContextManager | null = null;
  * @returns シングルトンインスタンス
  */
 export function getAudioContextManager(): AudioContextManager { if (!audioContextManagerInstance) {
-        audioContextManagerInstance = new AudioContextManager() };
+        audioContextManagerInstance = new AudioContextManager() }
     return audioContextManagerInstance;
 }
 

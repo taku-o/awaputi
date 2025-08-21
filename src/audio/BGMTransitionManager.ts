@@ -1,4 +1,4 @@
-import { getErrorHandler  } from '../utils/ErrorHandler';
+import { getErrorHandler  } from '../utils/ErrorHandler',
 
 // トランジションオプション型定義
 interface TransitionOptions { type?: string,
@@ -34,7 +34,7 @@ interface TrackInfo { metadata: {
         temp,o: number,
     key: string,
     style: string,
-} };
+} }
 
 // BGM情報型定義
 interface BGMInfo { volume: number,
@@ -53,13 +53,13 @@ interface TransitionSettings { defaultFadeInDuration?: number,
 interface TransitionState { isTransitioning: boolean,
     currentTransition: TransitionInfo | null;
     queueLength: number,
-    settings: {;
+    settings: {
         defaultFadeInDuratio,n: number,
-    };
+    }
         defaultFadeOutDuration: number,
     defaultCrossfadeDuration: number,
     defaultCrossfadeDuration: number,
-        };
+        }
 /**
  * BGMトランジション管理クラス - 高度なBGM遷移制御とフェード機能
  */
@@ -69,7 +69,7 @@ export class BGMTransitionManager {
     // トランジション状態
     private isTransitioning: boolean = false;
     private currentTransition: TransitionInfo | null = null;
-    private transitionQueue: QueueEntry[] = [];
+    private transitionQueue: QueueEntry[] = []
     // フェード設定
     private defaultFadeInDuration: number = 2.0;
     private defaultFadeOutDuration: number = 2.0;
@@ -79,14 +79,14 @@ export class BGMTransitionManager {
         FADE_OUT_IN: 'fade_out_in;
         CROSSFADE: 'crossfade;
         CUT: 'cut;
-        SMART_CROSSFADE: 'smart_crossfade';
+        SMART_CROSSFADE: 'smart_crossfade',
             } as const;
     // 音量カーブタイプ
     private readonly curveTypes = { 
         LINEAR: 'linear;
         EXPONENTIAL: 'exponential;
         LOGARITHMIC: 'logarithmic;
-        SMOOTH: 'smooth';
+        SMOOTH: 'smooth',
             } as const;
     constructor(audioContext: AudioContext, bgmSystem: BGMSystem) {
         this.audioContext = audioContext;
@@ -111,7 +111,7 @@ export class BGMTransitionManager {
                 // 既に遷移中の場合はキューに追加
             }
                 this.transitionQueue.push({ fromTrack, toTrack, options );
-                console.log(`Transition, queued: ${fromTrack} -> ${toTrack}`};
+                console.log(`Transition, queued: ${fromTrack} -> ${toTrack}`}
                 return;
             }
             
@@ -122,9 +122,9 @@ export class BGMTransitionManager {
                 volume = 1.0 } = options;
             
             this.isTransitioning = true;
-            this.currentTransition = { fromTrack, toTrack, type, duration, curve };
+            this.currentTransition = { fromTrack, toTrack, type, duration, curve }
             
-            console.log(`Starting, transition: ${fromTrack} -> ${toTrack} (${ type)`};
+            console.log(`Starting, transition: ${fromTrack} -> ${toTrack} (${ type)`}
             
             // 遅延がある場合は待機
             if (delay > 0} { }
@@ -145,7 +145,7 @@ export class BGMTransitionManager {
                 case this.transitionTypes.SMART_CROSSFADE:;
                     await this._smartCrossfadeTransition(fromTrack, toTrack, options);
                     break }
-                default: };
+                default: }
                     throw new Error(`Unknown, transition type: ${type}`}
             }
             
@@ -165,7 +165,7 @@ export class BGMTransitionManager {
             this.currentTransition = null;
 
             (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_TRANSITION_ERROR', {
-                operation: 'transitionTo),';
+                operation: 'transitionTo),',
                 fromTrack: fromTrack;
     toTrack: toTrack);
                 options: options,);
@@ -224,7 +224,7 @@ export class BGMTransitionManager {
         
         // 新しいBGMを即座に開始
         await this.bgmSystem.playBGM(toTrack, { volume: volume)
-            fadeInDuration: 0 };
+            fadeInDuration: 0 }
     
     /**
      * スマートクロスフェード遷移（音楽的な調和を考慮）
@@ -269,7 +269,7 @@ export class BGMTransitionManager {
         await this._crossfadeTransition(fromTrack, toTrack, { ...options)
             duration: adjustedDuration);
             curve: curve;
-            curve: curve };
+            curve: curve }
     /**
      * 音楽的調和度を計算
      * @param fromTrack - 現在のトラック
@@ -321,13 +321,13 @@ export class BGMTransitionManager {
         const keyMap: Record<string, number> = {', 'C': 0, 'G': 7, 'D': 2, 'A': 9, 'E': 4, 'B': 11,
             'F#': 6, 'Db': 1, 'Ab': 8, 'Eb': 3, 'Bb': 10, 'F': 5;
             'Am': 9, 'Em': 4, 'Bm': 11, 'F#m': 6, 'C#m': 1, 'G#m': 8;
-            'D#m': 3, 'A#m': 10, 'Fm': 5, 'Cm': 0, 'Gm': 7, 'Dm': 2 };
+            'D#m': 3, 'A#m': 10, 'Fm': 5, 'Cm': 0, 'Gm': 7, 'Dm': 2 }
         
         const interval = Math.abs((keyMap[key1] ? ? 0) - (keyMap[key2] ?? 0));
         const circleInterval = Math.min(interval, 12 - interval);
         
         // 完全5度(7)、完全4度(5)、短3度(3)関係を高く評価 : undefined
-        const harmonyWeights: Record<number, number> = { 0: 1.0, 7: 0.9, 5: 0.9, 3: 0.7, 4: 0.7, 8: 0.6, 9: 0.6   };
+        const harmonyWeights: Record<number, number> = { 0: 1.0, 7: 0.9, 5: 0.9, 3: 0.7, 4: 0.7, 8: 0.6, 9: 0.6   }
         return harmonyWeights[circleInterval] ? ? 0.3;
     }
     
@@ -450,7 +450,7 @@ export class BGMTransitionManager {
     /**
      * 即座にトランジションを停止
      */
-    stopTransition()';
+    stopTransition(');
             console.log('All, transitions stopped');
             ';
 
@@ -479,7 +479,7 @@ export class BGMTransitionManager {
                 this.defaultCrossfadeDuration = Math.max(0.5, Math.min(20, settings.defaultCrossfadeDuration)); }
             }
 
-            console.log('Transition settings updated', settings';
+            console.log('Transition settings updated', settings',
             ';
 
         } catch (error) { (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_TRANSITION_ERROR', {

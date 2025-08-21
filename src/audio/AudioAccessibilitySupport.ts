@@ -1,10 +1,10 @@
-import { getErrorHandler  } from '../utils/ErrorHandler';
-import { getConfigurationManager  } from '../core/ConfigurationManager';
-import { getLocalizationManager  } from '../core/LocalizationManager';
-import { AudioDescriptionManager  } from './accessibility/AudioDescriptionManager';
-import { AudioCueManager  } from './accessibility/AudioCueManager';
-import { AudioFeedbackManager  } from './accessibility/AudioFeedbackManager';
-import { AudioSettingsManager  } from './accessibility/AudioSettingsManager';
+import { getErrorHandler  } from '../utils/ErrorHandler',
+import { getConfigurationManager  } from '../core/ConfigurationManager',
+import { getLocalizationManager  } from '../core/LocalizationManager',
+import { AudioDescriptionManager  } from './accessibility/AudioDescriptionManager',
+import { AudioCueManager  } from './accessibility/AudioCueManager',
+import { AudioFeedbackManager  } from './accessibility/AudioFeedbackManager',
+import { AudioSettingsManager  } from './accessibility/AudioSettingsManager',
 
 // エラーハンドラー型定義
 interface ErrorHandler {
@@ -23,7 +23,7 @@ interface LocalizationManager {
 
 // オーディオマネージャー型定義
 interface AudioManager {
-    audioVisualizer?: any;
+    audioVisualizer?: any,
     getVisualizationStatistics(): AudioVisualizationStats | null;
 }
 
@@ -39,7 +39,7 @@ interface VisualNotificationOptions {
     message?: string,
     icon?: string,
     color?: string,
-    position?: any;
+    position?: any,
     duration?: number,
 }
 
@@ -47,7 +47,7 @@ interface VisualNotificationOptions {
 interface BubblePopEventData {
     bubbleType: string,
     comboLevel: number,
-    position?: any;
+    position?: any,
 }
 
 interface ComboEventData {
@@ -68,7 +68,7 @@ interface GameStateEventData {
 interface AudioEventData {
     bubbleType?: string,
     comboLevel?: number | string;
-    position?: any;
+    position?: any,
     comboCount?: number,
     achievementName?: string,
     rarity?: string,
@@ -111,7 +111,7 @@ interface PatternRecognition {
  * const accessibilitySupport = new AudioAccessibilitySupport(audioManager);
  * await accessibilitySupport.initialize()
  *   type: 'bubble_pop', ')
- *   data: { bubbleType: 'special', score: 100  }';
+ *   data: { bubbleType: 'special', score: 100  }',
 
  * ');
  * 
@@ -145,7 +145,7 @@ export class MainAudioAccessibilitySupport {
     private audioEventListeners: Map<string, ((event: any) => void)[]> = new Map();
     // カラーインジケーター
     private colorIndicator: HTMLElement | null = null;
-    // パターン認識  };
+    // パターン認識  }
     private patternRecognition: PatternRecognition = { enabled: false;
     constructor(audioManager: AudioManager) {
         this.audioManager = audioManager;
@@ -208,10 +208,10 @@ export class MainAudioAccessibilitySupport {
 
         }');
 
-        this.addAudioEventListener('comboAchieved', (event: ComboEventData) => { this.handleComboEvent(event),' 
+        this.addAudioEventListener('comboAchieved', (event: ComboEventData) => { this.handleComboEvent(event),
     }');
 
-        this.addAudioEventListener('achievementUnlocked', (event: AchievementEventData) => { this.handleAchievementEvent(event),' 
+        this.addAudioEventListener('achievementUnlocked', (event: AchievementEventData) => { this.handleAchievementEvent(event),
     }');
 
         this.addAudioEventListener('gameStateChange', (event: GameStateEventData) => { this.handleGameStateEvent(event) });
@@ -237,11 +237,11 @@ export class MainAudioAccessibilitySupport {
                 if (this.settings.hapticFeedback) {
             }
 
-                    this.triggerAudioLevelVibration(stats.averageLevel || 0, 'background'; }
+                    this.triggerAudioLevelVibration(stats.averageLevel || 0, 'background', }
 }
             
             setTimeout(monitorLoop, updateInterval);
-        };
+        }
         
         monitorLoop();
     }
@@ -327,7 +327,7 @@ export class MainAudioAccessibilitySupport {
         // 触覚フィードバック
         if (this.settings.hapticFeedback) {', ' }
 
-            this.triggerHapticFeedback('bubblePop', event'; }
+            this.triggerHapticFeedback('bubblePop', event', }
 }
     
     /**
@@ -340,7 +340,7 @@ export class MainAudioAccessibilitySupport {
         // 視覚的通知
         this.showVisualNotification({ 
             type: 'combo
-            };
+            }
             title: `${comboLevel}連鎖`
             message: `${comboCount}コンボ達成！`,
             icon: '🔥;
@@ -356,7 +356,7 @@ export class MainAudioAccessibilitySupport {
         // 触覚フィードバック
         if (this.settings.hapticFeedback) {', ' }
 
-            this.triggerHapticFeedback('comboAchieved', event'; }
+            this.triggerHapticFeedback('comboAchieved', event', }
 }
     
     /**
@@ -373,7 +373,7 @@ export class MainAudioAccessibilitySupport {
     message: achievementName,');
             icon: '🏆');
             color: this.getRarityColor(rarity;
-    duration: 4000  };
+    duration: 4000  }
         // 字幕
         if (this.settings.captioning) {
     
@@ -384,7 +384,7 @@ export class MainAudioAccessibilitySupport {
         // 触覚フィードバック
         if (this.settings.hapticFeedback) {', ' }
 
-            this.triggerHapticFeedback('achievementUnlocked', event'; }
+            this.triggerHapticFeedback('achievementUnlocked', event', }
 }
     
     /**
@@ -409,7 +409,7 @@ export class MainAudioAccessibilitySupport {
              ;
         ';
 
-        const stateInfo = stateMessages[state];
+        const stateInfo = stateMessages[state]
         if (stateInfo) {
             // 視覚的通知
             this.showVisualNotification({
