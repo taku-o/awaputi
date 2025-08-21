@@ -78,6 +78,7 @@ export interface PlayerData {
     achievements: string[];
     statistics: Record<string, number>;
 }
+
 // UI and interaction types
 export interface UIComponent {
     element?: HTMLElement;
@@ -95,6 +96,7 @@ export interface InteractiveElement {
     onMouseDown?(event: MouseEvent): void;
     onMouseUp?(event: MouseEvent): void;
 }
+
 // Resource loading types
 export interface ResourceLoader {
     loaded: boolean;
@@ -185,6 +187,7 @@ declare global {
         GAME_CONFIG?: any;
     }
 }
+
 // Canvas and WebGL types
 export interface CanvasContext {
     canvas: HTMLCanvasElement;
@@ -210,12 +213,14 @@ export interface StorageAdapter {
     length: number;
     key(index: number): string | null;
 }
+
 // Internationalization
 export interface I18nResource {
     locale: string;
     namespace: string;
     resources: Record<string, string | Record<string, string>>;
 }
+
 export interface I18nManager {
     currentLocale: string;
     supportedLocales: string[];
