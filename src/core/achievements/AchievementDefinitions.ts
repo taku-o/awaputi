@@ -15,8 +15,23 @@
  */
 
 // 型定義
-export interface Achievement { id: string; name: string; description: string; icon: string; category: CategoryType; type: AchievementType; condition: AchievementCondition; reward: AchievementReward; difficulty?: DifficultyLevel; hidden?: boolean; }
-export interface AchievementCondition { type: ConditionType; value?: number | boolean; bubbleType?: BubbleType; }
+export interface Achievement {
+    id: string;
+    name: string;
+    description: string;
+    icon: string;
+    category: CategoryType;
+    type: AchievementType;
+    condition: AchievementCondition;
+    reward: AchievementReward;
+    difficulty?: DifficultyLevel;
+    hidden?: boolean;
+}
+
+export interface AchievementCondition {
+    type: ConditionType;
+    value?: number | boolean;
+    bubbleType?: BubbleType;
     hp?: number;
     time?: number;
     score?: number;
@@ -25,121 +40,142 @@ export interface AchievementCondition { type: ConditionType; value?: number | bo
     startHour?: number;
     endHour?: number;
     [key: string]: any;
-    export interface AchievementReward { ap: number;
+}
+
+export interface AchievementReward {
+    ap: number;
     items?: RewardItem[];
     unlocks?: string[];
     titles?: string[];
-    export interface RewardItem { type: ItemType;
+}
+
+export interface RewardItem {
+    type: ItemType;
     id: string;
     quantity: number;
-    export interface Category { name: string;
+}
+
+export interface Category {
+    name: string;
     description: string;
     icon: string;
     color: string;
     priority?: number;
     unlockRequirements?: string[];
-    export interface AchievementStatistics { total: number;
-    byCategory: Record<CategoryType; number>;
-    byType: Record<AchievementType; number>;
+}
+
+export interface AchievementStatistics {
+    total: number;
+    byCategory: Record<CategoryType, number>;
+    byType: Record<AchievementType, number>;
     totalAP: number;
-    averageAP: number; }
-    difficultyDistribution?: Record<DifficultyLevel, number> };
-export interface AchievementFilter { category?: CategoryType,
+    averageAP: number;
+    difficultyDistribution?: Record<DifficultyLevel, number>;
+}
+
+export interface AchievementFilter {
+    category?: CategoryType;
     type?: AchievementType;
     conditionType?: ConditionType;
     minAP?: number;
     maxAP?: number;
     difficulty?: DifficultyLevel;
     unlocked?: boolean;
-    export interface AchievementSearchResult { achievements: Achievement[];
+}
+
+export interface AchievementSearchResult {
+    achievements: Achievement[];
     totalCount: number;
     categories: string[];
+}
 
 // 列挙型
-export type CategoryType = ;
-    | 'basic'';'
-    | 'score'';'
-    | 'combo'';'
-    | 'bubbleType'';'
-    | 'survival'';'
-    | 'stage'';'
-    | 'technique'';'
-    | 'play'';'
-    | 'collection'';'
+export type CategoryType = 
+    | 'basic'
+    | 'score'
+    | 'combo'
+    | 'bubbleType'
+    | 'survival'
+    | 'stage'
+    | 'technique'
+    | 'play'
+    | 'collection'
     | 'challenge';
-    export type AchievementType = 'single' | 'cumulative' | 'progressive';
-';'
+export type AchievementType = 'single' | 'cumulative' | 'progressive';
 
-export type ConditionType = ';'
-    | 'bubblesPopped'';'
-    | 'singleGameScore'';'
-    | 'cumulativeScore'';'
-    | 'maxCombo'';'
-    | 'bubbleTypePopped'';'
-    | 'survivalTime'';'
-    | 'lowHpSurvival'';'
-    | 'lowHpScore'';'
-    | 'stagesCleared'';'
-    | 'allStagesCleared'';'
-    | 'perfectGame'';'
-    | 'speedChallenge'';'
-    | 'accuracy'';'
-    | 'consecutiveDays'';'
-    | 'totalPlayTime'';'
-    | 'gamesPlayed'';'
-    | 'allBubbleTypes'';'
-    | 'allStagesMultiple'';'
-    | 'noItemScore'';'
+export type ConditionType = 
+    | 'bubblesPopped'
+    | 'singleGameScore'
+    | 'cumulativeScore'
+    | 'maxCombo'
+    | 'bubbleTypePopped'
+    | 'survivalTime'
+    | 'lowHpSurvival'
+    | 'lowHpScore'
+    | 'stagesCleared'
+    | 'allStagesCleared'
+    | 'perfectGame'
+    | 'speedChallenge'
+    | 'accuracy'
+    | 'consecutiveDays'
+    | 'totalPlayTime'
+    | 'gamesPlayed'
+    | 'allBubbleTypes'
+    | 'allStagesMultiple'
+    | 'noItemScore'
     | 'timeSpecificScore';
-';'
 
-export type BubbleType = ';'
-    | 'normal'';'
-    | 'rainbow'';'
-    | 'diamond'';'
-    | 'boss'';'
-    | 'golden'';'
-    | 'phantom'';'
-    | 'explosive'';'
-    | 'magnetic'';'
-    | 'frozen'';'
-    | 'multiplier'';'
-    | 'stone'';'
-    | 'iron'';'
-    | 'electric'';'
-    | 'poison'';'
-    | 'spiky'';'
+export type BubbleType = 
+    | 'normal'
+    | 'rainbow'
+    | 'diamond'
+    | 'boss'
+    | 'golden'
+    | 'phantom'
+    | 'explosive'
+    | 'magnetic'
+    | 'frozen'
+    | 'multiplier'
+    | 'stone'
+    | 'iron'
+    | 'electric'
+    | 'poison'
+    | 'spiky'
     | 'pink';
-    export type DifficultyLevel = 'easy' | 'medium' | 'hard' | 'expert' | 'legendary';
-    export type ItemType = 'powerup' | 'skin' | 'currency' | 'unlock';
-    export class AchievementDefinitions {
-    private achievements: Record<string; Achievement>;
-    private categories: Record<CategoryType; Category>; }
-    constructor() {
+export type DifficultyLevel = 'easy' | 'medium' | 'hard' | 'expert' | 'legendary';
+export type ItemType = 'powerup' | 'skin' | 'currency' | 'unlock';
 
-        this.achievements = this.initializeAchievements() };
-        this.categories = this.initializeCategories(); }
+export class AchievementDefinitions {
+    private achievements: Record<string, Achievement>;
+    private categories: Record<CategoryType, Category>;
+    constructor() {
+        this.achievements = this.initializeAchievements();
+        this.categories = this.initializeCategories();
     }
 
     /**
      * 全実績を初期化
-     * @returns 実績定義オブジェクト'
-     */''
-    private initializeAchievements('''
-                id: 'firstBubble;
-                name: '初めての泡;
-                description: '初めて泡を割る;
-                icon: '🎈;
-                category: 'basic;
-                type: 'single;
-                condition: { type: 'bubblesPopped'; value: 1  ;
-                reward: { ap: 10  ;
-            bubbleHunter: { ''
-                id: 'bubbleHunter'  ;
-                name: '泡ハンター;
-                description: '100個の泡を割る;
-                icon: '🏹;
-                category: 'basic;
+     * @returns 実績定義オブジェクト
+     */
+    private initializeAchievements(): Record<string, Achievement> {
+        return {
+            // 基本プレイ実績
+            firstBubble: {
+                id: 'firstBubble',
+                name: '初めての泡',
+                description: '初めて泡を割る',
+                icon: '🎈',
+                category: 'basic',
+                type: 'single',
+                condition: { type: 'bubblesPopped', value: 1 },
+                reward: { ap: 10 }
+            },
+            bubbleHunter: {
+                id: 'bubbleHunter',
+                name: '泡ハンター',
+                description: '100個の泡を割る',
+                icon: '🏹',
+                category: 'basic',
                 type: 'cumulative',' }'
 
                 condition: { type: 'bubblesPopped'; value: 100  ;

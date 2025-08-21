@@ -46,12 +46,13 @@ export class DataAggregationProcessor {
             return this.createSuccessResponse(aggregatedData, {
                 aggregationRules,
                 sourceDataCount: rawData.length,
-    aggregatedGroupCount: Object.keys(aggregatedData).length; 
-    }
+                aggregatedGroupCount: Object.keys(aggregatedData).length
+            });
         } catch (error) {
-            console.error('Aggregation error:', error','
-            return this.createErrorResponse('AGGREGATION_ERROR,
+            console.error('Aggregation error:', error);
+            return this.createErrorResponse('AGGREGATION_ERROR',
                 'Failed to aggregate data', 500);
+        }
     }
     
     /**
@@ -62,27 +63,30 @@ export class DataAggregationProcessor {
      */
     async getAdvancedAggregatedData(aggregationRules, options: any = {}) {
         const startTime = performance.now();
-        const requestId = this.generateRequestId(,
+        const requestId = this.generateRequestId();
+        
+        const {
                 dataTypes = ['sessionData'],
-                multiGroupBy = [] }
+                multiGroupBy = [],
                 customAggregations = {},
                 timeWindow = null,
                 conditionalAggregations = [],
-                hierarchicalGrouping = null);
-                cacheKey = null);
-                maxResults = 1000;
+                hierarchicalGrouping = null,
+                cacheKey = null,
+                maxResults = 1000
             } = aggregationRules;
             
-            // キャッシュチェック)
-            if (cacheKey && this.aggregationCache && this.aggregationCache.has(cacheKey) {
+            // キャッシュチェック
+            if (cacheKey && this.aggregationCache && this.aggregationCache.has(cacheKey)) {
                 const cachedResult = this.aggregationCache.get(cacheKey);
                 if (Date.now() - cachedResult.timestamp < 300000) { // 5分間有効
                     return this.createSuccessResponse(cachedResult.data, {
-                        cached: true,);
-                        requestId }
-                        responseTime: performance.now() - startTime 
-        }
-}
+                        cached: true,
+                        requestId,
+                        responseTime: performance.now() - startTime
+                    });
+                }
+            }
             // 複数データタイプからのデータ収集
             const aggregatedResults = {};
             
@@ -93,41 +97,46 @@ export class DataAggregationProcessor {
                     multiGroupBy,
                     customAggregations,
                     timeWindow,
-                    conditionalAggregations }
-                    hierarchicalGrouping }
-                    filters: aggregationRules.filters || {},')'
-                    period: aggregationRules.period');'
-                ;
+                    conditionalAggregations,
+                    hierarchicalGrouping,
+                    filters: aggregationRules.filters || {},
+                    period: aggregationRules.period
+                });
+                
                 aggregatedResults[dataType] = typeResult;
             }
             
             // 結果の統合と後処理
             const finalResult = this.consolidateAggregationResults(aggregatedResults, {
-                maxResults
-                sortBy: aggregationRules.sortBy,'),
-                sortOrder: aggregationRules.sortOrder || 'desc'),
+                maxResults,
+                sortBy: aggregationRules.sortBy,
+                sortOrder: aggregationRules.sortOrder || 'desc'
+            });
+            
             // キャッシュに保存
             if (cacheKey && this.aggregationCache) {
                 this.aggregationCache.set(cacheKey, {
-                data: finalResult),
-                    timestamp: Date.now(); 
-    }
+                    data: finalResult,
+                    timestamp: Date.now()
+                });
             }
             
             const responseTime = Math.max(performance.now() - startTime, 0.1);
             
             return this.createSuccessResponse(finalResult, {
-                requestId
+                requestId,
                 responseTime,
-                aggregationRules);
+                aggregationRules,
                 dataTypes,
-                totalGroups: this.countTotalGroups(finalResult,
-    cached: false,);
+                totalGroups: this.countTotalGroups(finalResult),
+                cached: false
+            });
         } catch (error) {
-            console.error('Advanced aggregation error:', error','
-            return this.createErrorResponse('ADVANCED_AGGREGATION_ERROR' }'
-                error.message, 500, { requestId     }
-}
+            console.error('Advanced aggregation error:', error);
+            return this.createErrorResponse('ADVANCED_AGGREGATION_ERROR',
+                error.message, 500, { requestId });
+        }
+    }
     /**
      * 時系列集計API
      * @param {Object} timeSeriesRules - 時系列集計ルール
@@ -136,86 +145,92 @@ export class DataAggregationProcessor {
      */
     async getTimeSeriesAggregation(timeSeriesRules, options: any = {}) {
         const startTime = performance.now();
-        const requestId = this.generateRequestId(,
-                dataType = 'sessionData,
-                timeField = 'timestamp,
-                interval = 'hour', // hour, day, week, month }
+        const requestId = this.generateRequestId();
+        
+        const {
+                dataType = 'sessionData',
+                timeField = 'timestamp',
+                interval = 'hour', // hour, day, week, month
                 aggregateBy = {},
                 filters = {},
                 startDate,
                 endDate,
-                fillGaps = true;
+                fillGaps = true
             } = timeSeriesRules;
             
-            // 時系列データの取得)
+            // 時系列データの取得
             const query = this.buildTimeSeriesQuery(filters, startDate, endDate);
             const rawData = await this.storageManager.getData(dataType, query);
 
             if (!Array.isArray(rawData) || rawData.length === 0) {
-            return this.createSuccessResponse([], {}
-                    message: 'No data found for time series aggregation');
+                return this.createSuccessResponse([], {
+                    message: 'No data found for time series aggregation',
                     requestId,
-                    responseTime: Math.max(performance.now() - startTime, 0.1 }
+                    responseTime: Math.max(performance.now() - startTime, 0.1)
+                });
             }
             
             // 時系列集計の実行
             const timeSeriesResult = this.performTimeSeriesAggregation(rawData, {
-                timeField
+                timeField,
                 interval,
-                aggregateBy);
+                aggregateBy,
                 fillGaps,
-                startDate: new Date(startDate).getTime(
-    endDate: new Date(endDate).getTime(  };
+                startDate: new Date(startDate).getTime(),
+                endDate: new Date(endDate).getTime()
+            });
+            
             const responseTime = Math.max(performance.now() - startTime, 0.1);
             
-            return this.createSuccessResponse(timeSeriesResult, { requestId,
+            return this.createSuccessResponse(timeSeriesResult, {
+                requestId,
                 responseTime,
                 timeSeriesRules,
-                interval);
-                dataPoints: timeSeriesResult.length),
-            '
-            }
+                interval,
+                dataPoints: timeSeriesResult.length
+            });
         } catch (error) {
-            console.error('Time series aggregation error:', error','
-            return this.createErrorResponse('TIMESERIES_AGGREGATION_ERROR' }'
-                error.message, 500, { requestId }';'
+            console.error('Time series aggregation error:', error);
+            return this.createErrorResponse('TIMESERIES_AGGREGATION_ERROR',
+                error.message, 500, { requestId });
         }
     }
     
     /**
      * 統計サマリーの取得
      * @param {Object} query - クエリパラメータ
-     * @returns {Promise<Object>} 統計サマリー'
-     */''
-    async getStatsSummary(query = { )) {
-        try { }
-
+     * @returns {Promise<Object>} 統計サマリー
+     */
+    async getStatsSummary(query = {}) {
+        try {
             const { period = 'last7d' } = query;
             // 並列でデータを取得
             const [sessions, interactions, performance] = await Promise.all([
-                this.storageManager.getData('sessionData', { ...query, period ).then(r => r || []),''
-                this.storageManager.getData('bubbleInteractions', { ...query, period ).then(r => r || []),''
-                this.storageManager.getData('performanceData', { ...query, period ).then(r => r || [])
-            ]),
+                this.storageManager.getData('sessionData', { ...query, period }).then(r => r || []),
+                this.storageManager.getData('bubbleInteractions', { ...query, period }).then(r => r || []),
+                this.storageManager.getData('performanceData', { ...query, period }).then(r => r || [])
+            ]);
             
             // サマリー統計の計算
             const summary = {
                 overview: {
-                    totalSessions: sessions.length ,
+                    totalSessions: sessions.length,
                     totalInteractions: interactions.length,
-    totalPerformanceRecords: performance.length,
-                    period  }
+                    totalPerformanceRecords: performance.length,
+                    period
                 },
                 sessionStats: this.calculateSessionStats(sessions),
                 interactionStats: this.calculateInteractionStats(interactions),
-                performanceStats: this.calculatePerformanceStats(performance,
-    generatedAt: new Date().toISOString() };
+                performanceStats: this.calculatePerformanceStats(performance),
+                generatedAt: new Date().toISOString()
+            };
             
             return summary;
 
         } catch (error) {
             console.error('Stats summary error:', error);
-            throw error }
+            throw error;
+        }
     }
     
     /**
@@ -225,16 +240,16 @@ export class DataAggregationProcessor {
      * @returns {Object} 集計結果
      */
     performAggregation(data, rules) {
-    
-}
-        const { groupBy = [], aggregateBy = { } = rules;
+        const { groupBy = [], aggregateBy = {} } = rules;
         
         // グループ化
         const groups = this.groupData(data, groupBy);
         
         // 各グループの集計
         const result = {};
-        for(const [groupKey, groupData] of Object.entries(groups) { result[groupKey] = this.aggregateGroup(groupData, aggregateBy);
+        for(const [groupKey, groupData] of Object.entries(groups)) {
+            result[groupKey] = this.aggregateGroup(groupData, aggregateBy);
+        }
         
         return result;
     }
