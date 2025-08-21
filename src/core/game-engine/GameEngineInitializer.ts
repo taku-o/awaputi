@@ -8,23 +8,26 @@
 // import { getPoolManager  } from '../../utils/ObjectPool.js';
 // import { getSEOMonitor  } from '../../seo/SEOMonitor.js';
 
-interface GameEngine { sceneManager?: any,
+interface GameEngine {
+    sceneManager?: any;
     socialSharingManager?: any;
     errorHandler?: any;
     audioManager?: any;
-    // 他のプロパティは必要に応じて追加 }
+    // 他のプロパティは必要に応じて追加
+}
 
-interface SEOMonitor { startMonitoring(config: any): void;
+interface SEOMonitor {
+    startMonitoring(config: any): void;
     stopMonitoring(): void;
-    export class GameEngineInitializer {
+}
+
+export class GameEngineInitializer {
     private gameEngine: GameEngine;
-    private, seoMonitor: SEOMonitor | null;
+    private seoMonitor: SEOMonitor | null;
+    
     constructor(gameEngine: GameEngine) {
-    
-        this.gameEngine = gameEngine
-    
-    };
-        this.seoMonitor = null; }
+        this.gameEngine = gameEngine;
+        this.seoMonitor = null;
     }
     
     /**
