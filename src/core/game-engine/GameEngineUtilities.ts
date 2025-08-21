@@ -5,7 +5,8 @@
 import { getPerformanceOptimizer  } from '../../utils/PerformanceOptimizer.js';
 // import { getMemoryManager  } from '../../utils/MemoryManager.js';
 
-interface GameEngine { performanceMonitor?: any,
+interface GameEngine {
+    performanceMonitor?: any;
     performanceStats?: any;
     canvas?: HTMLCanvasElement;
     context?: CanvasRenderingContext2D;
@@ -13,16 +14,20 @@ interface GameEngine { performanceMonitor?: any,
     memoryManager?: any;
     audioManager?: any;
     errorHandler?: any;
-    eventListeners?: Map<string, any[]> }
+    eventListeners?: Map<string, any[]>;
+}
 
 export class GameEngineUtilities {
     private gameEngine: GameEngine;
+    
     constructor(gameEngine: GameEngine) {
-        this.gameEngine = gameEngine };
+        this.gameEngine = gameEngine;
+    }
+    
     /**
-     * デバッグモードかどうか'
-     */''
-    isDebugMode()';'
+     * デバッグモードかどうか
+     */
+    isDebugMode(): boolean {
         return localStorage.getItem('debug') === 'true';
     }
     

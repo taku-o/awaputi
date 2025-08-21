@@ -4,12 +4,13 @@
  */
 
 import type { Config } from 'jest';
-';'
-const config: Config = { // テスト環境
-    testEnvironment: 'jsdom,
+
+const config: Config = {
+    // テスト環境
+    testEnvironment: 'jsdom',
     // テストファイルのパターン
-            testMatch: ['],
-        '**/src/tests/integration/**/*.test.ts'],
+    testMatch: [
+        '**/src/tests/integration/**/*.test.ts'
     ],
     
     // モジュール解決

@@ -6,32 +6,39 @@
  */
 
 // Type definitions
-interface Bounds { x: number,
-    y: number,
-    width: number,
+interface Bounds {
+    x: number;
+    y: number;
+    width: number;
     height: number;
-    interface QuadTreeObject { bounds: Bounds;
+}
+
+interface QuadTreeObject {
+    bounds: Bounds;
     [key: string]: any;
-    export class QuadTree {
+}
+
+export class QuadTree {
     private bounds: Bounds;
     private maxObjects: number;
     private maxLevels: number;
     private level: number;
     private objects: QuadTreeObject[];
-    private, nodes: QuadTree[];
+    private nodes: QuadTree[];
+
     constructor(bounds: Bounds, maxObjects: number = 10, maxLevels: number = 5, level: number = 0) {
-    
         this.bounds = bounds;
-    this.maxObjects = maxObjects;
-    this.maxLevels = maxLevels;
-    this.level = level;
-    this.objects = []
-};
-        this.nodes = []; }
+        this.maxObjects = maxObjects;
+        this.maxLevels = maxLevels;
+        this.level = level;
+        this.objects = [];
+        this.nodes = [];
     }
     
-    clear(): void { this.objects = [];
-        this.nodes = [] }
+    clear(): void {
+        this.objects = [];
+        this.nodes = [];
+    }
     
     split(): void { const subWidth = this.bounds.width / 2;
         const subHeight = this.bounds.height / 2,
