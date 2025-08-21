@@ -10,55 +10,55 @@ import { LoggingSystem  } from '../../core/LoggingSystem';
 
 /**
  * チャンネル名の型定義'
- */''
+ */
 type AudioChannel = 'master' | 'music' | 'sfx' | 'ui' | 'voice' | 'environmental';
 
 /**
  * 音量マップインターフェース
  */
-interface VolumeMap { master: number,
-    music: number,
-    sfx: number,
-    ui: number,
-    voice: number,
+interface VolumeMap { master: number;
+    music: number;
+    sfx: number;
+    ui: number;
+    voice: number;
     environmental: number;
 
 /**
  * ミュート状態マップインターフェース
  */
-interface MuteStateMap { master: boolean,
-    music: boolean,
-    sfx: boolean,
-    ui: boolean,
-    voice: boolean,
+interface MuteStateMap { master: boolean;
+    music: boolean;
+    sfx: boolean;
+    ui: boolean;
+    voice: boolean;
     environmental: boolean;
 
 /**
  * ゲインノードマップインターフェース
  */
-interface GainNodeMap { master: GainNode | null,
-    music: GainNode | null,
-    sfx: GainNode | null,
-    ui: GainNode | null,
-    voice: GainNode | null,
+interface GainNodeMap { master: GainNode | null;
+    music: GainNode | null;
+    sfx: GainNode | null;
+    ui: GainNode | null;
+    voice: GainNode | null;
     environmental: GainNode | null }
 
 /**
  * チャンネル設定インターフェース
  */
-interface ChannelConfig { defaultVolumes: VolumeMap,
-    volumeStep: number,
-    minVolume: number,
-    maxVolume: number,
+interface ChannelConfig { defaultVolumes: VolumeMap;
+    volumeStep: number;
+    minVolume: number;
+    maxVolume: number;
     fadeStep: number;
 
 /**
  * マネージャー状態インターフェース
  */
-interface ManagerState { volumes: VolumeMap,
-    muteStates: MuteStateMap,
-    effectiveVolumes: VolumeMap,
-    channelConfig: ChannelConfig,
+interface ManagerState { volumes: VolumeMap;
+    muteStates: MuteStateMap;
+    effectiveVolumes: VolumeMap;
+    channelConfig: ChannelConfig;
     availableChannels: string[];
 
 /**
@@ -104,25 +104,25 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
         
         // オーディオノード階層
         this.gainNodes = {
-            master: null,
-    music: null,
-    sfx: null,
-    ui: null,
-    voice: null,
+            master: null;
+    music: null;
+    sfx: null;
+    ui: null;
+    voice: null;
     environmental: null;
         // 音量設定
-        this.volumes = { master: 1.0,
-            music: 0.7,
-    sfx: 0.8,
-    ui: 0.6,
-    voice: 1.0,
+        this.volumes = { master: 1.0;
+            music: 0.7;
+    sfx: 0.8;
+    ui: 0.6;
+    voice: 1.0;
     environmental: 0.5  };
         // ミュート状態
-        this.muteStates = { master: false,
-            music: false,
-            sfx: false,
-            ui: false,
-            voice: false,
+        this.muteStates = { master: false;
+            music: false;
+            sfx: false;
+            ui: false;
+            voice: false;
     environmental: false;
         // 前回の音量（ミュート解除時の復元用）
         this.previousVolumes = { ...this.volumes;
@@ -132,17 +132,17 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
         
         // チャンネル設定
         this.channelConfig = { defaultVolumes: {
-                master: 1.0,
-                music: 0.7,
-                sfx: 0.8,
-                ui: 0.6,
-                voice: 1.0,
+                master: 1.0;
+                music: 0.7;
+                sfx: 0.8;
+                ui: 0.6;
+                voice: 1.0;
     environmental: 0.5 } };
-            volumeStep: 0.1,
-            minVolume: 0.0,
-            maxVolume: 2.0,
+            volumeStep: 0.1;
+            minVolume: 0.0;
+            maxVolume: 2.0;
     fadeStep: 0.02;
-        },
+        };
         
         this.initialize();
     }
@@ -186,7 +186,7 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
     
     /**
      * 初期音量を読み込み'
-     */''
+     */
     private loadInitialVolumes()';'
             const audioConfig = this.configManager.get('audio);'
             
@@ -275,7 +275,7 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
 
             return clampedVolume;} catch (error) {
             this.errorHandler.handleError(error, 'AudioChannelManager.setVolume),'
-            return this.volumes[channel] || 0,
+            return this.volumes[channel] || 0;
     
     /**
      * 音量を取得
@@ -290,7 +290,7 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
 
             return this.volumes[channel];} catch (error) {
             this.errorHandler.handleError(error, 'AudioChannelManager.getVolume),'
-            return 0,
+            return 0;
     
     /**
      * ミュート状態を設定
@@ -322,7 +322,7 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
 
             return muted;} catch (error) {
             this.errorHandler.handleError(error, 'AudioChannelManager.setMute),'
-            return this.muteStates[channel] || false,
+            return this.muteStates[channel] || false;
     
     /**
      * ミュート状態を取得
@@ -337,7 +337,7 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
 
             return this.muteStates[channel];} catch (error) {
             this.errorHandler.handleError(error, 'AudioChannelManager.getMute),'
-            return false,
+            return false;
     
     /**
      * 全チャンネルの音量を取得
@@ -370,8 +370,8 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
      */
     adjustVolumeByStep(channel: AudioChannel, increase: boolean): number { try {
             const currentVolume = this.getVolume(channel);
-            const step = this.channelConfig.volumeStep,
-            const newVolume = increase ? currentVolume + step: currentVolume - step,
+            const step = this.channelConfig.volumeStep;
+            const newVolume = increase ? currentVolume + step: currentVolume - step;
 
             return this.setVolume(channel, newVolume),' }'
 
@@ -385,7 +385,7 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
     resetVolume(channel: AudioChannel | null = null): void { try {
             if (channel) {
                 // 特定チャンネルをリセット
-                const defaultVolume = this.channelConfig.defaultVolumes[channel],
+                const defaultVolume = this.channelConfig.defaultVolumes[channel];
                 if (defaultVolume !== undefined) {
              }
                     this.setVolume(channel, defaultVolume); }
@@ -439,9 +439,9 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
      * @returns 状態情報
      */
     getManagerState(): ManagerState { return { volumes: this.getAllVolumes(
-            muteStates: this.getAllMuteStates(),
+            muteStates: this.getAllMuteStates();
             effectiveVolumes: this.getEffectiveVolumes(
-    channelConfig: this.channelConfig ,
+    channelConfig: this.channelConfig ;
             availableChannels: Object.keys(this.gainNodes); 
     }
     
@@ -449,7 +449,7 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
      * 音量を設定に保存
      * @param channel - チャンネル名
      * @param volume - 音量'
-     */''
+     */
     private saveVolumeToConfig(channel: AudioChannel, volume: number): void { try { }
 
             this.configManager.set('audio', `volumes.${channel}`, volume}';} catch (error) {'
@@ -460,7 +460,7 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
      * ミュート状態を設定に保存
      * @param channel - チャンネル名
      * @param muted - ミュート状態'
-     */''
+     */
     private saveMuteToConfig(channel: AudioChannel, muted: boolean): void { try { }
 
             this.configManager.set('audio', `mute.${channel}`, muted}';} catch (error) {'
@@ -471,14 +471,14 @@ interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
      * チャンネル設定を更新
      * @param newConfig - 新しい設定
      */'
-    updateChannelConfig(newConfig: Partial<ChannelConfig>): void { ''
+    updateChannelConfig(newConfig: Partial<ChannelConfig>): void { 
         Object.assign(this.channelConfig, newConfig);
         this.loggingSystem.debug('AudioChannelManager', 'Channel configuration updated', newConfig' }'
     
     /**
      * オーディオコンテキストとの統合
      * @param audioManager - AudioManagerインスタンス'
-     */''
+     */
     integrateWithAudioManager(audioManager: AudioManager): void { try {'
             if(audioManager && typeof, audioManager.registerGainNodes === 'function' {', ' }
 

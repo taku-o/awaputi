@@ -10,46 +10,46 @@ import { getConfigurationManager  } from '../../core/ConfigurationManager';
 /**
  * オーディオソースラッパーインターフェース
  */
-interface AudioSourceWrapper { source: AudioBufferSourceNode | null,
-    gainNode: GainNode,
-    isInUse: boolean,
-    createdAt: number,
+interface AudioSourceWrapper { source: AudioBufferSourceNode | null;
+    gainNode: GainNode;
+    isInUse: boolean;
+    createdAt: number;
     lastUsed: number;
 
 /**
  * サウンドバリエーションインターフェース
  */
-interface SoundVariation { buffer: AudioBuffer,
-    playCount: number,
+interface SoundVariation { buffer: AudioBuffer;
+    playCount: number;
     weight: number;
 
 /**
  * サウンドエントリーインターフェース
  */
-interface SoundEntry { buffer: AudioBuffer,
+interface SoundEntry { buffer: AudioBuffer;
     variations: Map<string, SoundVariation>;
-    playCount: number,
+    playCount: number;
     lastPlayed: number;
 
 /**
  * カテゴリプールインターフェース
  */
-interface CategoryPool { sounds: Map<string, SoundEntry>,
+interface CategoryPool { sounds: Map<string, SoundEntry>;
     maxSize: number;
 
 /**
  * プール設定インターフェース
  */
-interface PoolConfig { maxPoolSize: number,
-    maxActiveSources: number,
-    poolCleanupInterval: number,
-    sourceReuseDelay: number,
+interface PoolConfig { maxPoolSize: number;
+    maxActiveSources: number;
+    poolCleanupInterval: number;
+    sourceReuseDelay: number;
     preloadedSounds: number;
 
 /**
  * 再生オプションインターフェース
  */
-interface PlaybackOptions { volume?: number,
+interface PlaybackOptions { volume?: number;
     pitch?: number;
     loop?: boolean;
     loopStart?: number;
@@ -61,33 +61,33 @@ interface PlaybackOptions { volume?: number,
 /**
  * 再生インスタンスインターフェース
  */'
-interface PlaybackInstance { sourceWrapper: AudioSourceWrapper,''
-    stop: () => void,
-    category: string,
-    soundKey: string,
+interface PlaybackInstance { sourceWrapper: AudioSourceWrapper,
+    stop: () => void;
+    category: string;
+    soundKey: string;
     startTime: number;
 }
 
 /**
  * カテゴリ統計インターフェース
  */
-interface CategoryStatistics { soundCount: number,
-    maxSize: number,
+interface CategoryStatistics { soundCount: number;
+    maxSize: number;
     totalPlayCount: number;
 
 /**
  * プール統計インターフェース
  */
-interface PoolStatistics { activeSources: number,
-    maxActiveSources: number,
-    poolSize: number,
-    maxPoolSize: number,
+interface PoolStatistics { activeSources: number;
+    maxActiveSources: number;
+    poolSize: number;
+    maxPoolSize: number;
     categories: Record<string, CategoryStatistics>;
     availableSources: number;
 
 /**
  * サウンドカテゴリタイプ'
- */''
+ */
 type SoundCategory = 'bubble' | 'ui' | 'combo' | 'achievement' | 'gamestate';
 
 /**
@@ -105,7 +105,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
     private configManager: ConfigurationManager;
     private errorHandler: ErrorHandler;
     // サウンドプール管理
-    private, soundPools: Map<string, any>,
+    private, soundPools: Map<string, any>;
     private activeSources: Set<AudioSourceWrapper>;
     private sourcePool: AudioSourceWrapper[];
     // プール設定
@@ -118,7 +118,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
     private variationCounters: Map<string, number>;
     
     // クリーンアップタイマー
-    private cleanupTimerId?: NodeJS.Timeout,
+    private cleanupTimerId?: NodeJS.Timeout;
 
     constructor(audioContext: AudioContext, sfxGainNode: GainNode) {
 
@@ -134,8 +134,8 @@ interface ErrorHandler { handleError(error: any, context: string): void;
         
         // プール設定
         this.poolConfig = {
-            maxPoolSize: 100,
-    maxActiveSources: 32,
+            maxPoolSize: 100;
+    maxActiveSources: 32;
     poolCleanupInterval: 30000, // 30秒;
     sourceReuseDelay: 100, // 100ms
     };
@@ -143,11 +143,11 @@ interface ErrorHandler { handleError(error: any, context: string): void;
     };
         // サウンドカテゴリ別プール
         this.categoryPools = {
-            bubble: { sounds: new Map(), maxSize: 20  ,
-            ui: { sounds: new Map(), maxSize: 15  ,
-            combo: { sounds: new Map(), maxSize: 10  ,
-            achievement: { sounds: new Map(), maxSize: 8  ,
-            gamestate: { sounds: new Map(), maxSize: 12   ,
+            bubble: { sounds: new Map(), maxSize: 20  ;
+            ui: { sounds: new Map(), maxSize: 15  ;
+            combo: { sounds: new Map(), maxSize: 10  ;
+            achievement: { sounds: new Map(), maxSize: 8  ;
+            gamestate: { sounds: new Map(), maxSize: 12   ;
         
         // バリエーション管理
         this.soundVariations = new Map();
@@ -184,9 +184,9 @@ interface ErrorHandler { handleError(error: any, context: string): void;
     /**
      * 新しいオーディオソースを作成
      */
-    private createNewSource(): AudioSourceWrapper { return { source: null,
-            gainNode: this.audioContext.createGain(),
-            isInUse: false,
+    private createNewSource(): AudioSourceWrapper { return { source: null;
+            gainNode: this.audioContext.createGain();
+            isInUse: false;
     createdAt: Date.now() };
             lastUsed: 0 
     }
@@ -204,9 +204,9 @@ interface ErrorHandler { handleError(error: any, context: string): void;
             
             // メインサウンドを追加
             pool.sounds.set(soundKey, {
-                buffer: audioBuffer),
-                variations: new Map(),
-                playCount: 0,
+                buffer: audioBuffer);
+                variations: new Map();
+                playCount: 0;
     lastPlayed: 0 
             });
             // バリエーションを追加
@@ -214,7 +214,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
                 const variationKey = `${soundKey}_var${index}`;
                 const soundEntry = pool.sounds.get(soundKey);
                 if (soundEntry) { soundEntry.variations.set(variationKey, {
-                buffer: variation,
+                buffer: variation;
     playCount: 0 }
                         weight: 1.0 // 再生重み); 
     }
@@ -233,7 +233,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
      * プールからサウンドを取得
      */
     private getFromPool(category: SoundCategory, soundKey: string, useVariation: boolean = true): AudioBuffer | null { try {
-            const pool = this.categoryPools[category],
+            const pool = this.categoryPools[category];
             if (!pool || !pool.sounds.has(soundKey) { }
                 console.warn(`[SoundPoolManager] Sound, not found: ${category}/${soundKey}`};
                 return null;
@@ -255,7 +255,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
 
         } catch (error) {
             this.errorHandler.handleError(error, 'SoundPoolManager.getFromPool),'
-            return null,
+            return null;
     
     /**
      * バリエーションを選択
@@ -286,7 +286,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
                     sourceWrapper = this.createNewSource();
                     this.sourcePool.push(sourceWrapper); }
                 } else {  // プールが満杯の場合、最も古いソースを再利用
-                    sourceWrapper = this.sourcePool.reduce((oldest, current) => ,
+                    sourceWrapper = this.sourcePool.reduce((oldest, current) => ;
                         current.lastUsed < oldest.lastUsed ? current : oldest);
                     this.stopSourceWrapper(sourceWrapper); }
 }
@@ -305,7 +305,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
 
         } catch (error) {
             this.errorHandler.handleError(error, 'SoundPoolManager.getAudioSource),'
-            return null,
+            return null;
     
     /**
      * オーディオソースを返却
@@ -368,17 +368,17 @@ interface ErrorHandler { handleError(error: any, context: string): void;
             sourceWrapper.source.start(startTime);
             
             return { sourceWrapper stop: () => this.returnAudioSource(sourceWrapper'),'
-                category,
+                category;
                 soundKey };
                 startTime }
         } catch (error') {'
             this.errorHandler.handleError(error, 'SoundPoolManager.playSound),'
-            return null,
+            return null;
     
     /**
      * 再生オプションを適用
      */
-    private applyPlaybackOptions(sourceWrapper: AudioSourceWrapper, options: PlaybackOptions): void { if (!sourceWrapper.source) return,
+    private applyPlaybackOptions(sourceWrapper: AudioSourceWrapper, options: PlaybackOptions): void { if (!sourceWrapper.source) return;
         
         // 音量設定
         if (options.volume !== undefined) {
@@ -392,7 +392,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
         
         // ループ設定
         if (options.loop) {
-            sourceWrapper.source.loop = true,
+            sourceWrapper.source.loop = true;
             if (options.loopStart !== undefined) {
         }
                 sourceWrapper.source.loopStart = options.loopStart; }
@@ -402,8 +402,8 @@ interface ErrorHandler { handleError(error: any, context: string): void;
         
         // フェードイン効果
         if (options.fadeIn) {
-            const currentGain = sourceWrapper.gainNode.gain.value,
-            sourceWrapper.gainNode.gain.value = 0,
+            const currentGain = sourceWrapper.gainNode.gain.value;
+            sourceWrapper.gainNode.gain.value = 0;
             sourceWrapper.gainNode.gain.linearRampToValueAtTime(
                 currentGain }
                 this.audioContext.currentTime + options.fadeIn); }
@@ -412,11 +412,11 @@ interface ErrorHandler { handleError(error: any, context: string): void;
     /**
      * カテゴリ内の全サウンドを停止
      */
-    stopCategory(category: SoundCategory): number { const stoppedSounds: AudioSourceWrapper[] = [],
+    stopCategory(category: SoundCategory): number { const stoppedSounds: AudioSourceWrapper[] = [];
         
         this.activeSources.forEach(sourceWrapper => { )
             // カテゴリが一致する場合は停止)
-            // 実際の実装では、ソースにカテゴリ情報を保存する必要がある),
+            // 実際の実装では、ソースにカテゴリ情報を保存する必要がある);
             this.returnAudioSource(sourceWrapper);
             stoppedSounds.push(sourceWrapper); }
         };
@@ -428,7 +428,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
     /**
      * 全サウンドを停止
      */
-    stopAllSounds(): number { const stoppedCount = this.activeSources.size,
+    stopAllSounds(): number { const stoppedCount = this.activeSources.size;
         
         this.activeSources.forEach(sourceWrapper => { );
             this.returnAudioSource(sourceWrapper); }
@@ -481,26 +481,26 @@ interface ErrorHandler { handleError(error: any, context: string): void;
     getPoolStatistics(): PoolStatistics {
         const categoryStats: Record<string, CategoryStatistics> = {};
         
-        Object.keys(this.categoryPools).forEach(category => { const, pool = this.categoryPools[category, as SoundCategory],
+        Object.keys(this.categoryPools).forEach(category => { const, pool = this.categoryPools[category, as SoundCategory];
             categoryStats[category] = {)
-                soundCount: pool.sounds.size),
-                maxSize: pool.maxSize,
+                soundCount: pool.sounds.size);
+                maxSize: pool.maxSize;
     totalPlayCount: Array.from(pool.sounds.values(  }
                     .reduce(())sum, sound) => sum + sound.playCount, 0); }
             });
         
-        return { activeSources: this.activeSources.size,
-            maxActiveSources: this.poolConfig.maxActiveSources,
-            poolSize: this.sourcePool.length,
-            maxPoolSize: this.poolConfig.maxPoolSize,
-    categories: categoryStats,
+        return { activeSources: this.activeSources.size;
+            maxActiveSources: this.poolConfig.maxActiveSources;
+            poolSize: this.sourcePool.length;
+            maxPoolSize: this.poolConfig.maxPoolSize;
+    categories: categoryStats;
             availableSources: this.sourcePool.filter(wrapper => !wrapper.isInUse).length; 
     }
     
     /**
      * プール設定を更新
      */'
-    updatePoolConfig(newConfig: Partial<PoolConfig>): void { ''
+    updatePoolConfig(newConfig: Partial<PoolConfig>): void { 
         Object.assign(this.poolConfig, newConfig);
         console.log('[SoundPoolManager] Pool configuration updated:', newConfig }
     

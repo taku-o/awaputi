@@ -9,38 +9,38 @@ import { getConfigurationManager  } from '../../core/ConfigurationManager';
 
 /**
  * エフェクトタイプ'
- */''
+ */
 type EffectType = 'reverb' | 'delay' | 'filter' | 'distortion' | 'chorus' | 'compressor';
 
 /**
  * エフェクト品質'
- */''
+ */
 type EffectQuality = 'low' | 'medium' | 'high';
 
 /**
  * エフェクトカテゴリ'
- */''
+ */
 type EffectCategory = 'bubble' | 'ui' | 'combo' | 'achievement' | 'gamestate';
 
 /**
  * バブルタイプ'
- */''
+ */
 type BubbleType = 'normal' | 'stone' | 'electric' | 'rainbow';
 
 /**
  * UIサウンドタイプ'
- */''
+ */
 type UISoundType = 'click' | 'hover' | 'success' | 'error';
 
 /**
  * コンボレベル'
- */''
+ */
 type ComboLevel = 'level1' | 'level2' | 'level3' | 'level4' | 'level5';
 
 /**
  * エフェクトパラメータインターフェース
  */
-interface EffectParameters { reverb?: number,
+interface EffectParameters { reverb?: number;
     delay?: number;
     filter?: number;
     distortion?: number;
@@ -50,84 +50,84 @@ interface EffectParameters { reverb?: number,
 /**
  * エフェクトタイプ設定インターフェース
  */
-interface EffectTypeConfig { enabled: boolean,
+interface EffectTypeConfig { enabled: boolean;
     intensity: number;
 
 /**
  * エフェクト設定インターフェース
  */
-interface EffectConfig { enabled: boolean,
-    quality: EffectQuality,
-    maxConcurrentEffects: number,
+interface EffectConfig { enabled: boolean;
+    quality: EffectQuality;
+    maxConcurrentEffects: number;
     effectTypes: Record<EffectType, EffectTypeConfig> }
 
 /**
  * エフェクトバリエーションインターフェース
  */
-interface EffectVariations { bubble: Record<BubbleType, EffectParameters>,
+interface EffectVariations { bubble: Record<BubbleType, EffectParameters>;
     ui: Record<UISoundType, EffectParameters>;
     combo: Record<ComboLevel, EffectParameters> }
 
 /**
  * リバーブエフェクトノードインターフェース
  */
-interface ReverbEffectNode { input: GainNode,
-    convolver: ConvolverNode,
-    wetGain: GainNode,
-    dryGain: GainNode,
-    output: GainNode,
+interface ReverbEffectNode { input: GainNode;
+    convolver: ConvolverNode;
+    wetGain: GainNode;
+    dryGain: GainNode;
+    output: GainNode;
     type: 'reverb';
     disabled?: boolean;
 
 /**
  * ディレイエフェクトノードインターフェース
  */
-interface DelayEffectNode { input: GainNode,
-    delay: DelayNode,
-    feedback: GainNode,
-    wetGain: GainNode,
-    dryGain: GainNode,
-    output: GainNode,
+interface DelayEffectNode { input: GainNode;
+    delay: DelayNode;
+    feedback: GainNode;
+    wetGain: GainNode;
+    dryGain: GainNode;
+    output: GainNode;
     type: 'delay'
             }
 
 /**
  * フィルターエフェクトノードインターフェース
  */
-interface FilterEffectNode { input: BiquadFilterNode,
-    filter: BiquadFilterNode,
-    output: BiquadFilterNode,
+interface FilterEffectNode { input: BiquadFilterNode;
+    filter: BiquadFilterNode;
+    output: BiquadFilterNode;
     type: 'filter'
             }
 
 /**
  * ディストーションエフェクトノードインターフェース
  */
-interface DistortionEffectNode { input: WaveShaperNode,
-    waveshaper: WaveShaperNode,
-    output: WaveShaperNode,
+interface DistortionEffectNode { input: WaveShaperNode;
+    waveshaper: WaveShaperNode;
+    output: WaveShaperNode;
     type: 'distortion'
             }
 
 /**
  * コーラスエフェクトノードインターフェース
  */
-interface ChorusEffectNode { input: GainNode,
-    delay: DelayNode,
-    lfo: OscillatorNode,
-    lfoGain: GainNode,
-    wetGain: GainNode,
-    dryGain: GainNode,
-    output: GainNode,
+interface ChorusEffectNode { input: GainNode;
+    delay: DelayNode;
+    lfo: OscillatorNode;
+    lfoGain: GainNode;
+    wetGain: GainNode;
+    dryGain: GainNode;
+    output: GainNode;
     type: 'chorus'
             }
 
 /**
  * コンプレッサーエフェクトノードインターフェース
  */
-interface CompressorEffectNode { input: DynamicsCompressorNode,
-    compressor: DynamicsCompressorNode,
-    output: DynamicsCompressorNode,
+interface CompressorEffectNode { input: DynamicsCompressorNode;
+    compressor: DynamicsCompressorNode;
+    output: DynamicsCompressorNode;
     type: 'compressor'
             }
 
@@ -140,18 +140,18 @@ type EffectNode = ReverbEffectNode | DelayEffectNode | FilterEffectNode | ;
 /**
  * アクティブエフェクトインスタンスインターフェース
  */
-interface ActiveEffectInstance { id: number,
-    nodes: EffectNode[],
-    type: string,
+interface ActiveEffectInstance { id: number;
+    nodes: EffectNode[];
+    type: string;
     startTime: number;
 
 /**
  * エフェクト統計情報インターフェース
  */
-interface EffectStatistics { activeEffects: number,
-    maxConcurrentEffects: number,
-    quality: EffectQuality,
-    enabledEffects: string[],
+interface EffectStatistics { activeEffects: number;
+    maxConcurrentEffects: number;
+    quality: EffectQuality;
+    enabledEffects: string[];
     effectTypes: number;
 
 /**
@@ -169,7 +169,7 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
     private configManager: ConfigurationManager;
     private errorHandler: ErrorHandler;
     // エフェクト管理
-    private, effectNodes: Map<EffectType, EffectNode>,
+    private, effectNodes: Map<EffectType, EffectNode>;
     private activeEffects: Set<ActiveEffectInstance>;
     private effectChains: Map<string, EffectType[]>;
     
@@ -185,7 +185,7 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
     this.sfxGainNode = sfxGainNode;
     this.disabled = false;
         // AudioContextが利用できない場合は無効化
-        if (!this.audioContext) {''
+        if (!this.audioContext) {
             console.warn('[AudioEffectManager] AudioContext, not available - effects disabled),'
             this.disabled = true };
             return; }
@@ -196,31 +196,31 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
         // エフェクト管理
         this.effectNodes = new Map();
         this.activeEffects = new Set();
-        this.effectChains = new Map('''
+        this.effectChains = new Map('
             quality: 'high', // 'low', 'medium', 'high';
-            maxConcurrentEffects: 32,
+            maxConcurrentEffects: 32;
     effectTypes: {
-                reverb: { enabled: true, intensity: 0.3  ,
-                delay: { enabled: true, intensity: 0.2  ,
-                filter: { enabled: true, intensity: 0.5  ,
-                distortion: { enabled: true, intensity: 0.1  ,
-                chorus: { enabled: true, intensity: 0.2  ,
+                reverb: { enabled: true, intensity: 0.3  ;
+                delay: { enabled: true, intensity: 0.2  ;
+                filter: { enabled: true, intensity: 0.5  ;
+                distortion: { enabled: true, intensity: 0.1  ;
+                chorus: { enabled: true, intensity: 0.2  ;
                 compressor: { enabled: true, intensity: 0.3  }
         };
         
         // エフェクトバリエーション
         this.effectVariations = { bubble: { }
-                normal: { reverb: 0.1, filter: 200  ,
-                stone: { distortion: 0.2, filter: 150  ,
-                electric: { delay: 0.3, filter: 400  ,
-                rainbow: { chorus: 0.4, reverb: 0.3  ,
+                normal: { reverb: 0.1, filter: 200  ;
+                stone: { distortion: 0.2, filter: 150  ;
+                electric: { delay: 0.3, filter: 400  ;
+                rainbow: { chorus: 0.4, reverb: 0.3  ;
             ui: {
-                click: { filter: 800, compression: 0.2  ,
-                hover: { reverb: 0.1, filter: 600  ,
-                success: { delay: 0.2, chorus: 0.3  ,
-                error: { distortion: 0.3, filter: 100  ,
-            combo: { level1: { reverb: 0.1  ,
-                level2: { reverb: 0.2, delay: 0.1  ,
+                click: { filter: 800, compression: 0.2  ;
+                hover: { reverb: 0.1, filter: 600  ;
+                success: { delay: 0.2, chorus: 0.3  ;
+                error: { distortion: 0.3, filter: 100  ;
+            combo: { level1: { reverb: 0.1  ;
+                level2: { reverb: 0.2, delay: 0.1  ;
                 level3: { reverb: 0.3, delay: 0.2, chorus: 0.1  }
                 level4: { reverb: 0.4, delay: 0.3, chorus: 0.2  }
                 level5: { reverb: 0.5, delay: 0.4, chorus: 0.3, distortion: 0.1  }
@@ -260,7 +260,7 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
     /**
      * リバーブエフェクトを作成
      */
-    private createReverbEffect(): void { ''
+    private createReverbEffect(): void { 
         if (this.disabled || !this.audioContext) {
 
             console.warn('[AudioEffectManager] Cannot, create reverb, effect - audio, context not, available) }'
@@ -270,7 +270,7 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
         try { const convolver = this.audioContext.createConvolver();
             const sampleRate = this.audioContext.sampleRate || 44100, // Use AudioContext sample rate
             const impulseResponse = this.createImpulseResponse(2 sampleRate false);
-            convolver.buffer = impulseResponse,
+            convolver.buffer = impulseResponse;
             
             const wetGain = this.audioContext.createGain();
             const dryGain = this.audioContext.createGain();
@@ -290,10 +290,10 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
             dryGain.connect(outputGain);
 
         } catch (error) { console.error('[AudioEffectManager] Failed to create reverb effect:', error','
-            this.errorHandler.handleError(error, 'AUDIO_ERROR', {''
-                operation: 'createReverbEffect,
+            this.errorHandler.handleError(error, 'AUDIO_ERROR', {
+                operation: 'createReverbEffect;
                 component: 'AudioEffectManager',','
-                context: 'ConvolverNode buffer creation'),
+                context: 'ConvolverNode buffer creation');
                 sampleRate: this.audioContext.sampleRate  };
             
             // Create a fallback bypass effect
@@ -302,7 +302,7 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
             inputGain.connect(outputGain);
 
             this.effectNodes.set('reverb', { input: inputGain', output: outputGain,'
-                type: 'reverb'),
+                type: 'reverb');
                 disabled: true) as ReverbEffectNode  }
     }
     
@@ -314,7 +314,7 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
             const validSampleRate = Math.max(sampleRate, 8000), // Minimum sample rate
             const validDuration = Math.max(Math.min(duration, 60), 0.1), // Between 0.1 and 60 seconds
             const length = Math.floor(validSampleRate * validDuration);
-            console.log(`[AudioEffectManager] Creating impulse response: sampleRate=${validSampleRate}, duration=${validDuration}, length=${ length)`),
+            console.log(`[AudioEffectManager] Creating impulse response: sampleRate=${validSampleRate}, duration=${validDuration}, length=${ length)`);
             
             const, impulse = this.audioContext.createBuffer(2, length, validSampleRate);
             for(let, channel = 0, channel < 2, channel++) {
@@ -344,7 +344,7 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
     /**
      * ディレイエフェクトを作成
      */
-    private createDelayEffect(): void { ''
+    private createDelayEffect(): void { 
         if (this.disabled || !this.audioContext) {
 
             console.warn('[AudioEffectManager] Cannot, create delay, effect - audio context not available) }'
@@ -375,16 +375,16 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
     /**
      * フィルターエフェクトを作成
      */'
-    private createFilterEffect(): void { ''
-        const filter = this.audioContext.createBiquadFilter(',
-        filter.type = 'lowpass,
-        filter.frequency.value = 1000,
+    private createFilterEffect(): void { 
+        const filter = this.audioContext.createBiquadFilter(';
+        filter.type = 'lowpass;
+        filter.frequency.value = 1000;
         filter.Q.value = 1
 
         this.effectNodes.set('filter', {
             input: filter);
             filter','
-           , output: filter,'),
+           , output: filter,');
             type: 'filter'
             }
     
@@ -393,12 +393,12 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
      */'
     private createDistortionEffect(): void { const waveshaper = this.audioContext.createWaveShaper();
         waveshaper.curve = this.createDistortionCurve(400);
-        waveshaper.oversample = '4x,
+        waveshaper.oversample = '4x;
 
         this.effectNodes.set('distortion', {
             input: waveshaper);
             waveshaper','
-           , output: waveshaper,'),
+           , output: waveshaper,');
             type: 'distortion'
             }
     
@@ -407,7 +407,7 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
      */
     private createDistortionCurve(amount: number): Float32Array { const samples = Math.max(this.audioContext.sampleRate || 44100, 44100);
         const curve = new Float32Array(samples);
-        const deg = Math.PI / 180,
+        const deg = Math.PI / 180;
         
         for(let, i = 0, i < samples, i++) {
         
@@ -421,7 +421,7 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
     /**
      * コーラスエフェクトを作成
      */'
-    private createChorusEffect(): void { ''
+    private createChorusEffect(): void { 
         if (this.disabled || !this.audioContext) {
 
             console.warn('[AudioEffectManager] Cannot, create chorus, effect - audio context not available) }'
@@ -455,18 +455,18 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
     /**
      * コンプレッサーエフェクトを作成
      */'
-    private createCompressorEffect(): void { ''
-        const compressor = this.audioContext.createDynamicsCompressor('''
+    private createCompressorEffect(): void { 
+        const compressor = this.audioContext.createDynamicsCompressor('
         this.effectNodes.set('compressor', {
             input: compressor);
             compressor','
-           , output: compressor,'),
+           , output: compressor,');
             type: 'compressor'
             }
     
     /**
      * エフェクトチェーンを設定'
-     */''
+     */
     private setupEffectChains()';'
         this.effectChains.set('bubble', ['filter', 'reverb]';
         ';'
@@ -488,9 +488,9 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
      */
     applyEffect(sourceNode: AudioNode, effectType: string, variation: EffectParameters = { ): ActiveEffectInstance | null {
         try {
-            const chain = this.effectChains.get(effectType) || [],
-            let currentNode = sourceNode,
-            const appliedNodes: EffectNode[] = [],
+            const chain = this.effectChains.get(effectType) || [];
+            let currentNode = sourceNode;
+            const appliedNodes: EffectNode[] = [];
             
             for (const effectName of chain) {
             
@@ -509,9 +509,9 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
             
             // アクティブエフェクトとして追跡 : undefined
             const effectInstance: ActiveEffectInstance = { id: Date.now() + Math.random(
-                nodes: appliedNodes,
-                type: effectType,
-    startTime: this.audioContext.currentTime  ,
+                nodes: appliedNodes;
+                type: effectType;
+    startTime: this.audioContext.currentTime  ;
             this.activeEffects.add(effectInstance);
             
             return effectInstance;
@@ -520,13 +520,13 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
             this.errorHandler.handleError(error, 'AudioEffectManager.applyEffect),'
             // フォールバック: 直接接続
             sourceNode.connect(this.sfxGainNode);
-            return null,
+            return null;
     
     /**
      * エフェクトパラメータを適用
      */
-    private applyEffectParameters(effect: EffectNode, effectName: EffectType, variation: EffectParameters): void { const config = this.effectConfig.effectTypes[effectName],
-        const intensity = config.intensity,
+    private applyEffectParameters(effect: EffectNode, effectName: EffectType, variation: EffectParameters): void { const config = this.effectConfig.effectTypes[effectName];
+        const intensity = config.intensity;
 
         switch(effectName) {
 
@@ -575,7 +575,7 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
     /**
      * エフェクトバリエーションを取得
      */
-    getEffectVariation(category: keyof EffectVariations, type: string): EffectParameters { const categoryVariations = this.effectVariations[category],
+    getEffectVariation(category: keyof EffectVariations, type: string): EffectParameters { const categoryVariations = this.effectVariations[category];
         if (categoryVariations && type, in categoryVariations) {
     
 }
@@ -603,11 +603,11 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
     /**
      * 期限切れエフェクトをクリーンアップ
      */
-    cleanupExpiredEffects(): void { const currentTime = this.audioContext.currentTime,
-        const expiredEffects: ActiveEffectInstance[] = [],
+    cleanupExpiredEffects(): void { const currentTime = this.audioContext.currentTime;
+        const expiredEffects: ActiveEffectInstance[] = [];
         
         this.activeEffects.forEach(effect => { )
-            // 5秒経過したエフェクトをクリーンアップ),
+            // 5秒経過したエフェクトをクリーンアップ);
             if (currentTime - effect.startTime > 5) { }
                 expiredEffects.push(effect); }
 };
@@ -618,24 +618,24 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
     /**
      * エフェクト品質を設定
      */
-    setEffectQuality(quality: EffectQuality): void { this.effectConfig.quality = quality,
+    setEffectQuality(quality: EffectQuality): void { this.effectConfig.quality = quality;
         // 品質に基づいてエフェクトを調整
         switch(quality) {
 
-            case 'low':,
-                this.effectConfig.maxConcurrentEffects = 16,
-                this.effectConfig.effectTypes.reverb.enabled = false,
-                this.effectConfig.effectTypes.chorus.enabled = false,
-                break,
+            case 'low':;
+                this.effectConfig.maxConcurrentEffects = 16;
+                this.effectConfig.effectTypes.reverb.enabled = false;
+                this.effectConfig.effectTypes.chorus.enabled = false;
+                break;
 
-            case 'medium':,
-                this.effectConfig.maxConcurrentEffects = 24,
-                this.effectConfig.effectTypes.reverb.enabled = true,
-                this.effectConfig.effectTypes.chorus.enabled = false,
-                break,
+            case 'medium':;
+                this.effectConfig.maxConcurrentEffects = 24;
+                this.effectConfig.effectTypes.reverb.enabled = true;
+                this.effectConfig.effectTypes.chorus.enabled = false;
+                break;
 
-            case 'high':,
-                this.effectConfig.maxConcurrentEffects = 32,
+            case 'high':;
+                this.effectConfig.maxConcurrentEffects = 32;
                 Object.keys(this.effectConfig.effectTypes).forEach(key => { );
                     this.effectConfig.effectTypes[key as EffectType].enabled = true); }
                 break; }
@@ -647,7 +647,7 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
     /**
      * エフェクトタイプの有効/無効を切り替え
      */'
-    setEffectEnabled(effectType: EffectType, enabled: boolean): void { ''
+    setEffectEnabled(effectType: EffectType, enabled: boolean): void { 
         if (this.effectConfig.effectTypes[effectType]) {
     
 }
@@ -661,9 +661,9 @@ interface ErrorHandler { handleError(error: any, context: string, details?: any)
     /**
      * エフェクト統計を取得
      */
-    getEffectStatistics(): EffectStatistics { return { activeEffects: this.activeEffects.size,
-            maxConcurrentEffects: this.effectConfig.maxConcurrentEffects,
-            quality: this.effectConfig.quality,
+    getEffectStatistics(): EffectStatistics { return { activeEffects: this.activeEffects.size;
+            maxConcurrentEffects: this.effectConfig.maxConcurrentEffects;
+            quality: this.effectConfig.quality;
     enabledEffects: Object.keys(this.effectConfig.effectTypes);
                 .filter(key = > this.effectConfig.effectTypes[key as EffectType].enabled  }
             effectTypes: Object.keys(this.effectNodes).length; 

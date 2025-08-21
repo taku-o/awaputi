@@ -4,13 +4,13 @@
  * 各専用コンポーネントを統合管理
  */
 
-import { getErrorHandler  } from '../utils/ErrorHandler.js';
-import { getConfigurationManager  } from '../core/ConfigurationManager.js';
-import { Equalizer  } from './Equalizer.js';
-import { AudioChannelManager  } from './components/AudioChannelManager.js';
-import { AudioVolumeController  } from './components/AudioVolumeController.js';
-import { AudioFormatHandler  } from './components/AudioFormatHandler.js';
-import { AudioComponentPerformanceMonitor  } from './components/AudioComponentPerformanceMonitor.js';
+import { getErrorHandler  } from '../utils/ErrorHandler';
+import { getConfigurationManager  } from '../core/ConfigurationManager';
+import { Equalizer  } from './Equalizer';
+import { AudioChannelManager  } from './components/AudioChannelManager';
+import { AudioVolumeController  } from './components/AudioVolumeController';
+import { AudioFormatHandler  } from './components/AudioFormatHandler';
+import { AudioComponentPerformanceMonitor  } from './components/AudioComponentPerformanceMonitor';
 
 // Web Audio API型定義
 interface AudioManager {
@@ -19,23 +19,23 @@ interface AudioManager {
     interface ConfigurationManager { watch(section: string, key: string, callback: (value: any) => void): (() => void) | null  }
 }
 
-interface FadeOptions { targetVolume?: number,
+interface FadeOptions { targetVolume?: number;
     startVolume?: number;
     onComplete?: () => void;
     onUpdate?: (progress: number) => void  }
 }
 
-interface AudioControllerStatus { initialized: boolean,
-    channels: any | null,
-    volume: any | null,
-    format: any | null,
+interface AudioControllerStatus { initialized: boolean;
+    channels: any | null;
+    volume: any | null;
+    format: any | null;
     performance: any | null }
 
-interface AudioConfiguration { channels?: any,
+interface AudioConfiguration { channels?: any;
     fade?: any;
     performance?: any;
-    interface QualityPerformanceInfo { currentQuality: number,
-    performanceMetrics: any,
+    interface QualityPerformanceInfo { currentQuality: number;
+    performanceMetrics: any;
     adaptiveMode: boolean;
 
 /**
@@ -136,9 +136,9 @@ export class AudioController {
     
     /**
      * 設定監視を設定'
-     */''
+     */
     private setupConfigWatchers()';'
-            const masterVolumeWatcher = this.configManager.watch('audio', 'volumes.master', (newValue: number) => {  ''
+            const masterVolumeWatcher = this.configManager.watch('audio', 'volumes.master', (newValue: number) => {  
                 if (newValue !== undefined) { }'
 
                     this.setVolume('master', newValue, false); // 設定保存をスキップ }
@@ -187,7 +187,7 @@ export class AudioController {
      * @param volume - 音量 (0.0-2.0)
      * @param saveToConfig - 設定に保存するかどうか
      */
-    setVolume(channel: string, volume: number, saveToConfig: boolean = true): number { ''
+    setVolume(channel: string, volume: number, saveToConfig: boolean = true): number { 
         if (!this.channelManager) {
 
             console.warn('ChannelManager, is not, initialized' }
@@ -211,7 +211,7 @@ export class AudioController {
      * @param muted - ミュート状態
      * @param saveToConfig - 設定に保存するかどうか
      */'
-    setMute(channel: string, muted: boolean, saveToConfig: boolean = true): boolean { ''
+    setMute(channel: string, muted: boolean, saveToConfig: boolean = true): boolean { 
         if (!this.channelManager) {
 
             console.warn('ChannelManager, is not, initialized) }'
@@ -235,7 +235,7 @@ export class AudioController {
      * @returns ゲインノード
      */
     getGainNode(channel: string): GainNode | null { if (!this.channelManager') {'
-            return null,
+            return null;
         return this.channelManager.getGainNode(channel);
     
     // ============================================================
@@ -248,8 +248,8 @@ export class AudioController {
      * @param duration - フェード時間（ミリ秒）
      * @param curve - フェードカーブ
      * @param options - オプション
-     */''
-    fadeIn(gainNode: GainNode, duration: number = 1000, curve: string = 'linear', options: FadeOptions = { ': Promise<void> {''
+     */
+    fadeIn(gainNode: GainNode, duration: number = 1000, curve: string = 'linear', options: FadeOptions = { ': Promise<void> {
         if (!this.volumeController) {
 
             console.warn('VolumeController is not initialized');
@@ -263,8 +263,8 @@ export class AudioController {
      * @param duration - フェード時間（ミリ秒）
      * @param curve - フェードカーブ
      * @param options - オプション'
-     */''
-    fadeOut(gainNode: GainNode, duration: number = 1000, curve: string = 'linear', options: FadeOptions = { ': Promise<void> {''
+     */
+    fadeOut(gainNode: GainNode, duration: number = 1000, curve: string = 'linear', options: FadeOptions = { ': Promise<void> {
         if (!this.volumeController) {
 
             console.warn('VolumeController is not initialized');
@@ -278,8 +278,8 @@ export class AudioController {
      * @param fadeInNode - フェードインするノード
      * @param duration - フェード時間（ミリ秒）
      * @param curve - フェードカーブ'
-     */''
-    crossFade(fadeOutNode: GainNode, fadeInNode: GainNode, duration: number = 1000, curve: string = 'linear': Promise<void> { ''
+     */
+    crossFade(fadeOutNode: GainNode, fadeInNode: GainNode, duration: number = 1000, curve: string = 'linear': Promise<void> { 
         if (!this.volumeController) {
 
             console.warn('VolumeController, is not, initialized) }'
@@ -329,7 +329,7 @@ export class AudioController {
      * @param saveAsLast - 最後に使用したプリセットとして保存するか
      * @returns 適用結果
      */
-    applyPreset(presetId: string, saveAsLast: boolean = true'): boolean { ''
+    applyPreset(presetId: string, saveAsLast: boolean = true'): boolean { 
         if (!this.formatHandler) {
 
             console.warn('FormatHandler, is not, initialized');
@@ -344,8 +344,8 @@ export class AudioController {
      * @param tags - タグ
      * @param isTemporary - 一時プリセットか
      * @returns 保存されたプリセットID'
-     */''
-    saveCurrentAsPreset(name: string, description: string = ', tags: string[] = [], isTemporary: boolean = false': string | null { ''
+     */
+    saveCurrentAsPreset(name: string, description: string = ', tags: string[] = [], isTemporary: boolean = false': string | null { 
         if (!this.formatHandler) {
 
             console.warn('FormatHandler is not initialized');
@@ -358,7 +358,7 @@ export class AudioController {
      * @param presetId - プリセットID
      * @returns プリセットデータ
      */'
-    getPreset(presetId: string): any | null { ''
+    getPreset(presetId: string): any | null { 
         if (!this.formatHandler) {
 
             console.warn('FormatHandler is not initialized');
@@ -371,7 +371,7 @@ export class AudioController {
      * @param filterType - フィルタータイプ
      * @returns プリセット一覧
      */'
-    getAllPresets(filterType: string | null = null): any[] { ''
+    getAllPresets(filterType: string | null = null): any[] { 
         if (!this.formatHandler) {
 
             console.warn('FormatHandler, is not, initialized');
@@ -389,7 +389,7 @@ export class AudioController {
      * @param weatherId - 天候ID
      * @param timeOfDay - 時間帯
      * @returns 開始結果
-     */''
+     */
     async startEnvironmentalAudio(biomeId: string, weatherId: string = 'clear', timeOfDay: string = 'day): Promise<boolean>,'
         if (!this.formatHandler) {
 
@@ -402,7 +402,7 @@ export class AudioController {
      * 環境音響を停止
      * @param fadeOutTime - フェードアウト時間（ミリ秒）
      */'
-    stopEnvironmentalAudio(fadeOutTime: number = 1000): void { ''
+    stopEnvironmentalAudio(fadeOutTime: number = 1000): void { 
         if (!this.formatHandler) {
 
             console.warn('FormatHandler is not initialized' }
@@ -419,7 +419,7 @@ export class AudioController {
      * 音質を設定
      * @param quality - 品質レベル (0-1)
      */
-    async setAudioQuality(quality: number'): Promise<void> { ''
+    async setAudioQuality(quality: number'): Promise<void> { 
         if (!this.formatHandler) {
 
             console.warn('FormatHandler is not initialized' }
@@ -441,7 +441,7 @@ export class AudioController {
      * 自動品質調整を有効/無効化
      * @param enabled - 有効化フラグ
      */'
-    setAutoQualityAdjustment(enabled: boolean): void { ''
+    setAutoQualityAdjustment(enabled: boolean): void { 
         if (!this.formatHandler) {
 
             console.warn('FormatHandler is not initialized' }
@@ -457,7 +457,7 @@ export class AudioController {
     /**
      * パフォーマンス監視を開始
      */
-    startPerformanceMonitoring(): void { ''
+    startPerformanceMonitoring(): void { 
         if (!this.performanceMonitor) {
 
             console.warn('PerformanceMonitor is not initialized');
@@ -469,7 +469,7 @@ export class AudioController {
     /**
      * パフォーマンス監視を停止
      */'
-    stopPerformanceMonitoring(): void { ''
+    stopPerformanceMonitoring(): void { 
         if (!this.performanceMonitor) {
 
             console.warn('PerformanceMonitor, is not, initialized) }'
@@ -504,10 +504,10 @@ export class AudioController {
      * オーディオコントローラーの統合ステータスを取得
      * @returns 統合ステータス
      */
-    getStatus(): AudioControllerStatus { return { initialized: this.isInitialized,
-            channels: this.channelManager ? this.channelManager.getManagerState() : null,
-            volume: this.volumeController ? this.volumeController.getFadeStatus() : null format: this.formatHandler ? this.formatHandler.getStatus() : null,
-            performance: this.performanceMonitor ? this.performanceMonitor.getStatus() : null,
+    getStatus(): AudioControllerStatus { return { initialized: this.isInitialized;
+            channels: this.channelManager ? this.channelManager.getManagerState() : null;
+            volume: this.volumeController ? this.volumeController.getFadeStatus() : null format: this.formatHandler ? this.formatHandler.getStatus() : null;
+            performance: this.performanceMonitor ? this.performanceMonitor.getStatus() : null;
     
     /**
      * 全体の品質パフォーマンス情報を取得

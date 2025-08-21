@@ -11,21 +11,21 @@ import { LoggingSystem  } from '../../core/LoggingSystem';
 /**
  * フェード設定インターフェース
  */
-interface FadeConfig { defaultDuration: number,
-    defaultCurve: FadeCurveType,
-    stepSize: number,
+interface FadeConfig { defaultDuration: number;
+    defaultCurve: FadeCurveType;
+    stepSize: number;
     updateInterval: number;
 
 /**
  * フェードカーブタイプ'
- */''
+ */
 type FadeCurveType = 'linear' | 'exponential' | 'logarithmic' | 'sine' | 'cosine' | 'easeIn' | 'easeOut' | 'easeInOut' | string;
 
 /**
  * フェードオプションインターフェース
  */
-interface FadeOptions { startVolume: number,
-    endVolume: number,
+interface FadeOptions { startVolume: number;
+    endVolume: number;
     duration: number;
     curve?: FadeCurveType;
     onProgress?: (progress: number, currentVolume: number) => void;
@@ -36,73 +36,73 @@ interface FadeOptions { startVolume: number,
 /**
  * アクティブフェード情報インターフェース
  */
-interface ActiveFadeInfo { fadeId: number,
-    timeoutId: NodeJS.Timeout,
-    resolve: (value: number) => void,
+interface ActiveFadeInfo { fadeId: number;
+    timeoutId: NodeJS.Timeout;
+    resolve: (value: number) => void;
     reject: (reason: any) => void  }
 }
 
 /**
  * イコライザーバンドインターフェース
  */
-interface EqualizerBand { frequency: number,
-    filter: BiquadFilterNode,
+interface EqualizerBand { frequency: number;
+    filter: BiquadFilterNode;
     gain: number;
 
 /**
  * イコライザー設定インターフェース
  */
-interface EqualizerConfig { bandCount: number,
-    frequencies: number[],
-    defaultGain: number,
-    minGain: number,
-    maxGain: number,
+interface EqualizerConfig { bandCount: number;
+    frequencies: number[];
+    defaultGain: number;
+    minGain: number;
+    maxGain: number;
     qFactor: number;
 
 /**
  * イコライザーインターフェース
  */
-interface Equalizer { enabled: boolean,
-    bands: EqualizerBand[],
+interface Equalizer { enabled: boolean;
+    bands: EqualizerBand[];
     presets: Map<string, number[]>;
     gainNodes: BiquadFilterNode[];
 
 /**
  * 周波数レスポンスインターフェース
  */
-interface FrequencyResponse { magnitude: Float32Array,
-    phase: Float32Array,
+interface FrequencyResponse { magnitude: Float32Array;
+    phase: Float32Array;
     frequencies: Float32Array;
 
 /**
  * バンド情報インターフェース
  */
-interface BandInfo { index: number,
-    frequency: number,
-    gain: number,
+interface BandInfo { index: number;
+    frequency: number;
+    gain: number;
     type: BiquadFilterType;
 
 /**
  * イコライザーステータスインターフェース
  */
-interface EqualizerStatus { enabled: boolean,
-    bandCount: number,
-    gains: number[],
-    frequencies: number[],
-    presets: string[],
+interface EqualizerStatus { enabled: boolean;
+    bandCount: number;
+    gains: number[];
+    frequencies: number[];
+    presets: string[];
     config: EqualizerConfig;
 
 /**
  * フェードステータスインターフェース
  */
-interface FadeStatus { activeFades: number,
-    fadeConfig: FadeConfig,
+interface FadeStatus { activeFades: number;
+    fadeConfig: FadeConfig;
     availableCurves: string[];
 
 /**
  * ConfigurationManager インターフェース（型定義用）
  */
-interface ConfigurationManager { get(category: string, path?: string): any,
+interface ConfigurationManager { get(category: string, path?: string): any;
     set(category: string, path: string, value: any): void;
 
 /**
@@ -115,7 +115,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
     private errorHandler: ErrorHandler;
     private loggingSystem: LoggingSystem;
     // フェード管理
-    private, activeFades: Map<GainNode, ActiveFadeInfo>,
+    private, activeFades: Map<GainNode, ActiveFadeInfo>;
     private fadeConfig: FadeConfig;
     // イコライザー
     private equalizer: Equalizer;
@@ -130,31 +130,31 @@ interface ErrorHandler { handleError(error: any, context: string): void;
     this.errorHandler = getErrorHandler();
     this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         // フェード管理
-        this.activeFades = new Map('''
-            defaultCurve: 'linear,
+        this.activeFades = new Map('
+            defaultCurve: 'linear;
     stepSize: 0.02 };
     }
             updateInterval: 16 // 60FPS 
     };
         // イコライザー
         this.equalizer = { enabled: false)
-            bands: []),
+            bands: []);
             presets: new Map(
     gainNodes: [] };
         // イコライザー設定
-        this.equalizerConfig = { bandCount: 10,
-            frequencies: [32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000],
-            defaultGain: 0,
-            minGain: -12,
-            maxGain: 12,
+        this.equalizerConfig = { bandCount: 10;
+            frequencies: [32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];
+            defaultGain: 0;
+            minGain: -12;
+            maxGain: 12;
     qFactor: 1.414  };
         // フェードカーブ関数
-        this.fadeCurves = { linear: (progress: number) => progress,
+        this.fadeCurves = { linear: (progress: number) => progress;
             exponential: (progress: number) => Math.pow(progress, 2);
-            logarithmic: (progress: number) => Math.log10(progress * 9 + 1),
-            sine: (progress: number) => Math.sin(progress * Math.PI / 2),
-            cosine: (progress: number) => 1 - Math.cos(progress * Math.PI / 2),
-            easeIn: (progress: number) => progress * progress,
+            logarithmic: (progress: number) => Math.log10(progress * 9 + 1);
+            sine: (progress: number) => Math.sin(progress * Math.PI / 2);
+            cosine: (progress: number) => 1 - Math.cos(progress * Math.PI / 2);
+            easeIn: (progress: number) => progress * progress;
             easeOut: (progress: number) => 1 - Math.pow(1 - progress, 2);
             easeInOut: (progress: number) => progress < 0.5 ? 2 * progress * progress : 1 - 2 * Math.pow(1 - progress, 2) 
         };
@@ -180,21 +180,21 @@ interface ErrorHandler { handleError(error: any, context: string): void;
      * イコライザーを初期化
      */
     private initializeEqualizer(): void { try {
-            this.equalizer.bands = [],
-            this.equalizer.gainNodes = [],
+            this.equalizer.bands = [];
+            this.equalizer.gainNodes = [];
             
             // 各周波数帯域のフィルターを作成
-            this.equalizerConfig.frequencies.forEach((frequency, index) => { ''
-                const filter = this.audioContext.createBiquadFilter('''
+            this.equalizerConfig.frequencies.forEach((frequency, index) => { 
+                const filter = this.audioContext.createBiquadFilter('
                 filter.type = index === 0 ? 'lowshelf' : ','
-                              index === this.equalizerConfig.frequencies.length - 1 ? 'highshelf' : 'peaking,
-                filter.frequency.value = frequency,
-                filter.Q.value = this.equalizerConfig.qFactor,
-                filter.gain.value = this.equalizerConfig.defaultGain,
+                              index === this.equalizerConfig.frequencies.length - 1 ? 'highshelf' : 'peaking;
+                filter.frequency.value = frequency;
+                filter.Q.value = this.equalizerConfig.qFactor;
+                filter.gain.value = this.equalizerConfig.defaultGain;
                 
                 this.equalizer.bands.push({)
-                    frequency: frequency,
-    filter: filter),
+                    frequency: frequency;
+    filter: filter);
                     gain: this.equalizerConfig.defaultGain);
                 this.equalizer.gainNodes.push(filter); }
             };
@@ -213,14 +213,14 @@ interface ErrorHandler { handleError(error: any, context: string): void;
      * イコライザープリセットを設定
      */
     private setupEqualizerPresets(): void { const presets: Record<string, number[]> = {
-            flat: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            rock: [-1, 1, 4, 3, -1, -1, 1, 3, 3, 3],
-            pop: [-2, 1, 3, 4, 2, -1, -2, -2, 1, 3],
-            jazz: [2, 1, 1, 2, -1, -1, 0, 1, 2, 3],
-            classical: [3, 2, -1, -1, -1, -1, -1, 2, 3, 4],
-            electronic: [2, 3, 1, 0, -1, 1, 0, 1, 3, 4],
-            vocal: [-2, -1, 1, 3, 3, 2, 1, 0, -1, -2],
-            bass_boost: [6, 4, 2, 1, 0, -1, -1, -1, -1, -1],
+            flat: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            rock: [-1, 1, 4, 3, -1, -1, 1, 3, 3, 3];
+            pop: [-2, 1, 3, 4, 2, -1, -2, -2, 1, 3];
+            jazz: [2, 1, 1, 2, -1, -1, 0, 1, 2, 3];
+            classical: [3, 2, -1, -1, -1, -1, -1, 2, 3, 4];
+            electronic: [2, 3, 1, 0, -1, 1, 0, 1, 3, 4];
+            vocal: [-2, -1, 1, 3, 3, 2, 1, 0, -1, -2];
+            bass_boost: [6, 4, 2, 1, 0, -1, -1, -1, -1, -1];
             treble_boost: [-1, -1, -1, -1, 0, 1, 2, 4, 6, 8] };
         ';'
 
@@ -238,13 +238,13 @@ interface ErrorHandler { handleError(error: any, context: string): void;
      * @param curve - フェードカーブ
      * @param options - オプション
      */
-    fadeIn(gainNode: GainNode, duration: number = this.fadeConfig.defaultDuration, curve: FadeCurveType = this.fadeConfig.defaultCurve, options: Partial<FadeOptions> = { ): Promise<number>,
+    fadeIn(gainNode: GainNode, duration: number = this.fadeConfig.defaultDuration, curve: FadeCurveType = this.fadeConfig.defaultCurve, options: Partial<FadeOptions> = { ): Promise<number>;
         return this.performAdvancedFade(gainNode, {
-            startVolume: 0,
-            endVolume: options.targetVolume || 1),
-            duration: duration,
+            startVolume: 0;
+            endVolume: options.targetVolume || 1);
+            duration: duration;
     curve: curve);
-            ...options),
+            ...options);
     
     /**
      * フェードアウト
@@ -253,13 +253,13 @@ interface ErrorHandler { handleError(error: any, context: string): void;
      * @param curve - フェードカーブ
      * @param options - オプション
      */
-    fadeOut(gainNode: GainNode, duration: number = this.fadeConfig.defaultDuration, curve: FadeCurveType = this.fadeConfig.defaultCurve, options: Partial<FadeOptions> = { ): Promise<number>,
+    fadeOut(gainNode: GainNode, duration: number = this.fadeConfig.defaultDuration, curve: FadeCurveType = this.fadeConfig.defaultCurve, options: Partial<FadeOptions> = { ): Promise<number>;
         return this.performAdvancedFade(gainNode, {
-            startVolume: options.startVolume || gainNode.gain.value,
-            endVolume: 0),
-            duration: duration,
+            startVolume: options.startVolume || gainNode.gain.value;
+            endVolume: 0);
+            duration: duration;
     curve: curve);
-            ...options),
+            ...options);
     
     /**
      * 指数フェード
@@ -267,11 +267,11 @@ interface ErrorHandler { handleError(error: any, context: string): void;
      * @param startVolume - 開始音量
      * @param endVolume - 終了音量
      * @param duration - フェード時間（ミリ秒）'
-     */''
-    exponentialFade(gainNode: GainNode, startVolume: number, endVolume: number, duration: number): Promise<number>,
+     */
+    exponentialFade(gainNode: GainNode, startVolume: number, endVolume: number, duration: number): Promise<number>;
         return this.performAdvancedFade(gainNode, { startVolume: startVolume)
             endVolume: endVolume)','
-    duration: duration,'),
+    duration: duration,');
             curve: 'exponential'
             }
     
@@ -280,9 +280,9 @@ interface ErrorHandler { handleError(error: any, context: string): void;
      * @param gainNode - 対象のゲインノード
      * @param options - フェードオプション
      */
-    performAdvancedFade(gainNode: GainNode, options: FadeOptions): Promise<number>,
+    performAdvancedFade(gainNode: GainNode, options: FadeOptions): Promise<number>;
         return new Promise((resolve, reject) => { try {'
-                const fadeId = Date.now() + Math.random(',
+                const fadeId = Date.now() + Math.random(';
                     curve = 'linear),'
                     onProgress = null }
                     onComplete = null }
@@ -294,15 +294,15 @@ interface ErrorHandler { handleError(error: any, context: string): void;
                 const startTime = Date.now();
                 const volumeDiff = endVolume - startVolume;
                 
-                const updateFade = (): void => {  const elapsed = Date.now() - startTime,
+                const updateFade = (): void => {  const elapsed = Date.now() - startTime;
                     const progress = Math.min(elapsed / duration, 1);
                     // フェードカーブを適用
-                    const curveFunction = this.fadeCurves[curve] || this.fadeCurves.linear,
+                    const curveFunction = this.fadeCurves[curve] || this.fadeCurves.linear;
                     const curveProgress = curveFunction(progress);
                     ','
 
-                    const currentVolume = startVolume + (volumeDiff * curveProgress),
-                    gainNode.gain.value = Math.max(0, Math.min(2, currentVolume)),
+                    const currentVolume = startVolume + (volumeDiff * curveProgress);
+                    gainNode.gain.value = Math.max(0, Math.min(2, currentVolume));
                     ','
                     // 進捗コールバック
                     if(onProgress && typeof, onProgress === 'function' { }'
@@ -371,13 +371,13 @@ interface ErrorHandler { handleError(error: any, context: string): void;
      * @param duration - フェード時間（ミリ秒）
      * @param options - オプション
      */
-    customFade(gainNode: GainNode, customCurve: (progress: number) => number, duration: number, options: Partial<FadeOptions> = {}: Promise<number>,
-        const fadeOptions: any = { ...options,
-            duration: duration,
+    customFade(gainNode: GainNode, customCurve: (progress: number) => number, duration: number, options: Partial<FadeOptions> = {}: Promise<number>;
+        const fadeOptions: any = { ...options;
+            duration: duration;
         // カスタムカーブを一時的に追加
-        const tempCurveName = `custom_${Date.now()),
-        this.fadeCurves[tempCurveName] = customCurve,
-        fadeOptions.curve = tempCurveName,
+        const tempCurveName = `custom_${Date.now());
+        this.fadeCurves[tempCurveName] = customCurve;
+        fadeOptions.curve = tempCurveName;
         
         return this.performAdvancedFade(gainNode, fadeOptions).finally(() => {  // カスタムカーブを削除 }
             delete this.fadeCurves[tempCurveName];);
@@ -387,7 +387,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
      * 全フェードをキャンセル
      */
     cancelAllFades(): number { try {
-            let cancelledCount = 0,
+            let cancelledCount = 0;
             
             this.activeFades.forEach((fadeInfo, gainNode) => { 
                 this.cancelFade(gainNode);
@@ -399,16 +399,16 @@ interface ErrorHandler { handleError(error: any, context: string): void;
 
             return cancelledCount;} catch (error) {
             this.errorHandler.handleError(error, 'AudioVolumeController.cancelAllFades),'
-            return 0,
+            return 0;
     
     /**
      * フェード状態を取得
      * @returns アクティブなフェード情報
      */
     getFadeStatus(): FadeStatus { const status: FadeStatus = {
-            activeFades: this.activeFades.size,
-            fadeConfig: this.fadeConfig,
-    availableCurves: Object.keys(this.fadeCurves  ,
+            activeFades: this.activeFades.size;
+            fadeConfig: this.fadeConfig;
+    availableCurves: Object.keys(this.fadeCurves  ;
         
         return status
     }
@@ -417,7 +417,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
      * デフォルトフェードカーブを設定
      * @param curve - フェードカーブ名
      */'
-    setDefaultFadeCurve(curve: FadeCurveType): void { ''
+    setDefaultFadeCurve(curve: FadeCurveType): void { 
         if (this.fadeCurves[curve]) {
     
 }
@@ -433,7 +433,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
      * @param enabled - 有効化フラグ
      */
     setEqualizerEnabled(enabled: boolean): void { try {
-            this.equalizer.enabled = enabled,
+            this.equalizer.enabled = enabled;
             
             // 有効化/無効化に応じてゲインを調整
             this.equalizer.bands.forEach(band => { ')'
@@ -481,7 +481,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
 
             return this.equalizer.bands[bandIndex].gain;} catch (error) {
             this.errorHandler.handleError(error, 'AudioVolumeController.getEqualizerBandGain),'
-            return 0,
+            return 0;
     
     /**
      * イコライザーの全ゲインを設定
@@ -559,31 +559,31 @@ interface ErrorHandler { handleError(error: any, context: string): void;
                     phaseResponse[i] += bandPhase[i]; }
 };
             
-            return { magnitude: magResponse,
-                phase: phaseResponse,
+            return { magnitude: magResponse;
+                phase: phaseResponse;
                 frequencies: frequencies;;'} catch (error) {'
             this.errorHandler.handleError(error, 'AudioVolumeController.getEqualizerFrequencyResponse),'
-            return null,
+            return null;
     
     /**
      * イコライザーバンド情報を取得
      * @returns バンド情報
      */
     getEqualizerBandInfo(): BandInfo[] { return this.equalizer.bands.map((band, index) => ({
-            index: index,
-            frequency: band.frequency,
-            gain: band.gain,
+            index: index;
+            frequency: band.frequency;
+            gain: band.gain;
     type: band.filter.type      }
 }
     /**
      * イコライザー状態を取得
      * @returns イコライザー状態
      */
-    getEqualizerStatus(): EqualizerStatus { return { enabled: this.equalizer.enabled,
-            bandCount: this.equalizer.bands.length,
-            gains: this.getEqualizerGains(),
-            frequencies: this.equalizerConfig.frequencies,
-    presets: this.getEqualizerPresets() ,
+    getEqualizerStatus(): EqualizerStatus { return { enabled: this.equalizer.enabled;
+            bandCount: this.equalizer.bands.length;
+            gains: this.getEqualizerGains();
+            frequencies: this.equalizerConfig.frequencies;
+    presets: this.getEqualizerPresets() ;
             config: this.equalizerConfig 
     }
     
@@ -603,7 +603,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
      * フェード設定を更新
      * @param newConfig - 新しい設定
      */'
-    updateFadeConfig(newConfig: Partial<FadeConfig>): void { ''
+    updateFadeConfig(newConfig: Partial<FadeConfig>): void { 
         Object.assign(this.fadeConfig, newConfig);
         this.loggingSystem.debug('AudioVolumeController', 'Fade configuration updated', newConfig' }'
     
@@ -611,7 +611,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
      * イコライザー設定を更新
      * @param newConfig - 新しい設定
      */'
-    updateEqualizerConfig(newConfig: Partial<EqualizerConfig>): void { ''
+    updateEqualizerConfig(newConfig: Partial<EqualizerConfig>): void { 
         Object.assign(this.equalizerConfig, newConfig);
         this.loggingSystem.debug('AudioVolumeController', 'Equalizer configuration updated', newConfig);
     

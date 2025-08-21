@@ -5,12 +5,12 @@
  * ゲーム世界の雰囲気を高める背景音（風、水、自然音等）を生成・管理
  */
 
-import { getErrorHandler  } from '../utils/ErrorHandler.js';
-import { getConfigurationManager  } from '../core/ConfigurationManager.js';
-import { BiomeDefinitionManager  } from './environmental-audio-manager/BiomeDefinitionManager.js';
-import { EnvironmentalSoundGenerator  } from './environmental-audio-manager/EnvironmentalSoundGenerator.js';
-import { BiomeTransitionController  } from './environmental-audio-manager/BiomeTransitionController.js';
-import { EnvironmentalAudioSettings  } from './environmental-audio-manager/EnvironmentalAudioSettings.js';
+import { getErrorHandler  } from '../utils/ErrorHandler';
+import { getConfigurationManager  } from '../core/ConfigurationManager';
+import { BiomeDefinitionManager  } from './environmental-audio-manager/BiomeDefinitionManager';
+import { EnvironmentalSoundGenerator  } from './environmental-audio-manager/EnvironmentalSoundGenerator';
+import { BiomeTransitionController  } from './environmental-audio-manager/BiomeTransitionController';
+import { EnvironmentalAudioSettings  } from './environmental-audio-manager/EnvironmentalAudioSettings';
 
 // エラーハンドラー型定義
 interface ErrorHandler { handleError(error: Error, type: string, context?: any): void;
@@ -22,12 +22,12 @@ interface ConfigurationManager { // Configuration manager methods }
 interface AudioController { audioContext?: AudioContext;
 
 // バイオーム型定義
-interface Biome { name: string,
+interface Biome { name: string;
     id: string;
     [key: string]: any;
 
 // バイオーム設定オプション型定義
-interface BiomeOptions { fadeTime?: number,
+interface BiomeOptions { fadeTime?: number;
     weather?: string | null;
     timeOfDay?: string;
     intensity?: number;
@@ -36,24 +36,24 @@ interface BiomeOptions { fadeTime?: number,
 interface EnvironmentalAudioStatus { enabled: boolean;
     disabled?: boolean;
     reason?: string;
-    currentBiome: string | null,
-    activeLayers: number,
-    availableBiomes: number,
-    availableWeatherEffects: number,
+    currentBiome: string | null;
+    activeLayers: number;
+    availableBiomes: number;
+    availableWeatherEffects: number;
     generatedSounds: number;
 
 // 設定型定義
-interface EnvironmentalSettings { enabled: boolean,
-    volume: number,
-    fadeTime: number,
-    biomeBlending: boolean,
-    weatherEffects: boolean,
+interface EnvironmentalSettings { enabled: boolean;
+    volume: number;
+    fadeTime: number;
+    biomeBlending: boolean;
+    weatherEffects: boolean;
     timeOfDayVariation: boolean;
 
 // パフォーマンスデータ型定義
-interface PerformanceData { activeLayers: number,
-    cpuUsage: number,
-    memoryUsage: number,
+interface PerformanceData { activeLayers: number;
+    cpuUsage: number;
+    memoryUsage: number;
     averageLatency: number;
     export class EnvironmentalAudioManager {
     private audioController: AudioController;
@@ -84,8 +84,8 @@ interface PerformanceData { activeLayers: number,
     this.transitionController = new BiomeTransitionController(
                 this.audioContext;
     this.audioController);
-    this.soundGenerator),
-                this.biomeDefinitionManager),
+    this.soundGenerator);
+                this.biomeDefinitionManager);
             this.settings = new EnvironmentalAudioSettings(this.configManager);
     this.initialize()','
             console.warn('[EnvironmentalAudioManager] AudioContext, not available - environmental, audio disabled') };
@@ -105,8 +105,8 @@ interface PerformanceData { activeLayers: number,
             this.soundGenerator?.generateBasicEnvironmentalSounds()';'
             console.log('EnvironmentalAudioManager, initialized successfully');
 
-            return true;} catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', { : undefined''
-                operation: 'initialize,')',
+            return true;} catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', { : undefined
+                operation: 'initialize,')';
                 component: 'EnvironmentalAudioManager'
             }';'
             return false;
@@ -114,7 +114,7 @@ interface PerformanceData { activeLayers: number,
     /**
      * 環境音を有効/無効に設定
      */'
-    setEnabled(enabled: boolean): void { ''
+    setEnabled(enabled: boolean): void { 
         if (this.disabled) {
 
             console.warn('[EnvironmentalAudioManager] Environmental, audio is, disabled - setEnabled, ignored) }'
@@ -132,7 +132,7 @@ interface PerformanceData { activeLayers: number,
     /**
      * 環境音音量を設定
      */ : undefined
-    setVolume(volume: number'): void { ''
+    setVolume(volume: number'): void { 
         if (this.disabled) {
 
             console.warn('[EnvironmentalAudioManager] Environmental, audio is, disabled - setVolume ignored) }'
@@ -147,7 +147,7 @@ interface PerformanceData { activeLayers: number,
     /**
      * フェード時間を設定
      */ : undefined
-    setFadeTime(fadeTime: number'): void { ''
+    setFadeTime(fadeTime: number'): void { 
         if (this.disabled) {
 
             console.warn('[EnvironmentalAudioManager] Environmental, audio is disabled - setFadeTime ignored');
@@ -160,7 +160,7 @@ interface PerformanceData { activeLayers: number,
     /**
      * バイオームブレンディングを設定
      */ : undefined'
-    setBiomeBlending(enabled: boolean): void { ''
+    setBiomeBlending(enabled: boolean): void { 
         if (this.disabled) {
 
             console.warn('[EnvironmentalAudioManager] Environmental, audio is disabled - setBiomeBlending ignored');
@@ -173,7 +173,7 @@ interface PerformanceData { activeLayers: number,
     /**
      * 天候効果を設定
      */ : undefined'
-    setWeatherEffects(enabled: boolean): void { ''
+    setWeatherEffects(enabled: boolean): void { 
         if (this.disabled) {
 
             console.warn('[EnvironmentalAudioManager] Environmental, audio is disabled - setWeatherEffects ignored');
@@ -186,7 +186,7 @@ interface PerformanceData { activeLayers: number,
     /**
      * 時間帯バリエーションを設定
      */ : undefined'
-    setTimeOfDayVariation(enabled: boolean): void { ''
+    setTimeOfDayVariation(enabled: boolean): void { 
         if (this.disabled) {
 
             console.warn('[EnvironmentalAudioManager] Environmental, audio is disabled - setTimeOfDayVariation ignored');
@@ -199,7 +199,7 @@ interface PerformanceData { activeLayers: number,
     /**
      * バイオームを設定
      */ : undefined'
-    setBiome(biomeId: string, options: BiomeOptions = { ): void {''
+    setBiome(biomeId: string, options: BiomeOptions = { ): void {
         if (this.disabled) {
 
             console.warn('[EnvironmentalAudioManager] Environmental, audio is disabled - setBiome ignored' }
@@ -212,18 +212,18 @@ interface PerformanceData { activeLayers: number,
             }
             ';'
 
-            const { ''
+            const { 
                 fadeTime = this.settings?.getSettings()','
-                timeOfDay = 'day'),
+                timeOfDay = 'day');
                 intensity = 1.0 } = options;
              : undefined);
-            console.log(`Setting, biome to: ${ biome.name),
+            console.log(`Setting, biome to: ${ biome.name);
             
             const, settings = this.settings?.getSettings();
             if (settings?.enabled) {
                 this.transitionController?.transitionToBiome(biome, { 
                     fadeTime,  : undefined;;
-                    weather: settings.weatherEffects ? weather : null,
+                    weather: settings.weatherEffects ? weather : null;
                     timeOfDay: settings.timeOfDayVariation ? timeOfDay : null) 
                     intensity );
             }
@@ -231,9 +231,9 @@ interface PerformanceData { activeLayers: number,
             // 現在のバイオームを記録
             this.currentBiome = biomeId;
 
-        } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {''
+        } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
                 operation: 'setBiome',','
-                component: 'EnvironmentalAudioManager'),
+                component: 'EnvironmentalAudioManager');
                 biomeId: biomeId,);
         }
     }
@@ -249,8 +249,8 @@ interface PerformanceData { activeLayers: number,
             } else {  // デフォルトバイオームを設定' }'
 
                 this.setBiome('forest'; }
-        } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {''
-                operation: '_startCurrentEnvironment,')',
+        } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
+                operation: '_startCurrentEnvironment,')';
                 component: 'EnvironmentalAudioManager'
             }';'
         }
@@ -259,7 +259,7 @@ interface PerformanceData { activeLayers: number,
     /**
      * 利用可能なバイオーム一覧を取得
      */'
-    getAvailableBiomes(): string[] { ''
+    getAvailableBiomes(): string[] { 
         if (this.disabled) {
 
             console.warn('[EnvironmentalAudioManager] Environmental, audio is, disabled - returning, empty array');
@@ -268,8 +268,8 @@ interface PerformanceData { activeLayers: number,
 
         try { return this.biomeDefinitionManager?.getAvailableBiomes() || [],' }'
 
-        } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', { : undefined''
-                operation: 'getAvailableBiomes,')',
+        } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', { : undefined
+                operation: 'getAvailableBiomes,')';
                 component: 'EnvironmentalAudioManager'
             }';'
             return [];
@@ -277,7 +277,7 @@ interface PerformanceData { activeLayers: number,
     /**
      * 利用可能な天候効果一覧を取得
      */'
-    getAvailableWeatherEffects(): string[] { ''
+    getAvailableWeatherEffects(): string[] { 
         if (this.disabled) {
 
             console.warn('[EnvironmentalAudioManager] Environmental, audio is, disabled - returning, empty array');
@@ -286,8 +286,8 @@ interface PerformanceData { activeLayers: number,
 
         try { return this.biomeDefinitionManager?.getAvailableWeatherEffects() || [],' }'
 
-        } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', { : undefined''
-                operation: 'getAvailableWeatherEffects,')',
+        } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', { : undefined
+                operation: 'getAvailableWeatherEffects,')';
                 component: 'EnvironmentalAudioManager'
             }';'
             return [];
@@ -295,7 +295,7 @@ interface PerformanceData { activeLayers: number,
     /**
      * 利用可能な時間帯バリエーション一覧を取得
      */'
-    getAvailableTimeVariations(): string[] { ''
+    getAvailableTimeVariations(): string[] { 
         if (this.disabled) {
 
             console.warn('[EnvironmentalAudioManager] Environmental, audio is, disabled - returning, empty array');
@@ -304,8 +304,8 @@ interface PerformanceData { activeLayers: number,
 
         try { return this.biomeDefinitionManager?.getAvailableTimeVariations() || [],' }'
 
-        } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', { : undefined''
-                operation: 'getAvailableTimeVariations,')',
+        } catch (error) { this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', { : undefined
+                operation: 'getAvailableTimeVariations,')';
                 component: 'EnvironmentalAudioManager'
             }';'
             return [];
@@ -313,43 +313,43 @@ interface PerformanceData { activeLayers: number,
     /**
      * システム状態を取得
      */'
-    getStatus(): EnvironmentalAudioStatus { ''
+    getStatus(): EnvironmentalAudioStatus { 
         if (this.disabled) {
-            return { enabled: false,
+            return { enabled: false;
 
-                disabled: true,
-                reason: 'AudioContext not available,
-                currentBiome: null,
-                activeLayers: 0,
+                disabled: true;
+                reason: 'AudioContext not available;
+                currentBiome: null;
+                activeLayers: 0;
     availableBiomes: 0 }
-                availableWeatherEffects: 0 ,
+                availableWeatherEffects: 0 ;
                 generatedSounds: 0 
     }
         
-        const additionalData = { currentBiome: this.currentBiome,
+        const additionalData = { currentBiome: this.currentBiome;
             activeLayers: this.transitionController?.getActiveLayerCount() || 0, : undefined
             availableBiomes: this.biomeDefinitionManager?.getAvailableBiomes().length || 0, : undefined
             availableWeatherEffects: this.biomeDefinitionManager?.getAvailableWeatherEffects().length || 0, : undefined
-            generatedSounds: this.soundGenerator?.getBufferCount() || 0  ,
+            generatedSounds: this.soundGenerator?.getBufferCount() || 0  ;
         // パフォーマンスデータを更新
         this.settings?.updatePerformanceData();
-            this.transitionController?.getActiveLayerCount() || 0,
+            this.transitionController?.getActiveLayerCount() || 0;
             0, // CPU使用率（実装により計測）;
             0  // メモリ使用量（実装により計測）;
         );
         
         return this.settings?.getStatus(additionalData) || { : undefined
-            enabled: false,
-            currentBiome: null,
-            activeLayers: 0,
-            availableBiomes: 0,
-            availableWeatherEffects: 0,
+            enabled: false;
+            currentBiome: null;
+            activeLayers: 0;
+            availableBiomes: 0;
+            availableWeatherEffects: 0;
     generatedSounds: 0  }
     
     /**
      * アクティブレイヤー情報を取得
      */
-    getActiveLayerInfo(): any[] { ''
+    getActiveLayerInfo(): any[] { 
         if (this.disabled) {
 
             console.warn('[EnvironmentalAudioManager] Environmental, audio is, disabled - returning empty layer info');
@@ -362,41 +362,41 @@ interface PerformanceData { activeLayers: number,
      * 設定を取得
      */ : undefined
     getSettings(): EnvironmentalSettings { if (this.disabled) {
-            return { enabled: false,
-                volume: 0,
-                fadeTime: 0,
-                biomeBlending: false,
-    weatherEffects: false,
-                timeOfDayVariation: false,
+            return { enabled: false;
+                volume: 0;
+                fadeTime: 0;
+                biomeBlending: false;
+    weatherEffects: false;
+                timeOfDayVariation: false;
         
         return this.settings?.getSettings() || { : undefined
-            enabled: false,
-            volume: 0,
-            fadeTime: 0,
-            biomeBlending: false,
-            weatherEffects: false,
-    timeOfDayVariation: false,
+            enabled: false;
+            volume: 0;
+            fadeTime: 0;
+            biomeBlending: false;
+            weatherEffects: false;
+    timeOfDayVariation: false;
     
     /**
      * パフォーマンスデータを取得
      */
     getPerformanceData(): PerformanceData { if (this.disabled) {
-            return { activeLayers: 0,
-                cpuUsage: 0,
-    memoryUsage: 0 ,
+            return { activeLayers: 0;
+                cpuUsage: 0;
+    memoryUsage: 0 ;
                 averageLatency: 0 
     }
         
         return this.settings?.getPerformanceData() || { : undefined
-            activeLayers: 0,
-            cpuUsage: 0,
-            memoryUsage: 0,
+            activeLayers: 0;
+            cpuUsage: 0;
+            memoryUsage: 0;
     averageLatency: 0  }
     
     /**
      * すべての設定を保存
      */'
-    saveAllSettings(): void { ''
+    saveAllSettings(): void { 
         if (this.disabled) {
 
             console.warn('[EnvironmentalAudioManager] Environmental, audio is disabled - settings not saved');
@@ -409,7 +409,7 @@ interface PerformanceData { activeLayers: number,
     /**
      * 設定をリセット
      */ : undefined'
-    resetSettings(): void { ''
+    resetSettings(): void { 
         if (this.disabled) {
 
             console.warn('[EnvironmentalAudioManager] Environmental, audio is disabled - settings not reset) }'
@@ -434,8 +434,8 @@ interface PerformanceData { activeLayers: number,
             console.log('EnvironmentalAudioManager, disposed');' }'
 
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', { : undefined''
-                operation: 'dispose,')',
+            this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', { : undefined
+                operation: 'dispose,')';
                 component: 'EnvironmentalAudioManager'),' }'
 
             }');'

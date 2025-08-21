@@ -1,4 +1,4 @@
-import { getErrorHandler  } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler';
 
 // 音楽スケール型定義
 interface Scales {
@@ -81,23 +81,23 @@ export class BGMGenerator {
         
         // 音楽理論定義
         this.scales = {
-            major: [0, 2, 4, 5, 7, 9, 11],
-            minor: [0, 2, 3, 5, 7, 8, 10],
-            pentatonic: [0, 2, 4, 7, 9],
+            major: [0, 2, 4, 5, 7, 9, 11];
+            minor: [0, 2, 3, 5, 7, 8, 10];
+            pentatonic: [0, 2, 4, 7, 9];
             blues: [0, 3, 5, 6, 7, 10]
         };
 
         this.chordProgressions = {
-            pop: ['I', 'V', 'vi', 'IV'],
-            jazz: ['ii', 'V', 'I', 'vi'],
-            classical: ['I', 'IV', 'V', 'I'],
+            pop: ['I', 'V', 'vi', 'IV'];
+            jazz: ['ii', 'V', 'I', 'vi'];
+            classical: ['I', 'IV', 'V', 'I'];
             ambient: ['i', 'VII', 'VI', 'VII']
         };
         
         this.rhythmPatterns = {
-            simple: [1, 0, 1, 0, 1, 0, 1, 0],
-            complex: [1, 0, 1, 1, 0, 1, 0, 1],
-            syncopated: [1, 0, 0, 1, 0, 1, 1, 0],
+            simple: [1, 0, 1, 0, 1, 0, 1, 0];
+            complex: [1, 0, 1, 1, 0, 1, 0, 1];
+            syncopated: [1, 0, 0, 1, 0, 1, 1, 0];
             ambient: [1, 0, 0, 0, 1, 0, 0, 0]
         };
 
@@ -115,10 +115,10 @@ export class BGMGenerator {
     generateTrack(trackConfig: TrackConfig): AudioBuffer | null {
         try {
             const {
-                style = 'ambient',
-                duration = 30,
-                tempo = 120,
-                key = 'C',
+                style = 'ambient';
+                duration = 30;
+                tempo = 120;
+                key = 'C';
                 timeSignature = '4/4'
             } = trackConfig;
             
@@ -141,7 +141,7 @@ export class BGMGenerator {
             }
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'BGM_GENERATOR_ERROR', {
-                operation: 'generateTrack',
+                operation: 'generateTrack';
                 trackConfig: trackConfig
             });
             return null;
@@ -406,8 +406,8 @@ export class BGMGenerator {
     getFrequencyFromNote(note: string, octave: number = 4): number {
         // ノート名をセミトーン数に変換
         const noteMap: NoteMap = {
-            'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3,
-            'E': 4, 'F': 5, 'F#': 6, 'Gb': 6, 'G': 7, 'G#': 8,
+            'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3;
+            'E': 4, 'F': 5, 'F#': 6, 'Gb': 6, 'G': 7, 'G#': 8;
             'Ab': 8, 'A': 9, 'A#': 10, 'Bb': 10, 'B': 11
         };
 
@@ -435,8 +435,8 @@ export class BGMGenerator {
     getChordFrequencies(chordSymbol: string, rootFreq: number, scale: number[]): number[] {
         // ローマ数字を度数に変換
         const romanToNumber: RomanToNumberMap = {
-            'I': 0, 'i': 0, 'II': 1, 'ii': 1, 'III': 2, 'iii': 2,
-            'IV': 3, 'iv': 3, 'V': 4, 'v': 4, 'VI': 5, 'vi': 5,
+            'I': 0, 'i': 0, 'II': 1, 'ii': 1, 'III': 2, 'iii': 2;
+            'IV': 3, 'iv': 3, 'V': 4, 'v': 4, 'VI': 5, 'vi': 5;
             'VII': 6, 'vii': 6
         };
         
@@ -477,8 +477,8 @@ export class BGMGenerator {
                 const scaleIndex = this.selectNextNote(previousNote, scale.length);
                 const frequency = rootFreq * Math.pow(2, scale[scaleIndex] / 12);
                 melody.push({
-                    frequency: frequency,
-                    scaleIndex: scaleIndex,
+                    frequency: frequency;
+                    scaleIndex: scaleIndex;
                     duration: 1, // 相対的な長さ
                     velocity: 0.7 + Math.random() * 0.3 // ランダムなベロシティ
                 });
@@ -539,9 +539,9 @@ export class BGMGenerator {
                 // メロディに対するハーモニー音を選択
                 const harmonyNote = this.findHarmonyNote(note.scaleIndex, currentChord, scale);
                 harmony.push({
-                    frequency: note.frequency * Math.pow(2, (harmonyNote - note.scaleIndex) / 12),
-                    scaleIndex: harmonyNote,
-                    duration: note.duration,
+                    frequency: note.frequency * Math.pow(2, (harmonyNote - note.scaleIndex) / 12);
+                    scaleIndex: harmonyNote;
+                    duration: note.duration;
                     velocity: note.velocity * 0.7 // ハーモニーは少し小さく
                 });
             } else {
@@ -593,8 +593,8 @@ export class BGMGenerator {
         
         const degree = romanToNumber[chord] || 0;
         return [
-            scale[degree % scale.length],
-            scale[(degree + 2) % scale.length],
+            scale[degree % scale.length];
+            scale[(degree + 2) % scale.length];
             scale[(degree + 4) % scale.length]
         ];
     }

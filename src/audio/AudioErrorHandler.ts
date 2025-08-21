@@ -1,6 +1,6 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';
-import { getConfigurationManager } from '../core/ConfigurationManager.js';
-import { getLocalizationManager } from '../core/LocalizationManager.js';
+import { getErrorHandler } from '../utils/ErrorHandler';
+import { getConfigurationManager } from '../core/ConfigurationManager';
+import { getLocalizationManager } from '../core/LocalizationManager';
 
 // エラーハンドラー型定義
 interface ErrorHandler {
@@ -130,14 +130,14 @@ interface MemoryUsage {
 interface ErrorReport {
     timestamp: string;
     sessionDuration: number;
-    statistics: ErrorStats & {
+    statistics: ErrorStats & {;
         errorRate: number;
         recoveryRate: number;
     };
-    currentState: ErrorState & {
+    currentState: ErrorState & {;
         fallbackOptions: FallbackOptions;
     };
-    systemInfo: {
+    systemInfo: {;
         userAgent: string;
         webAudioSupported: boolean;
     };
@@ -201,79 +201,79 @@ export class AudioErrorHandler {
         
         // エラー統計
         this.errorStats = {
-            totalErrors: 0,
-            errorsByType: new Map(),
-            errorsBySource: new Map(),
-            recoveryAttempts: 0,
-            successfulRecoveries: 0,
-            fallbacksTriggered: 0,
+            totalErrors: 0;
+            errorsByType: new Map();
+            errorsBySource: new Map();
+            recoveryAttempts: 0;
+            successfulRecoveries: 0;
+            fallbacksTriggered: 0;
             sessionStart: Date.now()
         };
 
         // エラータイプ定義
         this.errorTypes = {
-            WEB_AUDIO_INIT: 'web_audio_initialization',
-            WEB_AUDIO_CONTEXT: 'web_audio_context_error',
-            AUDIO_DECODE: 'audio_decode_error',
-            AUDIO_LOAD: 'audio_load_error',
-            AUDIO_PLAY: 'audio_playback_error',
-            AUDIO_STOP: 'audio_stop_error',
-            BGM_GENERATION: 'bgm_generation_error',
-            AUDIO_EFFECT: 'audio_effect_error',
-            VIBRATION: 'vibration_error',
-            ACCESSIBILITY: 'accessibility_error',
-            MEMORY: 'memory_error',
-            PERFORMANCE: 'performance_error',
-            NETWORK: 'network_error',
-            PERMISSION: 'permission_error',
+            WEB_AUDIO_INIT: 'web_audio_initialization';
+            WEB_AUDIO_CONTEXT: 'web_audio_context_error';
+            AUDIO_DECODE: 'audio_decode_error';
+            AUDIO_LOAD: 'audio_load_error';
+            AUDIO_PLAY: 'audio_playback_error';
+            AUDIO_STOP: 'audio_stop_error';
+            BGM_GENERATION: 'bgm_generation_error';
+            AUDIO_EFFECT: 'audio_effect_error';
+            VIBRATION: 'vibration_error';
+            ACCESSIBILITY: 'accessibility_error';
+            MEMORY: 'memory_error';
+            PERFORMANCE: 'performance_error';
+            NETWORK: 'network_error';
+            PERMISSION: 'permission_error';
             BROWSER_COMPAT: 'browser_compatibility_error'
         };
 
         // 回復戦略の定義
         this.recoveryStrategies = new Map([
-            [this.errorTypes.WEB_AUDIO_INIT, this.recoverWebAudioInit.bind(this)],
-            [this.errorTypes.WEB_AUDIO_CONTEXT, this.recoverWebAudioContext.bind(this)],
-            [this.errorTypes.AUDIO_DECODE, this.recoverAudioDecode.bind(this)],
-            [this.errorTypes.AUDIO_LOAD, this.recoverAudioLoad.bind(this)],
-            [this.errorTypes.AUDIO_PLAY, this.recoverAudioPlay.bind(this)],
-            [this.errorTypes.BGM_GENERATION, this.recoverBGMGeneration.bind(this)],
-            [this.errorTypes.MEMORY, this.recoverMemoryError.bind(this)],
-            [this.errorTypes.PERFORMANCE, this.recoverPerformanceError.bind(this)],
+            [this.errorTypes.WEB_AUDIO_INIT, this.recoverWebAudioInit.bind(this)];
+            [this.errorTypes.WEB_AUDIO_CONTEXT, this.recoverWebAudioContext.bind(this)];
+            [this.errorTypes.AUDIO_DECODE, this.recoverAudioDecode.bind(this)];
+            [this.errorTypes.AUDIO_LOAD, this.recoverAudioLoad.bind(this)];
+            [this.errorTypes.AUDIO_PLAY, this.recoverAudioPlay.bind(this)];
+            [this.errorTypes.BGM_GENERATION, this.recoverBGMGeneration.bind(this)];
+            [this.errorTypes.MEMORY, this.recoverMemoryError.bind(this)];
+            [this.errorTypes.PERFORMANCE, this.recoverPerformanceError.bind(this)];
             [this.errorTypes.BROWSER_COMPAT, this.recoverBrowserCompatibility.bind(this)]
         ]);
         
         // フォールバック設定
         this.fallbackOptions = {
-            useHTMLAudio: false,
-            useSilentMode: false,
-            useMinimalFeatures: false,
-            disableEffects: false,
-            reducedQuality: false,
+            useHTMLAudio: false;
+            useSilentMode: false;
+            useMinimalFeatures: false;
+            disableEffects: false;
+            reducedQuality: false;
             noVibration: false
         };
 
         // エラー閾値設定
         this.errorThresholds = {
-            maxErrorsPerMinute: 10,
-            maxConsecutiveErrors: 5,
-            maxRecoveryAttempts: 3,
+            maxErrorsPerMinute: 10;
+            maxConsecutiveErrors: 5;
+            maxRecoveryAttempts: 3;
             performanceDegradationThreshold: 0.8
         };
 
         // エラー状態管理
         this.errorState = {
-            consecutiveErrors: 0,
-            lastErrorTime: 0,
-            recoveryInProgress: false,
-            fallbackMode: false,
+            consecutiveErrors: 0;
+            lastErrorTime: 0;
+            recoveryInProgress: false;
+            fallbackMode: false;
             criticalErrorsDetected: false
         };
 
         // ユーザー通知設定
         this.userNotificationSettings = {
-            showErrorMessages: true,
-            showRecoveryMessages: false,
-            showFallbackMessages: true,
+            showErrorMessages: true;
+            showRecoveryMessages: false;
+            showFallbackMessages: true;
             notificationDuration: 5000
         };
 
@@ -452,8 +452,8 @@ export class AudioErrorHandler {
      */
     determineSeverity(error: Error, errorType: string): string {
         const criticalTypes = [
-            this.errorTypes.WEB_AUDIO_INIT,
-            this.errorTypes.MEMORY,
+            this.errorTypes.WEB_AUDIO_INIT;
+            this.errorTypes.MEMORY;
             this.errorTypes.BROWSER_COMPAT
         ];
 
@@ -462,7 +462,7 @@ export class AudioErrorHandler {
         }
         
         const highTypes = [
-            this.errorTypes.WEB_AUDIO_CONTEXT,
+            this.errorTypes.WEB_AUDIO_CONTEXT;
             this.errorTypes.PERFORMANCE
         ];
 
@@ -493,14 +493,14 @@ export class AudioErrorHandler {
      */
     logError(error: Error, errorType: string, severity: string, context: any): void {
         const errorData: ErrorData = {
-            timestamp: new Date().toISOString(),
-            type: errorType,
-            severity: severity,
-            message: error.message,
-            stack: error.stack,
-            context: context,
-            userAgent: navigator.userAgent,
-            audioContextState: this.audioManager.audioContext?.state,
+            timestamp: new Date().toISOString();
+            type: errorType;
+            severity: severity;
+            message: error.message;
+            stack: error.stack;
+            context: context;
+            userAgent: navigator.userAgent;
+            audioContextState: this.audioManager.audioContext?.state;
             memoryUsage: this.getMemoryUsage()
         };
         
@@ -655,7 +655,7 @@ export class AudioErrorHandler {
                 await new Promise(resolve => setTimeout(resolve, delay));
                 
                 const result = await this.audioManager.loadAudioFile?.(url, {
-                    ...context,
+                    ...context;
                     retryCount: retryCount + 1
                 });
                 return !!result;
@@ -704,8 +704,8 @@ export class AudioErrorHandler {
             // より簡単な生成パラメータで再試行
             const { config } = context;
             const simplifiedConfig = {
-                ...config,
-                complexity: 'simple',
+                ...config;
+                complexity: 'simple';
                 duration: Math.min(config.duration, 30)
             };
             
@@ -891,8 +891,8 @@ export class AudioErrorHandler {
         
         // エラーレポートを送信
         this.globalErrorHandler.handleError(error, 'AUDIO_CRITICAL_ERROR', {
-            errorStats: this.errorStats,
-            errorState: this.errorState,
+            errorStats: this.errorStats;
+            errorState: this.errorState;
             fallbackOptions: this.fallbackOptions
         });
     }
@@ -952,7 +952,7 @@ export class AudioErrorHandler {
         if (!error) return false;
 
         const audioKeywords = [
-            'audio', 'sound', 'web audio', 'audiocontext', 'audiobuffer',
+            'audio', 'sound', 'web audio', 'audiocontext', 'audiobuffer';
             'vibration', 'bgm', 'sfx', 'microphone', 'speaker'
         ];
 
@@ -1029,8 +1029,8 @@ export class AudioErrorHandler {
         if ((performance as any).memory) {
             const memory = (performance as any).memory;
             return {
-                used: memory.usedJSHeapSize,
-                total: memory.totalJSHeapSize,
+                used: memory.usedJSHeapSize;
+                total: memory.totalJSHeapSize;
                 limit: memory.jsHeapSizeLimit
             };
         }
@@ -1074,22 +1074,22 @@ export class AudioErrorHandler {
         const sessionDuration = Date.now() - this.errorStats.sessionStart;
         
         return {
-            timestamp: new Date().toISOString(),
-            sessionDuration: sessionDuration,
+            timestamp: new Date().toISOString();
+            sessionDuration: sessionDuration;
             statistics: {
-                ...this.errorStats,
+                ...this.errorStats;
                 errorRate: this.errorStats.totalErrors / (sessionDuration / 60000), // errors per minute
                 recoveryRate: this.errorStats.successfulRecoveries / Math.max(this.errorStats.recoveryAttempts, 1)
-            },
+            };
             currentState: {
-                ...this.errorState,
+                ...this.errorState;
                 fallbackOptions: this.fallbackOptions
-            },
+            };
             systemInfo: {
-                userAgent: navigator.userAgent,
+                userAgent: navigator.userAgent;
                 webAudioSupported: !!(window.AudioContext || (window as any).webkitAudioContext)
-            },
-            memoryInfo: this.getMemoryUsage(),
+            };
+            memoryInfo: this.getMemoryUsage();
             recommendations: this.generateRecommendations()
         };
     }
@@ -1120,20 +1120,20 @@ export class AudioErrorHandler {
      */
     reset(): void {
         this.errorStats = {
-            totalErrors: 0,
-            errorsByType: new Map(),
-            errorsBySource: new Map(),
-            recoveryAttempts: 0,
-            successfulRecoveries: 0,
-            fallbacksTriggered: 0,
+            totalErrors: 0;
+            errorsByType: new Map();
+            errorsBySource: new Map();
+            recoveryAttempts: 0;
+            successfulRecoveries: 0;
+            fallbacksTriggered: 0;
             sessionStart: Date.now()
         };
         
         this.errorState = {
-            consecutiveErrors: 0,
-            lastErrorTime: 0,
-            recoveryInProgress: false,
-            fallbackMode: false,
+            consecutiveErrors: 0;
+            lastErrorTime: 0;
+            recoveryInProgress: false;
+            fallbackMode: false;
             criticalErrorsDetected: false
         };
 

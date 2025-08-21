@@ -4,26 +4,26 @@
  * 各種効果音のリアルタイム生成・バリエーション作成を担当
  */
 
-import { getErrorHandler  } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler';
 
 /**
  * プロシージャル音響生成クラス
  */
 export class ProceduralSoundGenerator {
     // プロパティ宣言
-    isInitialized: boolean,
-    audioContext: any,
+    isInitialized: boolean;
+    audioContext: any;
     soundBuffers: Map<string, any>;
-    soundParams: any,
-    isGenerating: boolean,
-    generationProgress: number,
+    soundParams: any;
+    isGenerating: boolean;
+    generationProgress: number;
     lastGenerationTime: number;
     constructor() {
 
         // 初期化状態
         this.isInitialized = false;
         
-        // AudioContext (外部から注入される),
+        // AudioContext (外部から注入される);
         this.audioContext = null;
         
         // 生成済み音響バッファ
@@ -36,21 +36,21 @@ export class ProceduralSoundGenerator {
 
      };
         this.soundParams = { }
-            pop: { baseFreq: 400, duration: 0.1, decay: 8  ,
-            pop_combo: { baseFreq: 800, duration: 0.1, decay: 8  ,
-            bonus: { baseFreq: 440, duration: 0.5, decay: 2  ,
-            heal: { freqs: [523.25, 659.25, 783.99], duration: 0.3, decay: 3  ,
-            damage: { baseFreq: 150, duration: 0.2, decay: 5  ,
-            electric: { baseFreq: 2000, duration: 0.3, decay: 4  ,
-            chain: { baseFreq: 200, duration: 0.4, decay: 2  ,
-            time_stop: { baseFreq: 1000, duration: 0.6, decay: 2  ,
-            click: { baseFreq: 800, duration: 0.05, decay: 20  ,
-            hover: { baseFreq: 600, duration: 0.1, decay: 10  ,
-            error: { baseFreq: 200, duration: 0.3, decay: 3  ,
-            success: { baseFreq: 440, duration: 0.4, decay: 2  ,
-            game_start: { freqs: [261.63, 329.63, 392.00, 523.25], duration: 1.0, decay: 1  ,
-            game_over: { baseFreq: 440, duration: 1.5, decay: 1  ,
-            warning: { baseFreq: 800, duration: 0.5, decay: 2   ,
+            pop: { baseFreq: 400, duration: 0.1, decay: 8  ;
+            pop_combo: { baseFreq: 800, duration: 0.1, decay: 8  ;
+            bonus: { baseFreq: 440, duration: 0.5, decay: 2  ;
+            heal: { freqs: [523.25, 659.25, 783.99], duration: 0.3, decay: 3  ;
+            damage: { baseFreq: 150, duration: 0.2, decay: 5  ;
+            electric: { baseFreq: 2000, duration: 0.3, decay: 4  ;
+            chain: { baseFreq: 200, duration: 0.4, decay: 2  ;
+            time_stop: { baseFreq: 1000, duration: 0.6, decay: 2  ;
+            click: { baseFreq: 800, duration: 0.05, decay: 20  ;
+            hover: { baseFreq: 600, duration: 0.1, decay: 10  ;
+            error: { baseFreq: 200, duration: 0.3, decay: 3  ;
+            success: { baseFreq: 440, duration: 0.4, decay: 2  ;
+            game_start: { freqs: [261.63, 329.63, 392.00, 523.25], duration: 1.0, decay: 1  ;
+            game_over: { baseFreq: 440, duration: 1.5, decay: 1  ;
+            warning: { baseFreq: 800, duration: 0.5, decay: 2   ;
         
         // 生成状態
         this.isGenerating = false;
@@ -67,7 +67,7 @@ export class ProceduralSoundGenerator {
      * 全効果音を生成
      * @returns {Promise<boolean>} 生成成功フラグ
      */
-    async generateAllSounds() { ''
+    async generateAllSounds() { 
         if (!this.audioContext) {
 
             console.warn('AudioContext, not available for sound generation');
@@ -77,32 +77,32 @@ export class ProceduralSoundGenerator {
             this.generationProgress = 0;
 
             const soundTypes = Object.keys(this.soundParams'),'
-            const totalSounds = soundTypes.length,
+            const totalSounds = soundTypes.length;
             ','
             // 泡ポップ音
-            this.soundBuffers.set('pop', this.createPopSound()),
+            this.soundBuffers.set('pop', this.createPopSound());
             this.soundBuffers.set('pop_combo', this.createPopSound(true);
             this.updateProgress(2, totalSounds);
             ','
             // 特殊効果音
-            this.soundBuffers.set('bonus', this.createBonusSound()),
-            this.soundBuffers.set('heal', this.createHealSound()),
-            this.soundBuffers.set('damage', this.createDamageSound()),
-            this.soundBuffers.set('electric', this.createElectricSound()),
-            this.soundBuffers.set('chain', this.createChainSound()),
+            this.soundBuffers.set('bonus', this.createBonusSound());
+            this.soundBuffers.set('heal', this.createHealSound());
+            this.soundBuffers.set('damage', this.createDamageSound());
+            this.soundBuffers.set('electric', this.createElectricSound());
+            this.soundBuffers.set('chain', this.createChainSound());
             this.soundBuffers.set('time_stop', this.createTimeStopSound();
             this.updateProgress(8, totalSounds);
             ','
             // UI音
-            this.soundBuffers.set('click', this.createClickSound()),
-            this.soundBuffers.set('hover', this.createHoverSound()),
-            this.soundBuffers.set('error', this.createErrorSound()),
+            this.soundBuffers.set('click', this.createClickSound());
+            this.soundBuffers.set('hover', this.createHoverSound());
+            this.soundBuffers.set('error', this.createErrorSound());
             this.soundBuffers.set('success', this.createSuccessSound();
             this.updateProgress(12, totalSounds);
             ','
             // ゲーム状態音
-            this.soundBuffers.set('game_start', this.createGameStartSound()),
-            this.soundBuffers.set('game_over', this.createGameOverSound()),
+            this.soundBuffers.set('game_start', this.createGameStartSound());
+            this.soundBuffers.set('game_over', this.createGameOverSound());
             this.soundBuffers.set('warning', this.createWarningSound();
             this.updateProgress(15, totalSounds);
             this.isGenerating = false;
@@ -113,7 +113,7 @@ export class ProceduralSoundGenerator {
             ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', { ')'
-                component: 'ProceduralSoundGenerator,')',
+                component: 'ProceduralSoundGenerator,')';
                 operation: 'generateAllSounds'
             };
             this.isGenerating = false;
@@ -132,19 +132,19 @@ export class ProceduralSoundGenerator {
      * @returns {AudioBuffer} 音響バッファ
      */
     createPopSound(isCombo = false) {
-        const params = isCombo ? this.soundParams.pop_combo: this.soundParams.pop,
-        const duration = params.duration,
-        const sampleRate = this.audioContext.sampleRate,
+        const params = isCombo ? this.soundParams.pop_combo: this.soundParams.pop;
+        const duration = params.duration;
+        const sampleRate = this.audioContext.sampleRate;
         const buffer = this.audioContext.createBuffer(1, duration * sampleRate, sampleRate);
         const data = buffer.getChannelData(0);
-        const baseFreq = params.baseFreq,
-        const freqModulation = isCombo ? 1.5 : 1.2,
+        const baseFreq = params.baseFreq;
+        const freqModulation = isCombo ? 1.5 : 1.2;
         
         for (let, i = 0, i < data.length, i++) {
-            const t = i / sampleRate,
+            const t = i / sampleRate;
             const decay = Math.exp(-t * params.decay);
             const freq = baseFreq * Math.pow(freqModulation, -t * 4);
-            data[i] = Math.sin(2 * Math.PI * freq * t) * decay * 0.3,
+            data[i] = Math.sin(2 * Math.PI * freq * t) * decay * 0.3;
             
             // ノイズ成分を追加
     }
@@ -159,14 +159,14 @@ export class ProceduralSoundGenerator {
      * @returns {AudioBuffer} 音響バッファ
      */
     createBonusSound() {
-        const params = this.soundParams.bonus,
-        const duration = params.duration,
-        const sampleRate = this.audioContext.sampleRate,
+        const params = this.soundParams.bonus;
+        const duration = params.duration;
+        const sampleRate = this.audioContext.sampleRate;
         const buffer = this.audioContext.createBuffer(1, duration * sampleRate, sampleRate);
         const data = buffer.getChannelData(0);
         for (let, i = 0, i < data.length, i++) {
-            const t = i / sampleRate,
-            const progress = t / duration,
+            const t = i / sampleRate;
+            const progress = t / duration;
             
             // 上昇する音階
             const freq1 = params.baseFreq * Math.pow(2, progress * 2), // 2オクターブ上昇
@@ -185,23 +185,23 @@ export class ProceduralSoundGenerator {
      * @returns {AudioBuffer} 音響バッファ
      */
     createHealSound() {
-        const params = this.soundParams.heal,
-        const duration = params.duration,
-        const sampleRate = this.audioContext.sampleRate,
+        const params = this.soundParams.heal;
+        const duration = params.duration;
+        const sampleRate = this.audioContext.sampleRate;
         const buffer = this.audioContext.createBuffer(1, duration * sampleRate, sampleRate);
         const data = buffer.getChannelData(0);
         for (let, i = 0, i < data.length, i++) {
-            const t = i / sampleRate,
-            const progress = t / duration,
+            const t = i / sampleRate;
+            const progress = t / duration;
             
-            // 優しい和音 (C5, E5, G5),
-            const freq1 = params.freqs[0],
-            const freq2 = params.freqs[1],
-            const freq3 = params.freqs[2],
+            // 優しい和音 (C5, E5, G5);
+            const freq1 = params.freqs[0];
+            const freq2 = params.freqs[1];
+            const freq3 = params.freqs[2];
             
             const decay = Math.exp(-t * params.decay);
             const envelope = Math.sin(Math.PI * progress);
-            data[i] = (Math.sin(2 * Math.PI * freq1 * t) +,
+            data[i] = (Math.sin(2 * Math.PI * freq1 * t) +;
                       Math.sin(2 * Math.PI * freq2 * t) * 0.7 + }
                       Math.sin(2 * Math.PI * freq3 * t) * 0.5) * decay * envelope * 0.2; }
         }
@@ -214,16 +214,16 @@ export class ProceduralSoundGenerator {
      * @returns {AudioBuffer} 音響バッファ
      */
     createDamageSound() {
-        const params = this.soundParams.damage,
-        const duration = params.duration,
-        const sampleRate = this.audioContext.sampleRate,
+        const params = this.soundParams.damage;
+        const duration = params.duration;
+        const sampleRate = this.audioContext.sampleRate;
         const buffer = this.audioContext.createBuffer(1, duration * sampleRate, sampleRate);
         const data = buffer.getChannelData(0);
         for (let, i = 0, i < data.length, i++) {
-            const t = i / sampleRate,
+            const t = i / sampleRate;
             
             // 不協和音とノイズ
-            const freq = params.baseFreq + Math.sin(t * 50) * 50,
+            const freq = params.baseFreq + Math.sin(t * 50) * 50;
             const decay = Math.exp(-t * params.decay);
             data[i] = (Math.sin(2 * Math.PI * freq * t) +  }
                       (Math.random() - 0.5) * 0.5) * decay * 0.4; }
@@ -237,17 +237,17 @@ export class ProceduralSoundGenerator {
      * @returns {AudioBuffer} 音響バッファ
      */
     createElectricSound() {
-        const params = this.soundParams.electric,
-        const duration = params.duration,
-        const sampleRate = this.audioContext.sampleRate,
+        const params = this.soundParams.electric;
+        const duration = params.duration;
+        const sampleRate = this.audioContext.sampleRate;
         const buffer = this.audioContext.createBuffer(1, duration * sampleRate, sampleRate);
         const data = buffer.getChannelData(0);
         for (let, i = 0, i < data.length, i++) {
-            const t = i / sampleRate,
+            const t = i / sampleRate;
             
             // 高周波ノイズ
-            const noise = (Math.random() - 0.5) * 2,
-            const freq = params.baseFreq + Math.sin(t * 100) * 1000,
+            const noise = (Math.random() - 0.5) * 2;
+            const freq = params.baseFreq + Math.sin(t * 100) * 1000;
             const buzz = Math.sin(2 * Math.PI * freq * t);
             const decay = Math.exp(-t * params.decay);
             data[i] = (noise * 0.7 + buzz * 0.3) * decay * 0.3; }
@@ -261,17 +261,17 @@ export class ProceduralSoundGenerator {
      * @returns {AudioBuffer} 音響バッファ
      */
     createChainSound() {
-        const params = this.soundParams.chain,
-        const duration = params.duration,
-        const sampleRate = this.audioContext.sampleRate,
+        const params = this.soundParams.chain;
+        const duration = params.duration;
+        const sampleRate = this.audioContext.sampleRate;
         const buffer = this.audioContext.createBuffer(1, duration * sampleRate, sampleRate);
         const data = buffer.getChannelData(0);
         for (let, i = 0, i < data.length, i++) {
-            const t = i / sampleRate,
-            const progress = t / duration,
+            const t = i / sampleRate;
+            const progress = t / duration;
             
             // 連続する爆発音
-            const freq = params.baseFreq + Math.sin(t * 20) * 100,
+            const freq = params.baseFreq + Math.sin(t * 20) * 100;
             const amplitude = Math.sin(progress * Math.PI * 8) * Math.exp(-t * params.decay);
             data[i] = Math.sin(2 * Math.PI * freq * t) * amplitude * 0.4; }
         }
@@ -284,14 +284,14 @@ export class ProceduralSoundGenerator {
      * @returns {AudioBuffer} 音響バッファ
      */
     createTimeStopSound() {
-        const params = this.soundParams.time_stop,
-        const duration = params.duration,
-        const sampleRate = this.audioContext.sampleRate,
+        const params = this.soundParams.time_stop;
+        const duration = params.duration;
+        const sampleRate = this.audioContext.sampleRate;
         const buffer = this.audioContext.createBuffer(1, duration * sampleRate, sampleRate);
         const data = buffer.getChannelData(0);
         for (let, i = 0, i < data.length, i++) {
-            const t = i / sampleRate,
-            const progress = t / duration,
+            const t = i / sampleRate;
+            const progress = t / duration;
             
             // 下降する音程
             const freq = params.baseFreq * Math.pow(0.1, progress);
@@ -307,13 +307,13 @@ export class ProceduralSoundGenerator {
      * @returns {AudioBuffer} 音響バッファ
      */
     createClickSound() {
-        const params = this.soundParams.click,
-        const duration = params.duration,
-        const sampleRate = this.audioContext.sampleRate,
+        const params = this.soundParams.click;
+        const duration = params.duration;
+        const sampleRate = this.audioContext.sampleRate;
         const buffer = this.audioContext.createBuffer(1, duration * sampleRate, sampleRate);
         const data = buffer.getChannelData(0);
         for (let, i = 0, i < data.length, i++) {
-            const t = i / sampleRate,
+            const t = i / sampleRate;
             const decay = Math.exp(-t * params.decay);
             data[i] = Math.sin(2 * Math.PI * params.baseFreq * t) * decay * 0.2; }
         }
@@ -326,13 +326,13 @@ export class ProceduralSoundGenerator {
      * @returns {AudioBuffer} 音響バッファ
      */
     createHoverSound() {
-        const params = this.soundParams.hover,
-        const duration = params.duration,
-        const sampleRate = this.audioContext.sampleRate,
+        const params = this.soundParams.hover;
+        const duration = params.duration;
+        const sampleRate = this.audioContext.sampleRate;
         const buffer = this.audioContext.createBuffer(1, duration * sampleRate, sampleRate);
         const data = buffer.getChannelData(0);
         for (let, i = 0, i < data.length, i++) {
-            const t = i / sampleRate,
+            const t = i / sampleRate;
             const decay = Math.exp(-t * params.decay);
             data[i] = Math.sin(2 * Math.PI * params.baseFreq * t) * decay * 0.1; }
         }
@@ -345,14 +345,14 @@ export class ProceduralSoundGenerator {
      * @returns {AudioBuffer} 音響バッファ
      */
     createErrorSound() {
-        const params = this.soundParams.error,
-        const duration = params.duration,
-        const sampleRate = this.audioContext.sampleRate,
+        const params = this.soundParams.error;
+        const duration = params.duration;
+        const sampleRate = this.audioContext.sampleRate;
         const buffer = this.audioContext.createBuffer(1, duration * sampleRate, sampleRate);
         const data = buffer.getChannelData(0);
         for (let, i = 0, i < data.length, i++) {
-            const t = i / sampleRate,
-            const freq = params.baseFreq - t * 100,
+            const t = i / sampleRate;
+            const freq = params.baseFreq - t * 100;
             const decay = Math.exp(-t * params.decay);
             data[i] = Math.sin(2 * Math.PI * freq * t) * decay * 0.3; }
         }
@@ -365,14 +365,14 @@ export class ProceduralSoundGenerator {
      * @returns {AudioBuffer} 音響バッファ
      */
     createSuccessSound() {
-        const params = this.soundParams.success,
-        const duration = params.duration,
-        const sampleRate = this.audioContext.sampleRate,
+        const params = this.soundParams.success;
+        const duration = params.duration;
+        const sampleRate = this.audioContext.sampleRate;
         const buffer = this.audioContext.createBuffer(1, duration * sampleRate, sampleRate);
         const data = buffer.getChannelData(0);
         for (let, i = 0, i < data.length, i++) {
-            const t = i / sampleRate,
-            const progress = t / duration,
+            const t = i / sampleRate;
+            const progress = t / duration;
             
             const freq = params.baseFreq + progress * 220, // A4からA5へ
             const envelope = Math.sin(Math.PI * progress);
@@ -388,21 +388,21 @@ export class ProceduralSoundGenerator {
      * @returns {AudioBuffer} 音響バッファ
      */
     createGameStartSound() {
-        const params = this.soundParams.game_start,
-        const duration = params.duration,
-        const sampleRate = this.audioContext.sampleRate,
+        const params = this.soundParams.game_start;
+        const duration = params.duration;
+        const sampleRate = this.audioContext.sampleRate;
         const buffer = this.audioContext.createBuffer(1, duration * sampleRate, sampleRate);
         const data = buffer.getChannelData(0);
         for (let, i = 0, i < data.length, i++) {
-            const t = i / sampleRate,
-            const progress = t / duration,
+            const t = i / sampleRate;
+            const progress = t / duration;
             
-            // 上昇するアルペジオ (C, E, G, C),
-            const frequencies = params.freqs,
+            // 上昇するアルペジオ (C, E, G, C);
+            const frequencies = params.freqs;
             const noteIndex = Math.floor(progress * frequencies.length);
-            const freq = frequencies[Math.min(noteIndex, frequencies.length - 1)],
+            const freq = frequencies[Math.min(noteIndex, frequencies.length - 1)];
             
-            const noteProgress = (progress * frequencies.length) % 1,
+            const noteProgress = (progress * frequencies.length) % 1;
             const envelope = Math.sin(Math.PI * noteProgress);
             const decay = Math.exp(-t * params.decay);
             data[i] = Math.sin(2 * Math.PI * freq * t) * envelope * decay * 0.3; }
@@ -416,14 +416,14 @@ export class ProceduralSoundGenerator {
      * @returns {AudioBuffer} 音響バッファ
      */
     createGameOverSound() {
-        const params = this.soundParams.game_over,
-        const duration = params.duration,
-        const sampleRate = this.audioContext.sampleRate,
+        const params = this.soundParams.game_over;
+        const duration = params.duration;
+        const sampleRate = this.audioContext.sampleRate;
         const buffer = this.audioContext.createBuffer(1, duration * sampleRate, sampleRate);
         const data = buffer.getChannelData(0);
         for (let, i = 0, i < data.length, i++) {
-            const t = i / sampleRate,
-            const progress = t / duration,
+            const t = i / sampleRate;
+            const progress = t / duration;
             
             // 下降する悲しい音程
             const freq = params.baseFreq * Math.pow(0.5, progress * 2);
@@ -439,16 +439,16 @@ export class ProceduralSoundGenerator {
      * @returns {AudioBuffer} 音響バッファ
      */
     createWarningSound() {
-        const params = this.soundParams.warning,
-        const duration = params.duration,
-        const sampleRate = this.audioContext.sampleRate,
+        const params = this.soundParams.warning;
+        const duration = params.duration;
+        const sampleRate = this.audioContext.sampleRate;
         const buffer = this.audioContext.createBuffer(1, duration * sampleRate, sampleRate);
         const data = buffer.getChannelData(0);
         for (let, i = 0, i < data.length, i++) {
-            const t = i / sampleRate,
+            const t = i / sampleRate;
             
             // 警告のビープ音
-            const freq = params.baseFreq + Math.sin(t * 10) * 200,
+            const freq = params.baseFreq + Math.sin(t * 10) * 200;
             const envelope = Math.sin(t * 20) * Math.exp(-t * params.decay);
             data[i] = Math.sin(2 * Math.PI * freq * t) * envelope * 0.3; }
         }
@@ -462,9 +462,9 @@ export class ProceduralSoundGenerator {
      * @param {Object} variation - バリエーション設定
      * @returns {AudioBuffer} バリエーション音響バッファ
      */
-    generateSoundVariation(baseSoundName: string, variation: { pitchShift?: number,
-        volumeScale?: number,
-        timeStretch?: number,
+    generateSoundVariation(baseSoundName: string, variation: { pitchShift?: number;
+        volumeScale?: number;
+        timeStretch?: number;
         noiseLevel?: number;) = { ): AudioBuffer | null {
         const baseBuffer = this.soundBuffers.get(baseSoundName);
         if (!baseBuffer) { }'
@@ -473,9 +473,9 @@ export class ProceduralSoundGenerator {
             return null;
         } };
 
-        const { pitchShift = 1.0,
-            volumeScale = 1.0,
-            timeStretch = 1.0,
+        const { pitchShift = 1.0;
+            volumeScale = 1.0;
+            timeStretch = 1.0;
             noiseLevel = 0.0 } = variation;
         ';'
         // pitchShiftは将来の実装で使用予定
@@ -489,10 +489,10 @@ export class ProceduralSoundGenerator {
 
             const sourceIndex = Math.floor(i / timeStretch);
             if (sourceIndex < originalData.length) {
-                let sample = originalData[sourceIndex],
+                let sample = originalData[sourceIndex];
                 
                 // 音量調整
-                sample *= volumeScale,
+                sample *= volumeScale;
                 
                 // ノイズ追加
                 if (noiseLevel > 0) {
@@ -526,10 +526,10 @@ export class ProceduralSoundGenerator {
      * @returns {Object} 生成状態
      */
     getGenerationStatus() {
-        return { isGenerated: this.soundBuffers.size > 0,
+        return { isGenerated: this.soundBuffers.size > 0;
             soundCount: this.soundBuffers.size }
-            generationTime: Date.now() - this.lastGenerationTime ,
-            lastGenerated: this.lastGenerationTime > 0 ? new Date(this.lastGenerationTime) : null,
+            generationTime: Date.now() - this.lastGenerationTime ;
+            lastGenerated: this.lastGenerationTime > 0 ? new Date(this.lastGenerationTime) : null;
 
     /**
      * 音響パラメーター更新
@@ -551,7 +551,7 @@ export class ProceduralSoundGenerator {
 }
 
 // シングルトンインスタンス管理
-let proceduralSoundGeneratorInstance: ProceduralSoundGenerator | null = null,
+let proceduralSoundGeneratorInstance: ProceduralSoundGenerator | null = null;
 
 /**
  * ProceduralSoundGeneratorのシングルトンインスタンスを取得
@@ -567,5 +567,5 @@ export function getProceduralSoundGenerator(): ProceduralSoundGenerator { if (!p
  * @returns {ProceduralSoundGenerator} 新しいシングルトンインスタンス
  */
 export function reinitializeProceduralSoundGenerator(): ProceduralSoundGenerator { if (proceduralSoundGeneratorInstance) {
-        proceduralSoundGeneratorInstance.dispose() }''
+        proceduralSoundGeneratorInstance.dispose() }
     proceduralSoundGeneratorInstance = new ProceduralSoundGenerator();

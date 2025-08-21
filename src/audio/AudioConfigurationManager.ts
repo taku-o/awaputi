@@ -4,7 +4,7 @@
  * 設定値監視・同期、音量管理、ミュート状態管理、動的設定更新を担当
  */
 
-import { getErrorHandler  } from '../utils/ErrorHandler.js';
+import { getErrorHandler  } from '../utils/ErrorHandler';
 
 /**
  * 音響設定管理クラス
@@ -50,18 +50,18 @@ export class AudioConfigurationManager {
         // 現在の設定値（キャッシュ）
         this.currentConfig = {
             volumes: {
-                master: 0.8,
-                sfx: 0.7,
-                bgm: 0.5,
+                master: 0.8;
+                sfx: 0.7;
+                bgm: 0.5;
                 muted: false
-            },
+            };
             effects: {
-                compression: true,
+                compression: true;
                 reverb: false
-            },
+            };
             quality: {
-                sampleRate: 44100,
-                bufferSize: 256,
+                sampleRate: 44100;
+                bufferSize: 256;
                 maxConcurrentSounds: 32
             }
         };
@@ -73,8 +73,8 @@ export class AudioConfigurationManager {
         
         // 設定同期状態
         this.syncState = {
-            isInitialized: false,
-            lastSyncTime: 0,
+            isInitialized: false;
+            lastSyncTime: 0;
             syncInterval: null
         };
     }
@@ -89,10 +89,10 @@ export class AudioConfigurationManager {
         this.audioConfig = audioConfig;
         
         const {
-            masterGainNode,
-            sfxGainNode,
-            bgmGainNode,
-            compressor,
+            masterGainNode;
+            sfxGainNode;
+            bgmGainNode;
+            compressor;
             reverbConvolver
         } = audioNodes;
         
@@ -155,7 +155,7 @@ export class AudioConfigurationManager {
             
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
-                component: 'AudioConfigurationManager',
+                component: 'AudioConfigurationManager';
                 operation: 'setupConfigWatchers'
             });
         }
@@ -194,9 +194,9 @@ export class AudioConfigurationManager {
             
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
-                component: 'AudioConfigurationManager',
-                operation: 'onVolumeChange',
-                type,
+                component: 'AudioConfigurationManager';
+                operation: 'onVolumeChange';
+                type;
                 newValue
             });
         }
@@ -228,8 +228,8 @@ export class AudioConfigurationManager {
             
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
-                component: 'AudioConfigurationManager',
-                operation: 'onMuteChange',
+                component: 'AudioConfigurationManager';
+                operation: 'onMuteChange';
                 newValue
             });
         }
@@ -267,9 +267,9 @@ export class AudioConfigurationManager {
             
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
-                component: 'AudioConfigurationManager',
-                operation: 'onEffectChange',
-                effectType,
+                component: 'AudioConfigurationManager';
+                operation: 'onEffectChange';
+                effectType;
                 newValue
             });
         }
@@ -315,9 +315,9 @@ export class AudioConfigurationManager {
 
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                component: 'AudioConfigurationManager',
-                operation: 'setVolume',
-                type,
+                component: 'AudioConfigurationManager';
+                operation: 'setVolume';
+                type;
                 volume
             });
         }
@@ -345,8 +345,8 @@ export class AudioConfigurationManager {
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                component: 'AudioConfigurationManager',
-                operation: 'getVolume',
+                component: 'AudioConfigurationManager';
+                operation: 'getVolume';
                 type
             });
             return 0;
@@ -372,8 +372,8 @@ export class AudioConfigurationManager {
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                component: 'AudioConfigurationManager',
-                operation: 'setMuted',
+                component: 'AudioConfigurationManager';
+                operation: 'setMuted';
                 muted
             });
         }
@@ -395,7 +395,7 @@ export class AudioConfigurationManager {
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                component: 'AudioConfigurationManager',
+                component: 'AudioConfigurationManager';
                 operation: 'toggleMute'
             });
             return this.currentConfig.volumes.muted;
@@ -417,9 +417,9 @@ export class AudioConfigurationManager {
             }
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                component: 'AudioConfigurationManager',
-                operation: 'setAudioEffect',
-                effectType,
+                component: 'AudioConfigurationManager';
+                operation: 'setAudioEffect';
+                effectType;
                 enabled
             });
         }
@@ -432,8 +432,8 @@ export class AudioConfigurationManager {
     updateQualitySettings(qualityConfig: any): void {
         try {
             const {
-                maxConcurrentSounds,
-                bufferSize,
+                maxConcurrentSounds;
+                bufferSize;
                 enableEffects
             } = qualityConfig;
             
@@ -457,8 +457,8 @@ export class AudioConfigurationManager {
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                component: 'AudioConfigurationManager',
-                operation: 'updateQualitySettings',
+                component: 'AudioConfigurationManager';
+                operation: 'updateQualitySettings';
                 qualityConfig
             });
         }
@@ -492,7 +492,7 @@ export class AudioConfigurationManager {
 
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                component: 'AudioConfigurationManager',
+                component: 'AudioConfigurationManager';
                 operation: 'syncWithConfig'
             });
         }

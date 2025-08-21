@@ -1,5 +1,5 @@
-import { getErrorHandler } from '../utils/ErrorHandler.js';
-import { getConfigurationManager } from '../core/ConfigurationManager.js';
+import { getErrorHandler } from '../utils/ErrorHandler';
+import { getConfigurationManager } from '../core/ConfigurationManager';
 
 // エラーハンドラー型定義
 interface ErrorHandler {
@@ -132,8 +132,8 @@ interface AudioController {
 
 // プリセット種別
 const PRESET_TYPES = {
-    BUILTIN: 'builtin',
-    USER: 'user',
+    BUILTIN: 'builtin';
+    USER: 'user';
     TEMPORARY: 'temporary'
 } as const;
 
@@ -216,7 +216,7 @@ export class PresetManager {
             console.log('PresetManager initialized successfully');
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: 'initialize',
+                operation: 'initialize';
                 component: 'PresetManager'
             });
         }
@@ -230,148 +230,148 @@ export class PresetManager {
         try {
             // ゲーミングプリセット
             this.builtinPresets.set('gaming', {
-                id: 'gaming',
-                name: 'ゲーミング',
-                description: 'ゲームプレイ用に最適化された音響設定',
-                type: PRESET_TYPES.BUILTIN,
+                id: 'gaming';
+                name: 'ゲーミング';
+                description: 'ゲームプレイ用に最適化された音響設定';
+                type: PRESET_TYPES.BUILTIN;
                 settings: {
                     volumes: {
-                        master: 0.8,
-                        bgm: 0.6,
-                        sfx: 0.9,
-                        ui: 0.7,
-                        achievement: 0.8,
+                        master: 0.8;
+                        bgm: 0.6;
+                        sfx: 0.9;
+                        ui: 0.7;
+                        achievement: 0.8;
                         game: 0.8
-                    },
+                    };
                     equalizer: {
-                        enabled: true,
+                        enabled: true;
                         bands: {
-                            bass: 2,
-                            lowMid: 1,
-                            mid: 0,
-                            highMid: 2,
+                            bass: 2;
+                            lowMid: 1;
+                            mid: 0;
+                            highMid: 2;
                             treble: 3
                         }
-                    },
+                    };
                     effects: {
-                        reverb: false,
+                        reverb: false;
                         compression: true
                     }
-                },
-                tags: ['ゲーム', 'アクション', '集中'],
-                createdAt: Date.now(),
+                };
+                tags: ['ゲーム', 'アクション', '集中'];
+                createdAt: Date.now();
                 updatedAt: Date.now()
             });
             
             // 音楽鑑賞プリセット
             this.builtinPresets.set('music', {
-                id: 'music',
-                name: '音楽鑑賞',
-                description: '音楽を楽しむための音響設定',
-                type: PRESET_TYPES.BUILTIN,
+                id: 'music';
+                name: '音楽鑑賞';
+                description: '音楽を楽しむための音響設定';
+                type: PRESET_TYPES.BUILTIN;
                 settings: {
                     volumes: {
-                        master: 0.7,
-                        bgm: 0.8,
-                        sfx: 0.4,
-                        ui: 0.3,
-                        achievement: 0.5,
+                        master: 0.7;
+                        bgm: 0.8;
+                        sfx: 0.4;
+                        ui: 0.3;
+                        achievement: 0.5;
                         game: 0.6
-                    },
+                    };
                     equalizer: {
-                        enabled: true,
+                        enabled: true;
                         bands: {
-                            bass: 1,
-                            lowMid: 0,
-                            mid: -1,
-                            highMid: 0,
+                            bass: 1;
+                            lowMid: 0;
+                            mid: -1;
+                            highMid: 0;
                             treble: 1
                         }
-                    },
+                    };
                     effects: {
-                        reverb: true,
+                        reverb: true;
                         compression: false
                     }
-                },
-                tags: ['音楽', 'リラックス', 'BGM'],
-                createdAt: Date.now(),
+                };
+                tags: ['音楽', 'リラックス', 'BGM'];
+                createdAt: Date.now();
                 updatedAt: Date.now()
             });
             
             // 静音プリセット
             this.builtinPresets.set('quiet', {
-                id: 'quiet',
-                name: '静音モード',
-                description: '夜間や集中作業に適した低音量設定',
-                type: PRESET_TYPES.BUILTIN,
+                id: 'quiet';
+                name: '静音モード';
+                description: '夜間や集中作業に適した低音量設定';
+                type: PRESET_TYPES.BUILTIN;
                 settings: {
                     volumes: {
-                        master: 0.3,
-                        bgm: 0.2,
-                        sfx: 0.4,
-                        ui: 0.5,
-                        achievement: 0.3,
+                        master: 0.3;
+                        bgm: 0.2;
+                        sfx: 0.4;
+                        ui: 0.5;
+                        achievement: 0.3;
                         game: 0.3
-                    },
+                    };
                     equalizer: {
-                        enabled: true,
+                        enabled: true;
                         bands: {
-                            bass: -2,
-                            lowMid: -1,
-                            mid: 1,
-                            highMid: 0,
+                            bass: -2;
+                            lowMid: -1;
+                            mid: 1;
+                            highMid: 0;
                             treble: -1
                         }
-                    },
+                    };
                     effects: {
-                        reverb: false,
+                        reverb: false;
                         compression: true
                     }
-                },
-                tags: ['静音', '夜間', '集中'],
-                createdAt: Date.now(),
+                };
+                tags: ['静音', '夜間', '集中'];
+                createdAt: Date.now();
                 updatedAt: Date.now()
             });
             
             // デフォルトプリセット
             this.builtinPresets.set('default', {
-                id: 'default',
-                name: 'デフォルト',
-                description: '標準的な音響設定',
-                type: PRESET_TYPES.BUILTIN,
+                id: 'default';
+                name: 'デフォルト';
+                description: '標準的な音響設定';
+                type: PRESET_TYPES.BUILTIN;
                 settings: {
                     volumes: {
-                        master: 0.7,
-                        bgm: 0.7,
-                        sfx: 0.7,
-                        ui: 0.7,
-                        achievement: 0.7,
+                        master: 0.7;
+                        bgm: 0.7;
+                        sfx: 0.7;
+                        ui: 0.7;
+                        achievement: 0.7;
                         game: 0.7
-                    },
+                    };
                     equalizer: {
-                        enabled: false,
+                        enabled: false;
                         bands: {
-                            bass: 0,
-                            lowMid: 0,
-                            mid: 0,
-                            highMid: 0,
+                            bass: 0;
+                            lowMid: 0;
+                            mid: 0;
+                            highMid: 0;
                             treble: 0
                         }
-                    },
+                    };
                     effects: {
-                        reverb: false,
+                        reverb: false;
                         compression: false
                     }
-                },
-                tags: ['デフォルト', 'バランス'],
-                createdAt: Date.now(),
+                };
+                tags: ['デフォルト', 'バランス'];
+                createdAt: Date.now();
                 updatedAt: Date.now()
             });
             
             console.log(`Initialized ${this.builtinPresets.size} builtin presets`);
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: '_initializeBuiltinPresets',
+                operation: '_initializeBuiltinPresets';
                 component: 'PresetManager'
             });
         }
@@ -394,7 +394,7 @@ export class PresetManager {
             console.log(`Loaded ${this.userPresets.size} user presets`);
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: '_loadUserPresets',
+                operation: '_loadUserPresets';
                 component: 'PresetManager'
             });
         }
@@ -408,8 +408,8 @@ export class PresetManager {
         try {
             // ユーザープリセットの変更監視
             const userPresetsWatcher = this.configManager.watch(
-                'audio',
-                'userPresets',
+                'audio';
+                'userPresets';
                 (newPresets: any) => {
                     this._onUserPresetsChanged(newPresets);
                 }
@@ -419,7 +419,7 @@ export class PresetManager {
             console.log('Config watchers set up successfully');
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: '_setupConfigWatchers',
+                operation: '_setupConfigWatchers';
                 component: 'PresetManager'
             });
         }
@@ -441,7 +441,7 @@ export class PresetManager {
             }
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: '_restoreLastPreset',
+                operation: '_restoreLastPreset';
                 component: 'PresetManager'
             });
         }
@@ -479,7 +479,7 @@ export class PresetManager {
             console.log(`User presets updated: ${this.userPresets.size} presets`);
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: '_onUserPresetsChanged',
+                operation: '_onUserPresetsChanged';
                 component: 'PresetManager'
             });
         }
@@ -506,9 +506,9 @@ export class PresetManager {
             
             // 現在のプリセットを更新
             this.currentPreset = {
-                id: preset.id,
-                name: preset.name,
-                type: preset.type,
+                id: preset.id;
+                name: preset.name;
+                type: preset.type;
                 appliedAt: Date.now()
             };
             
@@ -522,8 +522,8 @@ export class PresetManager {
             return true;
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: 'applyPreset',
-                component: 'PresetManager',
+                operation: 'applyPreset';
+                component: 'PresetManager';
                 presetId
             });
             return false;
@@ -570,8 +570,8 @@ export class PresetManager {
      */
     private _addToHistory(preset: PresetData): void {
         const historyItem: PresetHistoryItem = {
-            id: preset.id,
-            appliedAt: Date.now(),
+            id: preset.id;
+            appliedAt: Date.now();
             preset
         };
         
@@ -648,13 +648,13 @@ export class PresetManager {
             const currentSettings = this._getCurrentSettings();
             
             const preset: PresetData = {
-                id,
-                name,
-                description,
-                type: PRESET_TYPES.USER,
-                settings: currentSettings,
-                tags,
-                createdAt: Date.now(),
+                id;
+                name;
+                description;
+                type: PRESET_TYPES.USER;
+                settings: currentSettings;
+                tags;
+                createdAt: Date.now();
                 updatedAt: Date.now()
             };
             
@@ -665,8 +665,8 @@ export class PresetManager {
             return true;
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: 'createUserPreset',
-                component: 'PresetManager',
+                operation: 'createUserPreset';
+                component: 'PresetManager';
                 presetId: id
             });
             return false;
@@ -683,17 +683,17 @@ export class PresetManager {
         const equalizerGains = this.audioController.getEqualizerGains();
         
         return {
-            volumes,
+            volumes;
             equalizer: {
-                enabled: equalizerEnabled,
+                enabled: equalizerEnabled;
                 bands: {
-                    bass: equalizerGains[0] || 0,
-                    lowMid: equalizerGains[1] || 0,
-                    mid: equalizerGains[2] || 0,
-                    highMid: equalizerGains[3] || 0,
+                    bass: equalizerGains[0] || 0;
+                    lowMid: equalizerGains[1] || 0;
+                    mid: equalizerGains[2] || 0;
+                    highMid: equalizerGains[3] || 0;
                     treble: equalizerGains[4] || 0
                 }
-            },
+            };
             effects: {
                 reverb: false, // デフォルト値
                 compression: false // デフォルト値
@@ -716,7 +716,7 @@ export class PresetManager {
             this.configManager.set('audio', 'userPresets', presetsData);
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: '_saveUserPresets',
+                operation: '_saveUserPresets';
                 component: 'PresetManager'
             });
         }
@@ -747,8 +747,8 @@ export class PresetManager {
             return true;
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: 'updateUserPreset',
-                component: 'PresetManager',
+                operation: 'updateUserPreset';
+                component: 'PresetManager';
                 presetId
             });
             return false;
@@ -777,8 +777,8 @@ export class PresetManager {
             return true;
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: 'deleteUserPreset',
-                component: 'PresetManager',
+                operation: 'deleteUserPreset';
+                component: 'PresetManager';
                 presetId
             });
             return false;
@@ -804,9 +804,9 @@ export class PresetManager {
      */
     getPresetCounts(): PresetCounts {
         return {
-            builtin: this.builtinPresets.size,
-            user: this.userPresets.size,
-            temporary: this.temporaryPresets.size,
+            builtin: this.builtinPresets.size;
+            user: this.userPresets.size;
+            temporary: this.temporaryPresets.size;
             total: this.builtinPresets.size + this.userPresets.size + this.temporaryPresets.size
         };
     }
@@ -816,10 +816,10 @@ export class PresetManager {
      */
     getStatus(): PresetManagerStatus {
         return {
-            initialized: this.builtinPresets.size > 0,
-            presetCounts: this.getPresetCounts(),
-            currentPreset: this.currentPreset,
-            historySize: this.presetHistory.length,
+            initialized: this.builtinPresets.size > 0;
+            presetCounts: this.getPresetCounts();
+            currentPreset: this.currentPreset;
+            historySize: this.presetHistory.length;
             configWatchers: this.configWatchers.size
         };
     }
@@ -835,14 +835,14 @@ export class PresetManager {
             }
             
             return {
-                version: '1.0',
-                exportedAt: Date.now(),
+                version: '1.0';
+                exportedAt: Date.now();
                 preset
             };
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: 'exportPreset',
-                component: 'PresetManager',
+                operation: 'exportPreset';
+                component: 'PresetManager';
                 presetId
             });
             return null;
@@ -859,13 +859,13 @@ export class PresetManager {
             }
             
             const preset: PresetData = {
-                id: importData.preset.id,
-                name: importData.preset.name,
-                description: importData.preset.description || '',
-                type: PRESET_TYPES.USER,
-                settings: importData.preset.settings || this._getDefaultSettings(),
-                tags: importData.preset.tags || [],
-                createdAt: importData.preset.createdAt || Date.now(),
+                id: importData.preset.id;
+                name: importData.preset.name;
+                description: importData.preset.description || '';
+                type: PRESET_TYPES.USER;
+                settings: importData.preset.settings || this._getDefaultSettings();
+                tags: importData.preset.tags || [];
+                createdAt: importData.preset.createdAt || Date.now();
                 updatedAt: Date.now()
             };
             
@@ -876,7 +876,7 @@ export class PresetManager {
             return true;
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: 'importPreset',
+                operation: 'importPreset';
                 component: 'PresetManager'
             });
             return false;
@@ -890,25 +890,25 @@ export class PresetManager {
     private _getDefaultSettings(): PresetSettings {
         return {
             volumes: {
-                master: 0.7,
-                bgm: 0.7,
-                sfx: 0.7,
-                ui: 0.7,
-                achievement: 0.7,
+                master: 0.7;
+                bgm: 0.7;
+                sfx: 0.7;
+                ui: 0.7;
+                achievement: 0.7;
                 game: 0.7
-            },
+            };
             equalizer: {
-                enabled: false,
+                enabled: false;
                 bands: {
-                    bass: 0,
-                    lowMid: 0,
-                    mid: 0,
-                    highMid: 0,
+                    bass: 0;
+                    lowMid: 0;
+                    mid: 0;
+                    highMid: 0;
                     treble: 0
                 }
-            },
+            };
             effects: {
-                reverb: false,
+                reverb: false;
                 compression: false
             }
         };
@@ -937,7 +937,7 @@ export class PresetManager {
             console.log('PresetManager disposed successfully');
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: 'dispose',
+                operation: 'dispose';
                 component: 'PresetManager'
             });
         }
@@ -946,14 +946,14 @@ export class PresetManager {
 
 export { PRESET_TYPES };
 export type {
-    PresetData,
-    PresetSettings,
-    VolumeSettings,
-    EqualizerSettings,
-    EffectSettings,
-    CurrentPreset,
-    PresetManagerStatus,
-    ExportData,
-    ImportData,
+    PresetData;
+    PresetSettings;
+    VolumeSettings;
+    EqualizerSettings;
+    EffectSettings;
+    CurrentPreset;
+    PresetManagerStatus;
+    ExportData;
+    ImportData;
     PresetUpdateData
 };
