@@ -7,47 +7,24 @@
 // 型定義
 export interface TranslationValue { [key: string]: string | string[] | TranslationValue };
 export interface TranslationData { [key: string]: string | string[] };
-export interface AccessibilityTranslationData { [key: string]: string;
-    export interface TranslationCategoryStats { keyCount: number,
-    arrayCount: number;
-    export interface AccessibilityCategoryStats {
-    keyCount: number;
-    export interface TranslationStats { loadedLanguages: string[],
-    languageCount: number,
-    translations: Record<string, TranslationCategoryStats>;
-    accessibilityTranslations: Record<string, AccessibilityCategoryStats> };
-export interface TranslationSearchOptions { caseSensitive?: boolean,
-    exactMatch?: boolean;
-    includeAccessibility?: boolean;
-    export interface TranslationSearchResult { language: string,
-    key: string,
-    value: string | string[],
-    category: TranslationCategory;
-    export interface TranslationValidationResult { isValid: boolean,
-    missingKeys: string[],
-    extraKeys: string[],
-    invalidValues: string[];
-    export interface TranslationExportOptions { includeAccessibility?: boolean,
-    format?: TranslationExportFormat;
-    languages?: string[];
-    export interface TranslationImportResult { success: boolean,
-    importedLanguages: string[],
-    errors: string[];
-    export interface BulkTranslationOperation { language: string,
-    key: string,
-    value: string | string[],
-    operation: TranslationOperation;
-    export interface TranslationMergeResult { mergedKeys: number,
-    conflictKeys: string[],
-    newKeys: number;
+export interface AccessibilityTranslationData { [key: string]: string; }
+    export interface TranslationCategoryStats { keyCount: number; arrayCount: number; }
+    export interface AccessibilityCategoryStats { keyCount: number; }
+    export interface TranslationStats { loadedLanguages: string[]; languageCount: number; translations: Record<string, TranslationCategoryStats>; accessibilityTranslations: Record<string, AccessibilityCategoryStats>; }
+export interface TranslationSearchOptions { caseSensitive?: boolean; exactMatch?: boolean; includeAccessibility?: boolean; }
+    export interface TranslationSearchResult { language: string; key: string; value: string | string[]; category: TranslationCategory; }
+    export interface TranslationValidationResult { isValid: boolean; missingKeys: string[]; extraKeys: string[]; invalidValues: string[]; }
+    export interface TranslationExportOptions { includeAccessibility?: boolean; format?: TranslationExportFormat; languages?: string[]; }
+    export interface TranslationImportResult { success: boolean; importedLanguages: string[]; errors: string[]; }
+    export interface BulkTranslationOperation { language: string; key: string; value: string | string[]; operation: TranslationOperation; }
+    export interface TranslationMergeResult { mergedKeys: number; conflictKeys: string[]; newKeys: number; }
 
 // 列挙型
 export type TranslationCategory = 'main' | 'accessibility';
-    export type TranslationExportFormat = 'json' | 'csv' | 'yaml';
-    export type TranslationOperation = 'add' | 'update' | 'delete';
-';'
+export type TranslationExportFormat = 'json' | 'csv' | 'yaml';
+export type TranslationOperation = 'add' | 'update' | 'delete';
 // 定数
-export const SUPPORTED_LANGUAGES = ['ja', 'en', 'ko', 'zh-CN', 'zh-TW] as const;'
+export const SUPPORTED_LANGUAGES = ['ja', 'en', 'ko', 'zh-CN', 'zh-TW'] as const;
 export type SupportedLanguage = typeof | SUPPORTED_LANGUAGES[number];
     export const DEFAULT_FALLBACK_LANGUAGE: SupportedLanguage = 'en';
     export class TranslationDataManager {
