@@ -9,7 +9,8 @@ export class DataAggregationProcessor {
         
         // 集計キャッシュ（LRUキャッシュ）
         this.aggregationCache = new Map();
-        this.maxCacheSize = 100; };
+        this.maxCacheSize = 100;
+    }
     /**
      * 集計データ取得
      * @param {Object} aggregationRules - 集計ルール
@@ -19,11 +20,11 @@ export class DataAggregationProcessor {
     async getAggregatedData(aggregationRules, options: any = {}) {
         try {
             const {
-                dataType = 'sessionData,
-                groupBy = [] }
+                dataType = 'sessionData',
+                groupBy = [],
                 aggregateBy = {},
                 filters = {},
-                period = null;
+                period = null
             } = aggregationRules;
             
             // 基本データの取得
@@ -31,14 +32,16 @@ export class DataAggregationProcessor {
             const rawData = await this.storageManager.getData(dataType, baseQuery);
 
             if (!Array.isArray(rawData) || rawData.length === 0) {
-            return this.createSuccessResponse([], {}
+                return this.createSuccessResponse([], {
                     message: 'No data found for aggregation'
+                });
             }
             
             // データの集計処理
             const aggregatedData = this.performAggregation(rawData, {
-                groupBy
-                aggregateBy,
+                groupBy,
+                aggregateBy
+            });
             
             return this.createSuccessResponse(aggregatedData, {
                 aggregationRules,

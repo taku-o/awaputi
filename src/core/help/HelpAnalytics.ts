@@ -17,42 +17,38 @@ export interface HelpManager { searchEngine?: SearchEngine;
 export interface HelpFeedbackSystem {
     // フィードバックシステムのインターフェース
 }
-};
 export interface AccessibilityManager {
     // アクセシビリティマネージャーのインターフェース
 }
-};
 export interface SearchEngine {
     // 検索エンジンのインターフェース
 }
-};
 export interface ContentLoader {
     // コンテンツローダーのインターフェース
 }
-};
 export interface AnalyticsConfig { sessionTimeout: number;
     maxEvents: number;
     enableRealTimeTracking: boolean;
     enableOfflineStorage: boolean;
-    dataRetentionDays: number
+    dataRetentionDays: number;
 };
 export interface HelpUsageAnalytics { totalSessions: number;
     totalPageViews: number;
     uniqueUsers: Set<string>;
     averageSessionDuration: number;
-    topHelpCategories: Map<string, number>
-    topHelpTopics: Map<string, number>
-    searchQueries: Map<string, number>
-    exitPoints: Map<string, number> };
-export interface ContentAnalytics { topicViews: Map<string, TopicViewStats>,
-    categoryViews: Map<string, CategoryViewStats> };
+    topHelpCategories: Map<string, number>;
+    topHelpTopics: Map<string, number>;
+    searchQueries: Map<string, number>;
+    exitPoints: Map<string, number>; };
+export interface ContentAnalytics { topicViews: Map<string, TopicViewStats>;
+    categoryViews: Map<string, CategoryViewStats>; };
 export interface TopicViewStats { viewCount: number;
     totalViewTime: number;
-    exitCount: number
+    exitCount: number;
 };
 export interface CategoryViewStats { viewCount: number;
     totalViewTime: number;
-    exitCount: number
+    exitCount: number;
 };
 export interface TutorialUsageAnalytics { totalStarts: number;
     totalCompletions: number;
