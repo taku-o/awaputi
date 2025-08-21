@@ -4,29 +4,29 @@
  * 設定値監視・同期、音量管理、ミュート状態管理、動的設定更新を担当
  */
 
-import { getErrorHandler  } from '../utils/ErrorHandler',
+import { getErrorHandler } from '../utils/ErrorHandler';
 
 /**
  * 音響設定管理クラス
  */
 export class AudioConfigurationManager {
     // プロパティ宣言
-    configManager: any,
-    audioConfig: any,
-    masterGainNode: any,
-    sfxGainNode: any,
-    bgmGainNode: any,
-    compressor: any,
-    reverbConvolver: any,
-    audioNodes: any,
-    settings: any,
+    configManager: any;
+    audioConfig: any;
+    masterGainNode: any;
+    sfxGainNode: any;
+    bgmGainNode: any;
+    compressor: any;
+    reverbConvolver: any;
+    audioNodes: any;
+    settings: any;
     configWatchers: Set<any>;
-    currentConfig: any,
+    currentConfig: any;
     changeListeners: Map<string, any>;
-    lastLoggedMuteState: any,
-    syncState: any,
-    constructor() {
+    lastLoggedMuteState: any;
+    syncState: any;
 
+    constructor() {
         // 設定管理（外部から注入される）
         this.configManager = null;
         this.audioConfig = null;
@@ -50,21 +50,22 @@ export class AudioConfigurationManager {
         // 現在の設定値（キャッシュ）
         this.currentConfig = {
             volumes: {
-                master: 0.8;
-                sfx: 0.7;
-                bgm: 0.5;
+                master: 0.8,
+                sfx: 0.7,
+                bgm: 0.5,
                 muted: false
-            }
+            },
             effects: {
-                compression: true;
+                compression: true,
                 reverb: false
-            }
+            },
             quality: {
-                sampleRate: 44100;
-                bufferSize: 256;
+                sampleRate: 44100,
+                bufferSize: 256,
                 maxConcurrentSounds: 32
             }
-        }
+        };
+
         // 設定変更リスナー
         this.changeListeners = new Map();
         
@@ -73,11 +74,12 @@ export class AudioConfigurationManager {
         
         // 設定同期状態
         this.syncState = {
-            isInitialized: false;
-            lastSyncTime: 0;
+            isInitialized: false,
+            lastSyncTime: 0,
             syncInterval: null
-        }
+        };
     }
+
     /**
      * 依存関係設定
      * @param {Object} configManager - 設定管理オブジェクト
@@ -89,10 +91,10 @@ export class AudioConfigurationManager {
         this.audioConfig = audioConfig;
         
         const {
-            masterGainNode;
-            sfxGainNode;
-            bgmGainNode;
-            compressor;
+            masterGainNode,
+            sfxGainNode,
+            bgmGainNode,
+            compressor,
             reverbConvolver
         } = audioNodes;
         
@@ -156,10 +158,11 @@ export class AudioConfigurationManager {
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
                 component: 'AudioConfigurationManager',
-                operation: 'setupConfigWatchers
+                operation: 'setupConfigWatchers'
             });
         }
     }
+
     /**
      * 音量変更処理
      * @param {string} type - 音量タイプ
@@ -169,6 +172,7 @@ export class AudioConfigurationManager {
         try {
             const validatedValue = Math.max(0, Math.min(1, newValue));
             this.currentConfig.volumes[type] = validatedValue;
+
             // ゲインノードへの反映
             switch(type) {
                 case 'master':
@@ -196,11 +200,12 @@ export class AudioConfigurationManager {
             getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
                 component: 'AudioConfigurationManager',
                 operation: 'onVolumeChange',
-                type;
+                type,
                 newValue
             });
         }
     }
+
     /**
      * ミュート変更処理
      * @param {boolean} newValue - 新しいミュート状態
@@ -234,6 +239,7 @@ export class AudioConfigurationManager {
             });
         }
     }
+
     /**
      * エフェクト変更処理
      * @param {string} effectType - エフェクトタイプ
@@ -242,6 +248,7 @@ export class AudioConfigurationManager {
     onEffectChange(effectType: string, newValue: boolean) {
         try {
             this.currentConfig.effects[effectType] = Boolean(newValue);
+
             switch(effectType) {
                 case 'compression':
                     if (this.compressor) {
@@ -262,6 +269,7 @@ export class AudioConfigurationManager {
                     }
                     break;
             }
+
             this.notifyListeners('effect', { type: effectType, enabled: newValue });
             console.log(`[AudioConfig] ${effectType} effect changed to ${newValue}`);
             
@@ -269,7 +277,7 @@ export class AudioConfigurationManager {
             getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
                 component: 'AudioConfigurationManager',
                 operation: 'onEffectChange',
-                effectType;
+                effectType,
                 newValue
             });
         }
@@ -312,12 +320,11 @@ export class AudioConfigurationManager {
             // 直接変更も反映
             this.onVolumeChange(type, volume);
             
-
         } catch (error) {
-            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+            getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
                 component: 'AudioConfigurationManager',
                 operation: 'setVolume',
-                type;
+                type,
                 volume
             });
         }
@@ -344,7 +351,7 @@ export class AudioConfigurationManager {
             return this.currentConfig.volumes[type] || 0;
             
         } catch (error) {
-            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+            getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
                 component: 'AudioConfigurationManager',
                 operation: 'getVolume',
                 type
@@ -371,13 +378,14 @@ export class AudioConfigurationManager {
             this.onMuteChange(muted);
             
         } catch (error) {
-            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+            getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
                 component: 'AudioConfigurationManager',
                 operation: 'setMuted',
                 muted
             });
         }
     }
+
     /**
      * ミュート切り替え
      * @returns {boolean} 新しいミュート状態
@@ -394,9 +402,9 @@ export class AudioConfigurationManager {
             return newMutedState;
             
         } catch (error) {
-            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+            getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
                 component: 'AudioConfigurationManager',
-                operation: 'toggleMute
+                operation: 'toggleMute'
             });
             return this.currentConfig.volumes.muted;
         }
@@ -416,10 +424,10 @@ export class AudioConfigurationManager {
                 this.configManager.setValue('audio', `effects.${effectType}`, enabled);
             }
         } catch (error) {
-            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+            getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
                 component: 'AudioConfigurationManager',
                 operation: 'setAudioEffect',
-                effectType;
+                effectType,
                 enabled
             });
         }
@@ -432,8 +440,8 @@ export class AudioConfigurationManager {
     updateQualitySettings(qualityConfig: any): void {
         try {
             const {
-                maxConcurrentSounds;
-                bufferSize;
+                maxConcurrentSounds,
+                bufferSize,
                 enableEffects
             } = qualityConfig;
             
@@ -456,13 +464,14 @@ export class AudioConfigurationManager {
             this.notifyListeners('quality', this.currentConfig.quality);
             
         } catch (error) {
-            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+            getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
                 component: 'AudioConfigurationManager',
                 operation: 'updateQualitySettings',
                 qualityConfig
             });
         }
     }
+
     /**
      * 設定との同期
      */
@@ -491,12 +500,13 @@ export class AudioConfigurationManager {
             this.syncState.lastSyncTime = Date.now();
 
         } catch (error) {
-            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+            getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
                 component: 'AudioConfigurationManager',
-                operation: 'syncWithConfig
+                operation: 'syncWithConfig'
             });
         }
     }
+
     /**
      * 音量設定を取得
      * @returns {Object} 音量設定
@@ -504,7 +514,7 @@ export class AudioConfigurationManager {
     getVolumeConfig(): any {
         return {
             ...this.currentConfig.volumes
-        }
+        };
     }
 
     /**
@@ -514,7 +524,7 @@ export class AudioConfigurationManager {
     getAllSettings(): any {
         return {
             ...this.currentConfig
-        }
+        };
     }
 
     /**
