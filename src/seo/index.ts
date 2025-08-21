@@ -1,7 +1,7 @@
 /**
  * SEOモジュールのエクスポート
  */
-export { SEOConfig, getBaseUrl, getLocalizedUrl, getSocialImageUrl } from './SEOConfig';
-export { SEOLogger, seoLogger } from './SEOLogger';
-export { SEOErrorHandler, seoErrorHandler } from './SEOErrorHandler';
-export * from './SEOUtils';
+export { SEOConfig, getBaseUrl, getLocalizedUrl, getSocialImageUrl } from './SEOConfig.js';
+export { SEOLogger, seoLogger } from './SEOLogger.js';
+export { SEOErrorHandler, seoErrorHandler } from './SEOErrorHandler.js';
+export * from './SEOUtils.js';

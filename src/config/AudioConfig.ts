@@ -5,107 +5,128 @@
  * AudioManagerとの連携インターフェースを提供します。
  */
 
-import { getConfigurationManager, ConfigurationManager  } from '../core/ConfigurationManager.js';
-import { getErrorHandler, ErrorHandler  } from '../utils/ErrorHandler.js';
+import { getConfigurationManager, ConfigurationManager } from '../core/ConfigurationManager.js';
+import { getErrorHandler, ErrorHandler } from '../utils/ErrorHandler.js';
 
 /**
  * 音量設定の型定義
  */
-export interface VolumeConfig { master: number,
-    sfx: number,
-    bgm: number,
+export interface VolumeConfig {
+    master: number;
+    sfx: number;
+    bgm: number;
     muted: boolean;
+}
 
 /**
  * 音質設定の型定義
  */
-export interface QualityConfig { sampleRate: number,
-    bufferSize: number,
-    channels: number,
+export interface QualityConfig {
+    sampleRate: number;
+    bufferSize: number;
+    channels: number;
     bitDepth: number;
+}
 
 /**
  * コンプレッサー設定の型定義
  */
-export interface CompressorConfig { threshold: number,
-    knee: number,
-    ratio: number,
-    attack: number,
+export interface CompressorConfig {
+    threshold: number;
+    knee: number;
+    ratio: number;
+    attack: number;
     release: number;
+}
 
 /**
  * リバーブ設定の型定義
  */
-export interface ReverbConfig { duration: number,
-    decay: number,
+export interface ReverbConfig {
+    duration: number;
+    decay: number;
     wet: number;
+}
 
 /**
  * イコライザーバンド設定の型定義
  */
-export interface EqualizerBands { bass: number,
-    lowMid: number,
-    mid: number,
-    highMid: number,
+export interface EqualizerBands {
+    bass: number;
+    lowMid: number;
+    mid: number;
+    highMid: number;
     treble: number;
+}
 
 /**
  * イコライザー設定の型定義
  */
-export interface EqualizerConfig { enabled: boolean,
+export interface EqualizerConfig {
+    enabled: boolean;
     bands: EqualizerBands;
+}
 
 /**
  * 音響効果設定の型定義
  */
-export interface EffectConfig { reverbEnabled: boolean,
-    compression: boolean,
-    compressor: CompressorConfig,
+export interface EffectConfig {
+    reverbEnabled: boolean;
+    compression: boolean;
+    compressor: CompressorConfig;
     reverb: ReverbConfig;
+}
 
 /**
  * 環境音設定の型定義
  */
-export interface EnvironmentalConfig { enabled: boolean,
-    volume: number,
-    currentBiome: string | null,
-    currentWeather: string | null,
-    currentTimeOfDay: string | null };
+export interface EnvironmentalConfig {
+    enabled: boolean;
+    volume: number;
+    currentBiome: string | null;
+    currentWeather: string | null;
+    currentTimeOfDay: string | null;
+}
 /**
  * アクセシビリティ設定の型定義
  */
-export interface AccessibilityConfig { visualFeedback: boolean,
-    captioning: boolean,
-    colorIndication: boolean,
-    patternRecognition: boolean,
-    highContrast: boolean,
-    largeFonts: boolean,
-    reduceMotion: boolean,
-    hapticFeedback: boolean,
+export interface AccessibilityConfig {
+    visualFeedback: boolean;
+    captioning: boolean;
+    colorIndication: boolean;
+    patternRecognition: boolean;
+    highContrast: boolean;
+    largeFonts: boolean;
+    reduceMotion: boolean;
+    hapticFeedback: boolean;
     vibrationIntensity: number;
+}
 
 /**
  * AudioManagerステータスの型定義
  */
-export interface AudioManagerStatus { masterVolume: number,
-    sfxVolume: number,
-    bgmVolume: number,
+export interface AudioManagerStatus {
+    masterVolume: number;
+    sfxVolume: number;
+    bgmVolume: number;
     isMuted: boolean;
+}
 
 /**
  * AudioManagerインターフェースの型定義
  */
-export interface AudioManager { setVolume(type: string, volume: number): void,
+export interface AudioManager {
+    setVolume(type: string, volume: number): void;
     isMuted: boolean;
     toggleMute(): void;
     getStatus(): AudioManagerStatus;
-     };
+}
 export class AudioConfig {
     private configManager: ConfigurationManager;
+    
     constructor() {
-
-        this.configManager = getConfigurationManager() };
-        this._initialize(); }
+        this.configManager = getConfigurationManager();
+        this._initialize();
     }
 
     /**

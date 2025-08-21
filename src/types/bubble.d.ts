@@ -94,8 +94,6 @@ export interface BubbleInterface {
     triggerSpecialEffect(): void;
     containsPoint(x: number, y: number): boolean;
     getScore(): number;
-    updateSpecialBehavior(deltaTime: number, mousePosition?: Position): void,''
-    getAndClearEffects(''';'
-    animationQuality: 'high' | 'medium' | 'low',' }'
-
+    updateSpecialBehavior(deltaTime: number, mousePosition?: Position): void;
+    getAndClearEffects(): BubbleEffect[];
 }
