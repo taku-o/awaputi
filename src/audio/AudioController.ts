@@ -4,39 +4,53 @@
  * 各専用コンポーネントを統合管理
  */
 
-import { getErrorHandler  } from '../utils/ErrorHandler',
-import { getConfigurationManager  } from '../core/ConfigurationManager',
-import { Equalizer  } from './Equalizer',
-import { AudioChannelManager  } from './components/AudioChannelManager',
-import { AudioVolumeController  } from './components/AudioVolumeController',
-import { AudioFormatHandler  } from './components/AudioFormatHandler',
-import { AudioComponentPerformanceMonitor  } from './components/AudioComponentPerformanceMonitor',
+import { getErrorHandler } from '../utils/ErrorHandler';
+import { getConfigurationManager } from '../core/ConfigurationManager';
+import { Equalizer } from './Equalizer';
+import { AudioChannelManager } from './components/AudioChannelManager';
+import { AudioVolumeController } from './components/AudioVolumeController';
+import { AudioFormatHandler } from './components/AudioFormatHandler';
+import { AudioComponentPerformanceMonitor } from './components/AudioComponentPerformanceMonitor';
 
 // Web Audio API型定義
 interface AudioManager {
     audioContext: AudioContext;
-    interface ErrorHandler { handleError(error: Error, context: string): void;
-    interface ConfigurationManager { watch(section: string, key: string, callback: (value: any) => void): (() => void) | null  }
 }
 
-interface FadeOptions { targetVolume?: number,
-    startVolume?: number,
+interface ErrorHandler {
+    handleError(error: Error, context: string): void;
+}
+
+interface ConfigurationManager {
+    watch(section: string, key: string, callback: (value: any) => void): (() => void) | null;
+}
+
+interface FadeOptions {
+    targetVolume?: number;
+    startVolume?: number;
     onComplete?: () => void;
-    onUpdate?: (progress: number) => void  }
+    onUpdate?: (progress: number) => void;
 }
 
-interface AudioControllerStatus { initialized: boolean,
+interface AudioControllerStatus {
+    initialized: boolean;
     channels: any | null;
     volume: any | null;
     format: any | null;
-    performance: any | null }
+    performance: any | null;
+}
 
-interface AudioConfiguration { channels?: any,
-    fade?: any,
-    performance?: any,
-    interface QualityPerformanceInfo { currentQuality: number,
-    performanceMetrics: any,
-    adaptiveMode: boolean,
+interface AudioConfiguration {
+    channels?: any;
+    fade?: any;
+    performance?: any;
+}
+
+interface QualityPerformanceInfo {
+    currentQuality: number;
+    performanceMetrics: any;
+    adaptiveMode: boolean;
+}
 
 /**
  * AudioController - 高度な音響制御システムのメインコントローラー
@@ -62,21 +76,20 @@ export class AudioController {
     private isInitialized: boolean = false;
     private initializationPromise: Promise<void> | null = null;
     constructor(audioManager: AudioManager) {
-
         this.audioManager = audioManager;
-    this.audioContext = audioManager.audioContext;
-    this.configManager = getConfigurationManager();
-    this.errorHandler = getErrorHandler()
-}
-    }
-        this.initialize(); }
+        this.audioContext = audioManager.audioContext;
+        this.configManager = getConfigurationManager();
+        this.errorHandler = getErrorHandler();
+        this.initialize();
     }
     
     /**
      * AudioControllerを初期化
      */
-    async initialize(): Promise<void> { if (this.initializationPromise) {
-            return this.initializationPromise }
+    async initialize(): Promise<void> {
+        if (this.initializationPromise) {
+            return this.initializationPromise;
+        }
         
         this.initializationPromise = this._performInitialization();
         return this.initializationPromise;
@@ -85,7 +98,8 @@ export class AudioController {
     /**
      * 実際の初期化処理
      */
-    private async _performInitialization(): Promise<void> { try {
+    private async _performInitialization(): Promise<void> {
+        try {
             // 専用コンポーネントを初期化
             await this.initializeComponents();
             // レガシーシステムを初期化（互換性）
@@ -93,18 +107,21 @@ export class AudioController {
             // 設定監視を設定
             this.setupConfigWatchers();
             // コンポーネント間の統合を設定
-            this.setupComponentIntegration()',
-            console.log('AudioController, initialized successfully'),' }
-
+            this.setupComponentIntegration();
+            
+            this.isInitialized = true;
+            console.log('AudioController initialized successfully');
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'AudioController.initialize),
-            throw error }
+            this.errorHandler.handleError(error as Error, 'AudioController.initialize');
+            throw error;
+        }
     }
     
     /**
      * 専用コンポーネントを初期化
      */
-    private async initializeComponents(): Promise<void> { try {
+    private async initializeComponents(): Promise<void> {
+        try {
             // チャンネルマネージャーを初期化
             this.channelManager = new AudioChannelManager(this.audioContext);
             await this.channelManager.initialize();
@@ -112,69 +129,72 @@ export class AudioController {
             this.volumeController = new AudioVolumeController(this.audioContext);
             
             // フォーマットハンドラーを初期化
-            this.formatHandler = new AudioFormatHandler(this.audioContext; this.audioManager);
+            this.formatHandler = new AudioFormatHandler(this.audioContext, this.audioManager);
             // パフォーマンス監視を初期化
-            this.performanceMonitor = new AudioComponentPerformanceMonitor(this.audioContext; this.audioManager);
-            console.log('Audio, components initialized, successfully'),' }
-
+            this.performanceMonitor = new AudioComponentPerformanceMonitor(this.audioContext, this.audioManager);
+            console.log('Audio components initialized successfully');
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'AudioController.initializeComponents' }
+            this.errorHandler.handleError(error as Error, 'AudioController.initializeComponents');
+        }
     }
     
     /**
      * レガシーシステムを初期化（互換性維持）
      */
-    private initializeLegacySystems(): void { try {
+    private initializeLegacySystems(): void {
+        try {
             // イコライザーシステム
             this.equalizer = new Equalizer(this.audioContext);
-
-            console.log('Legacy, systems initialized, for compatibility'),' }
-
+            
+            console.log('Legacy systems initialized for compatibility');
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'AudioController.initializeLegacySystems' }
+            this.errorHandler.handleError(error as Error, 'AudioController.initializeLegacySystems');
+        }
     }
     
     /**
      * 設定監視を設定
      */
-    private setupConfigWatchers(');
-            const masterVolumeWatcher = this.configManager.watch('audio', 'volumes.master', (newValue: number) => {  
-                if (newValue !== undefined) { }
-
-                    this.setVolume('master', newValue, false); // 設定保存をスキップ }
-}';
+    private setupConfigWatchers(): void {
+        try {
+            const masterVolumeWatcher = this.configManager.watch('audio', 'volumes.master', (newValue: number) => {
+                if (newValue !== undefined) {
+                    this.setVolume('master', newValue, false); // 設定保存をスキップ
+                }
+            });
             if (masterVolumeWatcher) this.configWatchers.add(masterVolumeWatcher);
-
-            console.log('Config, watchers setup, completed');
+            
+            console.log('Config watchers setup completed');
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'AudioController.setupConfigWatchers' }
+            this.errorHandler.handleError(error as Error, 'AudioController.setupConfigWatchers');
+        }
     }
     
     /**
      * コンポーネント間の統合を設定
      */
-    private setupComponentIntegration(): void { try {
+    private setupComponentIntegration(): void {
+        try {
             // チャンネルマネージャーとオーディオマネージャーを統合
             if (this.channelManager) {
-    
-}
-                this.channelManager.integrateWithAudioManager(this.audioManager); }
+                this.channelManager.integrateWithAudioManager(this.audioManager);
             }
             
             // パフォーマンス監視とフォーマットハンドラーを連携
             if (this.performanceMonitor && this.formatHandler) {
                 // パフォーマンスメトリクスの更新イベントを設定
                 const originalUpdateMetrics = this.performanceMonitor.updatePerformanceMetrics.bind(this.performanceMonitor);
-                this.performanceMonitor.updatePerformanceMetrics = () => { 
+                this.performanceMonitor.updatePerformanceMetrics = () => {
                     originalUpdateMetrics();
-                    const metrics = this.performanceMonitor!.getCurrentMetrics(); }
-
-                    this.formatHandler!.updatePerformanceMetrics(metrics); }
-                }
-
-            console.log('Component, integration setup, completed');
+                    const metrics = this.performanceMonitor!.getCurrentMetrics();
+                    this.formatHandler!.updatePerformanceMetrics(metrics);
+                };
+            }
+            
+            console.log('Component integration setup completed');
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'AudioController.setupComponentIntegration' }
+            this.errorHandler.handleError(error as Error, 'AudioController.setupComponentIntegration');
+        }
     }
     
     // ============================================================
@@ -187,12 +207,12 @@ export class AudioController {
      * @param volume - 音量 (0.0-2.0)
      * @param saveToConfig - 設定に保存するかどうか
      */
-    setVolume(channel: string, volume: number, saveToConfig: boolean = true): number { 
+    setVolume(channel: string, volume: number, saveToConfig: boolean = true): number {
         if (!this.channelManager) {
-
-            console.warn('ChannelManager, is not, initialized' }
+            console.warn('ChannelManager is not initialized');
             return 0;
-        return this.channelManager.setVolume(channel volume saveToConfig');
+        }
+        return this.channelManager.setVolume(channel, volume, saveToConfig);
     }
     
     /**
@@ -200,9 +220,11 @@ export class AudioController {
      * @param channel - チャンネル名
      * @returns 音量
      */
-    getVolume(channel: string): number { if (!this.channelManager) {
-            return 0 }
-        return this.channelManager.getVolume(channel');
+    getVolume(channel: string): number {
+        if (!this.channelManager) {
+            return 0;
+        }
+        return this.channelManager.getVolume(channel);
     }
     
     /**
@@ -211,12 +233,12 @@ export class AudioController {
      * @param muted - ミュート状態
      * @param saveToConfig - 設定に保存するかどうか
      */
-    setMute(channel: string, muted: boolean, saveToConfig: boolean = true): boolean { 
+    setMute(channel: string, muted: boolean, saveToConfig: boolean = true): boolean {
         if (!this.channelManager) {
-
-            console.warn('ChannelManager, is not, initialized) }
+            console.warn('ChannelManager is not initialized');
             return false;
-        return this.channelManager.setMute(channel muted saveToConfig);
+        }
+        return this.channelManager.setMute(channel, muted, saveToConfig);
     }
     
     /**
@@ -224,9 +246,11 @@ export class AudioController {
      * @param channel - チャンネル名
      * @returns ミュート状態
      */
-    getMute(channel: string): boolean { if (!this.channelManager) {
-            return false }
-        return this.channelManager.getMute(channel');
+    getMute(channel: string): boolean {
+        if (!this.channelManager) {
+            return false;
+        }
+        return this.channelManager.getMute(channel);
     }
     
     /**
@@ -234,9 +258,12 @@ export class AudioController {
      * @param channel - チャンネル名
      * @returns ゲインノード
      */
-    getGainNode(channel: string): GainNode | null { if (!this.channelManager') {
+    getGainNode(channel: string): GainNode | null {
+        if (!this.channelManager) {
             return null;
+        }
         return this.channelManager.getGainNode(channel);
+    }
     
     // ============================================================
     // フェード制御 API（ボリュームコントローラーに委譲）
@@ -249,11 +276,11 @@ export class AudioController {
      * @param curve - フェードカーブ
      * @param options - オプション
      */
-    fadeIn(gainNode: GainNode, duration: number = 1000, curve: string = 'linear', options: FadeOptions = { ': Promise<void> {
+    fadeIn(gainNode: GainNode, duration: number = 1000, curve: string = 'linear', options: FadeOptions = {}): Promise<void> {
         if (!this.volumeController) {
-
             console.warn('VolumeController is not initialized');
             return Promise.resolve();
+        }
         return this.volumeController.fadeIn(gainNode, duration, curve, options);
     }
     
@@ -264,11 +291,11 @@ export class AudioController {
      * @param curve - フェードカーブ
      * @param options - オプション
      */
-    fadeOut(gainNode: GainNode, duration: number = 1000, curve: string = 'linear', options: FadeOptions = { ': Promise<void> {
+    fadeOut(gainNode: GainNode, duration: number = 1000, curve: string = 'linear', options: FadeOptions = {}): Promise<void> {
         if (!this.volumeController) {
-
             console.warn('VolumeController is not initialized');
             return Promise.resolve();
+        }
         return this.volumeController.fadeOut(gainNode, duration, curve, options);
     }
     
@@ -279,12 +306,12 @@ export class AudioController {
      * @param duration - フェード時間（ミリ秒）
      * @param curve - フェードカーブ
      */
-    crossFade(fadeOutNode: GainNode, fadeInNode: GainNode, duration: number = 1000, curve: string = 'linear': Promise<void> { 
+    crossFade(fadeOutNode: GainNode, fadeInNode: GainNode, duration: number = 1000, curve: string = 'linear'): Promise<void> {
         if (!this.volumeController) {
-
-            console.warn('VolumeController, is not, initialized) }
+            console.warn('VolumeController is not initialized');
             return Promise.resolve();
-        return this.volumeController.crossFade(fadeOutNode, fadeInNode duration curve);
+        }
+        return this.volumeController.crossFade(fadeOutNode, fadeInNode, duration, curve);
     }
     
     // ============================================================
@@ -295,28 +322,37 @@ export class AudioController {
      * イコライザーを有効/無効化
      * @param enabled - 有効化フラグ
      */
-    setEqualizerEnabled(enabled: boolean): void { if (this.volumeController) {
-            this.volumeController.setEqualizerEnabled(enabled) } else if (this.equalizer) { // レガシー互換性
+    setEqualizerEnabled(enabled: boolean): void {
+        if (this.volumeController) {
+            this.volumeController.setEqualizerEnabled(enabled);
+        } else if (this.equalizer) { // レガシー互換性
             this.equalizer.setEnabled(enabled);
+        }
     }
     
     /**
      * イコライザープリセットを適用
      * @param presetName - プリセット名
      */
-    applyEqualizerPreset(presetName: string): void { if (this.volumeController) {
-            this.volumeController.applyEqualizerPreset(presetName) } else if (this.equalizer) { // レガシー互換性
+    applyEqualizerPreset(presetName: string): void {
+        if (this.volumeController) {
+            this.volumeController.applyEqualizerPreset(presetName);
+        } else if (this.equalizer) { // レガシー互換性
             this.equalizer.applyPreset(presetName);
+        }
     }
     
     /**
      * イコライザープリセット一覧を取得
      * @returns プリセット名配列
      */
-    getEqualizerPresets(): string[] { if (this.volumeController) {
-            return this.volumeController.getEqualizerPresets() } else if (this.equalizer) { // レガシー互換性
+    getEqualizerPresets(): string[] {
+        if (this.volumeController) {
+            return this.volumeController.getEqualizerPresets();
+        } else if (this.equalizer) { // レガシー互換性
             return this.equalizer.getPresets();
-        return []
+        }
+        return [];
     }
     
     // ============================================================
@@ -329,11 +365,11 @@ export class AudioController {
      * @param saveAsLast - 最後に使用したプリセットとして保存するか
      * @returns 適用結果
      */
-    applyPreset(presetId: string, saveAsLast: boolean = true'): boolean { 
+    applyPreset(presetId: string, saveAsLast: boolean = true): boolean {
         if (!this.formatHandler) {
-
-            console.warn('FormatHandler, is not, initialized');
+            console.warn('FormatHandler is not initialized');
             return false;
+        }
         return this.formatHandler.applyPreset(presetId, saveAsLast);
     }
     
@@ -345,12 +381,12 @@ export class AudioController {
      * @param isTemporary - 一時プリセットか
      * @returns 保存されたプリセットID
      */
-    saveCurrentAsPreset(name: string, description: string = ', tags: string[] = [], isTemporary: boolean = false': string | null { 
+    saveCurrentAsPreset(name: string, description: string = '', tags: string[] = [], isTemporary: boolean = false): string | null {
         if (!this.formatHandler) {
-
             console.warn('FormatHandler is not initialized');
             return null;
-        return this.formatHandler.saveCurrentAsPreset(name, description, tags, isTemporary');
+        }
+        return this.formatHandler.saveCurrentAsPreset(name, description, tags, isTemporary);
     }
     
     /**
@@ -358,12 +394,12 @@ export class AudioController {
      * @param presetId - プリセットID
      * @returns プリセットデータ
      */
-    getPreset(presetId: string): any | null { 
+    getPreset(presetId: string): any | null {
         if (!this.formatHandler) {
-
             console.warn('FormatHandler is not initialized');
             return null;
-        return this.formatHandler.getPreset(presetId');
+        }
+        return this.formatHandler.getPreset(presetId);
     }
     
     /**
@@ -371,11 +407,11 @@ export class AudioController {
      * @param filterType - フィルタータイプ
      * @returns プリセット一覧
      */
-    getAllPresets(filterType: string | null = null): any[] { 
+    getAllPresets(filterType: string | null = null): any[] {
         if (!this.formatHandler) {
-
-            console.warn('FormatHandler, is not, initialized');
-            return []
+            console.warn('FormatHandler is not initialized');
+            return [];
+        }
         return this.formatHandler.getAllPresets(filterType);
     }
     
@@ -390,25 +426,24 @@ export class AudioController {
      * @param timeOfDay - 時間帯
      * @returns 開始結果
      */
-    async startEnvironmentalAudio(biomeId: string, weatherId: string = 'clear', timeOfDay: string = 'day): Promise<boolean>,
+    async startEnvironmentalAudio(biomeId: string, weatherId: string = 'clear', timeOfDay: string = 'day'): Promise<boolean> {
         if (!this.formatHandler) {
-
             console.warn('FormatHandler is not initialized');
             return false;
-        return this.formatHandler.startEnvironmentalAudio(biomeId, weatherId, timeOfDay');
+        }
+        return this.formatHandler.startEnvironmentalAudio(biomeId, weatherId, timeOfDay);
     }
     
     /**
      * 環境音響を停止
      * @param fadeOutTime - フェードアウト時間（ミリ秒）
      */
-    stopEnvironmentalAudio(fadeOutTime: number = 1000): void { 
+    stopEnvironmentalAudio(fadeOutTime: number = 1000): void {
         if (!this.formatHandler) {
-
-            console.warn('FormatHandler is not initialized' }
-            return; }
+            console.warn('FormatHandler is not initialized');
+            return;
         }
-        this.formatHandler.stopEnvironmentalAudio(fadeOutTime');
+        this.formatHandler.stopEnvironmentalAudio(fadeOutTime);
     }
     
     // ============================================================
@@ -419,21 +454,22 @@ export class AudioController {
      * 音質を設定
      * @param quality - 品質レベル (0-1)
      */
-    async setAudioQuality(quality: number'): Promise<void> { 
+    async setAudioQuality(quality: number): Promise<void> {
         if (!this.formatHandler) {
-
-            console.warn('FormatHandler is not initialized' }
-            return; }
+            console.warn('FormatHandler is not initialized');
+            return;
         }
-        return this.formatHandler.setAudioQuality(quality');
+        return this.formatHandler.setAudioQuality(quality);
     }
     
     /**
      * 現在の音質を取得
      * @returns 現在の品質レベル
      */
-    getAudioQuality(): number { if (!this.formatHandler) {
-            return 1.0 }
+    getAudioQuality(): number {
+        if (!this.formatHandler) {
+            return 1.0;
+        }
         return this.formatHandler.getAudioQuality();
     }
     
@@ -441,13 +477,12 @@ export class AudioController {
      * 自動品質調整を有効/無効化
      * @param enabled - 有効化フラグ
      */
-    setAutoQualityAdjustment(enabled: boolean): void { 
+    setAutoQualityAdjustment(enabled: boolean): void {
         if (!this.formatHandler) {
-
-            console.warn('FormatHandler is not initialized' }
-            return; }
+            console.warn('FormatHandler is not initialized');
+            return;
         }
-        this.formatHandler.setAutoQualityAdjustment(enabled');
+        this.formatHandler.setAutoQualityAdjustment(enabled);
     }
     
     // ============================================================
@@ -457,11 +492,10 @@ export class AudioController {
     /**
      * パフォーマンス監視を開始
      */
-    startPerformanceMonitoring(): void { 
+    startPerformanceMonitoring(): void {
         if (!this.performanceMonitor) {
-
             console.warn('PerformanceMonitor is not initialized');
-            return; }
+            return;
         }
         this.performanceMonitor.startMonitoring();
     }
@@ -469,11 +503,10 @@ export class AudioController {
     /**
      * パフォーマンス監視を停止
      */
-    stopPerformanceMonitoring(): void { 
+    stopPerformanceMonitoring(): void {
         if (!this.performanceMonitor) {
-
-            console.warn('PerformanceMonitor, is not, initialized) }
-            return; }
+            console.warn('PerformanceMonitor is not initialized');
+            return;
         }
         this.performanceMonitor.stopMonitoring();
     }
@@ -482,8 +515,10 @@ export class AudioController {
      * 現在のパフォーマンスメトリクスを取得
      * @returns 現在のメトリクス
      */
-    getCurrentPerformanceMetrics(): any { if (!this.performanceMonitor) { }
-            return {}
+    getCurrentPerformanceMetrics(): any {
+        if (!this.performanceMonitor) {
+            return {};
+        }
         return this.performanceMonitor.getCurrentMetrics();
     }
     
@@ -491,8 +526,10 @@ export class AudioController {
      * パフォーマンスレポートを生成
      * @returns パフォーマンスレポート
      */
-    generatePerformanceReport(): any | null { if (!this.performanceMonitor) {
-            return null }
+    generatePerformanceReport(): any | null {
+        if (!this.performanceMonitor) {
+            return null;
+        }
         return this.performanceMonitor.generatePerformanceReport();
     }
     
@@ -504,17 +541,24 @@ export class AudioController {
      * オーディオコントローラーの統合ステータスを取得
      * @returns 統合ステータス
      */
-    getStatus(): AudioControllerStatus { return { initialized: this.isInitialized;
-            channels: this.channelManager ? this.channelManager.getManagerState() : null;
-            volume: this.volumeController ? this.volumeController.getFadeStatus() : null format: this.formatHandler ? this.formatHandler.getStatus() : null;
-            performance: this.performanceMonitor ? this.performanceMonitor.getStatus() : null;
+    getStatus(): AudioControllerStatus {
+        return {
+            initialized: this.isInitialized,
+            channels: this.channelManager ? this.channelManager.getManagerState() : null,
+            volume: this.volumeController ? this.volumeController.getFadeStatus() : null,
+            format: this.formatHandler ? this.formatHandler.getStatus() : null,
+            performance: this.performanceMonitor ? this.performanceMonitor.getStatus() : null
+        };
+    }
     
     /**
      * 全体の品質パフォーマンス情報を取得
      * @returns パフォーマンス情報
      */
-    getQualityPerformanceInfo(): QualityPerformanceInfo | null { if (!this.formatHandler) {
-            return null }
+    getQualityPerformanceInfo(): QualityPerformanceInfo | null {
+        if (!this.formatHandler) {
+            return null;
+        }
         return this.formatHandler.getQualityPerformanceInfo();
     }
     
@@ -522,62 +566,62 @@ export class AudioController {
      * 設定を更新
      * @param newConfig - 新しい設定
      */
-    updateConfiguration(newConfig: AudioConfiguration): void { try {
+    updateConfiguration(newConfig: AudioConfiguration): void {
+        try {
             if (newConfig.channels && this.channelManager) {
-    
-}
-                this.channelManager.updateChannelConfig(newConfig.channels); }
+                this.channelManager.updateChannelConfig(newConfig.channels);
             }
             
-            if (newConfig.fade && this.volumeController) { this.volumeController.updateFadeConfig(newConfig.fade') }
-            
-            if (newConfig.performance && this.performanceMonitor') {
-            ',
-
-                ' }
-
-                this.performanceMonitor.updateConfiguration(newConfig.performance); }
+            if (newConfig.fade && this.volumeController) {
+                this.volumeController.updateFadeConfig(newConfig.fade);
             }
-
-            console.log('Audio configuration updated', newConfig',} catch (error) {
-            this.errorHandler.handleError(error as Error, 'AudioController.updateConfiguration' }
+            
+            if (newConfig.performance && this.performanceMonitor) {
+                this.performanceMonitor.updateConfiguration(newConfig.performance);
+            }
+            
+            console.log('Audio configuration updated', newConfig);
+        } catch (error) {
+            this.errorHandler.handleError(error as Error, 'AudioController.updateConfiguration');
+        }
     }
     
     /**
      * 全システムをリセット
      */
-    reset(): void { try {
+    reset(): void {
+        try {
             if (this.channelManager) {
                 this.channelManager.resetVolume();
-                this.channelManager.resetMute(); }
+                this.channelManager.resetMute();
             }
             
             if (this.volumeController) {
-            
                 this.volumeController.cancelAllFades();
-                this.volumeController.resetEqualizer(); }
+                this.volumeController.resetEqualizer();
             }
             
             if (this.performanceMonitor) {
-            ',
-
                 this.performanceMonitor.reset();
-
-            console.log('Audio, controller reset, completed'); }
-
+            }
+            
+            console.log('Audio controller reset completed');
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'AudioController.reset' }
+            this.errorHandler.handleError(error as Error, 'AudioController.reset');
+        }
     }
     
     /**
      * AudioControllerを破棄
      */
-    dispose(): void { try {
+    dispose(): void {
+        try {
             // 設定監視を停止
-            this.configWatchers.forEach(watcher => { '),
-                if(typeof, watcher === 'function' { }
-                    watcher(); // アンサブスクライブ }
-}
+            this.configWatchers.forEach(watcher => {
+                if (typeof watcher === 'function') {
+                    watcher(); // アンサブスクライブ
+                }
+            });
             this.configWatchers.clear();
             
             // 専用コンポーネントを破棄
@@ -589,9 +633,11 @@ export class AudioController {
             // レガシーシステムを破棄
             this.equalizer?.dispose();
             // アクティブトランジションをクリア
-            this.activeTransitions.clear(');
-            console.log('AudioController, disposed successfully');
+            this.activeTransitions.clear();
+            
+            console.log('AudioController disposed successfully');
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AudioController.dispose');
-
-    }'} : undefined
+        }
+    }
+}

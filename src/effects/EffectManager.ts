@@ -1,68 +1,112 @@
-import { getEffectsConfig  } from '../config/EffectsConfig.js';'
-import { getErrorHandler  } from '../utils/ErrorHandler.js';
+import { getEffectsConfig } from '../config/EffectsConfig.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 // Effect Manager types
-export interface ColorRGBA { r: number; g: number; b: number; a: number; }
-    export interface CurrentTransform { shake: { x: number; y: number; zoom: number; }; rotation: number; flash: ColorRGBA; tint: ColorRGBA; blur: number; contrast: number; brightness: number; saturation: number; }
-export interface Transforms { shakeX: number[]; shakeY: number[]; zoom: number[]; rotation: number[]; flash: ColorRGBA[]; tint: ColorRGBA[]; blur: number[]; contrast: number[]; brightness: number[]; saturation: number[]; }
-    export interface EffectParameters { shakeIntensity: number; flashDuration: number; zoomSensitivity: number; enabled: boolean; shake: { duration: number; damping: number; }; flash: { intensity: number; duration: number; }; zoom: { duration: number; easing: string; }; tint: { intensity: number; duration: number; }; }
-export interface BaseEffect { id: number; type: EffectType; duration: number; elapsed: number; }'
-';'
+export interface ColorRGBA {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+}
 
-export interface ShakeEffect extends BaseEffect {,'
-    type: 'shake;
+export interface CurrentTransform {
+    shake: { x: number; y: number };
+    zoom: number;
+    rotation: number;
+    flash: ColorRGBA;
+    tint: ColorRGBA;
+    blur: number;
+    contrast: number;
+    brightness: number;
+    saturation: number;
+}
+
+export interface Transforms {
+    shakeX: number[];
+    shakeY: number[];
+    zoom: number[];
+    rotation: number[];
+    flash: ColorRGBA[];
+    tint: ColorRGBA[];
+    blur: number[];
+    contrast: number[];
+    brightness: number[];
+    saturation: number[];
+}
+
+export interface EffectParameters {
+    shakeIntensity: number;
+    flashDuration: number;
+    zoomSensitivity: number;
+    enabled: boolean;
+    shake: { duration: number; damping: number };
+    flash: { intensity: number; duration: number };
+    zoom: { duration: number; easing: string };
+    tint: { intensity: number; duration: number };
+}
+export interface BaseEffect {
+    id: number;
+    type: EffectType;
+    duration: number;
+    elapsed: number;
+}'
+
+export interface ShakeEffect extends BaseEffect {
+    type: 'shake';
     intensity: number;
     shakeType: ShakeType;
     frequency: number;
-    damping: number;'
-';'
+    damping: number;
+}'
 
-export interface FlashEffect extends BaseEffect {,'
-    type: 'flash;
+export interface FlashEffect extends BaseEffect {
+    type: 'flash';
     color: ColorRGBA;
     intensity: number;
-    fadeType: FadeType;'
-';'
+    fadeType: FadeType;
+}'
 
-export interface TintEffect extends BaseEffect {,'
-    type: 'tint;
+export interface TintEffect extends BaseEffect {
+    type: 'tint';
     color: ColorRGBA;
     intensity: number;
-    easing: string;'
-';'
+    easing: string;
+}'
 
-export interface ZoomEffect extends BaseEffect {,'
-    type: 'zoom;
+export interface ZoomEffect extends BaseEffect {
+    type: 'zoom';
     targetZoom: number;
     startZoom: number;
-    easing: string;'
-';'
+    easing: string;
+}'
 
-export interface RotationEffect extends BaseEffect {,'
-    type: 'rotation;
+export interface RotationEffect extends BaseEffect {
+    type: 'rotation';
     targetRotation: number;
     startRotation: number;
-    easing: string;'
-';'
+    easing: string;
+}'
 
-export interface BlurEffect extends BaseEffect {,'
-    type: 'blur;
+export interface BlurEffect extends BaseEffect {
+    type: 'blur';
     targetBlur: number;
     startBlur: number;
-    easing: string;'
-';'
+    easing: string;
+}'
 
-export interface FilterEffect extends BaseEffect {,'
-    type: 'filter;
+export interface FilterEffect extends BaseEffect {
+    type: 'filter';
     filterType: FilterType;
     targetValue: number;
     startValue: number;
     easing: string;
-    export type Effect = ShakeEffect | FlashEffect | TintEffect | ZoomEffect | RotationEffect | BlurEffect | FilterEffect;'
-    export type EffectType = 'shake' | 'flash' | 'tint' | 'zoom' | 'rotation' | 'blur' | 'filter';'
-    export type ShakeType = 'random' | 'horizontal' | 'vertical' | 'circular';'
-    export type FadeType = 'in' | 'out' | 'inout';'
-    export type FilterType = 'contrast' | 'brightness' | 'saturation';
+}
+
+export type Effect = ShakeEffect | FlashEffect | TintEffect | ZoomEffect | RotationEffect | BlurEffect | FilterEffect;
+export type EffectType = 'shake' | 'flash' | 'tint' | 'zoom' | 'rotation' | 'blur' | 'filter';
+export type ShakeType = 'random' | 'horizontal' | 'vertical' | 'circular';
+export type FadeType = 'in' | 'out' | 'inout';
+export type FilterType = 'contrast' | 'brightness' | 'saturation';
 
 /**
  * 視覚効果管理クラス
@@ -73,61 +117,59 @@ export class EffectManager {
     private effects: Effect[];
     private effectId: number;
     private effectsConfig: any;
-    private, configWatchers: Map<string; any>,
+    private configWatchers: Map<string, any>;
     private currentTransform: CurrentTransform;
-    private, transforms: Transforms;
+    private transforms: Transforms;
     constructor(canvas: HTMLCanvasElement) {
-
         this.canvas = canvas;
-    this.effects = [];
-    this.effectId = 0;
+        this.effects = [];
+        this.effectId = 0;
         
         // 設定システムとの連携
         this.effectsConfig = getEffectsConfig();
-    this.configWatchers = new Map();
+        this.configWatchers = new Map();
         
         // 現在の変換状態
-
-     };
-        this.currentTransform = { }
-            shake: { x: 0; y: 0  ,
-            zoom: 1;
-            rotation: 0;
-    flash: { r: 0; g: 0, b: 0; a: 0  ,
-            tint: { r: 0; g: 0, b: 0; a: 0  ,
-            blur: 0;
-            contrast: 1;
-            brightness: 1;
-    saturation: 1;
-        },
+        this.currentTransform = {
+            shake: { x: 0, y: 0 },
+            zoom: 1,
+            rotation: 0,
+            flash: { r: 0, g: 0, b: 0, a: 0 },
+            tint: { r: 0, g: 0, b: 0, a: 0 },
+            blur: 0,
+            contrast: 1,
+            brightness: 1,
+            saturation: 1
+        };
         
         // 効果の積算用
-        this.transforms = { shakeX: [];
-            shakeY: [];
-            zoom: [];
-            rotation: [];
-            flash: [];
-            tint: [];
-            blur: [];
-            contrast: [];
-            brightness: [];
-    saturation: [] 
- };
+        this.transforms = {
+            shakeX: [],
+            shakeY: [],
+            zoom: [],
+            rotation: [],
+            flash: [],
+            tint: [],
+            blur: [],
+            contrast: [],
+            brightness: [],
+            saturation: []
+        };
         // 設定変更の監視を開始
         this._setupConfigWatchers();
     }
     
     /**
      * 設定変更の監視を設定
-     * @private'
-     */'''
-    private _setupConfigWatchers()';''
-            const shakeWatcher = configManager.watch('effects', 'screen.shakeIntensity', (newValue: number) => {  }
-;
-                console.log(`[EffectManager] 画面揺れ強度が変更されました: ${newValue}`);'
-            }');''
-            this.configWatchers.set('shakeIntensity', shakeWatcher';''
-            ';'
+     * @private
+     */
+    private _setupConfigWatchers(): void {
+        try {
+            // Note: 設定システムが実装されたら、適切なwatcherを設定
+            // const shakeWatcher = this.effectsConfig.watch('screen.shakeIntensity', (newValue: number) => {
+            //     console.log(`[EffectManager] 画面揺れ強度が変更されました: ${newValue}`);
+            // });
+            // this.configWatchers.set('shakeIntensity', shakeWatcher);
             // フラッシュ時間の監視'
             const flashWatcher = configManager.watch('effects', 'screen.flashDuration', (newValue: number) => {  }
 ;

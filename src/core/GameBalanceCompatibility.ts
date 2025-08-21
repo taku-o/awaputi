@@ -10,9 +10,9 @@ interface BasicConfig {
  * 新しい設定システムへの段階的な移行を促進します。
  */
 
-import { getGameConfig  } from '../config/GameConfig.js';
-import { getConfigurationManager  } from './ConfigurationManager.js';
-import { getLoggingSystem  } from './LoggingSystem.js';
+import { getGameConfig } from '../config/GameConfig.js';
+import { getConfigurationManager } from './ConfigurationManager.js';
+import { getLoggingSystem } from './LoggingSystem.js';
 
 // 警告表示の制御
 const SHOW_DEPRECATION_WARNINGS = true;
@@ -156,25 +156,31 @@ class BalanceHelperCompatibility {
      * @param {string} itemId - アイテムID
      * @param {number} currentLevel - 現在のレベル
      * @returns {number} 計算されたコスト
-     */'
-    static calculateItemCost(itemId, currentLevel) { const gameConfig = getGameConfig();
-        const caller = _getCallerInfo()','
+     */
+    static calculateItemCost(itemId: string, currentLevel: number): number {
+        const gameConfig = getGameConfig();
+        const caller = _getCallerInfo();
         _showDeprecationWarning('BalanceHelper.calculateItemCostは非推奨です', caller);
-        return gameConfig.calculateItemCost(itemId, currentLevel) }
+        return gameConfig.calculateItemCost(itemId, currentLevel);
+    }
     
     /**
      * ステージ開放チェック（互換性メソッド）
      * @param {string} stageId - ステージID
      * @param {number} playerTAP - プレイヤーのTAP値
      * @returns {boolean} 開放状態
-     */'
-    static isStageUnlocked(stageId, playerTAP) { const gameConfig = getGameConfig();
-        const caller = _getCallerInfo()','
+     */
+    static isStageUnlocked(stageId: string, playerTAP: number): boolean {
+        const gameConfig = getGameConfig();
+        const caller = _getCallerInfo();
         _showDeprecationWarning('BalanceHelper.isStageUnlockedは非推奨です', caller);
         return gameConfig.isStageUnlocked(stageId, playerTAP);
+    }
+}
 // 既存のBALANCE_CONFIGとBalanceHelperをエクスポート
-export const BALANCE_CONFIG = BALANCE_CONFIG_PROXY,
-export const BalanceHelper = BalanceHelperCompatibility,
+export const BALANCE_CONFIG = BALANCE_CONFIG_PROXY;
+export const BalanceHelper = BalanceHelperCompatibility;
+
 // 新しいAPIも同時にエクスポート（移行を促進）
-export { getGameConfig  } from '../config/GameConfig.js';
-export { getConfigurationManager  } from './ConfigurationManager.js';
+export { getGameConfig } from '../config/GameConfig.js';
+export { getConfigurationManager } from './ConfigurationManager.js';
