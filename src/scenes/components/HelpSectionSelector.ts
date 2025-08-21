@@ -3,9 +3,8 @@ import { ComponentEventBus } from './ComponentEventBus';''
 import { SceneState } from './SceneState';
 
 interface SectionChangeData { oldSection: string,
-    newSection: string,
-    buttonIndex: number }
-}
+    newSection: string;
+    buttonIndex: number ,}
 
 /**
  * ヘルプセクション選択コンポーネント
@@ -41,11 +40,9 @@ export class HelpSectionSelector {
         this.state = state;
         
     
-    }
-    }
+    ,}
         // アクセシビリティ設定 }
-        this.accessibilitySettings = state.accessibilitySettings || {};
-    }
+        this.accessibilitySettings = state.accessibilitySettings || {}
     
     /**
      * レンダリング処理
@@ -63,7 +60,7 @@ export class HelpSectionSelector {
         this.renderBackground(context, x, y, width, this.buttonHeight + 20);
         
         // ボタンを描画
-        for(let i = 0; i < this.sections.length; i++) {
+        for(let, i = 0; i < this.sections.length; i++) {
             const buttonX = x + i * (buttonWidth + this.buttonSpacing);
             const buttonY = y + 10;
             
@@ -90,9 +87,9 @@ export class HelpSectionSelector {
      * @param width - 幅
      * @param height - 高さ
      */''
-    private renderBackground(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number'): void { ''
+    private renderBackground(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#F8F9FA';''
-        context.fillRect(x, y, width, height');
+        context.fillRect(x, y, width, height);
         ';
         // 下部の境界線
         context.strokeStyle = this.accessibilitySettings.highContrast ? '#000000' : '#DEE2E6';
@@ -101,7 +98,6 @@ export class HelpSectionSelector {
         context.moveTo(x, y + height - 1);
         context.lineTo(x + width, y + height - 1);
         context.stroke(); }
-    }
     
     /**
      * セクションボタンを描画
@@ -115,7 +111,7 @@ export class HelpSectionSelector {
      * @param index - ボタンインデックス
      */
     private renderSectionButton(;
-        context: CanvasRenderingContext2D,
+        context: CanvasRenderingContext2D;
         x: number, ;
         y: number, ;
         width: number, ;
@@ -138,34 +134,40 @@ export class HelpSectionSelector {
                 this.animatingSection = null;
         }
                 this.animationStartTime = 0; }
-            }
-        }
+}
         
         // ボタンの色を決定
         let backgroundColor: string, textColor: string, borderColor: string,
-        '';
-        if(isActive') {'
-            '';
-            backgroundColor = this.interpolateColor('#E3F2FD', '#1976D2', animationProgress');''
-            textColor = '#FFFFFF';'
-        }'
-            borderColor = '#1565C0';' }'
-        } else if (isHovered || isFocused') { ''
+
+        if(isActive) {'
+
+            backgroundColor = this.interpolateColor('#E3F2FD', '#1976D2', animationProgress);''
+            textColor = '#FFFFFF';
+
+        }
+
+            borderColor = '#1565C0';' }
+
+        } else if(isHovered || isFocused) { ''
             backgroundColor = '#E9ECEF';''
             textColor = '#495057';''
-            borderColor = '#ADB5BD'; }'
-        } else {  ''
+            borderColor = '#ADB5BD'; }
+
+        } else {
             backgroundColor = '#FFFFFF';''
-            textColor = '#6C757D';' }'
+            textColor = '#6C757D';' }
+
             borderColor = '#DEE2E6'; }
         }
         ';
         // 高コントラストモードの調整
-        if(this.accessibilitySettings.highContrast') {'
-            '';
+        if(this.accessibilitySettings.highContrast) {'
+
             backgroundColor = isActive ? '#000000' : '#FFFFFF';''
-            textColor = isActive ? '#FFFFFF' : '#000000';'
-        }'
+            textColor = isActive ? '#FFFFFF' : '#000000';
+
+        }
+
             borderColor = '#000000'; }
         }
         
@@ -179,17 +181,19 @@ export class HelpSectionSelector {
         context.lineWidth = isActive || isFocused ? 2 : 1;
         this.roundRect(context, x, y, width, height, this.cornerRadius);
         context.stroke();
-        ;
         // フォーカス時の追加視覚効果
-        if(isFocused && !isActive') {'
-            '';
+        if(isFocused && !isActive) {'
+
             context.strokeStyle = '#007BFF';
             context.lineWidth = 2;
             context.setLineDash([2, 2]);
-            this.roundRect(context, x - 1, y - 1, width + 2, height + 2, this.cornerRadius + 1);'
-            context.stroke();'
-        }'
-            context.setLineDash([]'); }
+            this.roundRect(context, x - 1, y - 1, width + 2, height + 2, this.cornerRadius + 1);
+
+            context.stroke();
+
+        }
+
+            context.setLineDash([]); }
         }
         
         // ボタンテキストを描画
@@ -199,16 +203,16 @@ export class HelpSectionSelector {
         context.textBaseline = 'middle';
         ';
         // テキストのシャドウ効果（アクティブ時）
-        if(isActive && !this.accessibilitySettings.highContrast') {'
-            '';
-            context.shadowColor = 'rgba(0, 0, 0, 0.3')';
+        if(isActive && !this.accessibilitySettings.highContrast) {'
+
+            context.shadowColor = 'rgba(0, 0, 0, 0.3)';
             context.shadowBlur = 2;
             context.shadowOffsetX = 1;
         }
             context.shadowOffsetY = 1; }
-        }'
-        '';
-        context.fillText(label, x + width / 2, y + height / 2');
+        }
+
+        context.fillText(label, x + width / 2, y + height / 2);
         ';
         // シャドウをリセット
         context.shadowColor = 'transparent';
@@ -218,7 +222,6 @@ export class HelpSectionSelector {
         
         // アクティブボタンのインジケーター
         if (isActive) { this.renderActiveIndicator(context, x, y + height - 3, width, 3); }
-        }
     }
     
     /**
@@ -230,15 +233,14 @@ export class HelpSectionSelector {
      * @param height - 高さ
      */
     private renderActiveIndicator(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
-        const gradient = context.createLinearGradient(x, y, x + width, y');''
+        const gradient = context.createLinearGradient(x, y, x + width, y);''
         gradient.addColorStop(0, '#1976D2'');''
         gradient.addColorStop(0.5, '#2196F3'');''
-        gradient.addColorStop(1, '#1976D2');
+        gradient.addColorStop(1, '#1976D2);
         
         context.fillStyle = gradient;
         this.roundRect(context, x + 5, y, width - 10, height, height / 2);
         context.fill(); }
-    }
     
     /**
      * クリック処理
@@ -257,16 +259,14 @@ export class HelpSectionSelector {
         if(relativeY < 10 || relativeY > 10 + this.buttonHeight) {
             
         }
-            return false; }
-        }
+            return false;
         
         // クリックされたボタンを特定
         const buttonIndex = this.getButtonIndex(relativeX, containerWidth);
         if(buttonIndex !== -1) {
             this.selectSection(this.sections[buttonIndex], buttonIndex);
         }
-            return true; }
-        }
+            return true;
         
         return false;
     }
@@ -288,7 +288,6 @@ export class HelpSectionSelector {
         }
             this.hoveredButton = this.getButtonIndex(relativeX, containerWidth); }
         } else { this.hoveredButton = -1; }
-        }
     }
     
     /**
@@ -297,32 +296,31 @@ export class HelpSectionSelector {
      * @returns イベントが処理された場合true
      */
     handleKeyboard(event: KeyboardEvent): boolean { ''
-        switch(event.key') {'
-            '';
+        switch(event.key) {'
+
             case 'ArrowLeft':';
                 event.preventDefault();''
-                this.focusedButton = Math.max(0, this.focusedButton - 1');
-                return true;'
-                '';
+                this.focusedButton = Math.max(0, this.focusedButton - 1);
+                return true;
+
             case 'ArrowRight':';
                 event.preventDefault();''
-                this.focusedButton = Math.min(this.sections.length - 1, this.focusedButton + 1');
-                return true;'
-                '';
+                this.focusedButton = Math.min(this.sections.length - 1, this.focusedButton + 1);
+                return true;
+
             case 'Enter':'';
             case ' ':';
                 event.preventDefault();''
-                this.selectSection(this.sections[this.focusedButton], this.focusedButton');
-                return true;'
-                '';
+                this.selectSection(this.sections[this.focusedButton], this.focusedButton);
+                return true;
+
             case 'Home':'';
                 event.preventDefault()';
             case 'End':);
                 event.preventDefault();
                 this.focusedButton = this.sections.length - 1;
         }
-                return true; }
-        }
+                return true;
         
         // 数字キーでのダイレクト選択
         const number = parseInt(event.key);
@@ -330,8 +328,7 @@ export class HelpSectionSelector {
             event.preventDefault();
             this.selectSection(this.sections[number - 1], number - 1);
         }
-            return true; }
-        }
+            return true;
         
         return false;
     }
@@ -346,16 +343,14 @@ export class HelpSectionSelector {
         const totalSpacing = (buttonCount - 1) * this.buttonSpacing;
         const buttonWidth = Math.max(80, (containerWidth - totalSpacing) / buttonCount);
         
-        for(let i = 0; i < buttonCount; i++) {
+        for(let, i = 0; i < buttonCount; i++) {
         
             const buttonX = i * (buttonWidth + this.buttonSpacing);
             
             if (x >= buttonX && x <= buttonX + buttonWidth) {
         
         }
-                return i; }
-            }
-        }
+                return i;
         
         return -1;
     }
@@ -369,19 +364,17 @@ export class HelpSectionSelector {
             const oldSection = this.currentSection;
             this.currentSection = section;
             this.focusedButton = buttonIndex;
-            ;
             // アニメーション開始
-            this.startSectionAnimation(section');
+            this.startSectionAnimation(section);
             
             // イベント通知
             const eventData: SectionChangeData = {
                 oldSection,
-                newSection: section,
-                buttonIndex }
-            };''
+                newSection: section;
+                buttonIndex ,};''
             this.eventBus.emit('help-section-changed', eventData);
             
-            console.log(`Help section changed to: ${section)`});
+            console.log(`Help, section changed, to: ${section}`});
         }
     }
     
@@ -392,7 +385,6 @@ export class HelpSectionSelector {
     private startSectionAnimation(section: string): void { if (!this.accessibilitySettings.reducedMotion) {
             this.animatingSection = section;
             this.animationStartTime = performance.now(); }
-        }
     }
     
     /**
@@ -412,7 +404,7 @@ export class HelpSectionSelector {
         const g = Math.round(c1.g + (c2.g - c1.g) * progress);
         const b = Math.round(c1.b + (c2.b - c1.b) * progress);
          }
-        return `rgb(${r}, ${g}, ${b)})`;
+        return `rgb(${r}, ${g}, ${b}})`;
     }
     
     /**
@@ -425,8 +417,7 @@ export class HelpSectionSelector {
         return result ? { : undefined
             r: parseInt(result[1], 16),
             g: parseInt(result[2], 16),
-            b: parseInt(result[3], 16) }
-        } : null;
+            b: parseInt(result[3], 16 } : null;
     }
     
     /**
@@ -449,7 +440,6 @@ export class HelpSectionSelector {
         context.lineTo(x, y + radius);
         context.quadraticCurveTo(x, y, x + radius, y);
         context.closePath(); }
-    }
     
     /**
      * 現在のセクションを設定
@@ -458,7 +448,6 @@ export class HelpSectionSelector {
     setCurrentSection(section: string): void { if(this.sections.includes(section) {
             const buttonIndex = this.sections.indexOf(section);
             this.selectSection(section, buttonIndex); }
-        }
     }
     
     /**
@@ -466,17 +455,16 @@ export class HelpSectionSelector {
      * @returns 現在のセクションID
      */
     getCurrentSection(): string { return this.currentSection; }
-    }
     
     /**
      * 利用可能なセクション一覧を取得
      * @returns セクション情報の配列
      */
     getAvailableSections(): Array<{ id: string; label: string; active: boolean }> { return this.sections.map((section, index) => ({
-            id: section,
+            id: section;
             label: this.sectionLabels[index]);
-            active: section === this.currentSection }
-        }),
+            active: section === this.currentSection ,}
+        });
     }
     
     /**

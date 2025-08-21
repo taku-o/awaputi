@@ -6,86 +6,72 @@
 
 // 型定義
 export interface VoiceConfig { enabled: boolean,
-    language: string,
-    confidence: number,
-    continuousListening: boolean,
-    pushToTalk: boolean,
+    language: string;
+    confidence: number;
+    continuousListening: boolean;
+    pushToTalk: boolean;
     commands: Map<string, string>, }
-}
 
 export interface VoiceState { isListening: boolean,
-    recognition: SpeechRecognition | null,
-    lastCommand: string | null,
-    commandQueue: string[],
-    confidence: number,
-    isInitialized: boolean }
-}
+    recognition: SpeechRecognition | null;
+    lastCommand: string | null;
+    commandQueue: string[];
+    confidence: number;
+    isInitialized: boolean ,}
 
-export interface VoiceStats { commandsRecognized: number,
-    commandsExecuted: number,
-    averageConfidence: number,
-    listeningTime: number,
+export interface VoiceStats { commandsRecognized: number;
+    commandsExecuted: number;
+    averageConfidence: number;
+    listeningTime: number;
     sessionStart: number }
-}
 
-export interface DetailedVoiceStats extends VoiceStats { isListening: boolean,
-    isInitialized: boolean,
-    currentContext: string,
-    lastCommand: string | null,
+export interface DetailedVoiceStats extends VoiceStats { isListening: boolean;
+    isInitialized: boolean;
+    currentContext: string;
+    lastCommand: string | null;
     confidence: number }
-}
 
-export interface CommandExecutionData { command: string,
+export interface CommandExecutionData { command: string;
     originalTranscript?: string;
     confidence?: number; }
-}
 
 export interface FeedbackData { [key: string]: any, }
-}
 
 export interface VoiceControllerConfig { voiceControl?: Partial<VoiceConfig>;
     }
-}
 
 export interface SimilarityResult { command: string | null,
-    similarity: number }
-}
+    similarity: number ,}
 
-export interface VoiceUIElement extends HTMLElement { className: string,
+export interface VoiceUIElement extends HTMLElement { className: string;
     style: CSSStyleDeclaration
     }
-}
 
 // Web Speech API関連型定義
-export interface SpeechRecognitionEvent { results: SpeechRecognitionResultList,
+export interface SpeechRecognitionEvent { results: SpeechRecognitionResultList;
     resultIndex: number }
-}
 
-export interface SpeechRecognitionErrorEvent { error: SpeechRecognitionErrorCode,
+export interface SpeechRecognitionErrorEvent { error: SpeechRecognitionErrorCode;
     message?: string }
-}
 
-export interface SpeechRecognitionResult { 0: SpeechRecognitionAlternative,
-    isFinal: boolean,
+export interface SpeechRecognitionResult { 0: SpeechRecognitionAlternative;
+    isFinal: boolean;
     length: number }
-}
 
-export interface SpeechRecognitionAlternative { transcript: string,
+export interface SpeechRecognitionAlternative { transcript: string;
     confidence: number }
-}
 
-export interface SpeechRecognitionResultList { [index: number]: SpeechRecognitionResult,
+export interface SpeechRecognitionResultList { [index: number]: SpeechRecognitionResult;
     length: number }
-}
 
-export interface ExtendedSpeechRecognition extends SpeechRecognition { continuous: boolean,
-    interimResults: boolean,
-    lang: string,
-    maxAlternatives: number,
-    onstart: ((event: Event) => void) | null,
-    onend: ((event: Event) => void) | null,
-    onresult: ((event: SpeechRecognitionEvent) => void) | null,
-    onerror: ((event: SpeechRecognitionErrorEvent) => void) | null,
+export interface ExtendedSpeechRecognition extends SpeechRecognition { continuous: boolean;
+    interimResults: boolean;
+    lang: string;
+    maxAlternatives: number;
+    onstart: ((event: Event) => void) | null;
+    onend: ((event: Event) => void) | null;
+    onresult: ((event: SpeechRecognitionEvent) => void) | null;
+    onerror: ((event: SpeechRecognitionErrorEvent) => void) | null;
     onnomatch: ((event: Event) => void) | null }
 }
 
@@ -93,17 +79,19 @@ export interface ExtendedSpeechRecognition extends SpeechRecognition { continuou
 export type SpeechRecognitionErrorCode = ;
     | 'no-speech' | 'aborted' | 'audio-capture' '';
     | 'network' | 'not-allowed' | 'service-not-allowed' '';
-    | 'bad-grammar' | 'language-not-supported';'
-'';
+    | 'bad-grammar' | 'language-not-supported';
+
 export type VoiceContext = 'default' | 'game' | 'menu' | 'settings';
-';'
+';
+
 export type FeedbackType = '';
     | 'listening_started' | 'listening_stopped' | 'no_match' '';
     | 'low_confidence' | 'unknown_command' | 'command_executed' '';
     | 'command_failed' | 'no_handler' | 'no_speech' '';
     | 'microphone_error' | 'permission_denied' | 'network_error' '';
     | 'recognition_error';
-';'
+';
+
 export type CommandAction = '';
     | 'click' | 'pop' | 'select' | 'back' | 'next' '';
     | 'menu' | 'pause' | 'resume' | 'up' | 'down' '';
@@ -126,126 +114,119 @@ export const COMMAND_HISTORY_DISPLAY_TIME = 3000;
 export const COMMAND_DISPLAY_LIMIT = 8;
 
 // デフォルトコマンドマップ
-export const DEFAULT_VOICE_COMMANDS: Record<string, CommandAction> = { ''
-    'クリック': 'click','';
-    'ポップ': 'pop','';
-    '選択': 'select','';
-    '戻る': 'back','';
-    '次へ': 'next','';
-    'メニュー': 'menu','';
-    'ポーズ': 'pause','';
-    '再開': 'resume','';
-    '上': 'up','';
-    '下': 'down','';
-    '左': 'left','';
-    '右': 'right','';
-    'スタート': 'start','';
-    'ストップ': 'stop','';
-    'はい': 'yes','';
-    'いいえ': 'no','';
-    'キャンセル': 'cancel','';
-    'ヘルプ': 'help' }
-};
+export const DEFAULT_VOICE_COMMANDS: Record<string, CommandAction> = {;
+    'クリック': 'click',
+    'ポップ': 'pop',
+    '選択': 'select',
+    '戻る': 'back',
+    '次へ': 'next',
+    'メニュー': 'menu',
+    'ポーズ': 'pause',
+    '再開': 'resume',
+    '上': 'up',
+    '下': 'down',
+    '左': 'left',
+    '右': 'right',
+    'スタート': 'start',
+    'ストップ': 'stop',
+    'はい': 'yes',
+    'いいえ': 'no',
+    'キャンセル': 'cancel',
+    'ヘルプ': 'help' };
 
 // コンテキスト別コマンド
 export const CONTEXTUAL_COMMANDS: Record<VoiceContext, Record<string, CommandAction>> = {
-    default: {},
+    default: {};
     game: { ''
-        'アイテム': 'use_item','';
-        'アイテム使用': 'use_item','';
-        'スコア': 'show_score','';
-        '時間': 'show_time','';
-        '設定': 'show_settings' }
-    },'
+        'アイテム': 'use_item',
+        'アイテム使用': 'use_item',
+        'スコア': 'show_score',
+        '時間': 'show_time',
+        '設定': 'show_settings' },
+
     menu: { ''
-        '新しいゲーム': 'new_game','';
-        '続きから': 'continue_game','';
-        '設定': 'settings','';
-        'ヘルプ': 'help','';
-        '終了': 'exit' }
-    },'
+        '新しいゲーム': 'new_game',
+        '続きから': 'continue_game',
+        '設定': 'settings',
+        'ヘルプ': 'help',
+        '終了': 'exit' },
+
     settings: { ''
-        '音量': 'volume','';
-        '音声設定': 'voice_settings','';
-        '画面設定': 'display_settings','';
-        '保存': 'save_settings','';
+        '音量': 'volume',
+        '音声設定': 'voice_settings',
+        '画面設定': 'display_settings',
+        '保存': 'save_settings',
         'リセット': 'reset_settings' }
-    }
 };
 
 // 音声応答メッセージ
-export const VOICE_RESPONSES: Record<CommandAction, string> = { ''
-    click: 'クリックしました','';
-    pop: 'ポップしました','';
-    select: '選択しました','';
-    back: '戻ります','';
-    next: '次に進みます','';
-    menu: 'メニューを表示します','';
-    pause: 'ゲームを一時停止しました','';
-    resume: 'ゲームを再開しました','';
-    up: '上に移動','';
-    down: '下に移動','';
-    left: '左に移動','';
-    right: '右に移動','';
-    start: '開始しました','';
-    stop: '停止しました','';
-    yes: 'はい','';
-    no: 'いいえ','';
-    cancel: 'キャンセルしました','';
-    help: 'ヘルプを表示します','';
-    use_item: 'アイテムを使用しました','';
-    show_score: 'スコアを表示します','';
-    show_time: '時間を表示します','';
-    show_settings: '設定を表示します','';
-    new_game: '新しいゲームを開始します','';
-    continue_game: 'ゲームを続行します','';
-    settings: '設定画面を開きます','';
-    exit: 'ゲームを終了します','';
-    volume: '音量設定です','';
-    voice_settings: '音声設定です','';
-    display_settings: '画面設定です','';
-    save_settings: '設定を保存しました','';
-    reset_settings: '設定をリセットしました' }
-},
+export const VOICE_RESPONSES: Record<CommandAction, string> = {;
+    click: 'クリックしました',
+    pop: 'ポップしました',
+    select: '選択しました',
+    back: '戻ります',
+    next: '次に進みます',
+    menu: 'メニューを表示します',
+    pause: 'ゲームを一時停止しました',
+    resume: 'ゲームを再開しました',
+    up: '上に移動',
+    down: '下に移動',
+    left: '左に移動',
+    right: '右に移動',
+    start: '開始しました',
+    stop: '停止しました',
+    yes: 'はい',
+    no: 'いいえ',
+    cancel: 'キャンセルしました',
+    help: 'ヘルプを表示します',
+    use_item: 'アイテムを使用しました',
+    show_score: 'スコアを表示します',
+    show_time: '時間を表示します',
+    show_settings: '設定を表示します',
+    new_game: '新しいゲームを開始します',
+    continue_game: 'ゲームを続行します',
+    settings: '設定画面を開きます',
+    exit: 'ゲームを終了します',
+    volume: '音量設定です',
+    voice_settings: '音声設定です',
+    display_settings: '画面設定です',
+    save_settings: '設定を保存しました',
+    reset_settings: '設定をリセットしました' ,};
 ';
 // 型ガード
 export function isSpeechRecognitionSupported(''';
-    return 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
-}'
-'';
-export function isSpeechSynthesisSupported(''';
-    return 'speechSynthesis' in window;
-}'
+    return 'webkitSpeechRecognition' in, window || 'SpeechRecognition' in, window;
+}
+
+export, function isSpeechSynthesisSupported(''';
+    return 'speechSynthesis' in, window;
+}
+
 ')';
-export function isValidSpeechRecognitionEvent(event: any'): event is SpeechRecognitionEvent { return event && '
+export function isValidSpeechRecognitionEvent(event: any): event is SpeechRecognitionEvent { return event &&;
            event.results && '';
            typeof event.resultIndex === 'number' &&;
            event.results.length > 0; }
-}'
-'';
-export function isValidCommandAction(action: any'): action is CommandAction { ''
+
+export function isValidCommandAction(action: any): action is CommandAction {;
     return typeof action === 'string' && action in VOICE_RESPONSES; }
-}'
-'';
-export function isValidVoiceContext(context: any'): context is VoiceContext { ''
+
+export function isValidVoiceContext(context: any): context is VoiceContext {;
     return typeof context === 'string' && '';
-           ['default', 'game', 'menu', 'settings'].includes(context); }
-}
-';'
-export function hasJapaneseVoice(voices: SpeechSynthesisVoice[]): SpeechSynthesisVoice | undefined { ''
+           ['default', 'game', 'menu', 'settings].includes(context); }
+';
+
+export function hasJapaneseVoice(voices: SpeechSynthesisVoice[]): SpeechSynthesisVoice | undefined {;
     return voices.find(voice => ');''
-        voice.lang.startsWith('ja'') || voice.lang.includes('JP'); }
+        voice.lang.startsWith('ja'') || voice.lang.includes('JP); }
 }
 
 // Window拡張（Web Speech API）
 declare global { interface Window {
         webkitSpeechRecognition: {
-            new (): ExtendedSpeechRecognition,
-    }
-        };
-        SpeechRecognition: { new (): ExtendedSpeechRecognition,
-    }
-        };
+            new (): ExtendedSpeechRecognition;
+    };
+        SpeechRecognition: { new (): ExtendedSpeechRecognition;
     }
 }
 
@@ -270,26 +251,22 @@ export class VoiceInputController {
 
         // 音声制御設定
         this.voiceConfig = {
-            enabled: false,
-            language: DEFAULT_LANGUAGE,
-            confidence: DEFAULT_CONFIDENCE,
-            continuousListening: false,
-            pushToTalk: true,
-
-    }
-    }
+            enabled: false;
+            language: DEFAULT_LANGUAGE;
+            confidence: DEFAULT_CONFIDENCE;
+            continuousListening: false;
+            pushToTalk: true;
+    ,}
             commands: new Map<string, string>(Object.entries(DEFAULT_VOICE_COMMANDS); }
         };
         
         // 音声認識状態
         this.voiceState = { isListening: false,
-            recognition: null,
-            lastCommand: null,
-            commandQueue: [],
-            confidence: 0,
-            isInitialized: false }
-        },
-        
+            recognition: null;
+            lastCommand: null;
+            commandQueue: [];
+            confidence: 0;
+            isInitialized: false ,};
         // 音声フィードバック
         this.speechSynthesis = null;
         this.voiceList = [];
@@ -307,12 +284,11 @@ export class VoiceInputController {
         
         // 統計
         this.stats = { commandsRecognized: 0,
-            commandsExecuted: 0,
-            averageConfidence: 0,
-            listeningTime: 0,'';
+            commandsExecuted: 0;
+            averageConfidence: 0;
+            listeningTime: 0,
             sessionStart: Date.now()';
-        console.log('[VoiceInputController] Initialized'), }
-    }
+        console.log('[VoiceInputController] Initialized'), }'
     
     /**
      * 音声入力を初期化
@@ -324,23 +300,23 @@ export class VoiceInputController {
         
         try {
             await this.setupSpeechRecognition();
-            await this.setupSpeechSynthesis();'
+            await this.setupSpeechSynthesis();
+
             this.setupCommandHandlers();''
             this.createVoiceInterface()';
-            console.log('[VoiceInputController] Voice input initialized');' }'
-        } catch (error) { ''
+            console.log('[VoiceInputController] Voice, input initialized');' }
+
+        } catch (error) {
             console.error('[VoiceInputController] Initialization failed:', error);
             throw error; }
-        }
     }
     
     /**
      * 音声認識をセットアップ
      */'
     private async setupSpeechRecognition(): Promise<void> { ''
-        if (!isSpeechRecognitionSupported()') {''
-            throw new Error('Speech recognition not supported'); }
-        }
+        if(!isSpeechRecognitionSupported()) {''
+            throw new Error('Speech, recognition not, supported); }'
         
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         this.voiceState.recognition = new SpeechRecognition();
@@ -355,15 +331,18 @@ export class VoiceInputController {
         
         // イベントハンドラーを設定
         recognition.onstart = () => {  this.voiceState.isListening = true;''
-            this.updateMicrophoneIndicator(true');''
-            this.provideFeedback('listening_started'');' }'
-            console.log('[VoiceInputController] Speech recognition started'); }
+            this.updateMicrophoneIndicator(true);''
+            this.provideFeedback('listening_started'');' }
+
+            console.log('[VoiceInputController] Speech, recognition started'); }'
         };
-        ';'
+        ';
+
         recognition.onend = () => {  this.voiceState.isListening = false;''
-            this.updateMicrophoneIndicator(false');''
-            this.provideFeedback('listening_stopped'');' }'
-            console.log('[VoiceInputController] Speech recognition ended'); }
+            this.updateMicrophoneIndicator(false);''
+            this.provideFeedback('listening_stopped'');' }
+
+            console.log('[VoiceInputController] Speech, recognition ended'); }'
         };
         
         recognition.onresult = (event: Event) => {  const speechEvent = event as SpeechRecognitionEvent; }
@@ -372,39 +351,37 @@ export class VoiceInputController {
         
         recognition.onerror = (event: Event) => {  const errorEvent = event as SpeechRecognitionErrorEvent; }
             this.handleSpeechError(errorEvent); }
-        };'
-        '';
-        recognition.onnomatch = (') => {  ''
-            console.log('[VoiceInputController] No speech match found'');' }'
-            this.provideFeedback('no_match'); }
         };
-    }
+
+        recognition.onnomatch = (') => {  ''
+            console.log('[VoiceInputController] No, speech match, found'');' }
+
+            this.provideFeedback('no_match); }'
+        }
     
     /**
      * 音声合成をセットアップ
      */'
     private async setupSpeechSynthesis(): Promise<void> { ''
-        if (!isSpeechSynthesisSupported()') {''
-            console.warn('[VoiceInputController] Speech synthesis not supported');
+        if(!isSpeechSynthesisSupported()) {''
+            console.warn('[VoiceInputController] Speech, synthesis not, supported);
             return; }
-        }
         
         this.speechSynthesis = window.speechSynthesis;
         
         // 音声リストを取得
         return new Promise<void>((resolve) => {  const loadVoices = (): void => {
                 this.voiceList = this.speechSynthesis!.getVoices();
-                ;
                 // 日本語音声を優先選択
-                this.selectedVoice = hasJapaneseVoice(this.voiceList') || this.voiceList[0] || null;'
+                this.selectedVoice = hasJapaneseVoice(this.voiceList') || this.voiceList[0] || null;
+
                 ' }'
-                console.log(`[VoiceInputController] Selected voice: ${this.selectedVoice? .name || 'default')`), }
+
+                console.log(`[VoiceInputController] Selected voice: ${this.selectedVoice? .name || 'default}`}, }'
                 resolve(});
             };
             
-            if (this.speechSynthesis!.getVoices().length > 0) { loadVoices(); }
-            } else { this.speechSynthesis!.onvoiceschanged = loadVoices; }
-            }
+            if (this.speechSynthesis!.getVoices().length > 0) { loadVoices(); } else { this.speechSynthesis!.onvoiceschanged = loadVoices; }
         });
     }
     
@@ -412,23 +389,23 @@ export class VoiceInputController {
      * コマンドハンドラーをセットアップ'
      */ : undefined''
     private setupCommandHandlers()';
-        this.commandHandlers.set('click', () => this.performClick()');''
-        this.commandHandlers.set('pop', () => this.performPop()');''
-        this.commandHandlers.set('select', () => this.performSelect()');''
-        this.commandHandlers.set('back', () => this.performBack()');''
-        this.commandHandlers.set('next', () => this.performNext()');''
-        this.commandHandlers.set('menu', () => this.showMenu()');''
-        this.commandHandlers.set('pause', () => this.pauseGame()');''
-        this.commandHandlers.set('resume', () => this.resumeGame()');''
-        this.commandHandlers.set('up', () => this.moveUp()');''
-        this.commandHandlers.set('down', () => this.moveDown()');''
-        this.commandHandlers.set('left', () => this.moveLeft()');''
-        this.commandHandlers.set('right', () => this.moveRight()');''
-        this.commandHandlers.set('start', () => this.startAction()');''
-        this.commandHandlers.set('stop', () => this.stopAction()');''
-        this.commandHandlers.set('yes', () => this.confirmAction()');''
-        this.commandHandlers.set('no', () => this.cancelAction()');''
-        this.commandHandlers.set('cancel', () => this.cancelAction()');''
+        this.commandHandlers.set('click', () => this.performClick());''
+        this.commandHandlers.set('pop', () => this.performPop());''
+        this.commandHandlers.set('select', () => this.performSelect());''
+        this.commandHandlers.set('back', () => this.performBack());''
+        this.commandHandlers.set('next', () => this.performNext());''
+        this.commandHandlers.set('menu', () => this.showMenu());''
+        this.commandHandlers.set('pause', () => this.pauseGame());''
+        this.commandHandlers.set('resume', () => this.resumeGame());''
+        this.commandHandlers.set('up', () => this.moveUp());''
+        this.commandHandlers.set('down', () => this.moveDown());''
+        this.commandHandlers.set('left', () => this.moveLeft());''
+        this.commandHandlers.set('right', () => this.moveRight());''
+        this.commandHandlers.set('start', () => this.startAction());''
+        this.commandHandlers.set('stop', () => this.stopAction());''
+        this.commandHandlers.set('yes', () => this.confirmAction());''
+        this.commandHandlers.set('no', () => this.cancelAction());''
+        this.commandHandlers.set('cancel', () => this.cancelAction());''
         this.commandHandlers.set('help', () => this.showHelp();
         
         // コンテキスト固有コマンド
@@ -441,8 +418,7 @@ export class VoiceInputController {
     private setupContextualCommands(): void { Object.entries(CONTEXTUAL_COMMANDS).forEach(([context, commands]) => { 
             if(isValidVoiceContext(context) { }
                 this.contextualCommands.set(context, new Map(Object.entries(commands)); }
-            }
-        });
+});
     }
     
     /**
@@ -451,7 +427,6 @@ export class VoiceInputController {
     private createVoiceInterface(): void { this.createMicrophoneIndicator();
         this.createCommandHistory();
         this.createVoiceControlPanel(); }
-    }
     
     /**
      * マイクインジケーターを作成
@@ -461,20 +436,20 @@ export class VoiceInputController {
         this.microphoneIndicator = document.createElement('div'') as VoiceUIElement;''
         this.microphoneIndicator.className = 'microphone-indicator';
         this.microphoneIndicator.style.cssText = `;
-            position: fixed,
-            top: 20px,
-            right: 20px,
-            width: 50px,';
-            height: 50px,'';
-            background: rgba(0, 0, 0, 0.7'),
-            border: 2px solid #ccc,
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px,
+            height: 50px,
+            background: rgba(0, 0, 0, 0.7),
+            border: 2px solid #ccc;
             border-radius: 50%,
-            display: flex,
+            display: flex;
             align-items: center,
             justify-content: center,
             z-index: 10005,
-            cursor: pointer,
-            transition: all 0.3s ease,
+            cursor: pointer;
+            transition: all 0.3s ease;
         `;
         
         // マイクアイコン
@@ -501,24 +476,23 @@ export class VoiceInputController {
         this.commandHistory = document.createElement('div'') as VoiceUIElement;''
         this.commandHistory.className = 'command-history';
         this.commandHistory.style.cssText = `;
-            position: fixed,
-            top: 80px,
-            right: 20px,
-            width: 200px,
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            width: 200px;
             max-height: 150px,
             background: rgba(0, 0, 0, 0.8),
-            border: 1px solid #ccc,
+            border: 1px solid #ccc;
             border-radius: 8px,
-            padding: 10px,
-            color: white,
+            padding: 10px;
+            color: white;
             font-size: 12px,
             overflow-y: auto,
             z-index: 10004,
-            display: none,
+            display: none;
         `;
         
-        document.body.appendChild(this.commandHistory); }
-    }
+        document.body.appendChild(this.commandHistory); ,}
     
     /**
      * 音声制御パネルを作成
@@ -528,19 +502,20 @@ export class VoiceInputController {
         this.voiceInterface = document.createElement('div'') as VoiceUIElement;''
         this.voiceInterface.className = 'voice-control-panel';
         this.voiceInterface.style.cssText = `;
-            position: fixed,
-            bottom: 20px,
-            right: 20px,';
-            width: 250px,'';
-            background: rgba(0, 0, 0, 0.9'),
-            border: 2px solid #444,
+            position: fixed;
+            bottom: 20px;
+            right: 20px,
+            width: 250px,
+            background: rgba(0, 0, 0, 0.9),
+            border: 2px solid #444;
             border-radius: 12px,
-            padding: 15px,
-            color: white,
+            padding: 15px;
+            color: white;
             z-index: 10003,
-            display: none,
+            display: none;
         `;
-        ';'
+        ';
+
         this.voiceInterface.innerHTML = `'';
             <h3 style="margin: 0 0 10px 0; font-size: 14px;">音声コマンド</h3>""
             <div class="command-list" style="font-size: 11px; line-height: 1.4;"></div>""
@@ -548,8 +523,7 @@ export class VoiceInputController {
         `;
         
         document.body.appendChild(this.voiceInterface);
-        this.updateVoiceInterface(); }
-    }
+        this.updateVoiceInterface(); ,}
     
     /**
      * 音声認識結果を処理
@@ -570,16 +544,17 @@ export class VoiceInputController {
         
         }"
             " }"
-            console.log(`[VoiceInputController] Recognized: "${transcript")" (${(confidence * 100).toFixed(1})}%)`);
+            console.log(`[VoiceInputController] Recognized: "${transcript}" (${(confidence * 100}.toFixed(1})%)`);
             
             if(confidence >= this.voiceConfig.confidence) {
             ";
                 ";
             }"
-                this.processVoiceCommand(transcript, confidence"); }"
-            } else {  ""
-                console.log('[VoiceInputController] Low confidence, command ignored'');' }'
-                this.provideFeedback('low_confidence'); }
+                this.processVoiceCommand(transcript, confidence); }"
+            } else {
+                console.log('[VoiceInputController] Low confidence, command ignored'');' }
+
+                this.provideFeedback('low_confidence); }'
             }
             
             this.updateCommandHistory(transcript, confidence);
@@ -589,20 +564,22 @@ export class VoiceInputController {
     /**
      * 音声認識エラーを処理'
      */''
-    private handleSpeechError(event: SpeechRecognitionErrorEvent'): void { ''
+    private handleSpeechError(event: SpeechRecognitionErrorEvent): void { ''
         console.error('[VoiceInputController] Speech recognition error:', event.error);
-        ';'
+        ';
+
         const errorType: FeedbackType = (() => { ''
-            switch(event.error') {'
-                '';
+            switch(event.error) {'
+
                 case 'no-speech': return 'no_speech';''
                 case 'audio-capture': return 'microphone_error';''
-                case 'not-allowed': return 'permission_denied';'
-            }'
-                case 'network': return 'network_error';' }'
-                default: return 'recognition_error'; }
-            }
-        })();
+                case 'not-allowed': return 'permission_denied';
+
+            ,}
+
+                case 'network': return 'network_error';' }
+
+                default: return 'recognition_error';)();
         
         this.provideFeedback(errorType);
     }
@@ -617,14 +594,19 @@ export class VoiceInputController {
         const command = this.mapTranscriptToCommand(transcript);
         
         if(command && isValidCommandAction(command) {
-        ';'
-            ';'
-        }'
-            this.executeCommand(command, transcript'); }'
-        } else {  ''
-            console.log('[VoiceInputController] Unknown command:', transcript');' }'
-            this.provideFeedback('unknown_command'); }
-            this.speakResponse(`コマンド「${transcript)」は認識できませんでした。`});
+        ';
+
+            ';
+
+        }
+
+            this.executeCommand(command, transcript); }
+
+        } else {
+            console.log('[VoiceInputController] Unknown command:', transcript);' }
+
+            this.provideFeedback('unknown_command); }'
+            this.speakResponse(`コマンド「${transcript}」は認識できませんでした。`});
         }
     }
     
@@ -637,9 +619,7 @@ export class VoiceInputController {
         for(const [phrase, command] of this.voiceConfig.commands) {
             if(normalizedTranscript.includes(phrase.toLowerCase()) {
         }
-                return command as CommandAction; }
-            }
-        }
+                return command as CommandAction;
         
         // コンテキスト固有コマンドをチェック
         const contextCommands = this.contextualCommands.get(this.currentContext);
@@ -647,9 +627,7 @@ export class VoiceInputController {
             for (const [phrase, command] of contextCommands) {
                 if(normalizedTranscript.includes(phrase.toLowerCase()) {
         }
-                    return command; }
-                }
-            }
+                    return command;
         }
         
         // 部分マッチング
@@ -674,17 +652,14 @@ export class VoiceInputController {
             for (const [phrase, command] of contextCommands) {
         }
                 allCommands.set(phrase, command); }
-            }
-        }
+}
         
         for(const [phrase, command] of allCommands) {
         
             if(this.calculateSimilarity(transcript, phrase.toLowerCase() > DEFAULT_SIMILARITY_THRESHOLD) {
         
         }
-                return command; }
-            }
-        }
+                return command;
         
         return null;
     }
@@ -699,7 +674,6 @@ export class VoiceInputController {
         
         const distance = this.levenshteinDistance(longer, shorter);
         return (longer.length - distance) / longer.length; }
-    }
     
     /**
      * レーベンシュタイン距離を計算
@@ -707,20 +681,19 @@ export class VoiceInputController {
     private levenshteinDistance(str1: string, str2: string): number { const matrix: number[][] = Array(str2.length + 1).fill(null).map(() => 
             Array(str1.length + 1).fill(null);
         
-        for (let i = 0; i <= str1.length; i++) matrix[0][i] = i;
-        for (let j = 0; j <= str2.length; j++) matrix[j][0] = j;
+        for (let, i = 0; i <= str1.length; i++) matrix[0][i] = i;
+        for (let, j = 0; j <= str2.length; j++) matrix[j][0] = j;
         
-        for(let j = 1; j <= str2.length; j++) {
+        for(let, j = 1; j <= str2.length; j++) {
         
-            for (let i = 1; i <= str1.length; i++) {
+            for (let, i = 1; i <= str1.length; i++) {
                 const indicator = str1[i - 1] === str2[j - 1] ? 0 : 1;
                 matrix[j][i] = Math.min(;
                     matrix[j][i - 1] + 1,      // insertion);
                     matrix[j - 1][i] + 1,      // deletion);
         }
                     matrix[j - 1][i - 1] + indicator  // substitution); }
-            }
-        }
+}
         
         return matrix[str2.length][str1.length];
     }
@@ -734,18 +707,22 @@ export class VoiceInputController {
         
             try {
                 handler();
-                this.stats.commandsExecuted++;'
-        
-        }'
-                console.log(`[VoiceInputController] Executed command: ${command)`'),' }'
-                this.provideFeedback('command_executed', { command ) as CommandExecutionData});'
-            } catch (error) { ''
-                console.error(`[VoiceInputController] Command execution failed:`, error');''
-                this.provideFeedback('command_failed'); }
-            }'
-        } else { ' }'
-            console.warn(`[VoiceInputController] No handler for command: ${command}`');''
-            this.provideFeedback('no_handler');
+                this.stats.commandsExecuted++;
+
+        }
+
+                console.log(`[VoiceInputController] Executed command: ${command}`'},' }
+
+                this.provideFeedback('command_executed', { command ) as CommandExecutionData});
+
+            } catch (error) {
+                console.error(`[VoiceInputController] Command execution failed:`, error);''
+                this.provideFeedback('command_failed); }'
+
+        } else { }'
+
+            console.warn(`[VoiceInputController] No, handler for, command: ${command}`);''
+            this.provideFeedback('no_handler);
         }
     }
     
@@ -783,15 +760,12 @@ export class VoiceInputController {
         utterance.volume = 0.8;
         
         this.speechSynthesis.speak(utterance); }
-    }
     
     /**
      * リスニングを切り替え
      */
     toggleListening(): void { if (this.voiceState.isListening) {
-            this.stopListening(); }
-        } else { this.startListening(); }
-        }
+            this.stopListening(); } else { this.startListening(); }
     }
     
     /**
@@ -801,9 +775,8 @@ export class VoiceInputController {
         
         try {
             this.voiceState.recognition.start();' }'
-        } catch (error) { ''
-            console.error('[VoiceInputController] Failed to start listening:', error) }
-        }
+
+        } catch (error) { console.error('[VoiceInputController] Failed to start listening:', error }
     }
     
     /**
@@ -813,45 +786,48 @@ export class VoiceInputController {
         
         try {
             this.voiceState.recognition.stop();' }'
-        } catch (error) { ''
-            console.error('[VoiceInputController] Failed to stop listening:', error) }
-        }
+
+        } catch (error) { console.error('[VoiceInputController] Failed to stop listening:', error }
     }
     
     /**
      * マイクインジケーターを更新
      */
-    private updateMicrophoneIndicator(isListening: boolean): void { if (!this.microphoneIndicator) return;'
-        '';
-        if(isListening') {'
-            '';
-            this.microphoneIndicator.style.background = 'rgba(255, 0, 0, 0.8')';''
-            this.microphoneIndicator.style.borderColor = '#ff4444';'
-        }'
-            this.microphoneIndicator.style.animation = 'pulse 1s infinite'; }'
-        } else {  ''
-            this.microphoneIndicator.style.background = 'rgba(0, 0, 0, 0.7')';''
-            this.microphoneIndicator.style.borderColor = '#ccc';' }'
-            this.microphoneIndicator.style.animation = 'none'; }
+    private updateMicrophoneIndicator(isListening: boolean): void { if (!this.microphoneIndicator) return;
+
+        if(isListening) {'
+
+            this.microphoneIndicator.style.background = 'rgba(255, 0, 0, 0.8)';''
+            this.microphoneIndicator.style.borderColor = '#ff4444';
+
         }
-    }
+
+            this.microphoneIndicator.style.animation = 'pulse 1s infinite'; }
+
+        } else {
+            this.microphoneIndicator.style.background = 'rgba(0, 0, 0, 0.7)';''
+            this.microphoneIndicator.style.borderColor = '#ccc';' }
+
+            this.microphoneIndicator.style.animation = 'none'; }
+}
     
     /**
      * コマンド履歴を更新
      */'
     private updateCommandHistory(transcript: string, confidence: number): void { ''
-        if (!this.commandHistory') return;'
-        '';
-        const entry = document.createElement('div');
+        if(!this.commandHistory) return;
+
+        const entry = document.createElement('div);
         entry.style.cssText = `;
-            margin-bottom: 5px,';
-            padding: 3px,'';
-            background: rgba(255, 255, 255, 0.1'),
+            margin-bottom: 5px,
+            padding: 3px,
+            background: rgba(255, 255, 255, 0.1),
             border-radius: 3px,
         `;
-        entry.innerHTML = ` }'
+        entry.innerHTML = ` }
+
             <div>${transcript}</div>''
-            <div style="font-size: 10px; color: #aaa;">${(confidence * 100).toFixed(1})}%</div>
+            <div style="font-size: 10px; color: #aaa;">${(confidence * 100}.toFixed(1})%</div>
         `;
         
         this.commandHistory.appendChild(entry);
@@ -861,27 +837,27 @@ export class VoiceInputController {
         if(entries.length > COMMAND_HISTORY_LIMIT) {"
             ";
         }"
-            this.commandHistory.removeChild(entries[0]"); }
+            this.commandHistory.removeChild(entries[0]); }
         }"
-        "";
+
         this.commandHistory.style.display = 'block';
         
         // 自動的に隠す
         setTimeout(() => {  ''
-            if (this.commandHistory') {' }'
+            if(this.commandHistory) {' }'
+
                 this.commandHistory.style.display = 'none'; }
-            }
-        }, COMMAND_HISTORY_DISPLAY_TIME);
+}, COMMAND_HISTORY_DISPLAY_TIME);
     }
     
     /**
      * 音声インターフェースを更新
      */'
     private updateVoiceInterface(): void { ''
-        if (!this.voiceInterface') return;'
-        '';
+        if(!this.voiceInterface) return;
+
         const commandList = this.voiceInterface.querySelector('.command-list'');''
-        const voiceStatus = this.voiceInterface.querySelector('.voice-status');
+        const voiceStatus = this.voiceInterface.querySelector('.voice-status);
         
         if(commandList) {
         
@@ -890,8 +866,10 @@ export class VoiceInputController {
                 .concat(contextCommands ? Array.from(contextCommands.keys() : []);
             
             commandList.innerHTML = commands.slice(0, COMMAND_DISPLAY_LIMIT).map(cmd => );
-        }'
-                `<div>• ${cmd)</div>`' }'
+        }
+
+                `<div>• ${cmd}</div>`' }'
+
             ').join(''});
         }
         
@@ -910,7 +888,7 @@ export class VoiceInputController {
     setContext(context: VoiceContext): void { if(isValidVoiceContext(context) {
             this.currentContext = context;
             this.updateVoiceInterface(); }
-            console.log(`[VoiceInputController] Context changed to: ${context)`});
+            console.log(`[VoiceInputController] Context, changed to: ${context}`});
         }
     }
     
@@ -919,33 +897,32 @@ export class VoiceInputController {
      */
     private provideFeedback(type: FeedbackType, data: FeedbackData = { ): void {
         // 視覚・音響フィードバック（実装省略） }
-        console.log(`[VoiceInputController] Feedback: ${type)`, data});
+        console.log(`[VoiceInputController] Feedback: ${type}`, data});
     }
     
     /**
      * 統計情報を取得
      */
     getStats(): DetailedVoiceStats { return { ...this.stats,
-            isListening: this.voiceState.isListening,
-            isInitialized: this.voiceState.isInitialized,
-            currentContext: this.currentContext,
+            isListening: this.voiceState.isListening;
+            isInitialized: this.voiceState.isInitialized;
+            currentContext: this.currentContext;
             lastCommand: this.voiceState.lastCommand, };
             confidence: this.voiceState.confidence }
-        },
-    }
+        }
     
     /**
      * 設定を更新
      */
     updateConfig(newConfig: Partial<VoiceConfig>): void { Object.assign(this.voiceConfig, newConfig);
-        '';
-        if(this.voiceState.recognition') {
+
+        if(this.voiceState.recognition) {
             this.voiceState.recognition.lang = this.voiceConfig.language;
         }
             this.voiceState.recognition.continuous = this.voiceConfig.continuousListening; }
-        }'
-        '';
-        console.log('[VoiceInputController] Configuration updated');
+        }
+
+        console.log('[VoiceInputController] Configuration, updated);
     }
     
     /**
@@ -953,22 +930,19 @@ export class VoiceInputController {
      */
     getConfig(): VoiceConfig { return { ...this.voiceConfig, };
             commands: new Map(this.voiceConfig.commands); }
-        };
-    }
+        }
     
     /**
      * 現在の音声状態を取得
      */
     getVoiceState(): Readonly<VoiceState> { return { ...this.voiceState, };
-            commandQueue: [...this.voiceState.commandQueue] }
-        },
-    }
+            commandQueue: [...this.voiceState.commandQueue]
+        }
     
     /**
      * 利用可能な音声リストを取得
      */
-    getAvailableVoices(): SpeechSynthesisVoice[] { return [...this.voiceList]; }
-    }
+    getAvailableVoices(): SpeechSynthesisVoice[] { return [...this.voiceList];
     
     /**
      * 音声を選択
@@ -978,7 +952,7 @@ export class VoiceInputController {
             
         }
             this.selectedVoice = voice; }
-            console.log(`[VoiceInputController] Voice changed to: ${voiceName)`});
+            console.log(`[VoiceInputController] Voice, changed to: ${voiceName}`});
             return true;
         }
         return false;
@@ -988,7 +962,7 @@ export class VoiceInputController {
      * カスタムコマンドハンドラーを追加
      */
     addCommandHandler(command: CommandAction, handler: CommandHandler): void { this.commandHandlers.set(command, handler); }
-        console.log(`[VoiceInputController] Custom handler added for: ${command)`});
+        console.log(`[VoiceInputController] Custom, handler added, for: ${command}`});
     }
     
     /**
@@ -996,7 +970,7 @@ export class VoiceInputController {
      */
     removeCommandHandler(command: CommandAction): boolean { const removed = this.commandHandlers.delete(command);
         if (removed) { }
-            console.log(`[VoiceInputController] Handler removed for: ${command)`});
+            console.log(`[VoiceInputController] Handler, removed for: ${command}`}');
         }
         return removed;
     }
@@ -1005,17 +979,21 @@ export class VoiceInputController {
      * 音声インターフェースの表示切り替え
      */'
     toggleVoiceInterface(show: boolean): void { ''
-        if(this.voiceInterface') {'
-            ';'
-        }'
-            this.voiceInterface.style.display = show ? 'block' : 'none'; }'
-        }''
-        if(this.microphoneIndicator') {'
-            ';'
-        }'
-            this.microphoneIndicator.style.display = show ? 'flex' : 'none'; }
+        if(this.voiceInterface) {'
+            ';
+
         }
-    }
+
+            this.voiceInterface.style.display = show ? 'block' : 'none'; }
+
+        }''
+        if(this.microphoneIndicator) {'
+            ';
+
+        }
+
+            this.microphoneIndicator.style.display = show ? 'flex' : 'none'; }
+}
     
     /**
      * リソースをクリーンアップ
@@ -1026,8 +1004,7 @@ export class VoiceInputController {
         [this.microphoneIndicator, this.commandHistory, this.voiceInterface].forEach(element => { );
             if (element) { }
                 element.remove(); }
-            }
-        });
+});
         
         this.microphoneIndicator = null;
         this.commandHistory = null;
@@ -1035,11 +1012,11 @@ export class VoiceInputController {
         
         // 音声合成を停止
         if (this.speechSynthesis) { this.speechSynthesis.cancel(); }
-        }
         
         // データをクリア
         this.commandHandlers.clear();''
         this.contextualCommands.clear()';
-        console.log('[VoiceInputController] Cleaned up'');'
+        console.log('[VoiceInputController] Cleaned, up'');
+
     }''
 }

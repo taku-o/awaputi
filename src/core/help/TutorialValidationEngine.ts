@@ -14,35 +14,28 @@ export interface GameEngine { bubbleManager?: BubbleManager;
     settingsManager?: SettingsManager;
     eventBus?: EventBus;
     }
-}
 
 export interface BubbleManager { getBubbleById(id: string): Bubble | null, }
-}
 
 export interface Bubble { id: string,
-    type: string,
-    isPopped: boolean }
-}
+    type: string;
+    isPopped: boolean ,}
 
 export interface ScoreManager { getCurrentCombo(): number;
     getCurrentScore(): number; }
-}
 
 export interface SceneManager { currentScene?: Scene;
     }
-}
 
 export interface Scene {
-    constructor: { name: string },
-}
+    constructor: { name: string }
 
 export interface SettingsManager { getSetting(key: string): any, }
-}
 
-export interface EventBus { emit(event: string, data: any): void }
-}
+export interface EventBus { emit(event: string, data: any): void ,}
 
-export interface StepAction { type: string }
+export interface StepAction {
+    type: string;
 }
 
 export interface TutorialStep { id: string,
@@ -56,28 +49,23 @@ export interface TutorialStep { id: string,
     targetSetting?: string;
     targetValue?: any;
     timeoutMessage?: string; }
-}
 
 export interface ActionResult { bubbleId?: string;
     bubbleType?: string;
     dragDistance?: number;
     [key: string]: any, }
-}
 
 export interface ValidationResult { success: boolean,
     error?: string | null;
     details?: any; }
-}
 
 export interface TutorialData { id: string,
     steps: TutorialStep[]
-    }
-}
+    ,}
 
-export interface TutorialOverlay { showError(error: string): Promise<void>,
+export interface TutorialOverlay { showError(error: string): Promise<void>;
     showTimeout(message: string): Promise<void>,
     }
-}
 
 export type ValidationFunction = (actionResult: ActionResult, step: TutorialStep, gameEngine: GameEngine) => Promise<ValidationResult>;
 export type InteractionHandler = (...args: any[]) => void;
@@ -103,7 +91,6 @@ export class TutorialValidationEngine {
         
 
     }
-    }
         this.initialize(); }
     }
     
@@ -112,9 +99,11 @@ export class TutorialValidationEngine {
      */
     initialize(): void { try {'
             this.setupValidationFunctions()';
-            this.loggingSystem.log('TutorialValidationEngineが初期化されました', 'info', 'TutorialValidationEngine'); }'
-        } catch (error) { ' }'
-            this.loggingSystem.log(`バリデーションエンジン初期化エラー: ${(error as Error'}).message}`, 'error', 'TutorialValidationEngine');
+            this.loggingSystem.log('TutorialValidationEngineが初期化されました', 'info', 'TutorialValidationEngine); }
+
+        } catch (error) { }
+
+            this.loggingSystem.log(`バリデーションエンジン初期化エラー: ${(error, as Error'}).message}`, 'error', 'TutorialValidationEngine');
         }
     }
     
@@ -122,63 +111,64 @@ export class TutorialValidationEngine {
      * バリデーション関数をセットアップ'
      */''
     setupValidationFunctions()';
-        this.validationFunctions.set('validateBubblePop', async (actionResult, step, gameEngine) => {  const bubbleManager = gameEngine? .bubbleManager;' }'
-            if (!bubbleManager') { : undefined' }'
-                return { success: false, error: 'BubbleManager not available' }
-            }
-            ';'
+        this.validationFunctions.set('validateBubblePop', async (actionResult, step, gameEngine) => {  const bubbleManager = gameEngine? .bubbleManager;' }
+
+            if(!bubbleManager) { : undefined' '
+                return { success: false, error: 'BubbleManager not available' ,}
+            ';
+
             const bubbleId = actionResult? .bubbleId;''
-            if (!bubbleId') { : undefined' }'
-                return { success: false, error: '泡を正しくクリックしてください' }
-            }
-            ';'
+            if(!bubbleId) { : undefined' '
+                return { success: false, error: '泡を正しくクリックしてください' ,}
+            ';
+
             const bubble = bubbleManager.getBubbleById(bubbleId);''
-            if(bubble && bubble.isPopped') {
+            if(bubble && bubble.isPopped) {
                 
             }
                 return { success: true }
-            }'
-            '';
-            return { success: false, error: '泡が正しく割れませんでした' }''
+
+            return { success: false, error: '泡が正しく割れませんでした' ,}''
         }');
         ';
         // 泡をドラッグするバリデーション
-        this.validationFunctions.set('validateBubbleDrag', async (actionResult, step, gameEngine) => {  ' }'
-            if (!actionResult || !actionResult.dragDistance') {' }'
-                return { success: false, error: 'ドラッグ操作が検出されませんでした' }
-            }
+        this.validationFunctions.set('validateBubbleDrag', async (actionResult, step, gameEngine) => {  ' }
+
+            if(!actionResult || !actionResult.dragDistance) {' }'
+
+                return { success: false, error: 'ドラッグ操作が検出されませんでした' ,}
             
             const minDistance = step.minDragDistance || 50;
             if (actionResult.dragDistance < minDistance) { return {  };
                     success: false,  }
                     error: `もう少し長くドラッグしてください（最小: ${minDistance}px）` 
-                },
-            }
-            ';'
+                }
+            ';
+
             return { success: true }''
         }');
         ';
         // 特殊泡を割るバリデーション
-        this.validationFunctions.set('validateSpecialBubblePop', async (actionResult, step, gameEngine) => {  const bubbleType = actionResult? .bubbleType;' }'
-            if (!bubbleType') { : undefined' }'
-                return { success: false, error: '泡の情報が取得できません' }
-            }'
-            '';
+        this.validationFunctions.set('validateSpecialBubblePop', async (actionResult, step, gameEngine) => {  const bubbleType = actionResult? .bubbleType;' }
+
+            if(!bubbleType) { : undefined' '
+                return { success: false, error: '泡の情報が取得できません' ,}
+
             const specialTypes = ['rainbow', 'pink', 'clock', 'electric', 'golden', 'frozen', 'magnetic', 'explosive', 'phantom', 'multiplier'];''
-            if (!specialTypes.includes(bubbleType)') { return { success: false, ' };'
+            if(!specialTypes.includes(bubbleType)) { return { success: false, ' };
+
                     error: '特殊な泡をクリックしてください', }
-                    details: { expectedTypes: specialTypes, actualType: bubbleType }
-                };
-            }
-            ';'
-            return { success: true, details: { bubbleType } }''
+                    details: { expectedTypes: specialTypes, actualType: bubbleType ,}
+            ';
+
+            return { success: true, details: { bubbleType ,}''
         }');
         ';
         // コンボ達成バリデーション
-        this.validationFunctions.set('validateCombo', async (actionResult, step, gameEngine) => {  const scoreManager = gameEngine? .scoreManager;' }'
-            if (!scoreManager') { : undefined' }'
-                return { success: false, error: 'ScoreManager not available' }
-            }
+        this.validationFunctions.set('validateCombo', async (actionResult, step, gameEngine) => {  const scoreManager = gameEngine? .scoreManager;' }
+
+            if(!scoreManager) { : undefined' '
+                return { success: false, error: 'ScoreManager not available' ,}
             
             const currentCombo = scoreManager.getCurrentCombo();
             const requiredCombo = step.requiredCombo || 3;
@@ -188,7 +178,7 @@ export class TutorialValidationEngine {
                 
             
             }
-                return { success: true, details: { combo: currentCombo } }
+                return { success: true, details: { combo: currentCombo ,}
             }
             
             return { success: false,  }
@@ -198,18 +188,19 @@ export class TutorialValidationEngine {
         ';
         // メニューナビゲーションバリデーション
         this.validationFunctions.set('validateMenuNavigation', async (actionResult, step, gameEngine) => {  const targetScene = step.targetScene;
-            const currentScene = gameEngine? .sceneManager?.currentScene?.constructor?.name;'
+            const currentScene = gameEngine? .sceneManager?.currentScene?.constructor?.name;
+
             ' }'
-            if (!targetScene') { : undefined' }'
-                return { success: false, error: 'ターゲットシーンが指定されていません' }
-            }
+
+            if(!targetScene) { : undefined' '
+                return { success: false, error: 'ターゲットシーンが指定されていません' ,}
             
             if(currentScene === targetScene) {
             
                 
             
             }
-                return { success: true, details: { scene: currentScene } }
+                return { success: true, details: { scene: currentScene ,}
             }
             
             return { success: false,  }
@@ -218,10 +209,10 @@ export class TutorialValidationEngine {
         }');
         ';
         // スコア達成バリデーション
-        this.validationFunctions.set('validateScore', async (actionResult, step, gameEngine) => {  const scoreManager = gameEngine? .scoreManager;' }'
-            if (!scoreManager') { : undefined' }'
-                return { success: false, error: 'ScoreManager not available' }
-            }
+        this.validationFunctions.set('validateScore', async (actionResult, step, gameEngine) => {  const scoreManager = gameEngine? .scoreManager;' }
+
+            if(!scoreManager) { : undefined' '
+                return { success: false, error: 'ScoreManager not available' ,}
             
             const currentScore = scoreManager.getCurrentScore();
             const requiredScore = step.requiredScore || 100;
@@ -231,7 +222,7 @@ export class TutorialValidationEngine {
                 
             
             }
-                return { success: true, details: { score: currentScore } }
+                return { success: true, details: { score: currentScore ,}
             }
             
             return { success: false,  }
@@ -241,28 +232,29 @@ export class TutorialValidationEngine {
         ';
         // 設定変更バリデーション
         this.validationFunctions.set('validateSettingsChange', async (actionResult, step, gameEngine) => {  const targetSetting = step.targetSetting;
-            const targetValue = step.targetValue;'
+            const targetValue = step.targetValue;
+
             ' }'
-            if (!targetSetting') {' }'
-                return { success: false, error: '変更する設定が指定されていません' }
-            }
-            ';'
+
+            if(!targetSetting) {' }'
+
+                return { success: false, error: '変更する設定が指定されていません' ,}
+            ';
+
             const settingsManager = gameEngine? .settingsManager;''
-            if (!settingsManager') { : undefined' }'
-                return { success: false, error: 'SettingsManager not available' }
-            }
+            if(!settingsManager) { : undefined' '
+                return { success: false, error: 'SettingsManager not available' ,}
             
             const currentValue = settingsManager.getSetting(targetSetting);
             if(currentValue === targetValue) {
                 
             }
-                return { success: true, details: { setting: targetSetting, value: currentValue } }
+                return { success: true, details: { setting: targetSetting, value: currentValue ,}
             }
             
             return { success: false,  }
                 error: `${targetSetting}設定を${targetValue}に変更してください` 
-            },
-        });
+            });
     }
     
     /**
@@ -271,31 +263,32 @@ export class TutorialValidationEngine {
      * @param actionResult - アクション結果
      * @returns 検証結果'
      */''
-    async validateStep(step: TutorialStep, actionResult: ActionResult'): Promise<ValidationResult> { try {'
+    async validateStep(step: TutorialStep, actionResult: ActionResult): Promise<ValidationResult> { try {'
             const validationFunc = this.validationFunctions.get(step.validationFunction || '');
             if (!validationFunc) { }
                 return { success: true }
-            }
             ';
             // バリデーション実行
-            const result = await validationFunc(actionResult, step, this.gameEngine');
+            const result = await validationFunc(actionResult, step, this.gameEngine);
             ';
             // 結果の正規化
-            if (typeof result === 'boolean'') { ' }'
-                return { success: result, error: result ? null : 'Validation failed' }
-            }
-            
+            if (typeof, result === 'boolean'') { ' }
+
+                return { success: result, error: result ? null : 'Validation failed' 
             return { success: result.success || false,
                 error: result.error || null, };
                 details: result.details || null }
-            },
-            ';'
-        } catch (error) { ' }'
-            this.loggingSystem.log(`ステップ検証エラー: ${step.id} - ${(error as Error'}).message}`, 'error', 'TutorialValidationEngine');'
-            return { success: false,' };'
-                error: (error as Error').message || 'Validation error occurred' }
-            },
-        }
+            };
+            ';
+
+        } catch (error) { }
+
+            this.loggingSystem.log(`ステップ検証エラー: ${step.id} - ${(error, as Error'}).message}`, 'error', 'TutorialValidationEngine');
+
+            return { success: false,' };
+
+                error: (error, as Error').message || 'Validation error occurred' }
+            }
     }
     
     /**
@@ -307,29 +300,27 @@ export class TutorialValidationEngine {
             if(step.validationFunction) {
                 
             }
-                return step.validationFunction; }
-            }
+                return step.validationFunction;
             
             // アクションタイプに基づいて自動決定
             const actionType = step.action? .type;''
-            if (!actionType') return null;
+            if(!actionType) return null;
              : undefined';
             const actionToValidation: Record<string, string> = { ''
-                'click_bubble': 'validateBubblePop','';
-                'drag_bubble': 'validateBubbleDrag','';
-                'click_special_bubble': 'validateSpecialBubblePop','';
-                'achieve_combo': 'validateCombo','';
-                'navigate_menu': 'validateMenuNavigation','';
-                'achieve_score': 'validateScore','';
-                'change_setting': 'validateSettingsChange' }
-            };
+                'click_bubble': 'validateBubblePop',
+                'drag_bubble': 'validateBubbleDrag',
+                'click_special_bubble': 'validateSpecialBubblePop',
+                'achieve_combo': 'validateCombo',
+                'navigate_menu': 'validateMenuNavigation',
+                'achieve_score': 'validateScore',
+                'change_setting': 'validateSettingsChange' };
             
-            return actionToValidation[actionType] || null;'
-        } catch (error) { ' }'
-            this.loggingSystem.log(`バリデーション関数決定エラー: ${(error as Error'}).message}`, 'error', 'TutorialValidationEngine');
+            return actionToValidation[actionType] || null;
+
+        } catch (error) { }
+
+            this.loggingSystem.log(`バリデーション関数決定エラー: ${(error, as Error'}).message}`, 'error', 'TutorialValidationEngine');
             return null;
-        }
-    }
     
     /**
      * 待機アクションを決定
@@ -337,29 +328,28 @@ export class TutorialValidationEngine {
      * @returns 待機アクション
      */
     determineWaitAction(step: TutorialStep): string { try {
-            if ((step as any).waitAction) {
-                return (step as any).waitAction; }
-            }
-            ';'
+            if ((step, as any).waitAction) {
+                return (step, as any).waitAction; }
+            ';
+
             const actionType = step.action? .type;''
-            if (!actionType') return 'wait_click';
+            if(!actionType) return 'wait_click';
              : undefined';
             const actionToWait: Record<string, string> = { ''
-                'click_bubble': 'wait_bubble_click','';
-                'drag_bubble': 'wait_bubble_drag','';
-                'click_special_bubble': 'wait_special_bubble_click','';
-                'achieve_combo': 'wait_combo','';
-                'navigate_menu': 'wait_scene_change','';
-                'achieve_score': 'wait_score_change','';
-                'change_setting': 'wait_setting_change' }
-            };'
-            '';
-            return actionToWait[actionType] || 'wait_click';'
-        } catch (error) { ' }'
-            this.loggingSystem.log(`待機アクション決定エラー: ${(error as Error'}).message}`, 'error', 'TutorialValidationEngine'');''
+                'click_bubble': 'wait_bubble_click',
+                'drag_bubble': 'wait_bubble_drag',
+                'click_special_bubble': 'wait_special_bubble_click',
+                'achieve_combo': 'wait_combo',
+                'navigate_menu': 'wait_scene_change',
+                'achieve_score': 'wait_score_change',
+                'change_setting': 'wait_setting_change' };
+
+            return actionToWait[actionType] || 'wait_click';
+
+        } catch (error) { }
+
+            this.loggingSystem.log(`待機アクション決定エラー: ${(error, as Error'}).message}`, 'error', 'TutorialValidationEngine'');''
             return 'wait_click';
-        }
-    }
     
     /**
      * インタラクションハンドラーを追加
@@ -367,20 +357,17 @@ export class TutorialValidationEngine {
      * @param handler - ハンドラー関数
      */
     addInteractionHandler(eventType: string, handler: InteractionHandler): void { this.interactionHandlers.set(eventType, handler); }
-    }
     
     /**
      * インタラクションハンドラーを削除
      * @param eventType - イベントタイプ
      */
     removeInteractionHandler(eventType: string): void { this.interactionHandlers.delete(eventType); }
-    }
     
     /**
      * すべてのインタラクションハンドラーをクリア
      */
     clearInteractionHandlers(): void { this.interactionHandlers.clear(); }
-    }
     
     /**
      * ステップタイマーをセット
@@ -406,7 +393,6 @@ export class TutorialValidationEngine {
     clearStepTimer(): void { if (this.stepTimer) {
             clearTimeout(this.stepTimer);
             this.stepTimer = null; }
-        }
     }
     
     /**
@@ -419,18 +405,18 @@ export class TutorialValidationEngine {
     async showValidationError(error: string, tutorialOverlay?: TutorialOverlay, currentTutorial?: TutorialData, currentStep?: number): Promise<void>;
         try { if (tutorialOverlay) {
                 await tutorialOverlay.showError(error); }
-            }
             ';
             // エラーイベントの発火
-            if(this.gameEngine && this.gameEngine.eventBus') {'
-                '';
+            if(this.gameEngine && this.gameEngine.eventBus) { '
+
                 this.gameEngine.eventBus.emit('tutorial_validation_error', {
                     tutorialId: currentTutorial? .id, : undefined);
-                    stepId: currentTutorial? .steps[currentStep || 0]?.id, : undefined)
-            }
-                    error: error); }'
-            } catch (err) { ' }'
-            this.loggingSystem.log(`バリデーションエラー表示失敗: ${(err as Error'}).message}`, 'error', 'TutorialValidationEngine');
+                    stepId: currentTutorial? .steps[currentStep || 0]?.id, : undefined 
+                    error: error); ,}
+
+            } catch (err) { }
+
+            this.loggingSystem.log(`バリデーションエラー表示失敗: ${(err, as Error'}).message}`, 'error', 'TutorialValidationEngine');
         }
     }
     
@@ -440,7 +426,8 @@ export class TutorialValidationEngine {
      * @param tutorialOverlay - チュートリアルオーバーレイ
      * @param currentTutorial - 現在のチュートリアル'
      */''
-    async showTimeoutMessage(step: TutorialStep, tutorialOverlay?: TutorialOverlay, currentTutorial?: TutorialData'): Promise<void>;'
+    async showTimeoutMessage(step: TutorialStep, tutorialOverlay?: TutorialOverlay, currentTutorial?: TutorialData): Promise<void>;
+
         try {'
             const message = step.timeoutMessage || 'このステップの制限時間を超過しました。もう一度お試しください。';
             if(tutorialOverlay) {
@@ -450,15 +437,16 @@ export class TutorialValidationEngine {
             }
             ';
             // タイムアウトイベントの発火
-            if(this.gameEngine && this.gameEngine.eventBus') {'
-                '';
+            if(this.gameEngine && this.gameEngine.eventBus) { '
+
                 this.gameEngine.eventBus.emit('tutorial_step_timeout', {
                     tutorialId: currentTutorial? .id, : undefined);
-                    stepId: step.id,)
-            }
-                    stepIndex: step.index); }'
-            } catch (error) { ' }'
-            this.loggingSystem.log(`タイムアウトメッセージ表示失敗: ${(error as Error'}).message}`, 'error', 'TutorialValidationEngine');
+                    stepId: step.id, }
+                    stepIndex: step.index); }
+
+            } catch (error) { }
+
+            this.loggingSystem.log(`タイムアウトメッセージ表示失敗: ${(error, as Error'}).message}`, 'error', 'TutorialValidationEngine');
         }
     }
     
@@ -469,9 +457,12 @@ export class TutorialValidationEngine {
      */
     registerValidationFunction(name: string, func: ValidationFunction): void { try {
             this.validationFunctions.set(name, func);' }'
-            this.loggingSystem.log(`カスタムバリデーション関数が登録されました: ${name')`, 'info', 'TutorialValidationEngine'});'
-        } catch (error) { ' }'
-            this.loggingSystem.log(`バリデーション関数登録エラー: ${(error as Error'}).message}`, 'error', 'TutorialValidationEngine');
+
+            this.loggingSystem.log(`カスタムバリデーション関数が登録されました: ${name}`, 'info', 'TutorialValidationEngine'});
+
+        } catch (error) { }
+
+            this.loggingSystem.log(`バリデーション関数登録エラー: ${(error, as Error'}).message}`, 'error', 'TutorialValidationEngine');
         }
     }
     
@@ -481,9 +472,12 @@ export class TutorialValidationEngine {
      */
     unregisterValidationFunction(name: string): void { try {
             this.validationFunctions.delete(name);' }'
-            this.loggingSystem.log(`バリデーション関数が削除されました: ${name')`, 'info', 'TutorialValidationEngine'});'
-        } catch (error) { ' }'
-            this.loggingSystem.log(`バリデーション関数削除エラー: ${(error as Error'}).message}`, 'error', 'TutorialValidationEngine');
+
+            this.loggingSystem.log(`バリデーション関数が削除されました: ${name}`, 'info', 'TutorialValidationEngine'});
+
+        } catch (error) { }
+
+            this.loggingSystem.log(`バリデーション関数削除エラー: ${(error, as Error'}).message}`, 'error', 'TutorialValidationEngine');
         }
     }
     
@@ -492,20 +486,21 @@ export class TutorialValidationEngine {
      * @returns バリデーション関数名の配列
      */
     getRegisteredValidationFunctions(): string[] { return Array.from(this.validationFunctions.keys(); }
-    }
     
     /**
      * リソースをクリーンアップ
      */
     destroy(): void { try {
-            this.clearStepTimer();'
+            this.clearStepTimer();
+
             this.clearInteractionHandlers();''
             this.validationFunctions.clear()';
-            this.loggingSystem.log('TutorialValidationEngineがクリーンアップされました', 'info', 'TutorialValidationEngine'); }'
-        } catch (error) { ' }'
-            this.loggingSystem.log(`クリーンアップエラー: ${(error as Error'}).message}`, 'error', 'TutorialValidationEngine');
+            this.loggingSystem.log('TutorialValidationEngineがクリーンアップされました', 'info', 'TutorialValidationEngine); }
+
+        } catch (error) { }
+
+            this.loggingSystem.log(`クリーンアップエラー: ${(error, as Error'}).message}`, 'error', 'TutorialValidationEngine');
         }
-    }
 }
 
 // シングルトンインスタンス管理
@@ -519,7 +514,6 @@ let tutorialValidationEngineInstance: TutorialValidationEngine | null = null,
  */
 export function getTutorialValidationEngine(gameEngine: GameEngine, loggingSystem?: LoggingSystem): TutorialValidationEngine { if (!tutorialValidationEngineInstance) {
         tutorialValidationEngineInstance = new TutorialValidationEngine(gameEngine, loggingSystem); }
-    }
     return tutorialValidationEngineInstance;
 }
 
@@ -530,10 +524,9 @@ export function getTutorialValidationEngine(gameEngine: GameEngine, loggingSyste
  * @returns 新しいシングルトンインスタンス
  */
 export function reinitializeTutorialValidationEngine(gameEngine: GameEngine, loggingSystem?: LoggingSystem): TutorialValidationEngine { if (tutorialValidationEngineInstance) {
-        tutorialValidationEngineInstance.destroy(); }
-    }''
-    tutorialValidationEngineInstance = new TutorialValidationEngine(gameEngine, loggingSystem');
+        tutorialValidationEngineInstance.destroy(); }''
+    tutorialValidationEngineInstance = new TutorialValidationEngine(gameEngine, loggingSystem);
     return tutorialValidationEngineInstance;
-}'
-'';
+}
+
 export default TutorialValidationEngine;

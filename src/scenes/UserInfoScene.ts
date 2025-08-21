@@ -1,5 +1,5 @@
 /**
- * ユーザー情報画面シーン (Main Controller Pattern)
+ * ユーザー情報画面シーン (Main, Controller Pattern)
  * 既存コンポーネントシステムを活用し、軽量なコントローラーとして機能
  */
 import { Scene } from '../core/Scene';
@@ -44,7 +44,6 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
     private userAchievementDisplay!: UserAchievementDisplay;
     private userDataExporter!: UserDataExporter;
     private userHelpIntegration!: UserHelpIntegration;
-    ;
     // レガシー互換性プロパティ
     private lastCleanupTime: number = Date.now(''';
     public currentTab: string = 'profile',
@@ -58,12 +57,13 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
         this.initializeControllers();
         this.initializeComponentSystem();
         this.initializeUserComponents();
-        ;
         // レガシー互換性プロパティ
         this.lastCleanupTime = Date.now();
-    }'
-    }'
-        console.log('[UserInfoScene] Main Controller Pattern初期化完了'); }
+    ,}
+
+    }
+
+        console.log('[UserInfoScene] Main, Controller Pattern初期化完了'); }'
     }
     
     /**
@@ -75,10 +75,9 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
         
         // サブコントローラーの初期化
         this.uiController = new UserInterfaceController(this.gameEngine, this.eventBus, this.sceneState);''
-        this.dataManager = new UserDataManager(this.gameEngine, this.eventBus, this.sceneState');'
-        '';
-        console.log('[UserInfoScene] メインコントローラーを初期化しました'); }
-    }
+        this.dataManager = new UserDataManager(this.gameEngine, this.eventBus, this.sceneState);
+
+        console.log('[UserInfoScene] メインコントローラーを初期化しました'); }'
     
     /**
      * コンポーネントシステムの初期化
@@ -87,8 +86,8 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
         this.dialogManager = new ScenesDialogManager(this.gameEngine, this.eventBus, this.sceneState);
         ';
         // ダイアログコンポーネントを登録
-        this.dialogManager.registerDialog('username', UsernameDialog');''
-        this.dialogManager.registerDialog('export', ScenesExportDialog');''
+        this.dialogManager.registerDialog('username', UsernameDialog);''
+        this.dialogManager.registerDialog('export', ScenesExportDialog);''
         this.dialogManager.registerDialog('import', ScenesImportDialog);
         
         // 専用コンポーネントの初期化
@@ -98,7 +97,6 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
         
         // レガシー互換性の設定
         this.setupLegacyCompatibility(); }
-    }
     
     /**
      * ユーザーコンポーネントの初期化
@@ -109,7 +107,6 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
         this.userAchievementDisplay = new UserAchievementDisplay(this.gameEngine, this.eventBus, this.sceneState);
         this.userDataExporter = new UserDataExporter(this.gameEngine, this.eventBus, this.sceneState);
         this.userHelpIntegration = new UserHelpIntegration(this.gameEngine, this.eventBus, this.sceneState); }
-    }
     
     /**
      * レガシー互換性のセットアップ
@@ -118,15 +115,19 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
         this.currentTab = 'profile';
         this.isDialogOpen = false;
         this.activeDialog = null;
-        ';'
-        // UIコントローラーとの同期')'
-        this.eventBus.on('tabSwitched', (tabId: string) => { this.currentTab = tabId;' }'
-        }');'
-        '';
-        this.eventBus.on('dialogOpened', (dialogType: string) => {  this.isDialogOpen = true; }'
+        ';
+
+        // UIコントローラーとの同期)'
+        this.eventBus.on('tabSwitched', (tabId: string) => { this.currentTab = tabId;' }
+
+        }');
+
+        this.eventBus.on('dialogOpened', (dialogType: string) => {  this.isDialogOpen = true; }
+
             this.activeDialog = dialogType;' }'
-        }');'
-        '';
+
+        }');
+
         this.eventBus.on('dialogClosed', () => {  this.isDialogOpen = false; }
             this.activeDialog = null; }
         });
@@ -148,9 +149,9 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
                 
             }
                 this.dialogManager.render(context);' }'
-            } catch (error) { ''
+
+            } catch (error) {
             console.error('[UserInfoScene] レンダリングエラー:', error); }
-        }
     }
     
     update(deltaTime: number): void { try {
@@ -163,9 +164,9 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
             // 定期クリーンアップ
             this.performPeriodicCleanup();
             ' }'
-        } catch (error) { ''
+
+        } catch (error) {
             console.error('[UserInfoScene] 更新エラー:', error); }
-        }
     }
     
     handleClick(x: number, y: number): void { try {
@@ -177,9 +178,9 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
                 
             }
                 this.eventHandler.handleClick(x, y);' }'
-            } catch (error) { ''
+
+            } catch (error) {
             console.error('[UserInfoScene] クリック処理エラー:', error); }
-        }
     }
     
     handleKeyDown(key: string): void { try {
@@ -191,9 +192,9 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
                 
             }
                 this.eventHandler.handleKeyDown(key);' }'
-            } catch (error) { ''
+
+            } catch (error) {
             console.error('[UserInfoScene] キー処理エラー:', error); }
-        }
     }
     
     // ========================================
@@ -201,33 +202,25 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
     // ========================================
     
     switchTab(tabId: string): void { this.uiController.switchTab(tabId); }
-    }
-    '';
-    openDialog(dialogType: string'): void { ''
+
+    openDialog(dialogType: string): void { ''
         this.eventBus.emit('openDialog', dialogType); }
-    }'
-    '';
+
     closeDialog()';
-        this.eventBus.emit('closeDialog');
+        this.eventBus.emit('closeDialog);
     }
     
     async getUserProfile(): Promise<any> { return await this.dataManager.getUserProfile(); }
-    }
     
     async getUserStatistics(): Promise<any> { return await this.dataManager.getUserStatistics(); }
-    }
     
     async getUserAchievements(): Promise<any> { return await this.dataManager.getUserAchievements(); }
-    }
     
     async updateUsername(newUsername: string): Promise<any> { return await this.dataManager.updateUsername(newUsername); }
-    }
     
     async exportUserData(): Promise<any> { return await this.dataManager.exportUserData(); }
-    }
     
     async importUserData(importData: any): Promise<any> { return await this.dataManager.importUserData(importData); }
-    }
     
     // ========================================
     // 内部メソッド
@@ -237,13 +230,11 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
      * コンポーネントの更新
      */
     private updateComponents(deltaTime: number): void { // タブマネージャーの更新
-        if (this.tabManager && (this.tabManager as any).update) {
-            (this.tabManager as any).update(deltaTime); }
-        }
+        if (this.tabManager && (this.tabManager, as any).update) {
+            (this.tabManager, as any).update(deltaTime); }
         
         // ダイアログマネージャーの更新
-        if (this.dialogManager && (this.dialogManager as any).update) { (this.dialogManager as any).update(deltaTime); }
-        }
+        if (this.dialogManager && (this.dialogManager, as any).update) { (this.dialogManager, as any).update(deltaTime); }
     }
     
     /**
@@ -254,8 +245,7 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
             this.cleanup();
         }
             this.lastCleanupTime = now; }
-        }
-    }
+}
     
     /**
      * クリーンアップ処理
@@ -265,24 +255,24 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
             if(this.dialogManager) {
                 
             }
-                (this.dialogManager as any).cleanup(); }
+                (this.dialogManager, as any).cleanup(); }
             }
             
             // コントローラーのクリーンアップ
-            if (this.uiController) { (this.uiController as any).cleanup(); }
-            }
+            if (this.uiController) { (this.uiController, as any).cleanup(); }
             
             if(this.dataManager) {
-            ';'
-                '';
-                (this.dataManager as any).cleanup()';
+            ';
+
+                (this.dataManager, as any).cleanup()';
             console.log('[UserInfoScene] 定期クリーンアップ完了');
             
-            }'
+            }
+
             ' }'
-        } catch (error) { ''
+
+        } catch (error) {
             console.error('[UserInfoScene] クリーンアップエラー:', error); }
-        }
     }
     
     /**
@@ -294,13 +284,15 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
             
             // イベントリスナーの削除
             if(this.eventBus) {
-                '';
+
                 this.eventBus.removeAllListeners()';
             console.log('[UserInfoScene] シーン破棄完了');
-            }'
+            }
+
             ' }'
-        } catch (error) { ''
-            console.error('[UserInfoScene] シーン破棄エラー:', error'); }
-        }'
+
+        } catch (error) {
+            console.error('[UserInfoScene] シーン破棄エラー:', error); }
+
     }''
 }

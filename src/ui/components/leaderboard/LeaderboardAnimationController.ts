@@ -11,114 +11,105 @@ import type { ErrorHandler } from '../../../utils/ErrorHandler.js';
  * Game engine interface
  */
 interface GameEngine { // Add specific properties/methods as needed }
-}
 
 /**
  * Animation configuration interface
  */
 interface AnimationConfig { fadeSpeed: number,
-    scrollSpeed: number,
-    hoverScale: number,
-    selectScale: number,
-    entryHeight: number,
-    transitionDuration: number,
-    easingFunction: string,
-    maxScrollVelocity: number,
-    scrollDamping: number }
-}
+    scrollSpeed: number;
+    hoverScale: number;
+    selectScale: number;
+    entryHeight: number;
+    transitionDuration: number;
+    easingFunction: string;
+    maxScrollVelocity: number;
+    scrollDamping: number ,}
 
 /**
  * Entry animation interface
  */
-interface EntryAnimation { startTime: number,
-    duration: number,
-    startValue: number,
-    endValue: number,
-    currentValue: number,
-    easing: string,
+interface EntryAnimation { startTime: number;
+    duration: number;
+    startValue: number;
+    endValue: number;
+    currentValue: number;
+    easing: string;
     onComplete: (() => void) | null }
 }
 
 /**
  * Hover animation interface
  */
-interface HoverAnimation { startTime: number,
-    duration: number,
-    startScale: number,
-    targetScale: number,
-    currentScale: number,
-    startOpacity: number,
-    targetOpacity: number,
-    currentOpacity: number,
+interface HoverAnimation { startTime: number;
+    duration: number;
+    startScale: number;
+    targetScale: number;
+    currentScale: number;
+    startOpacity: number;
+    targetOpacity: number;
+    currentOpacity: number;
     persistent: boolean }
-}
 
 /**
  * Select animation interface
  */
-interface SelectAnimation { startTime: number,
-    duration: number,
-    maxIntensity: number,
-    currentIntensity: number,
+interface SelectAnimation { startTime: number;
+    duration: number;
+    maxIntensity: number;
+    currentIntensity: number;
     type: string }
-}
 
 /**
  * Animation state interface
  */
-interface AnimationState { scrollOffset: number,
-    targetScrollOffset: number,
-    scrollVelocity: number,
-    isScrolling: boolean,
-    fadeOpacity: number,
-    targetFadeOpacity: number,
+interface AnimationState { scrollOffset: number;
+    targetScrollOffset: number;
+    scrollVelocity: number;
+    isScrolling: boolean;
+    fadeOpacity: number;
+    targetFadeOpacity: number;
     entryAnimations: Map<string, EntryAnimation>;
     hoverAnimations: Map<string, HoverAnimation>;
     selectAnimations: Map<string, SelectAnimation> }
-}
 
 /**
  * Interaction state interface
  */
 interface InteractionState { hoveredEntry: any | null,
-    hoveredButton: any | null,
-    selectedEntry: any | null,
-    lastHoverTime: number,
-    lastClickTime: number,
-    hoverDelay: number }
-}
+    hoveredButton: any | null;
+    selectedEntry: any | null;
+    lastHoverTime: number;
+    lastClickTime: number;
+    hoverDelay: number ,}
 
 /**
  * Scroll configuration interface
  */
-interface ScrollConfig { wheelSensitivity: number,
+interface ScrollConfig { wheelSensitivity: number;
     touchSensitivity: number, }
     scrollBounds: { min: number; max: number },
-    snapToEntry: boolean,
-    smoothScrolling: boolean,
-    momentumScrolling: boolean,
+    snapToEntry: boolean;
+    smoothScrolling: boolean;
+    momentumScrolling: boolean;
 }
 
 /**
  * Performance metrics interface
  */
 interface PerformanceMetrics { frameCount: number,
-    averageFPS: number,
-    lastFrameTime: number,
-    animationLoad: number }
-}
+    averageFPS: number;
+    lastFrameTime: number;
+    animationLoad: number ,}
 
 /**
  * Scroll options interface
  */
 interface ScrollOptions { isTouchEvent?: boolean; }
-}
 
 /**
  * Hover options interface
  */
 interface HoverOptions { targetOpacity?: number; }
-}
 
 /**
  * Select animation options interface
@@ -126,7 +117,6 @@ interface HoverOptions { targetOpacity?: number; }
 interface SelectAnimationOptions { duration?: number;
     intensity?: number;
     type?: string; }
-}
 
 /**
  * Entry animation config interface
@@ -135,19 +125,18 @@ interface EntryAnimationConfig { duration?: number;
     startValue?: number;
     endValue?: number;
     easing?: string;''
-    onComplete?: (') => void; }
+    onComplete?: (') => void; }'
 }
 
 /**
  * Performance info interface
  */
 interface PerformanceInfo extends PerformanceMetrics { activeAnimations: {
-        entries: number,
-        hovers: number,
-        selects: number,
-        total: number }
-    },
-    scrolling: boolean,
+        entries: number;
+        hovers: number;
+        selects: number;
+        total: number };
+    scrolling: boolean;
 }
 
 /**
@@ -156,8 +145,7 @@ interface PerformanceInfo extends PerformanceMetrics { activeAnimations: {
 interface UpdateConfig { animationConfig?: Partial<AnimationConfig>;
     scrollConfig?: Partial<ScrollConfig>;
     }
-}'
-'';
+
 type EasingType = 'linear' | 'easeInQuad' | 'easeOutQuad' | 'easeInOutQuad' | 'easeInCubic' | 'easeOutCubic' | 'easeInOutCubic' | 'easeOutBounce' | 'easeOutQuart';
 
 export class LeaderboardAnimationController {
@@ -166,43 +154,38 @@ export class LeaderboardAnimationController {
     // アニメーション設定
     private animationConfig: AnimationConfig = {
         fadeSpeed: 0.1;
-        scrollSpeed: 0.2,
-        hoverScale: 1.05,
-        selectScale: 1.1,
-        entryHeight: 50,
-        transitionDuration: 300,'';
-        easingFunction: 'easeInOutCubic',
-        maxScrollVelocity: 10,
-        scrollDamping: 0.85 }
-    },
-    
+        scrollSpeed: 0.2;
+        hoverScale: 1.05;
+        selectScale: 1.1;
+        entryHeight: 50;
+        transitionDuration: 300,
+        easingFunction: 'easeInOutCubic';
+        maxScrollVelocity: 10;
+        scrollDamping: 0.85 ,};
     // アニメーション状態
     private animationState: AnimationState = { scrollOffset: 0
-        targetScrollOffset: 0,
-        scrollVelocity: 0,
-        isScrolling: false,
-        fadeOpacity: 1.0,
-        targetFadeOpacity: 1.0,
-        entryAnimations: new Map(),
-        hoverAnimations: new Map(),
-        selectAnimations: new Map() }
-    };
+        targetScrollOffset: 0;
+        scrollVelocity: 0;
+        isScrolling: false;
+        fadeOpacity: 1.0;
+        targetFadeOpacity: 1.0;
+        entryAnimations: new Map();
+        hoverAnimations: new Map();
+        selectAnimations: new Map( };
     
     // ホバー・選択状態
     private interactionState: InteractionState = { hoveredEntry: null
-        hoveredButton: null,
-        selectedEntry: null,
-        lastHoverTime: 0,
-        lastClickTime: 0,
-        hoverDelay: 100 // ms }
-    },
-    
+        hoveredButton: null;
+        selectedEntry: null;
+        lastHoverTime: 0;
+        lastClickTime: 0;
+        hoverDelay: 100 // ms };
     // スクロール制御
     private scrollConfig: ScrollConfig = { wheelSensitivity: 1.0
         touchSensitivity: 1.5 }
-        scrollBounds: { min: 0, max: 0 },
-        snapToEntry: false,
-        smoothScrolling: true,
+        scrollBounds: { min: 0, max: 0 ,},
+        snapToEntry: false;
+        smoothScrolling: true;
         momentumScrolling: true;
     },
     
@@ -211,18 +194,15 @@ export class LeaderboardAnimationController {
     private isAnimating: boolean = false;
     // パフォーマンス監視
     private performanceMetrics: PerformanceMetrics = { frameCount: 0
-        averageFPS: 60,
-        lastFrameTime: 0,
-        animationLoad: 0 }
-    },
-
+        averageFPS: 60;
+        lastFrameTime: 0;
+        animationLoad: 0 };
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
         this.errorHandler = getErrorHandler();
         
 
-    }
     }
         this.initialize(); }
     }
@@ -233,10 +213,10 @@ export class LeaderboardAnimationController {
     initialize(): void { try {
             // アニメーションループを開始
             this.startAnimationLoop()';
-            console.log('[LeaderboardAnimationController] Animation controller initialized');' }'
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'LeaderboardAnimationController.initialize'); }
-        }
+            console.log('[LeaderboardAnimationController] Animation, controller initialized');' }
+
+        } catch (error) {
+            this.errorHandler.handleError(error, 'LeaderboardAnimationController.initialize); }'
     }
     
     /**
@@ -244,7 +224,6 @@ export class LeaderboardAnimationController {
      */
     startAnimationLoop(): void { if (this.animationFrame) {
             cancelAnimationFrame(this.animationFrame); }
-        }
         
         const animate = (currentTime: number) => {  this.updateAnimations(currentTime);
             this.updatePerformanceMetrics(currentTime);
@@ -252,7 +231,6 @@ export class LeaderboardAnimationController {
             if(this.isAnimating || this.hasActiveAnimations() { }
                 this.animationFrame = requestAnimationFrame(animate); }
             } else { this.animationFrame = null; }
-            }
         };
         
         this.isAnimating = true;
@@ -267,8 +245,7 @@ export class LeaderboardAnimationController {
             cancelAnimationFrame(this.animationFrame);
         }
             this.animationFrame = null; }
-        }
-    }
+}
     
     /**
      * アニメーションを更新
@@ -290,9 +267,9 @@ export class LeaderboardAnimationController {
             // 選択アニメーション
             this.updateSelectAnimations(currentTime);
             ' }'
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'LeaderboardAnimationController.updateAnimations'); }
-        }
+
+        } catch (error) {
+            this.errorHandler.handleError(error, 'LeaderboardAnimationController.updateAnimations); }'
     }
     
     /**
@@ -319,12 +296,10 @@ export class LeaderboardAnimationController {
                 this.scrollConfig.scrollBounds.min);
                 Math.min(this.scrollConfig.scrollBounds.max, this.animationState.scrollOffset);
             
-            this.animationState.isScrolling = true; }
-        } else {  this.animationState.scrollOffset = target;
+            this.animationState.isScrolling = true; } else {  this.animationState.scrollOffset = target;
             this.animationState.scrollVelocity = 0; }
             this.animationState.isScrolling = false; }
-        }
-    }
+}
     
     /**
      * フェードアニメーションを更新
@@ -334,9 +309,7 @@ export class LeaderboardAnimationController {
         
         if (Math.abs(current - target) > 0.01) {
             const diff = target - current;
-            this.animationState.fadeOpacity += diff * this.animationConfig.fadeSpeed; }
-        } else { this.animationState.fadeOpacity = target; }
-        }
+            this.animationState.fadeOpacity += diff * this.animationConfig.fadeSpeed; } else { this.animationState.fadeOpacity = target; }
     }
     
     /**
@@ -365,8 +338,7 @@ export class LeaderboardAnimationController {
                 }
                 this.animationState.entryAnimations.delete(entryId);
             }
-        }
-    }
+}
     
     /**
      * ホバーアニメーションを更新
@@ -374,9 +346,9 @@ export class LeaderboardAnimationController {
      */
     updateHoverAnimations(currentTime: number): void { for(const [elementId, animation] of this.animationState.hoverAnimations.entries() {
             const elapsed = currentTime - animation.startTime;''
-            const progress = Math.min(elapsed / animation.duration, 1');'
-            '';
-            const easedProgress = this.applyEasing(progress, 'easeOutQuart');
+            const progress = Math.min(elapsed / animation.duration, 1);
+
+            const easedProgress = this.applyEasing(progress, 'easeOutQuart);
             
             // スケール値を更新
             animation.currentScale = this.interpolate(;
@@ -399,8 +371,7 @@ export class LeaderboardAnimationController {
             
             }
                     this.animationState.hoverAnimations.delete(elementId); }
-                }
-            }
+}
         }
     }
     
@@ -410,9 +381,9 @@ export class LeaderboardAnimationController {
      */
     updateSelectAnimations(currentTime: number): void { for(const [elementId, animation] of this.animationState.selectAnimations.entries() {
             const elapsed = currentTime - animation.startTime;''
-            const progress = Math.min(elapsed / animation.duration, 1');'
-            '';
-            const easedProgress = this.applyEasing(progress, 'easeOutBounce');
+            const progress = Math.min(elapsed / animation.duration, 1);
+
+            const easedProgress = this.applyEasing(progress, 'easeOutBounce);
             
             // 選択効果を更新
             animation.currentIntensity = this.interpolate(;
@@ -426,8 +397,7 @@ export class LeaderboardAnimationController {
             
             }
                 this.animationState.selectAnimations.delete(elementId); }
-            }
-        }
+}
     }
     
     /**
@@ -437,7 +407,7 @@ export class LeaderboardAnimationController {
      */
     scroll(deltaY: number, options: ScrollOptions = { ): void {
         try {
-            const sensitivity = options.isTouchEvent ?   : undefined;
+            const sensitivity = options.isTouchEvent ?   : undefined
                 this.scrollConfig.touchSensitivity: this.scrollConfig.wheelSensitivity,
             
             const scrollAmount = deltaY * sensitivity;
@@ -459,13 +429,11 @@ export class LeaderboardAnimationController {
             
             // スナップ処理
             if (this.scrollConfig.snapToEntry) { this.snapToNearestEntry(); }
-            }
             
             this.startAnimationLoop();
-            '';
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'LeaderboardAnimationController.scroll'); }
-        }
+
+        } catch (error) {
+            this.errorHandler.handleError(error, 'LeaderboardAnimationController.scroll); }'
     }
     
     /**
@@ -476,14 +444,13 @@ export class LeaderboardAnimationController {
         const nearestEntry = Math.round(currentOffset / entryHeight);
         
         this.animationState.targetScrollOffset = nearestEntry * entryHeight; }
-    }
     
     /**
      * ホバー開始
      * @param {string|Object} target - ホバー対象
      * @param {Object} options - オプション'
      */''
-    startHover(target: string | { id: string }, options: HoverOptions = { )'): void {'
+    startHover(target: string | { id: string }, options: HoverOptions = { )): void {'
         try {'
             const targetId = typeof target === 'string' ? target: target.id,
             const currentTime = Date.now();
@@ -500,27 +467,26 @@ export class LeaderboardAnimationController {
             
             // ホバーアニメーション開始
             this.animationState.hoverAnimations.set(targetId, { startTime: currentTime,
-                duration: this.animationConfig.transitionDuration,
-                startScale: 1.0,
-                targetScale: this.animationConfig.hoverScale,
-                currentScale: 1.0,
+                duration: this.animationConfig.transitionDuration;
+                startScale: 1.0;
+                targetScale: this.animationConfig.hoverScale;
+                currentScale: 1.0;
                 startOpacity: 1.0);
                 targetOpacity: options.targetOpacity || 1.0);
                 currentOpacity: 1.0,);
-                persistent: true),
-            
+                persistent: true);
             this.startAnimationLoop();
-            ' }'
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'LeaderboardAnimationController.startHover'); }
-        }
+            ' ,}'
+
+        } catch (error) {
+            this.errorHandler.handleError(error, 'LeaderboardAnimationController.startHover); }'
     }
     
     /**
      * ホバー終了
      * @param {string|Object} target - ホバー対象'
      */''
-    endHover(target: string | { id: string )'): void {'
+    endHover(target: string | { id: string )): void {'
         try {'
             const targetId = typeof target === 'string' ? target: target.id,
             const currentTime = Date.now();
@@ -531,23 +497,21 @@ export class LeaderboardAnimationController {
             const existingAnimation = this.animationState.hoverAnimations.get(targetId);
             if(existingAnimation) {
                 this.animationState.hoverAnimations.set(targetId, {
-                    startTime: currentTime,
-                    duration: this.animationConfig.transitionDuration,
-                    startScale: existingAnimation.currentScale,
-                    targetScale: 1.0,
-                    currentScale: existingAnimation.currentScale,
+                    startTime: currentTime;
+                    duration: this.animationConfig.transitionDuration;
+                    startScale: existingAnimation.currentScale;
+                    targetScale: 1.0;
+                    currentScale: existingAnimation.currentScale;
                     startOpacity: existingAnimation.currentOpacity);
                     targetOpacity: 1.0);
-                    currentOpacity: existingAnimation.currentOpacity,)
-            }
+                    currentOpacity: existingAnimation.currentOpacity, }
                     persistent: false); }
             }
             
             this.startAnimationLoop();
-            '';
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'LeaderboardAnimationController.endHover'); }
-        }
+
+        } catch (error) {
+            this.errorHandler.handleError(error, 'LeaderboardAnimationController.endHover); }'
     }
     
     /**
@@ -555,17 +519,17 @@ export class LeaderboardAnimationController {
      * @param {string|Object} target - 選択対象
      * @param {Object} options - オプション'
      */''
-    startSelectAnimation(target: string | { id: string }, options: SelectAnimationOptions = { )'): void {'
+    startSelectAnimation(target: string | { id: string }, options: SelectAnimationOptions = { )): void {'
         try {'
-            const targetId = typeof target === 'string' ? target: target.id,'';
+            const targetId = typeof target === 'string' ? target: target.id,
             const currentTime = Date.now()';
-                type: options.type || 'pulse'),
-            
-            this.startAnimationLoop();'
-            ' }'
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'LeaderboardAnimationController.startSelectAnimation'); }
-        }
+                type: options.type || 'pulse');
+            this.startAnimationLoop();
+
+            ' ,}'
+
+        } catch (error) {
+            this.errorHandler.handleError(error, 'LeaderboardAnimationController.startSelectAnimation); }'
     }
     
     /**
@@ -577,19 +541,19 @@ export class LeaderboardAnimationController {
             const currentTime = Date.now();
             
             this.animationState.entryAnimations.set(entryId, {
-                startTime: currentTime,
-                duration: animationConfig.duration || this.animationConfig.transitionDuration,
-                startValue: animationConfig.startValue || 0,
+                startTime: currentTime;
+                duration: animationConfig.duration || this.animationConfig.transitionDuration;
+                startValue: animationConfig.startValue || 0;
                 endValue: animationConfig.endValue || 1);
                 currentValue: animationConfig.startValue || 0);
                 easing: animationConfig.easing || this.animationConfig.easingFunction,);
-                onComplete: animationConfig.onComplete || null),
-            
-            this.startAnimationLoop();'
-            ' }'
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'LeaderboardAnimationController.startEntryAnimation'); }
-        }
+                onComplete: animationConfig.onComplete || null);
+            this.startAnimationLoop();
+
+            ' ,}'
+
+        } catch (error) {
+            this.errorHandler.handleError(error, 'LeaderboardAnimationController.startEntryAnimation); }'
     }
     
     /**
@@ -599,14 +563,12 @@ export class LeaderboardAnimationController {
      */
     startFadeAnimation(targetOpacity: number, duration: number = this.animationConfig.transitionDuration): void { this.animationState.targetFadeOpacity = targetOpacity;
         this.startAnimationLoop(); }
-    }
     
     /**
      * スクロール境界を設定
      * @param {number} maxScroll - 最大スクロール値
      */
     setScrollBounds(maxScroll: number): void { this.scrollConfig.scrollBounds.max = Math.max(0, maxScroll); }
-    }
     
     /**
      * スクロール位置を設定
@@ -625,15 +587,13 @@ export class LeaderboardAnimationController {
             this.startAnimationLoop(); }
         } else {  this.animationState.scrollOffset = clampedPosition; }
             this.animationState.targetScrollOffset = clampedPosition; }
-        }
-    }
+}
     
     /**
      * 現在のスクロール位置を取得
      * @returns {number} スクロール位置
      */
     getScrollPosition(): number { return this.animationState.scrollOffset; }
-    }
     
     /**
      * ホバー状態を取得
@@ -641,7 +601,6 @@ export class LeaderboardAnimationController {
      * @returns {Object|null} ホバー状態
      */
     getHoverState(targetId: string): HoverAnimation | null { return this.animationState.hoverAnimations.get(targetId) || null; }
-    }
     
     /**
      * 選択状態を取得
@@ -649,7 +608,6 @@ export class LeaderboardAnimationController {
      * @returns {Object|null} 選択状態
      */
     getSelectState(targetId: string): SelectAnimation | null { return this.animationState.selectAnimations.get(targetId) || null; }
-    }
     
     /**
      * アクティブなアニメーションがあるかチェック
@@ -660,7 +618,6 @@ export class LeaderboardAnimationController {
                this.animationState.entryAnimations.size > 0 ||;
                this.animationState.hoverAnimations.size > 0 ||;
                this.animationState.selectAnimations.size > 0; }
-    }
     
     /**
      * イージング関数を適用
@@ -669,50 +626,45 @@ export class LeaderboardAnimationController {
      * @returns {number} イージング適用後の値
      */'
     applyEasing(progress: number, easingType: EasingType | string): number { ''
-        switch(easingType') {'
-            '';
+        switch(easingType) {'
+
             case 'linear':;
-                return progress;'
-                '';
+                return progress;
+
             case 'easeInQuad':;
-                return progress * progress;'
-                '';
+                return progress * progress;
+
             case 'easeOutQuad':'';
-                return 1 - (1 - progress) * (1 - progress');'
-                '';
+                return 1 - (1 - progress) * (1 - progress');
+
             case 'easeInOutQuad': return progress < 0.5 ?   : undefined'';
-                    2 * progress * progress: 1 - 2 * (1 - progress) * (1 - progress');'
-                '';
+                    2 * progress * progress: 1 - 2 * (1 - progress) * (1 - progress');
+
             case 'easeInCubic':;
-                return progress * progress * progress;'
-                '';
+                return progress * progress * progress;
+
             case 'easeOutCubic':'';
-                return 1 - Math.pow(1 - progress, 3');'
-                '';
+                return 1 - Math.pow(1 - progress, 3);
+
             case 'easeInOutCubic':;
                 return progress < 0.5 ?   : undefined';
                     4 * progress * progress * progress : '';
-                    1 - Math.pow(-2 * progress + 2, 3') / 2;'
-                '';
+                    1 - Math.pow(-2 * progress + 2, 3) / 2;
+
             case 'easeOutBounce':;
                 const n1 = 7.5625;
                 const d1 = 2.75;
                 
                 if (progress < 1 / d1) {
         }
-                    return n1 * progress * progress; }
-                } else if (progress < 2 / d1) { return n1 * (progress -= 1.5 / d1) * progress + 0.75; }
-                } else if (progress < 2.5 / d1) { return n1 * (progress -= 2.25 / d1) * progress + 0.9375; }'
-                } else {  ' }'
-                    return n1 * (progress -= 2.625 / d1') * progress + 0.984375; }
-                }'
-                '';
+                    return n1 * progress * progress; else if (progress < 2 / d1) { return n1 * (progress -= 1.5 / d1) * progress + 0.75; } else if (progress < 2.5 / d1) { return n1 * (progress -= 2.25 / d1) * progress + 0.9375; else {  ' }'
+
+                    return n1 * (progress -= 2.625 / d1') * progress + 0.984375;
+
             case 'easeOutQuart':;
                 return 1 - Math.pow(1 - progress, 4);
                 
             default: return progress;
-        }
-    }
     
     /**
      * 値を補間
@@ -722,7 +674,6 @@ export class LeaderboardAnimationController {
      * @returns {number} 補間された値
      */
     interpolate(start: number, end: number, progress: number): number { return start + (end - start) * progress; }
-    }
     
     /**
      * パフォーマンスメトリクスを更新
@@ -734,7 +685,6 @@ export class LeaderboardAnimationController {
             
             this.performanceMetrics.averageFPS = ;
                 (this.performanceMetrics.averageFPS * 0.9) + (currentFPS * 0.1); }
-        }
         
         this.performanceMetrics.lastFrameTime = currentTime;
         this.performanceMetrics.frameCount++;
@@ -754,11 +704,11 @@ export class LeaderboardAnimationController {
      */
     getPerformanceInfo(): PerformanceInfo { return { ...this.performanceMetrics,
             activeAnimations: {
-                entries: this.animationState.entryAnimations.size,
-                hovers: this.animationState.hoverAnimations.size,
-                selects: this.animationState.selectAnimations.size,
+                entries: this.animationState.entryAnimations.size;
+                hovers: this.animationState.hoverAnimations.size;
+                selects: this.animationState.selectAnimations.size;
                 total: this.animationState.entryAnimations.size +;
-                       this.animationState.hoverAnimations.size + };
+                       this.animationState.hoverAnimations.size + ,};
                        this.animationState.selectAnimations.size }
             },
             scrolling: this.animationState.isScrolling;
@@ -771,30 +721,32 @@ export class LeaderboardAnimationController {
      */
     updateConfig(newConfig: UpdateConfig): void { if (newConfig.animationConfig) {
             Object.assign(this.animationConfig, newConfig.animationConfig); }
-        }
         if(newConfig.scrollConfig) {
-            ';'
-        }'
-            Object.assign(this.scrollConfig, newConfig.scrollConfig'); }
-        }'
-        '';
-        console.log('[LeaderboardAnimationController] Configuration updated');
+            ';
+
+        }
+
+            Object.assign(this.scrollConfig, newConfig.scrollConfig); }
+        }
+
+        console.log('[LeaderboardAnimationController] Configuration, updated);
     }
     
     /**
      * 全アニメーションをクリア
      */
-    clearAllAnimations(): void { this.animationState.entryAnimations.clear();'
-        this.animationState.hoverAnimations.clear();''
+    clearAllAnimations(): void { this.animationState.entryAnimations.clear();
+
+        this.animationState.hoverAnimations.clear(');''
         this.animationState.selectAnimations.clear()';
-        console.log('[LeaderboardAnimationController] All animations cleared'); }
-    }
+        console.log('[LeaderboardAnimationController] All, animations cleared'); }'
     
     /**
      * アニメーションコントローラーを破棄
      */'
     dispose(): void { this.stopAnimationLoop();''
         this.clearAllAnimations()';
-        console.log('[LeaderboardAnimationController] Animation controller disposed''); }'
+        console.log('[LeaderboardAnimationController] Animation, controller disposed''); }
+
     }''
 }

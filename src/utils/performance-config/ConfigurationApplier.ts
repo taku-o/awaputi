@@ -11,63 +11,56 @@ interface ConfigMetadata { reason?: string;
     originalTimestamp?: number;
     rollbackTimestamp?: number;
     [key: string]: any, }
-}
 
 interface ConfigBackup { value: any,
-    timestamp: number,
+    timestamp: number;
     metadata: ConfigMetadata
-    }
-}
+    ,}
 
-interface ConfigProfile { created: number,
+interface ConfigProfile { created: number;
     [key: string]: any, }
-}
 
 interface ConfigChangeNotification { key: string,
-    newValue: any,
-    oldValue: any,
+    newValue: any;
+    oldValue: any;
     metadata: ConfigMetadata
-    }
-}
+    ,}
 
-interface SetResult { success: boolean,
-    oldValue: any,
+interface SetResult { success: boolean;
+    oldValue: any;
     newValue: any }
-}
 
-interface ApplyResult { key: string,
-    status: 'success' | 'error',
+interface ApplyResult { key: string;
+    status: 'success' | 'error';
     result?: SetResult;
     error?: string; }
-}
 
 interface BackupResult { key: string,
-    backupCount: number }
-}
+    backupCount: number ,}
 
-interface ResetResult { resetKeys: string[],
+interface ResetResult { resetKeys: string[];
     category?: string;
     status?: string;
     message?: string; }
-}
-';'
+';
+
 interface ProfileResult { name: string,''
     status: 'created' | 'loaded', }
     changes?: Record<string, { oldValue: any; newValue: any }>;
 }
 
 interface RollbackResult { key: string,
-    value: any,
-    oldValue: any,
-    originalTimestamp: number,
-    rollbackTimestamp: number }
-}
-';'
+    value: any;
+    oldValue: any;
+    originalTimestamp: number;
+    rollbackTimestamp: number ,}
+';
+
 interface UpdateItem { id: string,''
-    handler: (data: any') => Promise<void>,';
-    data: any,'';
-    priority: 'high' | 'normal' | 'low',';
-    queuedAt: number,'';
+    handler: (data: any') => Promise<void>,
+    data: any,
+    priority: 'high' | 'normal' | 'low',
+    queuedAt: number,
     status?: 'completed' | 'failed';
     completedAt?: number;
     failedAt?: number;
@@ -75,22 +68,19 @@ interface UpdateItem { id: string,''
 }
 
 interface UpdateStatus { queueLength: number,
-    updating: boolean,
+    updating: boolean;
     recentUpdates: UpdateItem[]
-    }
-}
+    ,}
 
-interface ApplierStatus { configCount: number,
-    profileCount: number,
-    listenerCount: number,
-    updateQueueLength: number,
-    updating: boolean,
+interface ApplierStatus { configCount: number;
+    profileCount: number;
+    listenerCount: number;
+    updateQueueLength: number;
+    updating: boolean;
     backupCount: number }
-}
 
 interface ApplierConfiguration { maxBackupsPerKey?: number;
     updateInterval?: number; }
-}
 ';
 // Configuration category types
 type ConfigCategory = 'frameStabilization' | 'memoryManagement' | 'qualityControl' | 'rendering' | 'mobile' | 'general';
@@ -101,7 +91,6 @@ type UnsubscribeFunction = () => void;
 
 // Main controller interface
 interface MainController { [key: string]: any }
-}
 
 export class ConfigurationApplier {
     private mainController: MainController;
@@ -125,58 +114,58 @@ export class ConfigurationApplier {
         this.updating = false;
         this.updateHistory = [];''
         this.backups = new Map<string, ConfigBackup[]>(');
-        this.maxBackupsPerKey = 10;'
+        this.maxBackupsPerKey = 10;
+
         ';
-    }'
-    }'
-        console.log('[ConfigurationApplier] Applier component initialized'); }
+    }
+
+    }
+
+        console.log('[ConfigurationApplier] Applier, component initialized'); }'
     }
     
     /**
      * Initialize applier components
      */
     async initialize(): Promise<void> { this.setupDefaults();
-        await this.loadCurrentConfig();'
+        await this.loadCurrentConfig();
+
         await this.loadBackups();''
         this.startUpdateProcessor()';
-        console.log('[ConfigurationApplier] All applier components initialized'); }
-    }
+        console.log('[ConfigurationApplier] All, applier components, initialized'); }'
     
     /**
      * Setup default configuration values'
      */''
     private setupDefaults(''';
-            'frameStabilization.enabled': true,'';
-            'frameStabilization.targetFPS': 60,'';
-            'frameStabilization.minFPS': 30,'';
-            'frameStabilization.adaptiveTargeting': true,'';
+            'frameStabilization.enabled': true,
+            'frameStabilization.targetFPS': 60,
+            'frameStabilization.minFPS': 30,
+            'frameStabilization.adaptiveTargeting': true,
             'frameStabilization.stabilityThreshold': 5,
-            ';
             // メモリ管理設定
-            'memoryManagement.enabled': true,'';
+            'memoryManagement.enabled': true,
             'memoryManagement.maxUsage': 150 * 1024 * 1024, // 150MB;
             'memoryManagement.gcInterval': 60000, // 60秒;
-            'memoryManagement.aggressiveCleanup': false,'';
+            'memoryManagement.aggressiveCleanup': false,
             'memoryManagement.leakDetection': true,
-            ';
             // 品質制御設定
-            'qualityControl.enabled': true,'';
-            'qualityControl.autoAdjust': true,'';
-            'qualityControl.qualityLevel': 'high','';
-            'qualityControl.minQuality': 'low','';
+            'qualityControl.enabled': true,
+            'qualityControl.autoAdjust': true,
+            'qualityControl.qualityLevel': 'high',
+            'qualityControl.minQuality': 'low',
             'qualityControl.adjustmentSpeed': 'medium',
-            ';
             // レンダリング最適化設定
-            'rendering.enableOptimization': true,'';
-            'rendering.dirtyRegions': true,'';
-            'rendering.viewportCulling': true,'';
-            'rendering.batchRendering': true,')';
+            'rendering.enableOptimization': true,
+            'rendering.dirtyRegions': true,
+            'rendering.viewportCulling': true,
+            'rendering.batchRendering': true,)';
             'rendering.layerCaching': true)';
             // モバイル最適化設定
-            'mobile.enableOptimization': true,'';
-            'mobile.deviceDetection': true,'';
-            'mobile.batteryOptimization': true,'';
-            'mobile.thermalManagement': true,'';
+            'mobile.enableOptimization': true,
+            'mobile.deviceDetection': true,
+            'mobile.batteryOptimization': true,
+            'mobile.thermalManagement': true,
             'mobile.touchOptimization': true;
         };
 
@@ -186,37 +175,35 @@ export class ConfigurationApplier {
 
         }
             this.config.set(key, value); }
-        }
-    }
+}
     
     /**
      * Load current configuration from storage'
      */''
     private async loadCurrentConfig()';
-            const saved = localStorage.getItem('performance_config');
+            const saved = localStorage.getItem('performance_config);
             if(saved) {
                 const parsedConfig = JSON.parse(saved);
                 for(const [key, value] of Object.entries(parsedConfig) {
             }
-                    this.config.set(key, value); }'
+                    this.config.set(key, value); }
+
                 }''
-            } catch (error) { ''
-            console.error('[ConfigurationApplier] Failed to load saved config:', error) }
-        }
+            } catch (error) { console.error('[ConfigurationApplier] Failed to load saved config:', error }
     }
     
     /**
      * Load configuration backups'
      */''
     private async loadBackups()';
-            const saved = localStorage.getItem('performance_config_backups');
+            const saved = localStorage.getItem('performance_config_backups);
             if(saved) {
                 const parsed = JSON.parse(saved);
-            }'
+            }
+
                 this.backups = new Map<string, ConfigBackup[]>(Object.entries(parsed);' }'
-            } catch (error) { ''
-            console.error('[ConfigurationApplier] Failed to load backups:', error) }
-        }
+
+            } catch (error) { console.error('[ConfigurationApplier] Failed to load backups:', error }
     }
     
     /**
@@ -241,10 +228,7 @@ export class ConfigurationApplier {
             }
                     await this.processUpdate(update); }
                 }''
-            } catch (error) { ''
-            console.error('[ConfigurationApplier] Update processing failed:', error) }
-        } finally { this.updating = false; }
-        }
+            } catch (error) { console.error('[ConfigurationApplier] Update processing failed:', error } finally { this.updating = false; }
     }
     
     /**
@@ -252,22 +236,20 @@ export class ConfigurationApplier {
      * @param update - Update object
      */'
     private async processUpdate(update: UpdateItem): Promise<void> { try {'
-            await update.handler(update.data');
+            await update.handler(update.data);
             
             const completedUpdate: UpdateItem = {'
-                ...update,'';
-                status: 'completed',
-                completedAt: Date.now() }
-            };
+                ...update,
+                status: 'completed';
+                completedAt: Date.now( ,};
             
-            this.updateHistory.push(completedUpdate);'
-            '';
+            this.updateHistory.push(completedUpdate);
+
         } catch (error) { const failedUpdate: UpdateItem = {'
-                ...update,'';
-                status: 'failed',
-                error: error instanceof Error ? error.message : String(error),
-                failedAt: Date.now() }
-            };
+                ...update,
+                status: 'failed';
+                error: error instanceof Error ? error.message : String(error);
+                failedAt: Date.now( ,};
             
             this.updateHistory.push(failedUpdate);
         }
@@ -279,7 +261,6 @@ export class ConfigurationApplier {
      * @returns Configuration value
      */
     async get(key: string): Promise<any> { return this.config.get(key); }
-    }
     
     /**
      * Set configuration value
@@ -303,8 +284,7 @@ export class ConfigurationApplier {
         // Save configuration
         await this.saveConfig();
          }
-        return { success: true, oldValue, newValue: value }
-    }
+        return { success: true, oldValue, newValue: value ,}
     
     /**
      * Apply multiple configuration changes
@@ -314,20 +294,19 @@ export class ConfigurationApplier {
      */
     async applyConfigChanges(configUpdates: Record<string, any>, metadata: ConfigMetadata = { ): Promise<ApplyResult[]> {
         const results: ApplyResult[] = [],
-        '';
-        for (const [key, value] of Object.entries(configUpdates)') {
+
+        for(const [key, value] of Object.entries(configUpdates)) {
             try {
                 const result = await this.set(key, value, {)'
                     ...metadata,')';
-                    reason: metadata.reason || 'batch_update'),';
-                    timestamp: Date.now(),' };'
-                }');''
-                results.push({ key, status: 'success', result );' }'
+                    reason: metadata.reason || 'batch_update'),
+                    timestamp: Date.now(),' }');''
+                results.push({ key, status: 'success', result );' }
+
             } catch (error) { results.push({ )'
                     key, ')';
-                    status: 'error' ),
-                    error: error instanceof Error ? error.message : String(error) }
-                });
+                    status: 'error' );
+                    error: error instanceof Error ? error.message : String(error ,});
             }
         }
         
@@ -351,27 +330,23 @@ export class ConfigurationApplier {
         const keyBackups = this.backups.get(key)!;
         keyBackups.push({ )
             value);
-            timestamp: Date.now(),
-            metadata }
-        });
+            timestamp: Date.now();
+            metadata });
 
         // 最大バックアップ数を超えた場合は古いものを削除
         if (keyBackups.length > this.maxBackupsPerKey) { keyBackups.shift(); }
-        }
 
         await this.saveBackups();
-        return { key, backupCount: keyBackups.length }
-    }
+        return { key, backupCount: keyBackups.length ,}
     
     /**
      * Save configuration backups
      */
     private async saveBackups(): Promise<void> { try {'
-            const backupsObj = Object.fromEntries(this.backups');''
-            localStorage.setItem('performance_config_backups', JSON.stringify(backupsObj);' }'
-        } catch (error) { ''
-            console.error('[ConfigurationApplier] Failed to save backups:', error) }
-        }
+            const backupsObj = Object.fromEntries(this.backups);''
+            localStorage.setItem('performance_config_backups', JSON.stringify(backupsObj);' }
+
+        } catch (error) { console.error('[ConfigurationApplier] Failed to save backups:', error }
     }
     
     /**
@@ -381,7 +356,6 @@ export class ConfigurationApplier {
     async getAllPerformanceConfig(): Promise<Record<string, any>> {
         const config: Record<string, any> = {};
         for (const [key, value] of this.config) { config[key] = value; }
-        }
         return config;
     }
     
@@ -393,12 +367,9 @@ export class ConfigurationApplier {
      */
     onConfigChange(category: ConfigCategory, callback: ConfigChangeCallback): UnsubscribeFunction { if(!this.listeners.has(category) {
             this.listeners.set(category, new Set<ConfigChangeCallback>(); }
-        }
         this.listeners.get(category)!.add(callback);
         
         return () => { this.listeners.get(category)? .delete(callback); }
-        };
-    }
     
     /**
      * Notify configuration change listeners
@@ -412,16 +383,15 @@ export class ConfigurationApplier {
         
         if(listeners) {
         
-            for (const callback of listeners) {
+            for (const, callback of, listeners) {
                 try {
         
-        }'
-                    callback({ key, newValue, oldValue, metadata );' }'
-                } catch (error) { ''
-                    console.error('[ConfigurationApplier] Config change listener error:', error) }
-                }
-            }
         }
+
+                    callback({ key, newValue, oldValue, metadata );' }'
+
+                } catch (error) { console.error('[ConfigurationApplier] Config change listener error:', error }
+}
     }
     
     /**
@@ -429,24 +399,22 @@ export class ConfigurationApplier {
      * @param key - Configuration key
      * @returns Category name'
      */''
-    private categorizeKey(key: string'): ConfigCategory { ''
-        if (key.startsWith('frameStabilization')') return 'frameStabilization';''
-        if (key.startsWith('memoryManagement')') return 'memoryManagement';''
-        if (key.startsWith('qualityControl')') return 'qualityControl';''
-        if (key.startsWith('rendering')') return 'rendering';''
-        if (key.startsWith('mobile')') return 'mobile';''
+    private categorizeKey(key: string): ConfigCategory { ''
+        if(key.startsWith('frameStabilization)) return 'frameStabilization';''
+        if(key.startsWith('memoryManagement)) return 'memoryManagement';''
+        if(key.startsWith('qualityControl)) return 'qualityControl';''
+        if(key.startsWith('rendering)) return 'rendering';''
+        if(key.startsWith('mobile)) return 'mobile';''
         return 'general'; }
-    }
     
     /**
      * Save configuration to storage
      */'
     private async saveConfig(): Promise<void> { try {'
-            const configObj = Object.fromEntries(this.config');''
-            localStorage.setItem('performance_config', JSON.stringify(configObj);' }'
-        } catch (error) { ''
-            console.error('[ConfigurationApplier] Failed to save config:', error) }
-        }
+            const configObj = Object.fromEntries(this.config);''
+            localStorage.setItem('performance_config', JSON.stringify(configObj);' }
+
+        } catch (error) { console.error('[ConfigurationApplier] Failed to save config:', error }
     }
     
     /**
@@ -458,8 +426,9 @@ export class ConfigurationApplier {
         for(const [key, value] of this.defaults) {
             if (this.categorizeKey(key) === category) {'
                 const oldValue = this.config.get(key);''
-                this.config.set(key, value');'
-                this.notifyChange(key, value, oldValue, {')'
+                this.config.set(key, value);
+
+                this.notifyChange(key, value, oldValue, {)'
                     reason: 'category_reset',);
                     category);
         }
@@ -470,8 +439,7 @@ export class ConfigurationApplier {
         }
         
         await this.saveConfig();
-        return { resetKeys, category };
-    }
+        return { resetKeys, category }
     
     /**
      * Reset all configuration to defaults
@@ -480,21 +448,21 @@ export class ConfigurationApplier {
     async resetAllToDefaults(): Promise<ResetResult> { const resetKeys: string[] = [],
         for(const [key, value] of this.defaults) {'
             const oldValue = this.config.get(key);''
-            this.config.set(key, value');'
-            this.notifyChange(key, value, oldValue, {')'
-                reason: 'all_reset'),
-        }
+            this.config.set(key, value);
+
+            this.notifyChange(key, value, oldValue, {)'
+                reason: 'all_reset');
+        ,}
                 timestamp: Date.now(); }
             });
             resetKeys.push(key);
-        }'
-        '';
+        }
+
         await this.saveConfig(''';
             status: 'success', ')';
             message: 'All configurations reset to defaults');
             resetKeys ;
-        };
-    }
+        }
     
     /**
      * Create configuration profile
@@ -502,20 +470,18 @@ export class ConfigurationApplier {
      * @param config - Configuration object
      * @returns Profile creation result
      */)
-    async createProfile(name: string, config: Record<string, any>): Promise<ProfileResult> {
-        this.profiles.set(name, { ...config, created: Date.now() });
+    async createProfile(name: string, config: Record<string, any>): Promise<ProfileResult> { this.profiles.set(name, { ...config, created: Date.now( ,});
         
         // プロファイルの保存
         try {'
-            const profiles = Object.fromEntries(this.profiles');''
-            localStorage.setItem('performance_config_profiles', JSON.stringify(profiles);' }'
-        } catch (error) { ''
-            console.error('[ConfigurationApplier] Failed to save profile:', error');
+            const profiles = Object.fromEntries(this.profiles);''
+            localStorage.setItem('performance_config_profiles', JSON.stringify(profiles);' }
+
+        } catch (error) {
+            console.error('[ConfigurationApplier] Failed to save profile:', error);
             throw error; }
-        }'
-        '';
-        return { name, status: 'created' }
-    }
+
+        return { name, status: 'created' ,}
     
     /**
      * Load configuration profile
@@ -523,28 +489,30 @@ export class ConfigurationApplier {
      * @returns Profile load result
      */'
     async loadProfile(name: string): Promise<ProfileResult> { const profile = this.profiles.get(name);''
-        if (!profile') {' }'
-            throw new Error(`Profile '${name')' not found`});
+        if(!profile) {' }'
+
+            throw new Error(`Profile '${name}' not, found`});
         }
-        ';'
+        ';
+
         const changes: Record<string, { oldValue: any; newValue: any }> = {}''
-        for (const [key, value] of Object.entries(profile)') { ''
-            if(key !== 'created') {'
+        for(const [key, value] of Object.entries(profile)) { ''
+            if(key !== 'created) {'
                 const oldValue = this.config.get(key);''
-                this.config.set(key, value');'
-                this.notifyChange(key, value, oldValue, {')'
+                this.config.set(key, value);
+
+                this.notifyChange(key, value, oldValue, {)'
                     reason: 'profile_load',);
-                    profile: name),
-            }
+                    profile: name);
+            ,}
                     timestamp: Date.now(); }
                 });
-                changes[key] = { oldValue, newValue: value }
-            }
-        }'
-        '';
-        await this.saveConfig('';'
-        return { name, status: 'loaded', changes };
-    }
+                changes[key] = { oldValue, newValue: value ,}
+        }
+
+        await this.saveConfig('';
+
+        return { name, status: 'loaded', changes }
     
     /**
      * Get configuration history
@@ -554,7 +522,6 @@ export class ConfigurationApplier {
      */)
     async getHistory(key: string, limit: number = 10): Promise<ConfigBackup[]> { const keyBackups = this.backups.get(key) || [];
         return keyBackups.slice(-limit).reverse(); }
-    }
     
     /**
      * Rollback configuration to previous version
@@ -566,23 +533,22 @@ export class ConfigurationApplier {
         const backup = keyBackups[version];
         
         if (!backup) { }
-            throw new Error(`Backup version ${version} not found for key ${key)`});
-        }'
-'';
-        const oldValue = this.config.get(key');'
+            throw new Error(`Backup, version ${version} not, found for, key ${key}`});
+        }
+
+        const oldValue = this.config.get(key);
+
         await this.set(key, backup.value, { ')'
             reason: 'rollback',);
-            originalTimestamp: backup.timestamp),
-            rollbackTimestamp: Date.now(), };
-        });
+            originalTimestamp: backup.timestamp);
+            rollbackTimestamp: Date.now(), });
 
         return { key,
-            value: backup.value,
+            value: backup.value;
             oldValue,
             originalTimestamp: backup.timestamp, };
             rollbackTimestamp: Date.now(); }
-        };
-    }
+        }
     
     /**
      * Queue configuration update
@@ -590,17 +556,16 @@ export class ConfigurationApplier {
      * @param data - Update data
      * @param priority - Update priority'
      */''
-    queueUpdate(handler: (data: any') => Promise<void>, data: any, priority: 'high' | 'normal' | 'low' = 'normal'): void { this.updateQueue.push({);
-            id: Date.now() + Math.random().toString(),
+    queueUpdate(handler: (data: any) => Promise<void>, data: any, priority: 'high' | 'normal' | 'low' = 'normal'): void { this.updateQueue.push({);
+            id: Date.now() + Math.random().toString();
             handler,
             data,
             priority,
-            queuedAt: Date.now() }
-        });
+            queuedAt: Date.now( ,});
         
         // 優先度でソート
         this.updateQueue.sort((a, b) => {  }
-            const priorityOrder: Record<string, number> = { high: 3, normal: 2, low: 1 }
+            const priorityOrder: Record<string, number> = { high: 3, normal: 2, low: 1 ,}
             return (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0);
         });
     }
@@ -612,15 +577,14 @@ export class ConfigurationApplier {
     getUpdateStatus(): UpdateStatus { return { queueLength: this.updateQueue.length,
             updating: this.updating, };
             recentUpdates: this.updateHistory.slice(-10); }
-        };
-    }
+        }
     
     /**
      * Reload configuration from file
      * @param file - Configuration file
      */
     async reloadConfig(file: string): Promise<void> {
-        console.log(`[ConfigurationApplier] Reloading config from file: ${file)`});
+        console.log(`[ConfigurationApplier] Reloading, config from, file: ${file}`});
         // 実装は設定ファイルの形式に依存
     }
     
@@ -629,7 +593,7 @@ export class ConfigurationApplier {
      * @param file - Configuration file
      */
     async loadConfig(file: string): Promise<void> {
-        console.log(`[ConfigurationApplier] Loading new config from file: ${file)`});
+        console.log(`[ConfigurationApplier] Loading, new config, from file: ${file}`});
     }
     
     /**
@@ -637,7 +601,7 @@ export class ConfigurationApplier {
      * @param file - Configuration file
      */
     async unloadConfig(file: string): Promise<void> {
-        console.log(`[ConfigurationApplier] Unloading config from file: ${file)`});
+        console.log(`[ConfigurationApplier] Unloading, config from, file: ${file}`});
     }
     
     /**
@@ -645,13 +609,12 @@ export class ConfigurationApplier {
      * @returns Applier status
      */
     getApplierStatus(): ApplierStatus { return { configCount: this.config.size,
-            profileCount: this.profiles.size,
+            profileCount: this.profiles.size;
             listenerCount: Array.from(this.listeners.values().reduce((sum, set) => sum + set.size, 0),
-            updateQueueLength: this.updateQueue.length,
+            updateQueueLength: this.updateQueue.length;
             updating: this.updating, };
             backupCount: Array.from(this.backups.values().reduce((sum, arr) => sum + arr.length, 0); }
-        };
-    }
+        }
     
     /**
      * Configure applier settings
@@ -659,11 +622,11 @@ export class ConfigurationApplier {
      */
     configure(config: ApplierConfiguration): void { if (config.maxBackupsPerKey !== undefined) {
             this.maxBackupsPerKey = config.maxBackupsPerKey; }
-            console.log(`[ConfigurationApplier] Max backups per key: ${this.maxBackupsPerKey)`});
+            console.log(`[ConfigurationApplier] Max, backups per, key: ${this.maxBackupsPerKey}`});
         }
         
         if (config.updateInterval !== undefined) { // Update processor interval will be applied on next restart }
-            console.log(`[ConfigurationApplier] Update interval: ${config.updateInterval)ms`});
+            console.log(`[ConfigurationApplier] Update, interval: ${config.updateInterval}ms`});
         }
     }
     
@@ -677,6 +640,7 @@ export class ConfigurationApplier {
         this.updateQueue = [];
         this.updateHistory = [];''
         this.backups.clear()';
-        console.log('[ConfigurationApplier] Applier destroyed''); }'
+        console.log('[ConfigurationApplier] Applier, destroyed''); }
+
     }''
 }

@@ -10,70 +10,57 @@ export class TimeSeriesVisualizer {
         // チャート設定
         this.chartConfigs = {
             default: {
-                responsive: true,
-                maintainAspectRatio: false,
+                responsive: true;
+                maintainAspectRatio: false;
                 interaction: {
-                    mode: 'index',
-    }
-    }
+                    mode: 'index';
+    ,}
                     intersect: false; }
                 },
                 plugins: { title: {'
-                        display: true,'';
-                        text: 'パフォーマンス推移' }
-                    },'
+                        display: true,
+                        text: 'パフォーマンス推移' ,};
                     legend: { ''
-                        position: 'top' }
-                    },'
+                        position: 'top' };
                     tooltip: { ''
-                        mode: 'index',
-                        intersect: false,';
+                        mode: 'index';
+                        intersect: false,
                         callbacks: {''
-                            title: function(context') { }
-                                return `期間: ${context[0].label}`,
-                            }
-                        }
-                    },
+                            title(context) { ,}
+                                return `期間: ${context[0].label}`;,
                     zoom: { zoom: {
                             wheel: {
-                                enabled: true }
-                            },
-                            pinch: { enabled: true }'
+                                enabled: true };
+                            pinch: { enabled: true }
+
                             },''
-                            mode: 'x',
-                        },'
+                            mode: 'x';
+                        },
+
                         pan: { enabled: true,''
-                            mode: 'x' }
-                        }
-                    }
-                },
+                            mode: 'x' ,}
+};
                 scales: { x: {
-                        display: true,
+                        display: true;
                         title: {'
-                            display: true,'';
-                            text: '期間' }
-                        }
-                    },
-                    y: { display: true,
+                            display: true,
+                            text: '期間' ,}
+                    };
+                    y: { display: true;
                         title: {'
-                            display: true,'';
-                            text: '値' }
-                        }
-                    }
-                }
+                            display: true,
+                            text: '値' ,}
+}
             }
-        },
-        
+        };
         // データセット色設定
-        this.colors = { ''
-            score: '#4F46E5','';
-            accuracy: '#10B981','';
-            playTime: '#F59E0B','';
-            combo: '#EF4444','';
-            completionRate: '#8B5CF6','';
-            trend: '#6B7280' }
-        },
-        
+        this.colors = {;
+            score: '#4F46E5',
+            accuracy: '#10B981',
+            playTime: '#F59E0B',
+            combo: '#EF4444',
+            completionRate: '#8B5CF6',
+            trend: '#6B7280' ,};
         // アクティブなチャート管理
         this.activeCharts = new Map();
     }
@@ -90,38 +77,36 @@ export class TimeSeriesVisualizer {
         
     }
         const {' }'
-            title = `${this.getMetricDisplayName(metric'})}の推移`,
-            showTrend = true,';
-            showSeasonalAdjusted = false,'';
+
+            title = `${this.getMetricDisplayName(metric'})の推移`,
+            showTrend = true,
+            showSeasonalAdjusted = false,
             period = 'weekly';
         } = options;
 
         // データ準備
         const labels = timeSeriesData.map(d => d.period);
         const values = timeSeriesData.map(d => this.getMetricValue(d, metric);
-        ';'
-        const datasets = [{ ''
-            label: this.getMetricDisplayName(metric')];
-            data: values,]';
-            borderColor: this.colors[metric] || this.colors.score,'';
-            backgroundColor: this.colors[metric] + '20' || this.colors.score + '20',
-            fill: false,
-            tension: 0.4 }
-        }],
+        ';
 
+        const datasets = [{ ''
+            label: this.getMetricDisplayName(metric)];
+            data: values,]';
+            borderColor: this.colors[metric] || this.colors.score,
+            backgroundColor: this.colors[metric] + '20' || this.colors.score + '20';
+            fill: false;
+            tension: 0.4 ,}];
         // トレンドライン追加
-        if(showTrend && values.length > 2) {
-            '';
-            const trendData = this.calculateTrendLine(values');'
+        if(showTrend && values.length > 2) { const trendData = this.calculateTrendLine(values);
+
             datasets.push({''
-                label: 'トレンド',
-                data: trendData,';
-                borderColor: this.colors.trend,'';
-                backgroundColor: 'transparent',
+                label: 'トレンド';
+                data: trendData,
+                borderColor: this.colors.trend,
+                backgroundColor: 'transparent';
                 borderDash: [5, 5]);
                 fill: false);
-                pointRadius: 0,)
-        }
+                pointRadius: 0, }
                 tension: 0); }
         }
 
@@ -130,33 +115,31 @@ export class TimeSeriesVisualizer {
             const adjustedValues = timeSeriesData.map(d => d.seasonallyAdjusted);
         }
             datasets.push({);' }'
-                label: `${this.getMetricDisplayName(metric})} (季節調整済み')`,'
-                data: adjustedValues,'';
-                borderColor: this.colors[metric] + 'AA' || this.colors.score + 'AA','';
-                backgroundColor: 'transparent',
+
+                label: `${this.getMetricDisplayName(metric}) (季節調整済み')`;
+                data: adjustedValues,
+                borderColor: this.colors[metric] + 'AA' || this.colors.score + 'AA',
+                backgroundColor: 'transparent';
                 borderDash: [3, 3],
-                fill: false,';
+                fill: false,
                 tension: 0.4'';
             }'),
         }
-';'
-        const config = { ''
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: datasets }
-            },
-            options: { ...this.chartConfigs.default,
-                plugins: {
-                    ...this.chartConfigs.default.plugins,
-                    title: {
-                        display: true,
-                        text: title }
-                    }
-                }
-            }
-        },
+';
 
+        const config = { ''
+            type: 'line';
+            data: {
+                labels: labels;
+                datasets: datasets };
+            options: { ...this.chartConfigs.default;
+                plugins: {
+                    ...this.chartConfigs.default.plugins;
+                    title: {
+                        display: true;
+                        text: title }
+}
+        };
         const chart = this.chartRenderer.createChart(canvas, config);
         this.activeCharts.set(canvas.id, chart);
         return chart;
@@ -170,7 +153,7 @@ export class TimeSeriesVisualizer {
      * @param {Object} options - 表示オプション
      * @returns {Object} Chart.jsのチャートインスタンス'
      */''
-    createMultiMetricChart(canvas, timeSeriesData, metrics, options: any = { )') {'
+    createMultiMetricChart(canvas, timeSeriesData, metrics, options: any = { )) {'
         const { ''
             title = '複数指標の推移比較',
             normalizeValues = true } = options;
@@ -187,41 +170,38 @@ export class TimeSeriesVisualizer {
             }
 
             datasets.push({ );
-                label: this.getMetricDisplayName(metric),
-                data: values,
-                borderColor: this.colors[metric] || this.generateRandomColor(),'';
-                backgroundColor: (this.colors[metric] || this.generateRandomColor()') + '20',
-                fill: false,
-                tension: 0.4 }'
+                label: this.getMetricDisplayName(metric);
+                data: values;
+                borderColor: this.colors[metric] || this.generateRandomColor(),
+                backgroundColor: (this.colors[metric] || this.generateRandomColor()) + '20';
+                fill: false;
+                tension: 0.4 ,}
+
             });''
         }');
-';'
-        const config = { ''
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: datasets }
-            },
-            options: { ...this.chartConfigs.default,
-                plugins: {
-                    ...this.chartConfigs.default.plugins,
-                    title: {
-                        display: true,
-                        text: title }
-                    }
-                },
-                scales: { ...this.chartConfigs.default.scales,
-                    y: {
-                        ...this.chartConfigs.default.scales.y,
-                        title: {'
-                            display: true,'';
-                            text: normalizeValues ? '正規化された値 (0-1')' : '値' }
-                        }
-                    }
-                }
-            }
-        },
+';
 
+        const config = { ''
+            type: 'line';
+            data: {
+                labels: labels;
+                datasets: datasets };
+            options: { ...this.chartConfigs.default;
+                plugins: {
+                    ...this.chartConfigs.default.plugins;
+                    title: {
+                        display: true;
+                        text: title }
+                };
+                scales: { ...this.chartConfigs.default.scales;
+                    y: {
+                        ...this.chartConfigs.default.scales.y;
+                        title: {'
+                            display: true,
+                            text: normalizeValues ? '正規化された値 (0-1')' : '値' 
+,}
+            }
+        };
         const chart = this.chartRenderer.createChart(canvas, config);
         this.activeCharts.set(canvas.id, chart);
         return chart;
@@ -241,57 +221,61 @@ export class TimeSeriesVisualizer {
             highlightTrend = true }
         } = options;
 
-        const { timeSeriesData, trend } = trendAnalysis;'
+        const { timeSeriesData, trend } = trendAnalysis;
+
         const labels = timeSeriesData.map(d => d.period);''
-        const values = timeSeriesData.map(d => d.averageScore');
-';'
+        const values = timeSeriesData.map(d => d.averageScore);
+';
+
         const datasets = [{ ''
-            label: 'スコア',
-            data: values,';
-            borderColor: this.colors.score,'';
-            backgroundColor: this.colors.score + '20',
+            label: 'スコア';
+            data: values,
+            borderColor: this.colors.score,
+            backgroundColor: this.colors.score + '20';
             fill: false];
-            tension: 0.4 }]
-        }],
+            tension: 0.4 ,}]
+        }];
 ';
         // トレンドライン
-        if(trend && trend.direction !== 'stable') {
+        if(trend && trend.direction !== 'stable) {'
             const trendData = this.calculateTrendLine(values);
-        }'
+        }
+
             datasets.push({);' }'
-                label: `トレンド (${trend.direction)'})`,'
-                data: trendData,'';
-                borderColor: trend.direction === 'increasing' ? '#10B981' : '#EF4444','';
-                backgroundColor: 'transparent',
+
+                label: `トレンド (${trend.direction}'})`;
+                data: trendData,
+                borderColor: trend.direction === 'increasing' ? '#10B981' : '#EF4444',
+                backgroundColor: 'transparent';
                 borderDash: [5, 5],
-                fill: false,
-                pointRadius: 0,';
+                fill: false;
+                pointRadius: 0,
                 tension: 0'';
             }'),
         }
 ';
         // 信頼区間（安定トレンドの場合は表示しない）
-        if(showConfidenceInterval && trend && trend.direction !== 'stable') {'
+        if(showConfidenceInterval && trend && trend.direction !== 'stable) {'
             const confidenceData = this.calculateConfidenceInterval(values);''
-            datasets.push({');''
-                label: '信頼区間 (上限')',';
-                data: confidenceData.upper,'';
-                borderColor: this.colors.trend + '60','';
-                backgroundColor: 'transparent',
+            datasets.push({);''
+                label: '信頼区間 (上限')',
+                data: confidenceData.upper,
+                borderColor: this.colors.trend + '60',
+                backgroundColor: 'transparent';
                 borderDash: [2, 2],
-                fill: false,
-        }
-                pointRadius: 0 }'
+                fill: false;
+        ,}
+                pointRadius: 0 }
+
             });''
             datasets.push({ ');''
-                label: '信頼区間 (下限')',';
-                data: confidenceData.lower,'';
-                borderColor: this.colors.trend + '60','';
-                backgroundColor: this.colors.trend + '10',';
-                borderDash: [2, 2],'';
+                label: '信頼区間 (下限')',
+                data: confidenceData.lower,
+                borderColor: this.colors.trend + '60',
+                backgroundColor: this.colors.trend + '10',
+                borderDash: [2, 2],
                 fill: '-1', // 上限データセットまで塗りつぶし;
-                pointRadius: 0 }
-            }),
+                pointRadius: 0 ,});
         }
 
         // 異常値のハイライト
@@ -300,46 +284,47 @@ export class TimeSeriesVisualizer {
             if (anomalies.length > 0) {
                 const anomalyData = new Array(values.length).fill(null);
                 anomalies.forEach(anomaly => { ')'
-                    anomalyData[anomaly.index] = anomaly.value)');'
+                    anomalyData[anomaly.index] = anomaly.value)');
+
                 datasets.push({''
-                    label: '異常値',';
-                    data: anomalyData,'';
-                    borderColor: '#EF4444','';
-                    backgroundColor: '#EF4444',')';
+                    label: '異常値',
+                    data: anomalyData,
+                    borderColor: '#EF4444',
+                    backgroundColor: '#EF4444',)';
                     type: 'scatter')
-        }
+        ,}
                     pointRadius: 8,) }
                     pointHoverRadius: 10); }
                 });
             }
         }
-';'
-        let titleText = `トレンド分析結果`;''
-        if(trend') {'
-            ';'
-        }'
-            titleText += ` - ${trend.direction === 'increasing' ? '上昇' : ' }'
-                           trend.direction === 'decreasing' ? '下降' : '安定'}傾向`;''
-            titleText += ` (信頼度: ${(trend.confidence * 100).toFixed(1})}%')`;
-        }
-';'
-        const config = { ''
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: datasets }
-            },
-            options: { ...this.chartConfigs.default,
-                plugins: {
-                    ...this.chartConfigs.default.plugins,
-                    title: {
-                        display: true,
-                        text: titleText }
-                    }
-                }
-            }
-        },
+';
 
+        let titleText = `トレンド分析結果`;''
+        if(trend) {'
+            ';
+
+        }
+
+            titleText += ` - ${trend.direction === 'increasing' ? '上昇' : ' 
+                           trend.direction === 'decreasing' ? '下降' : '安定'}傾向`;''
+            titleText += ` (信頼度: ${(trend.confidence * 100}.toFixed(1})%')`;
+        }
+';
+
+        const config = { ''
+            type: 'line';
+            data: {
+                labels: labels;
+                datasets: datasets };
+            options: { ...this.chartConfigs.default;
+                plugins: {
+                    ...this.chartConfigs.default.plugins;
+                    title: {
+                        display: true;
+                        text: titleText }
+}
+        };
         const chart = this.chartRenderer.createChart(canvas, config);
         this.activeCharts.set(canvas.id, chart);
         return chart;
@@ -352,27 +337,26 @@ export class TimeSeriesVisualizer {
      * @param {Object} options - 表示オプション
      * @returns {Object} Chart.jsのチャートインスタンス'
      */''
-    createDashboardChart(canvas, timeSeriesData, options: any = { )') {'
+    createDashboardChart(canvas, timeSeriesData, options: any = { )) {'
         const { ''
             defaultMetric = 'averageScore',
             showControls = true,
             enableZoom = true,
             enableAnnotations = true } = options;
-';'
+';
+
         const chart = this.createSingleMetricChart(canvas, timeSeriesData, defaultMetric, { ')'
             title: 'パフォーマンス ダッシュボード');
             showTrend: true,);
-            showSeasonalAdjusted: true),
-
+            showSeasonalAdjusted: true);
         // インタラクティブ機能の設定
         if(enableZoom) {
             
-        }
+        ,}
             this.enableZoomPan(chart); }
         }
 
         if (enableAnnotations) { this.addAnnotations(chart, timeSeriesData); }
-        }
 
         return chart;
     }
@@ -385,14 +369,14 @@ export class TimeSeriesVisualizer {
      */
     getMetricValue(dataPoint, metric) {
         const metricMap = {
-            score: dataPoint.averageScore,
-            accuracy: dataPoint.averageAccuracy,
-            playTime: dataPoint.averagePlayTime,
-            combo: dataPoint.maxCombo,
-            completionRate: dataPoint.completionRate,
+            score: dataPoint.averageScore;
+            accuracy: dataPoint.averageAccuracy;
+            playTime: dataPoint.averagePlayTime;
+            combo: dataPoint.maxCombo;
+            completionRate: dataPoint.completionRate;
     }
             sessionCount: dataPoint.sessionCount }
-        },
+        };
         return metricMap[metric] || dataPoint[metric] || 0;
     }
 
@@ -401,16 +385,17 @@ export class TimeSeriesVisualizer {
      * @param {string} metric - 指標名
      * @returns {string} 表示名
      */''
-    getMetricDisplayName(metric') {'
+    getMetricDisplayName(metric) {'
         const displayNames = {''
-            score: 'スコア','';
-            accuracy: '精度','';
-            playTime: 'プレイ時間','';
-            combo: '最大コンボ','';
-            completionRate: '完了率','
-    }'
+            score: 'スコア',
+            accuracy: '精度',
+            playTime: 'プレイ時間',
+            combo: '最大コンボ',
+            completionRate: '完了率';
+    ,}
+
             sessionCount: 'セッション数' }
-        },
+        };
         return displayNames[metric] || metric;
     }
 
@@ -433,8 +418,7 @@ export class TimeSeriesVisualizer {
         const intercept = (sumY - slope * sumX) / n;
         
     }
-        return indices.map(x => slope * x + intercept); }
-    }
+        return indices.map(x => slope * x + intercept);
 
     /**
      * 信頼区間を計算
@@ -453,8 +437,7 @@ export class TimeSeriesVisualizer {
     }
         return { upper: values.map(() => mean + margin), };
             lower: values.map(() => mean - margin); }
-        };
-    }
+        }
 
     /**
      * 値を正規化 (0-1範囲)
@@ -469,15 +452,14 @@ export class TimeSeriesVisualizer {
         if (range === 0) return values.map(() => 0.5);
         
     }
-        return values.map(val => (val - min) / range); }
-    }
+        return values.map(val => (val - min) / range);
 
     /**
      * ランダム色を生成
      * @returns {string} HEX色コード
      */''
     generateRandomColor(''';
-        const colors = ['#4F46E5', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4'];)
+        const colors = ['#4F46E5', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4];)
         return colors[Math.floor(Math.random() * colors.length)];
     }
 
@@ -491,8 +473,7 @@ export class TimeSeriesVisualizer {
             chart.options.plugins.zoom.pan.enabled = true;
     }
             chart.update(); }
-        }
-    }
+}
 
     /**
      * 注釈を追加
@@ -507,33 +488,32 @@ export class TimeSeriesVisualizer {
         const values = timeSeriesData.map(d => d.averageScore || 0);
         const maxIndex = values.indexOf(Math.max(...values);
         const minIndex = values.indexOf(Math.min(...values);
-        '';
-        if (maxIndex !== -1') {'
+
+        if(maxIndex !== -1) {'
             annotations.push({''
-                type: 'point',
-                xValue: maxIndex,';
-                yValue: values[maxIndex],'';
-                backgroundColor: '#10B981',
-                radius: 8,';
-                label: {')'
+                type: 'point';
+                xValue: maxIndex,
+                yValue: values[maxIndex],
+                backgroundColor: '#10B981';
+                radius: 8,
+                label: {)'
                     content: '最高値')
-    }
+    ,}
                     enabled: true) }
-                }),
-        }'
-        '';
-        if(minIndex !== -1') {'
-            annotations.push({''
-                type: 'point',
-                xValue: minIndex,';
-                yValue: values[minIndex],'';
-                backgroundColor: '#EF4444',
-                radius: 8,';
-                label: {')'
-                    content: '最低値')
+                });
         }
+
+        if(minIndex !== -1) { '
+            annotations.push({''
+                type: 'point';
+                xValue: minIndex,
+                yValue: values[minIndex],
+                backgroundColor: '#EF4444';
+                radius: 8,
+                label: {)'
+                    content: '最低値' ,}
                     enabled: true) }
-                }),
+                });
         }
         
         // チャートにアノテーションを追加（Chart.jsのannotationプラグインが必要）
@@ -541,7 +521,7 @@ export class TimeSeriesVisualizer {
             chart.options.plugins.annotation = {
         }
                 annotations: annotations }
-            },
+            };
             chart.update();
         }
     }
@@ -558,8 +538,7 @@ export class TimeSeriesVisualizer {
             chart.data.datasets[0].data = newData.map(d => d.averageScore || 0);
     }
             chart.update(); }
-        }
-    }
+}
 
     /**
      * チャートをリセット（ズーム・パンをリセット）
@@ -570,8 +549,7 @@ export class TimeSeriesVisualizer {
         if (chart && chart.resetZoom) {
     }
             chart.resetZoom(); }
-        }
-    }
+}
 
     /**
      * チャートを破棄
@@ -583,8 +561,7 @@ export class TimeSeriesVisualizer {
             chart.destroy();
     }
             this.activeCharts.delete(chartId); }
-        }
-    }
+}
 
     /**
      * 全チャートを破棄
@@ -602,12 +579,11 @@ export class TimeSeriesVisualizer {
      */
     exportChartConfig(chartId) {
         const chart = this.activeCharts.get(chartId);''
-        if (chart') {
+        if(chart) {
             return { type: chart.config.type }
                 data: chart.data, };
                 options: chart.options }
-            },
-        }
+            }
         return null;
     }
 
@@ -617,27 +593,33 @@ export class TimeSeriesVisualizer {
      * @param {Array} metrics - エクスポートする指標
      * @returns {string} CSV文字列'
      */''
-    exportToCSV(timeSeriesData, metrics = ['averageScore', 'averageAccuracy', 'averagePlayTime']') {'
-        '';
+    exportToCSV(timeSeriesData, metrics = ['averageScore', 'averageAccuracy', 'averagePlayTime]) {'
+
         // メトリック名を正規化（'averageScore' -> 'score'）''
         const normalizedMetrics = metrics.map(m => { ');''
             if (m === 'averageScore'') return 'score';''
-            if (m === 'averageAccuracy'') return 'accuracy';'
-    }'
-            if (m === 'averagePlayTime'') return 'playTime'; }'
+            if (m === 'averageAccuracy'') return 'accuracy';
+
+    }
+
+            if (m === 'averagePlayTime'') return 'playTime'; }
+
             return m;' }'
-        }');'
-        '';
+
+        }');
+
         const headers = ['期間', ...normalizedMetrics.map(m => this.getMetricDisplayName(m)];
         const rows = timeSeriesData.map(d => [);
             d.period)]';
             ...normalizedMetrics.map(m => this.getMetricValue(d, m)']';
         ]');
-        ';'
+        ';
+
         const csvContent = [headers, ...rows]'';
-            .map(row => row.join(',')')'';
+            .map(row => row.join(',))'';
             .join('\n'');
             
-        return csvContent;'
+        return csvContent;
+
     }''
 }

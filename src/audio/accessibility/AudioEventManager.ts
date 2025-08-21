@@ -7,29 +7,25 @@
 
 // Types for audio events
 interface AudioAccessibilityEvent { id: string,
-    type: string,
+    type: string;
     data: Record<string, any>;
-    timestamp: number }
-}
+    timestamp: number ,}
 
 // Types for event statistics
-interface EventStatistics { totalEvents: number,
+interface EventStatistics { totalEvents: number;
     eventsByType: Record<string, number>;
-    uptime: number,
-    firstEventTime: number | null,
-    lastEventTime: number | null }
-}
+    uptime: number;
+    firstEventTime: number | null;
+    lastEventTime: number | null ,}
 
 // Types for component status
-interface ComponentStatus { historySize: number,
-    maxHistorySize: number,
-    uptime: number,
+interface ComponentStatus { historySize: number;
+    maxHistorySize: number;
+    uptime: number;
     eventTypes: string[] }
-}
 
 // Main controller interface
 interface MainController { // Add properties as needed }
-}
 
 export class AudioEventManager {
     private mainController: MainController;
@@ -43,7 +39,6 @@ export class AudioEventManager {
         this.maxHistorySize = 50;
 
     }
-    }
         this.initializationTime = Date.now(); }
     }
 
@@ -53,17 +48,15 @@ export class AudioEventManager {
      * @param eventData - イベントデータ
      */
     public recordEvent(eventType: string, eventData: Record<string, any>): void { const event: AudioAccessibilityEvent = {
-            id: this.generateEventId(),
-            type: eventType,
-            data: eventData,
-            timestamp: Date.now() }
-        };
+            id: this.generateEventId();
+            type: eventType;
+            data: eventData;
+            timestamp: Date.now( };
         
         this.eventHistory.push(event);
         
         // 履歴サイズの制限
         if (this.eventHistory.length > this.maxHistorySize) { this.eventHistory.shift(); }
-        }
     }
 
     /**
@@ -73,13 +66,11 @@ export class AudioEventManager {
      */
     public getEventHistory(limit: number | null = null): AudioAccessibilityEvent[] { const history = [...this.eventHistory];
         return limit ? history.slice(-limit) : history; }
-    }
 
     /**
      * イベント履歴のクリア
      */
     public clearEventHistory(): void { this.eventHistory = []; }
-    }
 
     /**
      * 統計情報の取得
@@ -92,20 +83,18 @@ export class AudioEventManager {
         });
         
         return { totalEvents: this.eventHistory.length,
-            eventsByType: eventsByType,
-            uptime: Date.now() - this.initializationTime,
+            eventsByType: eventsByType;
+            uptime: Date.now() - this.initializationTime;
             firstEventTime: this.eventHistory.length > 0 ? this.eventHistory[0].timestamp : null, };
-            lastEventTime: this.eventHistory.length > 0 ? this.eventHistory[this.eventHistory.length - 1].timestamp : null }
-        },
-    }
+            lastEventTime: this.eventHistory.length > 0 ? this.eventHistory[this.eventHistory.length - 1].timestamp : null 
+        }
 
     /**
      * イベントタイプ別の集計
      * @param eventType - イベントタイプ
      * @returns 指定タイプのイベント
      */
-    public getEventsByType(eventType: string): AudioAccessibilityEvent[] { return this.eventHistory.filter(event => event.type === eventType); }
-    }
+    public getEventsByType(eventType: string): AudioAccessibilityEvent[] { return this.eventHistory.filter(event => event.type === eventType);
 
     /**
      * 時間範囲でのイベント取得
@@ -114,15 +103,14 @@ export class AudioEventManager {
      * @returns 指定期間のイベント
      */
     public getEventsByTimeRange(startTime: number, endTime: number = Date.now(): AudioAccessibilityEvent[] { return this.eventHistory.filter(event => )
-            event.timestamp >= startTime && event.timestamp <= endTime); }
-    }
+            event.timestamp >= startTime && event.timestamp <= endTime);
 
     /**
      * イベントIDの生成
      * @returns ユニークなイベントID
      */
     private generateEventId(): string {
-        return `event_${Date.now(})}_${Math.random().toString(36).substr(2, 9})}`;
+        return `event_${Date.now(,})_${Math.random(}.toString(36}.substr(2, 9})`;
     }
 
     /**
@@ -136,23 +124,20 @@ export class AudioEventManager {
             
         }
             this.eventHistory = this.eventHistory.slice(-maxSize); }
-        }
-    }
+}
 
     /**
      * ステータス取得
      * @returns コンポーネントステータス
      */
     public getStatus(): ComponentStatus { return { historySize: this.eventHistory.length,
-            maxHistorySize: this.maxHistorySize,
+            maxHistorySize: this.maxHistorySize;
             uptime: Date.now() - this.initializationTime, };
             eventTypes: Object.keys(this.getStatistics().eventsByType); }
-        };
-    }
+        }
 
     /**
      * クリーンアップ
      */
     public destroy(): void { this.clearEventHistory(); }
-    }
 }

@@ -6,23 +6,19 @@ interface PerformanceStats { fps?: number;
     memoryUsage?: number;
     renderTime?: number;
     updateTime?: number; }
-}
 
 interface ParticleManager { getActiveParticleCount(): number; }
-}
 
 interface EffectManager { getActiveEffectCount(): number; }
-}
 
 interface BubbleManager { getActiveBubbleCount(): number; }
-}
 
-interface Achievement { unlocked: boolean }
+interface Achievement {
+    unlocked: boolean;
 }
 
 interface AchievementManager { getAchievements(): Achievement[];
     }
-}
 
 interface GameEngine { performanceStats?: PerformanceStats;
     enhancedParticleManager?: ParticleManager;
@@ -30,10 +26,8 @@ interface GameEngine { performanceStats?: PerformanceStats;
     bubbleManager?: BubbleManager;
     achievementManager?: AchievementManager;
     }
-}
 
 interface DebugInterface { switchPanel(panelName: string): void, }
-}
 
 export class OverviewPanel {
     private gameEngine: GameEngine;
@@ -44,8 +38,7 @@ export class OverviewPanel {
 
         this.gameEngine = gameEngine
 
-    }
-    }
+    ,}
         this.debugInterface = debugInterface; }
     }
 
@@ -53,7 +46,8 @@ export class OverviewPanel {
      * パネルを作成
      */
     create(): HTMLElement { this.element = document.createElement('div'');''
-        this.element.className = 'debug-overview-panel';'
+        this.element.className = 'debug-overview-panel';
+
         this.element.innerHTML = `'';
             <div class="overview-section">";
                 <h4>システム概要</h4>"";
@@ -64,7 +58,7 @@ export class OverviewPanel {
                     <div>更新時間: <span id="overview-update">-- ms</span></div>;
                 </div>;
             </div>";
-            "";
+
             <div class="overview-section">";
                 <h4>アクティブシステム</h4>"";
                 <div id="active-systems">"";
@@ -74,7 +68,7 @@ export class OverviewPanel {
                     <div>実績: <span id="active-achievements">--</span></div>;
                 </div>;
             </div>";
-            "";
+
             <div class="overview-section">";
                 <h4>デバッグパネル</h4>"";
                 <div id="debug-panels">"";
@@ -88,27 +82,28 @@ export class OverviewPanel {
 
         this.bindEvents();
         return this.element; }
-    }
 
     /**
      * イベントバインド
      */"
     private bindEvents(): void { ""
-        if (!this.element") return;
+        if (!this.element) return;
 
         // パネル切り替えボタン"
         const buttons: Record<string, string> = {""
-            'switch-performance': 'performance','';
-            'switch-console': 'console', '';
-            'switch-error': 'error','';
-            'switch-test': 'test' }
-        };
+            'switch-performance': 'performance',
+            'switch-console': 'console',
+            'switch-error': 'error',
+            'switch-test': 'test' };
 
-        Object.entries(buttons).forEach(([buttonId, panelName]) => {  }'
+        Object.entries(buttons).forEach(([buttonId, panelName]) => {  }
+
             const button = this.element!.querySelector(`#${buttonId}`) as HTMLButtonElement;''
-            if(button') {'
-                ';'
-            }'
+            if(button) {'
+                ';
+
+            }
+
                 button.addEventListener('click', () => {  }
                     this.debugInterface.switchPanel(panelName); }
                 });
@@ -120,25 +115,23 @@ export class OverviewPanel {
      * パネルを表示
      */'
     show(): void { ''
-        if(this.element') {'
-            '';
+        if(this.element) {'
+
             this.element.style.display = 'block';
         }
             this.startUpdate(); }
-        }
-    }
+}
 
     /**
      * パネルを非表示
      */'
     hide(): void { ''
-        if(this.element') {'
-            '';
+        if(this.element) {'
+
             this.element.style.display = 'none';
         }
             this.stopUpdate(); }
-        }
-    }
+}
 
     /**
      * 更新開始
@@ -154,7 +147,6 @@ export class OverviewPanel {
     private stopUpdate(): void { if (this.updateInterval) {
             clearInterval(this.updateInterval);
             this.updateInterval = null; }
-        }
     }
 
     /**
@@ -169,19 +161,18 @@ export class OverviewPanel {
             // アクティブシステムの更新
             this.updateActiveSystems();
             ' }'
-        } catch (error) { ''
-            console.error('Overview panel update error:', error) }
-        }
+
+        } catch (error) { console.error('Overview panel update error:', error }
     }
 
     /**
      * システム状況を更新'
      */''
     private updateSystemStatus()';
-        this.setElementText('overview-fps', (stats.fps || 0).toFixed(1)');''
-        this.setElementText('overview-memory', ((stats.memoryUsage || 0) / 1024 / 1024).toFixed(1') + ' MB'');''
-        this.setElementText('overview-render', (stats.renderTime || 0).toFixed(2') + ' ms'');''
-        this.setElementText('overview-update', (stats.updateTime || 0).toFixed(2') + ' ms');
+        this.setElementText('overview-fps', (stats.fps || 0).toFixed(1));''
+        this.setElementText('overview-memory', ((stats.memoryUsage || 0) / 1024 / 1024).toFixed(1) + ' MB'');''
+        this.setElementText('overview-render', (stats.renderTime || 0).toFixed(2) + ' ms'');''
+        this.setElementText('overview-update', (stats.updateTime || 0).toFixed(2) + ' ms');
     }
 
     /**
@@ -201,8 +192,9 @@ export class OverviewPanel {
 
         // 実績数
         const achievements = this.gameEngine.achievementManager?.getAchievements() || [];''
-        const unlockedCount = achievements.filter(a => a.unlocked').length;' }'
-        this.setElementText('active-achievements', `${unlockedCount}/${achievements.length)`});
+        const unlockedCount = achievements.filter(a => a.unlocked).length;' }'
+
+        this.setElementText('active-achievements', `${unlockedCount}/${achievements.length}`});
     }
 
     /**
@@ -210,9 +202,8 @@ export class OverviewPanel {
      */ : undefined
     private setElementText(id: string, text: string): void { if (!this.element) return;
 
-        const element = this.element.querySelector(`#${id)`) as HTMLElement; }
+        const element = this.element.querySelector(`#${id}`} as, HTMLElement; }
         if (element}) { element.textContent = text; }
-        }
     }
 
     /**
@@ -223,18 +214,20 @@ export class OverviewPanel {
             // 必要に応じてレイアウトを再計算
         }
             this.update(); }
-        }
-    }
+}
 
     /**
      * パネルを破棄
      */
     destroy(): void { this.stopUpdate();
         if(this.element && this.element.parentNode) {
-            ';'
-        }'
-            this.element.parentNode.removeChild(this.element'); }
+            ';
+
         }
-        this.element = null;'
+
+            this.element.parentNode.removeChild(this.element); }
+        }
+        this.element = null;
+
     }''
 }

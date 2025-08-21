@@ -2,113 +2,106 @@ import { BaseComponent } from '../BaseComponent.js';
 
 // Type definitions
 interface FailurePattern { name: string,
-    keywords: string[],
-    category: string,'';
-    severity: 'low' | 'medium' | 'high' | 'critical',
-    description: string }
-}
+    keywords: string[];
+    category: string,
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    description: string ,}
 
-interface IdentifiedPattern extends FailurePattern { id: string,
+interface IdentifiedPattern extends FailurePattern { id: string;
     confidence: number }
-}
 
-interface PatternStatistics { totalPatterns: number,
+interface PatternStatistics { totalPatterns: number;
     patternsByCategory: Record<string, number>;
     patternsBySeverity: Record<string, number> }
-}
 
 interface MainController { [key: string]: any, }
-}
 
 /**
  * FailurePatternAnalyzer - 失敗パターン分析・認識コンポーネント
  */
-export class FailurePatternAnalyzer extends BaseComponent { private failurePatterns: Map<string, FailurePattern>;'
-'';
-    constructor(mainController: MainController') {'
-        '';
-        super(mainController, 'FailurePatternAnalyzer');
-    }
+export class FailurePatternAnalyzer extends BaseComponent { private failurePatterns: Map<string, FailurePattern>;
+
+    constructor(mainController: MainController) {'
+
+        super(mainController, 'FailurePatternAnalyzer);
     }
         this.failurePatterns = new Map<string, FailurePattern>(); }
     }
 
     async _doInitialize(): Promise<void> { this.setupFailurePatterns(); }
-    }
 
     /**
      * 失敗パターンの定義を設定'
      */''
     setupFailurePatterns(''';
         this.failurePatterns.set('null_reference', { ''
-            name: 'Null Reference Error','';
-            keywords: ['null', 'undefined', 'cannot read property', 'is not defined'],'';
-            category: 'runtime_error',')';
+            name: 'Null Reference Error',
+            keywords: ['null', 'undefined', 'cannot read property', 'is not defined],
+            category: 'runtime_error',)';
             severity: 'high',')';
-            description: 'オブジェクトまたはプロパティがnullまたはundefinedです')'),';
-'';
+            description: 'オブジェクトまたはプロパティがnullまたはundefinedです')'),
+
         this.failurePatterns.set('type_error', {''
-            name: 'Type Error','';
-            keywords: ['is not a function', 'is not a constructor', 'type error'],'';
-            category: 'type_error',')';
+            name: 'Type Error',
+            keywords: ['is not a function', 'is not a constructor', 'type error],
+            category: 'type_error',)';
             severity: 'high',')';
-            description: '型の不一致またはメソッドの呼び出しエラーです')'),';
-'';
+            description: '型の不一致またはメソッドの呼び出しエラーです')'),
+
         this.failurePatterns.set('assertion_failure', {''
-            name: 'Assertion Failure','';
-            keywords: ['expected', 'to equal', 'to be', 'assertion failed'],'';
-            category: 'assertion',')';
+            name: 'Assertion Failure',
+            keywords: ['expected', 'to equal', 'to be', 'assertion failed],
+            category: 'assertion',)';
             severity: 'medium',')';
-            description: 'テストの期待値と実際の値が一致しません'),' }'
-        }');'
-'';
+            description: 'テストの期待値と実際の値が一致しません'),' }
+
+        }');
+
         this.failurePatterns.set('timeout_error', { ''
-            name: 'Timeout Error','';
-            keywords: ['timeout', 'exceeded', 'timed out'],'';
-            category: 'performance',')';
+            name: 'Timeout Error',
+            keywords: ['timeout', 'exceeded', 'timed out],
+            category: 'performance',)';
             severity: 'medium',')';
-            description: 'テストの実行時間が制限を超えました')'),';
-'';
+            description: 'テストの実行時間が制限を超えました')'),
+
         this.failurePatterns.set('async_error', {''
-            name: 'Async Operation Error','';
-            keywords: ['promise', 'async', 'await', 'callback'],'';
-            category: 'async',')';
+            name: 'Async Operation Error',
+            keywords: ['promise', 'async', 'await', 'callback'],
+            category: 'async',)';
             severity: 'medium',')';
-            description: '非同期処理に関連するエラーです')'),';
-'';
+            description: '非同期処理に関連するエラーです')'),
+
         this.failurePatterns.set('memory_error', {''
-            name: 'Memory Error','';
-            keywords: ['out of memory', 'heap', 'stack overflow'],'';
-            category: 'memory',')';
+            name: 'Memory Error',
+            keywords: ['out of memory', 'heap', 'stack overflow],
+            category: 'memory',)';
             severity: 'high',')';
-            description: 'メモリ関連のエラーです')'),';
-'';
+            description: 'メモリ関連のエラーです')'),
+
         this.failurePatterns.set('network_error', {''
-            name: 'Network Error','';
-            keywords: ['network', 'fetch', 'xhr', 'cors', 'connection'],'';
-            category: 'network',')';
+            name: 'Network Error',
+            keywords: ['network', 'fetch', 'xhr', 'cors', 'connection'],
+            category: 'network',)';
             severity: 'medium',')';
-            description: 'ネットワーク通信に関連するエラーです')'),';
-'';
+            description: 'ネットワーク通信に関連するエラーです')'),
+
         this.failurePatterns.set('configuration_error', {''
-            name: 'Configuration Error','';
-            keywords: ['config', 'configuration', 'settings', 'invalid parameter'],'';
-            category: 'configuration',')';
+            name: 'Configuration Error',
+            keywords: ['config', 'configuration', 'settings', 'invalid parameter],
+            category: 'configuration',)';
             severity: 'medium',')';
-            description: '設定またはパラメータに関連するエラーです') }
-    }
+            description: '設定またはパラメータに関連するエラーです' ,}
 
     /**
      * エラーメッセージからパターンを識別
      * @param error - エラーメッセージ
      * @returns 識別されたパターン情報'
      */''
-    identifyPattern(error: string'): IdentifiedPattern | null { ''
-        if(!error || typeof error !== 'string') {
+    identifyPattern(error: string): IdentifiedPattern | null { ''
+        if(!error || typeof, error !== 'string) {'
             
         }
-            return null; }
-        }
+            return null;
 
         const errorText = error.toLowerCase();
         let bestMatch: IdentifiedPattern | null = null,
@@ -121,8 +114,7 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
 
         }
                 highestConfidence = confidence; }
-                bestMatch = { id: patternId, ...pattern, confidence };
-            }
+                bestMatch = { id: patternId, ...pattern, confidence }
         }
 
         return bestMatch;
@@ -135,12 +127,11 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
      * @returns 信頼度スコア（0-1）
      */
     calculatePatternConfidence(text: string, keywords: string[]): number { let matches = 0;
-        for(const keyword of keywords) {
+        for(const, keyword of, keywords) {
             if(text.includes(keyword.toLowerCase()) {
         }
                 matches++; }
-            }
-        }
+}
         return matches / keywords.length;
     }
 
@@ -149,7 +140,6 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
      * @returns 失敗パターンのマップ
      */
     getFailurePatterns(): Map<string, FailurePattern> { return new Map(this.failurePatterns); }
-    }
 
     /**
      * 特定のパターンを取得
@@ -157,7 +147,6 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
      * @returns パターン情報
      */
     getPattern(patternId: string): FailurePattern | null { return this.failurePatterns.get(patternId) || null; }
-    }
 
     /**
      * パターンの統計情報を取得
@@ -165,10 +154,9 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
      */
     getPatternStatistics(): PatternStatistics { const stats: PatternStatistics = {
             totalPatterns: this.failurePatterns.size }
-            patternsByCategory: {},
-            patternsBySeverity: {},
-
-        for(const pattern of this.failurePatterns.values() {
+            patternsByCategory: {};
+            patternsBySeverity: {};
+        for(const, pattern of, this.failurePatterns.values() {
 
             // カテゴリ別統計
             if (!stats.patternsByCategory[pattern.category]) {
@@ -180,7 +168,6 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
 
             // 重要度別統計
             if (!stats.patternsBySeverity[pattern.severity]) { stats.patternsBySeverity[pattern.severity] = 0; }
-            }
             stats.patternsBySeverity[pattern.severity]++;
         }
 
@@ -191,4 +178,4 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
      * クリーンアップ
      */
     cleanup(): void { this.failurePatterns.clear();''
-        super.cleanup(') }
+        super.cleanup(' }'

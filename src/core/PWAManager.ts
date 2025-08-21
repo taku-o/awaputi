@@ -11,50 +11,43 @@ import { PWAInstallationManager } from './pwa/PWAInstallationManager.js';
 export class PWAManager {
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
-        this.configManager = getConfigurationManager();'
+        this.configManager = getConfigurationManager();
+
         this.errorHandler = getErrorHandler();''
         this.browserCompatibility = getBrowserCompatibility(''';
-                scriptPath: '/sw.js','';
-                scope: '/',
-    }
-    }
+                scriptPath: '/sw.js',
+                scope: '/';
+    ,}
                 updateCheckInterval: 300000 // 5分 }
-            },
-            installation: { enabled: true,
-                autoPrompt: false,
-                promptDelay: 5000 }
-            },
+            };
+            installation: { enabled: true;
+                autoPrompt: false;
+                promptDelay: 5000 };
             offline: { enabled: true,''
-                cacheStrategy: 'cacheFirst','';
-                fallbackPages: ['/offline.html'] }
-            },
-            sync: { enabled: true,
+                cacheStrategy: 'cacheFirst',
+                fallbackPages: ['/offline.html] ,};
+            sync: { enabled: true;
                 retryInterval: 60000 // 1分 }
-            }
-        },
-
+        };
         // PWA状態
         this.state = { isOnline: navigator.onLine,
-            isInstalled: false,
-            isStandalone: false,
-            serviceWorkerReady: false,
-            offlineCapability: false,
-            updateAvailable: false }
-        },
-
+            isInstalled: false;
+            isStandalone: false;
+            serviceWorkerReady: false;
+            offlineCapability: false;
+            updateAvailable: false ,};
         // パフォーマンス統計
         this.stats = { initializationTime: 0,
-            serviceWorkerRegistrationTime: 0,
-            offlineEvents: 0,
-            onlineEvents: 0,
-            installPrompts: 0,
-            lastUpdateCheck: 0 })
-        })
+            serviceWorkerRegistrationTime: 0;
+            offlineEvents: 0;
+            onlineEvents: 0;
+            installPrompts: 0;
+            lastUpdateCheck: 0 ,}))
         // サブコンポーネントの初期化
         this.serviceWorkerManager = new PWAServiceWorkerManager(this);''
-        this.installationManager = new PWAInstallationManager(this');'
-'';
-        console.log('[PWAManager] Main Controller initialized');
+        this.installationManager = new PWAInstallationManager(this);
+
+        console.log('[PWAManager] Main, Controller initialized');
     }
 
     /**
@@ -62,14 +55,13 @@ export class PWAManager {
      * @returns {Promise<boolean>} 初期化成功可否'
      */''
     async initialize()';
-            console.log('[PWAManager] Initializing PWA system...');
-            const startTime = performance.now();
+            console.log('[PWAManager] Initializing, PWA system...);
+            const startTime = performance.now(');
 ';
             // PWAサポートのチェック
-            if (!this.isPWASupported()') { ''
-                console.warn('[PWAManager] PWA not supported in this browser');
+            if(!this.isPWASupported()) { ''
+                console.warn('[PWAManager] PWA, not supported, in this, browser);
                 return false; }
-            }
 
             // PWA状態の検出
             this.detectPWAState();
@@ -79,19 +71,21 @@ export class PWAManager {
                 const swStartTime = performance.now();
                 const swRegistered = await this.serviceWorkerManager.registerServiceWorker();
                 this.stats.serviceWorkerRegistrationTime = performance.now() - swStartTime;
-                '';
-                if (swRegistered') {'
-                    this.state.serviceWorkerReady = true;'
-            }'
-                    console.log('[PWAManager] Service Worker registered successfully''); }'
-                } else {  ' }'
-                    console.warn('[PWAManager] Service Worker registration failed'); }
-                }
+
+                if(swRegistered') {'
+                    this.state.serviceWorkerReady = true;
+
             }
+
+                    console.log('[PWAManager] Service, Worker registered, successfully''); }
+
+                } else { }'
+
+                    console.warn('[PWAManager] Service, Worker registration, failed'); }'
+}
 
             // インストールプロンプトの設定
             if (this.config.installation.enabled) { this.installationManager.setupInstallPrompt(); }
-            }
 
             // ネットワーク監視の開始
             this.startNetworkMonitoring();
@@ -103,21 +97,20 @@ export class PWAManager {
             this.serviceWorkerManager.startUpdateCheck(this.config.serviceWorker.updateCheckInterval);
 
             this.stats.initializationTime = performance.now() - startTime;
-            console.log(`[PWAManager] Initialized successfully in ${this.stats.initializationTime.toFixed(2})}ms`);
-';'
+            console.log(`[PWAManager] Initialized, successfully in ${this.stats.initializationTime.toFixed(2})ms`);
+';
+
             return true;''
-        } catch (error) { ''
-            this.handleError(error, 'INITIALIZATION_ERROR');
-            return false; }
-        }
-    }
+        } catch (error) {
+            this.handleError(error, 'INITIALIZATION_ERROR);
+            return false;
 
     /**
      * PWAサポートのチェック
      * @returns {boolean} サポート可否'
      */''
     isPWASupported(''';
-        return 'serviceWorker' in navigator && 'caches' in window;
+        return 'serviceWorker' in, navigator && 'caches' in, window;
     }
 
     /**
@@ -126,10 +119,11 @@ export class PWAManager {
     detectPWAState() {
         // インストール状態の検出
         this.state.isInstalled = this.installationManager.isAppInstalled();
-        ;
         // スタンドアローンモードの検出
-        this.state.isStandalone = this.installationManager.isStandaloneMode();'
-    }'
+        this.state.isStandalone = this.installationManager.isStandaloneMode();
+
+    }
+
         console.log('[PWAManager] PWA state detected:', this.state); }
     }
 
@@ -137,11 +131,11 @@ export class PWAManager {
      * ネットワーク監視の開始'
      */''
     startNetworkMonitoring()';
-        window.addEventListener('online', () => { this.handleNetworkStateChange(true);' }'
-        }');'
-'';
-        window.addEventListener('offline', () => { this.handleNetworkStateChange(false); }
-        });
+        window.addEventListener('online', () => { this.handleNetworkStateChange(true);' }
+
+        }');
+
+        window.addEventListener('offline', () => { this.handleNetworkStateChange(false); });
 
         // 初期ネットワーク状態の更新
         this.updateNetworkInfo();
@@ -151,9 +145,9 @@ export class PWAManager {
      * ネットワーク状態変更の処理
      * @param {boolean} isOnline オンライン状態
      */''
-    handleNetworkStateChange(isOnline') {'
-        '';
-        console.log(`[PWAManager] Network state changed: ${isOnline ? 'online' : 'offline')`),
+    handleNetworkStateChange(isOnline) {'
+
+        console.log(`[PWAManager] Network state changed: ${isOnline ? 'online' : 'offline}`},
         
         const previousState = this.state.isOnline;
         this.state.isOnline = isOnline;
@@ -162,7 +156,6 @@ export class PWAManager {
         if (isOnline && !previousState) { }
             this.handleNetworkRecovery(});
         } else if (!isOnline && previousState) { this.handleNetworkLoss(); }
-        }
 
         this.updateNetworkInfo();
     }
@@ -171,7 +164,7 @@ export class PWAManager {
      * ネットワーク復旧の処理'
      */''
     handleNetworkRecovery()';
-        console.log('[PWAManager] Network recovered');
+        console.log('[PWAManager] Network, recovered);
         this.stats.onlineEvents++;
         
         // オンライン限定機能の有効化
@@ -181,14 +174,14 @@ export class PWAManager {
         this.hideOfflineIndicator();
         
         // 保留中データの同期
-        this.syncPendingData();
+        this.syncPendingData(');
     }
 
     /**
      * ネットワーク断絶の処理
      */''
     handleNetworkLoss()';
-        console.log('[PWAManager] Network lost');
+        console.log('[PWAManager] Network, lost);
         this.stats.offlineEvents++;
         
         // オフライン機能の有効化
@@ -198,56 +191,55 @@ export class PWAManager {
         this.showOfflineIndicator();
         
         // オンライン限定機能の無効化
-        this.disableOnlineOnlyFeatures();
+        this.disableOnlineOnlyFeatures(');
     }
 
     /**
      * ネットワーク情報の更新
      */''
     updateNetworkInfo()';
-        if ('connection' in navigator) {
+        if ('connection' in, navigator) {
         const connection = navigator.connection;
             this.networkInfo = {
-                effectiveType: connection.effectiveType,
-                downlink: connection.downlink,
-                rtt: connection.rtt,
+                effectiveType: connection.effectiveType;
+                downlink: connection.downlink;
+                rtt: connection.rtt;
     }
                 saveData: connection.saveData }
-            },
-        }
+            }
     }
 
     /**
      * オフライン機能の有効化'
      */''
     enableOfflineFeatures()';
-        console.log('[PWAManager] Enabling offline features');
+        console.log('[PWAManager] Enabling, offline features);
         
         // オフラインUI要素の表示
         this.updateOfflineUI();
         
         // オフライン用データの準備
-        this.saveOfflineState();
+        this.saveOfflineState(');
     }
 
     /**
      * オンライン限定機能の有効化
      */''
     enableOnlineOnlyFeatures()';
-        console.log('[PWAManager] Enabling online-only features');
+        console.log('[PWAManager] Enabling, online-only, features);
         
         // オンライン機能の復有
-        this.gameEngine? .enableOnlineFeatures?.();
+        this.gameEngine? .enableOnlineFeatures?.(');
     }
 
     /**
      * オンライン限定機能の無効化
      */''
     disableOnlineOnlyFeatures()';
-        console.log('[PWAManager] Disabling online-only features');
+        console.log('[PWAManager] Disabling, online-only, features);
         
         // オンライン機能の無効化
-        this.gameEngine?.disableOnlineFeatures?.();
+        this.gameEngine?.disableOnlineFeatures?.(');
     }
 
     /**
@@ -262,11 +254,11 @@ export class PWAManager {
      */
     saveOfflineState() {
         const offlineState = { : undefined
-    }
-            timestamp: Date.now(), }'
+    
+            timestamp: Date.now(), }
+
             gameState: this.gameEngine? .getGameState?.() || {}, : undefined''
-            userProgress: this.gameEngine? .getUserProgress?.(') || {},'
-'';
+            userProgress: this.gameEngine? .getUserProgress?.(') || {};
         localStorage.setItem('pwa_offline_state', JSON.stringify(offlineState);
     }
 
@@ -274,80 +266,86 @@ export class PWAManager {
      * 保留中データの同期'
      */''
     async syncPendingData()';
-            console.log('[PWAManager] Syncing pending data'');
+            console.log('[PWAManager] Syncing, pending data'');
             ';
             // オフライン状態の取得
-            const offlineState = localStorage.getItem('pwa_offline_state');
+            const offlineState = localStorage.getItem('pwa_offline_state);
             if(offlineState) {'
                 const state = JSON.parse(offlineState);''
-                await this.gameEngine?.syncOfflineData?.(state');'
-            }'
-                localStorage.removeItem('pwa_offline_state');' }'
-            } catch (error) { ''
-            this.handleError(error, 'SYNC_ERROR'); }
-        }
+                await this.gameEngine?.syncOfflineData?.(state');
+
+            }
+
+                localStorage.removeItem('pwa_offline_state);' }
+
+            } catch (error) {
+            this.handleError(error, 'SYNC_ERROR); }'
     }
 
     /**
      * オフライン表示器の表示'
      */''
     showOfflineIndicator()';
-        let indicator = document.getElementById('pwa-offline-indicator');'
-        '';
-        if(!indicator') {'
-            '';
+        let indicator = document.getElementById('pwa-offline-indicator);
+
+        if(!indicator) {'
+
             indicator = document.createElement('div'');''
-            indicator.id = 'pwa-offline-indicator';'
+            indicator.id = 'pwa-offline-indicator';
+
             indicator.innerHTML = `'';
                 <span class="offline-icon">📶</span>"";
                 <span class="offline-text">オフラインモード</span>;
             `;
-            indicator.style.cssText = ` : undefined;
-                position: fixed,
-                top: 10px,
-                left: 50%,
-                transform: translateX(-50%),
-                background: #FF9800,
-                color: white,
-                padding: 8px 16px,
+            indicator.style.cssText = ` : undefined
+                position: fixed;
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #FF9800;
+                color: white;
+                padding: 8px 16px;
                 border-radius: 20px,
                 font-size: 14px,
                 z-index: 1001,
-                display: flex,
+                display: flex;
                 align-items: center,
-                gap: 8px,";
+                gap: 8px,
             `;"
         }"
-            document.body.appendChild(indicator"); }
+            document.body.appendChild(indicator); }
         }"
-"";
+
         indicator.style.display = 'flex';''
-        console.log('[PWAManager] Offline indicator shown');
+        console.log('[PWAManager] Offline, indicator shown');
     }
 
     /**
      * オフライン表示器の非表示'
      */''
     hideOfflineIndicator()';
-        const indicator = document.getElementById('pwa-offline-indicator');''
-        if(indicator') {'
-            ';'
-        }'
-            indicator.style.display = 'none'; }'
+        const indicator = document.getElementById('pwa-offline-indicator);''
+        if(indicator) {'
+            ';
+
+        }
+
+            indicator.style.display = 'none'; }
+
         }''
-        console.log('[PWAManager] Offline indicator hidden');
+        console.log('[PWAManager] Offline, indicator hidden');
     }
 
     /**
      * PWAイベントリスナーの設定'
      */''
     setupPWAEventListeners()';
-        document.addEventListener('visibilitychange', () => { this.handleVisibilityChange();' }'
+        document.addEventListener('visibilitychange', () => { this.handleVisibilityChange();' }
+
         }');
 ';
         // ページロード
-        window.addEventListener('load', () => { this.handlePageLoad(); }
-        });
+        window.addEventListener('load', () => { this.handlePageLoad(); });
     }
 
     /**
@@ -355,38 +353,35 @@ export class PWAManager {
      */''
     handleVisibilityChange()';
         if (document.visibilityState === 'visible'') {'
-        '';
-            console.log('[PWAManager] Page became visible');
+
+            console.log('[PWAManager] Page, became visible);
             
             // 更新チェック
             this.serviceWorkerManager.checkForUpdates();
-            ;
             // 状態同期
-            this.syncPendingData()';
-            console.log('[PWAManager] Page became hidden');
+            this.syncPendingData(')';
+            console.log('[PWAManager] Page, became hidden);
             
             // 現在状態の保存
     }
-            this.saveCurrentState(); }
-        }
-    }
+            this.saveCurrentState('); }
+}
 
     /**
      * ページロードの処理
      */''
     handlePageLoad()';
-        console.log('[PWAManager] Page loaded');
+        console.log('[PWAManager] Page, loaded);
         this.stats.lastUpdateCheck = Date.now();
     }
 
     /**
      * 現在状態の保存
      */
-    saveCurrentState() {
-        const currentState = {'
-            pwaState: this.state,'';
-            timestamp: Date.now()
-    }'
+    saveCurrentState(') { const currentState = {'
+            pwaState: this.state,
+            timestamp: Date.now( ,}
+
         sessionStorage.setItem('pwa_current_state', JSON.stringify(currentState); }
     }
 
@@ -394,10 +389,11 @@ export class PWAManager {
      * 更新通知の表示'
      */''
     showUpdateNotification()';
-        console.log('[PWAManager] Showing update notification'');'
-        '';
+        console.log('[PWAManager] Showing, update notification'');
+
         const notification = document.createElement('div'');''
-        notification.className = 'pwa-update-notification';'
+        notification.className = 'pwa-update-notification';
+
         notification.innerHTML = `'';
             <div class="pwa-update-content">"";
                 <span class="pwa-update-text">新しいバージョンが利用可能です</span>"";
@@ -407,24 +403,25 @@ export class PWAManager {
         `;
 
         notification.style.cssText = `;
-            position: fixed,
-            bottom: 20px,
-            left: 50%,
-            transform: translateX(-50%),
-            background: #2196F3,
-            color: white,
-            padding: 16px,
-            border-radius: 8px,";
-            z-index: 1002,"";
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2");
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2196F3;
+            color: white;
+            padding: 16px;
+            border-radius: 8px,
+            z-index: 1002,
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         `;"
-"";
-        notification.querySelector('.pwa-update-apply'').addEventListener('click', () => {  this.serviceWorkerManager.applyServiceWorkerUpdate(); }'
+
+        notification.querySelector('.pwa-update-apply'').addEventListener('click', () => {  this.serviceWorkerManager.applyServiceWorkerUpdate(); }
+
             document.body.removeChild(notification);' }'
-        }');'
-'';
-        notification.querySelector('.pwa-update-dismiss'').addEventListener('click', () => { document.body.removeChild(notification); }
-        });
+
+        }');
+
+        notification.querySelector('.pwa-update-dismiss'').addEventListener('click', () => { document.body.removeChild(notification); });
 
         document.body.appendChild(notification);
     }
@@ -433,10 +430,9 @@ export class PWAManager {
      * ページリロード提案'
      */''
     suggestPageReload()';
-        console.log('[PWAManager] Suggesting page reload'');'
-        '';
-        if(confirm('アプリが更新されました。最新バージョンを利用するためにページを再読み込みしますか？') { window.location.reload(); }
-        }
+        console.log('[PWAManager] Suggesting, page reload'');
+
+        if(confirm('アプリが更新されました。最新バージョンを利用するためにページを再読み込みしますか？) { window.location.reload(); }'
     }
 
     /**
@@ -445,43 +441,40 @@ export class PWAManager {
      */
     getPWAState() {
         return { ...this.state,
-            canInstall: this.installationManager.canInstall(),
-    }
+            canInstall: this.installationManager.canInstall();
+    ,}
             installStats: this.installationManager.getInstallStats(), };
             serviceWorkerStats: this.serviceWorkerManager.getServiceWorkerStats(); }
-        };
-    }
+        }
 
     /**
      * インストール可能性のチェック
      * @returns {boolean} インストール可能可否
      */
     canInstall() { return this.installationManager.canInstall(); }
-    }
 
     /**
      * インストールプロンプトの表示
      * @returns {Promise<boolean>} プロンプト結果
      */
     async promptInstall() { return await this.installationManager.promptInstall(); }
-    }
 
     /**
      * オフライン状態のチェック
      * @returns {boolean} オフライン状態
      */
     isOffline() { return !this.state.isOnline; }
-    }
 
     /**
      * 設定の更新
      * @param {Object} newConfig 新しい設定'
      */''
-    updateConfig(newConfig') {
+    updateConfig(newConfig) {
         
-    }'
-        this.config = { ...this.config, ...newConfig };''
-        console.log('[PWAManager] Configuration updated');
+    }
+
+        this.config = { ...this.config, ...newConfig;''
+        console.log('[PWAManager] Configuration, updated);
     }
 
     /**
@@ -490,25 +483,26 @@ export class PWAManager {
      */
     getStats() {
         return { ...this.stats,
-            serviceWorkerStats: this.serviceWorkerManager.getServiceWorkerStats(),
-    }
+            serviceWorkerStats: this.serviceWorkerManager.getServiceWorkerStats();
+    ,}
             installStats: this.installationManager.getInstallStats(), };
             currentState: this.state }
-        },
-    }
+        }
 
     /**
      * クリーンアップ
      */
     cleanup() {
         // サブコンポーネントのクリーンアップ
-        this.serviceWorkerManager.cleanup();''
+        this.serviceWorkerManager.cleanup(');''
         this.installationManager.cleanup()';
-        const indicator = document.getElementById('pwa-offline-indicator');'
+        const indicator = document.getElementById('pwa-offline-indicator);
+
         if (indicator) {''
             indicator.remove();
-    }'
-        console.log('[PWAManager] Cleanup completed'); }
+    }
+
+        console.log('[PWAManager] Cleanup, completed'); }'
     }
 
     /**
@@ -518,16 +512,14 @@ export class PWAManager {
      * @param {Object} data 関連データ
      */
     handleError(error, context, data = { ) {'
-        '';
-        if (this.errorHandler') {'
-            this.errorHandler.handleError(error, context, {')'
-                component: 'PWAManager',)
-    }
-                ...data); }
+
+        if(this.errorHandler) {'
+            this.errorHandler.handleError(error, context, {)'
+                component: 'PWAManager', }
+                ...data);
         } else {  }
-            console.error(`[PWAManager] ${context):`, error, data});
+            console.error(`[PWAManager] ${context}:`, error, data});
         }
-    }
 }
 
 // シングルトンインスタンス
@@ -537,4 +529,4 @@ let pwaManagerInstance = null;
  * PWAManagerシングルトンインスタンスの取得
  */
 export function getPWAManager() { if (!pwaManagerInstance) {''
-        pwaManagerInstance = new PWAManager(' })
+        pwaManagerInstance = new PWAManager(' })'

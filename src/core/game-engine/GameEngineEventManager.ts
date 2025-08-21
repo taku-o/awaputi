@@ -6,13 +6,11 @@
 
 interface GameEngine { eventListeners: Map<string, Function[]>;
     // 他のプロパティは必要に応じて追加 }
-}
 
 export class GameEngineEventManager {
     private gameEngine: GameEngine;
     constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine }
-    }
     
     /**
      * イベントリスナーを追加
@@ -21,7 +19,6 @@ export class GameEngineEventManager {
      */
     on(eventName: string, listener: Function): void { if(!this.gameEngine.eventListeners.has(eventName) {
             this.gameEngine.eventListeners.set(eventName, []); }
-        }
         this.gameEngine.eventListeners.get(eventName)!.push(listener);
     }
     
@@ -54,8 +51,7 @@ export class GameEngineEventManager {
             if (index !== -1) {
         }
                 listeners.splice(index, 1); }
-            }
-        }
+}
     }
     
     /**
@@ -64,7 +60,6 @@ export class GameEngineEventManager {
      */
     update(_deltaTime: number): void { // イベントシステムの更新処理
         // 現時点では特に処理なし（将来的に実装） }
-    }
     
     /**
      * リソースの破棄
@@ -72,7 +67,6 @@ export class GameEngineEventManager {
     destroy(): void { // イベントリスナーのクリア
         this.gameEngine.eventListeners.clear()';
         console.log('[GameEngineEventManager] Destroyed''); }
-    }
-}'
-'';
+}
+
 export default GameEngineEventManager;

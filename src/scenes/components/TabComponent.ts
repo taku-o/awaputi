@@ -8,11 +8,10 @@ import { ComponentEventBus } from './ComponentEventBus';''
 import { SceneState } from './SceneState';
 
 export interface AccessibilitySettings { highContrast: boolean,
-    largeText: boolean,
-    reducedMotion: boolean }
-}
+    largeText: boolean;
+    reducedMotion: boolean ,}
 
-export abstract class TabComponent { protected gameEngine: GameEngine,
+export abstract class TabComponent { protected gameEngine: GameEngine;
     protected eventBus: ComponentEventBus,
     protected state: SceneState,
     // タブコンポーネントの基本プロパティ
@@ -34,20 +33,17 @@ export abstract class TabComponent { protected gameEngine: GameEngine,
         
         // アクセシビリティ設定
         this.accessibilitySettings = state.accessibilitySettings || {
-            highContrast: false,
-            largeText: false,
-    }
-    }
+            highContrast: false;
+            largeText: false;
+    ,}
             reducedMotion: false }
-        },
-    }
+        }
     
     /**
      * コンポーネントの初期化
      * 子クラスでオーバーライドして実装
      */
     initialize(): void { this.isInitialized = true; }
-    }
     
     /**
      * タブがアクティブになった時の処理
@@ -57,14 +53,12 @@ export abstract class TabComponent { protected gameEngine: GameEngine,
             
         }
             this.initialize(); }
-        }
-    }
+}
     
     /**
      * タブが非アクティブになった時の処理
      */
     deactivate(): void { this.isActive = false; }
-    }
     
     /**
      * レンダリング処理
@@ -84,7 +78,6 @@ export abstract class TabComponent { protected gameEngine: GameEngine,
      * @returns イベントが処理された場合true
      */
     handleClick(x: number, y: number): boolean { return false; }
-    }
     
     /**
      * 入力イベント処理
@@ -92,7 +85,6 @@ export abstract class TabComponent { protected gameEngine: GameEngine,
      * @returns イベントが処理された場合true
      */
     handleInput(event: Event): boolean { return false; }
-    }
     
     /**
      * フレーム更新処理
@@ -100,7 +92,6 @@ export abstract class TabComponent { protected gameEngine: GameEngine,
      */
     update(deltaTime: number): void { // 基本実装では何もしない
         // 必要に応じて子クラスでオーバーライド }
-    }
     
     /**
      * エラー発生時のフォールバック描画
@@ -112,32 +103,31 @@ export abstract class TabComponent { protected gameEngine: GameEngine,
      * @param error - 発生したエラー
      */
     protected renderErrorFallback(;
-        context: CanvasRenderingContext2D,
+        context: CanvasRenderingContext2D;
         x: number, ;
         y: number, ;
         width: number );
         height: number);
         error: Error'';
-    '): void { // エラーメッセージを表示
+    '): void { // エラーメッセージを表示'
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FF0000' : '#FF6B6B';''
-        context.fillRect(x, y, width, height');'
-        '';
+        context.fillRect(x, y, width, height);
+
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#333333';''
         context.font = this.accessibilitySettings.largeText ? '18px sans-serif' : '16px sans-serif';''
         context.textAlign = 'center';''
-        context.textBaseline = 'middle';'
-        '';
+        context.textBaseline = 'middle';
+
         const errorText = 'コンポーネントの読み込みでエラーが発生しました';
         context.fillText(errorText, x + width / 2, y + height / 2);
         ';
         // デバッグ情報（開発時のみ）
-        if(this.gameEngine.debugMode') {'
-            '';
+        if(this.gameEngine.debugMode) {'
+
             context.font = '12px monospace';
         }
             context.fillText(error.message, x + width / 2, y + height / 2 + 30); }
-        }
-    }
+}
     
     /**
      * コンポーネントのクリーンアップ'

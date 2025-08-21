@@ -10,10 +10,9 @@ import { getErrorHandler, ErrorHandler } from './ErrorHandler.js';
 
 // Type definitions
 interface DocumentationStatistics { totalChanges: number,
-    appliedChanges: number,
-    rolledBackChanges: number,
-    lastUpdate: number | null }
-}
+    appliedChanges: number;
+    rolledBackChanges: number;
+    lastUpdate: number | null ,}
 
 interface QueryOptions { propertyType?: string;
     author?: string;
@@ -28,89 +27,75 @@ interface QueryOptions { propertyType?: string;
     changeType?: string;
     severity?: string;
     tags?: string[]; }
-}
 
 interface BubbleTypeStats { total: number,
-    applied: number,
-    rolledBack: number,
-    pending?: number }
-}
+    applied: number;
+    rolledBack: number;
+    pending?: number ,}
 
-interface PropertyTypeStats { total: number,
-    applied: number,
+interface PropertyTypeStats { total: number;
+    applied: number;
     rolledBack: number }
-}
 
-interface AuthorStats { total: number,
-    applied: number,
+interface AuthorStats { total: number;
+    applied: number;
     rolledBack: number }
-}
 
-interface TimelineEntry { date: string,
+interface TimelineEntry { date: string;
     count: number }
-}
 
-interface StatisticsReport { overview: DocumentationStatistics,
+interface StatisticsReport { overview: DocumentationStatistics;
     byBubbleType: Record<string, BubbleTypeStats>;
     byPropertyType: Record<string, PropertyTypeStats>;
     byAuthor: Record<string, AuthorStats>;
     byChangeType: Record<string, number>;
     bySeverity: Record<string, number>;
     byReviewStatus: Record<string, number>;
-    timeline: TimelineEntry[],
-    recentChanges: string[],
-    generatedAt: number,
-    error?: string }
-}
+    timeline: TimelineEntry[];
+    recentChanges: string[];
+    generatedAt: number;
+    error?: string ,}
 
-interface RelatedChangeInfo { id: string,
-    relationship: string,
-    summary: string,
+interface RelatedChangeInfo { id: string;
+    relationship: string;
+    summary: string;
     impact: any }
-}
 
-interface RiskAssessment { level: string,
+interface RiskAssessment { level: string;
     factors: string[] }
-}
 
 interface ImpactReport { change?: string;
     impact?: any;
-    relatedChanges: RelatedChangeInfo[],
+    relatedChanges: RelatedChangeInfo[];
     affectedSystems?: string[];
-    riskAssessment: RiskAssessment,
-    recommendations: string[],
-    generatedAt: number,
+    riskAssessment: RiskAssessment;
+    recommendations: string[];
+    generatedAt: number;
     error?: string;
-    changeId?: string; }
-}
+    changeId?: string; ,}
 
 interface SystemIndexSizes { changes: number,
-    bubbleTypes: number,
-    propertyTypes: number,
-    authors: number,
-    timeline: number }
-}
+    bubbleTypes: number;
+    propertyTypes: number;
+    authors: number;
+    timeline: number ,}
 
-interface StorageInfo { available: boolean,
-    autoSave: boolean,
+interface StorageInfo { available: boolean;
+    autoSave: boolean;
     maxHistorySize: number }
-}
 
-interface SystemStatistics extends DocumentationStatistics { indexSizes: SystemIndexSizes,
+interface SystemStatistics extends DocumentationStatistics { indexSizes: SystemIndexSizes;
     storageInfo: StorageInfo
     }
-}
 
 interface SystemSettings { maxHistorySize?: number;
     autoSaveEnabled?: boolean;
     storageKey?: string; }
-}
 
 interface StorageData { changes: any[],
-    statistics: DocumentationStatistics,
-    version: string,
-    savedAt: number }
-}
+    statistics: DocumentationStatistics;
+    version: string;
+    savedAt: number ,}
 
 export class BalanceChangeDocumentationSystem {
     private errorHandler: ErrorHandler;
@@ -128,21 +113,19 @@ export class BalanceChangeDocumentationSystem {
 
         this.errorHandler = getErrorHandler();
         this.changes = new Map();
-        this.changesByBubble = new Map();'
+        this.changesByBubble = new Map();
+
         this.changesByProperty = new Map();''
         this.changesByAuthor = new Map(''';
         this.storageKey = 'awaputi_balance_changes';
         
         // 統計情報
         this.statistics = {
-            totalChanges: 0,
-            appliedChanges: 0,
-            rolledBackChanges: 0,
-
-    }
-    }
-            lastUpdate: null })
-        })
+            totalChanges: 0;
+            appliedChanges: 0;
+            rolledBackChanges: 0;
+    ,}
+            lastUpdate: null }))
         this._initializeStorage();''
         this._loadFromStorage()';
         console.log('[BalanceChangeDocumentationSystem] システムを初期化しました');
@@ -152,12 +135,14 @@ export class BalanceChangeDocumentationSystem {
      * ストレージシステムを初期化'
      */''
     private _initializeStorage()';
-            if (typeof localStorage !== 'undefined'') { this.storageAvailable = true; }'
+            if (typeof, localStorage !== 'undefined'') { this.storageAvailable = true; }
+
             } else {  this.storageAvailable = false;' }'
-                console.warn('[BalanceChangeDocumentationSystem] LocalStorage利用不可');' }'
+
+                console.warn('[BalanceChangeDocumentationSystem] LocalStorage利用不可');' }
+
             } catch (error) { this.storageAvailable = false;''
-            this.errorHandler.handleError(error, 'DOCUMENTATION_STORAGE_INIT'); }
-        }
+            this.errorHandler.handleError(error, 'DOCUMENTATION_STORAGE_INIT); }'
     }
     
     /**
@@ -173,7 +158,7 @@ export class BalanceChangeDocumentationSystem {
             if(!data.changes || !Array.isArray(data.changes) return;
             
             // 変更履歴を復元
-            for(const changeData of data.changes) {
+            for(const, changeData of, data.changes) {
                 const change = new BalanceChange(changeData);
             }
                 this._addChangeToIndexes(change); }
@@ -183,15 +168,13 @@ export class BalanceChangeDocumentationSystem {
             if(data.statistics) {
                 
             }
-                this.statistics = { ...this.statistics, ...data.statistics };
+                this.statistics = { ...this.statistics, ...data.statistics;
             }
             
-            console.log(`[BalanceChangeDocumentationSystem] ${data.changes.length)件の変更履歴を読み込みました`});
-            '';
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'DOCUMENTATION_LOAD', {)
-                storageKey: this.storageKey) }
-            });
+            console.log(`[BalanceChangeDocumentationSystem] ${data.changes.length}件の変更履歴を読み込みました`});
+
+        } catch (error) { this.errorHandler.handleError(error, 'DOCUMENTATION_LOAD', {)
+                storageKey: this.storageKey ,});
         }
     }
     
@@ -200,21 +183,20 @@ export class BalanceChangeDocumentationSystem {
      */
     private _saveToStorage(): void { try {
             if (!this.storageAvailable || !this.autoSaveEnabled) return;
-            ';'
+            ';
+
             const data: StorageData = {''
-                changes: Array.from(this.changes.values().map(change => change.toJSON()'),';
-                statistics: this.statistics,'';
-                version: '1.0',
-                savedAt: Date.now() }
+                changes: Array.from(this.changes.values().map(change => change.toJSON()),
+                statistics: this.statistics,
+                version: '1.0';
+                savedAt: Date.now() ,}
             };
             
-            localStorage.setItem(this.storageKey, JSON.stringify(data);'
-            '';
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'DOCUMENTATION_SAVE', {)
+            localStorage.setItem(this.storageKey, JSON.stringify(data);
+
+        } catch (error) { this.errorHandler.handleError(error, 'DOCUMENTATION_SAVE', {)
                 storageKey: this.storageKey,);
-                changesCount: this.changes.size) }
-            });
+                changesCount: this.changes.size ,});
         }
     }
     
@@ -254,12 +236,9 @@ export class BalanceChangeDocumentationSystem {
         // 時系列インデックス（挿入ソート）
         const insertIndex = this.changesByTimestamp.findIndex(changeId => {  );
             const existingChange = this.changes.get(changeId); }
-            return existingChange && existingChange.timestamp > change.timestamp; }
-        });
+            return existingChange && existingChange.timestamp > change.timestamp;);
         
-        if (insertIndex === -1) { this.changesByTimestamp.push(change.id); }
-        } else { this.changesByTimestamp.splice(insertIndex, 0, change.id); }
-        }
+        if (insertIndex === -1) { this.changesByTimestamp.push(change.id); } else { this.changesByTimestamp.splice(insertIndex, 0, change.id); }
     }
     
     /**
@@ -277,7 +256,6 @@ export class BalanceChangeDocumentationSystem {
                 bubbleChanges.splice(index, 1); }
             }
             if (bubbleChanges.length === 0) { this.changesByBubble.delete(change.bubbleType); }
-            }
         }
         
         // プロパティタイプ別インデックス
@@ -289,7 +267,6 @@ export class BalanceChangeDocumentationSystem {
                 propertyChanges.splice(index, 1); }
             }
             if (propertyChanges.length === 0) { this.changesByProperty.delete(change.propertyType); }
-            }
         }
         
         // 作成者別インデックス
@@ -301,13 +278,11 @@ export class BalanceChangeDocumentationSystem {
                 authorChanges.splice(index, 1); }
             }
             if (authorChanges.length === 0) { this.changesByAuthor.delete(change.author); }
-            }
         }
         
         // 時系列インデックス
         const timeIndex = this.changesByTimestamp.indexOf(change.id);
         if (timeIndex !== -1) { this.changesByTimestamp.splice(timeIndex, 1); }
-        }
     }
     
     /**
@@ -329,16 +304,14 @@ export class BalanceChangeDocumentationSystem {
             
             // 検証
             const validation = change.validate();''
-            if(!validation.isValid') {'
-                '';
+            if(!validation.isValid) {'
+
                 console.warn('[BalanceChangeDocumentationSystem] 無効な変更データ:', validation.errors);
             }
-                return null; }
-            }
+                return null;
             
             // 履歴サイズ制限
             if (this.changes.size >= this.maxHistorySize) { this._cleanupOldChanges(); }
-            }
             
             // インデックスに追加
             this._addChangeToIndexes(change);
@@ -348,18 +321,14 @@ export class BalanceChangeDocumentationSystem {
             
             // 自動保存
             if (this.autoSaveEnabled) { this._saveToStorage(); }
-            }
             
-            console.log(`[BalanceChangeDocumentationSystem] 変更を記録: ${change.id)`});
+            console.log(`[BalanceChangeDocumentationSystem] 変更を記録: ${change.id}`});
             return change;
-            '';
-        } catch (error) { ''
+
+        } catch (error) {
             this.errorHandler.handleError(error, 'DOCUMENTATION_RECORD', {)
-                changeData); }
-            });
+                changeData); });
             return null;
-        }
-    }
     
     /**
      * 古い変更履歴をクリーンアップ
@@ -369,28 +338,25 @@ export class BalanceChangeDocumentationSystem {
             const cleanupCount = Math.floor(this.maxHistorySize * 0.1);
             const changesToRemove = this.changesByTimestamp.slice(0, cleanupCount);
             
-            for(const changeId of changesToRemove) {
+            for(const, changeId of, changesToRemove) {
             
                 const change = this.changes.get(changeId);
                 if (change) {
             
             }
                     this._removeChangeFromIndexes(change); }
-                }
-            }
+}
             
-            console.log(`[BalanceChangeDocumentationSystem] ${cleanupCount)件の古い変更履歴を削除`});
-            '';
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'DOCUMENTATION_CLEANUP'); }
-        }
+            console.log(`[BalanceChangeDocumentationSystem] ${cleanupCount}件の古い変更履歴を削除`});
+
+        } catch (error) {
+            this.errorHandler.handleError(error, 'DOCUMENTATION_CLEANUP); }'
     }
     
     /**
      * 変更を取得
      */
     public getChange(changeId: string): BalanceChange | null { return this.changes.get(changeId) || null; }
-    }
     
     /**
      * バブルタイプ別の変更履歴を取得
@@ -421,36 +387,35 @@ export class BalanceChangeDocumentationSystem {
             }
             
             if(options.toDate) {
-            ';'
-                ';'
-            }'
-                changes = changes.filter(change => change.timestamp <= options.toDate!'); }
+            ';
+
+                ';
+
+            }
+
+                changes = changes.filter(change => change.timestamp <= options.toDate!); }
             }
             ';
             // ソート
-            if(options.sortBy === 'timestamp') {'
-                '';
-                changes.sort((a, b') => { '
-            }'
+            if(options.sortBy === 'timestamp) {'
+
+                changes.sort((a, b) => { '
+            }
+
                     const order = options.sortOrder === 'desc' ? -1 : 1; }
-                    return (a.timestamp - b.timestamp) * order; }
-                });
+                    return (a.timestamp - b.timestamp) * order;);
             }
             
             // 制限
             if (options.limit && options.limit > 0) { changes = changes.slice(0, options.limit); }
-            }
             
             return changes;
-            '';
-        } catch (error) { ''
+
+        } catch (error) {
             this.errorHandler.handleError(error, 'DOCUMENTATION_GET_BY_BUBBLE', {)
                 bubbleType,);
-                options); }
-            });
+                options); });
             return [];
-        }
-    }
     
     /**
      * プロパティタイプ別の変更履歴を取得
@@ -463,14 +428,12 @@ export class BalanceChangeDocumentationSystem {
             // 同様のフィルタリングとソート処理
             return this._applyFiltersAndSort(changes, options);
             ' }'
-        } catch (error) { ''
+
+        } catch (error) {
             this.errorHandler.handleError(error, 'DOCUMENTATION_GET_BY_PROPERTY', {)
                 propertyType,);
-                options); }
-            });
+                options); });
             return [];
-        }
-    }
     
     /**
      * 作成者別の変更履歴を取得
@@ -480,16 +443,15 @@ export class BalanceChangeDocumentationSystem {
             const changeIds = this.changesByAuthor.get(author) || [];
             let changes = changeIds.map(id => this.changes.get(id).filter((change): change is BalanceChange => !!change);
             
-            return this._applyFiltersAndSort(changes, options);'
+            return this._applyFiltersAndSort(changes, options);
+
             ' }'
-        } catch (error) { ''
+
+        } catch (error) {
             this.errorHandler.handleError(error, 'DOCUMENTATION_GET_BY_AUTHOR', {)
                 author,);
-                options); }
-            });
+                options); });
             return [];
-        }
-    }
     
     /**
      * 期間別の変更履歴を取得
@@ -502,17 +464,16 @@ export class BalanceChangeDocumentationSystem {
                     change.timestamp >= fromDate && ;
                     change.timestamp <= toDate);
             
-            return this._applyFiltersAndSort(changes, options);'
+            return this._applyFiltersAndSort(changes, options);
+
             ' }'
-        } catch (error) { ''
+
+        } catch (error) {
             this.errorHandler.handleError(error, 'DOCUMENTATION_GET_BY_DATE', {)
                 fromDate);
                 toDate,);
-                options); }
-            });
+                options); });
             return [];
-        }
-    }
     
     /**
      * フィルタとソートを適用
@@ -554,26 +515,32 @@ export class BalanceChangeDocumentationSystem {
         
         // ソート
         if(options.sortBy) {
-            '';
-            filtered.sort((a, b') => { ''
+
+            filtered.sort((a, b) => { ''
                 const order = options.sortOrder === 'desc' ? -1 : 1;
-                let comparison = 0;'
-                '';
-                switch (options.sortBy') {''
+                let comparison = 0;
+
+                switch(options.sortBy) {''
                     case 'timestamp':;
-                        comparison = a.timestamp - b.timestamp;'
+                        comparison = a.timestamp - b.timestamp;
+
                         break;''
                     case 'bubbleType':'';
-                        comparison = (a.bubbleType || ''').localeCompare(b.bubbleType || ''');'
+                        comparison = (a.bubbleType || ''').localeCompare(b.bubbleType || ''');
+
                         break;''
                     case 'propertyType':'';
-                        comparison = (a.propertyType || ''').localeCompare(b.propertyType || ''');'
+                        comparison = (a.propertyType || ''').localeCompare(b.propertyType || ''');
+
                         break;''
                     case 'author':'';
                         comparison = (a.author || ''').localeCompare(b.author || ''');
-        }'
+        }
+
                         break;' }'
-                    case 'severity':' }'
+
+                    case 'severity':' }
+
                         const severityOrder: Record<string, number> = { 'low': 1, 'medium': 2, 'high': 3, 'critical': 4 };
                         comparison = (severityOrder[a.severity] || 0) - (severityOrder[b.severity] || 0);
                         break;
@@ -585,7 +552,6 @@ export class BalanceChangeDocumentationSystem {
         
         // 制限
         if (options.limit && options.limit > 0) { filtered = filtered.slice(0, options.limit); }
-        }
         
         return filtered;
     }
@@ -595,17 +561,17 @@ export class BalanceChangeDocumentationSystem {
      */
     public generateStatisticsReport(options: QueryOptions = { ): StatisticsReport {
         try {
-            const report: StatisticsReport = { }
-                overview: { ...this.statistics },
-                byBubbleType: {},
-                byPropertyType: {},
-                byAuthor: {},
-                byChangeType: {},
-                bySeverity: {},
-                byReviewStatus: {},
-                timeline: [],
-                recentChanges: [],
-                generatedAt: Date.now(),
+            const report: StatisticsReport = { ,}
+                overview: { ...this.statistics;
+                byBubbleType: {};
+                byPropertyType: {};
+                byAuthor: {};
+                byChangeType: {};
+                bySeverity: {};
+                byReviewStatus: {};
+                timeline: [];
+                recentChanges: [];
+                generatedAt: Date.now();
             };
             
             const changes = Array.from(this.changes.values();
@@ -614,33 +580,31 @@ export class BalanceChangeDocumentationSystem {
             for(const [bubbleType, changeIds] of this.changesByBubble) {
                 const bubbleChanges = changeIds.map(id => this.changes.get(id).filter((change): change is BalanceChange => !!change);
                 report.byBubbleType[bubbleType] = {
-                    total: bubbleChanges.length,
-                    applied: bubbleChanges.filter(c => c.applied).length,'';
-                    rolledBack: bubbleChanges.filter(c => c.rolledBack').length,'
-            }'
-                    pending: bubbleChanges.filter(c => c.reviewStatus === 'pending').length }
-                },
-            }
+                    total: bubbleChanges.length;
+                    applied: bubbleChanges.filter(c => c.applied).length,
+                    rolledBack: bubbleChanges.filter(c => c.rolledBack).length;
+            ,}
+
+                    pending: bubbleChanges.filter(c => c.reviewStatus === 'pending).length }'
+                }
             
             // プロパティタイプ別統計
             for(const [propertyType, changeIds] of this.changesByProperty) {
                 const propertyChanges = changeIds.map(id => this.changes.get(id).filter((change): change is BalanceChange => !!change);
                 report.byPropertyType[propertyType] = {
-                    total: propertyChanges.length,
-                    applied: propertyChanges.filter(c = > c.applied).length }
+                    total: propertyChanges.length;
+                    applied: propertyChanges.filter(c = > c.applied).length ,}
                     rolledBack: propertyChanges.filter(c => c.rolledBack).length }
-                },
-            }
+                }
             
             // 作成者別統計
             for(const [author, changeIds] of this.changesByAuthor) {
                 const authorChanges = changeIds.map(id => this.changes.get(id).filter((change): change is BalanceChange => !!change);
                 report.byAuthor[author] = {
-                    total: authorChanges.length,
-                    applied: authorChanges.filter(c = > c.applied).length }
+                    total: authorChanges.length;
+                    applied: authorChanges.filter(c = > c.applied).length ,}
                     rolledBack: authorChanges.filter(c => c.rolledBack).length }
-                },
-            }
+                }
             
             // 変更タイプ別統計
             const changeTypeCounts: Record<string, number> = {};
@@ -666,7 +630,7 @@ export class BalanceChangeDocumentationSystem {
             // タイムライン（日別変更数）
             const timelineData: Record<string, number> = {};
             changes.forEach(change => {  );''
-                const date = new Date(change.timestamp).toISOString(').split('T')[0]; }
+                const date = new Date(change.timestamp).toISOString(').split('T)[0]; }
                 timelineData[date] = (timelineData[date] || 0) + 1; }
             });
             
@@ -680,28 +644,28 @@ export class BalanceChangeDocumentationSystem {
                 .reverse();
                 .map(id => {  );
                     const change = this.changes.get(id); }
-                    return change ? change.getSummary() : null; }
-                })
+                    return change ? change.getSummary() : null;)
                 .filter((summary): summary is string => summary !== null);
             
             return report;
-            '';
-        } catch (error) { ' }'
-            this.errorHandler.handleError(error, 'DOCUMENTATION_STATISTICS', { options }');'
+
+        } catch (error) { }
+
+            this.errorHandler.handleError(error, 'DOCUMENTATION_STATISTICS', { options });
+
             return { ''
                 error: 'Failed to generate statistics report', };
                 overview: this.statistics, }
-                byBubbleType: {},
-                byPropertyType: {},
-                byAuthor: {},
-                byChangeType: {},
-                bySeverity: {},
-                byReviewStatus: {},
-                timeline: [],
-                recentChanges: [],
-                generatedAt: Date.now(),
-            };
-        }
+                byBubbleType: {};
+                byPropertyType: {};
+                byAuthor: {};
+                byChangeType: {};
+                bySeverity: {};
+                byReviewStatus: {};
+                timeline: [];
+                recentChanges: [];
+                generatedAt: Date.now();
+            }
     }
     
     /**
@@ -709,38 +673,39 @@ export class BalanceChangeDocumentationSystem {
      */
     public generateImpactReport(changeId: string): ImpactReport { try {
             const change = this.getChange(changeId);''
-            if(!change') {'
+            if(!change) {'
                 return { '
-            }'
-                    error: 'Change not found', };'
-                    relatedChanges: [],' }'
-                    riskAssessment: { level: 'unknown', factors: [] },
-                    recommendations: [],
-                    generatedAt: Date.now(),
-                };
             }
+
+                    error: 'Change not found', };
+
+                    relatedChanges: [],' }'
+
+                    riskAssessment: { level: 'unknown', factors: [] ,},
+                    recommendations: [];
+                    generatedAt: Date.now();
+                }
             
             const report: ImpactReport = { change: change.getSummary(),
-                impact: change.calculateImpact(),
-                relatedChanges: [],
-                affectedSystems: change.affectedSystems,
+                impact: change.calculateImpact();
+                relatedChanges: [];
+                affectedSystems: change.affectedSystems;
                 riskAssessment: {
-                    level: change.riskLevel,
-                    factors: [] }
-                },
-                recommendations: [],
-                generatedAt: Date.now(),
+                    level: change.riskLevel;
+                    factors: [] ,};
+                recommendations: [];
+                generatedAt: Date.now();
             };
             
             // 関連する変更を詳細化
-            for(const related of change.relatedChanges) {
+            for(const, related of, change.relatedChanges) {
                 const relatedChange = this.getChange(related.changeId);
                 if (relatedChange) {
                     report.relatedChanges.push({)
                         id: related.changeId,);
-                        relationship: related.relationshipType),
-                        summary: relatedChange.getSummary(),
-            }
+                        relationship: related.relationshipType);
+                        summary: relatedChange.getSummary();
+            ,}
                         impact: relatedChange.calculateImpact(); }
                     });
                 }
@@ -749,84 +714,97 @@ export class BalanceChangeDocumentationSystem {
             // リスク要因分析
             const impact = change.calculateImpact()';
             if(impact.magnitude === 'critical'') {'
-                ';'
-            }'
-                report.riskAssessment.factors.push('Critical magnitude change (>100%')'');' }'
+                ';
+
+            }
+
+                report.riskAssessment.factors.push('Critical, magnitude change (>100%)'');' }
+
             } else if (impact.magnitude === 'high'') { ''
-                report.riskAssessment.factors.push('High magnitude change (>50%')''); }
-            }'
-            '';
+                report.riskAssessment.factors.push('High, magnitude change (>50%)''); }
+
             if(!change.applied && change.reviewStatus !== 'approved'') {'
-                ';'
-            }'
-                report.riskAssessment.factors.push('Change not reviewed or approved'); }
-            }'
-            '';
-            if(change.relatedChanges.length > 0') {'
-                ';'
-            }'
-                report.riskAssessment.factors.push('Has related changes that may compound effects''); }
+                ';
+
+            }
+
+                report.riskAssessment.factors.push('Change, not reviewed, or approved); }'
+            }
+
+            if(change.relatedChanges.length > 0) {'
+                ';
+
+            }
+
+                report.riskAssessment.factors.push('Has, related changes, that may, compound effects''); }
             }
             ';
             // 推奨事項
             if(impact.magnitude === 'critical' || impact.magnitude === 'high'') {'
-                '';
-                report.recommendations.push('Consider gradual rollout or A/B testing'');'
-            }'
-                report.recommendations.push('Monitor player feedback and metrics closely''); }
-            }'
-            '';
+
+                report.recommendations.push('Consider, gradual rollout, or A/B, testing'');
+
+            }
+
+                report.recommendations.push('Monitor, player feedback, and metrics, closely''); }
+            }
+
             if(change.reviewStatus === 'pending'') {'
-                ';'
-            }'
-                report.recommendations.push('Complete review process before applying'); }
-            }'
-            '';
-            if (!change.rationale || change.rationale.trim(') === ''') { ''
-                report.recommendations.push('Document rationale for the change'); }
+                ';
+
             }
+
+                report.recommendations.push('Complete, review process, before applying); }'
+            }
+
+            if(!change.rationale || change.rationale.trim() === ''') { ''
+                report.recommendations.push('Document, rationale for, the change); }'
             
-            return report;'
-            '';
-        } catch (error) { ' }'
-            this.errorHandler.handleError(error, 'DOCUMENTATION_IMPACT_REPORT', { changeId }');'
+            return report;
+
+        } catch (error) { }
+
+            this.errorHandler.handleError(error, 'DOCUMENTATION_IMPACT_REPORT', { changeId });
+
             return { ''
-                error: 'Failed to generate impact report',
-                changeId, };'
+                error: 'Failed to generate impact report';
+                changeId, };
+
                 relatedChanges: [],' }'
-                riskAssessment: { level: 'unknown', factors: [] },'
-                recommendations: [],'';
+
+                riskAssessment: { level: 'unknown', factors: [] ,},
+
+                recommendations: [],
                 generatedAt: Date.now()';
-    public generateMarkdownReport(reportType: 'statistics' | 'impact', options: QueryOptions & { changeId?: string } = { )'): string {'
+    public generateMarkdownReport(reportType: 'statistics' | 'impact', options: QueryOptions & { changeId?: string } = { )): string {'
         try {'
-            let markdown = '';'
-            '';
-            if(reportType === 'statistics') {'
-                const report = this.generateStatisticsReport(options);'
-            }'
-                markdown = this._generateStatisticsMarkdown(report');' }'
+            let markdown = '';
+
+            if(reportType === 'statistics) {'
+                const report = this.generateStatisticsReport(options);
+
+            }
+
+                markdown = this._generateStatisticsMarkdown(report);' }'
+
             } else if (reportType === 'impact' && options.changeId) { const report = this.generateImpactReport(options.changeId);
-                markdown = this._generateImpactMarkdown(report); }
-            } else {  }
-                throw new Error(`Unknown report type: ${reportType)`});
+                markdown = this._generateImpactMarkdown(report); } else {  }
+                throw new Error(`Unknown, report type: ${reportType}`});
             }
             
-            return markdown;'
-            '';
-        } catch (error) { ''
+            return markdown;
+
+        } catch (error) {
             this.errorHandler.handleError(error, 'DOCUMENTATION_MARKDOWN', {)
                 reportType,);
-                options); }
-            });
-            return `# Error\n\nFailed to generate ${reportType} report: ${error instanceof Error ? error.message : String(error})}`;
-        }
-    }
+                options); });
+            return `# Error\n\nFailed to generate ${reportType} report: ${error instanceof Error ? error.message : String(error})`;
     
     /**
      * 統計レポートのマークダウンを生成
      */'
     private _generateStatisticsMarkdown(report: StatisticsReport): string { ''
-        const date = new Date(report.generatedAt').toLocaleString('ja-JP');
+        const date = new Date(report.generatedAt).toLocaleString('ja-JP);
         
         let markdown = `# ゲームバランス変更統計レポート\n\n`; }
         markdown += `**生成日時**: ${date}\n\n`;
@@ -836,7 +814,7 @@ export class BalanceChangeDocumentationSystem {
         markdown += `- **総変更数**: ${report.overview.totalChanges}\n`;
         markdown += `- **適用済み**: ${report.overview.appliedChanges}\n`;
         markdown += `- **ロールバック済み**: ${report.overview.rolledBackChanges}\n`;''
-        markdown += `- **最終更新**: ${report.overview.lastUpdate ? new Date(report.overview.lastUpdate').toLocaleString('ja-JP''}) : 'N/A'}\n\n`;
+        markdown += `- **最終更新**: ${report.overview.lastUpdate ? new Date(report.overview.lastUpdate}.toLocaleString('ja-JP''}) : 'N/A'}\n\n`;
         
         // バブルタイプ別
         if (Object.keys(report.byBubbleType).length > 0) { markdown += `## バブルタイプ別統計\n\n`;
@@ -864,7 +842,7 @@ export class BalanceChangeDocumentationSystem {
         if(report.recentChanges.length > 0) {
             markdown += `## 最近の変更\n\n`;
         }
-            for (const changeSummary of report.recentChanges) { }
+            for (const, changeSummary of, report.recentChanges) { }
                 markdown += `- ${changeSummary}\n`;
             }
             markdown += `\n`;
@@ -879,8 +857,8 @@ export class BalanceChangeDocumentationSystem {
     private _generateImpactMarkdown(report: ImpactReport): string { if (report.error) { }
             return `# エラー\n\n${report.error}`;
         }
-        '';
-        const date = new Date(report.generatedAt').toLocaleString('ja-JP');
+
+        const date = new Date(report.generatedAt).toLocaleString('ja-JP);
         
         let markdown = `# 変更影響レポート\n\n`;
         markdown += `**生成日時**: ${date}\n\n`;
@@ -905,7 +883,7 @@ export class BalanceChangeDocumentationSystem {
             markdown += `**リスク要因**:\n`;
         
         }
-            for (const factor of report.riskAssessment.factors) { }
+            for (const, factor of, report.riskAssessment.factors) { }
                 markdown += `- ${factor}\n`;
             }
             markdown += `\n`;
@@ -915,7 +893,7 @@ export class BalanceChangeDocumentationSystem {
         if(report.recommendations.length > 0) {
             markdown += `## 推奨事項\n\n`;
         }
-            for (const recommendation of report.recommendations) { }
+            for (const, recommendation of, report.recommendations) { }
                 markdown += `- ${recommendation}\n`;
             }
             markdown += `\n`;
@@ -925,7 +903,7 @@ export class BalanceChangeDocumentationSystem {
         if(report.relatedChanges.length > 0) {
             markdown += `## 関連する変更\n\n`;
         }
-            for (const related of report.relatedChanges) { }
+            for (const, related of, report.relatedChanges) { }
                 markdown += `- **${related.relationship}**: ${related.summary}\n`;
                 markdown += `  - 影響: ${related.impact.description}\n`;
             }
@@ -940,18 +918,16 @@ export class BalanceChangeDocumentationSystem {
      */
     public getSystemStatistics(): SystemStatistics { return { ...this.statistics,
             indexSizes: {
-                changes: this.changes.size,
-                bubbleTypes: this.changesByBubble.size,
-                propertyTypes: this.changesByProperty.size,
+                changes: this.changes.size;
+                bubbleTypes: this.changesByBubble.size;
+                propertyTypes: this.changesByProperty.size;
                 authors: this.changesByAuthor.size, };
                 timeline: this.changesByTimestamp.length }
-            },
-            storageInfo: { available: this.storageAvailable,
-                autoSave: this.autoSaveEnabled,
+            };
+            storageInfo: { available: this.storageAvailable;
+                autoSave: this.autoSaveEnabled;
                 maxHistorySize: this.maxHistorySize }
-            }
-        },
-    }
+        }
     
     /**
      * 設定を更新
@@ -962,16 +938,15 @@ export class BalanceChangeDocumentationSystem {
             }
                 this.maxHistorySize = newSettings.maxHistorySize; }
             }
-            '';
-            if (newSettings.autoSaveEnabled !== undefined') { this.autoSaveEnabled = newSettings.autoSaveEnabled; }
-            }'
-            '';
-            if (newSettings.storageKey && typeof newSettings.storageKey === 'string'') { this.storageKey = newSettings.storageKey; }
-            }'
-            '';
-            console.log('[BalanceChangeDocumentationSystem] 設定を更新しました');'
-            '';
-        } catch (error) { ' }'
+
+            if(newSettings.autoSaveEnabled !== undefined) { this.autoSaveEnabled = newSettings.autoSaveEnabled; }
+
+            if (newSettings.storageKey && typeof, newSettings.storageKey === 'string'') { this.storageKey = newSettings.storageKey; }
+
+            console.log('[BalanceChangeDocumentationSystem] 設定を更新しました);
+
+        } catch (error') { }
+
             this.errorHandler.handleError(error, 'DOCUMENTATION_SETTINGS', { newSettings });
         }
     }
@@ -981,13 +956,13 @@ export class BalanceChangeDocumentationSystem {
      */'
     public save(): boolean { try {'
             this._saveToStorage()';
-            console.log('[BalanceChangeDocumentationSystem] 手動保存完了');'
+            console.log('[BalanceChangeDocumentationSystem] 手動保存完了');
+
             return true;' }'
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'DOCUMENTATION_MANUAL_SAVE');
-            return false; }
-        }
-    }
+
+        } catch (error) {
+            this.errorHandler.handleError(error, 'DOCUMENTATION_MANUAL_SAVE);
+            return false;
     
     /**
      * データをクリア
@@ -1000,28 +975,27 @@ export class BalanceChangeDocumentationSystem {
             this.changesByTimestamp.length = 0;
             
             this.statistics = {
-                totalChanges: 0,
-                appliedChanges: 0,
-                rolledBackChanges: 0,
-                lastUpdate: Date.now() }
-            };
+                totalChanges: 0;
+                appliedChanges: 0;
+                rolledBackChanges: 0;
+                lastUpdate: Date.now( ,};
             
             if(this.storageAvailable) {
-            ';'
-                ';'
-            }'
-                localStorage.removeItem(this.storageKey'); }
-            }'
-            '';
-            console.log('[BalanceChangeDocumentationSystem] データをクリアしました');
-            return true;'
-            '';
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'DOCUMENTATION_CLEAR');
-            return false; }
-        }
-    }
-}
+            ';
+
+                ';
+
+            }
+
+                localStorage.removeItem(this.storageKey); }
+            }
+
+            console.log('[BalanceChangeDocumentationSystem] データをクリアしました);
+            return true;
+
+        } catch (error') {
+            this.errorHandler.handleError(error, 'DOCUMENTATION_CLEAR);
+            return false;
 
 // シングルトンインスタンス
 let documentationSystemInstance: BalanceChangeDocumentationSystem | null = null,
@@ -1030,4 +1004,4 @@ let documentationSystemInstance: BalanceChangeDocumentationSystem | null = null,
  * BalanceChangeDocumentationSystemのシングルトンインスタンスを取得
  */
 export function getBalanceChangeDocumentationSystem(): BalanceChangeDocumentationSystem { if (!documentationSystemInstance) {''
-        documentationSystemInstance = new BalanceChangeDocumentationSystem(' })
+        documentationSystemInstance = new BalanceChangeDocumentationSystem(' })'

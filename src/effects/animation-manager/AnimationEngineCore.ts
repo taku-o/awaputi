@@ -29,32 +29,28 @@ export type EasingType = '';
  * Animation engine settings interface
  */
 export interface AnimationEngineSettings { enabled: boolean,
-    globalSpeed: number,
-    quality: AnimationQuality,
-    enableEasing: boolean,
-    enableParallax: boolean }
-}
+    globalSpeed: number;
+    quality: AnimationQuality;
+    enableEasing: boolean;
+    enableParallax: boolean ,}
 
 /**
  * Performance metrics interface
  */
-export interface PerformanceMetrics { activeAnimations: number,
-    frameTime: number,
+export interface PerformanceMetrics { activeAnimations: number;
+    frameTime: number;
     droppedFrames: number }
-}
 
 /**
  * Animation progress result interface
  */
-export interface AnimationProgress { progress: number,
+export interface AnimationProgress { progress: number;
     easedProgress: number }
-}
 
 /**
  * Animation target interface
  */
 export interface AnimationTarget { [key: string]: any, }
-}
 
 /**
  * Animation options interface
@@ -68,38 +64,34 @@ export interface AnimationOptions { onComplete?: (animation: Animation) => void;
  */
 export interface Animation { type?: string;
     target?: AnimationTarget;
-    duration: number,
-    elapsed: number,
+    duration: number;
+    elapsed: number;
     easing?: EasingType;
     endValues?: Record<string, any>;
     options?: AnimationOptions;
     [key: string]: any, }
-}
 
 /**
  * Quality level settings interface
  */
 export interface QualityLevelSettings { particleCount: number,
-    effectIntensity: number,
-    complexAnimations: boolean }
-}
+    effectIntensity: number;
+    complexAnimations: boolean ,}
 
 /**
  * Quality levels configuration interface
  */
-export interface QualityLevels { low: QualityLevelSettings,
-    medium: QualityLevelSettings,
-    high: QualityLevelSettings,
+export interface QualityLevels { low: QualityLevelSettings;
+    medium: QualityLevelSettings;
+    high: QualityLevelSettings;
     ultra: QualityLevelSettings
     }
-}
 
 /**
  * Quality settings with level interface
  */
 export interface QualitySettings extends QualityLevelSettings { level: AnimationQuality
     }
-}
 
 /**
  * Animation Engine Core
@@ -108,26 +100,23 @@ export interface QualitySettings extends QualityLevelSettings { level: Animation
 export class AnimationEngineCore {
     private settings: AnimationEngineSettings;
     private performanceMetrics: PerformanceMetrics';
-    '';
+
     constructor(''';
-            quality: 'high',
-            enableEasing: true,
-            enableParallax: true }
-        },
-        
+            quality: 'high';
+            enableEasing: true;
+            enableParallax: true };
         // パフォーマンス監視
         this.performanceMetrics = { activeAnimations: 0,
-            frameTime: 0,
-            droppedFrames: 0 })
-        })
+            frameTime: 0;
+            droppedFrames: 0 ,}))
     }
     
     /**
      * カスタムイージング関数
      */
     ease(t: number, type: EasingType): number { ''
-        switch(type') {'
-            '';
+        switch(type) {'
+
             case 'linear':';
                 return t;''
             case 'easeInQuad':';
@@ -135,38 +124,37 @@ export class AnimationEngineCore {
             case 'easeOutQuad':'';
                 return 1 - (1 - t) * (1 - t');''
             case 'easeInOutQuad':'';
-                return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2') / 2;''
+                return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;''
             case 'easeInCubic':';
                 return t * t * t;''
             case 'easeOutCubic':'';
-                return 1 - Math.pow(1 - t, 3');''
+                return 1 - Math.pow(1 - t, 3);''
             case 'easeInOutCubic':'';
-                return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3') / 2;''
+                return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;''
             case 'easeInQuart':';
                 return t * t * t * t;''
             case 'easeOutQuart':'';
-                return 1 - Math.pow(1 - t, 4');''
+                return 1 - Math.pow(1 - t, 4);''
             case 'easeInOutQuart':'';
-                return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4') / 2;''
+                return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;''
             case 'easeInBack':;
                 const c1 = 1.70158;
-                const c3 = c1 + 1;'
+                const c3 = c1 + 1;
+
                 return c3 * t * t * t - c1 * t * t;''
             case 'easeOutBack':;
-                const c1_2 = 1.70158;'
+                const c1_2 = 1.70158;
+
                 const c3_2 = c1_2 + 1;''
-                return 1 + c3_2 * Math.pow(t - 1, 3) + c1_2 * Math.pow(t - 1, 2');''
+                return 1 + c3_2 * Math.pow(t - 1, 3) + c1_2 * Math.pow(t - 1, 2);''
             case 'easeOutBounce':;
                 const n1 = 7.5625;
                 const d1 = 2.75;
                 if (t < 1 / d1) {
         }
-                    return n1 * t * t; }
-                } else if (t < 2 / d1) { return n1 * (t -= 1.5 / d1) * t + 0.75; }
-                } else if (t < 2.5 / d1) { return n1 * (t -= 2.25 / d1) * t + 0.9375; }'
-                } else {  ' }'
-                    return n1 * (t -= 2.625 / d1') * t + 0.984375; }'
-                }''
+                    return n1 * t * t; else if (t < 2 / d1) { return n1 * (t -= 1.5 / d1) * t + 0.75; } else if (t < 2.5 / d1) { return n1 * (t -= 2.25 / d1) * t + 0.9375; else {  ' }'
+
+                    return n1 * (t -= 2.625 / d1') * t + 0.984375;''
             case 'easeInElastic':';
                 const c4 = (2 * Math.PI) / 3;''
                 return t === 0 ? 0 : t === 1 ? 1 : -Math.pow(2, 10 * t - 10) * Math.sin((t * 10 - 10.75) * c4');''
@@ -174,15 +162,12 @@ export class AnimationEngineCore {
                 const c4_2 = (2 * Math.PI) / 3;
                 return t === 0 ? 0 : t === 1 ? 1 : Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c4_2) + 1;
             default: return t;
-        }
-    }
     
     /**
      * アニメーション更新ループ
      */
     updateAnimations(animations: Animation[], deltaTime: number): Animation[] { if (!this.settings.enabled) {
             return animations; }
-        }
         
         const startTime = performance.now();
         const adjustedDeltaTime = deltaTime * this.settings.globalSpeed;
@@ -226,9 +211,9 @@ export class AnimationEngineCore {
             try {
         }
                 animation.options.onComplete(animation); }
-            } catch (error) { ''
+            } catch (error) {
                 getErrorHandler()';
-                    context: 'AnimationEngineCore.completeAnimation'),' }'
+                    context: 'AnimationEngineCore.completeAnimation),' 
                 }');
             }
         }
@@ -244,40 +229,43 @@ export class AnimationEngineCore {
         const activeCount = this.performanceMetrics.activeAnimations;
         ';
         // フレーム時間が長すぎる場合は品質を下げる
-        if(frameTime > 16.67 && activeCount > 20') {'
+        if(frameTime > 16.67 && activeCount > 20) {'
             // 60FPS基準
             if (this.settings.quality === 'ultra'') {'
-        }'
-                this.settings.quality = 'high';' }'
+        }
+
+                this.settings.quality = 'high';' }
+
             } else if (this.settings.quality === 'high'') { ''
-                this.settings.quality = 'medium';' }'
+                this.settings.quality = 'medium';' }
+
             } else if (this.settings.quality === 'medium'') { ''
                 this.settings.quality = 'low'; }
-            }
         }
         ';
         // パフォーマンスが良い場合は品質を上げる
-        if(frameTime < 8 && activeCount < 10') {'
-            '';
+        if(frameTime < 8 && activeCount < 10) {'
+
             if (this.settings.quality === 'low'') {'
-        }'
-                this.settings.quality = 'medium';' }'
+        }
+
+                this.settings.quality = 'medium';' }
+
             } else if (this.settings.quality === 'medium'') { ''
-                this.settings.quality = 'high';' }'
+                this.settings.quality = 'high';' }
+
             } else if (this.settings.quality === 'high'') { ''
                 this.settings.quality = 'ultra'; }
-            }
-        }
-    }
+}
     
     /**
      * イベント発火'
      */''
-    private dispatchAnimationEvent(eventType: string, animation: Animation'): void { // カスタムイベントの実装
-        if (typeof window !== 'undefined' && window.dispatchEvent) { }
+    private dispatchAnimationEvent(eventType: string, animation: Animation): void { // カスタムイベントの実装
+        if (typeof, window !== 'undefined' && window.dispatchEvent) { }
             const event = new CustomEvent(`animation${eventType}`, {
                 detail: { animation })
-            ),
+            );
             window.dispatchEvent(event);
         }
     }
@@ -286,40 +274,37 @@ export class AnimationEngineCore {
      * アニメーション進行値計算
      */'
     calculateAnimationProgress(animation: Animation): AnimationProgress { ''
-        const progress = Math.min(animation.elapsed / animation.duration, 1');'
+        const progress = Math.min(animation.elapsed / animation.duration, 1);
+
         const easedProgress = this.settings.enableEasing ?   : undefined'';
-            this.ease(progress, animation.easing || 'linear') : progress; }
-        return { progress, easedProgress };
-    }
+            this.ease(progress, animation.easing || 'linear) : progress; }'
+        return { progress, easedProgress }
     
     /**
      * 設定更新
      */
     updateSettings(newSettings: Partial<AnimationEngineSettings>): void { Object.assign(this.settings, newSettings); }
-    }
     
     /**
      * パフォーマンス統計取得
      */
     getPerformanceMetrics(): PerformanceMetrics {
-        return { ...this.performanceMetrics };
+        return { ...this.performanceMetrics;
     }
     
     /**
      * クリーンアップ'
      */''
     dispose(''';
-            quality: 'high',
-            enableEasing: true,
+            quality: 'high';
+            enableEasing: true;
             enableParallax: true;
         },
         
         // メトリクスリセット
         this.performanceMetrics = { activeAnimations: 0,
-            frameTime: 0,
-            droppedFrames: 0 }
-        },
-    }
+            frameTime: 0;
+            droppedFrames: 0 ,}
 }
 
 /**
@@ -331,12 +316,11 @@ export class AnimationQualityController {
     private currentQuality: AnimationQuality;
     private frameTimeHistory: number[]);
     private readonly maxHistorySize: number);
-    '';
+
     constructor(''';
         this.currentQuality = 'high';
         this.frameTimeHistory = [];
         this.maxHistorySize = 60; // 1秒分のフレーム履歴 }
-    }
     
     /**
      * フレーム時間を記録して品質を動的調整
@@ -353,7 +337,6 @@ export class AnimationQualityController {
         
         // 定期的に品質を評価
         if (this.frameTimeHistory.length >= this.maxHistorySize) { this.evaluateQuality(); }
-        }
     }
     
     /**
@@ -370,7 +353,6 @@ export class AnimationQualityController {
             this.downgradeQuality(); }
         } else if (avgFrameTime < targetFrameTime * 0.8) { // パフォーマンスが良い - 品質を上げる
             this.upgradeQuality(); }
-        }
     }
     
     /**
@@ -381,7 +363,7 @@ export class AnimationQualityController {
         const currentIndex = qualityOrder.indexOf(this.currentQuality);
         
         if (currentIndex < qualityOrder.length - 1) { this.currentQuality = qualityOrder[currentIndex + 1]; }
-            console.log(`[AnimationQualityController] 品質を下げました: ${this.currentQuality)`});
+            console.log(`[AnimationQualityController] 品質を下げました: ${this.currentQuality}`});
         }
     }
     
@@ -393,7 +375,7 @@ export class AnimationQualityController {
         const currentIndex = qualityOrder.indexOf(this.currentQuality);
         
         if (currentIndex < qualityOrder.length - 1) { this.currentQuality = qualityOrder[currentIndex + 1]; }
-            console.log(`[AnimationQualityController] 品質を上げました: ${this.currentQuality)`});
+            console.log(`[AnimationQualityController] 品質を上げました: ${this.currentQuality}`});
         }
     }
     
@@ -401,18 +383,16 @@ export class AnimationQualityController {
      * 現在の品質設定を取得
      */
     getCurrentQualitySettings(): QualitySettings { return { level: this.currentQuality, };
-            ...this.qualityLevels[this.currentQuality]  }
-        };
-    }
+            ...this.qualityLevels[this.currentQuality]
+        }
     
     /**
      * 品質を手動設定
      */'
     setQuality(quality: AnimationQuality): void { ''
-        if(this.qualityLevels[quality]') {
+        if(this.qualityLevels[quality]) {
             
         }
             this.currentQuality = quality; }
-        }'
-    }''
+}''
 }

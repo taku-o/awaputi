@@ -5,76 +5,76 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
  * リアルタイムスクリーンリーダー通知の包括的な管理を提供
  */
 export class LiveRegionManager {'
-    '';
-    constructor(screenReaderManager') {
+
+    constructor(screenReaderManager) {
         this.screenReaderManager = screenReaderManager;
         this.accessibilityManager = screenReaderManager.accessibilityManager;
         this.gameEngine = this.accessibilityManager? .gameEngine;
         
         // 通知設定
         this.config = { : undefined''
-            enabledRegions: ['polite', 'assertive', 'status', 'log'],';
+            enabledRegions: ['polite', 'assertive', 'status', 'log'],
             priorityLevels: {''
-                critical: 'assertive','';
-                high: 'assertive','';
-                normal: 'polite','';
-                low: 'polite','
-    }
-    }'
+                critical: 'assertive',
+                high: 'assertive',
+                normal: 'polite',
+                low: 'polite';
+    ,}
+
                 info: 'status' }
-            },
-            throttling: { enabled: true,
+            };
+            throttling: { enabled: true;
                 interval: 1000, // 1秒間隔;
-                maxQueue: 10,
-                deduplicationWindow: 3000 // 3秒以内の重複を削除 }
-            },
-            deduplication: { enabled: true,
+                maxQueue: 10;
+                deduplicationWindow: 3000 // 3秒以内の重複を削除 ,};
+            deduplication: { enabled: true;
                 similarity: 0.8, // 80%以上類似で重複判定;
-                messageHistory: 20 // 履歴保持数 }
-            },
+                messageHistory: 20 // 履歴保持数 ,};
             languages: { ''
-                primary: 'ja','';
-                fallback: 'en' }
-            },
-            accessibility: { respectUserPausedSpeech: true,
-                interruptOnUrgent: true,
+                primary: 'ja',
+                fallback: 'en' ,};
+            accessibility: { respectUserPausedSpeech: true;
+                interruptOnUrgent: true;
                 verbosityControl: true }
-            }
-        },
+        };
         ';
         // ライブリージョン要素管理
         this.liveRegions = new Map(''';
             ['polite', { ''
-                politeness: 'polite', ';'
-                atomic: false, '';
-                relevant: 'all',']';
-                live: 'polite' }]'
+                politeness: 'polite',
+
+                atomic: false,
+                relevant: 'all',]';
+                live: 'polite' ,}]'
             }],''
             ['assertive', { ''
-                politeness: 'assertive', ';'
-                atomic: true, '';
-                relevant: 'all',']';
-                live: 'assertive' }]'
+                politeness: 'assertive',
+
+                atomic: true,
+                relevant: 'all',]';
+                live: 'assertive' ,}]'
             }],''
             ['status', { ''
-                politeness: 'polite', ';'
-                atomic: false, '';
-                relevant: 'text','';
-                live: 'polite',']';
-                role: 'status' }]'
+                politeness: 'polite',
+
+                atomic: false,
+                relevant: 'text',
+                live: 'polite',]';
+                role: 'status' ,}]'
             }],''
             ['log', { ''
-                politeness: 'polite', ';'
-                atomic: false, '';
-                relevant: 'additions','';
-                live: 'polite',']';
-                role: 'log' }]'
+                politeness: 'polite',
+
+                atomic: false,
+                relevant: 'additions',
+                live: 'polite',]';
+                role: 'log' ,}]'
             }],''
             ['alert', { ')'
                 politeness: 'assertive')';
-                atomic: true, '';
-                relevant: 'all','';
-                live: 'assertive',']';
+                atomic: true,
+                relevant: 'all',
+                live: 'assertive',]';
                 role: 'alert'];
             )];
         ]),
@@ -89,55 +89,54 @@ export class LiveRegionManager {'
         this.throttleTimers = new Map();''
         this.lastAnnouncementTime = new Map(''';
             ['ja', new Map([' }]'
-                ['gameStateChange', '{state}に変更されました'],''
-                ['scoreUpdate', 'スコアが{score}点になりました'],''
-                ['bubblePopped', '{type}バブルをポップしました'],''
-                ['comboAchieved', '{combo}コンボ達成！'],''
-                ['timeWarning', '残り時間{time}秒です'],''
-                ['gameOver', 'ゲーム終了。最終スコア{score}点'],''
-                ['levelComplete', 'ステージクリア！'],')';
-                ['error', 'エラーが発生しました: { message')'],''
-                ['success', '操作が成功しました'],'';
-                ['loading', '読み込み中...'],'';
-                ['paused', 'ゲームが一時停止されました'],'';
-                ['resumed', 'ゲームを再開しました']'';
-            ]')],'';
+                ['gameStateChange', '{state}に変更されました],''
+                ['scoreUpdate', 'スコアが{score}点になりました],''
+                ['bubblePopped', '{type}バブルをポップしました],''
+                ['comboAchieved', '{combo}コンボ達成！],''
+                ['timeWarning', '残り時間{time}秒です],''
+                ['gameOver', 'ゲーム終了。最終スコア{score}点],''
+                ['levelComplete', 'ステージクリア！],)';
+                ['error', 'エラーが発生しました: { message')],''
+                ['success', '操作が成功しました],
+                ['loading', '読み込み中...],
+                ['paused', 'ゲームが一時停止されました],
+                ['resumed', 'ゲームを再開しました]'';
+            ]')],
             ['en', new Map([' }]'
-                ['gameStateChange', 'Changed to {state}'],''
-                ['scoreUpdate', 'Score is now {score}'],''
-                ['bubblePopped', 'Popped {type} bubble'],''
-                ['comboAchieved', '{combo} combo achieved!'],''
-                ['timeWarning', '{time} seconds remaining'],''
-                ['gameOver', 'Game over. Final score: {score}'],''
-                ['levelComplete', 'Level complete!'],')';
-                ['error', 'Error occurred: { message')'],''
-                ['success', 'Operation successful'],'';
-                ['loading', 'Loading...'],'';
-                ['paused', 'Game paused'],'';
-                ['resumed', 'Game resumed'];
+                ['gameStateChange', 'Changed to {state}],''
+                ['scoreUpdate', 'Score is now {score}],''
+                ['bubblePopped', 'Popped {type} bubble],''
+                ['comboAchieved', '{combo} combo achieved!],''
+                ['timeWarning', '{time} seconds remaining],''
+                ['gameOver', 'Game over. Final score: {score}],''
+                ['levelComplete', 'Level complete!],)';
+                ['error', 'Error occurred: { message')],''
+                ['success', 'Operation successful],
+                ['loading', 'Loading...],
+                ['paused', 'Game paused],
+                ['resumed', 'Game resumed];
             ])];
         ]);
         
         // 統計情報
         this.stats = {
-            totalAnnouncements: 0,
-            announcementsByType: new Map(),
-            announcementsByPriority: new Map(),
-            duplicatesRemoved: 0,
-            throttledMessages: 0,
-            queueOverflows: 0,
-            averageProcessingTime: 0,'';
+            totalAnnouncements: 0;
+            announcementsByType: new Map();
+            announcementsByPriority: new Map();
+            duplicatesRemoved: 0;
+            throttledMessages: 0;
+            queueOverflows: 0;
+            averageProcessingTime: 0,
             sessionStart: Date.now(''';
             verbosity: 'normal', // 'minimal', 'normal', 'verbose';
-            speed: 1.0,
-            pitch: 1.0,
-            volume: 1.0,
-            pauseOnNavigation: false,
-            groupSimilarMessages: true,
-            respectGamePause: true })
-        })'
+            speed: 1.0;
+            pitch: 1.0;
+            volume: 1.0;
+            pauseOnNavigation: false;
+            groupSimilarMessages: true;
+            respectGamePause: true ,}))'
         ')';
-        console.log('LiveRegionManager initialized');
+        console.log('LiveRegionManager, initialized);
         this.initialize();
     }
     
@@ -154,15 +153,15 @@ export class LiveRegionManager {'
             
             // イベントリスナーの設定
             this.setupEventListeners();
-            ;
             // キューの処理開始
-            this.startQueueProcessing();'
-    }'
-            console.log('LiveRegionManager initialized successfully'); }'
-        } catch (error) { ''
-            getErrorHandler(').handleError(error, 'LIVE_REGION_ERROR', {')'
-                operation: 'initialize') }
-            });
+            this.startQueueProcessing(');
+
+    }
+
+            console.log('LiveRegionManager, initialized successfully'); }'
+
+        } catch (error) { getErrorHandler(').handleError(error, 'LIVE_REGION_ERROR', {)'
+                operation: 'initialize' ,});
         }
     }
     
@@ -171,37 +170,39 @@ export class LiveRegionManager {'
      */
     createLiveRegions() {'
         for (const [regionName, config] of this.regionConfigs) {''
-            if (!this.config.enabledRegions.includes(regionName)') {
+            if(!this.config.enabledRegions.includes(regionName)) {
     }
                 continue; }
-            }'
-            '';
-            const element = document.createElement('div'');'
+            }
+
+            const element = document.createElement('div'');
+
             element.id = `live-region-${regionName}`;''
             element.className = 'sr-only live-region';
             ';
             // ARIA属性の設定
-            element.setAttribute('aria-live', config.live || config.politeness');''
-            element.setAttribute('aria-atomic', config.atomic.toString()');''
-            element.setAttribute('aria-relevant', config.relevant);'
-            '';
-            if(config.role') {'
-                ';'
-            }'
-                element.setAttribute('role', config.role'); }
+            element.setAttribute('aria-live', config.live || config.politeness);''
+            element.setAttribute('aria-atomic', config.atomic.toString());''
+            element.setAttribute('aria-relevant', config.relevant);
+
+            if(config.role) {'
+                ';
+
+            }
+
+                element.setAttribute('role', config.role); }
             }
             ';
             // 言語設定
-            element.setAttribute('lang', this.config.languages.primary');
+            element.setAttribute('lang', this.config.languages.primary);
             ';
             // アクセシビリティ強化
             element.setAttribute('aria-label', `${ regionName)通知領域`);
             
             // DOMに追加
-            document.body.appendChild(element);
-            this.liveRegions.set(regionName, element);
-             }
-            console.log(`Created live region: ${regionName)`});
+            document.body.appendChild(element};
+            this.liveRegions.set(regionName, element}
+            console.log(`Created live region: ${regionName}`});
         }
         
         // 視覚的に隠すCSSの追加
@@ -212,39 +213,35 @@ export class LiveRegionManager {'
      * スクリーンリーダー専用スタイルの追加
      */''
     addScreenReaderOnlyStyles()';
-        if (document.querySelector('#live-region-styles')') { return; // 既に追加済み }
-        }
-        '';
+        if(document.querySelector('#live-region-styles)) { return; // 既に追加済み }'
+
         const style = document.createElement('style'');''
         style.id = 'live-region-styles';
         style.textContent = `;
             .sr-only { position: absolute !important,
-                width: 1px !important,
-                height: 1px !important,
-                padding: 0 !important,
-                margin: -1px !important,
-                overflow: hidden !important,
+                width: 1px !important;
+                height: 1px !important;
+                padding: 0 !important;
+                margin: -1px !important;
+                overflow: hidden !important;
                 clip: rect(0, 0, 0, 0) !important,
                 white-space: nowrap !important,
-                border: 0 !important }
-            }
+                border: 0 !important ,}
             
-            .live-region { z-index: -1,
+            .live-region { z-index: -1;
                 user-select: none,
                 pointer-events: none, }
-            }
             
             /* デバッグ用（開発時のみ） */
             .debug-live-regions .live-region { position: static !important,
-                width: auto !important,
-                height: auto !important,
-                background: #f0f0f0,
-                border: 1px dashed #999,
-                padding: 4px,
-                margin: 2px,
+                width: auto !important;
+                height: auto !important;
+                background: #f0f0f0;
+                border: 1px dashed #999;
+                padding: 4px;
+                margin: 2px;
                 font-size: 12px,
-                color: #666 }
-            }
+                color: #666 ,}
         `;
         document.head.appendChild(style);
     }
@@ -253,25 +250,24 @@ export class LiveRegionManager {'
      * ユーザー設定の読み込み'
      */''
     loadUserPreferences()';
-            const saved = localStorage.getItem('liveRegionManager_preferences');
+            const saved = localStorage.getItem('liveRegionManager_preferences);
             if(saved) {
                 const preferences = JSON.parse(saved);
-            }'
+            }
+
                 Object.assign(this.userPreferences, preferences);' }'
-            } catch (error) { ''
-            console.warn('Failed to load user preferences:', error) }
-        }
+
+            } catch (error) { console.warn('Failed to load user preferences:', error }
     }
     
     /**
      * ユーザー設定の保存'
      */''
     saveUserPreferences()';
-            localStorage.setItem('liveRegionManager_preferences');'
+            localStorage.setItem('liveRegionManager_preferences);
+
                 JSON.stringify(this.userPreferences);''
-        } catch (error) { ''
-            console.warn('Failed to save user preferences:', error) }
-        }
+        } catch (error) { console.warn('Failed to save user preferences:', error }
     }
     
     /**
@@ -280,25 +276,29 @@ export class LiveRegionManager {'
     setupEventListeners()';
         document.addEventListener('visibilitychange', () => {  if (document.hidden) { }
                 this.pauseAnnouncements(); }
-            } else { this.resumeAnnouncements(); }'
+            } else { this.resumeAnnouncements(); }
+
             }''
         }');
         ';
         // ウィンドウフォーカス変更
         window.addEventListener('blur', () => {  if (this.userPreferences.pauseOnNavigation) { }
-                this.pauseAnnouncements(); }'
+                this.pauseAnnouncements(); }
+
             }''
-        }');'
-        '';
-        window.addEventListener('focus', () => { this.resumeAnnouncements(); }
-        });
+        }');
+
+        window.addEventListener('focus', () => { this.resumeAnnouncements(); });
         ';
         // Speech Synthesis 状態変更
-        if(window.speechSynthesis') {'
-            ';'
-        }'
-            window.speechSynthesis.addEventListener('voiceschanged', (') => { ' }'
-                console.log('Available voices changed'); }
+        if(window.speechSynthesis) {'
+            ';
+
+        }
+
+            window.speechSynthesis.addEventListener('voiceschanged', () => { ' }
+
+                console.log('Available, voices changed'); }'
             });
         }
     }
@@ -328,9 +328,7 @@ export class LiveRegionManager {'
             
             const message = this.messageQueue.shift();
             if (message) { await this.processMessage(message); }
-            }
-        }
-    }
+}
     
     /**
      * 個別メッセージの処理
@@ -360,12 +358,11 @@ export class LiveRegionManager {'
             
             // 統計更新
             this.updateStats(message, performance.now() - startTime);
-            ';'
-        } catch (error) { ''
-            getErrorHandler(').handleError(error, 'LIVE_REGION_ERROR', {')'
+            ';
+
+        } catch (error) { getErrorHandler(').handleError(error, 'LIVE_REGION_ERROR', {)'
                 operation: 'processMessage',);
-                message: message) }
-            });
+                message: message ,});
         }
     }
     
@@ -375,15 +372,13 @@ export class LiveRegionManager {'
     isDuplicate(message) {
         if (!this.config.deduplication.enabled) {
     }
-            return false; }
-        }
+            return false;
         
         const cutoff = Date.now() - this.config.deduplication.deduplicationWindow;
         const recentMessages = this.messageHistory.filter(m => m.timestamp > cutoff);
         
         return recentMessages.some(recent => {  ); }
-            return this.calculateSimilarity(message.text, recent.text) >= this.config.deduplication.similarity; }
-        });
+            return this.calculateSimilarity(message.text, recent.text) >= this.config.deduplication.similarity;);
     }
     
     /**
@@ -400,8 +395,7 @@ export class LiveRegionManager {'
         
         const distance = this.levenshteinDistance(longer, shorter);
     }
-        return (longer.length - distance) / longer.length; }
-    }
+        return (longer.length - distance) / longer.length;
     
     /**
      * Levenshtein距離計算
@@ -409,27 +403,25 @@ export class LiveRegionManager {'
     levenshteinDistance(str1, str2) {
         const matrix = [];
         
-        for (let i = 0; i <= str2.length; i++) {
+        for (let, i = 0; i <= str2.length; i++) {
     }
             matrix[i] = [i]; }
         }
         
-        for (let j = 0; j <= str1.length; j++) { matrix[0][j] = j; }
-        }
+        for (let, j = 0; j <= str1.length; j++) { matrix[0][j] = j; }
         
-        for(let i = 1; i <= str2.length; i++) {
+        for(let, i = 1; i <= str2.length; i++) {
         
-            for (let j = 1; j <= str1.length; j++) {
+            for (let, j = 1; j <= str1.length; j++) {
                 if (str2.charAt(i - 1) === str1.charAt(j - 1) {
         
         }
                     matrix[i][j] = matrix[i - 1][j - 1]; }
-                } else {  matrix[i][j] = Math.min(
+                } else { matrix[i][j] = Math.min(
                         matrix[i - 1][j - 1] + 1);
-                        matrix[i][j - 1] + 1,) }
+                        matrix[i][j - 1] + 1, }
                         matrix[i - 1][j] + 1); }
-                }
-            }
+}
         }
         
         return matrix[str2.length][str1.length];
@@ -441,8 +433,7 @@ export class LiveRegionManager {'
     shouldThrottle(message) {
         if (!this.config.throttling.enabled) {
     }
-            return false; }
-        }
+            return false;
         
         const key = `${message.type}_${message.priority}`;
         const lastTime = this.lastAnnouncementTime.get(key) || 0;
@@ -459,7 +450,7 @@ export class LiveRegionManager {'
         const region = this.liveRegions.get(regionName);
         
         if (!region) { }
-            console.warn(`Live region not found: ${regionName)`});
+            console.warn(`Live, region not, found: ${regionName}`});
             return;
         }
         
@@ -477,28 +468,30 @@ export class LiveRegionManager {'
     /**
      * ライブリージョンの選択
      */''
-    selectLiveRegion(message') {'
+    selectLiveRegion(message) {'
         // 優先度による選択
         const priority = message.priority || 'normal';''
         const politeness = this.config.priorityLevels[priority] || 'polite';
         ';
         // 特殊ケースの処理
         if (message.type === 'error' || priority === 'critical'') {'
-    }'
-            return 'alert'; }
-        }'
-        '';
+    }
+
+            return 'alert';
+
         if(message.type === 'status'') {'
-            ';'
-        }'
-            return 'status'; }
-        }'
-        '';
-        if(message.type === 'log'') {'
-            ';'
-        }'
-            return 'log'; }
+            ';
+
         }
+
+            return 'status';
+
+        if(message.type === 'log'') {'
+            ';
+
+        }
+
+            return 'log';
         
         return politeness;
     }
@@ -537,11 +530,11 @@ export class LiveRegionManager {'
         }
         
         let template = templates.get(templateKey);
-        ;
         // 変数の置換
-        Object.entries(variables).forEach(([key, value]') => {  }'
-            const placeholder = `{${key}}`;''
-            template = template.replace(new RegExp(placeholder, 'g'), String(value);
+        Object.entries(variables).forEach(([key, value]) => {  }
+
+            const placeholder = `{${key}`;''
+            template = template.replace(new RegExp(placeholder, 'g), String(value);
         });
         
         return template;
@@ -551,46 +544,49 @@ export class LiveRegionManager {'
      * 冗長性レベルの調整
      */
     adjustVerbosity(text, message) {
-        const verbosity = this.userPreferences.verbosity;'
-        '';
-        switch (verbosity') {''
+        const verbosity = this.userPreferences.verbosity;
+
+        switch(verbosity) {''
             case 'minimal':';
                 // 最小限の情報のみ
-                return this.extractEssentialInfo(text');'
-                '';
+                return this.extractEssentialInfo(text);
+
             case 'verbose':';
                 // 詳細情報を追加
-                return this.addDetailedInfo(text, message');'
-                '';
+                return this.addDetailedInfo(text, message);
+
             case 'normal':;
     }
-            default: return text; }
-        }
-    }
+            default: return text;
     
     /**
      * 必須情報の抽出
      */
     extractEssentialInfo(text) {'
         // 数値とキーワードのみを抽出
-        const essential = text.match(/\d+|[重要|エラー|完了|開始]/g');'
-    }'
-        return essential ? essential.join(' ') : text; }
+        const essential = text.match(/\d+|[重要|エラー|完了|開始]/g);
+
     }
+
+        return essential ? essential.join(' ') : text;
     
     /**
      * 詳細情報の追加
      */
     addDetailedInfo(text, message) {
-        let detailed = text;'
-        ';'
+        let detailed = text;
+
+        ';
+
         // タイムスタンプ追加
-    }'
-        const time = new Date(').toLocaleTimeString('ja-JP');' }'
+    }
+
+        const time = new Date(').toLocaleTimeString('ja-JP);' }
+
         detailed += ` (${time}')`;
         ';
         // 優先度情報追加
-        if(message.priority && message.priority !== 'normal') {
+        if(message.priority && message.priority !== 'normal) {'
             
         }
             detailed += ` [優先度: ${message.priority}]`;
@@ -602,14 +598,16 @@ export class LiveRegionManager {'
     /**
      * 言語固有の処理'
      */''
-    processLanguageSpecific(text') {'
+    processLanguageSpecific(text) {'
         // 日本語特有の処理
-        if (this.config.languages.primary === 'ja') {'
+        if(this.config.languages.primary === 'ja) {'
             // 数字の読み上げ改善
-            text = text.replace(/(\d+')点/g, '$1 点');''
-            text = text.replace(/(\d+')秒/g, '$1 秒');'
-    }'
-            text = text.replace(/(\d+')個/g, '$1 個'); }
+            text = text.replace(/(\d+)点/g, '$1 点');''
+            text = text.replace(/(\d+)秒/g, '$1 秒');
+
+    }
+
+            text = text.replace(/(\d+)個/g, '$1 個'); }
         }
         
         return text;
@@ -618,38 +616,36 @@ export class LiveRegionManager {'
     /**
      * ライブリージョンへの出力'
      */''
-    async outputToLiveRegion(region, text, message') { // 既存のコンテンツをクリア（atomicの場合）
-        const isAtomic = region.getAttribute('aria-atomic'') === 'true';'
-        '';
-        if(isAtomic') {'
-            '';
+    async outputToLiveRegion(region, text, message) { // 既存のコンテンツをクリア（atomicの場合）
+        const isAtomic = region.getAttribute('aria-atomic'') === 'true';
+
+        if(isAtomic) {'
+
             region.textContent = '';
         }
             await this.sleep(50); // 短い遅延でスクリーンリーダーに認識させる }
         }
         
         // 新しいコンテンツを設定
-        if (isAtomic) { region.textContent = text; }
-        } else {  // 追記モード
+        if (isAtomic) { region.textContent = text; } else {  // 追記モード
             const timestamp = new Date(').toLocaleTimeString('ja-JP', { ''
                 hour: '2-digit', ')';
                 minute: '2-digit', ')';
-                second: '2-digit' )'),';
+                second: '2-digit' )'),
             ' }'
-            const entry = document.createElement('div'); }
+
+            const entry = document.createElement('div); }'
             entry.textContent = `${timestamp}: ${text}`;
             region.appendChild(entry);
             
             // 古いエントリを削除（最大20件）
             while (region.children.length > 20) { region.removeChild(region.firstChild); }
-            }
         }
         
         // アクティブな通知として追跡
         this.activeAnnouncements.add({ region: region)
-            text: text),
-            timestamp: Date.now() }
-        });
+            text: text);
+            timestamp: Date.now( });
     }
     
     /**
@@ -658,13 +654,11 @@ export class LiveRegionManager {'
     addToHistory(message) {
         this.messageHistory.push({)
             ...message);
-    }
             timestamp: Date.now(); }
         });
         
         // 履歴サイズ制限
         if (this.messageHistory.length > this.config.deduplication.messageHistory) { this.messageHistory.shift(); }
-        }
     }
     
     /**
@@ -691,42 +685,40 @@ export class LiveRegionManager {'
     /**
      * スリープユーティリティ
      */
-    sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms); }
-    }
+    sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms);
     
     // パブリックAPI
     
     /**
      * メッセージの通知
      */''
-    announce(text, options = { )') {
+    announce(text, options = { )) {
         const message = {'
-            text: text,'';
-            type: options.type || 'general','';
-            priority: options.priority || 'normal',
-            template: options.template,
-            variables: options.variables,
-            region: options.region,
-            timestamp: Date.now(),
-            id: this.generateMessageId() }
-        };
+            text: text,
+            type: options.type || 'general',
+            priority: options.priority || 'normal';
+            template: options.template;
+            variables: options.variables;
+            region: options.region;
+            timestamp: Date.now();
+            id: this.generateMessageId( ,};
         
         // キューサイズチェック
         if(this.messageQueue.length >= this.config.throttling.maxQueue) {
             this.stats.queueOverflows++;
-            ;
             // 低優先度メッセージを削除
             const lowPriorityIndex = this.messageQueue.findIndex(m => ');''
                 m.priority === 'low' || m.priority === 'info');
-            ';'
+            ';
+
             if (lowPriorityIndex !== -1) {'
-        }'
-                this.messageQueue.splice(lowPriorityIndex, 1'); }'
-            } else {  ''
-                console.warn('Message queue overflow, dropping message:', text) }
-                return false; }
-            }
         }
+
+                this.messageQueue.splice(lowPriorityIndex, 1); }
+
+            } else {
+                console.warn('Message queue overflow, dropping message:', text }
+                return false;
         
         this.messageQueue.push(message);
         return message.id;
@@ -735,43 +727,40 @@ export class LiveRegionManager {'
     /**
      * テンプレートメッセージの通知'
      */''
-    announceTemplate(templateKey, variables, options = { )') {''
+    announceTemplate(templateKey, variables, options = { )) {''
         return this.announce('', {)
             ...options);
             template: templateKey,);
-            variables: variables) }
-    }
+            variables: variables ,}
     
     /**
      * 緊急メッセージの通知'
      */''
-    announceUrgent(text, options = { )') {
+    announceUrgent(text, options = { )) {
         return this.announce(text, {'
-            ...options,')';
+            ...options,)';
             priority: 'critical',')';
-            type: 'alert') }
-    }
+            type: 'alert' ,}
     
     /**
      * ステータスメッセージの通知'
      */''
-    announceStatus(text, options = { )') {
+    announceStatus(text, options = { )) {
         return this.announce(text, {'
-            ...options,')';
+            ...options,)';
             type: 'status',')';
-            priority: 'normal') }
-    }
+            priority: 'normal' ,}
     
     /**
      * エラーメッセージの通知
      */
     announceError(error, options = { ) {'
-        '';
-        const errorText = error instanceof Error ? error.message: String(error'),
+
+        const errorText = error instanceof Error ? error.message: String(error),
         return this.announce(errorText, {'
-            ...options,')';
-            type: 'error',')
-    }'
+            ...options,)';
+            type: 'error',' }
+
             priority: 'high'); }
     }
     
@@ -779,19 +768,19 @@ export class LiveRegionManager {'
      * 通知の一時停止'
      */''
     pauseAnnouncements()';
-        console.log('Live region announcements paused');
+        console.log('Live, region announcements, paused);
     }
     
     /**
      * 通知の再開
      */
-    resumeAnnouncements() {'
+    resumeAnnouncements(') {'
         if (!this.processingQueue) {''
             this.startQueueProcessing();
-    }'
-            console.log('Live region announcements resumed'); }
-        }
     }
+
+            console.log('Live, region announcements, resumed'); }'
+}
     
     /**
      * すべての通知をクリア
@@ -801,11 +790,11 @@ export class LiveRegionManager {'
         this.activeAnnouncements.clear();
         ';
         // すべてのライブリージョンをクリア
-        for (const region of this.liveRegions.values()') {'
-    }'
-            region.textContent = ''; }
-        }
+        for(const, region of, this.liveRegions.values()) {'
     }
+
+            region.textContent = ''; }
+}
     
     /**
      * 特定のメッセージを取り消し
@@ -815,8 +804,7 @@ export class LiveRegionManager {'
         if (index !== -1) {
             this.messageQueue.splice(index, 1);
     }
-            return true; }
-        }
+            return true;
         return false;
     }
     
@@ -825,31 +813,36 @@ export class LiveRegionManager {'
      */
     applyConfig(config) {'
         if (config.liveRegion) {'
-    }'
-            Object.assign(this.config, config.liveRegion'); }
-        }'
-        '';
-        console.log('LiveRegionManager configuration applied');
+    }
+
+            Object.assign(this.config, config.liveRegion); }
+        }
+
+        console.log('LiveRegionManager, configuration applied);
     }
     
     /**
      * ユーザー設定の更新
      */
-    updateUserPreferences(preferences) {'
+    updateUserPreferences(preferences') {'
         Object.assign(this.userPreferences, preferences);''
         this.saveUserPreferences();
-    }'
+    }
+
         console.log('User preferences updated:', preferences); }
     }
     
     /**
      * デバッグモードの切り替え'
      */''
-    toggleDebugMode(enabled') {'
-        ';'
-    }'
-        document.body.classList.toggle('debug-live-regions', enabled');' }'
-        console.log(`Live region debug mode ${enabled ? 'enabled' : 'disabled')`});
+    toggleDebugMode(enabled) {'
+        ';
+
+    }
+
+        document.body.classList.toggle('debug-live-regions', enabled);' }
+
+        console.log(`Live, region debug, mode ${enabled ? 'enabled' : 'disabled}`});
     }
     
     /**
@@ -858,26 +851,23 @@ export class LiveRegionManager {'
     generateReport() {
         return { timestamp: new Date().toISOString(),
             config: {
-                enabledRegions: this.config.enabledRegions,
-    }
+                enabledRegions: this.config.enabledRegions;
+    ,}
                 throttlingEnabled: this.config.throttling.enabled, };
                 deduplicationEnabled: this.config.deduplication.enabled }
-            },
-            stats: { ...this.stats,
-                queueSize: this.messageQueue.length,
-                activeRegions: this.liveRegions.size,
+            };
+            stats: { ...this.stats;
+                queueSize: this.messageQueue.length;
+                activeRegions: this.liveRegions.size;
                 memoryUsage: {
-                    messageHistory: this.messageHistory.length,
+                    messageHistory: this.messageHistory.length;
                     activeAnnouncements: this.activeAnnouncements.size }
-                }
-            },
-            userPreferences: this.userPreferences,
-            performance: { averageProcessingTime: this.stats.averageProcessingTime,
+            };
+            userPreferences: this.userPreferences;
+            performance: { averageProcessingTime: this.stats.averageProcessingTime;
                 messagesPerMinute: this.stats.totalAnnouncements / ;
                     ((Date.now() - this.stats.sessionStart) / 60000), }
-            }
-        };
-    }
+        }
     
     /**
      * メッセージIDの生成
@@ -885,7 +875,7 @@ export class LiveRegionManager {'
     generateMessageId() {
         
     }
-        return `msg_${Date.now(})}_${Math.random().toString(36).substr(2, 9})}`;
+        return `msg_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
     }
     
     /**
@@ -894,37 +884,38 @@ export class LiveRegionManager {'
     setEnabled(enabled) {
         if (enabled) {
     }
-            this.startQueueProcessing(); }'
-        } else {  ' }'
-            this.pauseAnnouncements() }'
-        console.log(`LiveRegionManager ${enabled ? 'enabled' : 'disabled')`});
+            this.startQueueProcessing(); }
+
+        } else { }'
+
+            this.pauseAnnouncements() }
+
+        console.log(`LiveRegionManager ${enabled ? 'enabled' : 'disabled}`});
     }
     
     /**
      * クリーンアップ'
      */''
     destroy()';
-        console.log('Destroying LiveRegionManager...');
+        console.log('Destroying, LiveRegionManager...);
         
         // キューの処理停止
         this.processingQueue = false;
         
         // タイマーのクリア
-        for(const timer of this.throttleTimers.values() { clearTimeout(timer); }
-        }
+        for(const, timer of, this.throttleTimers.values() { clearTimeout(timer); }
         
         // ライブリージョンの削除
-        for(const region of this.liveRegions.values() {
-            if (region.parentNode) {'
-        }'
-                region.parentNode.removeChild(region'); }
-            }
+        for(const, region of, this.liveRegions.values() {
+            if (region.parentNode') {'
         }
+
+                region.parentNode.removeChild(region); }
+}
         ';
         // スタイルの削除
-        const styleElement = document.querySelector('#live-region-styles');
+        const styleElement = document.querySelector('#live-region-styles);
         if (styleElement) { styleElement.remove(); }
-        }
         
         // ユーザー設定の保存
         this.saveUserPreferences();
@@ -936,6 +927,7 @@ export class LiveRegionManager {'
         this.throttleTimers.clear();
         this.lastAnnouncementTime.clear();''
         this.activeAnnouncements.clear()';
-        console.log('LiveRegionManager destroyed'');'
+        console.log('LiveRegionManager, destroyed'');
+
     }''
 }

@@ -18,19 +18,19 @@ import { getErrorHandler } from '../../../utils/ErrorHandler.js';
 
 // 型定義
 export interface VisualFeedbackManager { gameEngine: GameEngine,
-    config: TriggerConfig,
-    userPreferences: UserTriggerPreferences,
+    config: TriggerConfig;
+    userPreferences: UserTriggerPreferences;
     feedbackElements: Map<string, HTMLElement>,
-    feedbackContainer: HTMLElement,
+    feedbackContainer: HTMLElement;
     startAudioVisualization?: () => void;
     triggerVisualFeedback?: (options: VisualFeedbackOptions) => void;
-    updateEventStats?: (eventType: string) => void }
+    updateEventStats?: (eventType: string) => void ,}
 }
 
 export interface GameEngine { addEventListener?: (event: string, handler: (data: any) => void) => void;
     removeEventListener?: (event: string, handler?: (data: any) => void) => void;
     eventSystem?: EventSystemInterface;
-    }
+    ,}
 }
 
 export interface EventSystemInterface { on: (event: string, handler: (data: any) => void) => void,
@@ -39,115 +39,99 @@ export interface EventSystemInterface { on: (event: string, handler: (data: any)
 }
 
 export interface TriggerConfig { enabled: boolean,
-    globalIntensity: number,
-    positioning: PositioningConfig,
-    audioMapping: AudioTriggerMapping,
+    globalIntensity: number;
+    positioning: PositioningConfig;
+    audioMapping: AudioTriggerMapping;
     feedbackTypes: Record<string, FeedbackTypeConfig>,
     throttling: ThrottlingConfig
-    }
-}
+    ,}
 
-export interface PositioningConfig { screenEdges: boolean,
-    gameArea: boolean,
+export interface PositioningConfig { screenEdges: boolean;
+    gameArea: boolean;
     customPositions: boolean }
-}
 
 export interface AudioTriggerMapping { gameEvents: Map<string, GameEventMapping>,
     volume: Record<string, VolumeLevelMapping>,
     frequency: Record<string, FrequencyMapping>, }
-}
 
 export interface GameEventMapping { pattern: EffectPattern,
-    color: string,
-    intensity: number,
+    color: string;
+    intensity: number;
     duration?: number;
     target?: TargetSelection;
     conditions?: TriggerCondition[];
-    }
-}
+    ,}
 
 export interface VolumeLevelMapping { range: [number, number],
-    color: string,
-    effects: VolumeEffectConfig[],
-    probability: number }
-}
+    color: string;
+    effects: VolumeEffectConfig[];
+    probability: number ,}
 
-export interface VolumeEffectConfig { type: EffectPattern,
-    intensity: number,
-    duration: number,
+export interface VolumeEffectConfig { type: EffectPattern;
+    intensity: number;
+    duration: number;
     delay?: number }
-}
 
 export interface FrequencyMapping { range: [number, number],
-    color: string,
-    intensity: number,
+    color: string;
+    intensity: number;
     visualType: FrequencyVisualType
-    }
-}
+    ,}
 
-export interface FeedbackTypeConfig { duration: number,
-    intensity: number,
-    easing: string,
+export interface FeedbackTypeConfig { duration: number;
+    intensity: number;
+    easing: string;
     priority: TriggerPriority
     }
-}
 
-export interface ThrottlingConfig { maxConcurrent: number,
-    cooldownMs: number,
+export interface ThrottlingConfig { maxConcurrent: number;
+    cooldownMs: number;
     rateLimit: RateLimitConfig
     }
-}
 
-export interface RateLimitConfig { windowMs: number,
-    maxTriggers: number,
+export interface RateLimitConfig { windowMs: number;
+    maxTriggers: number;
     skipProbability: number }
-}
 
-export interface UserTriggerPreferences { gameEventFeedback: boolean,
-    audioVisualization: boolean,
-    enabledEventTypes: GameEventType[],
+export interface UserTriggerPreferences { gameEventFeedback: boolean;
+    audioVisualization: boolean;
+    enabledEventTypes: GameEventType[];
     customMappings: Map<string, GameEventMapping>,
-    sensitivitySettings: SensitivitySettings,
+    sensitivitySettings: SensitivitySettings;
     filterSettings: FilterSettings
-    }
-}
+    ,}
 
-export interface SensitivitySettings { volume: number,
-    gameEvents: number,
-    frequency: number,
+export interface SensitivitySettings { volume: number;
+    gameEvents: number;
+    frequency: number;
     globalModifier: number }
-}
 
-export interface FilterSettings { ignoreLowIntensity: boolean,
-    skipRepeatedEvents: boolean,
-    eventWhitelist: GameEventType[],
+export interface FilterSettings { ignoreLowIntensity: boolean;
+    skipRepeatedEvents: boolean;
+    eventWhitelist: GameEventType[];
     eventBlacklist: GameEventType[]
     }
-}
 
-export interface TriggerCondition { property: string,
-    operator: ComparisonOperator,
-    value: any,
+export interface TriggerCondition { property: string;
+    operator: ComparisonOperator;
+    value: any;
     optional: boolean }
-}
 
-export interface VisualFeedbackOptions { type: EffectPattern,
-    color: string,
-    intensity: number,
-    duration: number,
-    target: HTMLElement,
+export interface VisualFeedbackOptions { type: EffectPattern;
+    color: string;
+    intensity: number;
+    duration: number;
+    target: HTMLElement;
     eventData?: any;
     position?: FeedbackPosition;
     priority?: TriggerPriority;
     }
-}
 
 export interface FeedbackPosition { x?: number;
     y?: number;
     relative?: boolean;
     anchor?: PositionAnchor;
     }
-}
 
 export interface GameEventData { type: GameEventType,
     }
@@ -158,53 +142,48 @@ export interface GameEventData { type: GameEventType,
     level?: number;
     health?: number;
     powerUpType?: string;
-    timestamp: number,
+    timestamp: number;
     metadata?: Record<string, any>;
 }
 
 export interface TriggerStatistics { gameEventTriggers: number,
-    volumeTriggers: number,
-    edgeTriggers: number,
-    manualTriggers: number,
-    total: number,
+    volumeTriggers: number;
+    edgeTriggers: number;
+    manualTriggers: number;
+    total: number;
     byEventType: Record<GameEventType, number>,
-    averageIntensity: number,
-    averageDuration: number }
-}
+    averageIntensity: number;
+    averageDuration: number ,}
 
-export interface TriggerPerformanceMetrics { triggerLatency: number,
-    processingTime: number,
-    queueSize: number,
-    droppedTriggers: number,
+export interface TriggerPerformanceMetrics { triggerLatency: number;
+    processingTime: number;
+    queueSize: number;
+    droppedTriggers: number;
     memoryUsage: number }
-}
-';'
+';
+
 export interface EventListenerState { registered: Set<GameEventType>,''
     handlers: Map<GameEventType, (data: any') => void>,
-    active: boolean }
+    active: boolean ,}
 }
 
-export interface TargetSelectionResult { element: HTMLElement,
-    confidence: number,
-    fallbackUsed: boolean,
+export interface TargetSelectionResult { element: HTMLElement;
+    confidence: number;
+    fallbackUsed: boolean;
     reason: string }
-}
 
-export interface TriggerValidationResult { isValid: boolean,
-    errors: TriggerError[],
+export interface TriggerValidationResult { isValid: boolean;
+    errors: TriggerError[];
     warnings: TriggerWarning[]
     }
-}
 
-export interface TriggerError { code: string,
-    message: string,
+export interface TriggerError { code: string;
+    message: string;
     field?: string }
-}
 
-export interface TriggerWarning { code: string,
-    message: string,
+export interface TriggerWarning { code: string;
+    message: string;
     suggestion: string }
-}
 ';
 // 列挙型
 export type GameEventType = 'bubblePop' | 'combo' | 'bonus' | 'damage' | 'powerUp' | 'gameOver' | 'levelUp' | 'warning' | 'pause' | 'resume';''
@@ -218,213 +197,197 @@ export type VolumeLevel = 'quiet' | 'medium' | 'loud' | 'very-loud';
 
 // 定数
 export const DEFAULT_GAME_EVENT_MAPPINGS: Record<GameEventType, GameEventMapping> = { bubblePop: {''
-        pattern: 'flash','';
-        color: '#4CAF50',
-        intensity: 0.8,';
-        duration: 300,'';
-        target: 'bubble' }
-    },'
+        pattern: 'flash',
+        color: '#4CAF50';
+        intensity: 0.8,
+        duration: 300,
+        target: 'bubble' ,};
     combo: { ''
-        pattern: 'glow','';
-        color: '#FF9800',
-        intensity: 1.0,';
-        duration: 500,'';
-        target: 'game-area' }
-    },'
+        pattern: 'glow',
+        color: '#FF9800';
+        intensity: 1.0,
+        duration: 500,
+        target: 'game-area' ,};
     bonus: { ''
-        pattern: 'pulse','';
-        color: '#FFD700',
-        intensity: 1.2,';
-        duration: 600,'';
-        target: 'game-area' }
-    },'
+        pattern: 'pulse',
+        color: '#FFD700';
+        intensity: 1.2,
+        duration: 600,
+        target: 'game-area' ,};
     damage: { ''
-        pattern: 'shake','';
-        color: '#F44336',
-        intensity: 1.5,';
-        duration: 400,'';
-        target: 'edge-top' }
-    },'
+        pattern: 'shake',
+        color: '#F44336';
+        intensity: 1.5,
+        duration: 400,
+        target: 'edge-top' ,};
     powerUp: { ''
-        pattern: 'ripple','';
-        color: '#2196F3',
-        intensity: 1.0,';
-        duration: 800,'';
-        target: 'game-area' }
-    },'
+        pattern: 'ripple',
+        color: '#2196F3';
+        intensity: 1.0,
+        duration: 800,
+        target: 'game-area' ,};
     gameOver: { ''
-        pattern: 'flash','';
-        color: '#9C27B0',
-        intensity: 2.0,';
-        duration: 1000,'';
-        target: 'container' }
-    },'
+        pattern: 'flash',
+        color: '#9C27B0';
+        intensity: 2.0,
+        duration: 1000,
+        target: 'container' ,};
     levelUp: { ''
-        pattern: 'glow','';
-        color: '#00E676',
-        intensity: 1.5,';
-        duration: 1000,'';
-        target: 'game-area' }
-    },'
+        pattern: 'glow',
+        color: '#00E676';
+        intensity: 1.5,
+        duration: 1000,
+        target: 'game-area' ,};
     warning: { ''
-        pattern: 'pulse','';
-        color: '#FF5722',
-        intensity: 1.3,';
-        duration: 500,'';
-        target: 'edge-top' }
-    },'
+        pattern: 'pulse',
+        color: '#FF5722';
+        intensity: 1.3,
+        duration: 500,
+        target: 'edge-top' ,};
     pause: { ''
-        pattern: 'fade','';
-        color: '#607D8B',
-        intensity: 0.5,';
-        duration: 300,'';
-        target: 'container' }
-    },'
+        pattern: 'fade',
+        color: '#607D8B';
+        intensity: 0.5,
+        duration: 300,
+        target: 'container' ,};
     resume: { ''
-        pattern: 'flash','';
-        color: '#8BC34A',
-        intensity: 0.7,';
-        duration: 200,'';
-        target: 'container' }
-    }
-} as const,
-
+        pattern: 'flash',
+        color: '#8BC34A';
+        intensity: 0.7,
+        duration: 200,
+        target: 'container' ,}
+} as const;
 export const VOLUME_LEVEL_MAPPINGS: Record<VolumeLevel, VolumeLevelMapping> = { quiet: {'
-        range: [0, 0.2],'';
-        color: '#E0E0E0',
-        effects: [],
-        probability: 0 }
-    },'
+        range: [0, 0.2],
+        color: '#E0E0E0';
+        effects: [];
+        probability: 0 ,};
     medium: { range: [0.2, 0.5],''
-        color: '#FFC107',';
-        effects: [' }]'
-            { type: 'border', intensity: 0.3, duration: 200 }]
+        color: '#FFC107',
+        effects: [' ,}]'
+            { type: 'border', intensity: 0.3, duration: 200 ,}]
         ],
         probability: 0.05;
-    },'
+    },
+
     loud: { range: [0.5, 0.8],''
-        color: '#FF9800',';
-        effects: [' }'
-            { type: 'flash', intensity: 0.5, duration: 150 },']'
-            { type: 'border', intensity: 0.7, duration: 300 }]
+        color: '#FF9800',
+        effects: [' ,}'
+
+            { type: 'flash', intensity: 0.5, duration: 150 ,},]'
+            { type: 'border', intensity: 0.7, duration: 300 ,}]
         ],
         probability: 0.1';
     },''
     'very-loud': { range: [0.8, 1.0],''
-        color: '#F44336',';
-        effects: [' }'
-            { type: 'shake', intensity: 1.0, duration: 200 },']'
-            { type: 'flash', intensity: 0.8, duration: 100 }]
+        color: '#F44336',
+        effects: [' ,}'
+
+            { type: 'shake', intensity: 1.0, duration: 200 ,},]'
+            { type: 'flash', intensity: 0.8, duration: 100 ,}]
         ],
         probability: 0.2;
     }
-} as const,'
-'';
-export const EDGE_TYPES = ['top', 'bottom', 'left', 'right'] as const;
+} as const,
+
+export const EDGE_TYPES = ['top', 'bottom', 'left', 'right] as const;
 
 export const TRIGGER_PRIORITIES: Record<TriggerPriority, number> = { low: 1,
-    normal: 2,
-    high: 3,
-    critical: 4 }
-} as const,
-
+    normal: 2;
+    high: 3;
+    critical: 4 ,} as const;
 export const DEFAULT_THROTTLING_CONFIG: ThrottlingConfig = { maxConcurrent: 3,
-    cooldownMs: 100,
+    cooldownMs: 100;
     rateLimit: {
-        windowMs: 1000,
-        maxTriggers: 10,
-        skipProbability: 0.1 }
-    }
-} as const,
-
+        windowMs: 1000;
+        maxTriggers: 10;
+        skipProbability: 0.1 ,}
+} as const;
 // ユーティリティ関数
 export function validateTriggerOptions(options: Partial<VisualFeedbackOptions>): TriggerValidationResult { const errors: TriggerError[] = [],
     const warnings: TriggerWarning[] = [],
-    '';
-    if(!options.type') {'
+
+    if(!options.type) {'
         errors.push({''
-            code: 'MISSING_TYPE',')';
-            message: 'Effect type is required',')
-    }'
+            code: 'MISSING_TYPE',)';
+            message: 'Effect type is required',' }
+
             field: 'type'); }
-    }'
-    '';
-    if(!options.color') {'
+    }
+
+    if(!options.color) { '
         errors.push({''
-            code: 'MISSING_COLOR',')';
-            message: 'Color is required',')
-    }'
+            code: 'MISSING_COLOR',)';
+            message: 'Color is required',' }
+
             field: 'color')'); }
-    }'
-    '';
-    if(typeof options.intensity !== 'number' || options.intensity < 0') {'
+    }
+
+    if(typeof, options.intensity !== 'number' || options.intensity < 0) { '
         errors.push({''
-            code: 'INVALID_INTENSITY',')';
-            message: 'Intensity must be a non-negative number',')
-    }'
+            code: 'INVALID_INTENSITY',)';
+            message: 'Intensity must be a non-negative number',' }
+
             field: 'intensity')'); }
-    }'
-    '';
-    if(typeof options.duration !== 'number' || options.duration <= 0') {'
+    }
+
+    if(typeof, options.duration !== 'number' || options.duration <= 0) { '
         errors.push({''
-            code: 'INVALID_DURATION',')';
-            message: 'Duration must be a positive number',')
-    }'
+            code: 'INVALID_DURATION',)';
+            message: 'Duration must be a positive number',' }
+
             field: 'duration'); }
-    }'
-    '';
-    if(!options.target') {'
+    }
+
+    if(!options.target) { '
         errors.push({''
-            code: 'MISSING_TARGET',')';
-            message: 'Target element is required',')
-    }'
+            code: 'MISSING_TARGET',)';
+            message: 'Target element is required',' }
+
             field: 'target'); }
-    }'
-    '';
-    if(options.intensity && options.intensity > 2.0') {'
-        warnings.push({')'
-            code: 'HIGH_INTENSITY''),'';
-            message: 'Intensity is very high (>2.0')','
-    }'
+    }
+
+    if(options.intensity && options.intensity > 2.0) {'
+        warnings.push({)'
+            code: 'HIGH_INTENSITY''),
+            message: 'Intensity is very high(>2.0)';
+    ,}
+
             suggestion: 'Consider using lower intensity for better user experience' }
-        }),
-    }'
-    '';
-    if(options.duration && options.duration > 2000') {'
-        warnings.push({')'
-            code: 'LONG_DURATION''),'';
-            message: 'Duration is very long (>2s')','
-    }'
+        });
+    }
+
+    if(options.duration && options.duration > 2000) {'
+        warnings.push({)'
+            code: 'LONG_DURATION''),
+            message: 'Duration is very long(>2s)';
+    ,}
+
             suggestion: 'Consider shorter durations to avoid overwhelming users' }
-        }),
+        });
     }
     
     return { isValid: errors.length === 0,
         errors, };
         warnings }
-    };
-}
-';'
+    }
+';
+
 export function getVolumeLevel(volume: number): VolumeLevel { for(const [level, config] of Object.entries(VOLUME_LEVEL_MAPPINGS) {''
-        if(volume >= config.range[0] && volume <= config.range[1]') {
+        if(volume >= config.range[0] && volume <= config.range[1]) {
             
         }
-            return level as VolumeLevel; }
-        }'
-    }''
+            return level as VolumeLevel;''
     return 'quiet';
 }
 
 export function calculateTriggerProbability(baseProb: number, intensity: number, volume: number): number { const intensityFactor = Math.min(2.0, Math.max(0.1, intensity);
     const volumeFactor = Math.min(1.0, Math.max(0.1, volume);
     return Math.min(1.0, baseProb * intensityFactor * volumeFactor); }
-}
 
 export function selectRandomEdge(): string { return EDGE_TYPES[Math.floor(Math.random() * EDGE_TYPES.length)]; }
-}
 
 export function normalizeIntensity(intensity: number, globalIntensity: number): number { return Math.min(2.0, Math.max(0, intensity * globalIntensity); }
-}
 
 export class FeedbackTriggerHandler {
     private mainController: VisualFeedbackManager;
@@ -451,54 +414,50 @@ export class FeedbackTriggerHandler {
         
         // 統計の初期化
         this.triggerStats = {
-            gameEventTriggers: 0,
-            volumeTriggers: 0,
-            edgeTriggers: 0,
-            manualTriggers: 0,
-
-    }
-    }
+            gameEventTriggers: 0;
+            volumeTriggers: 0;
+            edgeTriggers: 0;
+            manualTriggers: 0;
+    ,}
             total: 0, }
             byEventType: {} as Record<GameEventType, number>,
-            averageIntensity: 0,
+            averageIntensity: 0;
             averageDuration: 0;
         },
         
         this.performanceMetrics = { triggerLatency: 0,
-            processingTime: 0,
-            queueSize: 0,
-            droppedTriggers: 0,
-            memoryUsage: 0 }
-        },
-        
+            processingTime: 0;
+            queueSize: 0;
+            droppedTriggers: 0;
+            memoryUsage: 0 ,};
         this.eventListenerState = { registered: new Set(),
-            handlers: new Map(),
-            active: false }
-        },
-        
+            handlers: new Map();
+            active: false ,};
         this.lastTriggerTimes = new Map();
         this.triggerQueue = [];
         
         // イベントタイプごとの統計初期化
         Object.values(DEFAULT_GAME_EVENT_MAPPINGS).forEach((_, key) => { this.triggerStats.byEventType[key as GameEventType] = 0;' }'
-        }');'
-        '';
-        console.log('FeedbackTriggerHandler initialized');
+
+        }');
+
+        console.log('FeedbackTriggerHandler, initialized');
     }
 
     /**
      * イベントリスナーの設定
      */'
     setupEventListeners(): void { try {'
-            if(!this.gameEngine || this.eventListenerState.active') {'
-                '';
-                console.warn('Cannot setup event listeners: game engine missing or already active''),
+            if(!this.gameEngine || this.eventListenerState.active) {'
+
+                console.warn('Cannot, setup event, listeners: game, engine missing, or already, active''),
             }
                 return; }
             }
-            ';'
+            ';
+
             const eventTypes: GameEventType[] = ['';
-                'bubblePop', 'combo', 'bonus', 'damage',']';
+                'bubblePop', 'combo', 'bonus', 'damage',]';
                 'powerUp', 'gameOver', 'levelUp', 'warning'];
             ];
             
@@ -516,15 +475,13 @@ export class FeedbackTriggerHandler {
             
             // オーディオ視覚化の開始
             if (this.userPreferences.audioVisualization && this.mainController.startAudioVisualization) { this.mainController.startAudioVisualization(); }
-            }
             
-            console.log(`Game event listeners set up for ${this.eventListenerState.registered.size) events`});
-            ';'
-        } catch (error) { ''
-            getErrorHandler(').handleError(error as Error, 'TRIGGER_HANDLER_ERROR', { : undefined')'
+            console.log(`Game, event listeners, set up, for ${this.eventListenerState.registered.size} events`});
+            ';
+
+        } catch (error) { getErrorHandler(').handleError(error as Error, 'TRIGGER_HANDLER_ERROR', { : undefined)'
                 operation: 'setupEventListeners',);
-                hasGameEngine: !!this.gameEngine) }
-            });
+                hasGameEngine: !!this.gameEngine ,});
         }
     }
 
@@ -544,7 +501,6 @@ export class FeedbackTriggerHandler {
             
             // イベントフィルタリング
             if(!this.shouldTriggerEvent(eventType, eventData) { return; }
-            }
             
             const mapping = this.config.audioMapping.gameEvents.get(eventType) || ;
                            DEFAULT_GAME_EVENT_MAPPINGS[eventType];
@@ -554,7 +510,7 @@ export class FeedbackTriggerHandler {
                 
             
             }
-                console.warn(`No feedback mapping for event: ${eventType)`});
+                console.warn(`No, feedback mapping, for event: ${eventType}`});
                 return;
             }
             
@@ -567,34 +523,30 @@ export class FeedbackTriggerHandler {
             
             // フィードバックオプションの構築
             const feedbackOptions: VisualFeedbackOptions = { type: finalMapping.pattern,
-                color: finalMapping.color,
+                color: finalMapping.color;
                 intensity,;
                 duration: finalMapping.duration || this.config.feedbackTypes[finalMapping.pattern]? .duration || 500, : undefined'';
-                target: this.selectFeedbackTarget(eventType, eventData').element,';
-                eventData,'';
-                priority: this.config.feedbackTypes[finalMapping.pattern]? .priority || 'normal' }
-            },
-            
+                target: this.selectFeedbackTarget(eventType, eventData).element,
+                eventData,
+                priority: this.config.feedbackTypes[finalMapping.pattern]? .priority || 'normal' ,};
             // バリデーション
             const validation = validateTriggerOptions(feedbackOptions);''
-            if(!validation.isValid') {'
+            if(!validation.isValid) { '
                 : undefined'';
-                console.warn('Invalid feedback options:', validation.errors)
-            }
+                console.warn('Invalid feedback options:', validation.errors }
                 return; }
             }
             
             // メインコントローラーのフィードバック実行
             if (this.mainController.triggerVisualFeedback) { this.mainController.triggerVisualFeedback(feedbackOptions); }
-            }
             
             // 統計更新
             this.updateStatistics(eventType, feedbackOptions, startTime);
-            ';'
-        } catch (error) { ''
-            getErrorHandler(').handleError(error as Error, 'GAME_EVENT_FEEDBACK_ERROR', {)
-                eventType,) }
-                eventData: eventData ? { type: typeof eventData } : null),
+            ';
+
+        } catch (error) { getErrorHandler(').handleError(error as Error, 'GAME_EVENT_FEEDBACK_ERROR', {)
+                eventType, }
+                eventData: eventData ? { type: typeof eventData } : null);
             });
         }
     }
@@ -606,12 +558,10 @@ export class FeedbackTriggerHandler {
         if(this.userPreferences.filterSettings.eventBlacklist.includes(eventType) {
             
         }
-            return false; }
-        }
+            return false;
         
         if(this.userPreferences.filterSettings.eventWhitelist.length > 0 &&);
             !this.userPreferences.filterSettings.eventWhitelist.includes(eventType) { return false; }
-        }
         
         // レート制限チェック
         const now = Date.now();
@@ -619,7 +569,6 @@ export class FeedbackTriggerHandler {
         const cooldown = this.config.throttling.cooldownMs;
         
         if (now - lastTrigger < cooldown) { return false; }
-        }
         
         // 低強度フィルタリング
         if(this.userPreferences.filterSettings.ignoreLowIntensity) {
@@ -627,9 +576,7 @@ export class FeedbackTriggerHandler {
                            DEFAULT_GAME_EVENT_MAPPINGS[eventType];
             if (mapping && mapping.intensity < 0.3) {
         }
-                return false; }
-            }
-        }
+                return false;
         
         this.lastTriggerTimes.set(eventType, now);
         return true;
@@ -638,48 +585,50 @@ export class FeedbackTriggerHandler {
     /**
      * フィードバックターゲットの選択
      */''
-    private selectFeedbackTarget(eventType: GameEventType, eventData: GameEventData'): TargetSelectionResult { try {
+    private selectFeedbackTarget(eventType: GameEventType, eventData: GameEventData): TargetSelectionResult { try {
             let element: HTMLElement | null = null,
-            let confidence = 1.0;'
+            let confidence = 1.0;
+
             let fallbackUsed = false;''
             let reason = '';
             ';
             // イベントタイプに基づいてターゲットを決定
-            switch(eventType') {'
-                '';
+            switch(eventType) {'
+
                 case 'bubblePop':'';
                     element = eventData? .bubble || this.feedbackElements.get('game-area''); : undefined''
                     reason = eventData?.bubble ? 'bubble element' : 'game area fallback';
                     confidence = eventData?.bubble ? 1.0 : 0.8;
-                    break;'
-                    '';
+                    break;
+
                 case 'damage':'';
                     element = this.feedbackElements.get('edge-top'') || this.feedbackContainer;''
                     reason = 'top edge for damage indication';
-                    break;'
-                    '';
+                    break;
+
                 case 'combo':'';
                 case 'bonus':'';
                 case 'powerUp':'';
                 case 'levelUp':'';
                     element = this.feedbackElements.get('game-area'') || this.feedbackContainer;''
                     reason = 'game area for positive events';
-                    break;'
-                    '';
+                    break;
+
                 case 'gameOver':';
                     element = this.feedbackContainer;''
                     reason = 'full container for game over';
-                    break;'
-                    '';
+                    break;
+
                 case 'warning':'';
                     element = this.feedbackElements.get('edge-top'') || '';
-                             this.feedbackElements.get('game-area'') || ';'
+                             this.feedbackElements.get('game-area'') || ';
+
                              this.feedbackContainer;''
                     reason = 'top edge or game area for warnings';
                     confidence = 0.9;
-                    break;'
-                    '';
-                default: element = this.feedbackElements.get('game-area'') || this.feedbackContainer,'';
+                    break;
+
+                default: element = this.feedbackElements.get('game-area'') || this.feedbackContainer,
                     reason = 'default game area';
                     confidence = 0.7;
             }
@@ -687,11 +636,14 @@ export class FeedbackTriggerHandler {
             }
             ';
             // フォールバック処理
-            if(!element') {
+            if(!element) {
                 element = this.feedbackContainer;
-                fallbackUsed = true;'
-                confidence = 0.5;'
-            }'
+                fallbackUsed = true;
+
+                confidence = 0.5;
+
+            }
+
                 reason = 'fallback to container'; }
             }
             
@@ -700,20 +652,23 @@ export class FeedbackTriggerHandler {
                 fallbackUsed, };
                 reason }
             };
-            ';'
-        } catch (error) { ''
+            ';
+
+        } catch (error) {
             getErrorHandler(').handleError(error as Error, 'TARGET_SELECTION_ERROR', {)
-                eventType);'
+                eventType);
+
                 availableElements: Array.from(this.feedbackElements? .keys() || []),' }'
+
             }');
             
             return { : undefined
-                element: this.feedbackContainer,
-                confidence: 0.1,';
-                fallbackUsed: true,' };'
+                element: this.feedbackContainer;
+                confidence: 0.1,
+                fallbackUsed: true,' };
+
                 reason: 'error fallback to container' }
-            },
-        }
+            }
     }
 
     /**
@@ -730,7 +685,6 @@ export class FeedbackTriggerHandler {
             const volumeConfig = VOLUME_LEVEL_MAPPINGS[volumeLevel];
             
             if (!volumeConfig.effects.length) { return; }
-            }
             
             // 確率に基づく実行判定
             const probability = calculateTriggerProbability(;
@@ -740,7 +694,6 @@ export class FeedbackTriggerHandler {
             );
             
             if (Math.random() > probability) { return; }
-            }
             
             // エフェクトの実行
             volumeConfig.effects.forEach(effectConfig => {  ); }
@@ -748,13 +701,12 @@ export class FeedbackTriggerHandler {
             });
             
             this.triggerStats.volumeTriggers++;
-            ';'
-        } catch (error) { ''
-            getErrorHandler(').handleError(error as Error, 'VOLUME_FEEDBACK_ERROR', {)
+            ';
+
+        } catch (error) { getErrorHandler(').handleError(error as Error, 'VOLUME_FEEDBACK_ERROR', {)
                 volume);
                 enabled: this.config.enabled,);
-                audioVisualization: this.userPreferences.audioVisualization) }
-            });
+                audioVisualization: this.userPreferences.audioVisualization ,});
         }
     }
 
@@ -769,28 +721,29 @@ export class FeedbackTriggerHandler {
             }
             
             const randomEdge = selectRandomEdge();
-            const edgeElement = this.feedbackElements.get(`edge-${ randomEdge)`);'
+            const edgeElement = this.feedbackElements.get(`edge-${ randomEdge}`};
+
             ' }'
+
             if(edgeElement && this.mainController.triggerVisualFeedback'}) {'
                 const feedbackOptions: VisualFeedbackOptions = {''
-                    type: 'flash',
+                    type: 'flash';
                     color,
                     intensity: intensity * 0.5, // エッジフィードバックは少し弱く;
-                    duration: 200,
-                    target: edgeElement,'
-            }'
+                    duration: 200;
+                    target: edgeElement;
+            ,}
+
                     priority: 'low' }
-                },
-                
+                };
                 this.mainController.triggerVisualFeedback(feedbackOptions);
-                this.triggerStats.edgeTriggers++;'
-            } catch (error) { ''
-            getErrorHandler(').handleError(error as Error, 'EDGE_FEEDBACK_ERROR', {)
+                this.triggerStats.edgeTriggers++;
+
+            } catch (error) { getErrorHandler(').handleError(error as Error, 'EDGE_FEEDBACK_ERROR', {)
                 color);
                 intensity,);
-                enabledEdges: this.config.positioning.screenEdges),
-                availableElements: Array.from(this.feedbackElements? .keys() || []) }
-            });
+                enabledEdges: this.config.positioning.screenEdges);
+                availableElements: Array.from(this.feedbackElements? .keys() || [] ,});
         }
     }
 
@@ -799,43 +752,42 @@ export class FeedbackTriggerHandler {
      */ : undefined
     triggerManualFeedback(type: EffectPattern, options: Partial<VisualFeedbackOptions> = { ): void {'
         try {'
-            if(!this.config.enabled') {'
-                '';
-                console.warn('Visual feedback is disabled'');
+            if(!this.config.enabled) {'
+
+                console.warn('Visual, feedback is, disabled'');
             }
                 return; }
             }
-            ';'
+            ';
+
             const feedbackOptions: VisualFeedbackOptions = { type,''
-                color: options.color || '#ffffff',
-                intensity: options.intensity || 1.0,
-                duration: options.duration || 300,
-                target: options.target || this.feedbackContainer,';
-                eventData: options.eventData || null,'';
-                priority: options.priority || 'normal' }
-            },
-            ';'
+                color: options.color || '#ffffff';
+                intensity: options.intensity || 1.0;
+                duration: options.duration || 300;
+                target: options.target || this.feedbackContainer,
+                eventData: options.eventData || null,
+                priority: options.priority || 'normal' ,};
+            ';
+
             const validation = validateTriggerOptions(feedbackOptions);''
-            if(!validation.isValid') {'
-                '';
-                console.warn('Invalid manual feedback options:', validation.errors)
-            }
+            if(!validation.isValid) { '
+
+                console.warn('Invalid manual feedback options:', validation.errors }
                 return; }
             }
             
             if (this.mainController.triggerVisualFeedback) { this.mainController.triggerVisualFeedback(feedbackOptions); }
-            }
             
             this.triggerStats.manualTriggers++;
             this.triggerStats.total++;
             
-            console.log(`Manual feedback triggered: ${type)`, options});
-            ';'
-        } catch (error) { ''
+            console.log(`Manual feedback triggered: ${type}`, options});
+            ';
+
+        } catch (error) {
             getErrorHandler(').handleError(error as Error, 'MANUAL_FEEDBACK_ERROR', {)
                 type,);
-                options); }
-            });
+                options); });
         }
     }
 
@@ -859,7 +811,6 @@ export class FeedbackTriggerHandler {
         
         // メインコントローラーの統計更新
         this.mainController.updateEventStats? .(eventType); }
-    }
 
     /**
      * イベントリスナーの削除
@@ -867,75 +818,78 @@ export class FeedbackTriggerHandler {
     removeEventListeners(): void { try {
             if(!this.eventListenerState.active) {
                 
-            }
+            
                 return; }
             }
             
             for (const [eventType, handler] of this.eventListenerState.handlers) { this.gameEngine.removeEventListener? .(eventType, handler); }
-            }
-            ';'
+            ';
+
             this.eventListenerState.registered.clear();''
             this.eventListenerState.handlers.clear()';
-            console.log('Event listeners removed');'
-        } catch (error) { ''
-            getErrorHandler(').handleError(error as Error, 'REMOVE_LISTENERS_ERROR'); }
-        }
+            console.log('Event, listeners removed);
+
+        } catch (error') {
+            getErrorHandler(').handleError(error as Error, 'REMOVE_LISTENERS_ERROR); }
     }
 
     /**
      * トリガー統計の取得
      */ : undefined
     getTriggerStats(): TriggerStatistics {
-        return { ...this.triggerStats };
+        return { ...this.triggerStats;
     }
 
     /**
      * パフォーマンスメトリクスの取得
      */
     getPerformanceMetrics(): TriggerPerformanceMetrics {
-        return { ...this.performanceMetrics };
+        return { ...this.performanceMetrics;
     }
 
     /**
      * トリガー統計のリセット
      */
     resetTriggerStats(): void { this.triggerStats = {
-            gameEventTriggers: 0,
-            volumeTriggers: 0,
-            edgeTriggers: 0,
-            manualTriggers: 0,
+            gameEventTriggers: 0;
+            volumeTriggers: 0;
+            edgeTriggers: 0;
+            manualTriggers: 0;
             total: 0, }
             byEventType: {} as Record<GameEventType, number>,
-            averageIntensity: 0,
+            averageIntensity: 0;
             averageDuration: 0;
         },
         
         // イベントタイプごとの統計初期化
         Object.keys(DEFAULT_GAME_EVENT_MAPPINGS).forEach(key => {  ')'
-            this.triggerStats.byEventType[key as GameEventType] = 0)');'
+            this.triggerStats.byEventType[key as GameEventType] = 0)');
+
         ' }'
-        console.log('Trigger stats reset'); }
+
+        console.log('Trigger, stats reset'); }'
     }
 
     /**
      * 設定の更新'
      */''
     updateConfig()';
-        console.log('FeedbackTriggerHandler config updated');
+        console.log('FeedbackTriggerHandler, config updated');
     }
 
     /**
      * リソースの解放'
      */''
     destroy()';
-        console.log('Destroying FeedbackTriggerHandler...');
+        console.log('Destroying, FeedbackTriggerHandler...);
         
         // イベントリスナーの削除
-        this.removeEventListeners();
+        this.removeEventListeners(');
         
         // キューのクリア
         this.triggerQueue = [];''
         this.lastTriggerTimes.clear()';
-        console.log('FeedbackTriggerHandler destroyed'');'
+        console.log('FeedbackTriggerHandler, destroyed'');
+
     }''
 }

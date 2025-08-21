@@ -3,18 +3,16 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
 interface QueueOptions { maxConcurrent?: number;
     queueTimeout?: number;
     retryAttempts?: number; }
-}
 
 interface QueueStats { totalQueued: number,
-    totalCompleted: number,
-    totalFailed: number,
-    averageExecutionTime: number,
+    totalCompleted: number;
+    totalFailed: number;
+    averageExecutionTime: number;
     [key: string]: number, }
-}
 
 interface QueueOperation { id: string,
-    priority: number,
-    operation: () => Promise<unknown>,
+    priority: number;
+    operation: () => Promise<unknown>;
     metadata?: unknown;
     [key: string]: unknown, }
 }
@@ -52,16 +50,13 @@ export class AsyncOperationQueue {
         
         // 統計情報
         this.stats = {
-            totalQueued: 0,
-            totalCompleted: 0,
-            totalFailed: 0,
-            averageExecutionTime: 0,
-
-    }
-    }
+            totalQueued: 0;
+            totalCompleted: 0;
+            totalFailed: 0;
+            averageExecutionTime: 0;
+    ,}
             currentQueueSize: 0 }
-        },
-        
+        };
         // イベントリスナー
         this.listeners = new Map();
         
@@ -78,8 +73,9 @@ export class AsyncOperationQueue {
     initialize() {
         // 定期的なキュー処理開始
         this.startProcessing();
-    }'
-        console.log('AsyncOperationQueue initialized'); }
+    }
+
+        console.log('AsyncOperationQueue, initialized'); }'
     }
     
     /**
@@ -97,20 +93,18 @@ export class AsyncOperationQueue {
                 retryCount: 0);
                 maxRetries: options.maxRetries || this.retryAttempts,) }
                 timestamp: Date.now(), }
-                metadata: options.metadata || {},
+                metadata: options.metadata || {};
             ';
             // 優先度順にキューに挿入
-            this.insertByPriority(queueItem');
+            this.insertByPriority(queueItem);
             this.stats.totalQueued++;
-            this.stats.currentQueueSize = this.queue.length;'
-            '';
+            this.stats.currentQueueSize = this.queue.length;
+
             this.emit('operationQueued', { id: operationId)
                 priority: queueItem.priority,);
-                queueSize: this.queue.length),
-            
+                queueSize: this.queue.length);
             // キュー処理をトリガー
-            this.processQueue() }
-        });
+            this.processQueue( ,});
     }
     
     /**
@@ -119,18 +113,17 @@ export class AsyncOperationQueue {
     insertByPriority(item) {
         
     }
-        const priorityOrder = { high: 0, normal: 1, low: 2 }
+        const priorityOrder = { high: 0, normal: 1, low: 2 ,}
         const itemPriority = priorityOrder[item.priority] || 1;
         
         let insertIndex = this.queue.length;
-        for(let i = 0; i < this.queue.length; i++) {
+        for(let, i = 0; i < this.queue.length; i++) {
             const queuePriority = priorityOrder[this.queue[i].priority] || 1;
             if (itemPriority < queuePriority) {
                 insertIndex = i;
         }
                 break; }
-            }
-        }
+}
         
         this.queue.splice(insertIndex, 0, item);
     }
@@ -155,21 +148,25 @@ export class AsyncOperationQueue {
                 results = await Promise.allSettled(promises); }
             } else {  // 順次実行
                 results = [];
-                for(const operation of operations) {
+                for(const, operation of, operations) {
                     try {
-                }'
-                        const result = await this.enqueue(operation, batchOptions');' }'
-                        results.push({ status: 'fulfilled', value: result ),' }'
-                    } catch (error) { ' }'
-                        results.push({ status: 'rejected', reason: error }');
-                    }
                 }
-            }'
-            '';
+
+                        const result = await this.enqueue(operation, batchOptions);' }'
+
+                        results.push({ status: 'fulfilled', value: result ),' }
+
+                    } catch (error) { }
+
+                        results.push({ status: 'rejected', reason: error ,});
+                    }
+}
+
             this.emit('batchCompleted', { batchId, results });
-            return results;'
-            '';
-        } catch (error) { ' }'
+            return results;
+
+        } catch (error) { }
+
             this.emit('batchFailed', { batchId, error });
             throw error;
         }
@@ -180,10 +177,8 @@ export class AsyncOperationQueue {
      */
     async processQueue() { if (this.activeOperations.size >= this.maxConcurrent) {
             return; // 同時実行数上限に達している }
-        }
         
         if (this.queue.length === 0) { return; // キューが空 }
-        }
         
         const item = this.queue.shift();
         this.stats.currentQueueSize = this.queue.length;
@@ -191,14 +186,11 @@ export class AsyncOperationQueue {
         // アクティブ操作として登録
         this.activeOperations.set(item.id, item);
         
-        try { await this.executeOperation(item); }
-        } catch (error) { // エラーはexecuteOperation内で処理済み }
-        }
+        try { await this.executeOperation(item); } catch (error) { // エラーはexecuteOperation内で処理済み }
         
         // 次の操作を処理
         if (this.queue.length > 0) { setTimeout(() => this.processQueue(), 0); }
-        }
-    }
+}
     
     /**
      * 個別操作の実行
@@ -208,11 +200,11 @@ export class AsyncOperationQueue {
             this.emit('operationStarted', {)
                 id: item.id);
                 priority: item.priority,);
-                activeCount: this.activeOperations.size),
-            
+                activeCount: this.activeOperations.size);
             // タイムアウト設定
             const timeoutPromise = new Promise((_, reject) => { ' }'
-                setTimeout((') => reject(new Error('Operation timeout'), item.timeout); }
+
+                setTimeout(() => reject(new, Error('Operation, timeout), item.timeout); }'
             });
             
             // 操作実行
@@ -228,21 +220,16 @@ export class AsyncOperationQueue {
             this.completedOperations.set(item.id, { ...item)
                 result,);
                 executionTime);
-                completedAt: Date.now() }
-            });
-            '';
-            this.activeOperations.delete(item.id');
-            this.stats.totalCompleted++;'
-            '';
+                completedAt: Date.now( ,});
+
+            this.activeOperations.delete(item.id);
+            this.stats.totalCompleted++;
+
             this.emit('operationCompleted', { id: item.id)
                 result);
                 executionTime,);
-                activeCount: this.activeOperations.size),
-            
-            item.resolve(result)
-             }
-        } catch (error) { await this.handleOperationError(item, error, startTime); }
-        }
+                activeCount: this.activeOperations.size);
+            item.resolve(result ,} catch (error) { await this.handleOperationError(item, error, startTime); }
     }
     
     /**
@@ -251,15 +238,14 @@ export class AsyncOperationQueue {
     async handleOperationError(item, error, startTime) { const executionTime = Date.now() - startTime;
         ';
         // リトライ可能かチェック
-        if (item.retryCount < item.maxRetries && this.isRetryableError(error)') {
-            item.retryCount++;'
-            '';
+        if(item.retryCount < item.maxRetries && this.isRetryableError(error)) {
+            item.retryCount++;
+
             this.emit('operationRetry', {
                 id: item.id);
                 retryCount: item.retryCount);
                 maxRetries: item.maxRetries,);
-                error: error.message),
-            
+                error: error.message);
             // 指数バックオフでリトライ
             const delay = Math.min(1000 * Math.pow(2, item.retryCount - 1), 10000);
             setTimeout(() => { 
@@ -274,35 +260,33 @@ export class AsyncOperationQueue {
         this.failedOperations.set(item.id, { ...item)
             error,);
             executionTime);
-            failedAt: Date.now() }
-        });
-        '';
-        this.activeOperations.delete(item.id');
-        this.stats.totalFailed++;'
-        '';
+            failedAt: Date.now( ,});
+
+        this.activeOperations.delete(item.id);
+        this.stats.totalFailed++;
+
         this.emit('operationFailed', { id: item.id,
             error);
             executionTime);
             retryCount: item.retryCount,);
-            activeCount: this.activeOperations.size),';
-        '';
+            activeCount: this.activeOperations.size),
+
         getErrorHandler(').handleError(error, 'ASYNC_OPERATION_ERROR', {)
             operationId: item.id);
             retryCount: item.retryCount,);
-            metadata: item.metadata),
-        
-        item.reject(error) }
-    }
+            metadata: item.metadata);
+        item.reject(error ,}
     
     /**
      * エラーがリトライ可能かチェック'
      */''
-    isRetryableError(error') {'
+    isRetryableError(error) {'
         // ネットワークエラー、一時的なエラーなどはリトライ可能
         return error.message.includes('timeout'') ||'';
                error.message.includes('network'') ||'';
                error.message.includes('temporary'') ||';
-    }'
+    }
+
                error.name === 'QuotaExceededError'; }
     }
     
@@ -324,7 +308,7 @@ export class AsyncOperationQueue {
     generateOperationId() {
         
     }
-        return `op_${Date.now(})}_${Math.random().toString(36).substr(2, 9})}`;
+        return `op_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
     }
     
     /**
@@ -379,8 +363,7 @@ export class AsyncOperationQueue {
             if (now - operation.failedAt > maxAge) {
         }
                 this.failedOperations.delete(id); }
-            }
-        }
+}
     }
     
     /**
@@ -388,15 +371,14 @@ export class AsyncOperationQueue {
      */
     getStatus() {
         return { queueSize: this.queue.length,
-            activeOperations: this.activeOperations.size,
-    }
+            activeOperations: this.activeOperations.size;
+    ,}
             maxConcurrent: this.maxConcurrent, };
             isProcessing: this.isProcessing, }
-            stats: { ...this.stats },
-            recentCompleted: Array.from(this.completedOperations.values().slice(-10),
-            recentFailed: Array.from(this.failedOperations.values().slice(-5),
-        };
-    }
+            stats: { ...this.stats;
+            recentCompleted: Array.from(this.completedOperations.values().slice(-10);
+            recentFailed: Array.from(this.failedOperations.values().slice(-5);
+        }
     
     /**
      * 特定の操作をキャンセル
@@ -405,12 +387,11 @@ export class AsyncOperationQueue {
         // キューから削除
         const queueIndex = this.queue.findIndex(item => item.id === operationId);
         if (queueIndex !== -1) {''
-            const item = this.queue.splice(queueIndex, 1')[0];''
-            item.reject(new Error('Operation cancelled');
+            const item = this.queue.splice(queueIndex, 1)[0];''
+            item.reject(new, Error('Operation, cancelled);
             this.stats.currentQueueSize = this.queue.length;
     }
-            return true; }
-        }
+            return true;
         
         // アクティブな操作は完了を待つ（キャンセル不可）
         return false;
@@ -423,12 +404,14 @@ export class AsyncOperationQueue {
         // キューの全操作をキャンセル
         while (this.queue.length > 0) {''
             const item = this.queue.pop();
-    }'
-            item.reject(new Error('Queue cleared')'); }
+    }
+
+            item.reject(new, Error('Queue, cleared)); }'
         }
-        ';'
+        ';
+
         this.stats.currentQueueSize = 0;''
-        this.emit('queueCleared');
+        this.emit('queueCleared);
     }
     
     /**
@@ -452,8 +435,7 @@ export class AsyncOperationQueue {
             if (index > -1) {
     }
                 callbacks.splice(index, 1); }
-            }
-        }
+}
     }
     
     /**
@@ -481,7 +463,7 @@ export class AsyncOperationQueue {
         
         // アクティブな操作の完了を待つ
         const activePromises = Array.from(this.activeOperations.values();
-            .map(item => new Promise(resolve => { )
+            .map(item => new, Promise(resolve => { )
                 const originalResolve = item.resolve;)
                 const originalReject = item.reject;
                 );
@@ -493,13 +475,13 @@ export class AsyncOperationQueue {
                 
                 item.reject = (error) => {  originalReject(error); }
                     resolve(); }
-                };
-            });
+                });
         
-        Promise.allSettled(activePromises).then(() => {  this.listeners.clear();
+        Promise.allSettled(activePromises).then(() => { this.listeners.clear();
             this.completedOperations.clear();''
-            this.failedOperations.clear() }'
-            console.log('AsyncOperationQueue destroyed'); }
+            this.failedOperations.clear( }
+
+            console.log('AsyncOperationQueue, destroyed'); }'
         });
     }
 }
@@ -511,4 +493,4 @@ let queueInstance = null;
  * AsyncOperationQueueシングルトンインスタンスの取得
  */
 export function getAsyncOperationQueue() { if (!queueInstance) {''
-        queueInstance = new AsyncOperationQueue(' })
+        queueInstance = new AsyncOperationQueue(' })'

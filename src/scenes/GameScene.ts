@@ -15,42 +15,36 @@ import { GamePerformanceMonitor } from './game-scene/GamePerformanceMonitor.js';
 
 // Game Scene specific types
 export interface GameSceneState { isPaused: boolean,
-    isGameOver: boolean,
+    isGameOver: boolean;
     lastUpdateDebugTime?: number;
     lastBubbleErrorTime?: number;
     canvas?: HTMLCanvasElement;
-    };
-}
+    ,}
 export interface GameSceneComponents { inputManager: GameInputManager,
-    floatingTextManager: FloatingTextManager,
-    stateManager: GameStateManager,
-    uiManager: GameUIManager,
-    visualizationManager: GameVisualizationManager,
+    floatingTextManager: FloatingTextManager;
+    stateManager: GameStateManager;
+    uiManager: GameUIManager;
+    visualizationManager: GameVisualizationManager;
     performanceMonitor: GamePerformanceMonitor
-    };
-}
+    ,}
 export interface GameSceneStats { state: any,
-    ui: any,
-    visualization: any,
-    performance: any };
-}
+    ui: any;
+    visualization: any;
+    performance: any ,}
 export interface GameSceneDebugInfo { scene: string,
-    isPaused: boolean,
-    isGameOver: boolean,
+    isPaused: boolean;
+    isGameOver: boolean;
     components: {
-        stateManager: any,
-        uiManager: any,
-        visualizationManager: any,
+        stateManager: any;
+        uiManager: any;
+        visualizationManager: any;
         performanceMonitor: any 
-}
-    },
+,};
     gameStats: GameSceneStats;
 }
 export interface TimeWarnings { timeWarning: boolean,
-    urgentWarning: boolean };
-}
-export interface PerformanceSettings { [key: string]: any, };
-}
+    urgentWarning: boolean ,}
+export interface PerformanceSettings { [key: string]: any, }
 export class GameScene extends Scene implements GameSceneState { // State properties
     public isPaused: boolean,
     public isGameOver: boolean,
@@ -65,7 +59,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
     public uiManager: GameUIManager,
     public visualizationManager: GameVisualizationManager,
     public performanceMonitor: GamePerformanceMonitor,
-    // Event handler references (bound methods);
+    // Event handler references (bound, methods);
     private boundHandleMouseClick: (event: MouseEvent) => void;
     private boundHandleMouseMove: (event: MouseEvent) => void;
     private boundHandleTouchStart: (event: TouchEvent) => void;
@@ -100,10 +94,8 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         this.boundHandleTouchEnd = this.handleTouchEnd.bind(this);
         this.boundHandleTouchCancel = this.handleTouchCancel.bind(this);
 
-    };
-}
-        this.boundHandleKeyDown = this.handleKeyDown.bind(this); };
-}
+    }
+        this.boundHandleKeyDown = this.handleKeyDown.bind(this); }
     /**
      * シーン開始時の処理
      */
@@ -120,11 +112,9 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         
         // イベントリスナーの設定
         this.setupEventListeners();
-        ;
         // ゲーム開始メッセージ
         this.uiManager.showGameStartMessage()';
-        console.log('Game scene started'); };
-}
+        console.log('Game, scene started); }
     /**
      * シーン終了時の処理
      */
@@ -135,44 +125,44 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         
         this.stateManager.endGame();
         this.uiManager.resetUIState();
-        this.visualizationManager.resetDragVisualization();''
+        this.visualizationManager.resetDragVisualization(');''
         this.performanceMonitor.stopMonitoring()';
-        console.log('Game scene exited'); };
-}
+        console.log('Game, scene exited); }
     /**
      * イベントリスナーの設定
      */
-    setupEventListeners(): void { this.canvas = this.gameEngine.canvas;'
-        '';
+    setupEventListeners(): void { this.canvas = this.gameEngine.canvas;
+
         if(!this.canvas') {'
-            '';
-            console.error('Canvas not available in GameEngine'');
+
+            console.error('Canvas, not available, in GameEngine'');
         }
-            return; };
-}
+            return; }
         ';
         // イベントリスナーを追加（バインドされたメソッドを使用）
-        this.canvas.addEventListener('click', this.boundHandleMouseClick');''
-        this.canvas.addEventListener('mousemove', this.boundHandleMouseMove');''
-        this.canvas.addEventListener('touchstart', this.boundHandleTouchStart, { passive: false )'),''
-        this.canvas.addEventListener('touchmove', this.boundHandleTouchMove, { passive: false )'),''
-        this.canvas.addEventListener('touchend', this.boundHandleTouchEnd');''
-        this.canvas.addEventListener('touchcancel', this.boundHandleTouchCancel');''
-        document.addEventListener('keydown', this.boundHandleKeyDown); };
-}
+        this.canvas.addEventListener('click', this.boundHandleMouseClick);''
+        this.canvas.addEventListener('mousemove', this.boundHandleMouseMove);''
+        this.canvas.addEventListener('touchstart', this.boundHandleTouchStart, { passive: false )),''
+        this.canvas.addEventListener('touchmove', this.boundHandleTouchMove, { passive: false )),''
+        this.canvas.addEventListener('touchend', this.boundHandleTouchEnd);''
+        this.canvas.addEventListener('touchcancel', this.boundHandleTouchCancel);''
+        document.addEventListener('keydown', this.boundHandleKeyDown); }
     /**
      * イベントリスナーの削除
      */'
     removeEventListeners(): void { ''
-        if(this.canvas') {'
-            '';
-            this.canvas.removeEventListener('click', this.boundHandleMouseClick');''
-            this.canvas.removeEventListener('mousemove', this.boundHandleMouseMove');''
-            this.canvas.removeEventListener('touchstart', this.boundHandleTouchStart');''
-            this.canvas.removeEventListener('touchmove', this.boundHandleTouchMove');''
-            this.canvas.removeEventListener('touchend', this.boundHandleTouchEnd');'
-        }'
-            this.canvas.removeEventListener('touchcancel', this.boundHandleTouchCancel'); }'
+        if(this.canvas) {'
+
+            this.canvas.removeEventListener('click', this.boundHandleMouseClick);''
+            this.canvas.removeEventListener('mousemove', this.boundHandleMouseMove);''
+            this.canvas.removeEventListener('touchstart', this.boundHandleTouchStart);''
+            this.canvas.removeEventListener('touchmove', this.boundHandleTouchMove);''
+            this.canvas.removeEventListener('touchend', this.boundHandleTouchEnd);
+
+        }
+
+            this.canvas.removeEventListener('touchcancel', this.boundHandleTouchCancel); }
+
         }''
         document.removeEventListener('keydown', this.boundHandleKeyDown);
     }
@@ -189,8 +179,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         if(this.uiManager.handleControlButtonClick(x, y, event) {
             
         }
-            return; // ボタンがクリックされた場合は他の処理をしない };
-}
+            return; // ボタンがクリックされた場合は他の処理をしない }
         // 通常のゲームクリック処理（バブルクリックなど）
         // 既存のゲームロジック...
     }
@@ -204,8 +193,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         const y = event.clientY - rect.top;
         
         // ボタンのホバー状態更新
-        this.uiManager.updateMousePosition(x, y); };
-}
+        this.uiManager.updateMousePosition(x, y); }
     /**
      * タッチ開始処理
      * @param event - タッチイベント
@@ -220,8 +208,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         if(this.uiManager.handleTouchStart(x, y) {
             
         }
-            return; };
-}
+            return; }
         // 通常のゲームタッチ処理
         // 既存のゲームロジック...
     }
@@ -237,8 +224,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         const y = touch.clientY - rect.top;
         
         // ボタンのホバー状態更新（タッチでは通常不要だが、一貫性のため）
-        this.uiManager.updateMousePosition(x, y); };
-}
+        this.uiManager.updateMousePosition(x, y); }
     /**
      * タッチ終了処理
      * @param event - タッチイベント
@@ -255,8 +241,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         if(this.uiManager.handleTouchEnd(x, y) {
             
         }
-            return; };
-}
+            return; }
         // 通常のゲームタッチ終了処理
         // 既存のゲームロジック...
     }
@@ -268,8 +253,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
     private handleTouchCancel(event: TouchEvent): void { event.preventDefault();
         
         // UIマネージャーのタッチキャンセル処理
-        this.uiManager.handleTouchCancel(); };
-}
+        this.uiManager.handleTouchCancel(); }
     /**
      * キーボード処理
      * @param event - キーボードイベント
@@ -278,8 +262,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         if(this.uiManager.handleKeyboard(event) {
             
         }
-            return; // UIで処理された場合は他の処理をしない };
-}
+            return; // UIで処理された場合は他の処理をしない }
         // 他のゲーム固有のキーボード処理があればここに追加
     }
     
@@ -288,7 +271,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      */
     update(deltaTime: number): void { // Debug logs throttled to prevent console flooding - only log occasionally
         if (!this.lastUpdateDebugTime || performance.now() - this.lastUpdateDebugTime > 5000) { }
-            console.log(`[DEBUG] GameScene.update working - paused: ${this.isPaused}, gameOver: ${ this.gameEngine.isGameOver)`), }
+            console.log(`[DEBUG] GameScene.update working - paused: ${this.isPaused}, gameOver: ${ this.gameEngine.isGameOver}`}, }
             this.lastUpdateDebugTime = performance.now(});
         }
         
@@ -304,22 +287,18 @@ export class GameScene extends Scene implements GameSceneState { // State proper
             this.uiManager.updateUIState(deltaTime);
         
         }
-            return; };
-}
+            return; }
         // ゲーム状態の更新
         this.stateManager.updateGameState(deltaTime);
-        ;
         // UI状態の更新
-        this.uiManager.updateUIState(deltaTime');
+        this.uiManager.updateUIState(deltaTime);
         ';
         // 泡の更新
-        if (this.gameEngine.bubbleManager && typeof this.gameEngine.bubbleManager.update === 'function') { this.gameEngine.bubbleManager.update(deltaTime); }
-        } else {  // Only log this error occasionally
+        if(this.gameEngine.bubbleManager && typeof, this.gameEngine.bubbleManager.update === 'function) { this.gameEngine.bubbleManager.update(deltaTime); } else {  // Only log this error occasionally'
             if (!this.lastBubbleErrorTime || performance.now() - this.lastBubbleErrorTime > 5000) { }
-                console.error(`[DEBUG] bubbleManager.update is not available: manager = ${!!this.gameEngine.bubbleManager)`) }
+                console.error(`[DEBUG] bubbleManager.update, is not, available: manager = ${!!this.gameEngine.bubbleManager}`} }
                 this.lastBubbleErrorTime = performance.now(});
-            };
-}
+            }
         // ドラッグビジュアライゼーションの更新
         this.visualizationManager.updateDragVisualization(deltaTime);
         
@@ -338,8 +317,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      */
     private handleScoreChange(): void { if(this.stateManager.checkScoreChange() {
             const newScore = this.gameEngine.playerData.currentScore;
-            this.uiManager.onScoreChanged(newScore); };
-}
+            this.uiManager.onScoreChanged(newScore); }
     }
     
     /**
@@ -349,8 +327,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         if(warnings.timeWarning || warnings.urgentWarning) {
             
         }
-            this.uiManager.showTimeWarnings(warnings); };
-}
+            this.uiManager.showTimeWarnings(warnings); }
     }
     
     /**
@@ -380,11 +357,9 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         if(this.gameEngine.isGameOver) {
             
         }
-            this.visualizationManager.renderGameOver(context); };
-}
+            this.visualizationManager.renderGameOver(context); }
         // ポーズ画面
-        if (this.isPaused) { this.visualizationManager.renderPause(context); };
-}
+        if (this.isPaused) { this.visualizationManager.renderPause(context); }
         // 描画時間の測定
         const renderEndTime = performance.now();
         this.performanceMonitor.updateAverageRenderTime(renderEndTime - renderStartTime);
@@ -395,15 +370,13 @@ export class GameScene extends Scene implements GameSceneState { // State proper
     /**
      * ゲームオーバー処理
      */
-    gameOver(): void { this.stateManager.triggerGameOver(); };
-}
+    gameOver(): void { this.stateManager.triggerGameOver(); }
     /**
      * ダメージ処理
      * @param damage - ダメージ量
      */
     onPlayerDamaged(damage: number): void { this.stateManager.onPlayerDamaged(damage);
-        this.uiManager.onPlayerDamaged(damage); };
-}
+        this.uiManager.onPlayerDamaged(damage); }
     /**
      * 回復処理
      * @param heal - 回復量
@@ -412,8 +385,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         this.uiManager.onPlayerHealed(actualHeal);
         
         // 新しい回復エフェクト
-        this.gameEngine.createHealEffect(actualHeal); };
-}
+        this.gameEngine.createHealEffect(actualHeal); }
     /**
      * 特殊効果発動時の処理
      * @param effectType - エフェクトタイプ
@@ -421,108 +393,106 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      * @param y - Y座標
      */
     onSpecialEffect(effectType: string, x: number, y: number): void { this.stateManager.onSpecialEffect(effectType, x, y);
-        this.uiManager.onSpecialEffect(effectType, x, y); };
-}
+        this.uiManager.onSpecialEffect(effectType, x, y); }
     /**
      * ドラッグ開始
      * @param x - 開始X座標
      * @param y - 開始Y座標
      * @param targetBubble - 対象の泡
      */
-    startDrag(x: number, y: number, targetBubble: any = null): void { this.visualizationManager.startDrag(x, y, targetBubble); };
-}
+    startDrag(x: number, y: number, targetBubble: any = null): void { this.visualizationManager.startDrag(x, y, targetBubble); }
     /**
      * ドラッグ更新
      * @param x - 現在のX座標
      * @param y - 現在のY座標
      */
-    updateDrag(x: number, y: number): void { this.visualizationManager.updateDrag(x, y); };
-}
+    updateDrag(x: number, y: number): void { this.visualizationManager.updateDrag(x, y); }
     /**
      * ドラッグ終了
      */
-    endDrag(): void { this.visualizationManager.endDrag(); };
-}
+    endDrag(): void { this.visualizationManager.endDrag(); }
     /**
      * ドラッグパーティクルを生成
      * @param x - X座標
      * @param y - Y座標  
      * @param intensity - パーティクルの強度（数）
      */
-    createDragParticles(x: number, y: number, intensity: number = 10): void { try { }'
-            console.log(`[DEBUG] createDragParticles called: x=${x}, y=${y}, intensity=${ intensity)`');
+    createDragParticles(x: number, y: number, intensity: number = 10): void { try { }
+
+            console.log(`[DEBUG] createDragParticles called: x=${x}, y=${y}, intensity=${ intensity)`'};
             ';
             // 基本パーティクルマネージャーでクリックエフェクトを作成
-            if(this.gameEngine.particleManager && typeof this.gameEngine.particleManager.createComboEffect === 'function'') {'
-                ';'
-            }'
-                console.log('[DEBUG] Using particleManager.createComboEffect');' }'
-                this.gameEngine.particleManager.createComboEffect(x, y, 1'}); // コンボ1としてエフェクト生成
-            } else {  ' }'
-                console.warn('[DEBUG] particleManager.createComboEffect not available''); };
-}
+            if(this.gameEngine.particleManager && typeof, this.gameEngine.particleManager.createComboEffect === 'function''} {'
+                ';
+
+            }
+
+                console.log('[DEBUG] Using, particleManager.createComboEffect');' }
+
+                this.gameEngine.particleManager.createComboEffect(x, y, 1'}); // コンボ1としてエフェクト生成'
+            } else { }'
+
+                console.warn('[DEBUG] particleManager.createComboEffect, not available''); }
             ';
             // 拡張パーティクルマネージャーでパーティクルを個別生成
-            if(this.gameEngine.enhancedParticleManager && typeof this.gameEngine.enhancedParticleManager.createParticle === 'function'') {'
-                '';
-                console.log('[DEBUG] Using enhancedParticleManager.createParticle');
+            if(this.gameEngine.enhancedParticleManager && typeof, this.gameEngine.enhancedParticleManager.createParticle === 'function'') {'
+
+                console.log('[DEBUG] Using, enhancedParticleManager.createParticle);
                 
                 // 複数のパーティクルを放射状に生成
                 for (let i = 0; i < Math.min(intensity, 15); i++) {
                     const angle = (i / intensity) * Math.PI * 2;
                     const speed = 50 + Math.random() * 30;
-                    const vx = Math.cos(angle) * speed;''
-                    const vy = Math.sin(angle') * speed;
-                    ';'
-                    this.gameEngine.enhancedParticleManager.createParticle(x, y, vx, vy, {')'
-                        color: '#FFD700'),
-                        size: 3 + Math.random() * 2,
-                        lifetime: 500 + Math.random() * 300,
-            }'
+                    const vx = Math.cos(angle') * speed;''
+                    const vy = Math.sin(angle) * speed;
+                    ';
+
+                    this.gameEngine.enhancedParticleManager.createParticle(x, y, vx, vy, {)'
+                        color: '#FFD700');
+                        size: 3 + Math.random() * 2;
+                        lifetime: 500 + Math.random() * 300;
+            ,}
+
                         fadeOut: true' }'
-                    }'),
-                }'
-            } else {  ' }'
-                console.warn('[DEBUG] enhancedParticleManager.createParticle not available''); }
-            }'
-            '';
-            console.log('[DEBUG] createDragParticles completed');'
-            '';
-        } catch (error) { ''
-            console.error('[GameScene] Error creating drag particles:', error) };
-}
+
+                    }');
+                }
+
+            } else { }'
+
+                console.warn('[DEBUG] enhancedParticleManager.createParticle, not available''); }
+            }
+
+            console.log('[DEBUG] createDragParticles, completed);
+
+        } catch (error') { console.error('[GameScene] Error creating drag particles:', error }
     }
     
     /**
      * ポーズ状態の切り替え
      */
     togglePause(): void { this.stateManager.togglePause();
-        this.isPaused = this.stateManager.isPaused; };
-}
+        this.isPaused = this.stateManager.isPaused; }
     /**
      * ポーズ設定
      * @param paused - ポーズ状態
      */
     setPaused(paused: boolean): void { this.stateManager.setPaused(paused);
-        this.isPaused = this.stateManager.isPaused; };
-}
+        this.isPaused = this.stateManager.isPaused; }
     /**
      * 画面震動の開始
      * @param duration - 持続時間
      * @param intensity - 強度
      */
-    startScreenShake(duration: number, intensity: number): void { this.visualizationManager.startScreenShake(duration, intensity); };
-}
+    startScreenShake(duration: number, intensity: number): void { this.visualizationManager.startScreenShake(duration, intensity); }
     /**
      * パフォーマンス表示の切り替え
      */
-    togglePerformanceDisplay(): void { this.performanceMonitor.toggleMetricsDisplay(); };
-}
+    togglePerformanceDisplay(): void { this.performanceMonitor.toggleMetricsDisplay(); }
     /**
      * 詳細情報表示の切り替え
      */
-    toggleDetailedInfo(): void { this.uiManager.toggleDetailedInfo(); };
-}
+    toggleDetailedInfo(): void { this.uiManager.toggleDetailedInfo(); }
     // ===== 統計・デバッグ情報 =====
     
     /**
@@ -530,34 +500,30 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      * @returns 統計情報
      */
     getGameStats(): GameSceneStats { return { state: this.stateManager.getGameStats(),
-            ui: this.uiManager.getUIState(),
+            ui: this.uiManager.getUIState();
             visualization: this.visualizationManager.getVisualizationStats(), };
             performance: this.performanceMonitor.getPerformanceStats(); }
-        };
-    }
+        }
     
     /**
      * パフォーマンス推奨事項の取得
      * @returns 推奨事項配列
      */
-    getPerformanceRecommendations(): any[] { return this.performanceMonitor.getPerformanceRecommendations(); };
-}
+    getPerformanceRecommendations(): any[] { return this.performanceMonitor.getPerformanceRecommendations(); }
     /**
      * デバッグ情報の取得
      * @returns デバッグ情報
      */''
     getDebugInfo(''';
-            scene: 'GameScene',
+            scene: 'GameScene';
             isPaused: this.isPaused);
             isGameOver: this.gameEngine.isGameOver);
-            components: { stateManager: this.stateManager.getDebugInfo(),
-                uiManager: this.uiManager.getUIState(),
-                visualizationManager: this.visualizationManager.getVisualizationStats(),
-                performanceMonitor: this.performanceMonitor.getPerformanceStats() }
-            },
-            gameStats: this.getGameStats(),
-        };
-    }
+            components: { stateManager: this.stateManager.getDebugInfo();
+                uiManager: this.uiManager.getUIState();
+                visualizationManager: this.visualizationManager.getVisualizationStats();
+                performanceMonitor: this.performanceMonitor.getPerformanceStats( };
+            gameStats: this.getGameStats();
+        }
     
     /**
      * 設定の更新
@@ -565,12 +531,14 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      */
     updateSettings(settings: { performance?: PerformanceSettings ): void {
         if(settings.performance) {'
-            ';'
-        }'
-            this.performanceMonitor.updateSettings(settings.performance'); }
-        }'
-        '';
-        console.log('[GameScene] Settings updated');
+            ';
+
+        }
+
+            this.performanceMonitor.updateSettings(settings.performance); }
+        }
+
+        console.log('[GameScene] Settings, updated);
     }
     
     /**
@@ -581,8 +549,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
             !!this.uiManager,
             !!this.visualizationManager];
             !!this.performanceMonitor];
-        ];'
-        '';
-        return validations.every(valid => valid'); }'
-    }''
+        ];
+
+        return validations.every(valid => valid');''
 }

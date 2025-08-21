@@ -1,6 +1,8 @@
 import { getPerformanceOptimizer } from '../../utils/PerformanceOptimizer';
-import type { BubbleEffectProcessor as IBubbleEffectProcessor, '
+import type { BubbleEffectProcessor as IBubbleEffectProcessor,
+
     Bubble' }'
+
 } from '../../types/game';
 
 /**
@@ -11,105 +13,102 @@ import type { BubbleEffectProcessor as IBubbleEffectProcessor, '
 export class BubbleEffectProcessor implements IBubbleEffectProcessor { public gameEngine: any,
 
     constructor(gameEngine: any) {
-        this.gameEngine = gameEngine }
-    }
+        this.gameEngine = gameEngine ,}
     
     /**
      * 泡の効果を処理
      */'
     processBubbleEffect(bubble: Bubble, x: number, y: number): void { // パフォーマンス最適化: エフェクトの実行可否を判定
-        if (!getPerformanceOptimizer(').shouldRunEffect('bubble_effect') {
+        if(!getPerformanceOptimizer().shouldRunEffect('bubble_effect) {'
             return; }
-        }
         
         // @ts-ignore 将来のシーン依存エフェクトで使用予定
         const _gameScene = this.gameEngine.sceneManager.getCurrentScene();
-        '';
-        switch(bubble.type') {'
-            '';
+
+        switch(bubble.type) {'
+
             case 'rainbow':';
                 // ボーナスタイム開始
-                this.gameEngine.activateBonusTime(10000');''
-                this.notifySpecialEffect('rainbow', x, y');
-                break;'
-                '';
+                this.gameEngine.activateBonusTime(10000);''
+                this.notifySpecialEffect('rainbow', x, y);
+                break;
+
             case 'pink':;
                 // HP回復
                 const healAmount = 15;
                 this.gameEngine.playerData.heal(healAmount);''
-                this.notifyHeal(healAmount');''
-                this.notifySpecialEffect('pink', x, y');
-                break;'
-                '';
+                this.notifyHeal(healAmount);''
+                this.notifySpecialEffect('pink', x, y);
+                break;
+
             case 'clock':';
                 // 時間停止
-                this.gameEngine.activateTimeStop(3000');''
-                this.notifySpecialEffect('clock', x, y');
-                break;'
-                '';
+                this.gameEngine.activateTimeStop(3000);''
+                this.notifySpecialEffect('clock', x, y);
+                break;
+
             case 'electric':';
                 // 画面震動
-                this.gameEngine.activateScreenShake(15, 2000');''
-                this.notifySpecialEffect('electric', x, y');
-                break;'
-                '';
+                this.gameEngine.activateScreenShake(15, 2000);''
+                this.notifySpecialEffect('electric', x, y);
+                break;
+
             case 'poison':;
                 // ダメージ
                 const damage = 10;''
-                this.gameEngine.playerData.takeDamage(damage');''
+                this.gameEngine.playerData.takeDamage(damage);''
                 this.notifyDamage(damage, 'poison'');''
-                this.notifySpecialEffect('poison', x, y');
-                break;'
-                '';
+                this.notifySpecialEffect('poison', x, y);
+                break;
+
             case 'spiky':';
                 // 周囲の泡を割る
-                this.chainReaction(bubble.position.x, bubble.position.y, 80');''
-                this.notifySpecialEffect('spiky', x, y');
+                this.chainReaction(bubble.position.x, bubble.position.y, 80);''
+                this.notifySpecialEffect('spiky', x, y);
                 break;
                 ';
             // 新しい泡タイプの効果処理
             case 'golden':';
                 // 黄金の泡：スコア倍率効果
-                this.gameEngine.activateScoreMultiplier(2.0, 5000');''
-                this.notifySpecialEffect('golden', x, y');
-                break;'
-                '';
+                this.gameEngine.activateScoreMultiplier(2.0, 5000);''
+                this.notifySpecialEffect('golden', x, y);
+                break;
+
             case 'frozen':';
                 // 氷の泡：周囲の泡を遅くする
-                this.applySlowEffect(bubble.position.x, bubble.position.y, 120, 0.5, 8000');''
-                this.notifySpecialEffect('frozen', x, y');
-                break;'
-                '';
+                this.applySlowEffect(bubble.position.x, bubble.position.y, 120, 0.5, 8000);''
+                this.notifySpecialEffect('frozen', x, y);
+                break;
+
             case 'magnetic':';
                 // 磁石の泡：他の泡を引き寄せる
-                this.applyMagneticPull(bubble.position.x, bubble.position.y, 100, 150');''
-                this.notifySpecialEffect('magnetic', x, y');
-                break;'
-                '';
+                this.applyMagneticPull(bubble.position.x, bubble.position.y, 100, 150);''
+                this.notifySpecialEffect('magnetic', x, y);
+                break;
+
             case 'explosive':';
                 // 爆発の泡：大きな爆発
-                this.bigExplosion(bubble.position.x, bubble.position.y, 150, 15');''
-                this.notifySpecialEffect('explosive', x, y');
-                break;'
-                '';
+                this.bigExplosion(bubble.position.x, bubble.position.y, 150, 15);''
+                this.notifySpecialEffect('explosive', x, y);
+                break;
+
             case 'phantom':';
                 // 幻の泡：特殊効果なし（すり抜け効果は別途処理済み）
-                this.notifySpecialEffect('phantom', x, y');
-                break;'
-                '';
+                this.notifySpecialEffect('phantom', x, y);
+                break;
+
             case 'multiplier':';
                 // 倍率の泡：次の泡のスコアを倍増
-                this.gameEngine.activateNextScoreMultiplier(3.0, 10000');''
+                this.gameEngine.activateNextScoreMultiplier(3.0, 10000);''
                 this.notifySpecialEffect('multiplier', x, y);
         }
                 break; }
-        }
-    }
+}
     
     /**
      * 自動破裂チェック'
      */''
-    checkAutoBurst(bubble: Bubble'): void { // ひび割れ泡は早期破裂
+    checkAutoBurst(bubble: Bubble): void { // ひび割れ泡は早期破裂
         if(bubble.type === 'cracked' && bubble.age > bubble.maxAge * 0.5) {
             this.burstBubble(bubble);
         }
@@ -121,8 +120,7 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
             this.burstBubble(bubble);
         }
             return; }
-        }
-    }
+}
     
     /**
      * 泡を破裂させる
@@ -131,10 +129,10 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
         
         // プレイヤーにダメージ
         const damage = this.calculateBurstDamage(bubble);
-        this.gameEngine.playerData.takeDamage(damage);
+        this.gameEngine.playerData.takeDamage(damage};
         
         // 新しいエフェクトシステムで爆発エフェクトを作成
-        if (this.gameEngine.createExplosion) { }
+        if (this.gameEngine.createExplosion} { }
             this.gameEngine.createExplosion(bubble.position.x, bubble.position.y, bubble.type, bubble.size, 1});
         }
         
@@ -145,17 +143,16 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
     /**
      * 破裂ダメージを計算
      */''
-    private calculateBurstDamage(bubble: Bubble'): number { const baseDamage: Record<string, number> = {''
-            'normal': 5,'';
-            'stone': 8,'';
-            'iron': 12,'';
-            'diamond': 15,'';
-            'poison': 20,'';
-            'spiky': 15,'';
-            'cracked': 8,'';
-            'boss': 25,'';
-            'escaping': 3 }
-        };
+    private calculateBurstDamage(bubble: Bubble): number { const baseDamage: Record<string, number> = {''
+            'normal': 5,
+            'stone': 8,
+            'iron': 12,
+            'diamond': 15,
+            'poison': 20,
+            'spiky': 15,
+            'cracked': 8,
+            'boss': 25,
+            'escaping': 3 };
         
         return baseDamage[bubble.type] || 5;
     }
@@ -165,36 +162,33 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
      */'
     private notifySpecialEffect(effectType: string, x: number, y: number): void { ''
         const gameScene = this.gameEngine.sceneManager.getCurrentScene()';
-        if(gameScene && typeof gameScene.onSpecialEffect === 'function') {
+        if(gameScene && typeof, gameScene.onSpecialEffect === 'function) {'
             
         }
             gameScene.onSpecialEffect(effectType, x, y); }
-        }
-    }
+}
     
     /**
      * ダメージ通知
      */'
     private notifyDamage(damage: number, source: string): void { ''
         const gameScene = this.gameEngine.sceneManager.getCurrentScene()';
-        if(gameScene && typeof gameScene.onDamageTaken === 'function') {
+        if(gameScene && typeof, gameScene.onDamageTaken === 'function) {'
             
         }
             gameScene.onDamageTaken(damage, source); }
-        }
-    }
+}
     
     /**
      * 回復通知
      */'
     private notifyHeal(healAmount: number): void { ''
         const gameScene = this.gameEngine.sceneManager.getCurrentScene()';
-        if(gameScene && typeof gameScene.onHealed === 'function') {
+        if(gameScene && typeof, gameScene.onHealed === 'function) {'
             
         }
             gameScene.onHealed(healAmount); }
-        }
-    }
+}
     
     /**
      * 連鎖反応（とげとげ泡用）
@@ -207,20 +201,18 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
             const dy = bubble.position.y - centerY;
             const distance = Math.sqrt(dx * dx + dy * dy);
             
-            if (distance <= radius && bubble.isAlive) { }
+            if (distance <= radius && bubble.isAlive) { ,}
                 affectedBubbles.push(bubble); }
-            }
-        });
+});
         
         // 少し遅延して爆発させる
         affectedBubbles.forEach((bubble, index) => {  setTimeout(() => {
                 if (bubble.isAlive) { }
                     this.gameEngine.bubbleManager.popBubble(bubble, bubble.position.x, bubble.position.y); }
-                }
-            }, index * 100);
+}, index * 100);
         });
         
-        console.log(`Chain reaction affected ${affectedBubbles.length) bubbles`});
+        console.log(`Chain, reaction affected ${affectedBubbles.length} bubbles`});
     }
     
     /**
@@ -234,20 +226,18 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
             const dy = bubble.position.y - centerY;
             const distance = Math.sqrt(dx * dx + dy * dy);
             
-            if (distance <= radius && bubble.isAlive) { }
+            if (distance <= radius && bubble.isAlive) { ,}
                 affectedBubbles.push(bubble); }
-            }
-        });
+});
         
         // 影響を受けた泡にスロー効果を適用
         affectedBubbles.forEach(bubble = > {  )
-            (bubble as any).slowEffect = {
+            (bubble, as any).slowEffect = {
                 factor: slowFactor }
                 endTime: Date.now() + duration }
-            },
-        });
+            });
         
-        console.log(`Slow effect applied to ${affectedBubbles.length} bubbles`);
+        console.log(`Slow, effect applied, to ${affectedBubbles.length} bubbles`);
     }
     
     /**
@@ -269,8 +259,7 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
             }
                     x: -dx / distance, }
                     y: -dy / distance }
-                },
-                
+                };
                 // 速度に力を加算
                 bubble.velocity.x += direction.x * pullForce * 0.016; // 60FPS想定
                 bubble.velocity.y += direction.y * pullForce * 0.016;
@@ -290,7 +279,6 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
             
             if (distance <= radius && bubble.isAlive) { }
                 affectedBubbles.push({ bubble, distance ); }
-            }
         });
         
         // 距離に応じて遅延爆発
@@ -299,14 +287,13 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
             setTimeout(() => {
                 if (bubble.isAlive) { }
                     this.gameEngine.bubbleManager.popBubble(bubble, bubble.position.x, bubble.position.y); }
-                }
-            }, delay);
+}, delay);
         });
         
         // プレイヤーにもダメージ
         this.gameEngine.playerData.takeDamage(damage);
         
-        console.log(`Big explosion affected ${affectedBubbles.length) bubbles`});
+        console.log(`Big, explosion affected ${affectedBubbles.length} bubbles`});
     }
 
     // =======================
@@ -316,33 +303,31 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
     /**
      * チェーンボーナスを設定
      */''
-    setChainBonus(type: string, bonus: number'): void { try {'
-            if(!type || typeof type !== 'string'') {'
-                '';
+    setChainBonus(type: string, bonus: number): void { try {'
+            if(!type || typeof, type !== 'string'') {'
+
                 console.warn('[BubbleEffectProcessor] setChainBonus: typeは文字列である必要があります''),
             }
                 return; }
-            }'
-            '';
-            if(typeof bonus !== 'number' || bonus < 0') {'
-                '';
-                console.warn('[BubbleEffectProcessor] setChainBonus: bonusは非負の数値である必要があります'),
+            }
+
+            if(typeof, bonus !== 'number' || bonus < 0) {'
+
+                console.warn('[BubbleEffectProcessor] setChainBonus: bonusは非負の数値である必要があります),
             }
                 return; }
             }
             
             // チェーンボーナスを保存
-            if(!this.chainBonuses) {
+            if(!this.chainBonuses') {
                 
             }
-                this.chainBonuses = {};
-            }
+                this.chainBonuses = {}
             this.chainBonuses[type] = bonus;
-            ';'
-            console.log(`[BubbleEffectProcessor] ${type} のチェーンボーナス設定: ${bonus)`});''
-        } catch (error) { ''
-            console.error('[BubbleEffectProcessor] setChainBonus error:', error') }
-        }
+            ';
+
+            console.log(`[BubbleEffectProcessor] ${type} のチェーンボーナス設定: ${bonus}`});''
+        } catch (error) { console.error('[BubbleEffectProcessor] setChainBonus error:', error }
     }
 
     // チェーンボーナス用プロパティ

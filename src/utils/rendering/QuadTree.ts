@@ -7,14 +7,12 @@
 
 // Type definitions
 interface Bounds { x: number,
-    y: number,
-    width: number,
-    height: number }
-}
+    y: number;
+    width: number;
+    height: number ,}
 
-interface QuadTreeObject { bounds: Bounds,
+interface QuadTreeObject { bounds: Bounds;
     [key: string]: any, }
-}
 
 export class QuadTree {
     private bounds: Bounds;
@@ -31,14 +29,12 @@ export class QuadTree {
         this.level = level;
         this.objects = [];
     
-    }
-    }
+    ,}
         this.nodes = []; }
     }
     
     clear(): void { this.objects = [];
         this.nodes = []; }
-    }
     
     split(): void { const subWidth = this.bounds.width / 2;
         const subHeight = this.bounds.height / 2;
@@ -46,33 +42,32 @@ export class QuadTree {
         const y = this.bounds.y;
         
         this.nodes[0] = new QuadTree({
-            x: x + subWidth,
+            x: x + subWidth;
             y: y);
             width: subWidth);
             height: subHeight;
         ), this.maxObjects, this.maxLevels, this.level + 1);
         
         this.nodes[1] = new QuadTree({
-            x: x,
+            x: x;
             y: y);
             width: subWidth);
             height: subHeight;
         ), this.maxObjects, this.maxLevels, this.level + 1);
         
         this.nodes[2] = new QuadTree({
-            x: x,
+            x: x;
             y: y + subHeight);
             width: subWidth);
             height: subHeight;
         ), this.maxObjects, this.maxLevels, this.level + 1);
         
         this.nodes[3] = new QuadTree({
-            x: x + subWidth,
+            x: x + subWidth;
             y: y + subHeight);
             width: subWidth);
             height: subHeight;
         ), this.maxObjects, this.maxLevels, this.level + 1); }
-    }
     
     getIndex(bounds: Bounds): number { let index = -1;
         const verticalMidpoint = this.bounds.x + (this.bounds.width / 2);
@@ -88,11 +83,8 @@ export class QuadTree {
         }
                 index = 1; }
             } else if (bottomQuadrant) { index = 2; }
-            }
         } else if (bounds.x > verticalMidpoint) { if (topQuadrant) {
-                index = 0; }
-            } else if (bottomQuadrant) { index = 3; }
-            }
+                index = 0; } else if (bottomQuadrant) { index = 3; }
         }
         
         return index;
@@ -107,8 +99,7 @@ export class QuadTree {
             
             }
                 return; }
-            }
-        }
+}
         
         this.objects.push(object);
         
@@ -127,9 +118,7 @@ export class QuadTree {
             }
                     this.nodes[index].insert(this.objects.splice(i, 1)[0]); }
                 } else { i++; }
-                }
-            }
-        }
+}
     }
     
     retrieve(bounds: Bounds): QuadTreeObject[] { const returnObjects = this.objects.slice();
@@ -141,13 +130,10 @@ export class QuadTree {
             if (index !== -1) {
         
         }
-                returnObjects.push(...this.nodes[index].retrieve(bounds); }
-            } else {  for (const node of this.nodes) { }
-                    returnObjects.push(...node.retrieve(bounds); }
+                returnObjects.push(...this.nodes[index].retrieve(bounds);
+            } else {  for (const, node of, this.nodes) { }
+                    returnObjects.push(...node.retrieve(bounds);
                 }
-            }
-        }
+}
         
         return returnObjects;
-    }
-}

@@ -9,27 +9,24 @@ type BackgroundEffectType = 'particles' | 'rain' | 'snow' | 'fog' | 'stars' | 'c
  * Background effect options interface
  */
 interface BackgroundEffectOptions { density: number,
-    speed: number,
-    color: string,
-    size: number,
-    opacity: number }
-}
+    speed: number;
+    color: string;
+    size: number;
+    opacity: number ,}
 
 /**
  * Background effect interface
  */
-interface BackgroundEffect { effectType: BackgroundEffectType,
-    enabled: boolean,
-    intensity: number,
+interface BackgroundEffect { effectType: BackgroundEffectType;
+    enabled: boolean;
+    intensity: number;
     options: BackgroundEffectOptions
     }
-}
 
 /**
  * Error handler interface
  */
 interface ErrorHandler { handleError(error: any, details?: any): void }
-}
 
 /**
  * Background Effect Renderer
@@ -43,7 +40,6 @@ export class BackgroundEffectRenderer {
         this.canvas = canvas
 
     }
-    }
         this.errorHandler = getErrorHandler(); }
     }
     
@@ -52,31 +48,33 @@ export class BackgroundEffectRenderer {
      */
     renderBackgroundEffects(context: CanvasRenderingContext2D, backgroundEffects: BackgroundEffect[]): void { try {
             backgroundEffects.forEach(effect => { );
-                if (!effect.enabled) return;'
-                '';
-                switch(effect.effectType') {'
-                    '';
+                if (!effect.enabled) return;
+
+                switch(effect.effectType) {'
+
                     case 'particles':'';
-                        this.renderParticleBackground(context, effect');'
+                        this.renderParticleBackground(context, effect);
+
                         break;''
                     case 'rain':'';
-                        this.renderRainEffect(context, effect');'
+                        this.renderRainEffect(context, effect);
+
                         break;''
                     case 'snow':'';
-                        this.renderSnowEffect(context, effect');'
+                        this.renderSnowEffect(context, effect);
+
                         break;''
                     case 'fog':'';
-                        this.renderFogEffect(context, effect');'
+                        this.renderFogEffect(context, effect);
+
                         break;''
                     case 'stars':;
                 }
                         this.renderStarsEffect(context, effect); }
                         break; }
-                }'
-            });''
-        } catch (error) { this.errorHandler.handleError(error, {')'
-                context: 'BackgroundEffectRenderer.renderBackgroundEffects') }
-            });
+});''
+        } catch (error) { this.errorHandler.handleError(error, {)'
+                context: 'BackgroundEffectRenderer.renderBackgroundEffects' ,});
         }
     }
     
@@ -91,7 +89,7 @@ export class BackgroundEffectRenderer {
             context.globalAlpha = effect.options.opacity;
             context.fillStyle = effect.options.color;
             
-            for(let i = 0; i < particleCount; i++) {
+            for(let, i = 0; i < particleCount; i++) {
             
                 const x = (i * 123.456 + time * effect.options.speed * 10) % this.canvas.width;
                 const y = (i * 78.9 + time * effect.options.speed * 5) % this.canvas.height;
@@ -103,11 +101,11 @@ export class BackgroundEffectRenderer {
             }
                 context.fill(); }
             }
-            ';'
+            ';
+
             context.restore();''
-        } catch (error) { this.errorHandler.handleError(error, {')'
-                context: 'BackgroundEffectRenderer.renderParticleBackground') }
-            });
+        } catch (error) { this.errorHandler.handleError(error, {)'
+                context: 'BackgroundEffectRenderer.renderParticleBackground' ,});
         }
     }
     
@@ -123,7 +121,7 @@ export class BackgroundEffectRenderer {
             context.strokeStyle = effect.options.color;
             context.lineWidth = 1;
             
-            for(let i = 0; i < dropCount; i++) {
+            for(let, i = 0; i < dropCount; i++) {
             
                 const x = (i * 73.2 + time * effect.options.speed * 200) % (this.canvas.width + 100);
                 const y = (i * 41.7 + time * effect.options.speed * 300) % (this.canvas.height + 100);
@@ -136,11 +134,11 @@ export class BackgroundEffectRenderer {
             }
                 context.stroke(); }
             }
-            ';'
+            ';
+
             context.restore();''
-        } catch (error) { this.errorHandler.handleError(error, {')'
-                context: 'BackgroundEffectRenderer.renderRainEffect') }
-            });
+        } catch (error) { this.errorHandler.handleError(error, {)'
+                context: 'BackgroundEffectRenderer.renderRainEffect' ,});
         }
     }
     
@@ -155,7 +153,7 @@ export class BackgroundEffectRenderer {
             context.globalAlpha = 0.8;
             context.fillStyle = effect.options.color;
             
-            for(let i = 0; i < flakeCount; i++) {
+            for(let, i = 0; i < flakeCount; i++) {
             
                 const x = (i * 91.3 + time * effect.options.speed * 20 + Math.sin(time + i) * 20) % this.canvas.width;
                 const y = (i * 67.1 + time * effect.options.speed * 50) % (this.canvas.height + 20);
@@ -167,11 +165,11 @@ export class BackgroundEffectRenderer {
             }
                 context.fill(); }
             }
-            ';'
+            ';
+
             context.restore();''
-        } catch (error) { this.errorHandler.handleError(error, {')'
-                context: 'BackgroundEffectRenderer.renderSnowEffect') }
-            });
+        } catch (error) { this.errorHandler.handleError(error, {)'
+                context: 'BackgroundEffectRenderer.renderSnowEffect' ,});
         }
     }
     
@@ -186,15 +184,13 @@ export class BackgroundEffectRenderer {
             const gradient = context.createLinearGradient(0, 0, this.canvas.width, this.canvas.height);
             gradient.addColorStop(0, `rgba(200, 200, 200, ${effect.intensity * 0.1)`);
             gradient.addColorStop(0.5, `rgba(200, 200, 200, ${effect.intensity * 0.3)`);
-            gradient.addColorStop(1, `rgba(200, 200, 200, ${effect.intensity * 0.1)`);
+            gradient.addColorStop(1, `rgba(200, 200, 200, ${effect.intensity * 0.1)`};
             
             context.fillStyle = gradient;
-            context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-             }
+            context.fillRect(0, 0, this.canvas.width, this.canvas.height}
             context.restore(});''
-        } catch (error) { this.errorHandler.handleError(error, {')'
-                context: 'BackgroundEffectRenderer.renderFogEffect') }
-            });
+        } catch (error) { this.errorHandler.handleError(error, {)'
+                context: 'BackgroundEffectRenderer.renderFogEffect' ,});
         }
     }
     
@@ -208,7 +204,7 @@ export class BackgroundEffectRenderer {
             context.save();
             context.fillStyle = effect.options.color;
             
-            for(let i = 0; i < starCount; i++) {
+            for(let, i = 0; i < starCount; i++) {
             
                 const x = (i * 113.7) % this.canvas.width;
                 const y = (i * 89.3) % this.canvas.height;
@@ -222,11 +218,11 @@ export class BackgroundEffectRenderer {
             }
                 context.fill(); }
             }
-            ';'
+            ';
+
             context.restore();''
-        } catch (error) { this.errorHandler.handleError(error, {')'
-                context: 'BackgroundEffectRenderer.renderStarsEffect') }
-            });
+        } catch (error) { this.errorHandler.handleError(error, {)'
+                context: 'BackgroundEffectRenderer.renderStarsEffect' ,});
         }
     }
     
@@ -234,8 +230,8 @@ export class BackgroundEffectRenderer {
      * 個別背景効果の更新
      */'
     updateBackgroundEffect(effect: BackgroundEffect, deltaTime: number): void { try {'
-            switch(effect.effectType') {'
-                '';
+            switch(effect.effectType) {'
+
                 case 'particles':;
                     // パーティクル位置更新などの処理
                     break;''
@@ -248,9 +244,12 @@ export class BackgroundEffectRenderer {
                     // 雲・霧エフェクトの更新
             }
                     break;' }'
-            } catch (error) { this.errorHandler.handleError(error, {')'
-                context: 'BackgroundEffectRenderer.updateBackgroundEffect'),' }'
+
+            } catch (error) { this.errorHandler.handleError(error, {)'
+                context: 'BackgroundEffectRenderer.updateBackgroundEffect),' }
+
             }');
-        }'
+        }
+
     }''
 }

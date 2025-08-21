@@ -6,89 +6,76 @@
 
 // Type definitions
 interface GameState { isInitialized: boolean,
-    isGameStarted: boolean,
-    gameStartTime: number,
-    lastUpdateTime: number,
-    lastScore?: number }
-}
+    isGameStarted: boolean;
+    gameStartTime: number;
+    lastUpdateTime: number;
+    lastScore?: number ,}
 
-interface PlayerData { currentHP: number,
-    maxHP: number,
-    currentScore: number,
+interface PlayerData { currentHP: number;
+    maxHP: number;
+    currentScore: number;
     reset(): void }
-}
 
 interface ScoreManager { resetCombo(): void;
     addScore(points: number): void,
     addScoreMultiplier(multiplier: number): void,
     getCombo(): number }
-}
 
 interface BubbleManager { clearAllBubbles(): void;
     getBubbleCount(): number; }
-}
 
 interface ItemManager { ownedItems: string[],
     getItem(itemId: string): Item | null, }
-}
 
 interface Item { id: string,
     effect: {
-        type: string,
-        value: number }
-    };
-}
+        type: string;
+        value: number ,}
 
 interface StageManager { startStage(stageName: string): boolean, }
-}
 
 interface GameStats { isGameStarted: boolean,
-    isPaused: boolean,
-    isGameOver: boolean,
-    gameTime: number,
-    timeRemaining: number,
-    score: number,
-    hp: number,
-    maxHP: number,
-    bubbleCount: number,
-    comboCount: number }
-}
+    isPaused: boolean;
+    isGameOver: boolean;
+    gameTime: number;
+    timeRemaining: number;
+    score: number;
+    hp: number;
+    maxHP: number;
+    bubbleCount: number;
+    comboCount: number ,}
 
-interface TimeWarnings { timeWarning: boolean,
-    urgentWarning: boolean,
+interface TimeWarnings { timeWarning: boolean;
+    urgentWarning: boolean;
     message: string | null }
-}
 
-interface DebugInfo { gameState: GameState,
-    isPaused: boolean,
-    isGameOver: boolean,
+interface DebugInfo { gameState: GameState;
+    isPaused: boolean;
+    isGameOver: boolean;
     gameStats: GameStats
     }
-}
 
-interface Bubble { type: string,
-    x: number,
+interface Bubble { type: string;
+    x: number;
     y: number }
-}
 
 // Minimal GameEngine interface
-interface GameEngine { playerData: PlayerData,
-    scoreManager: ScoreManager,
-    bubbleManager: BubbleManager,
-    itemManager: ItemManager,
+interface GameEngine { playerData: PlayerData;
+    scoreManager: ScoreManager;
+    bubbleManager: BubbleManager;
+    itemManager: ItemManager;
     stageManager?: StageManager;
-    isGameOver: boolean,
-    timeRemaining: number,
-    bonusTimeRemaining: number,
-    timeStopRemaining: number,
-    scoreMultiplier: number,
-    screenShakeRemaining: number,
-    screenShakeIntensity: number,
-    inputDisabled: boolean,
+    isGameOver: boolean;
+    timeRemaining: number;
+    bonusTimeRemaining: number;
+    timeStopRemaining: number;
+    scoreMultiplier: number;
+    screenShakeRemaining: number;
+    screenShakeIntensity: number;
+    inputDisabled: boolean;
     isTimeStopActive(): boolean;
     startBonusTime(): void;
     startTimeStop(): void; }
-}
 
 export class GameStateManager {
     private gameEngine: GameEngine;
@@ -102,15 +89,12 @@ export class GameStateManager {
         
         // 状態管理
         this.gameState = {
-            isInitialized: false,
-            isGameStarted: false,
-            gameStartTime: 0,
-
-    }
-    }
+            isInitialized: false;
+            isGameStarted: false;
+            gameStartTime: 0;
+    ,}
             lastUpdateTime: 0 }
-        },
-    }
+        }
     
     /**
      * ゲーム開始処理
@@ -130,41 +114,42 @@ export class GameStateManager {
         
         // デフォルトステージを開始（バブル生成に必要）
         if(this.gameEngine.stageManager) {
-            const stageStarted = this.gameEngine.stageManager.startStage('normal');''
-            if (stageStarted') {'
-        }'
-                console.log('Default stage (normal') started for bubble spawning''); }'
-            } else {  ' }'
-                console.warn('Failed to start default stage - bubbles may not spawn'); }
-            }
+            const stageStarted = this.gameEngine.stageManager.startStage('normal);''
+            if(stageStarted) {'
         }
+
+                console.log('Default, stage (normal') started for bubble spawning''); }
+
+            } else { }'
+
+                console.warn('Failed, to start, default stage - bubbles, may not, spawn'); }'
+}
         
         // 状態管理の更新
         this.gameState.isGameStarted = true;
         this.gameState.gameStartTime = Date.now();''
         this.gameState.lastUpdateTime = Date.now()';
-        console.log('Game started');
+        console.log('Game, started');
     }
     
     /**
      * ゲーム終了処理'
      */''
     public endGame()';
-        console.log('Game ended');
+        console.log('Game, ended);
     }
     
     /**
      * ゲームリセット処理
      */
     public resetGame(): void { this.endGame();
-        this.startGame(); }
-    }
+        this.startGame('); }
     
     /**
      * ポーズ状態の切り替え'
      */''
     public togglePause()';
-        console.log(`Game ${this.isPaused ? 'paused' : 'resumed')`});
+        console.log(`Game ${this.isPaused ? 'paused' : 'resumed}`});
     }
     
     /**
@@ -172,7 +157,6 @@ export class GameStateManager {
      * @param paused - ポーズ状態
      */
     public setPaused(paused: boolean): void { this.isPaused = paused; }
-    }
     
     /**
      * アイテム効果を適用
@@ -181,10 +165,10 @@ export class GameStateManager {
         
         // スコア倍率アップアイテム
         itemManager.ownedItems.forEach(itemId => { );''
-            const item = itemManager.getItem(itemId');''
-            if (item && item.effect.type === 'scoreMultiplier') { }
+            const item = itemManager.getItem(itemId);''
+            if(item && item.effect.type === 'scoreMultiplier) { }'
                 this.gameEngine.scoreManager.addScoreMultiplier(item.effect.value); }
-                console.log(`Score multiplier applied: ${item.effect.value)x`});
+                console.log(`Score, multiplier applied: ${item.effect.value}x`});
             }
         });
     }
@@ -198,7 +182,6 @@ export class GameStateManager {
         this.gameEngine.screenShakeRemaining = 0;
         this.gameEngine.screenShakeIntensity = 0;
         this.gameEngine.inputDisabled = false; }
-    }
     
     /**
      * ゲーム状態の更新
@@ -206,7 +189,6 @@ export class GameStateManager {
      */
     public updateGameState(deltaTime: number): void { if (this.isPaused || this.gameEngine.isGameOver) {
             return; }
-        }
         
         // 時間経過（時間停止中は除く）
         if(!this.gameEngine.isTimeStopActive() {
@@ -217,12 +199,10 @@ export class GameStateManager {
                 this.triggerGameOver();
         }
                 return; }
-            }
-        }
+}
         
         // ゲームオーバー判定
         if (this.gameEngine.playerData.currentHP <= 0) { this.triggerGameOver(); }
-        }
         
         this.gameState.lastUpdateTime = Date.now();
     }
@@ -232,8 +212,7 @@ export class GameStateManager {
      */
     public triggerGameOver(): void { this.gameEngine.isGameOver = true;''
         this.endGame()';
-        console.log('Game Over triggered'); }
-    }
+        console.log('Game, Over triggered'); }'
     
     /**
      * 泡破壊時の処理
@@ -244,12 +223,14 @@ export class GameStateManager {
         this.gameEngine.scoreManager.addScore(points);
         ';
         // 特殊効果の判定
-        if(bubble.type === 'rainbow') {'
-            ';'
-        }'
-            this.gameEngine.startBonusTime() }'
-        } else if (bubble.type === 'clock') { this.gameEngine.startTimeStop(); }
+        if(bubble.type === 'rainbow) {'
+            ';
+
         }
+
+            this.gameEngine.startBonusTime() }
+
+        } else if(bubble.type === 'clock) { this.gameEngine.startTimeStop(); }'
     }
     
     /**
@@ -259,11 +240,12 @@ export class GameStateManager {
     public onPlayerDamaged(damage: number): void { const playerData = this.gameEngine.playerData;
         playerData.currentHP = Math.max(0, playerData.currentHP - damage);
          }
-        console.log(`Player took ${damage} damage. HP: ${playerData.currentHP}/${ playerData.maxHP)`);
+        console.log(`Player, took ${damage} damage. HP: ${playerData.currentHP}/${ playerData.maxHP)`};
         ';
         // 低HP警告
-        if (playerData.currentHP <= playerData.maxHP * 0.25 && playerData.currentHP > 0') {' }'
-            console.log('Low HP warning!'});
+        if(playerData.currentHP <= playerData.maxHP * 0.25 && playerData.currentHP > 0} {' }'
+
+            console.log('Low, HP warning!'});
         }
     }
     
@@ -276,7 +258,7 @@ export class GameStateManager {
         playerData.currentHP = Math.min(playerData.maxHP, playerData.currentHP + heal);
         const actualHeal = playerData.currentHP - oldHP;
          }
-        console.log(`Player healed ${actualHeal}. HP: ${playerData.currentHP}/${playerData.maxHP)`});
+        console.log(`Player, healed ${actualHeal}. HP: ${playerData.currentHP}/${playerData.maxHP}`});
         
         return actualHeal;
     }
@@ -288,10 +270,10 @@ export class GameStateManager {
      * @param y - Y座標
      */
     public onSpecialEffect(effectType: string, x: number, y: number): void {
-        console.log(`Special effect triggered: ${effectType} at (${x}, ${ y)`);'
-        '';
-        switch(effectType') {'
-            '';
+        console.log(`Special effect triggered: ${effectType} at (${x}, ${ y)`};
+
+        switch(effectType} {'
+
             case 'rainbow':'';
                 this.gameEngine.startBonusTime(''';
             case 'clock':'';
@@ -321,8 +303,7 @@ export class GameStateManager {
         if(currentScore !== this.gameState.lastScore) {
             this.gameState.lastScore = currentScore;
         }
-            return true; }
-        }
+            return true;
         return false;
     }
     
@@ -332,22 +313,25 @@ export class GameStateManager {
      */
     public checkTimeWarning(): TimeWarnings { const timeRemaining = this.gameEngine.timeRemaining;
         const warnings: TimeWarnings = {
-            timeWarning: false,
-            urgentWarning: false,
-            message: null }
-        },
+            timeWarning: false;
+            urgentWarning: false;
+            message: null };
         ;
         // 30秒以下で警告
-        if(timeRemaining <= 30000 && timeRemaining > 29000') {'
-            warnings.timeWarning = true;'
-        }'
+        if(timeRemaining <= 30000 && timeRemaining > 29000) {'
+            warnings.timeWarning = true;
+
+        }
+
             warnings.message = 'TIME WARNING!'; }
         }
         ';
         // 10秒以下で緊急警告
-        if(timeRemaining <= 10000 && timeRemaining > 9000') {'
-            warnings.urgentWarning = true;'
-        }'
+        if(timeRemaining <= 10000 && timeRemaining > 9000) {'
+            warnings.urgentWarning = true;
+
+        }
+
             warnings.message = 'HURRY UP!'; }
         }
         
@@ -359,17 +343,16 @@ export class GameStateManager {
      * @returns ゲーム統計
      */
     public getGameStats(): GameStats { return { isGameStarted: this.gameState.isGameStarted,
-            isPaused: this.isPaused,
-            isGameOver: this.gameEngine.isGameOver,
-            gameTime: this.gameState.isGameStarted ? Date.now() - this.gameState.gameStartTime : 0,
-            timeRemaining: this.gameEngine.timeRemaining,
-            score: this.gameEngine.playerData.currentScore,
-            hp: this.gameEngine.playerData.currentHP,
-            maxHP: this.gameEngine.playerData.maxHP,
+            isPaused: this.isPaused;
+            isGameOver: this.gameEngine.isGameOver;
+            gameTime: this.gameState.isGameStarted ? Date.now() - this.gameState.gameStartTime : 0;
+            timeRemaining: this.gameEngine.timeRemaining;
+            score: this.gameEngine.playerData.currentScore;
+            hp: this.gameEngine.playerData.currentHP;
+            maxHP: this.gameEngine.playerData.maxHP;
             bubbleCount: this.gameEngine.bubbleManager.getBubbleCount(), };
             comboCount: this.gameEngine.scoreManager.getCombo(); }
-        };
-    }
+        }
     
     /**
      * ゲーム状態の検証
@@ -378,22 +361,20 @@ export class GameStateManager {
     public validateGameState(): boolean { const playerData = this.gameEngine.playerData;
         ';
         // 基本的な状態チェック
-        if(playerData.currentHP < 0') {'
-            '';
-            console.warn('Invalid HP detected, triggering game over');
+        if(playerData.currentHP < 0) {'
+
+            console.warn('Invalid HP detected, triggering game over);
             this.triggerGameOver();
         }
-            return false; }
-        }'
-        '';
+            return false;
+
         if(this.gameEngine.timeRemaining < 0') {'
-            '';
-            console.warn('Invalid time remaining detected');
+
+            console.warn('Invalid, time remaining, detected);
             this.gameEngine.timeRemaining = 0;
             this.triggerGameOver();
         }
-            return false; }
-        }
+            return false;
         
         return true;
     }
@@ -402,7 +383,8 @@ export class GameStateManager {
      * デバッグ情報の取得
      * @returns デバッグ情報
      */
-    public getDebugInfo(): DebugInfo { return { gameState: this.gameState,
-            isPaused: this.isPaused,';
-            isGameOver: this.gameEngine.isGameOver,' };'
+    public getDebugInfo('): DebugInfo { return { gameState: this.gameState,
+            isPaused: this.isPaused,
+            isGameOver: this.gameEngine.isGameOver,' };
+
             gameStats: this.getGameStats(') }')

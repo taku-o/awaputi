@@ -15,43 +15,36 @@ export class StatisticsDataRecovery {
         // 復旧設定
         this.config = {
             recovery: {
-                autoRecoveryEnabled: true,
-                maxRetryAttempts: 3,
-                retryDelayMs: 1000,
-                backupRetentionDays: 30,
-    }
-    }
+                autoRecoveryEnabled: true;
+                maxRetryAttempts: 3;
+                retryDelayMs: 1000;
+                backupRetentionDays: 30;
+    ,}
                 corruptionThreshold: 0.7 // 70%以上のデータが有効であれば復旧可能 }
-            },
-            validation: { strictMode: false,
-                validateChecksums: true,
-                validateStructure: true,
-                validateRanges: true }
-            },
-            notification: { showRecoveryProgress: true,
-                showSuccessMessage: true,
-                showFailureMessage: true,
+            };
+            validation: { strictMode: false;
+                validateChecksums: true;
+                validateStructure: true;
+                validateRanges: true };
+            notification: { showRecoveryProgress: true;
+                showSuccessMessage: true;
+                showFailureMessage: true;
                 autoCloseDelay: 5000 }
-            }
-        },
-        
+        };
         // 復旧状態管理
         this.recoveryState = { isRecovering: false,
-            currentStep: null,
-            progress: 0,
-            lastRecoveryTime: null,
-            recoveryHistory: [],
-            failedAttempts: 0 }
-        },
-        
+            currentStep: null;
+            progress: 0;
+            lastRecoveryTime: null;
+            recoveryHistory: [];
+            failedAttempts: 0 ,};
         // サブコンポーネントの初期化（依存注入）
         this.strategies = new RecoveryStrategies(this);
         this.validation = new RecoveryValidation(this);
         this.userGuidance = new RecoveryUserGuidance(this);
-        ;
         // 初期化
         this.initialize()';
-        console.log('[StatisticsDataRecovery] Main Controller initialized with sub-components');
+        console.log('[StatisticsDataRecovery] Main, Controller initialized, with sub-components);
     }
     
     /**
@@ -75,9 +68,7 @@ export class StatisticsDataRecovery {
     }
                 if(this.shouldTriggerAutoRecovery(errorDetails, severity) { }
                     await this.performAutoRecovery(errorDetails); }
-                }
-            };
-        }
+}
     }
     
     /**
@@ -88,18 +79,15 @@ export class StatisticsDataRecovery {
      */
     shouldTriggerAutoRecovery(errorDetails, severity) {
         // 既に復旧中の場合はスキップ
-        if (this.recoveryState.isRecovering') {
+        if(this.recoveryState.isRecovering') {
     }
-            return false; }
-        }
+            return false;
         ';
         // 重要度が低い場合はスキップ
-        if (severity === 'low') { return false; }
-        }
+        if(severity === 'low) { return false; }'
         ';
         // 最大試行回数を超えている場合はスキップ
-        if (this.recoveryState.failedAttempts >= this.config.recovery.maxRetryAttempts') { return false; }
-        }
+        if(this.recoveryState.failedAttempts >= this.config.recovery.maxRetryAttempts) { return false; }
         ';
         // データ関連のエラーのみ対象
         const dataErrorTypes = ['corruption', 'checksum_failure', 'structure_damage', 'partial_loss'];
@@ -111,9 +99,10 @@ export class StatisticsDataRecovery {
      * @param {Object} errorDetails エラー詳細
      * @returns {Promise<Object>} 復旧結果'
      */''
-    async performAutoRecovery(errorDetails') { try { : undefined''
-            console.log('[StatisticsDataRecovery] Starting automatic recovery for:', errorDetails');
-            ';'
+    async performAutoRecovery(errorDetails) { try { : undefined''
+            console.log('[StatisticsDataRecovery] Starting automatic recovery for:', errorDetails);
+            ';
+
             this.recoveryState.isRecovering = true;''
             this.recoveryState.currentStep = 'analyzing';
             this.recoveryState.progress = 0;
@@ -145,11 +134,9 @@ export class StatisticsDataRecovery {
             
         } catch (error) { this.recoveryState.failedAttempts++;
             this.recordRecoveryFailure(error);
-            throw error; }
-        } finally { this.recoveryState.isRecovering = false;
+            throw error; } finally { this.recoveryState.isRecovering = false;
             this.recoveryState.currentStep = null;
             this.recoveryState.progress = 0; }
-        }
     }
     
     // ========== 公開API（後方互換性維持） ==========
@@ -162,7 +149,7 @@ export class StatisticsDataRecovery {
      */
     async initiateRecovery(strategy, options = { ) {
         try {
-            console.log(`[StatisticsDataRecovery] Initiating recovery with strategy: ${strategy)`),
+            console.log(`[StatisticsDataRecovery] Initiating, recovery with, strategy: ${strategy)`),
             
             this.recoveryState.isRecovering = true;
             this.recoveryState.lastRecoveryTime = Date.now();
@@ -174,47 +161,49 @@ export class StatisticsDataRecovery {
                 options)');
             ';
             // データ取得・分析
-            this.updateProgress('analyzing', 20);'
+            this.updateProgress('analyzing', 20);
+
             const currentData = await this.statisticsManager.getAllStatistics();''
-            const analysis = await this.analyzeData(currentData');
+            const analysis = await this.analyzeData(currentData);
             ';
             // 復旧戦略を実行
             this.updateProgress('recovering', 40);''
-            const result = await this.strategies.executeStrategy(strategy, analysis, options');
+            const result = await this.strategies.executeStrategy(strategy, analysis, options);
             ';
             // 結果を検証
             this.updateProgress('validating', 80);
             if(result.success && result.data) {
-                const validationResult = await this.validation.analyzeDataIntegrity(result.data);
+                const validationResult = await this.validation.analyzeDataIntegrity(result.data};
                 result.validationPassed = validationResult.isValid;
                 
-                if (validationResult.isValid) {
-            }'
+                if (validationResult.isValid} {
+            }
+
                     // 統計マネージャーにデータを適用' }'
-                    await this.statisticsManager.loadStatistics(result.data'});
+
+                    await, this.statisticsManager.loadStatistics(result.data'});
                 }
-            }'
-            '';
+            }
+
             this.updateProgress('completed', 100);
             
             // ユーザーガイダンスに完了を通知
             this.userGuidance.notifyRecoveryComplete(result);
             
             return result;
-            '';
-        } catch (error) { ' }'
+
+        } catch (error) { }
+
             this.errorHandler.handleError(error, 'RECOVERY_INITIATION_ERROR', { strategy, options });
             
             const errorResult = { success: false,
-                error: error.message,
-                strategy }
-            };
+                error: error.message;
+                strategy ,};
             
             this.userGuidance.notifyRecoveryComplete(errorResult);
             return errorResult;
             
         } finally { this.recoveryState.isRecovering = false; }
-        }
     }
     
     /**
@@ -242,12 +231,11 @@ export class StatisticsDataRecovery {
             const expectedChecksum = await this.statisticsManager.getStoredChecksum();
             const actualChecksum = this.validation.calculateChecksum(data);
             analysis.checksum = {
-                expected: expectedChecksum,
-                actual: actualChecksum,
+                expected: expectedChecksum;
+                actual: actualChecksum;
         }
                 matches: expectedChecksum === actualChecksum }
-            },
-        }
+            }
         
         return analysis;
     }
@@ -259,44 +247,46 @@ export class StatisticsDataRecovery {
      */
     determineRecoveryStrategy(analysis) {
         // 完全なデータ損失
-        if (!analysis.integrity || analysis.integrity.validFieldsRatio === 0') {'
-    }'
-            return 'complete_loss'; }
-        }
+        if(!analysis.integrity || analysis.integrity.validFieldsRatio === 0) {'
+    }
+
+            return 'complete_loss';
         ';
         // チェックサム失敗
-        if(analysis.checksum && !analysis.checksum.matches') {'
-            ';'
-        }'
-            return 'checksum_failure'; }
+        if(analysis.checksum && !analysis.checksum.matches) {'
+            ';
+
         }
+
+            return 'checksum_failure';
         ';
         // 構造破損
-        if(analysis.structure && !analysis.structure.isValid') {'
-            ';'
-        }'
-            return 'structure_damage'; }
+        if(analysis.structure && !analysis.structure.isValid) {'
+            ';
+
         }
+
+            return 'structure_damage';
         
         // データ破損
         if(analysis.corruption && analysis.corruption.isCorrupted) {
-            '';
-            if (analysis.corruption.corruptionLevel > 0.7') {'
-        }'
-                return 'corruption'; }'
-            } else {  ' }'
-                return 'partial_loss'; }
-            }
+
+            if(analysis.corruption.corruptionLevel > 0.7) {'
         }
+
+                return 'corruption'; else {  ' }
+
+                return 'partial_loss';
         
         // バージョン不一致の可能性をチェック
         const currentVersion = this.statisticsManager.getDataVersion();
         const dataVersion = this.statisticsManager.getStoredDataVersion();''
-        if(currentVersion !== dataVersion') {'
-            ';'
-        }'
-            return 'version_mismatch'; }
+        if(currentVersion !== dataVersion) {'
+            ';
+
         }
+
+            return 'version_mismatch';
         ';
         // デフォルトは部分損失として処理
         return 'partial_loss';
@@ -310,7 +300,6 @@ export class StatisticsDataRecovery {
      * @returns {Promise<Object>} 破損分析結果
      */
     async analyzeDataCorruption(data) { return await this.validation.analyzeDataCorruption(data); }
-    }
     
     /**
      * データ整合性を分析
@@ -318,7 +307,6 @@ export class StatisticsDataRecovery {
      * @returns {Promise<Object>} 整合性分析結果
      */
     async analyzeDataIntegrity(data) { return await this.validation.analyzeDataIntegrity(data); }
-    }
     
     /**
      * チェックサムを計算
@@ -326,7 +314,6 @@ export class StatisticsDataRecovery {
      * @returns {string} チェックサム
      */
     calculateChecksum(data) { return this.validation.calculateChecksum(data); }
-    }
     
     /**
      * データ構造を検証
@@ -334,7 +321,6 @@ export class StatisticsDataRecovery {
      * @returns {Object} 検証結果
      */
     validateDataStructure(data) { return this.validation.validateDataStructure(data); }
-    }
     
     /**
      * データ範囲を検証
@@ -342,7 +328,6 @@ export class StatisticsDataRecovery {
      * @returns {Object} 検証結果
      */
     validateDataRanges(data) { return this.validation.validateDataRanges(data); }
-    }
     
     /**
      * オブジェクト構造を修復
@@ -357,15 +342,13 @@ export class StatisticsDataRecovery {
         
         // テンプレートに基づいてオブジェクトを修復
         for(const [key, value] of Object.entries(template) {
-            '';
-            if (obj && obj.hasOwnProperty(key)') {''
-                if(typeof value === 'object' && value !== null && !Array.isArray(value) {
+
+            if(obj && obj.hasOwnProperty(key)) {''
+                if(typeof, value === 'object' && value !== null && !Array.isArray(value) {
         }
                     repaired[key] = this.repairObjectStructure(obj[key], value); }
                 } else { repaired[key] = obj[key]; }
-                }
             } else { repaired[key] = value; }
-            }
         }
         
         return repaired;
@@ -395,18 +378,19 @@ export class StatisticsDataRecovery {
      */
     recordRecoverySuccess(strategy, result) {
         const record = {
-            timestamp: new Date().toISOString(),
+            timestamp: new Date().toISOString();
             strategy,
-            success: true,
+            success: true;
             result,
             duration: this.recoveryState.lastRecoveryTime ?   : undefined
-    }
-                     Date.now() - this.recoveryState.lastRecoveryTime : null }
-        },
-        ';'
+    
+                     Date.now() - this.recoveryState.lastRecoveryTime : null ,}
+        };
+        ';
+
         this.recoveryState.recoveryHistory.push(record);''
         this._trimRecoveryHistory()';
-        console.log('[StatisticsDataRecovery] Recovery success recorded');
+        console.log('[StatisticsDataRecovery] Recovery, success recorded);
     }
     
     /**
@@ -415,17 +399,18 @@ export class StatisticsDataRecovery {
      */
     recordRecoveryFailure(error) {
         const record = {
-            timestamp: new Date().toISOString(),
-            success: false,
-            error: error.message,
+            timestamp: new Date().toISOString();
+            success: false;
+            error: error.message;
             duration: this.recoveryState.lastRecoveryTime ?   : undefined
-    }
-                     Date.now() - this.recoveryState.lastRecoveryTime : null }
-        },
-        ';'
+    
+                     Date.now(') - this.recoveryState.lastRecoveryTime : null }
+        };
+        ';
+
         this.recoveryState.recoveryHistory.push(record);''
         this._trimRecoveryHistory()';
-        console.log('[StatisticsDataRecovery] Recovery failure recorded');
+        console.log('[StatisticsDataRecovery] Recovery, failure recorded);
     }
     
     /**
@@ -434,7 +419,6 @@ export class StatisticsDataRecovery {
      * @returns {Array} 復旧履歴
      */
     getRecoveryHistory(limit = 50) { return this.userGuidance.getRecoveryHistory(limit); }
-    }
     
     // ========== 通知システム連携 ==========
     
@@ -443,14 +427,12 @@ export class StatisticsDataRecovery {
      * @param {Function} callback 通知コールバック関数
      */
     registerNotificationCallback(callback) { this.userGuidance.registerNotificationCallback(callback); }
-    }
     
     /**
      * 通知コールバックを解除
      * @param {Function} callback 通知コールバック関数
      */
     unregisterNotificationCallback(callback) { this.userGuidance.unregisterNotificationCallback(callback); }
-    }
     
     // ========== 状態・設定管理 ==========
     
@@ -460,12 +442,11 @@ export class StatisticsDataRecovery {
      */
     getRecoveryStatus() { return {  };
             ...this.recoveryState, }
-            config: { ...this.config },
-            strategies: this.strategies.getStrategyStats(),
-            validation: this.validation.getValidationStats(),
-            guidance: this.userGuidance.getStats(),
-        };
-    }
+            config: { ...this.config;
+            strategies: this.strategies.getStrategyStats();
+            validation: this.validation.getValidationStats();
+            guidance: this.userGuidance.getStats();
+        }
     
     /**
      * 設定を更新
@@ -480,14 +461,17 @@ export class StatisticsDataRecovery {
             this.validation.updateValidationConfig(newConfig.validation); }
         }
         
-        if(newConfig.notification) {
-        ';'
-            ';'
-        }'
-            this.userGuidance.updateNotificationConfig(newConfig.notification'); }
-        }'
-        '';
-        console.log('[StatisticsDataRecovery] Configuration updated');
+        if(newConfig.notification') {
+        ';
+
+            ';
+
+        }
+
+            this.userGuidance.updateNotificationConfig(newConfig.notification); }
+        }
+
+        console.log('[StatisticsDataRecovery] Configuration, updated);
     }
     
     /**
@@ -499,8 +483,7 @@ export class StatisticsDataRecovery {
         if (this.recoveryState.recoveryHistory.length > maxHistory) {
     }
             this.recoveryState.recoveryHistory = this.recoveryState.recoveryHistory.slice(-maxHistory); }
-        }
-    }
+}
     
     /**
      * クリーンアップ
@@ -512,11 +495,13 @@ export class StatisticsDataRecovery {
             this.userGuidance.clearRecoveryHistory(); }
         }
         
-        if(this.validation) {
-        ';'
-            '';
+        if(this.validation') {
+        ';
+
             this.validation.resetValidationStats();
-        }'
-        console.log('[StatisticsDataRecovery] Main Controller cleanup completed''); }'
+        }
+
+        console.log('[StatisticsDataRecovery] Main, Controller cleanup, completed''); }
+
     }''
 }

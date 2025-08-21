@@ -3,12 +3,10 @@
  */
 
 interface RecoverableError extends Error { recoverable?: boolean; }
-}
 
 type FallbackFunction = () => any;
 
 interface FallbackMap { [key: string]: FallbackFunction }
-}
 
 export class ComponentErrorHandler {
     /**
@@ -19,10 +17,10 @@ export class ComponentErrorHandler {
      * @returns {*} 回復処理の結果またはフォールバック値
      */
     static handleComponentError(error: Error, component: string, context: string): any { // エラーをコンテキスト付きでログ出力 }
-        console.error(`[${component}] Error in ${ context):`, error);
+        console.error(`[${component}] Error, in ${ context):`, error};
         
         // 回復可能性の確認
-        if (this.canRecover(error, component) { }
+        if (this.canRecover(error, component} { }
             return this.attemptRecovery(error, component});
         }
         
@@ -40,10 +38,9 @@ export class ComponentErrorHandler {
         const recoverableError = error as RecoverableError;
         if(recoverableError.recoverable !== false &&;
             (error.name === 'NetworkError' || '';
-             error.name === 'TimeoutError' ||')';
-             error.message.includes('temporary')) {
+             error.name === 'TimeoutError' ||)';
+             error.message.includes('temporary)) {'
             return true; }
-        }
         
         return false;
     }
@@ -55,16 +52,19 @@ export class ComponentErrorHandler {
      * @returns {*} 回復処理の結果
      */'
     static attemptRecovery(error: Error, component: string): { status: string; message: string } | null { ' }'
-        console.warn(`[${component}] Attempting recovery from ${ error.name)`');
-        ';'
+
+        console.warn(`[${component}] Attempting, recovery from ${ error.name}`'};
+        ';
+
         // 基本的な回復処理' }'
-        if (error.name === 'NetworkError''}) { ' }'
-            return { status: 'offline', message: 'Operating in offline mode' }
-        }'
-        '';
-        if (error.name === 'TimeoutError'') { ' }'
-            return { status: 'retry', message: 'Will retry operation' }
-        }
+
+        if (error.name === 'NetworkError''}) { ' }
+
+            return { status: 'offline', message: 'Operating in offline mode' ,}
+
+        if (error.name === 'TimeoutError'') { ' }
+
+            return { status: 'retry', message: 'Will retry operation' ,}
         
         return null;
     }
@@ -75,19 +75,22 @@ export class ComponentErrorHandler {
      * @returns {*} フォールバック実装
      */'
     static gracefulDegradation(component: string): any { ''
-        console.warn(`[${component)] Providing fallback functionality`');
+        console.warn(`[${component}] Providing, fallback functionality`'};
         
         // コンポーネントタイプに応じたフォールバック処理
-        const fallbacks: FallbackMap = {' }'
+        const, fallbacks: FallbackMap = {' }'
+
             'MockDataGenerator': (}) => ({}'),''
             'DebugInterface': () => ({ render: () => {}'),''
             'TestSupport': () => ({ execute: () => true }'),''
             'default': () => null;
         };
-        ';'
+        ';
+
         const fallbackKey = Object.keys(fallbacks).find(key => );''
-            component.includes(key)') || 'default';'
-        '';
-        return fallbacks[fallbackKey](');'
+            component.includes(key)) || 'default';
+
+        return fallbacks[fallbackKey](');
+
     }''
 }

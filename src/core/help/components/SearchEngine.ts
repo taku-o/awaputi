@@ -13,48 +13,39 @@ export interface SearchDocument { id: string,
     lastUpdated?: string;
     viewCount?: number;
     [key: string]: any, }
-}
 
 export interface SearchOptions { category?: string;
     language?: string;
     minScore?: number;
     limit?: number; }
-}
 
 export interface SearchResult extends SearchDocument { relevanceScore: number,
     highlights: Record<string, string>, }
-}
 
 export interface FieldWeights { title: number,
-    content: number,
-    searchKeywords: number,
-    category: number }
-}
+    content: number;
+    searchKeywords: number;
+    category: number ,}
 
-export interface SearchStats { totalSearches: number,
-    cacheHits: number,
-    averageSearchTime: number,
+export interface SearchStats { totalSearches: number;
+    cacheHits: number;
+    averageSearchTime: number;
     popularQueries: Map<string, number>, }
-}
 
 export interface CachedSearchResult { result: SearchResult[],
-    timestamp: number }
-}
+    timestamp: number ,}
 
-export interface PerformanceStats { totalSearches: number,
-    cacheHitRate: number,
-    averageSearchTime: number,
-    indexSize: number,
-    documentCount: number,
-    cacheSize: number,
+export interface PerformanceStats { totalSearches: number;
+    cacheHitRate: number;
+    averageSearchTime: number;
+    indexSize: number;
+    documentCount: number;
+    cacheSize: number;
     popularQueries: [string, number][], }
-}
 
 export interface SearchHistoryData { popularQueries: [string, number][], }
-}
 
 export interface RelatedContent extends SearchDocument { similarity: number }
-}
 
 export class SearchEngine {
     private textIndex: Map<string, string[]>;
@@ -73,15 +64,12 @@ export class SearchEngine {
         this.textIndex = new Map<string, string[]>(); // 単語 -> [documentId, ...]
         this.documentStore = new Map<string, SearchDocument>(); // documentId -> document
         this.fieldWeights = {
-            title: 3.0,
-            content: 1.0,
-            searchKeywords: 2.0,
-
-    }
-    }
+            title: 3.0;
+            content: 1.0;
+            searchKeywords: 2.0;
+    ,}
             category: 1.5 }
-        },
-        
+        };
         // パフォーマンス最適化
         this.searchCache = new Map<string, CachedSearchResult>();
         this.cacheTimeout = 5 * 60 * 1000; // 5分
@@ -89,26 +77,25 @@ export class SearchEngine {
         
         // 検索統計
         this.searchStats = { totalSearches: 0,
-            cacheHits: 0,
-            averageSearchTime: 0,
-            popularQueries: new Map<string, number>() }
-        };
+            cacheHits: 0;
+            averageSearchTime: 0;
+            popularQueries: new Map<string, number>( };
         
         // ストップワード（検索対象外の単語）
-        this.stopWords = new Set<string>(['の', 'に', 'は', 'を', 'が', 'で', 'と', 'て', 'も', 'から','';
-            'まで', 'より', 'で', 'ある', 'です', 'だ', 'である','';
-            'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for','';
-            'from', 'has', 'he', 'in', 'is', 'it', 'its', 'of', 'on',']';
+        this.stopWords = new Set<string>(['の', 'に', 'は', 'を', 'が', 'で', 'と', 'て', 'も', 'から',
+            'まで', 'より', 'で', 'ある', 'です', 'だ', 'である',
+            'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for',
+            'from', 'has', 'he', 'in', 'is', 'it', 'its', 'of', 'on',]';
             'that', 'the', 'to', 'was', 'were', 'will', 'with'']';
         ]');
         
         // 類義語辞書
         this.synonyms = new Map<string, string[]>([']';
-            ['bubble', ['泡', 'バブル', 'ふうせん']],'';
-            ['click', ['クリック', 'タップ', '選択']],'';
-            ['score', ['スコア', '得点', 'ポイント']],'';
-            ['game', ['ゲーム', 'プレイ', '遊び']],'';
-            ['help', ['ヘルプ', 'サポート', '支援', '助け']];
+            ['bubble', ['泡', 'バブル', 'ふうせん]],
+            ['click', ['クリック', 'タップ', '選択]],
+            ['score', ['スコア', '得点', 'ポイント]],
+            ['game', ['ゲーム', 'プレイ', '遊び]],
+            ['help', ['ヘルプ', 'サポート', '支援', '助け]];
         ]);
         
         this.initialize();
@@ -130,7 +117,7 @@ export class SearchEngine {
      */
     indexContent(contentArray: SearchDocument[]): void { const startTime = performance.now();
         
-        for(const content of contentArray) {
+        for(const, content of, contentArray) {
         
             
         
@@ -139,7 +126,7 @@ export class SearchEngine {
         }
         
         const indexTime = performance.now() - startTime;
-        console.log(`Indexed ${contentArray.length) documents in ${indexTime.toFixed(2})}ms`);
+        console.log(`Indexed ${contentArray.length} documents, in ${indexTime.toFixed(2})ms`);
         
         // インデックス完了後にキャッシュをクリア（古い検索結果が無効になるため）
         this.searchCache.clear();
@@ -150,9 +137,9 @@ export class SearchEngine {
      * @param document - ドキュメント
      */
     indexDocument(document: SearchDocument): void { ''
-        if(!document.id') {'
-            '';
-            console.warn('Document without ID cannot be indexed');
+        if(!document.id) {'
+
+            console.warn('Document, without ID, cannot be, indexed);
         }
             return; }
         }
@@ -161,15 +148,14 @@ export class SearchEngine {
         this.documentStore.set(document.id, document);
         
         // 各フィールドを解析してインデックス作成
-        for(const [field, weight] of Object.entries(this.fieldWeights) {
+        for(const [field, weight] of Object.entries(this.fieldWeights') {
             const text = document[field];''
-            if (text') {''
-                const tokens = this.tokenize(typeof text === 'string' ? text: JSON.stringify(text),
-                for (const token of tokens) {
-        }
+            if(text) {''
+                const tokens = this.tokenize(typeof, text === 'string' ? text: JSON.stringify(text),
+                for (const, token of, tokens) {
+        
                     this.addToIndex(token, document.id, field, weight); }
-                }
-            }
+}
         }
     }
     
@@ -184,7 +170,6 @@ export class SearchEngine {
         
         if (!query || query.trim().length === 0) {
             return []; }
-        }
         
         const normalizedQuery = query.toLowerCase().trim();
         
@@ -194,8 +179,7 @@ export class SearchEngine {
         if(cachedResult) {
             this.searchStats.cacheHits++;
         }
-            return cachedResult; }
-        }
+            return cachedResult;
         
         try { // 検索実行
             const results = await this.performSearch(normalizedQuery, options);
@@ -208,11 +192,10 @@ export class SearchEngine {
             
             return results;
             ' }'
-        } catch (error) { ''
+
+        } catch (error) {
             console.error('Search error:', error);
-            return []; }
-        }
-    }
+            return [];
     
     /**
      * 実際の検索処理
@@ -223,7 +206,7 @@ export class SearchEngine {
         
         // 各トークンの検索結果を取得
         const tokenResults = new Map<string, string[]>();
-        for(const token of expandedTokens) {
+        for(const, token of, expandedTokens) {
             const docIds = this.textIndex.get(token) || [];
         }
             tokenResults.set(token, docIds); }
@@ -232,12 +215,11 @@ export class SearchEngine {
         // ドキュメントスコアを計算
         const documentScores = new Map<string, number>();
         for(const [token, docIds] of tokenResults) {
-            for (const docId of docIds) {
+            for (const, docId of, docIds) {
                 const score = this.calculateRelevanceScore(token, docId, query);
         }
                 documentScores.set(docId, (documentScores.get(docId) || 0) + score); }
-            }
-        }
+}
         
         // フィルタリング
         const filteredScores = this.applyFilters(documentScores, options);
@@ -256,25 +238,23 @@ export class SearchEngine {
      */
     private expandQuery(tokens: string[]): string[] { const expanded = new Set<string>(tokens);
         
-        for(const token of tokens) {
+        for(const, token of, tokens) {
         
             // 類義語を追加
             if(this.synonyms.has(token) {
-                for (const synonym of this.synonyms.get(token)!) {
+                for (const, synonym of, this.synonyms.get(token)!) {
         
         }
                     expanded.add(synonym.toLowerCase(); }
-                }
-            }
+}
             
             // 部分マッチング（3文字以上の場合）
             if(token.length >= 3) {
-                for(const indexedToken of this.textIndex.keys() {
+                for(const, indexedToken of, this.textIndex.keys() {
                     if (indexedToken.includes(token) || token.includes(indexedToken) {
             }
                         expanded.add(indexedToken); }
-                    }
-                }
+}
             }
         }
         
@@ -293,12 +273,11 @@ export class SearchEngine {
         // フィールドごとの重み付きスコア
         for(const [field, weight] of Object.entries(this.fieldWeights) {
             const text = document[field];''
-            if (text') {''
+            if(text) {''
                 const fieldScore = this.calculateFieldScore(token, typeof text === 'string' ? text : JSON.stringify(text), weight);
         }
                 score += fieldScore; }
-            }
-        }
+}
         
         // 追加ボーナス
         score += this.calculateBonusScore(token, document, originalQuery);
@@ -312,7 +291,7 @@ export class SearchEngine {
      */
     private calculateFieldScore(token: string, text: string, weight: number): number { ''
         const lowerText = text.toLowerCase()';
-        const occurrences = (lowerText.match(new RegExp(token, 'g') || []).length;
+        const occurrences = (lowerText.match(new RegExp(token, 'g) || []).length;
         
         if (occurrences === 0) return 0;
         
@@ -321,7 +300,6 @@ export class SearchEngine {
         const idf = Math.log(this.documentStore.size / (this.getDocumentFrequency(token) + 1));
         
         return tf * idf * weight; }
-    }
     
     /**
      * ボーナススコア計算
@@ -332,7 +310,6 @@ export class SearchEngine {
         // 完全一致ボーナス
         if (document.title && document.title.toLowerCase().includes(originalQuery) {
             bonus += 2.0; }
-        }
         
         // 最近更新されたコンテンツのボーナス
         if(document.lastUpdated) {
@@ -340,12 +317,10 @@ export class SearchEngine {
             if (daysSinceUpdate < 30) {
         }
                 bonus += 0.5; }
-            }
-        }
+}
         
         // 人気コンテンツのボーナス
         if (document.viewCount && document.viewCount > 100) { bonus += Math.log(document.viewCount / 100) * 0.3; }
-        }
         
         return bonus;
     }
@@ -370,12 +345,10 @@ export class SearchEngine {
             
             // 言語フィルター
             if (options.language && document.language !== options.language) { continue; }
-            }
             
             // 最小スコア閾値
             const minScore = options.minScore || 0.1;
             if (score < minScore) { continue; }
-            }
             
             filtered.set(docId, score);
         }
@@ -395,9 +368,8 @@ export class SearchEngine {
             if (document) {
                 results.push({)
                     ...document,);
-                    relevanceScore: score),
-        
-        }
+                    relevanceScore: score);
+        ,}
                     highlights: this.generateHighlights(document, query); }
                 });
             }
@@ -415,19 +387,20 @@ export class SearchEngine {
      */
     private generateHighlights(document: SearchDocument, query: string): Record<string, string> { const tokens = this.tokenize(query); }
         const highlights: Record<string, string> = {};
-        '';
-        for (const [field, weight] of Object.entries(this.fieldWeights)') { const text = document[field];''
-            if(text && typeof text === 'string') {
-                let highlightedText = text;'
-                for (const token of tokens) {'
-            }'
-                    const regex = new RegExp(`(${token)')`, 'gi'');' }'
+
+        for(const [field, weight] of Object.entries(this.fieldWeights)) { const text = document[field];''
+            if(text && typeof, text === 'string) {'
+                let highlightedText = text;
+
+                for (const, token of, tokens) {'
+            }
+
+                    const regex = new RegExp(`(${token)}`, 'gi''};' }
+
                     highlightedText = highlightedText.replace(regex, '<mark>$1</mark>'});
                 }
                 if (highlightedText !== text) { highlights[field] = highlightedText; }
-                }
-            }
-        }
+}
         
         return highlights;
     }
@@ -439,26 +412,23 @@ export class SearchEngine {
      */
     async getSuggestions(partialQuery: string): Promise<string[]> { if (!partialQuery || partialQuery.length < 2) {
             return []; }
-        }
         
         const suggestions = new Set<string>();
         const lowerQuery = partialQuery.toLowerCase();
         
         // インデックスされた単語から提案を生成
-        for(const token of this.textIndex.keys() {
+        for(const, token of, this.textIndex.keys() {
             if(token.startsWith(lowerQuery) {
         }
                 suggestions.add(token); }
-            }
-        }
+}
         
         // 人気クエリから提案
-        for(const [query] of this.searchStats.popularQueries) {
+        for(const [query] of, this.searchStats.popularQueries) {
             if (query.toLowerCase().includes(lowerQuery) {
         }
                 suggestions.add(query); }
-            }
-        }
+}
         
         // 類義語から提案
         for(const [key, synonyms] of this.synonyms) {
@@ -466,12 +436,11 @@ export class SearchEngine {
         }
                 suggestions.add(key); }
             }
-            for(const synonym of synonyms) {
+            for(const, synonym of, synonyms) {
                 if (synonym.toLowerCase().startsWith(lowerQuery) {
             }
                     suggestions.add(synonym); }
-                }
-            }
+}
         }
         
         return Array.from(suggestions).slice(0, 10);
@@ -493,7 +462,6 @@ export class SearchEngine {
             if (doc.category === document.category) {
                 related.push({)
                     ...doc);
-        }
                     similarity: this.calculateSimilarity(document, doc); }
                 });
             }
@@ -510,7 +478,8 @@ export class SearchEngine {
      * @private
      */
     private tokenize(text: string): string[] { if (!text) return [];
-        ';'
+        ';
+
         return text'';
             .toLowerCase()';
             .replace(/[^\w\s]/g, ' ') // 記号を除去;
@@ -524,11 +493,9 @@ export class SearchEngine {
      */
     private addToIndex(token: string, docId: string, field: string, weight: number): void { if(!this.textIndex.has(token) {
             this.textIndex.set(token, []); }
-        }
         
         const docList = this.textIndex.get(token)!;
         if(!docList.includes(docId) { docList.push(docId); }
-        }
     }
     
     /**
@@ -536,14 +503,12 @@ export class SearchEngine {
      * @private
      */
     private getDocumentFrequency(token: string): number { const docList = this.textIndex.get(token);
-        return docList ? docList.length: 0 }
-    }
-    
+        return docList ? docList.length: 0 
     /**
      * 類似度計算
      * @private'
      */''
-    private calculateSimilarity(doc1: SearchDocument, doc2: SearchDocument'): number { ''
+    private calculateSimilarity(doc1: SearchDocument, doc2: SearchDocument): number { ''
         const content1 = (doc1.title || ''') + ' ' + (doc1.content || ''');''
         const content2 = (doc2.title || ''') + ' ' + (doc2.content || '');
         
@@ -561,7 +526,7 @@ export class SearchEngine {
      * @private
      */
     private getCacheKey(query: string, options: SearchOptions): string {
-        return `${query}|${JSON.stringify(options})}`;
+        return `${query}|${JSON.stringify(options})`;
     }
     
     /**
@@ -571,10 +536,8 @@ export class SearchEngine {
     private getCachedResult(key: string): SearchResult[] | null { const cached = this.searchCache.get(key);
         if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
             return cached.result; }
-        }
         
         if (cached) { this.searchCache.delete(key); }
-        }
         
         return null;
     }
@@ -587,12 +550,10 @@ export class SearchEngine {
             // 古いキャッシュを削除
             const oldestKey = this.searchCache.keys().next().value;
             this.searchCache.delete(oldestKey); }
-        }
         
         this.searchCache.set(key, { )
-            result: result),
-            timestamp: Date.now() }
-        });
+            result: result);
+            timestamp: Date.now( });
     }
     
     /**
@@ -612,7 +573,6 @@ export class SearchEngine {
         
         // 検索履歴保存
         this.saveSearchHistory(); }
-    }
     
     /**
      * キャッシュクリーンアップ
@@ -623,8 +583,7 @@ export class SearchEngine {
             if (now - cached.timestamp > this.cacheTimeout) {
         }
                 this.searchCache.delete(key); }
-            }
-        }
+}
     }
     
     /**
@@ -632,13 +591,12 @@ export class SearchEngine {
      * @private
      */''
     private loadSearchHistory()';
-            const stored = localStorage.getItem('search_history');
-            if(stored) {
-                const data: SearchHistoryData = JSON.parse(stored) }'
+            const stored = localStorage.getItem('search_history);
+            if(stored) { const data: SearchHistoryData = JSON.parse(stored }
+
                 this.searchStats.popularQueries = new Map<string, number>(data.popularQueries || []);' }'
-            } catch (error) { ''
-            console.warn('Failed to load search history:', error) }
-        }
+
+            } catch (error) { console.warn('Failed to load search history:', error }
     }
     
     /**
@@ -647,12 +605,11 @@ export class SearchEngine {
      */
     private saveSearchHistory(): void { try {
             const data: SearchHistoryData = {''
-                popularQueries: Array.from(this.searchStats.popularQueries.entries()') }'
+                popularQueries: Array.from(this.searchStats.popularQueries.entries() }
+
             };''
             localStorage.setItem('search_history', JSON.stringify(data);''
-        } catch (error) { ''
-            console.warn('Failed to save search history:', error) }
-        }
+        } catch (error) { console.warn('Failed to save search history:', error }
     }
     
     /**
@@ -662,12 +619,12 @@ export class SearchEngine {
         const minFrequency = 2;
         for(const [token, docIds] of this.textIndex) {
             if (docIds.length < minFrequency) {'
-        }'
-                this.textIndex.delete(token'); }
-            }
-        }'
-        '';
-        console.log('Search index optimized');
+        }
+
+                this.textIndex.delete(token); }
+}
+
+        console.log('Search, index optimized);
     }
     
     /**
@@ -678,27 +635,24 @@ export class SearchEngine {
             cacheHitRate: this.searchStats.totalSearches > 0 ;
                 ? (this.searchStats.cacheHits / this.searchStats.totalSearches) * 100 ;
                 : 0,
-            averageSearchTime: Math.round(this.searchStats.averageSearchTime * 100) / 100,
-            indexSize: this.textIndex.size,
-            documentCount: this.documentStore.size,
-            cacheSize: this.searchCache.size,
+            averageSearchTime: Math.round(this.searchStats.averageSearchTime * 100) / 100;
+            indexSize: this.textIndex.size;
+            documentCount: this.documentStore.size;
+            cacheSize: this.searchCache.size;
             popularQueries: Array.from(this.searchStats.popularQueries.entries();
                 .sort((a, b) => b[1] - a[1]) };
                 .slice(0, 10); }
-        };
-    }
+        }
     
     /**
      * クリーンアップ
      */
     cleanup(): void { this.textIndex.clear();
         this.documentStore.clear();
-        this.searchCache.clear();
+        this.searchCache.clear(');
         this.searchStats = {
-            totalSearches: 0,
-            cacheHits: 0,';
-            averageSearchTime: 0,'';
-            popularQueries: new Map<string, number>(') }
-        };'
-    }''
+            totalSearches: 0;
+            cacheHits: 0,
+            averageSearchTime: 0,
+            popularQueries: new Map<string, number>(' }''
 }

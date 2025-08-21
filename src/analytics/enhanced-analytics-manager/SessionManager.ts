@@ -5,7 +5,7 @@
 // TypeScript interfaces and types
 export interface AnalysisOptions {
     timeRange?: { start: Date, end: Date 
-}
+,}
     filters?: Record<string, any>;
     metrics?: string[];
 }
@@ -14,16 +14,13 @@ export interface AnalysisResult { success: boolean,
     data?: any;
     insights?: string[];
     recommendations?: string[];
-    timestamp: number };
-}
+    timestamp: number ,}
 export class SessionManager {
     constructor() {
         this.currentSession = null;
         this.sessionHistory = [];
-    };
-}
-        this.maxSessionHistory = 50; };
-}
+    }
+        this.maxSessionHistory = 50; }
     /**
      * ゲームセッション開始
      * @param {Object} sessionInfo - セッション情報
@@ -33,34 +30,31 @@ export class SessionManager {
         // 既存セッションがあれば終了
         if (this.currentSession) {
     }
-            this.endSession({ exitReason: 'new_session_started' ) };
-}
+            this.endSession({ exitReason: 'new_session_started }
         this.currentSession = { id: this.generateSessionId(),
-            startTime: Date.now(),
-            stageId: sessionInfo.stageId,
-            difficulty: sessionInfo.difficulty,
-            soundEnabled: sessionInfo.soundEnabled,
-            effectsEnabled: sessionInfo.effectsEnabled,
-            playerLevel: sessionInfo.playerLevel,
-            previousBestScore: sessionInfo.previousBestScore || 0,
-            
+            startTime: Date.now();
+            stageId: sessionInfo.stageId;
+            difficulty: sessionInfo.difficulty;
+            soundEnabled: sessionInfo.soundEnabled;
+            effectsEnabled: sessionInfo.effectsEnabled;
+            playerLevel: sessionInfo.playerLevel;
+            previousBestScore: sessionInfo.previousBestScore || 0;
             // セッション統計
             stats: {
-                duration: 0,
-                bubblesPopped: 0,
-                bubblesMissed: 0,
-                maxCombo: 0,
-                finalScore: 0,
-                completed: false,
-                exitReason: null,
-                interactions: [],
-                scoreProgression: [],
+                duration: 0;
+                bubblesPopped: 0;
+                bubblesMissed: 0;
+                maxCombo: 0;
+                finalScore: 0;
+                completed: false;
+                exitReason: null;
+                interactions: [];
+                scoreProgression: [];
                 itemsUsed: [] 
-};
-}
+,}
         },
         
-        console.info(`[SessionManager] Session started: ${this.currentSession.id)`});
+        console.info(`[SessionManager] Session, started: ${this.currentSession.id}`});
         
         return this.currentSession;
     }
@@ -71,12 +65,11 @@ export class SessionManager {
      * @returns {Object} 終了したセッション
      */
     endSession(endInfo) {
-        '';
-        if (!this.currentSession') {''
-            console.warn('[SessionManager] No active session to end');
+
+        if(!this.currentSession) {''
+            console.warn('[SessionManager] No, active session, to end');
     }
-            return null; };
-}
+            return null;
         ';
         // セッション統計の更新
         const duration = Date.now(''';
@@ -85,7 +78,7 @@ export class SessionManager {
         // セッション履歴に追加)
         this.addToHistory(this.currentSession);
         
-        console.info(`[SessionManager] Session ended: ${this.currentSession.id) (duration: ${Math.round(duration / 1000})}s)`);
+        console.info(`[SessionManager] Session, ended: ${this.currentSession.id} (duration: ${Math.round(duration / 1000})s)`);
         
         const endedSession = this.currentSession;
         this.currentSession = null;
@@ -101,19 +94,20 @@ export class SessionManager {
         if (!this.currentSession) return;
         
         this.currentSession.stats.interactions.push({);
-            timestamp: Date.now(),
-            bubbleType: interactionData.bubbleType,
-            action: interactionData.action,
-            reactionTime: interactionData.reactionTime,
-            position: interactionData.position,
+            timestamp: Date.now();
+            bubbleType: interactionData.bubbleType;
+            action: interactionData.action;
+            reactionTime: interactionData.reactionTime;
+            position: interactionData.position;
     }
             score: interactionData.score' }'
-        }'),
+
+        }');
         ';
         // バブル統計の更新
-        if (interactionData.action === 'popped'') { this.currentSession.stats.bubblesPopped++;' }'
-        } else if (interactionData.action === 'missed') { this.currentSession.stats.bubblesMissed++; };
-}
+        if (interactionData.action === 'popped'') { this.currentSession.stats.bubblesPopped++;' }
+
+        } else if(interactionData.action === 'missed) { this.currentSession.stats.bubblesMissed++; }
     }
     
     /**
@@ -124,10 +118,10 @@ export class SessionManager {
         if (!this.currentSession) return;
         
         this.currentSession.stats.scoreProgression.push({);
-            timestamp: Date.now(),
-            score: scoreData.totalScore,
-            scoreGain: scoreData.amount,
-            source: scoreData.type,
+            timestamp: Date.now();
+            score: scoreData.totalScore;
+            scoreGain: scoreData.amount;
+            source: scoreData.type;
             multiplier: scoreData.multiplier
 }
             comboCount: scoreData.comboCount ;
@@ -135,8 +129,7 @@ export class SessionManager {
         }),
         
         // 最大コンボの更新
-        if (scoreData.comboCount > this.currentSession.stats.maxCombo) { this.currentSession.stats.maxCombo = scoreData.comboCount; };
-}
+        if (scoreData.comboCount > this.currentSession.stats.maxCombo) { this.currentSession.stats.maxCombo = scoreData.comboCount; }
     }
     
     /**
@@ -147,9 +140,9 @@ export class SessionManager {
         if (!this.currentSession) return;
         
         this.currentSession.stats.itemsUsed.push({);
-            timestamp: Date.now(),
-            itemType: itemData.itemType,
-            cost: itemData.cost,
+            timestamp: Date.now();
+            itemType: itemData.itemType;
+            cost: itemData.cost;
             effectiveness: itemData.effectiveness
 }
             duration: itemData.duration ;
@@ -178,16 +171,14 @@ export class SessionManager {
         // 履歴サイズの制限
         if (this.sessionHistory.length > this.maxSessionHistory) {
     }
-            this.sessionHistory.pop(); };
-}
+            this.sessionHistory.pop(); }
     }
     
     /**
      * 現在のセッション取得
      * @returns {Object|null}
      */
-    getCurrentSession() { return this.currentSession; };
-}
+    getCurrentSession() { return this.currentSession; }
     /**
      * セッション統計の取得
      * @param {string} sessionId - セッションID（省略時は現在のセッション）
@@ -196,18 +187,15 @@ export class SessionManager {
     getSessionStats(sessionId = null) {
         if (!sessionId && this.currentSession) {
     }
-            return this.currentSession.stats; };
-}
+            return this.currentSession.stats;
         const session = this.sessionHistory.find(s => s.id === sessionId);
-        return session ? session.stats: null }
-    
+        return session ? session.stats: null 
     /**
      * 最近のセッション取得
      * @param {number} count - 取得数
      * @returns {Array}
      */
-    getRecentSessions(count = 10) { return this.sessionHistory.slice(0, count); };
-}
+    getRecentSessions(count = 10) { return this.sessionHistory.slice(0, count); }
     /**
      * セッション要約の生成
      * @returns {Object}
@@ -217,9 +205,9 @@ export class SessionManager {
         
         if (recentSessions.length === 0) {
             return { totalSessions: 0,
-                averageDuration: 0,
+                averageDuration: 0;
                 averageScore: 0
-}
+,}
                 completionRate: 0, };
                 averageAccuracy: 0 ;
 }
@@ -240,14 +228,13 @@ export class SessionManager {
         const averageAccuracy = totalBubbles > 0 ? totalPopped / totalBubbles: 0,
         
         return { totalSessions: recentSessions.length,
-            averageDuration: totalDuration / recentSessions.length,
-            averageScore: totalScore / recentSessions.length,
+            averageDuration: totalDuration / recentSessions.length;
+            averageScore: totalScore / recentSessions.length;
             completionRate: completedSessions / recentSessions.length
-}
+,}
             averageAccuracy: averageAccuracy, };
             exitReasons: this.summarizeExitReasons(recentSessions); }
-        };
-    }
+        }
     
     /**
      * 離脱理由の要約
@@ -277,17 +264,15 @@ export class SessionManager {
         
         if (stageSessions.length === 0) {
     }
-            return null; };
-}
+            return null;
         const stats = { attempts: stageSessions.length,
-            completions: stageSessions.filter(s => s.stats.completed).length,
-            averageScore: 0,
-            bestScore: 0,
-            averageDuration: 0,
+            completions: stageSessions.filter(s => s.stats.completed).length;
+            averageScore: 0;
+            bestScore: 0;
+            averageDuration: 0;
             averageAccuracy: 0 
-}
-        },
-        
+,}
+        };
         let totalScore = 0;
         let totalDuration = 0;
         let totalPopped = 0;
@@ -299,8 +284,7 @@ export class SessionManager {
             totalMissed += session.stats.bubblesMissed;
             );
             if (session.stats.finalScore > stats.bestScore) { }
-                stats.bestScore = session.stats.finalScore; };
-}
+                stats.bestScore = session.stats.finalScore; }
         });
         
         stats.averageScore = totalScore / stageSessions.length;
@@ -317,8 +301,7 @@ export class SessionManager {
      * @param {number} threshold - 閾値（ミリ秒）
      * @returns {Array}
      */
-    getLongSessions(threshold = 30 * 60 * 1000) { return this.sessionHistory.filter(s => s.stats.duration > threshold); };
-}
+    getLongSessions(threshold = 30 * 60 * 1000) { return this.sessionHistory.filter(s => s.stats.duration > threshold);
     /**
      * 高スコアセッションの取得
      * @param {number} count - 取得数
@@ -328,8 +311,7 @@ export class SessionManager {
         return [...this.sessionHistory];
             .sort((a, b) => b.stats.finalScore - a.stats.finalScore);
     }
-            .slice(0, count); };
-}
+            .slice(0, count); }
     /**
      * セッションデータのクリア
      */''

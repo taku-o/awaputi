@@ -5,12 +5,10 @@
 
 // 基本データ構造
 export interface Position { x: number,
-    y: number }
-}
+    y: number ,}
 
-export interface Velocity { x: number,
+export interface Velocity { x: number;
     y: number }
-}
 
 // バブルタイプ定義
 export type BubbleType = ;
@@ -22,10 +20,10 @@ export type BubbleType = ;
 
 // バブル設定インターフェース
 export interface BubbleConfig { health: number,
-    size: number,
-    maxAge: number,
-    color: string,
-    score: number,
+    size: number;
+    maxAge: number;
+    color: string;
+    score: number;
     // 特殊効果プロパティ（オプション）
     healAmount?: number;
     damageAmount?: number;
@@ -42,8 +40,7 @@ export interface BubbleConfig { health: number,
     magnetRadius?: number;
     explosionRadius?: number;
     phaseChance?: number;
-    scoreMultiplier?: number; }
-}
+    scoreMultiplier?: number; ,}
 
 // バブル効果定義
 export interface BubbleEffect { type: BubbleEffectType,
@@ -56,8 +53,8 @@ export interface BubbleEffect { type: BubbleEffectType,
     slowFactor?: number;
     strength?: number;
     damage?: number; }
-}
-';'
+';
+
 export type BubbleEffectType = '';
     | 'heal' | 'damage' | 'chain_destroy' | 'bonus_time''';
     | 'time_stop' | 'bonus_score' | 'screen_shake''';
@@ -66,19 +63,18 @@ export type BubbleEffectType = '';
 
 // バブルクラス型定義
 export interface BubbleInterface { // 基本プロパティ
-    id: string,
-    type: BubbleType,
-    position: Position,
-    velocity: Velocity,
-    size: number,
-    health: number,
-    maxHealth: number,
-    age: number,
-    maxAge: number,
-    isAlive: boolean,
-    effects: BubbleEffect[],
-    clickCount: number,
-
+    id: string;
+    type: BubbleType;
+    position: Position;
+    velocity: Velocity;
+    size: number;
+    health: number;
+    maxHealth: number;
+    age: number;
+    maxAge: number;
+    isAlive: boolean;
+    effects: BubbleEffect[];
+    clickCount: number;
     // メソッド定義
     applyTypeConfig(): void;
     getTypeConfig(): BubbleConfig;
@@ -96,5 +92,6 @@ export interface BubbleInterface { // 基本プロパティ
     getScore(): number;
     updateSpecialBehavior(deltaTime: number, mousePosition?: Position): void;''
     getAndClearEffects(''';
-    animationQuality: 'high' | 'medium' | 'low',' }'
+    animationQuality: 'high' | 'medium' | 'low',' }
+
 })

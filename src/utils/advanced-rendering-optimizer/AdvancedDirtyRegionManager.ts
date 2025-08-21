@@ -7,32 +7,27 @@ interface DirtyRegionConfig { enabled?: boolean;
     mergeThreshold?: number;
     expansionFactor?: number;
     historySize?: number; }
-}
 
 interface DirtyRegion { x: number,
-    y: number,
-    width: number,
-    height: number,
-    timestamp: number,
-    frame: number }
-}
+    y: number;
+    width: number;
+    height: number;
+    timestamp: number;
+    frame: number ,}
 
-interface RegionHistory { frame: number,
-    regions: DirtyRegion[],
+interface RegionHistory { frame: number;
+    regions: DirtyRegion[];
     timestamp: number }
-}
 
-interface RegionStats { totalRegions: number,
-    mergedRegions: number,
-    skippedRedraws: number,
-    pixelsSaved: number,
+interface RegionStats { totalRegions: number;
+    mergedRegions: number;
+    skippedRedraws: number;
+    pixelsSaved: number;
     performanceGain: number }
-}
 
-interface Hotspot { x: number,
-    y: number,
+interface Hotspot { x: number;
+    y: number;
     count: number }
-}
 
 /**
  * Dirty Region Management System
@@ -75,16 +70,13 @@ export class AdvancedDirtyRegionManager {
         
         // Optimization statistics
         this.stats = {
-            totalRegions: 0,
-            mergedRegions: 0,
-            skippedRedraws: 0,
-            pixelsSaved: 0,
-
-    }
-    }
+            totalRegions: 0;
+            mergedRegions: 0;
+            skippedRedraws: 0;
+            pixelsSaved: 0;
+    ,}
             performanceGain: 0 }
-        },
-    }
+        }
     
     /**
      * Add dirty region to be redrawn
@@ -103,23 +95,21 @@ export class AdvancedDirtyRegionManager {
             const finalHeight = Math.max(expandedHeight, this.minRegionSize);
             
             const region: DirtyRegion = {
-                x: expandedX,
-                y: expandedY,
-                width: finalWidth,
-                height: finalHeight,
-                timestamp: Date.now(),
-                frame: this._getCurrentFrame() }
-            };
+                x: expandedX;
+                y: expandedY;
+                width: finalWidth;
+                height: finalHeight;
+                timestamp: Date.now();
+                frame: this._getCurrentFrame( ,};
             
             this.regions.add(region);
             this.stats.totalRegions++;
             
             // Track hotspots
             this._trackHotspot(expandedX, expandedY, finalWidth, finalHeight);
-            '';
-        } catch (error) { ''
+
+        } catch (error) {
             this.errorHandler.logError('Failed to add dirty region', error); }
-        }
     }
     
     /**
@@ -127,23 +117,21 @@ export class AdvancedDirtyRegionManager {
      */
     mergeRegions(): DirtyRegion[] { if (!this.enabled || this.regions.size === 0) {
             return []; }
-        }
         
         try { const regionsArray = Array.from(this.regions);
             const merged: DirtyRegion[] = [],
             const processed = new Set<number>();
             
-            for(let i = 0; i < regionsArray.length; i++) {
+            for(let, i = 0; i < regionsArray.length; i++) {
             
                 if(processed.has(i) continue;
             
             }
-                 }
-                let currentRegion = { ...regionsArray[i] };
+                let currentRegion = { ...regionsArray[i];
                 processed.add(i);
                 
                 // Find overlapping regions
-                for(let j = i + 1; j < regionsArray.length; j++) {
+                for(let, j = i + 1; j < regionsArray.length; j++) {
                     if(processed.has(j) continue;
                     
                     const overlap = this._calculateOverlap(currentRegion, regionsArray[j]);
@@ -155,24 +143,20 @@ export class AdvancedDirtyRegionManager {
                         processed.add(j);
                 }
                         this.stats.mergedRegions++; }
-                    }
-                }
+}
                 
                 merged.push(currentRegion);
                 
                 // Limit number of regions
                 if (merged.length >= this.maxRegionCount) { break; }
-                }
             }
             
             this.mergedRegions = merged;
             return merged;
-            '';
-        } catch (error) { ''
+
+        } catch (error) {
             this.errorHandler.logError('Failed to merge regions', error);
-            return Array.from(this.regions); }
-        }
-    }
+            return Array.from(this.regions);
     
     /**
      * Clear all dirty regions
@@ -181,48 +165,42 @@ export class AdvancedDirtyRegionManager {
             // Store regions in history
             if(this.regions.size > 0) {
                 this.regionHistory.push({);
-                    frame: this._getCurrentFrame(),
-                    regions: Array.from(this.regions),
-            }
+                    frame: this._getCurrentFrame();
+                    regions: Array.from(this.regions);
+            ,}
                     timestamp: Date.now(); }
                 });
                 
                 // Limit history size
                 if (this.regionHistory.length > this.historySize) { this.regionHistory.shift(); }
-                }
             }
             
             this.regions.clear();
             this.mergedRegions = [];
-            '';
-        } catch (error) { ''
+
+        } catch (error) {
             this.errorHandler.logError('Failed to clear regions', error); }
-        }
     }
     
     /**
      * Get current dirty regions
      */
     getCurrentRegions(): DirtyRegion[] { return Array.from(this.regions); }
-    }
     
     /**
      * Get merged regions
      */
     getMergedRegions(): DirtyRegion[] { return this.mergedRegions; }
-    }
     
     /**
      * Check if point is in any dirty region
      */
-    isPointDirty(x: number, y: number): boolean { for (const region of this.regions) {
+    isPointDirty(x: number, y: number): boolean { for (const, region of, this.regions) {
             if(x >= region.x && x < region.x + region.width &&);
                 y >= region.y && y < region.y + region.height) {
                 
             }
-                return true; }
-            }
-        }
+                return true;
         return false;
     }
     
@@ -230,30 +208,28 @@ export class AdvancedDirtyRegionManager {
      * Get performance statistics
      */
     getStats(): RegionStats {
-        return { ...this.stats };
+        return { ...this.stats;
     }
     
     /**
      * Get hotspot information
      */'
     getHotspots(): Hotspot[] { ''
-        return Array.from(this.hotspots.entries().map(([key, count]') => { ' }'
-            const [x, y] = key.split(',').map(Number); }
-            return { x, y, count };
-        });
+        return Array.from(this.hotspots.entries().map(([key, count]) => { ' }'
+
+            const [x, y] = key.split(',).map(Number); }'
+            return { x, y, count });
     }
     
     /**
      * Reset statistics
      */
     resetStats(): void { this.stats = {
-            totalRegions: 0,
-            mergedRegions: 0,
-            skippedRedraws: 0,
-            pixelsSaved: 0,
+            totalRegions: 0;
+            mergedRegions: 0;
+            skippedRedraws: 0;
+            pixelsSaved: 0;
             performanceGain: 0 }
-        },
-    }
     
     // Private methods
     
@@ -267,7 +243,6 @@ export class AdvancedDirtyRegionManager {
         
         if (x2 <= x1 || y2 <= y1) return 0;
         return (x2 - x1) * (y2 - y1); }
-    }
     
     /**
      * Calculate union area of two regions
@@ -276,7 +251,6 @@ export class AdvancedDirtyRegionManager {
         const area2 = region2.width * region2.height;
         const overlap = this._calculateOverlap(region1, region2);
         return area1 + area2 - overlap; }
-    }
     
     /**
      * Merge two regions into one
@@ -288,12 +262,11 @@ export class AdvancedDirtyRegionManager {
         
         return { x,
             y,
-            width: right - x,
-            height: bottom - y,
+            width: right - x;
+            height: bottom - y;
             timestamp: Math.max(region1.timestamp, region2.timestamp), };
             frame: Math.max(region1.frame, region2.frame); }
-        };
-    }
+        }
     
     /**
      * Track frequently dirty areas (hotspots)
@@ -310,6 +283,5 @@ export class AdvancedDirtyRegionManager {
      * Get current frame number
      */
     private _getCurrentFrame(): number { // Simple frame counter
-        return Math.floor(Date.now() / 16.67'); // Approximate frame at 60fps }
-    }''
+        return Math.floor(Date.now() / 16.67); // Approximate frame at 60fps }''
 }

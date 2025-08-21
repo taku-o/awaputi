@@ -4,33 +4,27 @@
  */
 
 interface Console { commands?: Map<string, CommandData>; }
-}
 
 interface CommandData { description: string,
     hidden?: boolean }
-}
 
 interface GameEngine { // Game engine interface }
-}
 
-interface AutocompleteSettings { maxSuggestions: number,
-    fuzzyMatch: boolean,
-    contextAware: boolean,
+interface AutocompleteSettings { maxSuggestions: number;
+    fuzzyMatch: boolean;
+    contextAware: boolean;
     learningEnabled: boolean }
-}
 
-interface Suggestion { text: string,
-    type: 'command' | 'recent' | 'popular',
-    description: string,
-    score: number,
+interface Suggestion { text: string;
+    type: 'command' | 'recent' | 'popular';
+    description: string;
+    score: number;
     usage: number }
-}
 
-interface ExecutionHistoryEntry { command: string,
-    args: any[],
-    success: boolean,
+interface ExecutionHistoryEntry { command: string;
+    args: any[];
+    success: boolean;
     timestamp: number }
-}
 
 export class EnhancedAutocompleteEngine {
     private console: Console;
@@ -44,15 +38,12 @@ export class EnhancedAutocompleteEngine {
         this.console = console;
         this.gameEngine = gameEngine;
         this.settings = {
-            maxSuggestions: 10,
-            fuzzyMatch: true,
-            contextAware: true,
-
-    }
-    }
+            maxSuggestions: 10;
+            fuzzyMatch: true;
+            contextAware: true;
+    ,}
             learningEnabled: true }
-        },
-        
+        };
         // 学習データ
         this.usageStats = new Map();
         this.executionHistory = [];
@@ -62,16 +53,14 @@ export class EnhancedAutocompleteEngine {
     /**
      * 自動補完候補を取得
      */''
-    public getSuggestions(partial: string, cursorPosition: number | null = null'): Suggestion[] { ''
-        if(!partial || typeof partial !== 'string') {
+    public getSuggestions(partial: string, cursorPosition: number | null = null): Suggestion[] { ''
+        if(!partial || typeof, partial !== 'string) {'
             
         }
-            return this.getRecentCommands(); }
-        }
+            return this.getRecentCommands();
 
         const input = partial.trim();
         if (input.length === 0) { return this.getPopularCommands(); }
-        }
 
         const suggestions: Suggestion[] = [],
         
@@ -79,8 +68,7 @@ export class EnhancedAutocompleteEngine {
         suggestions.push(...this.getPrefixMatches(input);
         
         // 2. ファジーマッチ
-        if (this.settings.fuzzyMatch) { suggestions.push(...this.getFuzzyMatches(input); }
-        }
+        if (this.settings.fuzzyMatch) { suggestions.push(...this.getFuzzyMatches(input);
 
         // 重複除去とスコア順ソート
         return this.deduplicateAndSort(suggestions);
@@ -95,16 +83,15 @@ export class EnhancedAutocompleteEngine {
         if (!this.console.commands) return matches;
         
         for(const [command, data] of this.console.commands) {
-        ';'
-            '';
-            if (command.startsWith(input) && !data.hidden') {
+        ';
+
+            if (command.startsWith(input) && !data.hidden) {
                 matches.push({'
-                    text: command,')';
+                    text: command,)';
                     type: 'command',);
-                    description: data.description),
-                    score: 900 - (command.length - input.length),
-        
-        }
+                    description: data.description);
+                    score: 900 - (command.length - input.length);
+        ,}
                     usage: this.getUsageCount(command); }
                 });
             }
@@ -121,16 +108,15 @@ export class EnhancedAutocompleteEngine {
         if (!this.console.commands) return matches;
         
         for(const [command, data] of this.console.commands) {
-        ';'
-            '';
-            if (!command.startsWith(input) && !data.hidden && command.includes(input)') {
+        ';
+
+            if (!command.startsWith(input) && !data.hidden && command.includes(input)) {
                 matches.push({'
-                    text: command,')';
+                    text: command,)';
                     type: 'command');
                     description: data.description,);
-                    score: 700),
-        
-        }
+                    score: 700);
+        ,}
                     usage: this.getUsageCount(command); }
                 });
             }
@@ -145,12 +131,12 @@ export class EnhancedAutocompleteEngine {
     private getRecentCommands(): Suggestion[] { const recentCommands = this.executionHistory
             .slice(-5)';
             .reverse()'';
-            .map((entry, index') => ({'
-                text: entry.command,'';
-                type: 'recent' as const,'';
-                description: 'Recently used',
+            .map((entry, index) => ({'
+                text: entry.command,
+                type: 'recent' as const,
+                description: 'Recently used';
                 score: 1000 - index * 10);
-                usage: this.getUsageCount(entry.command) }
+                usage: this.getUsageCount(entry.command) ,}
             });
         
         return this.deduplicateAndSort(recentCommands);
@@ -163,14 +149,14 @@ export class EnhancedAutocompleteEngine {
             .sort((a, b) => b[1] - a[1]);
             .slice(0, 5)';
             .map(([command, count], index) => { ''
-                const data = this.console.commands ? this.console.commands.get(command') : null;'
+                const data = this.console.commands ? this.console.commands.get(command) : null;
+
                 return { text: command,''
-                    type: 'popular' as const,'';
-                    description: data ? data.description : 'Popular command', }
+                    type: 'popular' as const,
+                    description: data ? data.description : 'Popular command', 
                     score: 900 - index * 10, };
                     usage: count }
-                },
-            });
+                });
         
         return popularCommands;
     }
@@ -181,8 +167,7 @@ export class EnhancedAutocompleteEngine {
     private deduplicateAndSort(suggestions: Suggestion[]): Suggestion[] { const seen = new Set<string>();
         const unique = suggestions.filter(suggestion => { );
             if(seen.has(suggestion.text) { }
-                return false; }
-            }
+                return false;
             seen.add(suggestion.text);
             return true;
         });
@@ -194,7 +179,6 @@ export class EnhancedAutocompleteEngine {
      * 使用回数を取得
      */
     private getUsageCount(command: string): number { return this.usageStats.get(command) || 0; }
-    }
 
     /**
      * 実行結果から学習
@@ -210,22 +194,19 @@ export class EnhancedAutocompleteEngine {
             command);
             args,);
             success);
-            timestamp: Date.now() }
-        });
+            timestamp: Date.now( ,});
         
         // 履歴サイズ制限
         if (this.executionHistory.length > this.maxHistorySize) { this.executionHistory.shift(); }
-        }
     }
 
     /**
      * 設定を更新
      */
     public updateSettings(settings: Partial<AutocompleteSettings>): void { Object.assign(this.settings, settings); }
-    }
 
     /**
      * リソースの解放
      */
     public destroy(): void { ''
-        this.usageStats.clear(') }
+        this.usageStats.clear(' }'

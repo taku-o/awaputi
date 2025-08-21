@@ -36,22 +36,20 @@ export { HelpReportGenerator } from './effectiveness/HelpReportGenerator.js';
 // 型定義
 export interface GameEngine { eventBus?: any;
     state?: any; }
-}
 
 export interface HelpSystemComponents { helpManager: any,
-    tutorialManager: any,
-    contextManager: any,
-    helpErrorHandler: any,
-    tutorialOverlay: any,
-    contentLoader: any,
-    contentValidation: any,
-    searchEngine: any,
-    multilingualContentManager: any,
-    initialized: boolean,
-    version: string }
-}
+    tutorialManager: any;
+    contextManager: any;
+    helpErrorHandler: any;
+    tutorialOverlay: any;
+    contentLoader: any;
+    contentValidation: any;
+    searchEngine: any;
+    multilingualContentManager: any;
+    initialized: boolean;
+    version: string ,}
 
-export interface HelpSystemInitResult { initialized: boolean,
+export interface HelpSystemInitResult { initialized: boolean;
     error?: string;
     helpManager?: any;
     tutorialManager?: any;
@@ -63,7 +61,6 @@ export interface HelpSystemInitResult { initialized: boolean,
     searchEngine?: any;
     multilingualContentManager?: any;
     version?: string; }
-}
 
 /**
  * ヘルプシステム全体の初期化
@@ -84,23 +81,22 @@ export function initializeHelpSystem(gameEngine: GameEngine): HelpSystemInitResu
         const contentValidation = getContentValidation();
         const searchEngine = getSearchEngine();''
         const multilingualContentManager = getMultilingualContentManager(''';
-            version: '1.0.0' }'
-        };')'
-    } catch (error) { ''
+            version: '1.0.0' 
+        ,};)'
+    } catch (error) {
         console.error('Failed to initialize help system:', error);
         return { initialized: false, };
             error: error instanceof Error ? error.message : String(error); }
-        };
-    }
+        }
 }
 
 /**
  * ヘルプシステム全体の破棄'
  */''
 export function destroyHelpSystem(''';
-            'helpManagerInstance','';
-            'tutorialManagerInstance', '';
-            'contextManagerInstance','';
+            'helpManagerInstance',
+            'tutorialManagerInstance',
+            'contextManagerInstance',
             'helpErrorHandlerInstance';
         ];
 
@@ -115,23 +111,24 @@ export function destroyHelpSystem(''';
             getSearchEngine()];
             getMultilingualContentManager()];
         ];
-'';
+
         components.forEach(component => { ');''
-            if(component && typeof component.destroy === 'function') {
+            if(component && typeof, component.destroy === 'function) {'
                 
             }
-                try { }'
+                try { }
+
                     component.destroy();' }'
-                } catch (error) { ''
-                    console.warn('Failed to destroy component:', error) }
-                }'
+
+                } catch (error) { console.warn('Failed to destroy component:', error }
+
             }''
-        }');'
-'';
-        console.log('Help system destroyed successfully');'
+        });
+
+        console.log('Help, system destroyed, successfully');
+
         return true;''
-    } catch (error) { ''
-        console.error('Failed to destroy help system:', error');
-        return false; }'
-    }''
+    } catch (error) {
+        console.error('Failed to destroy help system:', error);
+        return false;''
 }

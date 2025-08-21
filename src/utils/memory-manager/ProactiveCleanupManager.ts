@@ -15,73 +15,65 @@ interface CleanupConfig { enabled?: boolean;
     audioCacheLimit?: number;
     maxCacheAge?: number;
     maxMemoryPressure?: number; }
-}
 
 interface SchedulingConfig { baseInterval: number,
-    minInterval: number,
-    maxInterval: number,
-    pressureMultiplier: number,
-    idleMultiplier: number }
-}
-';'
+    minInterval: number;
+    maxInterval: number;
+    pressureMultiplier: number;
+    idleMultiplier: number ,}
+';
+
 interface TimerInfo { id: number,''
-    type: 'timeout' | 'interval',
-    created: number }
-}
+    type: 'timeout' | 'interval';
+    created: number ,}
 
-interface EventListenerInfo { target: EventTarget,
-    event: string,
-    listener: EventListener | Function,
+interface EventListenerInfo { target: EventTarget;
+    event: string;
+    listener: EventListener | Function;
     created: number }
-}
 
-interface CanvasContextInfo { context: CanvasRenderingContext2D,
-    canvas: HTMLCanvasElement,
+interface CanvasContextInfo { context: CanvasRenderingContext2D;
+    canvas: HTMLCanvasElement;
     created: number }
-}
 
 interface CacheItem { image?: HTMLImageElement;
     audio?: HTMLAudioElement;
-    size: number,
-    accessed: number,
-    created: number }
-}
-';'
+    size: number;
+    accessed: number;
+    created: number ,}
+';
+
 interface CustomCleanupInfo { ''
-    cleanup: (') => void,
-    priority: number,
-    lastRun: number,
+    cleanup: (') => void;
+    priority: number;
+    lastRun: number;
     runCount: number }
 }
 
-interface CleanupTargets { timers: Set<TimerInfo>,
+interface CleanupTargets { timers: Set<TimerInfo>;
     eventListeners: Map<string, EventListenerInfo[]>;
-    canvasContexts: Set<CanvasContextInfo>,
+    canvasContexts: Set<CanvasContextInfo>;
     imageCache: Map<string, CacheItem>;
     audioCache: Map<string, CacheItem>;
     customCleanups: Map<string, CustomCleanupInfo> }
-}
 
 interface CleanupStatistics { cleanupCount: number,
-    totalMemoryFreed: number,
-    averageCleanupTime: number,
-    efficiency: number,
+    totalMemoryFreed: number;
+    averageCleanupTime: number;
+    efficiency: number;
     strategiesUsed: Map<string, number>;
-    lastCleanupResults: CleanupResults | null }
-}
+    lastCleanupResults: CleanupResults | null ,}
 
-interface ResourceLimits { imageCache: number,
-    audioCache: number,
-    maxCacheAge: number,
+interface ResourceLimits { imageCache: number;
+    audioCache: number;
+    maxCacheAge: number;
     maxMemoryPressure: number }
-}
 
-interface CleanupStrategy { name: string,
-    priority: number,
-    actions: string[],
-    memoryThreshold: number,
+interface CleanupStrategy { name: string;
+    priority: number;
+    actions: string[];
+    memoryThreshold: number;
     timeLimit: number }
-}
 
 interface CleanupResults { performed?: boolean;
     reason?: string;
@@ -97,7 +89,6 @@ interface CleanupResults { performed?: boolean;
     cacheItemsEvicted?: number;
     contextsCleared?: number;
     customCleanupsRun?: number; }
-}
 
 interface ActionResult { action: string,
     timersCleared?: number;
@@ -105,19 +96,16 @@ interface ActionResult { action: string,
     cacheItemsEvicted?: number;
     contextsCleared?: number;
     customCleanupsRun?: number; }
-}
 
 interface CleanupContext { memoryPressure?: number;
     [key: string]: any, }
-}
 
 interface ExtendedStatistics extends CleanupStatistics { registeredTimers: number,
-    registeredListeners: number,
-    imageCacheSize: number,
-    audioCacheSize: number,
-    customCleanups: number,
-    nextCleanupIn: number }
-}
+    registeredListeners: number;
+    imageCacheSize: number;
+    audioCacheSize: number;
+    customCleanups: number;
+    nextCleanupIn: number ,}
 
 export class ProactiveCleanupManager {'
     private enabled: boolean'';
@@ -132,10 +120,10 @@ export class ProactiveCleanupManager {'
     private cleanupTargets: CleanupTargets;
     private stats: CleanupStatistics;
     private limits: ResourceLimits';
-'';
-    constructor(config: CleanupConfig = {)') {
+
+    constructor(config: CleanupConfig = {)) {
         // Configuration
-        this.enabled = config.enabled !== undefined ? config.enabled: true,'';
+        this.enabled = config.enabled !== undefined ? config.enabled: true,
         this.mode = config.mode || 'adaptive';
         
         // Cleanup tracking
@@ -145,13 +133,11 @@ export class ProactiveCleanupManager {'
         
         // Intelligent scheduling
         this.scheduling = {
-            baseInterval: config.baseInterval || 30000,
-            minInterval: config.minInterval || 5000,
-            maxInterval: config.maxInterval || 120000,
-            pressureMultiplier: config.pressureMultiplier || 0.5,
-            idleMultiplier: config.idleMultiplier || 2.0 }
-        },
-        
+            baseInterval: config.baseInterval || 30000;
+            minInterval: config.minInterval || 5000;
+            maxInterval: config.maxInterval || 120000;
+            pressureMultiplier: config.pressureMultiplier || 0.5;
+            idleMultiplier: config.idleMultiplier || 2.0 ,};
         // Performance tracking
         this.performanceHistory = [];
         this.cleanupStrategies = new Map();
@@ -159,42 +145,38 @@ export class ProactiveCleanupManager {'
         
         // Cleanup targets and strategies
         this.cleanupTargets = { timers: new Set(),
-            eventListeners: new Map(),
-            canvasContexts: new Set(),
-            imageCache: new Map(),
-            audioCache: new Map(),
-            customCleanups: new Map() }
-        };
+            eventListeners: new Map();
+            canvasContexts: new Set();
+            imageCache: new Map();
+            audioCache: new Map();
+            customCleanups: new Map( ,};
         
         // Statistics
         this.stats = { cleanupCount: 0,
-            totalMemoryFreed: 0,
-            averageCleanupTime: 0,
-            efficiency: 1.0,
-            strategiesUsed: new Map(),
-            lastCleanupResults: null }
-        },
-        
+            totalMemoryFreed: 0;
+            averageCleanupTime: 0;
+            efficiency: 1.0;
+            strategiesUsed: new Map();
+            lastCleanupResults: null ,};
         // Resource limits for caches
         this.limits = { imageCache: config.imageCacheLimit || 50,
-            audioCache: config.audioCacheLimit || 20,
+            audioCache: config.audioCacheLimit || 20;
             maxCacheAge: config.maxCacheAge || 300000, // 5 minutes;
-            maxMemoryPressure: config.maxMemoryPressure || 0.8 }
-        },
-    }
+            maxMemoryPressure: config.maxMemoryPressure || 0.8 ,}
     
     /**
      * Perform intelligent cleanup based on current conditions
      */
     performIntelligentCleanup(context: CleanupContext = { ): CleanupResults {''
-        if (!this.enabled') {' }'
-            return { performed: false, reason: 'Cleanup disabled' }
-        }
-        ';'
+        if(!this.enabled) {' }'
+
+            return { performed: false, reason: 'Cleanup disabled' ,}
+        ';
+
         const now = Date.now();''
-        if (now - this.lastCleanup < this.scheduling.minInterval') { ' }'
-            return { performed: false, reason: 'Too frequent' }
-        }
+        if(now - this.lastCleanup < this.scheduling.minInterval) { ' }'
+
+            return { performed: false, reason: 'Too frequent' ,}
         
         const startTime = performance.now();
         const memoryBefore = this._getMemoryUsage();
@@ -220,30 +202,27 @@ export class ProactiveCleanupManager {'
             this.lastCleanup = now;
             
             const finalResults: CleanupResults = {
-                performed: true,
-                strategy: strategy.name,
+                performed: true;
+                strategy: strategy.name;
                 memoryFreed,
                 cleanupTime,
                 efficiency: memoryFreed / Math.max(1, cleanupTime),
-                actions: results.actions,
-                nextCleanup: this.nextCleanup }
-            },
-            
+                actions: results.actions;
+                nextCleanup: this.nextCleanup ,};
             this.stats.lastCleanupResults = finalResults;
             
             return finalResults;
-            '';
-        } catch (error) { ''
-            console.error('[ProactiveCleanupManager] Cleanup failed:', error);' }'
-            return { performed: false, error: (error as Error').message }
-        }
+
+        } catch (error) {
+            console.error('[ProactiveCleanupManager] Cleanup failed:', error);' }
+
+            return { performed: false, error: (error, as Error').message ,}'
     }
     
     /**
      * Register a timer for cleanup tracking'
      */''
-    registerTimer(timerId: number, type: 'timeout' | 'interval' = 'timeout'): void {
-        this.cleanupTargets.timers.add({ id: timerId, type, created: Date.now() });
+    registerTimer(timerId: number, type: 'timeout' | 'interval' = 'timeout): void { this.cleanupTargets.timers.add({ id: timerId, type, created: Date.now( ,});
     }
     
     /**
@@ -252,52 +231,51 @@ export class ProactiveCleanupManager {'
     registerEventListener(target: EventTarget, event: string, listener: EventListener | Function): void {
         const key = `${target.constructor.name}_${event}`;
         if(!this.cleanupTargets.eventListeners.has(key) { this.cleanupTargets.eventListeners.set(key, []); }
-        }
         this.cleanupTargets.eventListeners.get(key)!.push({ );
-            target, event, listener, created: Date.now() }
-        });
+            target, event, listener, created: Date.now( ,});
     }
     
     /**
      * Register a canvas context for cleanup
      */
     registerCanvasContext(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void { this.cleanupTargets.canvasContexts.add({);
-            context, canvas, created: Date.now() }
-        });
+            context, canvas, created: Date.now( ,});
     }
     
     /**
      * Add item to image cache with size tracking
      */'
     addToImageCache(key: string, image: HTMLImageElement, estimatedSize: number = 0): void { // Remove oldest items if cache is full
-        if(this.cleanupTargets.imageCache.size >= this.limits.imageCache') {'
-            ';'
-        }'
+        if(this.cleanupTargets.imageCache.size >= this.limits.imageCache) {'
+            ';
+
+        }
+
             this._evictOldestCacheItems('imageCache', 5); }
         }
         
         this.cleanupTargets.imageCache.set(key, { image)
-            size: estimatedSize),
-            accessed: Date.now(),
-            created: Date.now() }
-        });
+            size: estimatedSize);
+            accessed: Date.now();
+            created: Date.now( });
     }
     
     /**
      * Add item to audio cache with size tracking
      */'
     addToAudioCache(key: string, audio: HTMLAudioElement, estimatedSize: number = 0): void { // Remove oldest items if cache is full
-        if(this.cleanupTargets.audioCache.size >= this.limits.audioCache') {'
-            ';'
-        }'
+        if(this.cleanupTargets.audioCache.size >= this.limits.audioCache) {'
+            ';
+
+        }
+
             this._evictOldestCacheItems('audioCache', 3); }
         }
         
         this.cleanupTargets.audioCache.set(key, { audio)
-            size: estimatedSize),
-            accessed: Date.now(),
-            created: Date.now() }
-        });
+            size: estimatedSize);
+            accessed: Date.now();
+            created: Date.now( });
     }
     
     /**
@@ -307,29 +285,27 @@ export class ProactiveCleanupManager {'
             cleanup: cleanupFn);
             priority);
             lastRun: 0,);
-            runCount: 0) }
-        });
+            runCount: 0 ,});
     }
     
     /**
      * Remove custom cleanup function
      */
     unregisterCustomCleanup(name: string): void { this.cleanupTargets.customCleanups.delete(name); }
-    }
     
     /**
      * Get cleanup statistics
      */
     getStats(): ExtendedStatistics { return { ...this.stats,
-            registeredTimers: this.cleanupTargets.timers.size,
+            registeredTimers: this.cleanupTargets.timers.size;
             registeredListeners: Array.from(this.cleanupTargets.eventListeners.values();
                 .reduce((sum, arr) => sum + arr.length, 0),
-            imageCacheSize: this.cleanupTargets.imageCache.size,
-            audioCacheSize: this.cleanupTargets.audioCache.size,';
-            customCleanups: this.cleanupTargets.customCleanups.size,' };'
-            nextCleanupIn: Math.max(0, this.nextCleanup - (Date.now() - this.lastCleanup)'); }
-        };
-    }
+            imageCacheSize: this.cleanupTargets.imageCache.size;
+            audioCacheSize: this.cleanupTargets.audioCache.size,
+            customCleanups: this.cleanupTargets.customCleanups.size,' };
+
+            nextCleanupIn: Math.max(0, this.nextCleanup - (Date.now() - this.lastCleanup)'); }'
+        }
     
     /**
      * Force immediate cleanup with specified strategy'
@@ -337,7 +313,6 @@ export class ProactiveCleanupManager {'
     forceCleanup(strategyName: string = 'comprehensive', context: CleanupContext = { ): CleanupResults {
         const strategy = this._getCleanupStrategy(strategyName);
         return this._executeCleanupStrategy(strategy, context); }
-    }
     
     // Private methods
     
@@ -347,64 +322,60 @@ export class ProactiveCleanupManager {'
     private _determineCleanupStrategy(context: CleanupContext): CleanupStrategy { const memoryPressure = context.memoryPressure || this._calculateMemoryPressure();
         const timeSinceLastCleanup = Date.now() - this.lastCleanup;
         const recentEfficiency = this.cleanupEfficiency;
-        ;
         // Select strategy based on conditions
-        if(memoryPressure > 0.9') {'
-            ';'
-        }'
-            return this._getCleanupStrategy('emergency');' }'
-        } else if (memoryPressure > 0.7 || recentEfficiency < 0.5') { ''
-            return this._getCleanupStrategy('aggressive'');' }'
-        } else if (this.mode === 'aggressive' || timeSinceLastCleanup > this.scheduling.maxInterval') { ''
-            return this._getCleanupStrategy('comprehensive');' }'
-        } else if (memoryPressure < 0.3 && recentEfficiency > 0.8') { ''
-            return this._getCleanupStrategy('minimal''); }'
-        } else {  ' }'
-            return this._getCleanupStrategy('standard'); }
+        if(memoryPressure > 0.9) {'
+            ';
+
         }
-    }
+
+            return this._getCleanupStrategy('emergency);' }
+
+        } else if(memoryPressure > 0.7 || recentEfficiency < 0.5) { ''
+            return this._getCleanupStrategy('aggressive'');' }
+
+        } else if(this.mode === 'aggressive' || timeSinceLastCleanup > this.scheduling.maxInterval) {;
+            return this._getCleanupStrategy('comprehensive);' }
+
+        } else if(memoryPressure < 0.3 && recentEfficiency > 0.8) { ''
+            return this._getCleanupStrategy('minimal''); else {  ' }
+
+            return this._getCleanupStrategy('standard);
     
     /**
      * Get cleanup strategy configuration'
      */''
-    private _getCleanupStrategy(name: string'): CleanupStrategy { const strategies: Record<string, CleanupStrategy> = {'
+    private _getCleanupStrategy(name: string): CleanupStrategy { const strategies: Record<string, CleanupStrategy> = {'
             minimal: {''
-                name: 'minimal',';
-                priority: 1,'';
+                name: 'minimal',
+                priority: 1,
                 actions: ['cleanup_old_timers', 'evict_expired_cache'],
-                memoryThreshold: 0.3,
-                timeLimit: 10 }
-            },'
+                memoryThreshold: 0.3;
+                timeLimit: 10 ,};
             standard: { ''
-                name: 'standard',';
-                priority: 2,'';
+                name: 'standard',
+                priority: 2,
                 actions: ['cleanup_timers', 'cleanup_listeners', 'evict_cache', 'custom_cleanups'],
-                memoryThreshold: 0.6,
-                timeLimit: 50 }
-            },'
+                memoryThreshold: 0.6;
+                timeLimit: 50 ,};
             comprehensive: { ''
-                name: 'comprehensive',';
-                priority: 3,'';
+                name: 'comprehensive',
+                priority: 3,
                 actions: ['cleanup_all_timers', 'cleanup_all_listeners', 'cleanup_contexts', 'evict_all_cache', 'custom_cleanups', 'force_gc'],
-                memoryThreshold: 0.8,
-                timeLimit: 100 }
-            },'
+                memoryThreshold: 0.8;
+                timeLimit: 100 ,};
             aggressive: { ''
-                name: 'aggressive',';
-                priority: 4,'';
+                name: 'aggressive',
+                priority: 4,
                 actions: ['emergency_timer_cleanup', 'emergency_listener_cleanup', 'purge_all_cache', 'emergency_custom_cleanups', 'force_gc'],
-                memoryThreshold: 1.0,
-                timeLimit: 200 }
-            },'
+                memoryThreshold: 1.0;
+                timeLimit: 200 ,};
             emergency: { ''
-                name: 'emergency',';
-                priority: 5,'';
+                name: 'emergency',
+                priority: 5,
                 actions: ['clear_all_timers', 'clear_all_listeners', 'clear_all_cache', 'clear_all_contexts', 'emergency_gc'],
-                memoryThreshold: 1.0,
-                timeLimit: 500 }
-            }
-        },
-        
+                memoryThreshold: 1.0;
+                timeLimit: 500 ,}
+        };
         return strategies[name] || strategies.standard;
     }
     
@@ -412,20 +383,18 @@ export class ProactiveCleanupManager {'
      * Execute cleanup strategy
      */
     private _executeCleanupStrategy(strategy: CleanupStrategy, context: CleanupContext): CleanupResults { const results: CleanupResults = {
-            strategy: strategy.name,
-            actions: [],
-            timersCleared: 0,
-            listenersRemoved: 0,
-            cacheItemsEvicted: 0,
-            contextsCleared: 0,
-            customCleanupsRun: 0,
-            memoryFreed: 0 }
-        },
-        
+            strategy: strategy.name;
+            actions: [];
+            timersCleared: 0;
+            listenersRemoved: 0;
+            cacheItemsEvicted: 0;
+            contextsCleared: 0;
+            customCleanupsRun: 0;
+            memoryFreed: 0 };
         const startTime = performance.now();
         
-        for (const action of strategy.actions) { if (performance.now() - startTime > strategy.timeLimit) { }
-                results.actions!.push(`${action)_timeout`});
+        for (const, action of, strategy.actions) { if (performance.now() - startTime > strategy.timeLimit) { }
+                results.actions!.push(`${action}_timeout`});
                 break;
             }
             
@@ -438,9 +407,8 @@ export class ProactiveCleanupManager {'
                 if (actionResult.cacheItemsEvicted) results.cacheItemsEvicted! += actionResult.cacheItemsEvicted;
                 if (actionResult.contextsCleared) results.contextsCleared! += actionResult.contextsCleared;
                 if (actionResult.customCleanupsRun) results.customCleanupsRun! += actionResult.customCleanupsRun;
-                 }
-            } catch (error) {
-                results.actions!.push(`${action)_error`});
+                 } catch (error) {
+                results.actions!.push(`${action}_error`});
                 console.error(`[ProactiveCleanupManager] Action failed: ${action}`, error);
             }
         }
@@ -453,25 +421,27 @@ export class ProactiveCleanupManager {'
      */
     private _executeCleanupAction(action: string, context: CleanupContext): ActionResult {
         const result: ActionResult = { action }''
-        switch(action') {'
-            '';
+        switch(action) {'
+
             case 'cleanup_old_timers':'';
-                result.timersCleared = this._cleanupTimers(300000'); // 5 minutes old
+                result.timersCleared = this._cleanupTimers(300000); // 5 minutes old
                 break;''
             case 'cleanup_timers':'';
-                result.timersCleared = this._cleanupTimers(60000'); // 1 minute old
+                result.timersCleared = this._cleanupTimers(60000); // 1 minute old
                 break;''
             case 'cleanup_all_timers':'';
-                result.timersCleared = this._cleanupTimers(0'); // All timers
+                result.timersCleared = this._cleanupTimers(0); // All timers
                 break;''
             case 'emergency_timer_cleanup':'';
             case 'clear_all_timers':'';
                 result.timersCleared = this._clearAllTimers()';
             case 'cleanup_listeners':')';
-                result.listenersRemoved = this._cleanupEventListeners(300000');'
+                result.listenersRemoved = this._cleanupEventListeners(300000);
+
                 break;''
             case 'cleanup_all_listeners':'';
-                result.listenersRemoved = this._cleanupEventListeners(0');'
+                result.listenersRemoved = this._cleanupEventListeners(0);
+
                 break;''
             case 'emergency_listener_cleanup':'';
             case 'clear_all_listeners':'';
@@ -479,10 +449,10 @@ export class ProactiveCleanupManager {'
             case 'evict_expired_cache':'';
                 result.cacheItemsEvicted = this._evictExpiredCacheItems()';
             case 'evict_cache':')';
-                result.cacheItemsEvicted = this._evictLRUCacheItems(0.3'); // 30% of cache
+                result.cacheItemsEvicted = this._evictLRUCacheItems(0.3); // 30% of cache
                 break;''
             case 'evict_all_cache':'';
-                result.cacheItemsEvicted = this._evictLRUCacheItems(0.7'); // 70% of cache
+                result.cacheItemsEvicted = this._evictLRUCacheItems(0.7); // 70% of cache
                 break;''
             case 'purge_all_cache':'';
             case 'clear_all_cache':'';
@@ -492,12 +462,13 @@ export class ProactiveCleanupManager {'
             case 'clear_all_contexts':'';
                 result.contextsCleared = this._clearAllCanvasContexts()';
             case 'custom_cleanups':')';
-                result.customCleanupsRun = this._runCustomCleanups(false');'
+                result.customCleanupsRun = this._runCustomCleanups(false);
+
                 break;''
             case 'emergency_custom_cleanups':'';
-                result.customCleanupsRun = this._runCustomCleanups(true');
-                break;'
-                '';
+                result.customCleanupsRun = this._runCustomCleanups(true);
+                break;
+
             case 'force_gc':'';
                 this._requestGarbageCollection()';
             case 'emergency_gc':);
@@ -514,21 +485,20 @@ export class ProactiveCleanupManager {'
      */
     private _cleanupTimers(maxAge: number): number { const now = Date.now();
         let cleared = 0;
-        ';'
+        ';
+
         this.cleanupTargets.timers.forEach(timer => { );''
-            if(now - timer.created > maxAge') {'
+            if(now - timer.created > maxAge) {'
                 try {
-            }'
-                    if (timer.type === 'interval') { }
+            }
+
+                    if(timer.type === 'interval) { }'
                         clearInterval(timer.id); }
                     } else { clearTimeout(timer.id); }
-                    }
                     this.cleanupTargets.timers.delete(timer);
                     cleared++;
                 } catch (error) { // Timer might already be cleared }
-                }
-            }
-        });
+});
         
         return cleared;
     }
@@ -537,16 +507,15 @@ export class ProactiveCleanupManager {'
      * Clear all timers
      */
     private _clearAllTimers(): number { let cleared = 0;
-        ';'
+        ';
+
         this.cleanupTargets.timers.forEach(timer => { ')'
             try {);''
-                if (timer.type === 'interval') { }
+                if(timer.type === 'interval) { }'
                     clearInterval(timer.id); }
                 } else { clearTimeout(timer.id); }
-                }
                 cleared++;
             } catch (error) { // Timer might already be cleared }
-            }
         });
         
         this.cleanupTargets.timers.clear();
@@ -568,17 +537,12 @@ export class ProactiveCleanupManager {'
         
         }
                         removed++; }
-                        return false; }
-                    } catch (error) { // Listener might already be removed
-                        return false; }
-                    }
-                }
+                        return false; catch (error) { // Listener might already be removed
+                        return false;
                 return true;
             });
             
-            if (filteredListeners.length === 0) { this.cleanupTargets.eventListeners.delete(key); }
-            } else { this.cleanupTargets.eventListeners.set(key, filteredListeners); }
-            }
+            if (filteredListeners.length === 0) { this.cleanupTargets.eventListeners.delete(key); } else { this.cleanupTargets.eventListeners.set(key, filteredListeners); }
         }
         
         return removed;
@@ -589,18 +553,16 @@ export class ProactiveCleanupManager {'
      */
     private _clearAllEventListeners(): number { let removed = 0;
         
-        for(const listeners of this.cleanupTargets.eventListeners.values() {
+        for(const, listeners of, this.cleanupTargets.eventListeners.values() {
         
-            for (const listener of listeners) {
+            for (const, listener of, listeners) {
                 try {
                     listener.target.removeEventListener(listener.event, listener.listener as EventListener);
         
         }
                     removed++; }
                 } catch (error) { // Listener might already be removed }
-                }
-            }
-        }
+}
         
         this.cleanupTargets.eventListeners.clear();
         return removed;
@@ -618,8 +580,7 @@ export class ProactiveCleanupManager {'
                 this.cleanupTargets.imageCache.delete(key);
         }
                 evicted++; }
-            }
-        }
+}
         
         // Evict from audio cache
         for(const [key, item] of this.cleanupTargets.audioCache) {
@@ -627,8 +588,7 @@ export class ProactiveCleanupManager {'
                 this.cleanupTargets.audioCache.delete(key);
         }
                 evicted++; }
-            }
-        }
+}
         
         return evicted;
     }
@@ -643,7 +603,7 @@ export class ProactiveCleanupManager {'
             .sort(([,a], [,b]) => a.accessed - b.accessed);
         const imageEvictCount = Math.floor(imageItems.length * percentage);
         
-        for(let i = 0; i < imageEvictCount; i++) {
+        for(let, i = 0; i < imageEvictCount; i++) {
         
             this.cleanupTargets.imageCache.delete(imageItems[i][0]);
         
@@ -656,7 +616,7 @@ export class ProactiveCleanupManager {'
             .sort(([,a], [,b]) => a.accessed - b.accessed);
         const audioEvictCount = Math.floor(audioItems.length * percentage);
         
-        for(let i = 0; i < audioEvictCount; i++) {
+        for(let, i = 0; i < audioEvictCount; i++) {
         
             this.cleanupTargets.audioCache.delete(audioItems[i][0]);
         
@@ -674,7 +634,6 @@ export class ProactiveCleanupManager {'
         this.cleanupTargets.imageCache.clear();
         this.cleanupTargets.audioCache.clear();
         return total; }
-    }
     
     /**
      * Run custom cleanup functions
@@ -682,7 +641,7 @@ export class ProactiveCleanupManager {'
     private _runCustomCleanups(emergency: boolean = false): number { let run = 0;
         const now = Date.now();
         
-        // Sort by priority (highest first);
+        // Sort by priority (highest, first);
         const cleanups = Array.from(this.cleanupTargets.customCleanups.entries();
             .sort(([,a], [,b]) => b.priority - a.priority);
         
@@ -708,8 +667,7 @@ export class ProactiveCleanupManager {'
      * Get current memory usage
      */''
     private _getMemoryUsage()';
-        if (typeof performance !== 'undefined' && (performance as any).memory) { return (performance as any).memory.usedJSHeapSize; }
-        }
+        if (typeof, performance !== 'undefined' && (performance, as any).memory) { return (performance, as any).memory.usedJSHeapSize; }
         return 0;
     }
     
@@ -717,9 +675,8 @@ export class ProactiveCleanupManager {'
      * Calculate memory pressure'
      */''
     private _calculateMemoryPressure()';
-        if (typeof performance !== 'undefined' && (performance as any).memory) { const memory = (performance as any).memory;
+        if (typeof, performance !== 'undefined' && (performance, as any).memory) { const memory = (performance, as any).memory;
             return memory.usedJSHeapSize / memory.jsHeapSizeLimit; }
-        }
         return 0;
     }
     
@@ -727,10 +684,9 @@ export class ProactiveCleanupManager {'
      * Request garbage collection'
      */''
     private _requestGarbageCollection(''';
-        // Modern browsers don't expose direct GC control'
-        // This is a placeholder for potential GC hints')'
-        if (typeof window !== 'undefined' && (window as any).gc) { (window as any).gc(); }
-        }
+        // Modern, browsers don't, expose direct, GC control'
+        // This, is a, placeholder for, potential GC, hints)'
+        if (typeof, window !== 'undefined' && (window, as any).gc) { (window, as any).gc(); }
     }
     
     /**
@@ -738,15 +694,14 @@ export class ProactiveCleanupManager {'
      */'
     private _forceGarbageCollection(): void { // Emergency GC attempts
         this._requestGarbageCollection()';
-        if (typeof performance !== 'undefined' && (performance as any).memory) {
-            const memory = (performance as any).memory;
+        if (typeof, performance !== 'undefined' && (performance, as any).memory) {
+            const memory = (performance, as any).memory;
             if(memory.usedJSHeapSize > memory.jsHeapSizeLimit * 0.9) {
                 // Last resort: create temporary objects to trigger GC
                 const temp = new Array(1000).fill(0).map(() => new Array(1000).fill(0)
             }
                 temp.length = 0; }
-            }
-        }
+}
     }
     
     /**
@@ -765,7 +720,6 @@ export class ProactiveCleanupManager {'
         // Track strategy usage
         const strategyCount = this.stats.strategiesUsed.get(strategy.name) || 0;
         this.stats.strategiesUsed.set(strategy.name, strategyCount + 1); }
-    }
     
     /**
      * Schedule next cleanup based on results
@@ -779,12 +733,9 @@ export class ProactiveCleanupManager {'
         }
             nextInterval *= this.scheduling.pressureMultiplier; }
         } else if (memoryPressure < 0.3) { nextInterval *= this.scheduling.idleMultiplier; }
-        }
         
         // Adjust based on cleanup efficiency
-        if (this.cleanupEfficiency < 0.5) { nextInterval *= 0.8; // Clean more frequently if inefficient }
-        } else if (this.cleanupEfficiency > 1.5) { nextInterval *= 1.2; // Clean less frequently if very efficient }
-        }
+        if (this.cleanupEfficiency < 0.5) { nextInterval *= 0.8; // Clean more frequently if inefficient } else if (this.cleanupEfficiency > 1.5) { nextInterval *= 1.2; // Clean less frequently if very efficient }
         
         // Apply bounds
         this.nextCleanup = Math.max();
@@ -803,7 +754,7 @@ export class ProactiveCleanupManager {'
             .sort(([,a], [,b]) => a.accessed - b.accessed);
         
         const evictCount = Math.min(count, items.length);
-        for(let i = 0; i < evictCount; i++) {
+        for(let, i = 0; i < evictCount; i++) {
             
         }
             cache.delete(items[i][0]); }
@@ -816,13 +767,13 @@ export class ProactiveCleanupManager {'
      * Cleanup canvas contexts'
      */''
     private _cleanupCanvasContexts(''';
-        // Canvas contexts dont need explicit cleanup in most cases
-        // This is a placeholder for context-specific cleanup
-        return 0;
+        // Canvas, contexts dont, need explicit, cleanup in, most cases
+        // This, is a, placeholder for, context-specific, cleanup
+        return, 0;
     }
     
     /**
-     * Clear all canvas contexts
+     * Clear, all canvas, contexts
      */)'
     private _clearAllCanvasContexts(): number { const count = this.cleanupTargets.canvasContexts.size;''
-        this.cleanupTargets.canvasContexts.clear(') }
+        this.cleanupTargets.canvasContexts.clear(' }'

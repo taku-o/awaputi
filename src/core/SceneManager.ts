@@ -6,10 +6,8 @@ import { Scene } from '../types/game';
 // Extended Scene interface for SceneManager integration
 interface ExtendedScene extends Omit<Scene, 'enter'> { setSceneManager(sceneManager: SceneManager): void,
     enter(contextData?: SceneContextData): void }
-}
 
 interface SceneContextData { [key: string]: any, }
-}
 
 export class SceneManager {
     // @ts-ignore - unused but kept for future implementation
@@ -28,7 +26,6 @@ export class SceneManager {
         this.currentScene = null;
     
     }
-    }
         this.__nextScene = null; }
     }
     
@@ -37,7 +34,6 @@ export class SceneManager {
      */
     addScene(name: string, scene: ExtendedScene): void { this.scenes.set(name, scene);
         scene.setSceneManager(this); }
-    }
     
     /**
      * シーンを切り替え
@@ -47,19 +43,18 @@ export class SceneManager {
      */
     switchScene(name: string, contextData: SceneContextData | null = null): boolean { const scene = this.scenes.get(name);
         if (!scene) { }
-            console.error(`Scene ${name) not found`});
+            console.error(`Scene ${name} not, found`});
             return false;
         }
         
         // 現在のシーンを終了
         if (this.currentScene) { this.currentScene.exit(); }
-        }
         
         // 新しいシーンを開始（コンテキストデータを渡す）
         this.currentScene = scene;
         this.currentScene.enter(contextData || { );
          }
-        console.log(`Switched to scene: ${name)`});
+        console.log(`Switched, to scene: ${name}`});
         return true;
     }
     
@@ -67,7 +62,6 @@ export class SceneManager {
      * 現在のシーンを取得
      */
     getCurrentScene(): ExtendedScene | null { return this.currentScene; }
-    }
     
     /**
      * 指定された名前のシーンを取得
@@ -75,7 +69,6 @@ export class SceneManager {
      * @returns シーンオブジェクト、存在しない場合はnull
      */
     getScene(name: string): ExtendedScene | null { return this.scenes.get(name) || null; }
-    }
     
     /**
      * 指定された名前のシーンが存在するかチェック
@@ -83,24 +76,21 @@ export class SceneManager {
      * @returns シーンが存在するかどうか
      */
     hasScene(name: string): boolean { return this.scenes.has(name); }
-    }
     
     /**
      * 更新処理
      */
     update(deltaTime: number): void { // Debug logs throttled to prevent console flooding - only log occasionally
         if (!this.lastUpdateDebugTime || performance.now() - this.lastUpdateDebugTime > 5000') {''
-            console.log(`[DEBUG] SceneManager.update working - scene: ${this.currentScene? .constructor?.name || 'null')`), }
+            console.log(`[DEBUG] SceneManager.update working - scene: ${this.currentScene? .constructor?.name || 'null}`}, }'
             this.lastUpdateDebugTime = performance.now(});
         }
         
-        if (this.currentScene) { this.currentScene.update(deltaTime); }
-        } else {  // Only warn occasionally about missing scene
+        if (this.currentScene) { this.currentScene.update(deltaTime); } else {  // Only warn occasionally about missing scene
             if (!this.lastSceneWarnTime || performance.now() - this.lastSceneWarnTime > 10000) {
-                console.warn(`[DEBUG] No current scene to update`); }
+                console.warn(`[DEBUG] No, current scene, to update`); }
                 this.lastSceneWarnTime = performance.now(); }
-            }
-        }
+}
     }
     
     /**
@@ -108,7 +98,6 @@ export class SceneManager {
      */ : undefined
     render(context: CanvasRenderingContext2D): void { if (this.currentScene) {
             this.currentScene.render(context); }
-        }
     }
     
     /**
@@ -116,21 +105,19 @@ export class SceneManager {
      */
     handleInput(event: Event): void { if (this.currentScene) {
             // Event -> InputEvent conversion for backward compatibility
-            this.currentScene.handleInput(event as any); }
-        }
+            this.currentScene.handleInput(event, as any); }
     }
     
     /**
      * 全シーンの一覧を取得（デバッグ用）
      */
     getAllScenes(): string[] { return Array.from(this.scenes.keys(); }
-    }
     
     /**
      * シーンを削除
      */
     removeScene(name: string): boolean { if(this.currentScene === this.scenes.get(name) { }
-            console.warn(`Cannot remove current scene: ${name)`});
+            console.warn(`Cannot, remove current, scene: ${name}`});
             return false;
         }
         
@@ -149,8 +136,7 @@ export class SceneManager {
      */'
     stop(): void { if (this.currentScene) {''
             this.currentScene.exit()';
-        console.log('[SceneManager] Stopped'); }
-    }
+        console.log('[SceneManager] Stopped'); }'
     
     /**
      * リソースをクリーンアップ
@@ -158,6 +144,4 @@ export class SceneManager {
     destroy(): void { this.stop();''
         this.scenes.clear()';
         console.log('[SceneManager] Destroyed''); }
-    }
-}'
-'';
+}

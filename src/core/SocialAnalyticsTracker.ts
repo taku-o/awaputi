@@ -8,48 +8,40 @@ export class SocialAnalyticsTracker {
     constructor() {
         // パフォーマンス統計
         this.performanceStats = {
-            shareRequests: 0,
-            successfulShares: 0,
-            failedShares: 0,
-            averageResponseTime: 0,
-    }
+            shareRequests: 0;
+            successfulShares: 0;
+            failedShares: 0;
+            averageResponseTime: 0;
     }
             platformBreakdown: { }
-                twitter: { requests: 0, successes: 0, failures: 0 },
-                facebook: { requests: 0, successes: 0, failures: 0 },
-                webShare: { requests: 0, successes: 0, failures: 0 }
-            }
+                twitter: { requests: 0, successes: 0, failures: 0 ,},
+                facebook: { requests: 0, successes: 0, failures: 0 ,},
+                webShare: { requests: 0, successes: 0, failures: 0 ,}
         };
 
         // エラー統計
         this.errorStats = { total: 0 }
-            byType: {},
-            byPlatform: {},
+            byType: {};
+            byPlatform: {};
             recent: [];
         },
 
         // ユーザー行動統計
         this.userBehaviorStats = { sharePromptViews: 0,
-            sharePromptAccepts: 0,
-            sharePromptDismissals: 0,
-            screenshotCaptures: 0,
-            averageTimeToShare: 0 }
-        },
-
+            sharePromptAccepts: 0;
+            sharePromptDismissals: 0;
+            screenshotCaptures: 0;
+            averageTimeToShare: 0 ,};
         // 国際化統計
         this.i18nStats = { languageUsage: new Map(),
-            regionUsage: new Map(),
-            translationRequests: 0,
-            translationErrors: 0,
-            cachedTranslations: 0 }
-        },
-
+            regionUsage: new Map();
+            translationRequests: 0;
+            translationErrors: 0;
+            cachedTranslations: 0 ,};
         // タイムスタンプ記録
         this.timestamps = { sessionStart: Date.now(),
-            lastShareAttempt: null,
-            lastSuccessfulShare: null }
-        },
-
+            lastShareAttempt: null;
+            lastSuccessfulShare: null ,};
         // イベント履歴（最新100件）
         this.eventHistory = [];
         this.maxHistorySize = 100;
@@ -65,7 +57,7 @@ export class SocialAnalyticsTracker {
         const event = {
             action }
             timestamp, }
-            data: { ...data },
+            data: { ...data;
             sessionTime: timestamp - this.timestamps.sessionStart;
         },
 
@@ -74,7 +66,6 @@ export class SocialAnalyticsTracker {
         
         // プラットフォーム別統計
         if (data.platform) { this.updatePlatformStats(data.platform, action, data); }
-        }
     }
 
     /**
@@ -103,18 +94,14 @@ export class SocialAnalyticsTracker {
 
         // 最近のエラー履歴
         const errorRecord = { type: errorType,
-            timestamp: Date.now(),
-            data: errorData }
-        },
-        
+            timestamp: Date.now();
+            data: errorData ,};
         this.errorStats.recent.push(errorRecord);
         if (this.errorStats.recent.length > 50) { this.errorStats.recent.shift(); }
-        }
 
-        this.addToHistory({ action: 'error')
+        this.addToHistory({ action: 'error)'
             timestamp: errorRecord.timestamp,);
-            data: errorRecord) }
-    }
+            data: errorRecord ,}
 
     /**
      * ユーザー行動の記録
@@ -122,16 +109,19 @@ export class SocialAnalyticsTracker {
      * @param {Object} data - 行動データ
      */
     trackUserBehavior(behavior, data = { ) {'
-        '';
-        switch (behavior') {''
+
+        switch(behavior) {''
             case 'sharePromptView':;
-                this.userBehaviorStats.sharePromptViews++;'
+                this.userBehaviorStats.sharePromptViews++;
+
                 break;''
             case 'sharePromptAccept':;
-                this.userBehaviorStats.sharePromptAccepts++;'
+                this.userBehaviorStats.sharePromptAccepts++;
+
                 break;''
             case 'sharePromptDismiss':;
-                this.userBehaviorStats.sharePromptDismissals++;'
+                this.userBehaviorStats.sharePromptDismissals++;
+
                 break;''
             case 'screenshotCapture':;
                 this.userBehaviorStats.screenshotCaptures++;
@@ -140,10 +130,9 @@ export class SocialAnalyticsTracker {
         }
 
         this.addToHistory({ )
-            action: behavior),
-            timestamp: Date.now(),
-            data }
-        });
+            action: behavior);
+            timestamp: Date.now();
+            data });
     }
 
     /**
@@ -152,32 +141,34 @@ export class SocialAnalyticsTracker {
      * @param {Object} data - データ
      */
     trackI18nEvent(action, data = { ) {'
-        '';
-        switch (action') {''
+
+        switch(action) {''
             case 'language_request':'';
                 const language = data.language || 'unknown';
                 this.i18nStats.languageUsage.set();
                     language)';
                     (this.i18nStats.languageUsage.get(language) || 0) + 1'';
-                ');'
-                break;'
-                '';
+                ');
+
+                break;
+
             case 'region_request':'';
                 const region = data.region || 'unknown';
                 this.i18nStats.regionUsage.set();
                     region)';
                     (this.i18nStats.regionUsage.get(region) || 0) + 1'';
-                ');'
-                break;'
-                '';
+                ');
+
+                break;
+
             case 'translation_request':;
                 this.i18nStats.translationRequests++;
-                break;'
-                '';
+                break;
+
             case 'translation_error':;
                 this.i18nStats.translationErrors++;
-                break;'
-                '';
+                break;
+
             case 'cache_hit':;
                 this.i18nStats.cachedTranslations++;
     }
@@ -185,8 +176,8 @@ export class SocialAnalyticsTracker {
         }
 
         this.addToHistory({ );
-            action: `i18n_${action)`, }
-            timestamp: Date.now(}),
+            action: `i18n_${action}`, }
+            timestamp: Date.now(});
             data;
         });
     }
@@ -198,26 +189,28 @@ export class SocialAnalyticsTracker {
      */
     updatePerformanceStats(action, data = { ) {
         const startTime = data.startTime;
-        const endTime = data.endTime || Date.now();'
-'';
-        switch (action') {''
+        const endTime = data.endTime || Date.now();
+
+        switch(action) {''
             case 'share_request':;
                 this.performanceStats.shareRequests++;
                 this.timestamps.lastShareAttempt = endTime;
-                break;'
-                '';
+                break;
+
             case 'share_success':;
                 this.performanceStats.successfulShares++;
                 this.timestamps.lastSuccessfulShare = endTime;
                 
                 // レスポンス時間の計算
                 if (startTime) {
-                    const responseTime = endTime - startTime;'
-    }'
-                    this.updateAverageResponseTime(responseTime'); }
+                    const responseTime = endTime - startTime;
+
+    }
+
+                    this.updateAverageResponseTime(responseTime); }
                 }
-                break;'
-                '';
+                break;
+
             case 'share_failure':;
                 this.performanceStats.failedShares++;
                 break;
@@ -233,29 +226,29 @@ export class SocialAnalyticsTracker {
     updatePlatformStats(platform, action, data) {
         if (!this.performanceStats.platformBreakdown[platform]) {
             this.performanceStats.platformBreakdown[platform] = {
-                requests: 0,
-                successes: 0,
+                requests: 0;
+                successes: 0;
     }
                 failures: 0 }
-            },
-        }
+            }
 
-        const stats = this.performanceStats.platformBreakdown[platform];'
-        '';
-        switch(action') {'
-            '';
+        const stats = this.performanceStats.platformBreakdown[platform];
+
+        switch(action) {'
+
             case 'share_request':;
-                stats.requests++;'
+                stats.requests++;
+
                 break;''
             case 'share_success':;
-                stats.successes++;'
+                stats.successes++;
+
                 break;''
             case 'share_failure':;
                 stats.failures++;
         }
                 break; }
-        }
-    }
+}
 
     /**
      * 平均レスポンス時間の更新
@@ -270,8 +263,7 @@ export class SocialAnalyticsTracker {
             this.performanceStats.averageResponseTime = responseTime; }
         } else {  this.performanceStats.averageResponseTime =  }
                 ((currentAverage * (totalSuccesses - 1)) + responseTime) / totalSuccesses; }
-        }
-    }
+}
 
     /**
      * イベント履歴への追加
@@ -282,8 +274,7 @@ export class SocialAnalyticsTracker {
         if (this.eventHistory.length > this.maxHistorySize) {
     }
             this.eventHistory.shift(); }
-        }
-    }
+}
 
     /**
      * パフォーマンス統計の取得
@@ -291,14 +282,13 @@ export class SocialAnalyticsTracker {
      */
     getPerformanceStats() {
         const totalRequests = this.performanceStats.shareRequests;
-        const successRate = totalRequests > 0 ?   : undefined;
+        const successRate = totalRequests > 0 ?   : undefined
             (this.performanceStats.successfulShares / totalRequests) * 100 : 0;
 
-        return { ...this.performanceStats }
+        return { ...this.performanceStats
             successRate: Math.round(successRate * 100) / 100, };
             sessionDuration: Date.now() - this.timestamps.sessionStart, }
-            timestamps: { ...this.timestamps }
-        },
+            timestamps: { ...this.timestamps;
     }
 
     /**
@@ -309,7 +299,7 @@ export class SocialAnalyticsTracker {
         return { ...this.errorStats,
     }
             errorRate: this.performanceStats.shareRequests > 0 ? };
-                (this.errorStats.total / this.performanceStats.shareRequests) * 100 : 0 }
+                (this.errorStats.total / this.performanceStats.shareRequests) * 100 : 0 
         },
     }
 
@@ -325,8 +315,7 @@ export class SocialAnalyticsTracker {
     }
         return { ...this.userBehaviorStats, };
             acceptanceRate: Math.round(acceptanceRate * 100) / 100 }
-        },
-    }
+        }
 
     /**
      * 国際化統計の取得
@@ -334,13 +323,13 @@ export class SocialAnalyticsTracker {
      */
     getI18nStats() {
         return { languageUsage: Object.fromEntries(this.i18nStats.languageUsage),
-            regionUsage: Object.fromEntries(this.i18nStats.regionUsage),
-            translationRequests: this.i18nStats.translationRequests,
-            translationErrors: this.i18nStats.translationErrors,
-            cachedTranslations: this.i18nStats.cachedTranslations,
-    }
+            regionUsage: Object.fromEntries(this.i18nStats.regionUsage);
+            translationRequests: this.i18nStats.translationRequests;
+            translationErrors: this.i18nStats.translationErrors;
+            cachedTranslations: this.i18nStats.cachedTranslations;
+    ,}
             cacheHitRate: this.i18nStats.translationRequests > 0 ? };
-                (this.i18nStats.cachedTranslations / this.i18nStats.translationRequests) * 100 : 0 }
+                (this.i18nStats.cachedTranslations / this.i18nStats.translationRequests) * 100 : 0 
         },
     }
 
@@ -350,18 +339,17 @@ export class SocialAnalyticsTracker {
      */
     generateReport() {
         return { summary: {
-                sessionStart: new Date(this.timestamps.sessionStart),
+                sessionStart: new Date(this.timestamps.sessionStart);
     }
                 sessionDuration: Date.now() - this.timestamps.sessionStart, };
                 totalEvents: this.eventHistory.length }
-            },
-            performance: this.getPerformanceStats(),
-            errors: this.getErrorStats(),
-            userBehavior: this.getUserBehaviorStats(),
-            i18n: this.getI18nStats(),
-            recentEvents: this.eventHistory.slice(-10),
-        };
-    }
+            };
+            performance: this.getPerformanceStats();
+            errors: this.getErrorStats();
+            userBehavior: this.getUserBehaviorStats();
+            i18n: this.getI18nStats();
+            recentEvents: this.eventHistory.slice(-10);
+        }
 
     /**
      * 分析データのエクスポート
@@ -369,13 +357,14 @@ export class SocialAnalyticsTracker {
      */
     exportAnalyticsData() {
         return { metadata: {
-                exportDate: new Date().toISOString(),';
-                sessionStart: new Date(this.timestamps.sessionStart).toISOString(),'
-    }'
-                sessionDuration: Date.now('' };'
-                version: '1.0' })
-            },)
-            data: this.generateReport(),
+                exportDate: new Date().toISOString(),
+                sessionStart: new Date(this.timestamps.sessionStart).toISOString();
+    ,}
+
+                sessionDuration: Date.now('' };
+
+                version: '1.0' }),)
+            data: this.generateReport();
             rawEvents: this.eventHistory;
         },
     }
@@ -385,33 +374,28 @@ export class SocialAnalyticsTracker {
      */
     resetStats() {
         this.performanceStats = {
-            shareRequests: 0,
-            successfulShares: 0,
-            failedShares: 0,
+            shareRequests: 0;
+            successfulShares: 0;
+            failedShares: 0;
     }
             averageResponseTime: 0, }
-            platformBreakdown: {},
-        
+            platformBreakdown: {};
         this.errorStats = { total: 0 }
-            byType: {},
-            byPlatform: {},
+            byType: {};
+            byPlatform: {};
             recent: [];
         },
         
         this.userBehaviorStats = { sharePromptViews: 0,
-            sharePromptAccepts: 0,
-            sharePromptDismissals: 0,
-            screenshotCaptures: 0,
-            averageTimeToShare: 0 }
-        },
-        
+            sharePromptAccepts: 0;
+            sharePromptDismissals: 0;
+            screenshotCaptures: 0;
+            averageTimeToShare: 0 ,};
         this.i18nStats = { languageUsage: new Map(),
-            regionUsage: new Map(),
-            translationRequests: 0,
-            translationErrors: 0,
-            cachedTranslations: 0 }
-        },
-        
+            regionUsage: new Map();
+            translationRequests: 0;
+            translationErrors: 0;
+            cachedTranslations: 0 ,};
         this.eventHistory = [];
         this.timestamps.sessionStart = Date.now();
     }
@@ -422,7 +406,9 @@ export class SocialAnalyticsTracker {
      */
     getDebugInfo() {
         return { performance: this.getPerformanceStats(),
-            errors: this.getErrorStats(),
-    }'
-            userBehavior: this.getUserBehaviorStats(),' };'
+            errors: this.getErrorStats();
+    ,}
+
+            userBehavior: this.getUserBehaviorStats(),' };
+
             i18n: this.getI18nStats(') }')

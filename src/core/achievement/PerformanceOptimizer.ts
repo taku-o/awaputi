@@ -6,27 +6,24 @@
  */
 
 interface PerformanceConfig { enableCache: boolean,
-    cacheSize: number,
+    cacheSize: number;
     cacheTTL: number; // キャッシュ有効期限（ミリ秒）
-    batchSize: number,
-    throttleDelay: number; // スロットル遅延（ミリ秒） }
-}
+    batchSize: number;
+    throttleDelay: number; // スロットル遅延（ミリ秒） ,}
 
 interface CacheEntry { value: any,
-    timestamp: number }
-}
+    timestamp: number ,}
 
-interface PerformanceStats { cacheHits: number,
-    cacheMisses: number,
-    totalProcessed: number,
-    averageProcessTime: number,
+interface PerformanceStats { cacheHits: number;
+    cacheMisses: number;
+    totalProcessed: number;
+    averageProcessTime: number;
     throttledEvents: number }
-}
 
 export class PerformanceOptimizer {
     private cache: Map<string, CacheEntry>;
     private config: PerformanceConfig;
-    private stats: PerformanceStats }
+    private stats: PerformanceStats ,}
     private eventQueue: Array<{ eventType: string; data: any; callback: Function }>;
     private isProcessing: boolean;
     private throttleTimers: Map<string, NodeJS.Timeout>;
@@ -39,23 +36,18 @@ export class PerformanceOptimizer {
         this.throttleTimers = new Map();
         
         this.config = {
-            enableCache: true,
-            cacheSize: 1000,
+            enableCache: true;
+            cacheSize: 1000;
             cacheTTL: 60000, // 1分;
-            batchSize: 10,
-
-    }
-    }
+            batchSize: 10;
+    ,}
             throttleDelay: 100 // 100ms }
-        },
-        
+        };
         this.stats = { cacheHits: 0,
-            cacheMisses: 0,
-            totalProcessed: 0,
-            averageProcessTime: 0,
-            throttledEvents: 0 }
-        },
-    }
+            cacheMisses: 0;
+            totalProcessed: 0;
+            averageProcessTime: 0;
+            throttledEvents: 0 ,}
 
     /**
      * 初期化
@@ -77,8 +69,7 @@ export class PerformanceOptimizer {
                 this.stats.cacheHits++;
                 this.updateProcessTime(performance.now() - startTime);
         }
-                return cached; }
-            }
+                return cached;
             this.stats.cacheMisses++;
         }
 
@@ -87,16 +78,14 @@ export class PerformanceOptimizer {
             this.stats.throttledEvents++;
             this.scheduleThrottledUpdate(eventType, data, callback);
         }
-            return null; }
-        }
+            return null;
 
         // バッチ処理
         if(this.shouldBatch(eventType) {
             this.addToBatch(eventType, data, callback);
             this.processBatchIfNeeded();
         }
-            return null; }
-        }
+            return null;
 
         // 即座に処理
         const result = callback(eventType, data);
@@ -124,7 +113,6 @@ export class PerformanceOptimizer {
         if (Date.now() - entry.timestamp > this.config.cacheTTL) {
             this.cache.delete(key);
             return null; }
-        }
 
         return entry.value;
     }
@@ -141,50 +129,45 @@ export class PerformanceOptimizer {
             if (oldestKey) {
         }
                 this.cache.delete(oldestKey); }
-            }
-        }
+}
 
         this.cache.set(key, { )
             value);
-            timestamp: Date.now() }
-        });
+            timestamp: Date.now( });
     }
 
     /**
      * パフォーマンス統計を取得
      */
     getPerformanceStats(): PerformanceStats {
-        return { ...this.stats };
+        return { ...this.stats;
     }
 
     /**
      * 設定を更新
      */
     updateConfig(config: Partial<PerformanceConfig>): void {
-        this.config = { ...this.config, ...config };
+        this.config = { ...this.config, ...config;
         
         // キャッシュが無効化された場合はクリア
         if (!this.config.enableCache) { this.cache.clear(); }
-        }
     }
 
     /**
      * パフォーマンス統計をリセット
      */
     resetPerformanceStats(): void { this.stats = {
-            cacheHits: 0,
-            cacheMisses: 0,
-            totalProcessed: 0,
-            averageProcessTime: 0,
+            cacheHits: 0;
+            cacheMisses: 0;
+            totalProcessed: 0;
+            averageProcessTime: 0;
             throttledEvents: 0 }
-        },
-    }
 
     /**
      * 統計をロード
      */
     loadStats(stats: PerformanceStats): void {
-        this.stats = { ...stats };
+        this.stats = { ...stats;
     }
 
     /**
@@ -217,11 +200,10 @@ export class PerformanceOptimizer {
          }
         const keyData: any = {}
         // 重要なフィールドのみ抽出
-        ['id', 'type', 'value', 'score', 'level', 'stage'].forEach(field => {  );
+        ['id', 'type', 'value', 'score', 'level', 'stage].forEach(field => {  );
             if (data[field] !== undefined) { }
                 keyData[field] = data[field]; }
-            }
-        });
+});
         
         return keyData;
     }
@@ -238,8 +220,7 @@ export class PerformanceOptimizer {
             }
                 oldestTime = entry.timestamp; }
                 oldestKey = key; }
-            }
-        });
+});
 
         return oldestKey;
     }
@@ -253,8 +234,7 @@ export class PerformanceOptimizer {
         this.cache.forEach((entry, key) => { 
             if (now - entry.timestamp > this.config.cacheTTL) { }
                 keysToDelete.push(key); }
-            }
-        });
+});
 
         keysToDelete.forEach(key => this.cache.delete(key);
     }
@@ -262,18 +242,16 @@ export class PerformanceOptimizer {
     /**
      * スロットリングが必要か判定'
      */''
-    private shouldThrottle(eventType: string'): boolean { // 特定のイベントタイプでスロットリングを適用
+    private shouldThrottle(eventType: string): boolean { // 特定のイベントタイプでスロットリングを適用
         const throttledEvents = ['bubblePopped', 'scoreUpdated', 'progressUpdated'];
         return throttledEvents.includes(eventType); }
-    }
 
     /**
      * バッチ処理が必要か判定'
      */''
-    private shouldBatch(eventType: string'): boolean { // 特定のイベントタイプでバッチ処理を適用
+    private shouldBatch(eventType: string): boolean { // 特定のイベントタイプでバッチ処理を適用
         const batchedEvents = ['achievementProgress', 'statsUpdate'];
         return batchedEvents.includes(eventType); }
-    }
 
     /**
      * スロットリングされた更新をスケジュール
@@ -299,14 +277,12 @@ export class PerformanceOptimizer {
      * バッチに追加
      */
     private addToBatch(eventType: string, data: any, callback: Function): void { this.eventQueue.push({ eventType, data, callback ); }
-    }
 
     /**
      * 必要に応じてバッチを処理
      */
     private processBatchIfNeeded(): void { if (this.isProcessing || this.eventQueue.length < this.config.batchSize) {
             return; }
-        }
 
         this.processBatch();
     }
@@ -316,7 +292,6 @@ export class PerformanceOptimizer {
      */
     private async processBatch(): Promise<void> { if (this.isProcessing || this.eventQueue.length === 0) {
             return; }
-        }
 
         this.isProcessing = true;
         const startTime = performance.now();
@@ -325,7 +300,7 @@ export class PerformanceOptimizer {
         const batch = this.eventQueue.splice(0, this.config.batchSize);
 
         // バッチ処理
-        for(const item of batch) {
+        for(const, item of, batch) {
             try {
                 const result = await item.callback(item.eventType, item.data);
                 
@@ -335,11 +310,10 @@ export class PerformanceOptimizer {
         }
                     this.setCache(cacheKey, result); }
                 }
-                ';'
+                ';
+
                 this.stats.totalProcessed++;''
-            } catch (error) { ''
-                console.error('Error processing batch item:', error) }
-            }
+            } catch (error) { console.error('Error processing batch item:', error }
         }
 
         this.updateProcessTime(performance.now() - startTime);
@@ -347,16 +321,15 @@ export class PerformanceOptimizer {
 
         // まだキューにアイテムがあれば次のバッチを処理
         if (this.eventQueue.length > 0) { setTimeout(() => this.processBatch(), 0); }
-        }
-    }
+}
 
     /**
      * 処理時間を更新
      */
     private updateProcessTime(processTime: number): void { const total = this.stats.totalProcessed;
         const currentAvg = this.stats.averageProcessTime;
-        ;
         // 移動平均を計算
         this.stats.averageProcessTime = (currentAvg * (total - 1) + processTime') / total; }'
+
     }''
 }

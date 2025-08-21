@@ -13,80 +13,67 @@ export class StatisticsDashboard {
         // ダッシュボード設定
         this.config = {
             layout: {
-                rows: 3,
-                columns: 4,
-                gridGap: 10,
-    }
-    }
+                rows: 3;
+                columns: 4;
+                gridGap: 10;
+    ,}
                 padding: 20 }
-            },
+            };
             widgets: { keyMetrics: {
                     enabled: true, }
-                    span: { rows: 1, cols: 2 },
-                    position: { row: 0, col: 0 }
-                },
+                    span: { rows: 1, cols: 2 ,},
+                    position: { row: 0, col: 0 ,},
                 recentAchievements: { enabled: true, }
-                    span: { rows: 1, cols: 2 },
-                    position: { row: 0, col: 2 }
-                },
+                    span: { rows: 1, cols: 2 ,},
+                    position: { row: 0, col: 2 ,},
                 growthTrends: { enabled: true, }
-                    span: { rows: 1, cols: 3 },
-                    position: { row: 1, col: 0 }
-                },
+                    span: { rows: 1, cols: 3 ,},
+                    position: { row: 1, col: 0 ,},
                 playStyle: { enabled: true, }
-                    span: { rows: 1, cols: 1 },
-                    position: { row: 1, col: 3 }
-                },
+                    span: { rows: 1, cols: 1 ,},
+                    position: { row: 1, col: 3 ,},
                 performanceChart: { enabled: true, }
-                    span: { rows: 1, cols: 2 },
-                    position: { row: 2, col: 0 }
-                },
+                    span: { rows: 1, cols: 2 ,},
+                    position: { row: 2, col: 0 ,},
                 statisticsBreakdown: { enabled: true, }
-                    span: { rows: 1, cols: 2 },
-                    position: { row: 2, col: 2 }
-                }
+                    span: { rows: 1, cols: 2 ,},
+                    position: { row: 2, col: 2 ,}
             },
             responsive: { small: { }
-                    layout: { rows: 6, columns: 1 },
+                    layout: { rows: 6, columns: 1 ,},
                     widgets: {
-                        keyMetrics: { span: { rows: 1, cols: 1 }, position: { row: 0, col: 0 } },
-                        recentAchievements: { span: { rows: 1, cols: 1 }, position: { row: 1, col: 0 } },
-                        growthTrends: { span: { rows: 1, cols: 1 }, position: { row: 2, col: 0 } },
-                        playStyle: { span: { rows: 1, cols: 1 }, position: { row: 3, col: 0 } },
-                        performanceChart: { span: { rows: 1, cols: 1 }, position: { row: 4, col: 0 } },
-                        statisticsBreakdown: { span: { rows: 1, cols: 1 }, position: { row: 5, col: 0 } }
-                    }
-                },
+                        keyMetrics: { span: { rows: 1, cols: 1 ,}, position: { row: 0, col: 0 ,},
+                        recentAchievements: { span: { rows: 1, cols: 1 ,}, position: { row: 1, col: 0 ,},
+                        growthTrends: { span: { rows: 1, cols: 1 ,}, position: { row: 2, col: 0 ,},
+                        playStyle: { span: { rows: 1, cols: 1 ,}, position: { row: 3, col: 0 ,},
+                        performanceChart: { span: { rows: 1, cols: 1 ,}, position: { row: 4, col: 0 ,},
+                        statisticsBreakdown: { span: { rows: 1, cols: 1 ,}, position: { row: 5, col: 0 ,}
+},
                 medium: {
-                    layout: { rows: 3, columns: 2 },
+                    layout: { rows: 3, columns: 2 ,},
                     widgets: {
-                        keyMetrics: { span: { rows: 1, cols: 2 }, position: { row: 0, col: 0 } },
-                        recentAchievements: { span: { rows: 1, cols: 2 }, position: { row: 1, col: 0 } },
-                        growthTrends: { span: { rows: 1, cols: 1 }, position: { row: 2, col: 0 } },
-                        playStyle: { span: { rows: 1, cols: 1 }, position: { row: 2, col: 1 } },
-                        performanceChart: { enabled: false },
+                        keyMetrics: { span: { rows: 1, cols: 2 ,}, position: { row: 0, col: 0 ,},
+                        recentAchievements: { span: { rows: 1, cols: 2 ,}, position: { row: 1, col: 0 ,},
+                        growthTrends: { span: { rows: 1, cols: 1 ,}, position: { row: 2, col: 0 ,},
+                        playStyle: { span: { rows: 1, cols: 1 ,}, position: { row: 2, col: 1 ,},
+                        performanceChart: { enabled: false };
                         statisticsBreakdown: { enabled: false }
-                    }
-                }
-            }
-        },
-        
+}
+        };
         // ウィジェット管理
         this.widgets = new Map();
         this.layoutCache = new Map();
-        ;
         // イベントハンドラ
         this.eventHandlers = new Map(''';
-            easing: 'ease-in-out',
+            easing: 'ease-in-out';
             stagger: 50;
         },
         
         // 更新状態管理
         this.updateState = { isUpdating: false,
-            lastUpdateTime: 0,
+            lastUpdateTime: 0;
             updateInterval: 5000, // 5秒間隔;
-            autoUpdate: false })
-        })
+            autoUpdate: false ,}))
         this.initialize();
     }
     
@@ -131,29 +118,25 @@ export class StatisticsDashboard {
             // アニメーション対応
             if (this.animationConfig.enabled && options.animated) {
     }
-                return this.animateWidgets(renderPromises); }
-            }
-            '';
-            return Promise.all(renderPromises').then(results => ({ ')'
+                return this.animateWidgets(renderPromises);
+
+            return Promise.all(renderPromises).then(results => ({ ')'
                 type: 'dashboard');
                 widgets: results,);
-                layout: layout),
-                timestamp: Date.now() }
-            });'
-            '';
-        } catch (error) { ''
+                layout: layout);
+                timestamp: Date.now( ,});
+
+        } catch (error) {
             console.error('Dashboard rendering failed:', error);
-            return this.renderErrorDashboard(context, error); }
-        }
-    }
+            return this.renderErrorDashboard(context, error);
     
     /**
      * レスポンシブ設定の取得
      */
     getResponsiveConfig(width) { if (width <= 768) { }
-            return { ...this.config, ...this.config.responsive.small };
+            return { ...this.config, ...this.config.responsive.small;
         } else if (width <= 1024) {
-            return { ...this.config, ...this.config.responsive.medium };
+            return { ...this.config, ...this.config.responsive.medium;
         }
         return this.config;
     }
@@ -166,7 +149,6 @@ export class StatisticsDashboard {
     }
         const cacheKey = `${canvas.width}x${canvas.height}`;
         if(this.layoutCache.has(cacheKey) { return this.layoutCache.get(cacheKey); }
-        }
         
         const { layout, widgets } = config;
         const { rows, columns, gridGap, padding } = layout;
@@ -180,18 +162,16 @@ export class StatisticsDashboard {
         const widgetAreas = {};
         
         Object.entries(widgets).forEach(([name, widgetConfig]) => {  if (!widgetConfig.enabled) return; }
-             }
             const { span, position } = widgetConfig;
             const x = padding + (position.col * (cellWidth + gridGap));
             const y = padding + (position.row * (cellHeight + gridGap));
             const width = (cellWidth * span.cols) + (gridGap * (span.cols - 1);
             const height = (cellHeight * span.rows) + (gridGap * (span.rows - 1));
             
-            widgetAreas[name] = { x, y, width, height };
-        });
+            widgetAreas[name] = { x, y, width, height });
         
         const layoutResult = {
-            canvas: { width: canvas.width, height: canvas.height },
+            canvas: { width: canvas.width, height: canvas.height ,},
             grid: { rows, columns, cellWidth, cellHeight, gridGap, padding },
             widgets: widgetAreas;
         },
@@ -203,7 +183,7 @@ export class StatisticsDashboard {
     /**
      * 背景の描画'
      */''
-    renderBackground(context, layout, options') {
+    renderBackground(context, layout, options) {
         const canvas = context.canvas;
         ';
         // 背景色
@@ -214,23 +194,22 @@ export class StatisticsDashboard {
         if (options.showGrid) {
     }
             this.renderGrid(context, layout); }
-        }
-    }
+}
     
     /**
      * グリッドの描画
      */''
-    renderGrid(context, layout') {
+    renderGrid(context, layout) {
         
     }
-        const { grid } = layout;'
-        '';
+        const { grid } = layout;
+
         context.strokeStyle = '#E2E8F0';
         context.lineWidth = 1;
         context.setLineDash([2, 2]);
         
         // 垂直線
-        for(let col = 0; col <= grid.columns; col++) {
+        for(let, col = 0; col <= grid.columns; col++) {
             const x = grid.padding + (col * (grid.cellWidth + grid.gridGap)) - (grid.gridGap / 2);
             context.beginPath();
             context.moveTo(x, grid.padding);
@@ -240,7 +219,7 @@ export class StatisticsDashboard {
         }
         
         // 水平線
-        for(let row = 0; row <= grid.rows; row++) {
+        for(let, row = 0; row <= grid.rows; row++) {
             const y = grid.padding + (row * (grid.cellHeight + grid.gridGap)) - (grid.gridGap / 2);
             context.beginPath();
             context.moveTo(grid.padding, y);
@@ -263,28 +242,27 @@ export class StatisticsDashboard {
             
             const widget = this.widgets.get(name);
             const area = layout.widgets[name];
-            '';
-            if (widget && area') {'
+
+            if(widget && area) {'
                 // サブコンテキストの作成
                 const subCanvas = document.createElement('canvas'');
-                subCanvas.width = area.width;'
+                subCanvas.width = area.width;
+
                 subCanvas.height = area.height;''
-                const subContext = subCanvas.getContext('2d');
+                const subContext = subCanvas.getContext('2d);
                 
                 // ウィジェットのレンダリング
                 const renderPromise = widget.render(subContext, {)
                     ...options);
                     area: area,);
                     name: name).then(result => {)
-    }
+    ,}
                     // メインキャンバスに描画), }
                     context.drawImage(subCanvas, area.x, area.y); }
-                    return { name, result, area };
-                }).catch(error => { ); }
+                    return { name, result, area }).catch(error => { ); }
                     console.error(`Widget ${name} rendering failed:`, error);
                     this.renderWidgetError(context, area, name, error);
-                    return { name, error: error.message, area };
-                });
+                    return { name, error: error.message, area });
                 
                 renderPromises.push(renderPromise);
             }
@@ -296,15 +274,16 @@ export class StatisticsDashboard {
     /**
      * ウィジェットエラーの描画
      */''
-    renderWidgetError(context, area, name, error') {'
+    renderWidgetError(context, area, name, error) {'
         // エラー背景
         context.fillStyle = '#FEE2E2';''
-        context.fillRect(area.x, area.y, area.width, area.height');
+        context.fillRect(area.x, area.y, area.width, area.height);
         ';
         // エラー枠線
-        context.strokeStyle = '#DC2626';'
+        context.strokeStyle = '#DC2626';
+
         context.lineWidth = 2;''
-        context.strokeRect(area.x, area.y, area.width, area.height');
+        context.strokeRect(area.x, area.y, area.width, area.height);
         ';
         // エラーメッセージ
         context.fillStyle = '#DC2626';''
@@ -315,9 +294,11 @@ export class StatisticsDashboard {
         const centerX = area.x + area.width / 2;
         const centerY = area.y + area.height / 2;
         
-    }'
-        context.fillText(`${name) エラー`, centerX, centerY - 10);' }'
-        context.fillText(error.slice(0, 30') + '...', centerX, centerY + 10});
+    }
+
+        context.fillText(`${name} エラー`, centerX, centerY - 10};' }'
+
+        context.fillText(error.slice(0, 30) + '...', centerX, centerY + 10});
     }
     
     /**
@@ -334,11 +315,11 @@ export class StatisticsDashboard {
                         results[index] = result;)
                         completedCount++';
                         );''
-                        if (completedCount === renderPromises.length') {'
+                        if(completedCount === renderPromises.length) {'
                             resolve({''
-                                type: 'dashboard',
-                                widgets: results,
-    })
+                                type: 'dashboard';
+                                widgets: results;
+    ,})
                                 animated: true) }
                                 timestamp: Date.now(); }
                             });
@@ -352,31 +333,32 @@ export class StatisticsDashboard {
     /**
      * エラーダッシュボードの描画'
      */''
-    renderErrorDashboard(context, error') {
+    renderErrorDashboard(context, error) {
         const canvas = context.canvas;
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
         ';
         // 背景
         context.fillStyle = '#F8FAFC';''
-        context.fillRect(0, 0, canvas.width, canvas.height');
+        context.fillRect(0, 0, canvas.width, canvas.height);
         ';
         // エラーアイコン
         context.fillStyle = '#EF4444';''
         context.font = '48px system-ui, -apple-system, sans-serif';''
         context.textAlign = 'center';''
-        context.fillText('⚠', centerX, centerY - 30');
+        context.fillText('⚠', centerX, centerY - 30);
         ';
         // エラーメッセージ
         context.fillStyle = '#374151';''
         context.font = '16px system-ui, -apple-system, sans-serif';''
         context.fillText('ダッシュボードの読み込みに失敗しました', centerX, centerY + 20);''
-        context.fillText(error.message, centerX, centerY + 40');
-        ';'
-        return Promise.resolve({')'
+        context.fillText(error.message, centerX, centerY + 40);
+        ';
+
+        return Promise.resolve({)'
             type: 'dashboard',);
-            error: error.message),
-    }
+            error: error.message);
+    ,}
             timestamp: Date.now(); }
         });
     }
@@ -392,7 +374,6 @@ export class StatisticsDashboard {
     }
             this.startAutoUpdate(); }
         } else { this.stopAutoUpdate(); }
-        }
     }
     
     /**
@@ -406,8 +387,7 @@ export class StatisticsDashboard {
         
         this.updateState.autoUpdateTimer = setInterval(() => {  if (!this.updateState.isUpdating) { }
                 this.refreshData(); }
-            }
-        }, this.updateState.updateInterval);
+}, this.updateState.updateInterval);
     }
     
     /**
@@ -418,8 +398,7 @@ export class StatisticsDashboard {
             clearInterval(this.updateState.autoUpdateTimer);
     }
             this.updateState.autoUpdateTimer = null; }
-        }
-    }
+}
     
     /**
      * データの更新
@@ -431,31 +410,32 @@ export class StatisticsDashboard {
         try {
             // 各ウィジェットのデータ更新
             const updatePromises = Array.from(this.widgets.values().map(widget => { ');''
-                if (typeof widget.refreshData === 'function') { }
-                    return widget.refreshData(); }
-                }
+                if(typeof, widget.refreshData === 'function) { }'
+                    return widget.refreshData();
                 return Promise.resolve();
             });
-            ';'
+            ';
+
             await Promise.all(updatePromises);''
             this.updateState.lastUpdateTime = Date.now()';
             this.emit('dataUpdated', { )
-                timestamp: this.updateState.lastUpdateTime),';
+                timestamp: this.updateState.lastUpdateTime),
             ' }'
-        } catch (error) { ''
-            console.error('Dashboard data refresh failed:', error');''
-            this.emit('updateError', error); }
-        } finally { this.updateState.isUpdating = false; }
-        }
+
+        } catch (error) {
+            console.error('Dashboard data refresh failed:', error);''
+            this.emit('updateError', error); } finally { this.updateState.isUpdating = false; }
     }
     
     /**
      * イベントリスナーの設定'
      */''
     setupEventListeners()';
-        if (typeof window !== 'undefined'') {'
-        ';'
-    }'
+        if (typeof, window !== 'undefined'') {'
+        ';
+
+    }
+
             window.addEventListener('resize', () => {  }
                 this.layoutCache.clear(); }
             });
@@ -498,8 +478,7 @@ export class StatisticsDashboard {
             if (index > -1) {
     }
                 handlers.splice(index, 1); }
-            }
-        }
+}
     }
     
     /**
@@ -507,7 +486,10 @@ export class StatisticsDashboard {
      */
     destroy() {
         this.stopAutoUpdate();
-        this.widgets.clear();'
-        this.layoutCache.clear();'
-    }'
-        this.eventHandlers.clear(') }
+        this.widgets.clear();
+
+        this.layoutCache.clear();
+
+    }
+
+        this.eventHandlers.clear(') }'

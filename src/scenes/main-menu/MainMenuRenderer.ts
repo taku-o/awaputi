@@ -4,9 +4,9 @@ import type { MenuItem } from '../../types/game';
 
 // インターフェース定義
 interface MenuItemWithLabel extends MenuItem { label: string }
-}
 
-interface PlayerData { username: string }
+interface PlayerData {
+    username: string;
 }
 
 /**
@@ -23,8 +23,7 @@ export class MainMenuRenderer {
         this.gameEngine = gameEngine;
         this.errorHandler = getErrorHandler();
 
-    }
-    }
+    ,}
         this.coordinateCalculator = null; }
     }
     
@@ -43,14 +42,12 @@ export class MainMenuRenderer {
         }
             this.coordinateCalculator = new CoordinateCalculator(displayWidth, displayHeight, 800, 600); }
         } else { this.coordinateCalculator.updateCanvasDimensions(displayWidth, displayHeight); }
-        }
     }
     
     /**
      * キャンバスリサイズ時の処理
      */
     handleResize(): void { this.updateCoordinateCalculator(); }
-    }
     
     /**
      * メインメニューを描画
@@ -67,37 +64,37 @@ export class MainMenuRenderer {
             
             // タイトル
             context.save();
-            ;
             // フォント読み込みのフォールバック処理
-            const titleFontSize = calc.scaleFontSize(60');'
+            const titleFontSize = calc.scaleFontSize(60);
+
             const titleFonts = [' }'
+
                 `bold ${titleFontSize}px 'Noto Sans JP', Arial, sans-serif`,
                 `bold ${titleFontSize}px Arial, sans-serif`]
                 `bold ${titleFontSize}px sans-serif`]
             ];
             
             let fontSet = false;
-            for(const font of titleFonts) {
+            for(const, font of, titleFonts) {
                 try {
                     context.font = font;
                     fontSet = true;
             }
                     break; }
                 } catch (e) { // フォント設定エラーを無視して次のフォントを試す }
-                }
             }
-            '';
-            if(!fontSet') {
+
+            if(!fontSet) {
                 
             }
                 context.font = `bold ${titleFontSize}px sans-serif`;
-            }'
-            '';
+            }
+
             context.fillStyle = '#FFFFFF';''
             context.textAlign = 'center';''
-            context.textBaseline = 'middle';'
-            '';
-            const titleY = calc.toCanvasCoordinates(0, 80').y;''
+            context.textBaseline = 'middle';
+
+            const titleY = calc.toCanvasCoordinates(0, 80).y;''
             const titleText = 'BubblePop';
             const titleX = calc.getTextCenterX(context, titleText);
             
@@ -110,24 +107,23 @@ export class MainMenuRenderer {
             }
             
             context.fillText(titleText, titleX, titleY);
-            ;
             // サブタイトル
-            const subtitleFontSize = calc.scaleFontSize(22');'
+            const subtitleFontSize = calc.scaleFontSize(22);
+
             context.font = `${subtitleFontSize}px Arial`;''
             context.fillStyle = '#CCCCCC';''
-            const subtitleY = calc.toCanvasCoordinates(0, 120').y;''
+            const subtitleY = calc.toCanvasCoordinates(0, 120).y;''
             const subtitleX = calc.getTextCenterX(context, '泡割りゲーム'');''
             context.fillText('泡割りゲーム', subtitleX, subtitleY);
             context.restore();
             
             // プレイヤー情報表示
             const playerData = this.gameEngine.playerData as PlayerData;
-            if(playerData.username) {
-                '';
-                context.save()';
-                context.fillStyle = '#AAAAAA';')
-            }'
-                const playerFontSize = calc.scaleFontSize(16'); }'
+            if(playerData.username) { context.save()';
+                context.fillStyle = '#AAAAAA';' }
+
+                const playerFontSize = calc.scaleFontSize(16); }
+
                 context.font = `${playerFontSize}px Arial`;''
                 context.textAlign = 'center';
                 const playerY = calc.toCanvasCoordinates(0, 160).y;
@@ -148,14 +144,13 @@ export class MainMenuRenderer {
         } catch (error) { // エラー発生時もCanvas状態を復元
             try {
                 context.restore();' }'
+
             } catch (restoreError) { // 復元エラーは無視 }
-            }
-            '';
+
             this.errorHandler.handleError(error, 'RENDER_ERROR', { ')'
-                context: 'MainMenuRenderer.renderMainMenu');
+                context: 'MainMenuRenderer.renderMainMenu);
                 canvasWidth: this.gameEngine.canvas? .width, : undefined);
-                canvasHeight: this.gameEngine.canvas? .height) }
-            });
+                canvasHeight: this.gameEngine.canvas? .height ,});
         }
     }
     
@@ -179,19 +174,22 @@ export class MainMenuRenderer {
                 const baseY = baseStartY + index * (baseItemHeight + baseSpacing);
                 const canvasY = calc.toCanvasCoordinates(0, baseY).y;
                 const isSelected = index === selectedMenuIndex;
-                '';
+
                 context.save()';
                 context.fillStyle = isSelected ? '#0066CC' : '#333333';')'
-                context.fillRect(itemX, canvasY, itemSize.width, itemSize.height');
+                context.fillRect(itemX, canvasY, itemSize.width, itemSize.height);
                 ';
                 // 枠線
-                context.strokeStyle = isSelected ? '#FFFFFF' : '#666666';'
+                context.strokeStyle = isSelected ? '#FFFFFF' : '#666666';
+
                 context.lineWidth = calc.uniformScale * 2;''
-                context.strokeRect(itemX, canvasY, itemSize.width, itemSize.height');
+                context.strokeRect(itemX, canvasY, itemSize.width, itemSize.height);
                 ';
                 // テキスト
-                context.fillStyle = '#FFFFFF';' }'
-                const menuFontSize = calc.scaleFontSize(20'); }'
+                context.fillStyle = '#FFFFFF';' }
+
+                const menuFontSize = calc.scaleFontSize(20); }
+
                 context.font = `bold ${menuFontSize}px Arial`;''
                 context.textAlign = 'center';''
                 context.textBaseline = 'middle';
@@ -200,12 +198,11 @@ export class MainMenuRenderer {
                     itemX + itemSize.width / 2, );
                     canvasY + itemSize.height / 2);
                 
-                context.restore();'
+                context.restore();
+
             });''
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'RENDER_ERROR', {')'
-                context: 'MainMenuRenderer.renderMenuItems') }
-            });
+        } catch (error) { this.errorHandler.handleError(error, 'RENDER_ERROR', {)'
+                context: 'MainMenuRenderer.renderMenuItems' ,});
         }
     }
     
@@ -214,11 +211,12 @@ export class MainMenuRenderer {
      */
     renderControls(context: CanvasRenderingContext2D): void { try {
             const canvas = this.gameEngine.canvas as HTMLCanvasElement;
-            const calc = this.coordinateCalculator!;'
-            '';
+            const calc = this.coordinateCalculator!;
+
             context.save()';
             context.fillStyle = '#AAAAAA';')'
-            const controlFontSize = calc.scaleFontSize(16'); }'
+            const controlFontSize = calc.scaleFontSize(16); }
+
             context.font = `${controlFontSize}px Arial`;''
             context.textAlign = 'center';''
             context.textBaseline = 'bottom';
@@ -226,20 +224,23 @@ export class MainMenuRenderer {
             // 画面下部からの固定マージン
             const bottomMargin = calc.toCanvasSize(0, 60).height;
             const controlsY = canvas.height - bottomMargin;''
-            const lineSpacing = calc.toCanvasSize(0, 25').height;'
-            '';
-            const controlText1 = '↑↓: 選択  Enter: 決定  ESC: 終了','';
+            const lineSpacing = calc.toCanvasSize(0, 25).height;
+
+            const controlText1 = '↑↓: 選択  Enter: 決定  ESC: 終了',
             const controlText2 = 'クリックでも操作できます';
             const controlX1 = calc.getTextCenterX(context, controlText1);
             const controlX2 = calc.getTextCenterX(context, controlText2);
             context.fillText(controlText1, controlX1, controlsY);
             context.fillText(controlText2, controlX2, controlsY + lineSpacing);
-            ';'
+            ';
+
             context.restore();''
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'RENDER_ERROR', {')'
-                context: 'MainMenuRenderer.renderControls'),' }'
+        } catch (error) {
+            this.errorHandler.handleError(error, 'RENDER_ERROR', {)'
+                context: 'MainMenuRenderer.renderControls),' }
+
             }');
-        }'
+        }
+
     }''
 }

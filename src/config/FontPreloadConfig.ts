@@ -8,48 +8,45 @@
  */
 export interface FontPreloadConfig { preload: string[],
     fallbacks: Record<string, string[]>, }
-}
 
 /**
  * フォントプリロード設定
  */
-export const fontPreloadConfig: FontPreloadConfig = { preload: ["ja",""
-        "en", "";
-        "zh-CN","";
+export const fontPreloadConfig: FontPreloadConfig = { preload: ["ja","", "en",
+        "zh-CN",
         "zh-TW","]";
         "ko"];
     ],
     fallbacks: {"
         ja: ["";
-            "Hiragino Sans","";
-            "Yu Gothic","";
+            "Hiragino Sans",
+            "Yu Gothic",
             "Meiryo","]";
             "sans-serif"]";
-        ],"";
+        ],
         "zh-CN": ["";
-            "PingFang SC","";
-            "Microsoft YaHei","";
+            "PingFang SC",
+            "Microsoft YaHei",
             "SimHei","]";
             "sans-serif"]";
-        ],"";
+        ],
         "zh-TW": ["";
-            "PingFang TC","";
-            "Microsoft JhengHei","";
+            "PingFang TC",
+            "Microsoft JhengHei",
             "PMingLiU", "]";
             "sans-serif"];
-        ],";
+        ],
         ko: ["";
-            "Apple SD Gothic Neo","";
-            "Malgun Gothic","";
+            "Apple SD Gothic Neo",
+            "Malgun Gothic",
             "Nanum Gothic","]";
             "sans-serif"];
-        ],";
+        ],
         en: ["";
-            "Arial","";
+            "Arial",
             "Helvetica","]";
             "sans-serif"];
         ] }
-    }
 };
 
 /**
@@ -59,8 +56,7 @@ export const fontPreloadConfig: FontPreloadConfig = { preload: ["ja",""
  */"
 export const generatePreloadLinks = (language: string): string[] => {  const fonts = fontPreloadConfig.fallbacks[language] || fontPreloadConfig.fallbacks.en;" }"
     return fonts.map(font => ")" }"
-        `<link rel="preload" href="/fonts/${font.replace(' ', '-').toLowerCase('})}.woff2" as="font" type="font/woff2" crossorigin>`""
-    ");
-};"
-"";
+        `<link rel="preload" href="/fonts/${font.replace(' ', '-}.toLowerCase('}).woff2" as="font" type="font/woff2" crossorigin>`""
+    "); }"
+
 export default fontPreloadConfig;

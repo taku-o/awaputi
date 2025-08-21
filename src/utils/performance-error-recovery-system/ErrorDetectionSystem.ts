@@ -11,35 +11,30 @@ interface DetectionThresholds {
     network: { critical: number; warning: number; target: number },
     javascript: { critical: number; warning: number; target: number },
     resource: { critical: number; warning: number; target: number }
-}
 
 interface ThresholdConfig { critical: number,
-    warning: number,
-    target: number }
-}
+    warning: number;
+    target: number ,}
 
-interface PerformanceBaseline { averageTaskTime: number,
-    minTaskTime: number,
-    maxTaskTime: number,
-    standardDeviation: number,
+interface PerformanceBaseline { averageTaskTime: number;
+    minTaskTime: number;
+    maxTaskTime: number;
+    standardDeviation: number;
     timestamp: number }
-}
 
-interface DetectedError { type: string,
-    level: 'critical' | 'warning' | 'info',
+interface DetectedError { type: string;
+    level: 'critical' | 'warning' | 'info';
     metrics: Record<string, any>;
-    timestamp: number,
+    timestamp: number;
     detector?: string;
     baseline?: PerformanceBaseline;
     lastOccurrence?: number;
     classification?: ErrorClassification;
-    }
-}
+    ,}
 
 interface EnrichedError extends DetectedError { detector: string,
     baseline: PerformanceBaseline
-    }
-}
+    ,}
 
 type ErrorCallback = (error: DetectedError) => void;
 
@@ -47,67 +42,58 @@ type ErrorCallback = (error: DetectedError) => void;
 interface IErrorDetector { initialize(): Promise<void>;
     detect(): Promise<void>;
     onError(callback: ErrorCallback): void,
-    updateThresholds(thresholds: ThresholdConfig): void,'';
+    updateThresholds(thresholds: ThresholdConfig): void,
     getStatus(''';
-    priority: 'critical' | 'high' | 'medium' | 'low',
-    recoverable: boolean,
-    degradationOptions: string[] }
-}
-';'
+    priority: 'critical' | 'high' | 'medium' | 'low';
+    recoverable: boolean;
+    degradationOptions: string[] ,}
+';
+
 interface ErrorSeverity { score: number,''
-    level: 'critical' | 'high' | 'medium' | 'low',
+    level: 'critical' | 'high' | 'medium' | 'low';
     components: {
-        impact: number,
-        frequency: number,
-        userExperience: number,
-        recoverability: number }
-    };
-}
+        impact: number;
+        frequency: number;
+        userExperience: number;
+        recoverability: number ,}
 
 interface ErrorPatterns { recognized: boolean,
-    type: string,';
-    confidence: number,'';
-    trend: 'increasing' | 'decreasing' | 'stable' | 'insufficient_data',
+    type: string,
+    confidence: number,
+    trend: 'increasing' | 'decreasing' | 'stable' | 'insufficient_data';
     clustering: {
-        clustered: boolean,
-        dominantDetector?: string }
-    };
-    correlation: { hasCorrelation: boolean,
+        clustered: boolean;
+        dominantDetector?: string ,};
+    correlation: { hasCorrelation: boolean;
         correlatedWith: string[] }
-    };
-}
 
-interface ErrorClassification { category: string,'
-    subcategory: string,'';
-    priority: 'critical' | 'high' | 'medium' | 'low',
-    recoverable: boolean,
-    degradationOptions: string[],
-    severity: ErrorSeverity,
-    patterns: ErrorPatterns,
-    classifiedAt: number,
-    confidence: number }
-}
+interface ErrorClassification { category: string,
+
+    subcategory: string,
+    priority: 'critical' | 'high' | 'medium' | 'low';
+    recoverable: boolean;
+    degradationOptions: string[];
+    severity: ErrorSeverity;
+    patterns: ErrorPatterns;
+    classifiedAt: number;
+    confidence: number ,}
 
 interface ClassifiedError extends EnrichedError { classification: ErrorClassification
     }
-}
 
 // Frame rate specific interfaces
-interface FrameData { fps: number,
+interface FrameData { fps: number;
     timestamp: number }
-}
 
 // Memory specific interfaces
-interface MemoryMetrics { usage: number,
-    used: number,
+interface MemoryMetrics { usage: number;
+    used: number;
     total: number }
-}
 
 // Error history interface
 interface ErrorHistoryEntry { detector: string)
     timestamp: number);
     severity: string }
-}
 
 /**
  * Performance Error Detector
@@ -126,28 +112,26 @@ export class PerformanceErrorDetector {
         this.monitoringEnabled = true;
 
     }
-    }
         this.detectionThresholds = { }
-            frameRate: { critical: 15, warning: 30, target: 60 },
-            memory: { critical: 0.9, warning: 0.8, target: 0.5 },
-            rendering: { critical: 50, warning: 30, target: 16.67 },
-            network: { critical: 10000, warning: 5000, target: 1000 },
-            javascript: { critical: 100, warning: 50, target: 10 },
-            resource: { critical: 20000, warning: 10000, target: 2000 }
-        };
+            frameRate: { critical: 15, warning: 30, target: 60 ,},
+            memory: { critical: 0.9, warning: 0.8, target: 0.5 ,},
+            rendering: { critical: 50, warning: 30, target: 16.67 ,},
+            network: { critical: 10000, warning: 5000, target: 1000 ,},
+            javascript: { critical: 100, warning: 50, target: 10 ,},
+            resource: { critical: 20000, warning: 10000, target: 2000 ,};
         this.errorCallbacks = [];
         this.monitoringInterval = null;
         this.performanceBaseline = null;
     }
-'';
+
     async initialize()';
-        console.log('Initializing Performance Error Detector...'');'
-        '';
-        this.detectors.set('frameRate', new FrameRateErrorDetector(this.detectionThresholds.frameRate)');''
-        this.detectors.set('memory', new MemoryErrorDetector(this.detectionThresholds.memory)');''
-        this.detectors.set('rendering', new RenderingErrorDetector(this.detectionThresholds.rendering)');''
-        this.detectors.set('network', new NetworkErrorDetector(this.detectionThresholds.network)');''
-        this.detectors.set('javascript', new JavaScriptErrorDetector(this.detectionThresholds.javascript)');''
+        console.log('Initializing, Performance Error, Detector...'');
+
+        this.detectors.set('frameRate', new FrameRateErrorDetector(this.detectionThresholds.frameRate));''
+        this.detectors.set('memory', new MemoryErrorDetector(this.detectionThresholds.memory));''
+        this.detectors.set('rendering', new RenderingErrorDetector(this.detectionThresholds.rendering));''
+        this.detectors.set('network', new NetworkErrorDetector(this.detectionThresholds.network));''
+        this.detectors.set('javascript', new JavaScriptErrorDetector(this.detectionThresholds.javascript));''
         this.detectors.set('resource', new ResourceErrorDetector(this.detectionThresholds.resource);
 
         for(const [name, detector] of this.detectors) {
@@ -157,17 +141,18 @@ export class PerformanceErrorDetector {
         }
             detector.onError((error) => this.handleDetectedError(name, error); }
         }
-';'
+';
+
         await this.establishPerformanceBaseline();''
         this.startMonitoring()';
-        console.log('Performance Error Detector initialized successfully');
-    }'
-'';
-    private async establishPerformanceBaseline()';
-        console.log('Establishing performance baseline...');
+        console.log('Performance, Error Detector, initialized successfully);
+    }
+
+    private async establishPerformanceBaseline(')';
+        console.log('Establishing, performance baseline...);
         
         const measurements: number[] = [],
-        for(let i = 0; i < 10; i++) {
+        for(let, i = 0; i < 10; i++) {
             const start = performance.now();
             await this.performBenchmarkTask();
             const duration = performance.now() - start;
@@ -177,17 +162,17 @@ export class PerformanceErrorDetector {
         }
 
         this.performanceBaseline = { averageTaskTime: measurements.reduce((a, b) => a + b, 0) / measurements.length,
-            minTaskTime: Math.min(...measurements),
-            maxTaskTime: Math.max(...measurements),';
-            standardDeviation: this.calculateStandardDeviation(measurements),'';
-            timestamp: Date.now()';
+            minTaskTime: Math.min(...measurements);
+            maxTaskTime: Math.max(...measurements),
+            standardDeviation: this.calculateStandardDeviation(measurements),
+            timestamp: Date.now(')';
         console.log('Performance baseline established:', this.performanceBaseline) }
     }
 
     private async performBenchmarkTask(): Promise<number> { // Simple benchmark task for baseline measurement
         const iterations = 1000;
         let sum = 0;
-        for(let i = 0; i < iterations; i++) {
+        for(let, i = 0; i < iterations; i++) {
             
         }
             sum += Math.sqrt(i) * Math.random(); }
@@ -198,79 +183,71 @@ export class PerformanceErrorDetector {
     private calculateStandardDeviation(values: number[]): number { const mean = values.reduce((a, b) => a + b, 0) / values.length;
         const squaredDifferences = values.map(value => Math.pow(value - mean, 2);
         const variance = squaredDifferences.reduce((a, b) => a + b, 0) / values.length;
-        return Math.sqrt(variance); }
-    }
+        return Math.sqrt(variance);
 
     private startMonitoring(): void { if (!this.monitoringEnabled || this.monitoringInterval) return;
 
         this.monitoringInterval = setInterval(() => {  }
             this.performDetectionCycle();' }'
-        }, 1000'); // Check every second
-'';
-        console.log('Performance monitoring started');
+
+        }, 1000'); // Check every second'
+
+        console.log('Performance, monitoring started');
     }
-';'
+';
+
     stopMonitoring(): void { if (this.monitoringInterval) {''
-            clearInterval(this.monitoringInterval');
-            this.monitoringInterval = null; }'
+            clearInterval(this.monitoringInterval);
+            this.monitoringInterval = null; }
+
         }''
-        console.log('Performance monitoring stopped');
+        console.log('Performance, monitoring stopped);
     }
 
     private async performDetectionCycle(): Promise<void> { for (const [name, detector] of this.detectors) {
             try {
-                await detector.detect(); }
-            } catch (error) {
+                await detector.detect(); } catch (error) {
                 console.error(`Detection failed for ${name}:`, error);
             }
-        }
-    }
+}
 
     private handleDetectedError(detectorName: string, error: DetectedError): void { const enrichedError: EnrichedError = {
             ...error,
-            detector: detectorName,
-            timestamp: Date.now(),
-            baseline: this.performanceBaseline! }
-        },
-
-        console.warn(`Performance error detected by ${ detectorName):`, enrichedError);
+            detector: detectorName;
+            timestamp: Date.now();
+            baseline: this.performanceBaseline! ,};
+        console.warn(`Performance, error detected, by ${ detectorName):`, enrichedError};
         
-        this.errorCallbacks.forEach(callback => { ) }
-            try {); }'
-                callback(enrichedError});''
-            } catch (err) { ''
-                console.error('Error callback failed:', err) }
-            }
+        this.errorCallbacks.forEach(callback => { } }
+            try {); }
+
+                callback(enrichedError}');''
+            } catch (err) { console.error('Error callback failed:', err }
         });
     }
 
     onErrorDetected(callback: ErrorCallback): void { this.errorCallbacks.push(callback); }
-    }
 
     updateThresholds(newThresholds: Partial<DetectionThresholds>): void { Object.assign(this.detectionThresholds, newThresholds);
         
         for(const [name, detector] of this.detectors) {
         
-            if (this.detectionThresholds[name as keyof DetectionThresholds]) {
+            if (this.detectionThresholds[name, as keyof, DetectionThresholds]) {
         
         }
-                detector.updateThresholds(this.detectionThresholds[name as keyof DetectionThresholds]); }
-            }
-        }
+                detector.updateThresholds(this.detectionThresholds[name, as keyof, DetectionThresholds]); }
+}
     }
 
     getDetectionStatus(): object { const status = {
-            monitoring: this.monitoringEnabled,
+            monitoring: this.monitoringEnabled;
             baseline: this.performanceBaseline, }
             detectors: {} as Record<string, DetectorStatus>
         };
 
         for (const [name, detector] of this.detectors) { status.detectors[name] = detector.getStatus(); }
-        }
 
         return status;
-    }
-}
 
 /**
  * Performance Error Classifier
@@ -288,83 +265,84 @@ export class PerformanceErrorClassifier {
         this.patternAnalyzer = new ErrorPatternAnalyzer();
 
     }
-    }
         this.initialized = false; }
-    }'
-'';
+    }
+
     async initialize()';
-        console.log('Initializing Performance Error Classifier...');
+        console.log('Initializing, Performance Error, Classifier...);
         
-        this.setupClassificationRules();'
-        await this.severityCalculator.initialize();''
-        await this.patternAnalyzer.initialize();'
-        console.log('Performance Error Classifier initialized successfully');
-    }'
-'';
+        this.setupClassificationRules();
+
+        await this.severityCalculator.initialize(');''
+        await this.patternAnalyzer.initialize();
+
+        console.log('Performance, Error Classifier, initialized successfully');
+    }
+
     private setupClassificationRules(''';
         this.classificationRules.set('frameRate', { ''
-            category: 'performance','';
-            subcategory: 'rendering',')';
+            category: 'performance',
+            subcategory: 'rendering',)';
             priority: 'high')';
             recoverable: true,')';
-            degradationOptions: ['quality', 'effects', 'resolution'])');
+            degradationOptions: ['quality', 'effects', 'resolution])');
 ';
         // Memory related errors
         this.classificationRules.set('memory', {''
-            category: 'resource','';
-            subcategory: 'memory',')';
+            category: 'resource',
+            subcategory: 'memory',)';
             priority: 'critical')';
             recoverable: true,')';
-            degradationOptions: ['cleanup', 'cache', 'objects'])');
+            degradationOptions: ['cleanup', 'cache', 'objects])');
 ';
         // Rendering related errors
         this.classificationRules.set('rendering', {''
-            category: 'performance','';
-            subcategory: 'graphics',')';
+            category: 'performance',
+            subcategory: 'graphics',)';
             priority: 'high')';
             recoverable: true,')';
-            degradationOptions: ['quality', 'effects', 'particles'])');
+            degradationOptions: ['quality', 'effects', 'particles])');
 ';
         // Network related errors
         this.classificationRules.set('network', {''
-            category: 'connectivity','';
-            subcategory: 'network',')';
+            category: 'connectivity',
+            subcategory: 'network',)';
             priority: 'medium')';
             recoverable: false,')';
-            degradationOptions: ['offline', 'retry', 'cache'])');
+            degradationOptions: ['offline', 'retry', 'cache])');
 ';
         // JavaScript errors
         this.classificationRules.set('javascript', {''
-            category: 'code','';
-            subcategory: 'execution',')';
+            category: 'code',
+            subcategory: 'execution',)';
             priority: 'critical')';
             recoverable: false,')';
-            degradationOptions: ['fallback', 'disable'])');
+            degradationOptions: ['fallback', 'disable])');
 ';
         // Resource loading errors
         this.classificationRules.set('resource', {''
-            category: 'resource','';
-            subcategory: 'loading',')';
+            category: 'resource',
+            subcategory: 'loading',)';
             priority: 'medium')';
             recoverable: true,')';
-            degradationOptions: ['retry', 'fallback', 'cache']) }
-    }
-';'
-    async classify(detectedError: EnrichedError): Promise<ClassifiedError> { ''
-        if(!this.initialized') {'
-            ';'
-        }'
-            throw new Error('Classifier not initialized'); }
-        }'
-'';
-        const baseClassification = this.classificationRules.get(detectedError.detector') || { ''
-            category: 'unknown','';
-            subcategory: 'unclassified','';
-            priority: 'low' as const,
-            recoverable: false,
-            degradationOptions: [] }
-        },
+            degradationOptions: ['retry', 'fallback', 'cache] }
+';
 
+    async classify(detectedError: EnrichedError): Promise<ClassifiedError> { ''
+        if(!this.initialized) {'
+            ';
+
+        }
+
+            throw new Error('Classifier, not initialized); }'
+        }
+
+        const baseClassification = this.classificationRules.get(detectedError.detector) || { ''
+            category: 'unknown',
+            subcategory: 'unclassified',
+            priority: 'low' as const;
+            recoverable: false;
+            degradationOptions: [] ,};
         // Calculate severity
         const severity = await this.severityCalculator.calculate(detectedError);
         
@@ -374,14 +352,13 @@ export class PerformanceErrorClassifier {
         // Create classified error
         const classifiedError: ClassifiedError = { ...detectedError,
             classification: {
-                ...baseClassification,
+                ...baseClassification;
                 severity,
                 patterns,;
-                classifiedAt: Date.now(),'';
-                confidence: this.calculateClassificationConfidence(detectedError, patterns') }
-            }
-        };'
-'';
+                classifiedAt: Date.now(),
+                confidence: this.calculateClassificationConfidence(detectedError, patterns }
+        };
+
         console.log('Error classified:', classifiedError);
         return classifiedError;
     }
@@ -391,24 +368,19 @@ export class PerformanceErrorClassifier {
         // Increase confidence based on clear error indicators
         if (error.metrics && Object.keys(error.metrics).length > 0) {
             confidence += 0.2; }
-        }
 
         // Increase confidence based on pattern recognition
         if (patterns.recognized) { confidence += 0.2; }
-        }
 
         // Increase confidence based on baseline comparison
         if (error.baseline) { confidence += 0.1; }
-        }
 
         return Math.min(1.0, confidence);
     }
 
     getClassificationRules(): Map<string, ClassificationRule> { return new Map(this.classificationRules); }
-    }
 
     updateClassificationRule(detector: string, rule: ClassificationRule): void { this.classificationRules.set(detector, rule); }
-    }
 }
 
 /**
@@ -417,26 +389,22 @@ export class PerformanceErrorClassifier {
  */
 class ErrorSeverityCalculator { private severityWeights: {
         impact: number;
-        frequency: number,
-        userExperience: number,
-        recoverability: number }
-    };
+        frequency: number;
+        userExperience: number;
+        recoverability: number };
 
     constructor() {
 
         this.severityWeights = {
-            impact: 0.4,
-            frequency: 0.3,
-            userExperience: 0.2,
-
-    }
+            impact: 0.4;
+            frequency: 0.3;
+            userExperience: 0.2;
     }
             recoverability: 0.1 }
-        },
-    }
-'';
+        }
+
     async initialize()';
-        console.log('Error Severity Calculator initialized');
+        console.log('Error, Severity Calculator, initialized);
     }
 
     async calculate(error: EnrichedError): Promise<ErrorSeverity> { const impact = this.calculateImpact(error);
@@ -452,18 +420,15 @@ class ErrorSeverityCalculator { private severityWeights: {
 
         return { score: weightedScore };
             level: this.scoresToLevel(weightedScore, }
-            components: { impact, frequency, userExperience, recoverability }
-        };
-    })'
+            components: { impact, frequency, userExperience, recoverability }')'
 ')';
-    private calculateImpact(error: EnrichedError'): number { // Calculate impact based on error type and metrics
-        if (error.detector === 'memory' && error.metrics? .usage > 0.9') return 1.0;''
-        if (error.detector === 'frameRate' && error.metrics?.fps < 15') return 0.9;''
+    private calculateImpact(error: EnrichedError): number { // Calculate impact based on error type and metrics
+        if(error.detector === 'memory' && error.metrics? .usage > 0.9) return 1.0;''
+        if(error.detector === 'frameRate' && error.metrics?.fps < 15) return 0.9;''
         if (error.detector === 'javascript'') return 0.8;''
         if (error.detector === 'rendering' && error.metrics?.renderTime > 50) return 0.7;
         return 0.5; }
-    }
- : undefined;
+ : undefined
     private calculateFrequency(error: EnrichedError): number { // Simplified frequency calculation
         const now = Date.now();
         const timeSinceLastError = now - (error.lastOccurrence || 0);
@@ -472,11 +437,10 @@ class ErrorSeverityCalculator { private severityWeights: {
         if (timeSinceLastError < 5000) return 0.7; // Frequent
         if (timeSinceLastError < 30000) return 0.4; // Occasional
         return 0.2; // Rare }
-    }
 ;
     private calculateUserExperienceImpact(error: EnrichedError): number { // Calculate user experience impact
-        switch(error.detector') {'
-            '';
+        switch(error.detector) {'
+
             case 'frameRate': return 0.9; // Direct visual impact
             case 'rendering': return 0.8; // Visual quality impact
             case 'memory': return 0.6; // Indirect impact
@@ -484,13 +448,11 @@ class ErrorSeverityCalculator { private severityWeights: {
             case 'javascript': return 0.5; // Functionality impact
             case 'resource': return 0.4; // Content availability impact
         }
-            default: return 0.3; }
-        }
-    }
+            default: return 0.3;
 ;
     private calculateRecoverability(error: EnrichedError): number { // Higher score means harder to recover (worse);
-        switch(error.detector') {'
-            '';
+        switch(error.detector) {'
+
             case 'javascript': return 0.9; // Hard to recover
             case 'memory': return 0.7; // Moderate recovery difficulty
             case 'network': return 0.6; // Depends on connectivity
@@ -498,17 +460,13 @@ class ErrorSeverityCalculator { private severityWeights: {
             case 'rendering': return 0.3; // Usually recoverable
             case 'resource': return 0.2; // Often recoverable
         }
-            default: return 0.5; }
-        }
-    }
-'';
-    private scoresToLevel(score: number'): 'critical' | 'high' | 'medium' | 'low' { ''
-        if (score >= 0.8') return 'critical';''
-        if (score >= 0.6') return 'high';''
-        if (score >= 0.4') return 'medium';''
-        return 'low'; }
-    }
-}
+            default: return 0.5;
+
+    private scoresToLevel(score: number): 'critical' | 'high' | 'medium' | 'low' { ''
+        if(score >= 0.8) return 'critical';''
+        if(score >= 0.6) return 'high';''
+        if(score >= 0.4) return 'medium';''
+        return 'low';
 
 /**
  * Error Pattern Analyzer
@@ -522,65 +480,62 @@ class ErrorPatternAnalyzer { private errorHistory: ErrorHistoryEntry[]
         this.errorHistory = [];
         this.patterns = new Map();
 
-    }
-    }
+    ,}
         this.maxHistorySize = 100; }
-    }'
-'';
-    async initialize()';
-        console.log('Error Pattern Analyzer initialized');
     }
-';'
+
+    async initialize()';
+        console.log('Error, Pattern Analyzer, initialized');
+    }
+';
+
     async analyze(error: EnrichedError): Promise<ErrorPatterns> { ''
-        this.addToHistory(error');
+        this.addToHistory(error);
         
         const patterns: ErrorPatterns = {'
-            recognized: false,'';
-            type: 'unknown',
-            confidence: 0,
+            recognized: false,
+            type: 'unknown';
+            confidence: 0;
             trend: this.analyzeTrend();
-            clustering: this.analyzeClustering(),
-            correlation: this.analyzeCorrelation(error) }
-        };
+            clustering: this.analyzeClustering();
+            correlation: this.analyzeCorrelation(error ,};
 
         // Simple pattern recognition
         if(this.errorHistory.length >= 3) {
             const recentErrors = this.errorHistory.slice(-3);
             const sameDetector = recentErrors.every(e => e.detector === error.detector);
-            '';
-            if (sameDetector') {'
+
+            if(sameDetector) {'
                 patterns.recognized = true;''
                 patterns.type = 'recurring';
         }
                 patterns.confidence = 0.8; }
-            }
-        }
+}
 
         return patterns;
-    }'
-'';
-    private addToHistory(error: EnrichedError'): void { this.errorHistory.push({)
+    }
+
+    private addToHistory(error: EnrichedError): void { this.errorHistory.push({)
             detector: error.detector)';
             timestamp: error.timestamp,')';
-            severity: error.classification? .severity?.level || 'unknown'),
-
+            severity: error.classification? .severity?.level || 'unknown');
         if(this.errorHistory.length > this.maxHistorySize) {
 
             
 
-        }
+        ,}
             this.errorHistory.shift(); }
-        }
-    }'
+}
+
  : undefined'';
     private analyzeTrend('): 'increasing' | 'decreasing' | 'stable' | 'insufficient_data' { ''
-        if (this.errorHistory.length < 5') return 'insufficient_data';
+        if(this.errorHistory.length < 5) return 'insufficient_data';
         
         const recent = this.errorHistory.slice(-5);
         const timestamps = recent.map(e => e.timestamp);
         const intervals: number[] = [],
         
-        for(let i = 1; i < timestamps.length; i++) {
+        for(let, i = 1; i < timestamps.length; i++) {
         
             
         
@@ -588,10 +543,10 @@ class ErrorPatternAnalyzer { private errorHistory: ErrorHistoryEntry[]
             intervals.push(timestamps[i] - timestamps[i-1]); }
         }
         
-        const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;'
-        '';
-        if (avgInterval < 5000') return 'increasing';''
-        if (avgInterval > 30000') return 'decreasing';''
+        const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+
+        if(avgInterval < 5000) return 'increasing';''
+        if(avgInterval > 30000) return 'decreasing';''
         return 'stable';
     }
 
@@ -607,8 +562,7 @@ class ErrorPatternAnalyzer { private errorHistory: ErrorHistoryEntry[]
         
         return { clustered: maxCount / totalCount > 0.6 };
             dominantDetector: Object.keys(detectorCounts).find(key => detectorCounts[key] === maxCount); }
-        };
-    }
+        }
 
     private analyzeCorrelation(error: EnrichedError): { hasCorrelation: boolean; correlatedWith: string[] } { const timeWindow = 10000; // 10 seconds
         const recentErrors = this.errorHistory.filter();
@@ -619,8 +573,7 @@ class ErrorPatternAnalyzer { private errorHistory: ErrorHistoryEntry[]
         
         return { hasCorrelation: correlatedDetectors.size > 0 };
             correlatedWith: Array.from(correlatedDetectors); }
-        };
-    }
+        }
 }
 
 // Specific Error Detectors
@@ -635,12 +588,11 @@ export class FrameRateErrorDetector implements IErrorDetector { private threshol
         this.errorCallbacks = [];
 
     }
-    }
         this.lastFrameTime = performance.now(); }
     }
-'';
+
     async initialize()';
-        console.log('Frame Rate Error Detector initialized');
+        console.log('Frame, Rate Error, Detector initialized);
     }
 
     async detect(): Promise<void> { const currentTime = performance.now();
@@ -654,43 +606,42 @@ export class FrameRateErrorDetector implements IErrorDetector { private threshol
             this.frameHistory.shift(); }
         }
         
-        this.lastFrameTime = currentTime;'
-        '';
+        this.lastFrameTime = currentTime;
+
         if(fps < this.thresholds.critical') {'
-            ';'
-        }'
-            this.triggerError('critical', fps, frameTime);' }'
-        } else if (fps < this.thresholds.warning') { ''
-            this.triggerError('warning', fps, frameTime'); }
+            ';
+
         }
-    }'
-'';
-    private triggerError(level: 'critical' | 'warning', fps: number, frameTime: number'): void { const error: DetectedError = {''
-            type: 'frame_rate',
+
+            this.triggerError('critical', fps, frameTime);' }
+
+        } else if(fps < this.thresholds.warning) { ''
+            this.triggerError('warning', fps, frameTime); }
+    }
+
+    private triggerError(level: 'critical' | 'warning', fps: number, frameTime: number): void { const error: DetectedError = {''
+            type: 'frame_rate';
             level, }
             metrics: { fps, frameTime },
-            timestamp: Date.now(),
+            timestamp: Date.now();
         };
         
         this.errorCallbacks.forEach(callback => callback(error);
     }
 
     onError(callback: ErrorCallback): void { this.errorCallbacks.push(callback); }
-    }
 
     updateThresholds(newThresholds: ThresholdConfig): void { this.thresholds = newThresholds; }
-    }
 
     getStatus(): DetectorStatus { const recentFrames = this.frameHistory.slice(-10);
-        const avgFps = recentFrames.length > 0 ?   : undefined;
+        const avgFps = recentFrames.length > 0 ?   : undefined
             recentFrames.reduce((sum, frame) => sum + frame.fps, 0) / recentFrames.length: 0,
             
         return { enabled: true,
-            averageFps: avgFps,
+            averageFps: avgFps;
             thresholds: this.thresholds, };
             historySize: this.frameHistory.length }
-        },
-    }
+        }
 }
 
 export class MemoryErrorDetector implements IErrorDetector { private thresholds: ThresholdConfig
@@ -702,60 +653,58 @@ export class MemoryErrorDetector implements IErrorDetector { private thresholds:
         this.errorCallbacks = [];
 
     }
-    }
         this.lastCheck = Date.now(); }
-    }'
-'';
-    async initialize()';
-        console.log('Memory Error Detector initialized');
     }
 
-    async detect(): Promise<void> { if (!(performance as any).memory) return;
+    async initialize()';
+        console.log('Memory, Error Detector, initialized);
+    }
+
+    async detect(): Promise<void> { if (!(performance, as any).memory) return;
         
-        const memory = (performance as any).memory;
-        const usage = memory.usedJSHeapSize / memory.jsHeapSizeLimit;'
-        '';
+        const memory = (performance, as any).memory;
+        const usage = memory.usedJSHeapSize / memory.jsHeapSizeLimit;
+
         if(usage > this.thresholds.critical') {'
-            ';'
-        }'
-            this.triggerError('critical', usage);' }'
-        } else if (usage > this.thresholds.warning') { ''
+            ';
+
+        }
+
+            this.triggerError('critical', usage);' }
+
+        } else if(usage > this.thresholds.warning) { ''
             this.triggerError('warning', usage); }
-        }'
-        '';
+
         this.lastCheck = Date.now()';
     private triggerError(level: 'critical' | 'warning', usage: number): void { ''
-        const memory = (performance as any').memory;'
+        const memory = (performance, as any').memory;
+
         const error: DetectedError = {''
-            type: 'memory',
+            type: 'memory';
             level,
             metrics: { 
-                usage,
-                used: memory.usedJSHeapSize,
-                total: memory.jsHeapSizeLimit }
-            },
-            timestamp: Date.now(),
+                usage;
+                used: memory.usedJSHeapSize;
+                total: memory.jsHeapSizeLimit ,};
+            timestamp: Date.now();
         };
         
         this.errorCallbacks.forEach(callback => callback(error);
     }
 
     onError(callback: ErrorCallback): void { this.errorCallbacks.push(callback); }
-    }
 
     updateThresholds(newThresholds: ThresholdConfig): void { this.thresholds = newThresholds; }
-    }
 
-    getStatus(): DetectorStatus { const memory = (performance as any).memory;
-        const currentUsage = memory ?   : undefined;
+    getStatus(): DetectorStatus { const memory = (performance, as any).memory;
+        const currentUsage = memory ?   : undefined
             memory.usedJSHeapSize / memory.jsHeapSizeLimit: 0,
             
         return { enabled: true,
             currentUsage,
             thresholds: this.thresholds, };
             lastCheck: this.lastCheck }
-        },
-    }
+        }
 }
 
 // Additional simplified detector classes
@@ -766,27 +715,22 @@ export class RenderingErrorDetector implements IErrorDetector { private threshol
         this.thresholds = thresholds
 
     }
-    }
         this.errorCallbacks = []; }
     }
-'';
+
     async initialize()';
-        console.log('Rendering Error Detector initialized');
+        console.log('Rendering, Error Detector, initialized);
     }
 
     async detect(): Promise<void> { // Simplified rendering error detection
         // In real implementation, this would measure actual render times }
-    }
 
     onError(callback: ErrorCallback): void { this.errorCallbacks.push(callback); }
-    }
 
     updateThresholds(newThresholds: ThresholdConfig): void { this.thresholds = newThresholds; }
-    }
 
     getStatus(): DetectorStatus {
-        return { enabled: true, thresholds: this.thresholds }
-    }
+        return { enabled: true, thresholds: this.thresholds ,}
 }
 
 export class NetworkErrorDetector implements IErrorDetector { private thresholds: ThresholdConfig
@@ -796,26 +740,21 @@ export class NetworkErrorDetector implements IErrorDetector { private thresholds
         this.thresholds = thresholds
 
     }
-    }
         this.errorCallbacks = []; }
     }
-'';
-    async initialize()';
-        console.log('Network Error Detector initialized');
+
+    async initialize(')';
+        console.log('Network, Error Detector, initialized);
     }
 
     async detect(): Promise<void> { // Simplified network error detection }
-    }
 
     onError(callback: ErrorCallback): void { this.errorCallbacks.push(callback); }
-    }
 
     updateThresholds(newThresholds: ThresholdConfig): void { this.thresholds = newThresholds; }
-    }
 
     getStatus(): DetectorStatus {
-        return { enabled: true, thresholds: this.thresholds }
-    }
+        return { enabled: true, thresholds: this.thresholds ,}
 }
 
 export class JavaScriptErrorDetector implements IErrorDetector { private thresholds: ThresholdConfig
@@ -825,26 +764,21 @@ export class JavaScriptErrorDetector implements IErrorDetector { private thresho
         this.thresholds = thresholds
 
     }
-    }
         this.errorCallbacks = []; }
     }
-'';
-    async initialize()';
-        console.log('JavaScript Error Detector initialized');
+
+    async initialize(')';
+        console.log('JavaScript, Error Detector, initialized);
     }
 
     async detect(): Promise<void> { // Simplified JavaScript error detection }
-    }
 
     onError(callback: ErrorCallback): void { this.errorCallbacks.push(callback); }
-    }
 
     updateThresholds(newThresholds: ThresholdConfig): void { this.thresholds = newThresholds; }
-    }
 
     getStatus(): DetectorStatus {
-        return { enabled: true, thresholds: this.thresholds }
-    }
+        return { enabled: true, thresholds: this.thresholds ,}
 }
 
 export class ResourceErrorDetector implements IErrorDetector { private thresholds: ThresholdConfig
@@ -854,21 +788,17 @@ export class ResourceErrorDetector implements IErrorDetector { private threshold
         this.thresholds = thresholds
 
     }
-    }
         this.errorCallbacks = []; }
     }
-'';
-    async initialize()';
-        console.log('Resource Error Detector initialized');
+
+    async initialize(')';
+        console.log('Resource, Error Detector, initialized);
     }
 
     async detect(): Promise<void> { // Simplified resource error detection }
-    }
 
     onError(callback: ErrorCallback): void { this.errorCallbacks.push(callback); }
-    }
 
-    updateThresholds(newThresholds: ThresholdConfig): void { this.thresholds = newThresholds; }
-    }
-'';
+    updateThresholds(newThresholds: ThresholdConfig'): void { this.thresholds = newThresholds; }
+
     getStatus(');

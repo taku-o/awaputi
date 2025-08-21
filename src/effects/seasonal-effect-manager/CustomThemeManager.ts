@@ -6,59 +6,49 @@
 
 // カスタムテーマの型定義
 export interface CustomTheme { id: string,
-    name: string,
-    author: string,
-    created: string,
-    version: string,
+    name: string;
+    author: string;
+    created: string;
+    version: string;
     colors: {
-        primary: string[],
+        primary: string[];
         secondary?: string[];
-        accent?: string[]; }
-    };
-    particles: { types: string[],
+        accent?: string[]; ,};
+    particles: { types: string[];
         density?: number;
         movement?: string;
-        spawnRate?: number; }
-    };
-    effects: { bubbleDestruction: string,
+        spawnRate?: number; };
+    effects: { bubbleDestruction: string;
         comboEffect?: string;
-        backgroundPattern?: string; }
-    };
+        backgroundPattern?: string; };
     audio?: { ambientSounds?: string[];
         destructionSounds?: string[]; }
-    };
-}
 
 export interface ThemeHistoryEntry { action: 'save' | 'delete' | 'import' | 'export',
-    themeName: string,
-    timestamp: string,
-    themeId: string }
-}
+    themeName: string;
+    timestamp: string;
+    themeId: string ,}
 
-export interface ThemeListItem { name: string,
-    displayName: string,
-    author: string,
-    created: string,
+export interface ThemeListItem { name: string;
+    displayName: string;
+    author: string;
+    created: string;
     id: string }
-}
 
-export interface ThemeStatistics { totalThemes: number,
+export interface ThemeStatistics { totalThemes: number;
     authorCounts: Record<string, number>,
     oldestTheme?: CustomTheme;
     newestTheme?: CustomTheme;
     }
-}
 
 export interface ThemeBackup { themes: [string, CustomTheme][],
-    history: ThemeHistoryEntry[],
-    timestamp: string,
-    version: string }
-}
+    history: ThemeHistoryEntry[];
+    timestamp: string;
+    version: string ,}
 
 export interface StorageData { themes: [string, CustomTheme][],
     history: ThemeHistoryEntry[]
-    }
-}
+    ,}
 
 export class CustomThemeManager {
     private customThemes: Map<string, CustomTheme>;
@@ -68,14 +58,16 @@ export class CustomThemeManager {
     private readonly storageKey: string,
     
     constructor() {
-    ';'
+    ';
+
         this.customThemes = new Map<string, CustomTheme>();''
         this.userThemes = new Map<string, CustomTheme>(');
-        this.themeHistory = [];'
-        this.maxHistorySize = 50;'
-    
+        this.themeHistory = [];
+
+        this.maxHistorySize = 50;
+
     }
-    }'
+
         this.storageKey = 'bubblePop_customThemes'; }
     }
     
@@ -86,37 +78,33 @@ export class CustomThemeManager {
      * @param author - 作成者
      * @returns 保存成功かどうか'
      */''
-    saveCustomTheme(name: string, theme: Partial<CustomTheme>, author: string = 'user'): boolean { try {'
-            if (!this._validateTheme(theme)') {''
-                throw new Error('Invalid theme data'); }
-            }
+    saveCustomTheme(name: string, theme: Partial<CustomTheme>, author: string = 'user): boolean { try {'
+            if(!this._validateTheme(theme)) {''
+                throw new Error('Invalid, theme data); }'
             
             const themeData: CustomTheme = { ...theme as CustomTheme,
-                id: this._generateThemeId(),
-                name,';
-                author,'';
+                id: this._generateThemeId();
+                name,
+                author,
                 created: new Date().toISOString(''';
-                version: '1.0.0' })
-            })'
+                version: '1.0.0' ,}))'
             ')';
-            this.customThemes.set(name, themeData');''
+            this.customThemes.set(name, themeData);''
             this._addToHistory('save', name, themeData);
             this._persistToStorage();
-            ';'
+            ';
+
             return true;''
-        } catch (error) { ''
+        } catch (error) {
             console.error('Failed to save custom theme:', error);
-            return false; }
-        }
-    }
+            return false;
     
     /**
      * カスタムテーマを読み込み
      * @param name - テーマ名
      * @returns テーマデータ
      */
-    loadCustomTheme(name: string): CustomTheme | null { return this.customThemes.get(name) || null; }
-    }
+    loadCustomTheme(name: string): CustomTheme | null { return this.customThemes.get(name) || null; ,}
     
     /**
      * カスタムテーマを削除
@@ -125,11 +113,10 @@ export class CustomThemeManager {
      */
     deleteCustomTheme(name: string): boolean { if(this.customThemes.has(name) {'
             const theme = this.customThemes.get(name)!;''
-            this.customThemes.delete(name');''
+            this.customThemes.delete(name);''
             this._addToHistory('delete', name, theme);
             this._persistToStorage();
             return true; }
-        }
         return false;
     }
     
@@ -139,11 +126,11 @@ export class CustomThemeManager {
      */
     getAvailableCustomThemes(): ThemeListItem[] { return Array.from(this.customThemes.entries().map(([name, theme]) => ({
             name,
-            displayName: theme.name,
-            author: theme.author,
+            displayName: theme.name;
+            author: theme.author;
             created: theme.created);
-            id: theme.id }
-        }),
+            id: theme.id ,}
+        });
     }
     
     /**
@@ -156,11 +143,10 @@ export class CustomThemeManager {
         
         try {
             return JSON.stringify(theme, null, 2);' }'
-        } catch (error) { ''
+
+        } catch (error) {
             console.error('Failed to export theme:', error);
-            return null; }
-        }
-    }
+            return null;
     
     /**
      * テーマをインポート
@@ -169,21 +155,18 @@ export class CustomThemeManager {
      * @returns インポート成功かどうか
      */
     importTheme(themeJson: string, newName: string | null = null): boolean { try {
-            const theme = JSON.parse(themeJson) as Partial<CustomTheme>;'
-            '';
-            if (!this._validateTheme(theme)') {''
-                throw new Error('Invalid theme format''); }
-            }'
-            '';
+            const theme = JSON.parse(themeJson) as Partial<CustomTheme>;
+
+            if(!this._validateTheme(theme)) {''
+                throw new Error('Invalid, theme format''); ,}
+
             const name = newName || theme.name || 'Imported Theme';''
-            const uniqueName = this._generateUniqueName(name');'
-            '';
-            return this.saveCustomTheme(uniqueName, theme, theme.author || 'imported');''
-        } catch (error) { ''
+            const uniqueName = this._generateUniqueName(name);
+
+            return this.saveCustomTheme(uniqueName, theme, theme.author || 'imported);''
+        } catch (error) {
             console.error('Failed to import theme:', error);
-            return false; }
-        }
-    }
+            return false;
     
     /**
      * テーマを複製
@@ -192,14 +175,13 @@ export class CustomThemeManager {
      * @returns 複製成功かどうか
      */'
     duplicateTheme(sourceName: string, newName: string): boolean { const sourceTheme = this.customThemes.get(sourceName);''
-        if (!sourceTheme') return false;
+        if(!sourceTheme) return false;
         
         const duplicatedTheme: Partial<CustomTheme> = {
-            ...sourceTheme,';
-            name: newName,'';
-            author: sourceTheme.author + ' (copy')',
-            created: new Date().toISOString() }
-        };
+            ...sourceTheme,
+            name: newName,
+            author: sourceTheme.author + ' (copy')';
+            created: new Date().toISOString( ,};
         
         return this.saveCustomTheme(newName, duplicatedTheme);
     }
@@ -215,11 +197,10 @@ export class CustomThemeManager {
             }
                     this.customThemes = new Map(data.themes); }
                 }
-                if (data.history) { this.themeHistory = data.history; }'
+                if (data.history) { this.themeHistory = data.history; }
+
                 }''
-            } catch (error) { ''
-            console.error('Failed to load themes from storage:', error) }
-        }
+            } catch (error) { console.error('Failed to load themes from storage:', error }
     }
     
     /**
@@ -228,7 +209,6 @@ export class CustomThemeManager {
      * @returns 履歴配列
      */
     getThemeHistory(limit: number = 10): ThemeHistoryEntry[] { return this.themeHistory.slice(-limit).reverse(); }
-    }
     
     /**
      * テーマ統計を取得
@@ -242,8 +222,7 @@ export class CustomThemeManager {
         });
         
         const stats: ThemeStatistics = { totalThemes: themes.length,
-            authorCounts }
-        };
+            authorCounts };
         
         if(themes.length > 0) {
         
@@ -265,9 +244,9 @@ export class CustomThemeManager {
      * @returns 妥当性
      * @private'
      */''
-    private _validateTheme(theme: any'): theme is Partial<CustomTheme> { ''
-        if (!theme || typeof theme !== 'object'') return false;'
-        '';
+    private _validateTheme(theme: any): theme is Partial<CustomTheme> { ''
+        if (!theme || typeof, theme !== 'object'') return false;
+
         const requiredFields = ['colors', 'particles', 'effects'];
         const hasRequiredFields = requiredFields.every(field => theme.hasOwnProperty(field);
         
@@ -282,8 +261,7 @@ export class CustomThemeManager {
         // エフェクト設定の検証
         if (!theme.effects?.bubbleDestruction) return false;
         
-        return true; }
-    }
+        return true;
     
     /**
      * テーマIDを生成
@@ -291,7 +269,7 @@ export class CustomThemeManager {
      * @private
      */ : undefined
     private _generateThemeId(): string {
-        return `theme_${Date.now(})}_${Math.random().toString(36).substr(2, 9})}`;
+        return `theme_${Date.now(})_${Math.random(}.toString(36}.substr(2, 9})`;
     }
     
     /**
@@ -302,8 +280,10 @@ export class CustomThemeManager {
      */
     private _generateUniqueName(baseName: string): string { let counter = 1;
         let uniqueName = baseName;
-        ';'
+        ';
+
         while(this.customThemes.has(uniqueName) {' }'
+
             uniqueName = `${baseName} (${counter}')`;
             counter++;
         }
@@ -321,15 +301,12 @@ export class CustomThemeManager {
     private _addToHistory(action: ThemeHistoryEntry['action'], themeName: string, themeData: CustomTheme): void { const historyEntry: ThemeHistoryEntry = {
             action,
             themeName,
-            timestamp: new Date().toISOString(),
-            themeId: themeData.id }
-        },
-        
+            timestamp: new Date().toISOString();
+            themeId: themeData.id ,};
         this.themeHistory.push(historyEntry);
         
         // 履歴サイズ制限
         if (this.themeHistory.length > this.maxHistorySize) { this.themeHistory = this.themeHistory.slice(-this.maxHistorySize); }
-        }
     }
     
     /**
@@ -338,13 +315,10 @@ export class CustomThemeManager {
      */
     private _persistToStorage(): void { try {
             const data: StorageData = {
-                themes: Array.from(this.customThemes.entries(),
-                history: this.themeHistory }
-            },
+                themes: Array.from(this.customThemes.entries();
+                history: this.themeHistory };
             localStorage.setItem(this.storageKey, JSON.stringify(data);''
-        } catch (error) { ''
-            console.error('Failed to persist themes to storage:', error) }
-        }
+        } catch (error) { console.error('Failed to persist themes to storage:', error }
     }
     
     /**
@@ -352,11 +326,10 @@ export class CustomThemeManager {
      * @returns バックアップJSON
      */
     createBackup(): string { const backup: ThemeBackup = {
-            themes: Array.from(this.customThemes.entries(),';
-            history: this.themeHistory,'';
+            themes: Array.from(this.customThemes.entries(),
+            history: this.themeHistory,
             timestamp: new Date().toISOString(''';
-            version: '1.0.0' })
-        })
+            version: '1.0.0' ,}))
         );
         return JSON.stringify(backup, null, 2);
     }
@@ -377,13 +350,11 @@ export class CustomThemeManager {
                 this.customThemes = new Map(backup.themes); }
             }
             if (backup.history) { this.themeHistory = backup.history; }
-            }
             
-            this._persistToStorage();'
+            this._persistToStorage();
+
             return true;''
-        } catch (error) { ''
-            console.error('Failed to restore from backup:', error');
-            return false; }
-        }'
-    }''
+        } catch (error) {
+            console.error('Failed to restore from backup:', error);
+            return false;''
 }

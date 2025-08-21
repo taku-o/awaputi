@@ -8,58 +8,52 @@ interface LayerConfig { cachingEnabled?: boolean;
     cacheThreshold?: number;
     invalidationThreshold?: number;
     enableBlending?: boolean; }
-}
 
 interface LayerProperties { opacity?: number;
     blendMode?: string;
     static?: boolean;
     cacheable?: boolean; }
-}
 
 interface BoundingBox { x: number,
-    y: number,
-    width: number,
-    height: number }
-}
+    y: number;
+    width: number;
+    height: number ,}
 
-interface Layer { name: string,
-    order: number,
-    enabled: boolean,
-    visible: boolean,
-    opacity: number,
-    blendMode: string,
-    canvas: HTMLCanvasElement | null,
-    context: CanvasRenderingContext2D | null,
-    static: boolean,
-    cacheable: boolean,
-    dirty: boolean,
-    lastModified: number,
-    objects: Set<string>,
-    boundingBox: BoundingBox,
-    renderTime: number,
-    complexity: number,
-    cacheHits: number,
+interface Layer { name: string;
+    order: number;
+    enabled: boolean;
+    visible: boolean;
+    opacity: number;
+    blendMode: string;
+    canvas: HTMLCanvasElement | null;
+    context: CanvasRenderingContext2D | null;
+    static: boolean;
+    cacheable: boolean;
+    dirty: boolean;
+    lastModified: number;
+    objects: Set<string>;
+    boundingBox: BoundingBox;
+    renderTime: number;
+    complexity: number;
+    cacheHits: number;
     cacheMisses: number }
-}
 
-interface LayerStats { totalLayers: number,
-    activeLayers: number,
-    cachedLayers: number,
-    renderTime: number,
-    compositionTime: number,
+interface LayerStats { totalLayers: number;
+    activeLayers: number;
+    cachedLayers: number;
+    renderTime: number;
+    compositionTime: number;
     cacheHitRatio: number }
-}
 
 interface Viewport { x?: number;
     y?: number;
     width?: number;
     height?: number;
     scale?: number; }
-}
-';'
+';
+
 interface ErrorHandler { ''
-    logError(message: string, error: Error'): void }
-}
+    logError(message: string, error: Error): void ,}
 
 /**
  * Layer Management System
@@ -99,97 +93,92 @@ export class AdvancedLayerManager {
         
         // Performance tracking
         this.stats = {
-            totalLayers: 0,
-            activeLayers: 0,
-            cachedLayers: 0,
-            renderTime: 0,
-            compositionTime: 0,
-
-    }
-    }
+            totalLayers: 0;
+            activeLayers: 0;
+            cachedLayers: 0;
+            renderTime: 0;
+            compositionTime: 0;
+    ,}
             cacheHitRatio: 0 }
-        },
-        
+        };
         // Configuration
         this.config = { maxLayers: config.maxLayers || 16,
             cacheThreshold: config.cacheThreshold || 100, // ms;
             invalidationThreshold: config.invalidationThreshold || 10, // frames;
-            enableBlending: config.enableBlending !== undefined ? config.enableBlending : true })
-        })
+            enableBlending: config.enableBlending !== undefined ? config.enableBlending : true ,}))
     }
     
     /**
      * Create a new rendering layer
      * @param name - Layer name
-     * @param order - Rendering order (lower = rendered first)
+     * @param order - Rendering order (lower = rendered, first)
      * @param properties - Layer properties
      */
     createLayer(name: string, order: number, properties: LayerProperties = { ): Layer | null {
         try {'
-            if (this.layers.has(name)') {' }'
-                throw new Error(`Layer '${name')' already exists`});
+            if(this.layers.has(name)) {' }'
+
+                throw new Error(`Layer '${name}' already, exists`});
             }
-            ';'
+            ';
+
             if (this.layers.size >= this.config.maxLayers) { ' }'
-                throw new Error(`Maximum layer count (${this.config.maxLayers) exceeded`'});
+
+                throw new Error(`Maximum, layer count (${this.config.maxLayers} exceeded`'});
             }
             
             const layer: Layer = { name,
                 order,
-                enabled: true,
-                visible: true,';
-                opacity: properties.opacity || 1.0,'';
-                blendMode: properties.blendMode || 'source-over',
-                
+                enabled: true;
+                visible: true,
+                opacity: properties.opacity || 1.0,
+                blendMode: properties.blendMode || 'source-over';
                 // Layer canvas for caching
-                canvas: null,
-                context: null,
-                
+                canvas: null;
+                context: null;
                 // Properties
-                static: properties.static || false,
-                cacheable: properties.cacheable || false,
-                dirty: true,
-                lastModified: Date.now(),
-                
+                static: properties.static || false;
+                cacheable: properties.cacheable || false;
+                dirty: true;
+                lastModified: Date.now();
                 // Content tracking
                 objects: new Set(), }
-                boundingBox: { x: 0, y: 0, width: 0, height: 0 },
+                boundingBox: { x: 0, y: 0, width: 0, height: 0 ,},
                 
                 // Performance tracking
-                renderTime: 0,
-                complexity: 0,
-                cacheHits: 0,
+                renderTime: 0;
+                complexity: 0;
+                cacheHits: 0;
                 cacheMisses: 0;
             },
             ;
             // Create layer canvas if cacheable
-            if(layer.cacheable && this.cachingEnabled') {'
-                '';
+            if(layer.cacheable && this.cachingEnabled) {'
+
                 layer.canvas = document.createElement('canvas'');
-                layer.canvas.width = this.mainCanvas.width;'
-                layer.canvas.height = this.mainCanvas.height;'
-            }'
-                layer.context = layer.canvas.getContext('2d'); }
+                layer.canvas.width = this.mainCanvas.width;
+
+                layer.canvas.height = this.mainCanvas.height;
+
+            }
+
+                layer.context = layer.canvas.getContext('2d); }'
             }
             
             this.layers.set(name, layer);
             this._updateLayerOrder(name);
             
             // Track layer type
-            if (layer.static) { this.staticLayers.add(name); }
-            } else { this.dynamicLayers.add(name); }
-            }
+            if (layer.static) { this.staticLayers.add(name); } else { this.dynamicLayers.add(name); }
             
             this.stats.totalLayers = this.layers.size;
             
-            console.log(`[LayerManager] Layer created: ${name} (order: ${order)`});
+            console.log(`[LayerManager] Layer, created: ${name} (order: ${order}`});
             return layer;
-            '';
-        } catch (error) { ''
+
+        } catch (error) {
             this.errorHandler.logError('Failed to create layer', error as Error);
-            return null; }
-        }
-    }
+            return null;
     
     /**
      * Remove a layer
@@ -202,7 +191,7 @@ export class AdvancedLayerManager {
             // Clean up canvas
             if(layer.canvas) {
                 layer.canvas = null;
-            }
+            ,}
                 layer.context = null; }
             }
             
@@ -218,22 +207,19 @@ export class AdvancedLayerManager {
             this.layers.delete(name);
             this.stats.totalLayers = this.layers.size;
             
-            console.log(`[LayerManager] Layer removed: ${name)`});
+            console.log(`[LayerManager] Layer, removed: ${name}`});
             return true;
-            '';
-        } catch (error) { ''
+
+        } catch (error) {
             this.errorHandler.logError('Failed to remove layer', error as Error);
-            return false; }
-        }
-    }
+            return false;
     
     /**
      * Get layer by name
      * @param name - Layer name
      * @returns Layer object
      */
-    getLayer(name: string): Layer | null { return this.layers.get(name) || null; }
-    }
+    getLayer(name: string): Layer | null { return this.layers.get(name) || null; ,}
     
     /**
      * Set layer visibility
@@ -245,8 +231,7 @@ export class AdvancedLayerManager {
             layer.visible = visible;
         }
             this._markLayerDirty(name); }
-        }
-    }
+}
     
     /**
      * Set layer opacity
@@ -258,8 +243,7 @@ export class AdvancedLayerManager {
             layer.opacity = Math.max(0, Math.min(1, opacity);
         }
             this._markLayerDirty(name); }
-        }
-    }
+}
     
     /**
      * Set layer blend mode
@@ -271,15 +255,13 @@ export class AdvancedLayerManager {
             layer.blendMode = blendMode;
         }
             this._markLayerDirty(name); }
-        }
-    }
+}
     
     /**
      * Mark layer as dirty for re-rendering
      * @param name - Layer name
      */
     markLayerDirty(name: string): void { this._markLayerDirty(name); }
-    }
     
     /**
      * Add object to layer
@@ -310,8 +292,7 @@ export class AdvancedLayerManager {
             layer.objects.delete(objectId);
         }
             this._markLayerDirty(layerName); }
-        }
-    }
+}
     
     /**
      * Render all layers to main canvas
@@ -324,7 +305,7 @@ export class AdvancedLayerManager {
             let activeLayers = 0;
             
             // Render layers in order
-            for(const layerName of this.layerOrder) {
+            for(const, layerName of, this.layerOrder) {
                 const layer = this.layers.get(layerName);
                 
                 if (!layer || !layer.enabled || !layer.visible || layer.opacity <= 0) {
@@ -340,12 +321,9 @@ export class AdvancedLayerManager {
                 
                 mainContext.globalAlpha = originalAlpha * layer.opacity;
                 if (this.config.enableBlending) { mainContext.globalCompositeOperation = layer.blendMode as GlobalCompositeOperation; }
-                }
                 
                 // Render layer
-                if(layer.cacheable && this._shouldUseCache(layer) { this._renderCachedLayer(mainContext, layer, viewport); }
-                } else { this._renderLayerDirect(mainContext, layer, viewport); }
-                }
+                if(layer.cacheable && this._shouldUseCache(layer) { this._renderCachedLayer(mainContext, layer, viewport); } else { this._renderLayerDirect(mainContext, layer, viewport); }
                 
                 // Restore context settings
                 mainContext.globalAlpha = originalAlpha;
@@ -354,10 +332,9 @@ export class AdvancedLayerManager {
             
             this.stats.activeLayers = activeLayers;
             this.stats.renderTime = performance.now() - startTime;
-            '';
-        } catch (error) { ''
+
+        } catch (error) {
             this.errorHandler.logError('Failed to render layers', error as Error); }
-        }
     }
     
     /**
@@ -365,19 +342,18 @@ export class AdvancedLayerManager {
      * @returns Performance statistics
      */
     getStats(): LayerStats { this.stats.cachedLayers = this.cachedLayers.size; }
-        return { ...this.stats };
+        return { ...this.stats;
     }
     
     /**
      * Clear all layer caches
      */
-    clearCaches(): void { for(const layer of this.layers.values() {
+    clearCaches(): void { for(const, layer of, this.layers.values() {
             if(layer.canvas && layer.context) {
                 
             }
                 layer.context.clearRect(0, 0, layer.canvas.width, layer.canvas.height); }
-            }
-        }
+}
         this.cachedLayers.clear();
         this.cacheInvalidation.clear();
     }
@@ -396,18 +372,16 @@ export class AdvancedLayerManager {
         
         // Insert at correct position
         let inserted = false;
-        for(let i = 0; i < this.layerOrder.length; i++) {
+        for(let, i = 0; i < this.layerOrder.length; i++) {
             const otherLayer = this.layers.get(this.layerOrder[i]);
             if (otherLayer && layer.order < otherLayer.order) {
                 this.layerOrder.splice(i, 0, layerName);
                 inserted = true;
         }
                 break; }
-            }
-        }
+}
         
         if (!inserted) { this.layerOrder.push(layerName); }
-        }
     }
     
     /**
@@ -420,15 +394,14 @@ export class AdvancedLayerManager {
             layer.lastModified = Date.now();
         }
             this.cachedLayers.delete(name); }
-        }
-    }
+}
     
     /**
      * Update layer bounding box
      * @private
      */
     private _updateLayerBounds(layer: Layer, objectBounds: BoundingBox): void { if (layer.objects.size === 1) { }
-            layer.boundingBox = { ...objectBounds };
+            layer.boundingBox = { ...objectBounds;
         } else {  const bounds = layer.boundingBox;
             const right = Math.max(bounds.x + bounds.width, objectBounds.x + objectBounds.width);
             const bottom = Math.max(bounds.y + bounds.height, objectBounds.y + objectBounds.height);
@@ -437,8 +410,7 @@ export class AdvancedLayerManager {
             bounds.y = Math.min(bounds.y, objectBounds.y);
             bounds.width = right - bounds.x; }
             bounds.height = bottom - bounds.y; }
-        }
-    }
+}
     
     /**
      * Check if layer should use cache
@@ -449,7 +421,6 @@ export class AdvancedLayerManager {
         if(!this.cachedLayers.has(layer.name) return false;
         
         return layer.renderTime > this.config.cacheThreshold; }
-    }
     
     /**
      * Render cached layer
@@ -458,7 +429,6 @@ export class AdvancedLayerManager {
     private _renderCachedLayer(mainContext: CanvasRenderingContext2D, layer: Layer, viewport: Viewport | null): void { if (layer.canvas) {
             mainContext.drawImage(layer.canvas, 0, 0);
             layer.cacheHits++; }
-        }
     }
     
     /**
@@ -474,7 +444,7 @@ export class AdvancedLayerManager {
         
             // Clear layer canvas
         
-        }
+        
             layer.context.clearRect(0, 0, layer.canvas!.width, layer.canvas!.height); }
         }
         
@@ -489,12 +459,12 @@ export class AdvancedLayerManager {
             
             // Mark as cached if render time exceeds threshold
             if (layer.renderTime > this.config.cacheThreshold) {''
-                this.cachedLayers.set(layer.name, Date.now()');
+                this.cachedLayers.set(layer.name, Date.now());
         }
                 layer.dirty = false; }
-            }
-        }
+}
         
-        layer.cacheMisses++;'
+        layer.cacheMisses++;
+
     }''
 }

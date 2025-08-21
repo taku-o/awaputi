@@ -12,111 +12,97 @@ export interface UIUpdateOptions { priority?: PriorityLevel;
     preserveState?: boolean;
     deferHidden?: HTMLElement[];
     }
-}
 
 export interface UpdateResult { success: boolean,
     type?: UpdateType;
     elementsUpdated?: number;
-    updateTime: number,
+    updateTime: number;
     error?: string;
     deferredElements?: number;
     batchCount?: number;
     batchResults?: BatchResult[];
-    }
-}
+    ,}
 
 export interface BatchResult { success: boolean,
     priority?: PriorityLevel;
     batchCount?: number;
     totalElements?: number;
-    updateTime: number,
+    updateTime: number;
     error?: string;
     batchIndex?: number;
     elements?: number;
     batches?: BatchInfo[];
-    }
-}
+    ,}
 
 export interface BatchInfo { batchIndex: number,
-    elements: number,
-    updateTime: number }
-}
+    elements: number;
+    updateTime: number ,}
 
-export interface ElementMeasurement { rect: DOMRect,
-    computedStyle: CSSStyleDeclaration,
-    offsetWidth: number,
-    offsetHeight: number,
-    scrollWidth: number,
-    scrollHeight: number,
+export interface ElementMeasurement { rect: DOMRect;
+    computedStyle: CSSStyleDeclaration;
+    offsetWidth: number;
+    offsetHeight: number;
+    scrollWidth: number;
+    scrollHeight: number;
     timestamp?: number }
-}
 
-export interface ElementUpdateSpec { element: HTMLElement,
-    currentText: string,
-    newText: string,
-    measurement: ElementMeasurement,
-    needsReflow: boolean,
+export interface ElementUpdateSpec { element: HTMLElement;
+    currentText: string;
+    newText: string;
+    measurement: ElementMeasurement;
+    needsReflow: boolean;
     preserveState: boolean }
-}
 
 export interface ElementState { value?: string;
     selectionStart?: number;
     selectionEnd?: number; }
-}
 
 export interface OptimizationStrategies { separateReadWrite: boolean,
-    batchDOMOperations: boolean,
-    useDocumentFragment: boolean,
-    deferNonCritical: boolean,
-    reuseElements: boolean,
-    minimizeReflow: boolean,
-    useVirtualDOM: boolean }
-}
+    batchDOMOperations: boolean;
+    useDocumentFragment: boolean;
+    deferNonCritical: boolean;
+    reuseElements: boolean;
+    minimizeReflow: boolean;
+    useVirtualDOM: boolean ,}
 
-export interface PerformanceMetrics { updateCount: number,
-    batchCount: number,
-    averageUpdateTime: number,
-    totalUpdateTime: number,
-    reflowCount: number,
-    repaintCount: number,
+export interface PerformanceMetrics { updateCount: number;
+    batchCount: number;
+    averageUpdateTime: number;
+    totalUpdateTime: number;
+    reflowCount: number;
+    repaintCount: number;
     cacheHitRate: number }
-}
 
-export interface UIUpdateStats { totalUpdates: number,
-    batchedUpdates: number,
-    immediateUpdates: number,
-    cacheHits: number,
-    cacheMisses: number,
-    deferredUpdates: number,
-    averageBatchSize: number,
+export interface UIUpdateStats { totalUpdates: number;
+    batchedUpdates: number;
+    immediateUpdates: number;
+    cacheHits: number;
+    cacheMisses: number;
+    deferredUpdates: number;
+    averageBatchSize: number;
     totalBatchTime: number }
-}
 
 export interface DetailedStats extends UIUpdateStats, PerformanceMetrics { cacheSize: number,
-    visibleElements: number,
-    deferredElements: number,
-    strategiesEnabled: string[] }
-}
+    visibleElements: number;
+    deferredElements: number;
+    strategiesEnabled: string[] ,}
 
 export interface UIOptimizerConfig { enabled?: boolean;
     batchMode?: boolean;
     maxBatchSize?: number;
     strategies?: Partial<OptimizationStrategies>;
     }
-}
 
 export interface DeferredUpdateData { translationData: Record<string, string>,
     options: UIUpdateOptions
-    }
-}
-'';
+    ,}
+
 export type PriorityLevel = 'critical' | 'high' | 'normal' | 'low';''
 export type UpdateType = 'immediate' | 'batched';
 
 // HTMLElement の拡張
 declare global { interface HTMLElement {
         _deferredUpdate?: DeferredUpdateData;
-    }
     }
 }
 
@@ -157,7 +143,8 @@ export class UIUpdateOptimizer {
         // 基本設定
         this.enabled = true;
         this.batchMode = true;''
-        this.batchDelay = 16; // 16ms (60fps');'
+        this.batchDelay = 16; // 16ms(60fps);
+
         this.maxBatchSize = 100;''
         this.priorityLevels = ['critical', 'high', 'normal', 'low'];
         
@@ -175,28 +162,23 @@ export class UIUpdateOptimizer {
         
         // 更新戦略
         this.strategies = {
-            separateReadWrite: true,
-            batchDOMOperations: true,
-            useDocumentFragment: true,
-            deferNonCritical: true,
-            reuseElements: true,
-            minimizeReflow: true,
-
-    }
-    }
+            separateReadWrite: true;
+            batchDOMOperations: true;
+            useDocumentFragment: true;
+            deferNonCritical: true;
+            reuseElements: true;
+            minimizeReflow: true;
+    ,}
             useVirtualDOM: false // 将来の拡張用 }
-        },
-        
+        };
         // パフォーマンス監視
         this.performanceMetrics = { updateCount: 0,
-            batchCount: 0,
-            averageUpdateTime: 0,
-            totalUpdateTime: 0,
-            reflowCount: 0,
-            repaintCount: 0,
-            cacheHitRate: 0 }
-        },
-        
+            batchCount: 0;
+            averageUpdateTime: 0;
+            totalUpdateTime: 0;
+            reflowCount: 0;
+            repaintCount: 0;
+            cacheHitRate: 0 ,};
         // 要素プール
         this.elementPool = new Map<string, HTMLElement[]>();
         this.pooledElements = new Set<HTMLElement>();
@@ -211,18 +193,17 @@ export class UIUpdateOptimizer {
         
         // 統計情報
         this.stats = { totalUpdates: 0,
-            batchedUpdates: 0,
-            immediateUpdates: 0,
-            cacheHits: 0,
-            cacheMisses: 0,
-            deferredUpdates: 0,
-            averageBatchSize: 0,
-            totalBatchTime: 0 }
-        },
+            batchedUpdates: 0;
+            immediateUpdates: 0;
+            cacheHits: 0;
+            cacheMisses: 0;
+            deferredUpdates: 0;
+            averageBatchSize: 0;
+            totalBatchTime: 0 ,};
         ;
         // 初期化
         this.initialize()';
-        console.log('UIUpdateOptimizer initialized');
+        console.log('UIUpdateOptimizer, initialized);
     }
     
     /**
@@ -239,7 +220,6 @@ export class UIUpdateOptimizer {
         
         // キャッシュクリーンアップの設定
         this.setupCacheCleanup(); }
-    }
     
     /**
      * 言語切り替え時のUI更新を最適化
@@ -248,16 +228,14 @@ export class UIUpdateOptimizer {
         elements: HTMLElement[]
     );
         translationData: Record<string, string>);
-        options: UIUpdateOptions = { ): Promise<UpdateResult>;''
+        options: UIUpdateOptions = { '): Promise<UpdateResult>;''
         const startTime = performance.now(''';
                 priority = 'normal',
                 forceImmediate = false);
                 animateChanges = true);
-                preserveState = true }
-            } = options;
+                preserveState = true } = options;
             );
             if (!this.enabled) { return this.processImmediateUpdate(elements, translationData, options); }
-            }
             
             this.stats.totalUpdates++;
             
@@ -275,19 +253,15 @@ export class UIUpdateOptimizer {
             
             // バッチ処理
             return await this.processBatchedUpdate(visibleElements, translationData, { ...options)
-                deferHidden: hiddenElements)
-             }
-        } catch (error) { ''
-            getErrorHandler(').handleError(error as Error, 'UI_UPDATE_OPTIMIZER_ERROR', {')'
+                deferHidden: hiddenElements } catch (error) {
+            getErrorHandler(').handleError(error as Error, 'UI_UPDATE_OPTIMIZER_ERROR', {)'
                 operation: 'optimizeLanguageSwitchUpdate',);
-                elementCount: elements.length), };
-            });
+                elementCount: elements.length), });
             
             return { success: false,
-                error: (error as Error).message, };
+                error: (error, as Error).message, };
                 updateTime: performance.now() - startTime }
-            },
-        }
+            }
     }
     
     /**
@@ -297,7 +271,7 @@ export class UIUpdateOptimizer {
         elements: HTMLElement[]
     );
         translationData: Record<string, string>);
-        options: UIUpdateOptions = { ): Promise<UpdateResult>,
+        options: UIUpdateOptions = { ): Promise<UpdateResult>;
         const startTime = performance.now();
         
         try { }
@@ -313,29 +287,26 @@ export class UIUpdateOptimizer {
             
             // アニメーション準備
             if (animateChanges) { this.prepareUpdateAnimations(elements, updates); }
-            }
             
             // DOM更新を実行
             this.executeBatchUpdates(updates);
             
             // 隠れた要素の遅延更新をスケジュール
             if (deferHidden.length > 0) { this.scheduleDeferredUpdate(deferHidden, translationData, options); }
-            }
             
             const updateTime = performance.now() - startTime;
             this.updatePerformanceMetrics(updateTime, elements.length);
-            '';
-            console.log(`Immediate UI update completed in ${updateTime.toFixed(2})}ms for ${elements.length} elements`');
-            ';'
+
+            console.log(`Immediate, UI update, completed in ${updateTime.toFixed(2})ms for ${elements.length} elements`');
+            ';
+
             return { success: true,''
-                type: 'immediate',
-                elementsUpdated: elements.length,
+                type: 'immediate';
+                elementsUpdated: elements.length;
                 updateTime, };
                 deferredElements: deferHidden.length }
-            },
-            
-        } catch (error) {
-            throw new Error(`Immediate update failed: ${(error as Error}).message}`);
+            } catch (error) {
+            throw new Error(`Immediate, update failed: ${(error, as Error}).message}`);
         }
     }
     
@@ -347,7 +318,7 @@ export class UIUpdateOptimizer {
     );
         translationData: Record<string, string>);
         options: UIUpdateOptions = {}
-    ): Promise<UpdateResult>,
+    ): Promise<UpdateResult>;
         const startTime = performance.now();
         
         try {
@@ -360,37 +331,34 @@ export class UIUpdateOptimizer {
             
             // 優先度順に処理
             const results: BatchResult[] = [],
-            for(const level of this.priorityLevels) {
+            for(const, level of, this.priorityLevels) {
                 const group = priorityGroups.get(level);
                 if (group && group.length > 0) {
                     const batchResult = await this.processPriorityBatch(group, translationData, {)
                         ...options,);
-                        priority: level),
-            }
+                        priority: level);
+            ,}
                     results.push(batchResult); }
-                }
-            }
+}
             
             // 隠れた要素の遅延更新
             if (deferHidden.length > 0) { this.scheduleDeferredUpdate(deferHidden, translationData, options); }
-            }
             
             const totalUpdateTime = performance.now() - startTime;
             this.updatePerformanceMetrics(totalUpdateTime, elements.length);
-            '';
-            console.log(`Batched UI update completed in ${totalUpdateTime.toFixed(2})}ms for ${elements.length} elements`');
-            ';'
+
+            console.log(`Batched, UI update, completed in ${totalUpdateTime.toFixed(2})ms for ${elements.length} elements`');
+            ';
+
             return { success: true,''
-                type: 'batched',
-                elementsUpdated: elements.length,
-                batchCount: results.length,
-                updateTime: totalUpdateTime,
+                type: 'batched';
+                elementsUpdated: elements.length;
+                batchCount: results.length;
+                updateTime: totalUpdateTime;
                 deferredElements: deferHidden.length, };
                 batchResults: results }
-            },
-            
-        } catch (error) {
-            throw new Error(`Batched update failed: ${(error as Error}).message}`);
+            } catch (error) {
+            throw new Error(`Batched, update failed: ${(error, as Error}).message}`);
         }
     }
     
@@ -399,7 +367,7 @@ export class UIUpdateOptimizer {
      */
     private groupElementsByPriority(elements: HTMLElement[]): Map<PriorityLevel, HTMLElement[]> { const groups = new Map<PriorityLevel, HTMLElement[]>();
         
-        for(const level of this.priorityLevels) {
+        for(const, level of, this.priorityLevels) {
         
             
         
@@ -407,10 +375,11 @@ export class UIUpdateOptimizer {
             groups.set(level, []); }
         }
         
-        for(const element of elements) {
-        ';'
+        for(const, element of, elements) {
+        ';
+
             const priority = this.getElementPriority(element);''
-            const group = groups.get(priority') || groups.get('normal')!;
+            const group = groups.get(priority) || groups.get('normal)!;
         
         }
             group.push(element); }
@@ -424,23 +393,21 @@ export class UIUpdateOptimizer {
      */
     private getElementPriority(element: HTMLElement): PriorityLevel { // データ属性での指定
         const dataPriority = element.dataset.updatePriority as PriorityLevel;''
-        if (dataPriority && this.priorityLevels.includes(dataPriority)') {
+        if(dataPriority && this.priorityLevels.includes(dataPriority)) {
             return dataPriority; }
-        }
         ';
         // クラス名での判定
-        if (element.classList.contains('critical')') return 'critical';''
-        if (element.classList.contains('high-priority')') return 'high';''
-        if (element.classList.contains('low-priority')') return 'low';
+        if(element.classList.contains('critical)) return 'critical';''
+        if(element.classList.contains('high-priority)) return 'high';''
+        if(element.classList.contains('low-priority)) return 'low';
         
         // 要素タイプでの判定
         const tagPriority: Record<string, PriorityLevel> = { ''
-            'H1': 'critical', 'H2': 'high', 'H3': 'high','';
-            'BUTTON': 'high', 'INPUT': 'high', 'LABEL': 'high','';
-            'P': 'normal', 'SPAN': 'normal', 'DIV': 'normal','';
-            'SMALL': 'low', 'FOOTER': 'low' }
-        };'
-        '';
+            'H1': 'critical', 'H2': 'high', 'H3': 'high',
+            'BUTTON': 'high', 'INPUT': 'high', 'LABEL': 'high',
+            'P': 'normal', 'SPAN': 'normal', 'DIV': 'normal',
+            'SMALL': 'low', 'FOOTER': 'low' };
+
         return tagPriority[element.tagName] || 'normal';
     }
     
@@ -462,7 +429,7 @@ export class UIUpdateOptimizer {
             
             // バッチを順次処理
             const batchResults: BatchInfo[] = [],
-            for(let i = 0; i < batches.length; i++) {
+            for(let, i = 0; i < batches.length; i++) {
                 const batch = batches[i];
                 
                 // DOM読み取り
@@ -476,41 +443,37 @@ export class UIUpdateOptimizer {
                 
                 batchResults.push({)
                     batchIndex: i,);
-                    elements: batch.length),
-            }
+                    elements: batch.length);
+            ,}
                     updateTime: performance.now() - startTime' }'
-                }'),
+
+                }');
                 ';
                 // 次のバッチまで待機（高優先度以外）
                 if (priority !== 'critical' && i < batches.length - 1) { await this.waitForNextFrame(); }
-                }
             }
             
             return { success: true,
                 priority,
-                batchCount: batches.length,
-                totalElements: elements.length,
+                batchCount: batches.length;
+                totalElements: elements.length;
                 updateTime: performance.now() - startTime, };
                 batches: batchResults }
-            },
-            
-        } catch (error) { return { success: false,
+            } catch (error) { return { success: false,
                 priority,
-                error: (error as Error).message, };
+                error: (error, as Error).message, };
                 updateTime: performance.now() - startTime }
-            },
-        }
+            }
     }
     
     /**
      * 優先度に応じたバッチサイズを取得'
      */''
-    private getBatchSizeForPriority(priority: PriorityLevel'): number { const batchSizes: Record<PriorityLevel, number> = {''
-            'critical': Math.floor(this.maxBatchSize * 0.3'), // 30%;
-            'high': Math.floor(this.maxBatchSize * 0.5'),     // 50%;
+    private getBatchSizeForPriority(priority: PriorityLevel): number { const batchSizes: Record<PriorityLevel, number> = {''
+            'critical': Math.floor(this.maxBatchSize * 0.3), // 30%;
+            'high': Math.floor(this.maxBatchSize * 0.5),     // 50%;
             'normal': this.maxBatchSize,                     // 100%;
-            'low': Math.floor(this.maxBatchSize * 1.5)      // 150% }
-        };
+            'low': Math.floor(this.maxBatchSize * 1.5)      // 150% };
         
         return batchSizes[priority] || this.maxBatchSize;
     }
@@ -519,7 +482,7 @@ export class UIUpdateOptimizer {
      * 更新バッチを作成
      */
     private createUpdateBatches(elements: HTMLElement[], batchSize: number): HTMLElement[][] { const batches: HTMLElement[][] = [],
-        for(let i = 0; i < elements.length; i += batchSize) {
+        for(let, i = 0; i < elements.length; i += batchSize) {
             
         }
             batches.push(elements.slice(i, i + batchSize); }
@@ -533,7 +496,7 @@ export class UIUpdateOptimizer {
     private batchMeasureElements(elements: HTMLElement[]): Map<HTMLElement, ElementMeasurement> { const measurements = new Map<HTMLElement, ElementMeasurement>();
         
         // DOM読み取り操作をまとめて実行
-        for(const element of elements) {
+        for(const, element of, elements) {
             const cacheKey = this.getElementCacheKey(element);
             
             if(this.measurementCache.has(cacheKey) {
@@ -541,19 +504,17 @@ export class UIUpdateOptimizer {
         }
                 this.stats.cacheHits++; }
             } else {  const measurement: ElementMeasurement = {
-                    rect: element.getBoundingClientRect(),
-                    computedStyle: window.getComputedStyle(element),
-                    offsetWidth: element.offsetWidth,
-                    offsetHeight: element.offsetHeight,
+                    rect: element.getBoundingClientRect();
+                    computedStyle: window.getComputedStyle(element);
+                    offsetWidth: element.offsetWidth;
+                    offsetHeight: element.offsetHeight;
                     scrollWidth: element.scrollWidth, }
                     scrollHeight: element.scrollHeight }
-                },
-                
+                };
                 measurements.set(element, measurement);
                 this.measurementCache.set(cacheKey, { )
                     ...measurement);
-                    timestamp: Date.now() }
-                });
+                    timestamp: Date.now( });
                 this.stats.cacheMisses++;
             }
         }
@@ -572,7 +533,7 @@ export class UIUpdateOptimizer {
     ): Promise<ElementUpdateSpec[]>;
         const updates: ElementUpdateSpec[] = [],
         
-        for(const element of elements) {
+        for(const, element of, elements) {
         
             const measurement = measurements.get(element);
             if (measurement) {
@@ -582,8 +543,7 @@ export class UIUpdateOptimizer {
         
         }
                     updates.push(update); }
-                }
-            }
+}
         }
         
         return updates;
@@ -614,19 +574,16 @@ export class UIUpdateOptimizer {
             const updateSpec: ElementUpdateSpec = {
                 element,
                 currentText,
-                newText: translatedText,
+                newText: translatedText;
                 measurement,
                 needsReflow: this.needsReflow(element, currentText, translatedText, measurement),
-                preserveState: this.shouldPreserveState(element) }
-            };
+                preserveState: this.shouldPreserveState(element ,};
             
             return updateSpec;
-            '';
-        } catch (error) { ''
+
+        } catch (error) {
             console.warn('Failed to prepare element update:', error);
-            return null; }
-        }
-    }
+            return null;
     
     /**
      * バッチ更新を実行
@@ -636,10 +593,9 @@ export class UIUpdateOptimizer {
         // Document Fragment を使用して効率的な更新
         if(this.strategies.useDocumentFragment && updates.length > 10) {
             
-        }
+        ,}
             this.executeBatchUpdatesWithFragment(updates); }
         } else { this.executeBatchUpdatesDirectly(updates); }
-        }
         
         this.performanceMetrics.batchCount++;
         this.stats.batchedUpdates += updates.length;
@@ -653,24 +609,25 @@ export class UIUpdateOptimizer {
         const nonReflowUpdates = updates.filter(update => !update.needsReflow);
         
         // リフローが不要な更新を先に処理
-        for(const update of nonReflowUpdates) {
+        for(const, update of, nonReflowUpdates) {
             
         }
             this.applyElementUpdate(update); }
         }
         ;
         // リフローが必要な更新をバッチ処理
-        if(reflowUpdates.length > 0') {'
+        if(reflowUpdates.length > 0) {'
             // contain: layout を一時的に適用
             document.documentElement.style.contain = 'layout';
             
-            for (const update of reflowUpdates) {
+            for (const, update of, reflowUpdates) {
         }
                 this.applyElementUpdate(update); }
             }
             ';
             // 次のフレームで contain を解除
-            requestAnimationFrame((') => {  ' }'
+            requestAnimationFrame(() => {  ' }'
+
                 document.documentElement.style.contain = ''; }
             });
             
@@ -681,9 +638,8 @@ export class UIUpdateOptimizer {
     /**
      * 直接バッチ更新を実行
      */
-    private executeBatchUpdatesDirectly(updates: ElementUpdateSpec[]): void { for (const update of updates) {
+    private executeBatchUpdatesDirectly(updates: ElementUpdateSpec[]): void { for (const, update of, updates) {
             this.applyElementUpdate(update); }
-        }
     }
     
     /**
@@ -697,42 +653,41 @@ export class UIUpdateOptimizer {
                 const state = this.captureElementState(element);
                 element.textContent = newText;
                 if (state) {'
-            }'
-                    this.restoreElementState(element, state'); }
-                }
-            } else { element.textContent = newText; }
             }
+
+                    this.restoreElementState(element, state); }
+} else { element.textContent = newText; }
             ';
             // カスタムイベントを発火
-            element.dispatchEvent(new CustomEvent('textUpdated', { ) }
-                detail: { oldText: currentText, newText })));'
-            '';
-        } catch (error) { ''
-            console.warn('Failed to apply element update:', error) }
-        }
+            element.dispatchEvent(new CustomEvent('textUpdated', {  }
+                detail: { oldText: currentText, newText })));
+
+        } catch (error) { console.warn('Failed to apply element update:', error }
     }
     
     /**
      * 更新アニメーションを準備
      */'
-    private prepareUpdateAnimations(elements: HTMLElement[], updates: ElementUpdateSpec[]): void { for (const update of updates) {''
-            if(update.newText !== update.currentText') {
+    private prepareUpdateAnimations(elements: HTMLElement[], updates: ElementUpdateSpec[]): void { for (const, update of, updates) {''
+            if(update.newText !== update.currentText) {
                 // 簡単なフェードアニメーション
                 const element = update.element;''
                 element.style.transition = 'opacity 0.15s ease-out';''
                 element.style.opacity = '0.7';
                 ';
                 // テキスト更新後にアニメーション復帰
-                setTimeout((') => { ''
-                    element.style.opacity = '1';'
-            }'
-                    setTimeout((') => {' }'
+                setTimeout(() => { ''
+                    element.style.opacity = '1';
+
+            }
+
+                    setTimeout(() => {' }'
+
                         element.style.transition = ''; }
                     }, 150);
                 }, 50);
             }
-        }
-    }
+}
     
     /**
      * 遅延更新をスケジュール
@@ -745,7 +700,7 @@ export class UIUpdateOptimizer {
     ): void { this.stats.deferredUpdates += elements.length,
         
         // Intersection Observer で可視になったときに更新
-        for(const element of elements) {
+        for(const, element of, elements) {
             if (this.intersectionObserver) {
                 this.intersectionObserver.observe(element);
                 
@@ -753,11 +708,8 @@ export class UIUpdateOptimizer {
                 element._deferredUpdate = {
         }
                     translationData, }
-                    options: { ...options, forceImmediate: true }
-                };
-            }
-        }
-    }
+                    options: { ...options, forceImmediate: true ,}
+}
     
     /**
      * 要素の可視性をチェック
@@ -767,28 +719,25 @@ export class UIUpdateOptimizer {
         const rect = element.getBoundingClientRect();
         return rect.width > 0 && rect.height > 0 && ;
                rect.top < window.innerHeight && rect.bottom > 0; }
-    }
     
     /**
      * リフローが必要かチェック
      */
     private needsReflow(;
-        element: HTMLElement,
+        element: HTMLElement;
         oldText: string );
         newText: string);
         measurement: ElementMeasurement;
     ): boolean { const lengthRatio = newText.length / Math.max(oldText.length, 1);
-        ;
         // テキスト長が大幅に変わる場合
-        if (lengthRatio < 0.5 || lengthRatio > 2.0') return true;
+        if(lengthRatio < 0.5 || lengthRatio > 2.0) return true;
         
         // 固定幅の要素の場合
         const computedStyle = measurement.computedStyle;''
-        if(computedStyle.width !== 'auto' && computedStyle.whiteSpace === 'nowrap') {
+        if(computedStyle.width !== 'auto' && computedStyle.whiteSpace === 'nowrap) {
             
         }
-            return true; }
-        }
+            return true;
         
         return false;
     }
@@ -796,38 +745,34 @@ export class UIUpdateOptimizer {
     /**
      * 状態保持が必要かチェック'
      */''
-    private shouldPreserveState(element: HTMLElement'): boolean { ''
+    private shouldPreserveState(element: HTMLElement): boolean { ''
         return element.tagName === 'INPUT' || '';
                element.tagName === 'TEXTAREA' ||'';
                element.contentEditable === 'true'; }
-    }
     
     /**
      * 翻訳キーを取得'
      */''
-    private getTranslationKey(element: HTMLElement'): string | null { return element.dataset.i18nKey || ''
-               element.getAttribute('data-translate') ||;
+    private getTranslationKey(element: HTMLElement): string | null { return element.dataset.i18nKey || ''
+               element.getAttribute('data-translate) ||;
                element.className.match(/i18n-(\S+)/)? .[1] || null; }
-    }
     
     /**
      * 現在の要素テキストを取得'
      */ : undefined''
-    private getCurrentElementText(element: HTMLElement'): string { ''
+    private getCurrentElementText(element: HTMLElement): string { ''
         return element.textContent || element.innerText || ''; }
-    }
     
     /**
      * 要素の状態をキャプチャ'
      */''
-    private captureElementState(element: HTMLElement'): ElementState | null { ''
-        if(element.tagName = == 'INPUT') {
+    private captureElementState(element: HTMLElement): ElementState | null { ''
+        if(element.tagName = == 'INPUT) {'
             const input = element as HTMLInputElement;
             return { value: input.value }
                 selectionStart: input.selectionStart || 0, };
                 selectionEnd: input.selectionEnd || 0 }
-            },
-        }
+            }
         
         return null;
     }
@@ -835,20 +780,19 @@ export class UIUpdateOptimizer {
     /**
      * 要素の状態を復元'
      */''
-    private restoreElementState(element: HTMLElement, state: ElementState'): void { ''
+    private restoreElementState(element: HTMLElement, state: ElementState): void { ''
         if(state && element.tagName === 'INPUT'') {'
             const input = element as HTMLInputElement;''
             input.value = state.value || '';
         }
             input.setSelectionRange(state.selectionStart || 0, state.selectionEnd || 0); }
-        }
-    }
+}
     
     /**
      * 要素キャッシュキーを生成
      */
     private getElementCacheKey(element: HTMLElement): string {
-        return `${element.tagName}:${element.className}:${element.id}:${element.textContent? .substring(0, 30})}`;
+        return `${element.tagName}:${element.className}:${element.id}:${element.textContent? .substring(0, 30})`;
     }
     
     /**
@@ -862,9 +806,9 @@ export class UIUpdateOptimizer {
      * Intersection Observer を設定'
      */''
     private setupIntersectionObserver()';
-        if(typeof IntersectionObserver !== 'undefined') {
+        if(typeof, IntersectionObserver !== 'undefined) {'
             this.intersectionObserver = new IntersectionObserver((entries) => { 
-                for (const entry of entries) {
+                for (const, entry of, entries) {
                     const element = entry.target as HTMLElement;
                     
                     if (entry.isIntersecting) {
@@ -878,13 +822,13 @@ export class UIUpdateOptimizer {
                             delete element._deferredUpdate;
                             this.intersectionObserver!.unobserve(element);
                         }
-                    } else {  ' }'
-                        this.visibleElements.delete(element'); }
-                    }
-                }'
+                    } else { }'
+
+                        this.visibleElements.delete(element); }
+}
+
             }, { threshold: 0.1,''
-                rootMargin: '50px' }
-            }),
+                rootMargin: '50px' ,});
         }
     }
     
@@ -892,30 +836,28 @@ export class UIUpdateOptimizer {
      * Mutation Observer を設定'
      */''
     private setupMutationObserver()';
-        if(typeof MutationObserver !== 'undefined') {'
-            this.mutationObserver = new MutationObserver((mutations) => { ''
-                for (const mutation of mutations') {''
-                    if (mutation.type === 'childList' || mutation.type === 'characterData') {
+        if(typeof, MutationObserver !== 'undefined) {'
+            this.mutationObserver = new MutationObserver((mutations) => {;
+                for(const, mutation of, mutations) {''
+                    if(mutation.type === 'childList' || mutation.type === 'characterData) {
                         // キャッシュを無効化
                         const element = mutation.target as HTMLElement;
         }
                         const cacheKey = this.getElementCacheKey(element); }
                         this.measurementCache.delete(cacheKey); }
-                    }
-                }
+}
             });
             
             this.mutationObserver.observe(document.body, { childList: true)
                 characterData: true,);
-                subtree: true) }
-        }
+                subtree: true ,}
     }
     
     /**
      * パフォーマンス監視を開始
      */''
     private startPerformanceMonitoring()';
-        if(typeof ResizeObserver !== 'undefined') {
+        if(typeof, ResizeObserver !== 'undefined) {'
             const resizeObserver = new ResizeObserver(() => { 
         }
                 // リサイズ時にキャッシュをクリア }
@@ -939,8 +881,7 @@ export class UIUpdateOptimizer {
             }
                 if (data.timestamp && now - data.timestamp > this.cacheInvalidationTime) { }
                     this.measurementCache.delete(key); }
-                }
-            }
+}
         }, this.cacheInvalidationTime);
     }
     
@@ -957,49 +898,44 @@ export class UIUpdateOptimizer {
         this.performanceMetrics.cacheHitRate = totalCacheAccess > 0 ;
             ? (this.stats.cacheHits / totalCacheAccess) * 100 ;
             : 0; }
-    }
     
     /**
      * 統計を取得
      */''
     getStats()';
-            deferredElements: document.querySelectorAll('[data-deferred-update]').length,
+            deferredElements: document.querySelectorAll('[data-deferred-update]).length;
             strategiesEnabled: Object.entries(this.strategies);
                 .filter(([, enabled]) => enabled);
                 .map(([strategy]) => strategy);
-        };
-    }
+        }
     
     /**
      * 設定を更新
      */
     updateConfiguration(config: UIOptimizerConfig): void { if (config.enabled !== undefined) {
             this.enabled = config.enabled; }
-        }
         
         if (config.batchMode !== undefined) { this.batchMode = config.batchMode; }
-        }
         
         if (config.maxBatchSize !== undefined) { this.maxBatchSize = config.maxBatchSize; }
-        }'
-        '';
-        if(config.strategies') {
+
+        if(config.strategies) {
             
         }
-            this.strategies = { ...this.strategies, ...config.strategies };
-        }'
-        '';
+            this.strategies = { ...this.strategies, ...config.strategies;
+        }
+
         console.log('UIUpdateOptimizer configuration updated:', config);
     }
     
     /**
      * キャッシュをクリア
      */
-    clearCache(): void { this.measurementCache.clear();'
+    clearCache(): void { this.measurementCache.clear();
+
         this.layoutCache.clear();''
         this.computedStyleCache.clear()';
-        console.log('UIUpdateOptimizer caches cleared'); }
-    }
+        console.log('UIUpdateOptimizer, caches cleared'); }'
     
     /**
      * クリーンアップ
@@ -1013,13 +949,12 @@ export class UIUpdateOptimizer {
         
         // オブザーバーを切断
         if (this.intersectionObserver) { this.intersectionObserver.disconnect(); }
-        }
         
         if (this.mutationObserver) { this.mutationObserver.disconnect(); }
-        }
         ;
         // キャッシュをクリア
         this.clearCache()';
-        console.log('UIUpdateOptimizer cleaned up'');'
+        console.log('UIUpdateOptimizer, cleaned up'');
+
     }''
 }

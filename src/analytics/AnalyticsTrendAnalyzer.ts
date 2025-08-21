@@ -12,7 +12,6 @@ export class AnalyticsTrendAnalyzer {
         this.ANOMALY_THRESHOLD = 2.0; // 標準偏差の倍数
         this.MIN_DATA_POINTS = 7; // 最小データポイント数
     }
-    }
         this.SEASONAL_PERIOD = 7; // 週次の季節性（7日） }
     }
 
@@ -30,9 +29,7 @@ export class AnalyticsTrendAnalyzer {
             const cached = this.analysisCache.get(cacheKey);
             if (Date.now() - cached.timestamp < this.cacheExpiration) {
         }
-                return cached.data; }
-            }
-        }
+                return cached.data;
 
         try { : undefined
             const endDate = startDate ? new Date(startDate.getTime() + 7 * 24 * 60 * 60 * 1000) : new Date();''
@@ -41,35 +38,32 @@ export class AnalyticsTrendAnalyzer {
             // データ取得
             const data = await this.storageManager.getData('sessions', {)
                 startDate: analysisStartDate,);
-                endDate: endDate),';
-'';
-            if(data.length < this.MIN_DATA_POINTS') {'
+                endDate: endDate),
+
+            if(data.length < this.MIN_DATA_POINTS) {'
                 return { success: false,''
-                    message: 'データが不足しています。7日以上のデータが必要です。',
-            }
+                    message: 'データが不足しています。7日以上のデータが必要です。';
+            ,}
                     dataPoints: data.length, };
                     requiredPoints: this.MIN_DATA_POINTS }
-                },
-            }
+                }
 ';
             // 週次トレンド計算
-            const trendResult = this.calculateTrend(data, dataType, 'weekly');
+            const trendResult = this.calculateTrend(data, dataType, 'weekly);
             
             // キャッシュに保存
             this.analysisCache.set(cacheKey, { )
-                data: trendResult),
-                timestamp: Date.now() }
-            });
+                data: trendResult);
+                timestamp: Date.now( });
 
             return trendResult;
-'';
-        } catch (error) { ''
+
+        } catch (error) {
             console.error('週次トレンド分析エラー:', error);
             return { success: false,
                 error: error.message, };
                 dataType: dataType }
-            },
-        }
+            }
     }
 
     /**
@@ -79,6 +73,7 @@ export class AnalyticsTrendAnalyzer {
      * @returns {Promise<Object>} トレンド分析結果
      */'
     async analyzeMonthlyTrend(dataType, startDate = null) { ' }'
+
         const cacheKey = `monthly_${dataType}_${startDate? .getTime('}) || 'latest'}`;
         
         // キャッシュチェック
@@ -86,9 +81,7 @@ export class AnalyticsTrendAnalyzer {
             const cached = this.analysisCache.get(cacheKey);
             if (Date.now() - cached.timestamp < this.cacheExpiration) {
         }
-                return cached.data; }
-            }
-        }
+                return cached.data;
 
         try { : undefined
             const endDate = startDate ? new Date(startDate.getTime() + 30 * 24 * 60 * 60 * 1000) : new Date();''
@@ -97,35 +90,32 @@ export class AnalyticsTrendAnalyzer {
             // データ取得
             const data = await this.storageManager.getData('sessions', {)
                 startDate: analysisStartDate,);
-                endDate: endDate),';
-'';
-            if(data.length < 30') {'
+                endDate: endDate),
+
+            if(data.length < 30) {'
                 return { success: false,''
-                    message: 'データが不足しています。30日以上のデータが必要です。',
-            }
+                    message: 'データが不足しています。30日以上のデータが必要です。';
+            ,}
                     dataPoints: data.length, };
                     requiredPoints: 30 }
-                },
-            }
+                }
 ';
             // 月次トレンド計算
-            const trendResult = this.calculateTrend(data, dataType, 'monthly');
+            const trendResult = this.calculateTrend(data, dataType, 'monthly);
             
             // キャッシュに保存
             this.analysisCache.set(cacheKey, { )
-                data: trendResult),
-                timestamp: Date.now() }
-            });
+                data: trendResult);
+                timestamp: Date.now( });
 
             return trendResult;
-'';
-        } catch (error) { ''
-            console.error('月次トレンド分析エラー:', error');
+
+        } catch (error) {
+            console.error('月次トレンド分析エラー:', error);
             return { success: false,
                 error: error.message, };
                 dataType: dataType }
-            },
-        }
+            }
     }
 
     /**
@@ -135,30 +125,27 @@ export class AnalyticsTrendAnalyzer {
      * @param {string} period - 分析期間（'weekly' | 'monthly'）
      * @returns {Object} 計算結果
      */
-    calculateTrend(data, dataType, period) {
-        const metrics = this.extractMetrics(data, dataType);
+    calculateTrend(data, dataType, period) { const metrics = this.extractMetrics(data, dataType);
         const timeSeriesData = this.groupByTimeUnit(metrics, period);
         
         // トレンド分析計算
         const trendAnalysis = {
-            success: true,
-            period: period,
-            dataType: dataType,
-            dataPoints: data.length,
+            success: true;
+            period: period;
+            dataType: dataType;
+            dataPoints: data.length;
             timeRange: {
-                start: new Date(Math.min(...data.map(d = > d.startTime)) }
+                start: new Date(Math.min(...data.map(d = > d.startTime) ,}
                 end: new Date(Math.max(...data.map(d => d.endTime || d.startTime)); }
             },
-            metrics: { scoreImprovement: this.calculateScoreImprovement(timeSeriesData),
-                playTimeChange: this.calculatePlayTimeChange(timeSeriesData),'';
-                accuracyChange: this.calculateAccuracyChange(timeSeriesData') }
-            },'
+            metrics: { scoreImprovement: this.calculateScoreImprovement(timeSeriesData);
+                playTimeChange: this.calculatePlayTimeChange(timeSeriesData),
+                accuracyChange: this.calculateAccuracyChange(timeSeriesData ,};
             trend: { ''
                 direction: null, // 'increasing', 'decreasing', 'stable';
                 strength: 0, // 0-1の値;
-                confidence: 0 // 0-1の値 }
-            },
-            timeSeriesData: timeSeriesData,'';
+                confidence: 0 // 0-1の値 ,};
+            timeSeriesData: timeSeriesData,
             summary: '';
         },
 
@@ -180,17 +167,17 @@ export class AnalyticsTrendAnalyzer {
      */
     extractMetrics(data, dataType) {
         return data.map(session => { )
-            const duration = session.endTime ? ) : undefined;
+            const duration = session.endTime ? ) : undefined
                 (session.endTime - session.startTime) / 1000 : session.duration || 0;
             
-            const accuracy = session.bubblesPopped && session.bubblesMissed ?   : undefined;
+            const accuracy = session.bubblesPopped && session.bubblesMissed ?   : undefined
                 session.bubblesPopped / (session.bubblesPopped + session.bubblesMissed) : 0;
 
             return { timestamp: session.startTime,
-                score: session.finalScore || 0,
-                playTime: duration,
-                accuracy: accuracy,
-    }
+                score: session.finalScore || 0;
+                playTime: duration;
+                accuracy: accuracy;
+    ,}
                 combo: session.maxCombo || 0, }
                 completed: session.completed || false, };
                 date: new Date(session.startTime).toDateString(); }
@@ -206,23 +193,26 @@ export class AnalyticsTrendAnalyzer {
      */
     groupByTimeUnit(metrics, period) {
         const grouped = new Map();
-        ';'
+        ';
+
         metrics.forEach(metric => { );''
-            const date = new Date(metric.timestamp');
-            let key;'
-            '';
-            if (period === 'weekly') {
+            const date = new Date(metric.timestamp);
+            let key;
+
+            if(period === 'weekly) {'
                 // 週の開始日（月曜日）を基準にグループ化
                 const weekStart = new Date(date);
     }
                 weekStart.setDate(date.getDate() - date.getDay() + 1);' }'
-                key = weekStart.toISOString(').split('T')[0]; }'
+
+                key = weekStart.toISOString(').split('T)[0]; }
+
             } else { // 月の開始日を基準にグループ化' }'
-                key = `${date.getFullYear(})}-${String(date.getMonth() + 1').padStart(2, '0'})}`;
+
+                key = `${date.getFullYear(})-${String(date.getMonth(} + 1'}.padStart(2, '0'})`;
             }
             
             if(!grouped.has(key) { grouped.set(key, []); }
-            }
             grouped.get(key).push(metric);
         });
 
@@ -234,14 +224,13 @@ export class AnalyticsTrendAnalyzer {
             const completionRate = values.filter(v => v.completed).length / totalSessions;
 
             return { period: key,
-                sessionCount: totalSessions,
-                averageScore: avgScore,
-                averagePlayTime: avgPlayTime,
+                sessionCount: totalSessions;
+                averageScore: avgScore;
+                averagePlayTime: avgPlayTime;
                 averageAccuracy: avgAccuracy, }
                 completionRate: completionRate, };
                 maxCombo: Math.max(...values.map(v => v.combo); }
-            };
-        }).sort((a, b) => a.period.localeCompare(b.period);
+            }).sort((a, b) => a.period.localeCompare(b.period);
     }
 
     /**
@@ -257,8 +246,7 @@ export class AnalyticsTrendAnalyzer {
         
         if (firstPeriod === 0) return 0;
     }
-        return ((lastPeriod - firstPeriod) / firstPeriod) * 100; }
-    }
+        return ((lastPeriod - firstPeriod) / firstPeriod) * 100;
 
     /**
      * プレイ時間変化率を計算
@@ -273,8 +261,7 @@ export class AnalyticsTrendAnalyzer {
         
         if (firstPeriod === 0) return 0;
     }
-        return ((lastPeriod - firstPeriod) / firstPeriod) * 100; }
-    }
+        return ((lastPeriod - firstPeriod) / firstPeriod) * 100;
 
     /**
      * 精度変化率を計算
@@ -289,8 +276,7 @@ export class AnalyticsTrendAnalyzer {
         
         if (firstPeriod === 0) return 0;
     }
-        return ((lastPeriod - firstPeriod) / firstPeriod) * 100; }
-    }
+        return ((lastPeriod - firstPeriod) / firstPeriod) * 100;
 
     /**
      * トレンド方向と強度を計算
@@ -298,37 +284,37 @@ export class AnalyticsTrendAnalyzer {
      * @returns {Object} トレンド情報
      */
     calculateTrendDirection(timeSeriesData) {
-        ';'
-    }'
-        if (timeSeriesData.length < 3') {' }'
-            return { direction: 'stable', strength: 0, confidence: 0 }
-        }
+        ';
+
+    }
+
+        if(timeSeriesData.length < 3) {' }'
+
+            return { direction: 'stable', strength: 0, confidence: 0 ,}
 
         // 線形回帰でトレンドを計算
         const scores = timeSeriesData.map(d => d.averageScore);
         const indices = timeSeriesData.map((_, i) => i);
-        '';
-        const regression = this.linearRegression(indices, scores');
+
+        const regression = this.linearRegression(indices, scores);
         const slope = regression.slope;
         const rSquared = regression.rSquared;
 ';
         // トレンド方向の判定
         let direction = 'stable';''
-        if (Math.abs(slope) > 1') { // 閾値は調整可能
+        if (Math.abs(slope) > 1') { // 閾値は調整可能'
             direction = slope > 0 ? 'increasing' : 'decreasing'; }
-        }
 
         // 強度は傾きの絶対値を正規化
         const maxPossibleSlope = Math.max(...scores) - Math.min(...scores);
-        const strength = maxPossibleSlope > 0 ?   : undefined;
+        const strength = maxPossibleSlope > 0 ?   : undefined
             Math.min(Math.abs(slope) / maxPossibleSlope, 1) : 0;
 
         return { direction: direction,
-            strength: strength,
+            strength: strength;
             confidence: rSquared, // R²値を信頼度として使用 };
             slope: slope }
-        },
-    }
+        }
 
     /**
      * 線形回帰計算
@@ -354,46 +340,49 @@ export class AnalyticsTrendAnalyzer {
         const ssTot = y.map(yi => Math.pow(yi - yMean, 2).reduce((a, b) => a + b, 0);
         const rSquared = ssTot > 0 ? 1 - (ssRes / ssTot) : 0;
 
-        return { slope: slope }
+        return { slope: slope ,}
             intercept: intercept, };
             rSquared: rSquared }
-        },
-    }
+        }
 
     /**
      * トレンドサマリーを生成
      * @param {Object} trendAnalysis - トレンド分析結果
      * @returns {string} サマリーテキスト
      */''
-    generateTrendSummary(trendAnalysis') {
+    generateTrendSummary(trendAnalysis) {
         
     }
-        const { metrics, trend, period } = trendAnalysis;'
-        '';
+        const { metrics, trend, period } = trendAnalysis;
+
         let summary = `${period === 'weekly' ? '週次' : '月次'}分析結果: `;
         ';
         // トレンド方向
-        switch(trend.direction') {'
-            '';
+        switch(trend.direction) {'
+
             case 'increasing':'';
-                summary += 'パフォーマンスが向上傾向にあります。';'
+                summary += 'パフォーマンスが向上傾向にあります。';
+
                 break;''
             case 'decreasing':'';
-                summary += 'パフォーマンスが低下傾向にあります。';'
-                break;'
-        }'
+                summary += 'パフォーマンスが低下傾向にあります。';
+
+                break;
+
+        }
+
             default: summary += 'パフォーマンスは安定しています。'; }
         }
 ';
         // 具体的な変化
         if (Math.abs(metrics.scoreImprovement) > 5') { ''
             const direction = metrics.scoreImprovement > 0 ? '向上' : '低下'; }
-            summary += ` スコアが${Math.abs(metrics.scoreImprovement).toFixed(1})}%${direction}しました。`;
-        }'
-'';
+            summary += ` スコアが${Math.abs(metrics.scoreImprovement}.toFixed(1})%${direction}しました。`;
+        }
+
         if (Math.abs(metrics.accuracyChange) > 5') { ''
             const direction = metrics.accuracyChange > 0 ? '向上' : '低下'; }
-            summary += ` 精度が${Math.abs(metrics.accuracyChange).toFixed(1})}%${direction}しました。`;
+            summary += ` 精度が${Math.abs(metrics.accuracyChange}.toFixed(1})%${direction}しました。`;
         }
 
         return summary;
@@ -408,8 +397,7 @@ export class AnalyticsTrendAnalyzer {
     detectAnomalies(data, threshold = this.ANOMALY_THRESHOLD) {
         if (data.length < this.MIN_DATA_POINTS) {
     }
-            return []; }
-        }
+            return [];
 
         const values = data.map(d => d.averageScore || d.score || 0);
         const mean = values.reduce((a, b) => a + b, 0) / values.length;
@@ -417,19 +405,19 @@ export class AnalyticsTrendAnalyzer {
         const stdDev = Math.sqrt(variance);
 
         const anomalies = [];
-        data.forEach((dataPoint, index) => {  const value = dataPoint.averageScore || dataPoint.score || 0;
-            const zScore = stdDev > 0 ? Math.abs((value - mean) / stdDev) : 0;'
-            '';
-            if(zScore > threshold') {
+        data.forEach((dataPoint, index) => { const value = dataPoint.averageScore || dataPoint.score || 0;
+            const zScore = stdDev > 0 ? Math.abs((value - mean) / stdDev) : 0;
+
+            if(zScore > threshold) {
                 anomalies.push({
-                    index: index,
+                    index: index;
                     value: value);
-                    zScore: zScore)
-            }'
+                    zScore: zScore ,}
+
                     timestamp: dataPoint.timestamp || dataPoint.period,') }'
+
                     type: value > mean ? 'outlier_high' : 'outlier_low'); }
-            }
-        });
+});
 
         return anomalies;
     }
@@ -450,15 +438,14 @@ export class AnalyticsTrendAnalyzer {
         const seasonalIndices = this.calculateSeasonalIndices(values, period);
         
         return data.map((dataPoint, index) => {  const seasonalIndex = seasonalIndices[index % period];
-            const adjustedValue = seasonalIndex > 0 ?   : undefined;
+            const adjustedValue = seasonalIndex > 0 ?   : undefined
                 (dataPoint.averageScore || dataPoint.score || 0) / seasonalIndex: (dataPoint.averageScore || dataPoint.score || 0),
             
             return { ...dataPoint,
-                originalValue: dataPoint.averageScore || dataPoint.score || 0, }
+                originalValue: dataPoint.averageScore || dataPoint.score || 0, 
                 seasonallyAdjusted: adjustedValue, };
                 seasonalIndex: seasonalIndex }
-            },
-        });
+            });
     }
 
     /**
@@ -495,6 +482,8 @@ export class AnalyticsTrendAnalyzer {
      * キャッシュをクリア
      */
     clearCache() {
-        ';'
-    }'
-        this.analysisCache.clear(') }
+        ';
+
+    }
+
+        this.analysisCache.clear(') }'

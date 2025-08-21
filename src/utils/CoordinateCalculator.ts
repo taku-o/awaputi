@@ -7,31 +7,25 @@
 
 // 型定義
 interface Coordinates { x: number,
-    y: number }
-}
+    y: number ,}
 
-interface Size { width: number,
+interface Size { width: number;
     height: number }
-}
 
-interface SafeArea { x: number,
-    y: number,
-    width: number,
+interface SafeArea { x: number;
+    y: number;
+    width: number;
     height: number }
-}
 
-interface VerticalPosition { y: number,
+interface VerticalPosition { y: number;
     height: number }
-}
 
-interface DebugInfo { canvasSize: Size,
-    baseSize: Size,
+interface DebugInfo { canvasSize: Size;
+    baseSize: Size;
     scale: {
-        x: number,
-        y: number,
+        x: number;
+        y: number;
         uniform: number }
-    };
-}
 
 export class CoordinateCalculator {
     private canvasWidth: number;
@@ -55,8 +49,7 @@ export class CoordinateCalculator {
         
         // アスペクト比を保持したスケール
 
-    }
-    }
+    ,}
         this.uniformScale = Math.min(this.scaleX, this.scaleY); }
     }
     
@@ -68,37 +61,32 @@ export class CoordinateCalculator {
         this.scaleX = width / this.baseWidth;
         this.scaleY = height / this.baseHeight;
         this.uniformScale = Math.min(this.scaleX, this.scaleY); }
-    }
     
     /**
      * ベース座標系から実際のCanvas座標系への変換
      */
     toCanvasCoordinates(baseX: number, baseY: number): Coordinates { return { x: baseX * this.scaleX, };
             y: baseY * this.scaleY }
-        },
-    }
+        }
     
     /**
      * ベース座標系のサイズを実際のCanvasサイズに変換
      */
     toCanvasSize(baseWidth: number, baseHeight: number): Size { return { width: baseWidth * this.scaleX, };
             height: baseHeight * this.scaleY }
-        },
-    }
+        }
     
     /**
      * 要素を水平中央に配置するためのX座標を計算
      */
     getCenterX(elementWidth: number): number { const scaledWidth = elementWidth * this.scaleX;
         return (this.canvasWidth - scaledWidth) / 2; }
-    }
     
     /**
      * 要素を垂直中央に配置するためのY座標を計算
      */
     getCenterY(elementHeight: number): number { const scaledHeight = elementHeight * this.scaleY;
         return (this.canvasHeight - scaledHeight) / 2; }
-    }
     
     /**
      * テキストを水平中央に配置するためのX座標を計算
@@ -106,22 +94,20 @@ export class CoordinateCalculator {
      * @param {CanvasRenderingContext2D} context - Canvas 2Dコンテキスト
      * @param {string} text - 描画するテキスト'
      */''
-    getTextCenterX(context: CanvasRenderingContext2D, text: string'): number { ''
+    getTextCenterX(context: CanvasRenderingContext2D, text: string): number { ''
         // textAlign = 'center'の場合、Canvas表示領域の実際の中央座標を返す
         // transform scaleに関係なく、常に表示領域の中央を指定
         const canvas = context.canvas;
-        const displayWidth = (canvas as HTMLCanvasElement).clientWidth || this.canvasWidth;
+        const displayWidth = (canvas, as HTMLCanvasElement).clientWidth || this.canvasWidth;
         
         // 表示座標系での中央位置を計算
         return displayWidth / 2; }
-    }
     
     /**
      * フォントサイズをスケーリング
      */
     scaleFontSize(baseFontSize: number): number { ''
-        return Math.floor(baseFontSize * this.uniformScale'); }
-    }
+        return Math.floor(baseFontSize * this.uniformScale); }
     
     /**'
      * テキストの境界を検証し、Canvas内に収まるか確認''
@@ -129,9 +115,9 @@ export class CoordinateCalculator {
      * @returns {boolean} テキストがCanvas内に収まる場合true
      */'
     validateTextBounds(context: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number | null = null): boolean { ''
-        const metrics = context.measureText(text');
-        const textWidth = metrics.width;'
-        '';
+        const metrics = context.measureText(text);
+        const textWidth = metrics.width;
+
         // textAlign = 'center'の場合、xは中央座標なので左右に半分ずつ伸びる
         const textLeft = x - textWidth / 2;
         const textRight = x + textWidth / 2;
@@ -140,18 +126,15 @@ export class CoordinateCalculator {
         if(textLeft < 0 || textRight > this.canvasWidth) {
             
         }
-            return false; }
-        }
+            return false;
         
         // 最大幅の検証
         if (maxWidth && textWidth > maxWidth) { return false; }
-        }
         
         // 垂直方向の検証（概算）
         const fontMatch = context.font.match(/(\d+)/);
         const fontSize = fontMatch ? parseInt(fontMatch[1]) : 16;
         if (y - fontSize < 0 || y > this.canvasHeight) { return false; }
-        }
         
         return true;
     }
@@ -163,18 +146,16 @@ export class CoordinateCalculator {
                y >= 0 && ;
                x + width <= this.canvasWidth && ;
                y + height <= this.canvasHeight; }
-    }
     
     /**
      * マージンを考慮した安全な配置領域を取得
      */
     getSafeArea(margin: number = 20): SafeArea { const scaledMargin = margin * this.uniformScale;
         return { x: scaledMargin,
-            y: scaledMargin,
+            y: scaledMargin;
             width: this.canvasWidth - (scaledMargin * 2), };
             height: this.canvasHeight - (scaledMargin * 2); }
-        };
-    }
+        }
     
     /**
      * 複数要素を垂直方向に均等配置するための位置を計算
@@ -188,13 +169,12 @@ export class CoordinateCalculator {
         const positions: VerticalPosition[] = [],
         let currentY = startY + spacing;
         
-        for(let i = 0; i < itemCount; i++) {
+        for(let, i = 0; i < itemCount; i++) {
         
             positions.push({)
                 y: currentY,);
-                height: scaledItemHeight),
-        
-        }
+                height: scaledItemHeight);
+        ,}
             currentY += scaledItemHeight + spacing; }
         }
         
@@ -205,23 +185,17 @@ export class CoordinateCalculator {
      * デバッグ情報の取得
      */
     getDebugInfo(): DebugInfo { return { }
-            canvasSize: { width: this.canvasWidth, height: this.canvasHeight },
-            baseSize: { width: this.baseWidth, height: this.baseHeight },
-            scale: { x: this.scaleX, y: this.scaleY, uniform: this.uniformScale }
-        };
-    }
+            canvasSize: { width: this.canvasWidth, height: this.canvasHeight ,},
+            baseSize: { width: this.baseWidth, height: this.baseHeight ,},
+            scale: { x: this.scaleX, y: this.scaleY, uniform: this.uniformScale ,}
 
     // Getters for external access
     getCanvasWidth(): number { return this.canvasWidth; }
-    }
 
     getCanvasHeight(): number { return this.canvasHeight; }
-    }
 
     getScaleX(): number { return this.scaleX; }
-    }
 
     getScaleY(): number { return this.scaleY; }
-    }
-'';
+
     getUniformScale(');

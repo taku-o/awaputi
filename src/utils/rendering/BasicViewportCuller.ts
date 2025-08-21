@@ -1,42 +1,37 @@
 // Type definitions
 interface Viewport { x: number,
-    y: number,
-    width: number,
-    height: number }
-}
+    y: number;
+    width: number;
+    height: number ,}
 
-interface Frustum { left: number,
-    right: number,
-    top: number,
-    bottom: number,
-    near: number,
+interface Frustum { left: number;
+    right: number;
+    top: number;
+    bottom: number;
+    near: number;
     far: number }
-}
 
-interface ViewportCullingStats { totalObjects: number,
-    culledObjects: number,
-    cullingEfficiency: number,
+interface ViewportCullingStats { totalObjects: number;
+    culledObjects: number;
+    cullingEfficiency: number;
     processingTime: number }
-}
 
-interface CullingConfig { enabled: boolean,
-    viewport: Viewport,
-    cullingMargin: number,
+interface CullingConfig { enabled: boolean;
+    viewport: Viewport;
+    cullingMargin: number;
     spatialGrid: Map<string, Set<RenderableObject>>;
-    gridSize: number,
-    renderableObjects: Set<RenderableObject>,
-    culledObjects: Set<RenderableObject>,
+    gridSize: number;
+    renderableObjects: Set<RenderableObject>;
+    culledObjects: Set<RenderableObject>;
     visibilityCache: Map<string | number, boolean>;
-    frustum: Frustum,
+    frustum: Frustum;
     stats: ViewportCullingStats
-    }
-}
+    ,}
 
-interface ObjectBounds { x: number,
-    y: number,
-    width: number,
+interface ObjectBounds { x: number;
+    y: number;
+    width: number;
     height: number }
-}
 
 interface RenderableObject { id?: string | number;
     x?: number;
@@ -45,14 +40,12 @@ interface RenderableObject { id?: string | number;
     height?: number;
     rotation?: number;
     scale?: number; }
-}
 
 interface ViewportCullerConfigOptions { enabled?: boolean;
     cullingMargin?: number;
     gridSize?: number;
     viewport?: Partial<Viewport>;
     }
-}
 
 /**
  * ViewportCuller - Viewport culling optimization system
@@ -74,29 +67,26 @@ export class BasicViewportCuller {
         // Viewport culling system
         this.config = {}
             enabled: true, }
-            viewport: { x: 0, y: 0, width: 0, height: 0 },
+            viewport: { x: 0, y: 0, width: 0, height: 0 ,},
             cullingMargin: 50, // Extra margin around viewport;
             // Culling optimization
             spatialGrid: new Map<string, Set<RenderableObject>>(), // Spatial partitioning grid;
             gridSize: 128, // Grid cell size;
             // Object tracking
-            renderableObjects: new Set<RenderableObject>(),
-            culledObjects: new Set<RenderableObject>(),
+            renderableObjects: new Set<RenderableObject>();
+            culledObjects: new Set<RenderableObject>();
             visibilityCache: new Map<string | number, boolean>(),
             
             // Frustum culling
             frustum: { left: 0, right: 0, top: 0, bottom: 0,
-                near: 0, far: 1000 }
-            },
+                near: 0, far: 1000 ,},
             
             // Statistics
-            stats: { totalObjects: 0,
-                culledObjects: 0,
-                cullingEfficiency: 0,
+            stats: { totalObjects: 0;
+                culledObjects: 0;
+                cullingEfficiency: 0;
                 processingTime: 0 }
-            }
-        },
-
+        };
         this.updateViewport();
         this.rebuildSpatialGrid();
     }
@@ -116,7 +106,6 @@ export class BasicViewportCuller {
         frustum.right = viewport.x + viewport.width + this.config.cullingMargin;
         frustum.top = viewport.y - this.config.cullingMargin;
         frustum.bottom = viewport.y + viewport.height + this.config.cullingMargin; }
-    }
 
     /**
      * Rebuild spatial grid for viewport culling
@@ -133,17 +122,16 @@ export class BasicViewportCuller {
         const endX = Math.ceil((viewport.x + viewport.width + margin) / gridSize) * gridSize;
         const endY = Math.ceil((viewport.y + viewport.height + margin) / gridSize) * gridSize;
         
-        for(let x = startX; x < endX; x += gridSize) {
+        for(let, x = startX; x < endX; x += gridSize) {
         
             
         
         }
-            for (let y = startY; y < endY; y += gridSize) { }
+            for (let, y = startY; y < endY; y += gridSize) { }
                 const key = `${x},${y}`;
                 this.config.spatialGrid.set(key, new Set<RenderableObject>();
             }
-        }
-    }
+}
 
     /**
      * Perform viewport culling on objects
@@ -155,13 +143,12 @@ export class BasicViewportCuller {
             
         
         }
-            return objects; }
-        }
+            return objects;
 
         this.config.renderableObjects.clear();
         this.config.culledObjects.clear();
         
-        for(const obj of objects) {
+        for(const, obj of, objects) {
         
             const bounds = this.calculateObjectBounds(obj);
             
@@ -173,7 +160,6 @@ export class BasicViewportCuller {
         }
                 this.addObjectToSpatialGrid(obj); }
             } else { this.config.culledObjects.add(obj); }
-            }
             
             // Update visibility cache
             this.config.visibilityCache.set(obj.id || Math.random(), isVisible);
@@ -198,7 +184,6 @@ export class BasicViewportCuller {
             bounds.y + bounds.height < frustum.top ||;
             bounds.y > frustum.bottom;
         ); }
-    }
 
     /**
      * Add object to spatial grid
@@ -211,30 +196,26 @@ export class BasicViewportCuller {
         const endX = Math.floor((bounds.x + bounds.width) / gridSize) * gridSize;
         const endY = Math.floor((bounds.y + bounds.height) / gridSize) * gridSize;
         
-        for(let x = startX; x <= endX; x += gridSize) {
+        for(let, x = startX; x <= endX; x += gridSize) {
         
             
         
         }
-            for (let y = startY; y <= endY; y += gridSize) { }
+            for (let, y = startY; y <= endY; y += gridSize) { }
                 const key = `${x},${y}`;
                 const cell = this.config.spatialGrid.get(key);
                 if (cell) { cell.add(obj); }
-                }
-            }
-        }
+}
     }
 
     /**
      * Calculate object bounds
      */
     calculateObjectBounds(obj: RenderableObject): ObjectBounds { const bounds: ObjectBounds = {
-            x: obj.x || 0,
-            y: obj.y || 0,
-            width: obj.width || 0,
-            height: obj.height || 0 }
-        },
-
+            x: obj.x || 0;
+            y: obj.y || 0;
+            width: obj.width || 0;
+            height: obj.height || 0 };
         // Account for rotation and scaling
         if(obj.rotation || obj.scale !== 1) {
             const centerX = bounds.x + bounds.width / 2;
@@ -266,20 +247,19 @@ export class BasicViewportCuller {
         const endX = Math.floor((bounds.x + bounds.width) / gridSize) * gridSize;
         const endY = Math.floor((bounds.y + bounds.height) / gridSize) * gridSize;
         
-        for(let x = startX; x <= endX; x += gridSize) {
+        for(let, x = startX; x <= endX; x += gridSize) {
         
             
         
         }
-            for (let y = startY; y <= endY; y += gridSize) { }
+            for (let, y = startY; y <= endY; y += gridSize) { }
                 const key = `${x},${y}`;
                 const cell = this.config.spatialGrid.get(key);
                 if(cell) {
-                    for (const obj of cell) {
+                    for (const, obj of, cell) {
                 }
                         result.add(obj); }
-                    }
-                }
+}
             }
         }
         
@@ -290,13 +270,12 @@ export class BasicViewportCuller {
      * Check if object is currently visible
      */
     isObjectVisible(obj: RenderableObject): boolean { return this.config.visibilityCache.get(obj.id || Math.random() || false; }
-    }
 
     /**
      * Get culling statistics
      */
     getStats(): ViewportCullingStats {
-        return { ...this.config.stats };
+        return { ...this.config.stats;
     }
 
     /**
@@ -316,8 +295,7 @@ export class BasicViewportCuller {
         
         }
             this.updateViewport(); }
-        }
-    }
+}
 
     /**
      * Reset viewport culler
@@ -327,17 +305,14 @@ export class BasicViewportCuller {
         this.config.visibilityCache.clear();
         this.rebuildSpatialGrid();
         this.config.stats = {
-            totalObjects: 0,
-            culledObjects: 0,
-            cullingEfficiency: 0,
+            totalObjects: 0;
+            culledObjects: 0;
+            cullingEfficiency: 0;
             processingTime: 0 }
-        },
-    }
 
     /**
      * Handle canvas resize
      */
     handleCanvasResize(): void { this.updateViewport();
         this.rebuildSpatialGrid(); }
-    }
 }

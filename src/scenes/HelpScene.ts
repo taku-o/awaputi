@@ -14,10 +14,9 @@ import { ContextualHelpManager } from './help-scene/ContextualHelpManager.js';
 
 // Help Scene specific types
 export interface HelpTopic { id: string,
-    title: string,
+    title: string;
     content?: string;
-    category?: string; }
-}
+    category?: string; ,}
 
 export interface HelpContextData { contextual?: boolean;
     documentation?: boolean;
@@ -27,7 +26,6 @@ export interface HelpContextData { contextual?: boolean;
     accessMethod?: string;
     preserveContext?: boolean;
     returnScene?: string; }
-}
 
 export interface HelpSceneState { initialized: boolean,
     currentContext?: any;
@@ -35,44 +33,36 @@ export interface HelpSceneState { initialized: boolean,
     contextualHelpContent?: string;
     contextualHelpActions?: string[];
     hasContextualHelp?: boolean; }
-}
 
 export interface HelpSceneComponents { helpAccessibilityManager: HelpAccessibilityManager,
-    helpContentManager: HelpContentManager,
-    helpAnimationManager: HelpAnimationManager,
-    helpTransitionRenderer: HelpTransitionRenderer,
-    helpRenderer: HelpRenderer,
-    helpEventManager: HelpEventManager,
+    helpContentManager: HelpContentManager;
+    helpAnimationManager: HelpAnimationManager;
+    helpTransitionRenderer: HelpTransitionRenderer;
+    helpRenderer: HelpRenderer;
+    helpEventManager: HelpEventManager;
     contextualHelpManager: ContextualHelpManager
-    }
-}
+    ,}
 
 export interface AccessibilityOptions { highContrast?: boolean;
     largeText?: boolean; }
-}
 
 export interface AnimationOptions { enabled?: boolean; }
-}
 
 export interface LayoutOptions { [key: string]: any, }
-}
 
 export interface ColorOptions { [key: string]: any, }
-}
 
 export interface ConfigureOptions { accessibility?: AccessibilityOptions;
     animations?: AnimationOptions;
     layout?: LayoutOptions;
     colors?: ColorOptions;
     }
-}
 
 export interface HelpSceneStatus { initialized: boolean,
     contentState?: any;
     accessibilityState?: any;
     animationState?: any;
     eventState?: any; }
-}
 
 /**
  * ヘルプシーン (Refactored)
@@ -120,8 +110,7 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
         this.initialized = false;
         
 
-    }
-    }
+    ,}
         this.initialize(); }
     }
     
@@ -130,48 +119,48 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
      * @private
      */''
     private _initializeSubComponents()';
-        console.log('HelpScene: _initializeSubComponents(') called''),';
+        console.log('HelpScene: _initializeSubComponents(') called''),
         try { // アクセシビリティ管理
-            console.log('HelpScene: Creating HelpAccessibilityManager'),';
-            const accessibilityManager = this.gameEngine.accessibilityManager || new CoreAccessibilityManager(this.gameEngine);''
-            this.helpAccessibilityManager = new HelpAccessibilityManager(this.gameEngine, accessibilityManager');
+            console.log('HelpScene: Creating, HelpAccessibilityManager),
+            const accessibilityManager = this.gameEngine.accessibilityManager || new CoreAccessibilityManager(this.gameEngine');''
+            this.helpAccessibilityManager = new HelpAccessibilityManager(this.gameEngine, accessibilityManager);
             ';
             // コンテンツ管理
-            console.log('HelpScene: Creating HelpContentManager'),'';
+            console.log('HelpScene: Creating, HelpContentManager),
             this.helpContentManager = new HelpContentManager(this.gameEngine');
             ';
             // アニメーション管理
-            console.log('HelpScene: Creating HelpAnimationManager'),';
-            this.helpAnimationManager = new HelpAnimationManager();''
-            this.helpTransitionRenderer = new HelpTransitionRenderer(this.helpAnimationManager');
+            console.log('HelpScene: Creating, HelpAnimationManager),
+            this.helpAnimationManager = new HelpAnimationManager(');''
+            this.helpTransitionRenderer = new HelpTransitionRenderer(this.helpAnimationManager);
             ';
             // レンダリング管理
-            console.log('HelpScene: Creating HelpRenderer'),'';
+            console.log('HelpScene: Creating, HelpRenderer),
             this.helpRenderer = new HelpRenderer(this.gameEngine');
             
             // GameEngineにレンダラーの参照を設定（イベント管理で使用）
             this.gameEngine.helpRenderer = this.helpRenderer;
-            ;
             // イベント管理
-            console.log('HelpScene: Creating HelpEventManager'),
+            console.log('HelpScene: Creating, HelpEventManager),
             this.helpEventManager = new HelpEventManager(;
                 this.gameEngine,
                 this.helpContentManager);
-                this.helpAccessibilityManager)';
+                this.helpAccessibilityManager')';
                 this.helpAnimationManager'';
             ');''
-            console.log('HelpScene: HelpEventManager created, instance:', !!this.helpEventManager');
+            console.log('HelpScene: HelpEventManager created, instance:', !!this.helpEventManager);
             ';
             // コンテキスト依存ヘルプ管理
-            console.log('HelpScene: Creating ContextualHelpManager'),'';
-            this.contextualHelpManager = new ContextualHelpManager(this.gameEngine');'
-            '';
-            console.log('HelpScene sub-components initialized');'
+            console.log('HelpScene: Creating, ContextualHelpManager),
+            this.contextualHelpManager = new ContextualHelpManager(this.gameEngine');
+
+            console.log('HelpScene, sub-components, initialized');
+
             ' }'
-        } catch (error) { ''
-            console.error('Failed to initialize HelpScene sub-components:', error');''
+
+        } catch (error) {
+            console.error('Failed to initialize HelpScene sub-components:', error);''
             this.loggingSystem.error('HelpScene', 'Sub-component initialization failed', error); }
-        }
     }
 
     /**
@@ -180,15 +169,15 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
     async initialize(): Promise<void> { try {
             // サブコンポーネントの初期化待機
             await this.waitForSubComponentInitialization();
-            ;
             // イベントコールバックの設定
             this.setupEventCallbacks()';
-            this.loggingSystem.info('HelpScene', 'Help scene initialized successfully');'
+            this.loggingSystem.info('HelpScene', 'Help scene initialized successfully);
+
             ' }'
-        } catch (error) { ''
-            this.loggingSystem.error('HelpScene', 'Failed to initialize help scene', error');''
-            ErrorHandler.handle(error, 'HelpScene.initialize'); }
-        }
+
+        } catch (error) {
+            this.loggingSystem.error('HelpScene', 'Failed to initialize help scene', error);''
+            ErrorHandler.handle(error, 'HelpScene.initialize); }'
     }
     
     async waitForSubComponentInitialization(): Promise<void> { // 各サブコンポーネントの初期化完了を待機
@@ -203,17 +192,18 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
         }
         
         if (this.helpContentManager && this.helpContentManager.initialize) { initPromises.push(this.helpContentManager.initialize(); }
-        }
         
         await Promise.all(initPromises);
     }
-    '';
+
     setupEventCallbacks()';
         this.helpEventManager.setCallback('onGoBack', () => {  try {'
-                if(!this.gameEngine.sceneManager') {'
-                    ';'
-                }'
-                    console.error('SceneManager not available'); }
+                if(!this.gameEngine.sceneManager) {'
+                    ';
+
+                }
+
+                    console.error('SceneManager, not available'); }'
                     return; }
                 }
                 
@@ -224,60 +214,64 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
                 const success = this.gameEngine.sceneManager.switchScene(targetScene);
                 
                 if(!success) {
-                ';'
-                    '';
-                    console.error(`Failed to navigate to ${targetScene) from help screen`');'
+                ';
+
+                    console.error(`Failed, to navigate, to ${targetScene) from help screen`');
+
                     // フォールバック: menuシーンに戻る試行
-                    if (targetScene !== 'menu'') {''
-                        const fallbackSuccess = this.gameEngine.sceneManager.switchScene('menu');'
-                
-                }'
-                        if (!fallbackSuccess') {' }'
-                            console.error('Failed to navigate to fallback menu scene''});
+                    if (targetScene !== 'menu''} {''
+                        const, fallbackSuccess = this.gameEngine.sceneManager.switchScene('menu}
+
+                        if(!fallbackSuccess) {' }'
+
+                            console.error('Failed, to navigate, to fallback, menu scene''});
                         }
-                    }
-                }'
-                '';
-                this.loggingSystem.info('HelpScene', `Navigated back to: ${targetScene}, success: ${success)`});''
-            } catch (error) { ''
-                console.error('Error navigating back from help screen:', error');''
-                this.loggingSystem.error('HelpScene', 'Navigation error', error); }'
+}
+
+                this.loggingSystem.info('HelpScene', `Navigated back to: ${targetScene}, success: ${success}`});''
+            } catch (error) {
+                console.error('Error navigating back from help screen:', error);''
+                this.loggingSystem.error('HelpScene', 'Navigation error', error); }
+
             }''
-        }');'
-        '';
-        this.helpEventManager.setCallback('onFeedbackRequest', (data: any) => { this.showFeedbackDialog(data);' }'
-        }');'
-        '';
-        this.helpEventManager.setCallback('onEffectivenessReport', (report: any) => { this.showEffectivenessReport(report);' }'
-        }');'
-        '';
-        this.helpEventManager.setCallback('onSearchFocus', (') => {  // 検索フォーカス時の処理' }'
-            console.log('Search bar focused'); }
+        }');
+
+        this.helpEventManager.setCallback('onFeedbackRequest', (data: any) => { this.showFeedbackDialog(data);' }
+
+        }');
+
+        this.helpEventManager.setCallback('onEffectivenessReport', (report: any) => { this.showEffectivenessReport(report);' }
+
+        }');
+
+        this.helpEventManager.setCallback('onSearchFocus', () => {  // 検索フォーカス時の処理' }
+
+            console.log('Search, bar focused'); }'
         });
     }
 
     /**
      * シーン開始時の処理'
      */''
-    enter(contextData: HelpContextData = {}'): void { ''
-        console.log('HelpScene: enter(') called'),'';
-        if(!this.initialized') {'
-            '';
-            console.warn('HelpScene not initialized, attempting to initialize...');
-        }
-            this.initialize(); }
+    enter(contextData: HelpContextData = {}): void { ''
+        console.log('HelpScene: enter(') called'),
+        if(!this.initialized) {'
+
+            console.warn('HelpScene not initialized, attempting to initialize...);
+            this.initialize('); }
         }
         ';
         // コンテキストデータの処理
-        this.processEntryContext(contextData');
+        this.processEntryContext(contextData);
         ';
         // イベントリスナーの設定
         console.log('HelpScene: enter(') - helpEventManager exists:', !!this.helpEventManager);''
-        if(this.helpEventManager') {'
-            '';
-            console.log('HelpScene: enter() - calling setupEventListeners(')'),'';
+        if(this.helpEventManager) {'
+
+            console.log('HelpScene: enter(') - calling setupEventListeners(')),
             this.helpEventManager.setupEventListeners();
-        }'
+        }
+
             console.error('HelpScene: enter(') - helpEventManager is not available!'), }
         }
         
@@ -286,40 +280,42 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
         
         // アナリティクス開始
         const analytics = this.helpContentManager.getHelpAnalytics();''
-        if(analytics') {'
-            '';
+        if(analytics) { '
+
             analytics.startHelpSession('help_scene', {''
-                initialCategory: contextData.contextual ? 'contextual' : 'gameplay','';
-                accessMethod: contextData.accessMethod || 'unknown',')';
-                sourceScene: contextData.sourceScene || 'unknown',)
-        }
-                userAgent: navigator.userAgent), }'
-                screenSize: `${window.innerWidth}x${ window.innerHeight)`,' }'
+                initialCategory: contextData.contextual ? 'contextual' : 'gameplay',
+                accessMethod: contextData.accessMethod || 'unknown',)';
+                sourceScene: contextData.sourceScene || 'unknown', }
+                userAgent: navigator.userAgent), }
+
+                screenSize: `${window.innerWidth}x${ window.innerHeight}`,' }'
+
                 language: this.gameEngine.localizationManager? .getCurrentLanguage('}) || 'ja'
-            }),
+            });
         }
         ';
         // スクリーンリーダーへの入場アナウンス
-        const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager');''
-        let announcement = t('help.accessibility.sceneEntered', 'ヘルプシーンに入りました。F1キーでキーボードショートカットを確認できます。');
+        const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);''
+        let announcement = t('help.accessibility.sceneEntered', 'ヘルプシーンに入りました。F1キーでキーボードショートカットを確認できます。);
         ';
         // コンテキスト依存のアナウンス追加
-        if(contextData.contextual') {'
-            ';'
-        }'
-            announcement += ' ' + t('help.accessibility.contextualHelp', 'コンテキスト依存のヘルプを表示しています。');' }'
-        } else if (contextData.documentation') { ''
-            announcement += ' ' + t('help.accessibility.documentationHelp', 'ドキュメントヘルプを表示しています。');' }'
-        } else if (contextData.quick') { ''
-            announcement += ' ' + t('help.accessibility.quickHelp', 'クイックヘルプを表示しています。'); }
-        }'
-        '';
-        this.helpAccessibilityManager.announceToScreenReader(announcement');'
-        '';
+        if(contextData.contextual) {'
+            ';
+
+        }
+
+            announcement += ' ' + t('help.accessibility.contextualHelp', 'コンテキスト依存のヘルプを表示しています。);' }
+
+        } else if(contextData.documentation) { ''
+            announcement += ' ' + t('help.accessibility.documentationHelp', 'ドキュメントヘルプを表示しています。);' }
+
+        } else if(contextData.quick) { ''
+            announcement += ' ' + t('help.accessibility.quickHelp', 'クイックヘルプを表示しています。); }
+
+        this.helpAccessibilityManager.announceToScreenReader(announcement);
+
         this.loggingSystem.info('HelpScene', 'Help scene entered', { contextData, : undefined)
-            accessMethod: contextData.accessMethod) }
-    }
-    
+            accessMethod: contextData.accessMethod 
     /**
      * エントリコンテキストの処理
      * @param contextData - コンテキストデータ
@@ -327,66 +323,64 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
     processEntryContext(contextData: HelpContextData): void { try {
             // コンテキスト情報の保存（戻りナビゲーション用）
             this.currentContext = {
-                ...contextData,
-                entryTime: Date.now() }
-            };
+                ...contextData;
+                entryTime: Date.now( ,};
             
             // NavigationContextManagerにコンテキストを設定
-            if(contextData.preserveContext && contextData.returnScene) {
-                this.navigationContext.setReturnContext({)
+            if(contextData.preserveContext && contextData.returnScene) { this.navigationContext.setReturnContext({)
                     targetScene: contextData.returnScene);
-                    contextData: contextData,)
-            }
+                    contextData: contextData, }
                     preserveState: true); }
             }
             
             // コンテキスト依存のヘルプ内容設定
-            if (contextData.contextual && contextData.sourceScene) { this.setContextualHelpMode(contextData.sourceScene); }
-            } else if (contextData.documentation) { this.setDocumentationHelpMode(); }
-            } else if (contextData.quick) { this.setQuickHelpMode(); }
-            } else {  ''
-                this.setStandardHelpMode() }'
-            this.loggingSystem.debug('HelpScene', 'Entry context processed', contextData);' }'
-        } catch (error) { ''
+            if (contextData.contextual && contextData.sourceScene) { this.setContextualHelpMode(contextData.sourceScene); } else if (contextData.documentation) { this.setDocumentationHelpMode(); } else if (contextData.quick) { this.setQuickHelpMode(); } else {
+                this.setStandardHelpMode( }
+
+            this.loggingSystem.debug('HelpScene', 'Entry context processed', contextData);' }
+
+        } catch (error) {
             this.loggingSystem.error('HelpScene', 'Error processing entry context', error); }
-        }
     }
     
     /**
      * コンテキスト依存ヘルプモードの設定
      * @param {string} sourceScene - 呼び出し元シーン'
      */''
-    setContextualHelpMode(sourceScene: any') {
+    setContextualHelpMode(sourceScene: any) {
         // ContextualHelpManagerを使用してコンテキスト依存ヘルプを分析
         const contextualHelp = this.contextualHelpManager.analyzeContextAndGetHelp({
-            sourceScene,')';
+            sourceScene,)';
             accessMethod: 'keyboard_f1',);
-            contextual: true),
-        ';'
+            contextual: true);
+        ';
+
         if (contextualHelp) {'
-    }'
-            this.applyContextualHelp(contextualHelp'); }
-        }'
-        '';
+    ,}
+
+            this.applyContextualHelp(contextualHelp); }
+        }
+
         this.loggingSystem.info('HelpScene', `Contextual help mode for scene: ${sourceScene}`, { )
-            hasContextualHelp: !!contextualHelp) }
-    }
+            hasContextualHelp: !!contextualHelp }
     
     /**
      * ドキュメントヘルプモードの設定'
      */''
     setDocumentationHelpMode()';
             accessMethod: 'keyboard_ctrl_h');
-            documentation: true),
-        
+            documentation: true);
         if(documentationHelp) {
-        ';'
-            ';'
-        }'
-            this.applyContextualHelp(documentationHelp'); }
-        }'
-        '';
-        this.loggingSystem.info('HelpScene', 'Documentation help mode activated');
+        ';
+
+            ';
+
+        }
+
+            this.applyContextualHelp(documentationHelp); }
+        }
+
+        this.loggingSystem.info('HelpScene', 'Documentation help mode activated);
     }
     
     /**
@@ -394,16 +388,18 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
      */''
     setQuickHelpMode()';
             accessMethod: 'keyboard_ctrl_slash');
-            quick: true),
-        
+            quick: true);
         if(quickHelp) {
-        ';'
-            ';'
-        }'
-            this.applyContextualHelp(quickHelp'); }
-        }'
-        '';
-        this.loggingSystem.info('HelpScene', 'Quick help mode activated');
+        ';
+
+            ';
+
+        }
+
+            this.applyContextualHelp(quickHelp); }
+        }
+
+        this.loggingSystem.info('HelpScene', 'Quick help mode activated);
     }
     
     /**
@@ -411,16 +407,18 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
      */''
     setStandardHelpMode()';
             accessMethod: 'menu_click');
-            standard: true),
-        
+            standard: true);
         if(standardHelp) {
-        ';'
-            ';'
-        }'
-            this.applyContextualHelp(standardHelp'); }
-        }'
-        '';
-        this.loggingSystem.info('HelpScene', 'Standard help mode activated');
+        ';
+
+            ';
+
+        }
+
+            this.applyContextualHelp(standardHelp); }
+        }
+
+        this.loggingSystem.info('HelpScene', 'Standard help mode activated);
     }
     
     /**
@@ -432,8 +430,9 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
             // ヘルプ内容の設定
             if (this.helpContentManager && helpContent.category) {
                 // カテゴリベースでヘルプ内容を設定する
-    }'
-                this.setHelpCategory(helpContent.category'); }
+    }
+
+                this.setHelpCategory(helpContent.category); }
             }
             
             // タイトルと内容の設定
@@ -443,13 +442,13 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
             
             // UI更新フラグ
             this.hasContextualHelp = true;
-            '';
+
             this.loggingSystem.debug('HelpScene', 'Contextual help applied', { title: helpContent.title)
                 category: helpContent.category,)';
-                actionsCount: this.contextualHelpActions? .length || 0);' }'
-        } catch (error) { ''
+                actionsCount: this.contextualHelpActions? .length || 0);' ,}'
+
+        } catch (error) {
             this.loggingSystem.error('HelpScene', 'Error applying contextual help', error); }
-        }
     }
     
     /**
@@ -459,9 +458,11 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
     setHelpCategory(category: any) {
         try {
             if (this.helpContentManager && this.helpContentManager.selectCategory) {
-    }'
+    
                 this.helpContentManager.selectCategory(category);' }'
-            } catch (error) { ' }'
+
+            } catch (error) { }
+
             this.loggingSystem.error('HelpScene', `Error setting help category: ${category}`, error);
         }
     }
@@ -470,14 +471,15 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
      * ヘルプアクションの実行
      * @param {string} action - アクション名
      */
-    executeHelpAction(action: any) {
-        try {
+    executeHelpAction(action: any) { try {
             if (this.contextualHelpManager) {
                 this.contextualHelpManager.executeHelpAction(action, {)
-                    scene: this,)
-    }'
+                    scene: this, }
+
                     navigationContext: this.navigationContext);' }'
-            } catch (error) { ' }'
+
+            } catch (error) { }
+
             this.loggingSystem.error('HelpScene', `Error executing help action: ${action}`, error);
         }
     }
@@ -494,27 +496,24 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
             if (currentTopic) {
     }
                 feedbackSystem.endContentView(currentTopic.id); }
-            }
-        }
+}
         
         // アナリティクス終了
         const analytics = this.helpContentManager.getHelpAnalytics();''
-        if(analytics') {'
-            '';
+        if(analytics) { '
+
             analytics.endHelpSession('scene_exit', {)
                 finalCategory: state.selectedCategory)';
-                finalTopic: state.selectedTopicIndex,'';
-                searchPerformed: state.searchQuery !== '',)
-        }
+                finalTopic: state.selectedTopicIndex,
+                searchPerformed: state.searchQuery !== '', }
                 lastSearchQuery: state.searchQuery); }
         }
         
         // イベントリスナーの削除
         this.helpEventManager.removeEventListeners();
-        ;
         // アクセシビリティ機能の無効化
         this.helpAccessibilityManager.disableAccessibilityFeatures()';
-        this.loggingSystem.info('HelpScene', 'Help scene exited');
+        this.loggingSystem.info('HelpScene', 'Help scene exited);
     }
 
     /**
@@ -523,8 +522,8 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
     showFeedbackDialog(data: any) {
         try {
             const feedbackSystem = this.helpContentManager.getHelpFeedbackSystem();''
-            if (!feedbackSystem || !data.content') {''
-                console.warn('Feedback system not available or no content provided');
+            if(!feedbackSystem || !data.content) {''
+                console.warn('Feedback, system not, available or, no content, provided);
     }
                 return; }
             }
@@ -536,10 +535,9 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
             }
                 feedbackSystem.showQuickFeedback(data.topic.id, data.content, data.position); }
             } else {  // 詳細フィードバックダイアログ }
-                feedbackSystem.showFeedbackDialog(data.topic.id);' }'
-            } catch (error) { ''
-            console.error('Failed to show feedback dialog:', error) }
-        }
+                feedbackSystem.showFeedbackDialog(data.topic.id');' }'
+
+            } catch (error) { console.error('Failed to show feedback dialog:', error }
     }
 
     /**
@@ -547,23 +545,21 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
      */
     showEffectivenessReport(report: any) {'
         try {'
-            if (!report') {''
-                console.warn('No effectiveness report provided'');
+            if(!report) {''
+                console.warn('No, effectiveness report, provided'');
     }
                 return; }
             }
 ';
             // レポート表示の実装（簡易版）
-            console.log('Effectiveness Report:', report');
+            console.log('Effectiveness Report:', report);
             
             // 実際のプロダクションではモーダルダイアログなどを表示
             this.helpAccessibilityManager.announceToScreenReader(')';
                 'ヘルプ効果測定レポートが生成されました',')';
-                'assertive');'
-            '';
-        } catch (error) { ''
-            console.error('Failed to show effectiveness report:', error) }
-        }
+                'assertive');
+
+        } catch (error) { console.error('Failed to show effectiveness report:', error }
     }
 
     /**
@@ -571,9 +567,8 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
      */
     async handleSearchInput(query: any) { try {
             await this.helpEventManager.handleSearchInput(query);' }'
-        } catch (error) { ''
-            console.error('Search input handling failed:', error) }
-        }
+
+        } catch (error) { console.error('Search input handling failed:', error }
     }
 
     /**
@@ -600,10 +595,10 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
                 
             }
                 this.helpEventManager.updateInputPosition();' }'
-            } catch (error) { ''
-            console.error('Render error in HelpScene:', error');''
+
+            } catch (error) {
+            console.error('Render error in HelpScene:', error);''
             this.loggingSystem.error('HelpScene', 'Render error', error); }
-        }
     }
 
     /**
@@ -616,9 +611,8 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
             const currentTime = performance.now();
             this.helpAnimationManager.updateAnimations(currentTime);
             ' }'
-        } catch (error) { ''
-            console.error('Update error in HelpScene:', error) }
-        }
+
+        } catch (error) { console.error('Update error in HelpScene:', error }
     }
 
     /**
@@ -626,15 +620,13 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
      */
     getStatus(): HelpSceneStatus { if (!this.initialized) { }
             return { initialized: false }
-        }
 
         return { initialized: this.initialized,
-            contentState: this.helpContentManager.getState(),
-            accessibilityState: this.helpAccessibilityManager.getAccessibilityState(),
+            contentState: this.helpContentManager.getState();
+            accessibilityState: this.helpAccessibilityManager.getAccessibilityState();
             animationState: this.helpAnimationManager.getAllAnimationStates(), };
             eventState: this.helpEventManager.getEventState(); }
-        };
-    }
+        }
 
     /**
      * 設定変更
@@ -647,7 +639,6 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
         }
                     this.helpAccessibilityManager.enableHighContrastMode(); }
                 } else { this.helpAccessibilityManager.disableHighContrastMode(); }
-                }
             }
             
             if(options.accessibility.largeText !== undefined) {
@@ -657,9 +648,7 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
             }
                     this.helpAccessibilityManager.enableLargeTextMode(); }
                 } else { this.helpAccessibilityManager.disableLargeTextMode(); }
-                }
-            }
-        }
+}
 
         if(options.animations && this.helpAnimationManager) {
 
@@ -683,8 +672,7 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
 
         }
             this.helpRenderer.updateColors(options.colors); }
-        }
-    }
+}
 
     /**
      * クリーンアップ
@@ -698,27 +686,24 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
             }
             
             if (this.helpAccessibilityManager) { this.helpAccessibilityManager.destroy(); }
-            }
             
             if (this.helpContentManager) { this.helpContentManager.destroy(); }
-            }
             
             if (this.helpAnimationManager) { this.helpAnimationManager.destroy(); }
-            }
             
             if (this.navigationContext) { this.navigationContext.cleanup(); }
-            }
             
             if(this.contextualHelpManager) {
-            ';'
-                '';
+            ';
+
                 this.contextualHelpManager.cleanup()';
-            console.log('HelpScene destroyed');
+            console.log('HelpScene, destroyed');
             
-            }'
+            }
+
             ' }'
-        } catch (error) { ''
-            console.error('Error during HelpScene destruction:', error') }
-        }'
+
+        } catch (error) { console.error('Error during HelpScene destruction:', error }
+
     }''
 }

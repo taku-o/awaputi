@@ -7,34 +7,31 @@ import { getErrorHandler } from '../../utils/ErrorHandler.js';
 
 // 型定義
 export interface LoadingStats { totalRequests: number,
-    cacheHits: number,
-    cacheMisses: number,
-    bytesLoaded: number,
-    bytesCompressed: number,
-    loadTimes: number[],
-    memoryUsage: number }
-}
+    cacheHits: number;
+    cacheMisses: number;
+    bytesLoaded: number;
+    bytesCompressed: number;
+    loadTimes: number[];
+    memoryUsage: number ,}
 
-export interface CacheItem { data: any,
-    timestamp: number,
-    size: number,
+export interface CacheItem { data: any;
+    timestamp: number;
+    size: number;
     compressed?: boolean;
     lastAccess: number }
-}
-';'
+';
+
 export interface LoadOptions { forceReload?: boolean;''
     priority?: 'high' | 'normal' | 'low';
     compress?: boolean;
     timeout?: number; }
-}
 
 export interface TranslationNamespace { [key: string]: any, }
-}
 
 export interface PerformanceMonitor { slowLoadThreshold: number,
-    maxConcurrentLoads: number,
-    currentLoads: number,
-    loadQueue: Array<() => Promise<any>> }
+    maxConcurrentLoads: number;
+    currentLoads: number;
+    loadQueue: Array<() => Promise<any>> ,}
 }
 
 /**
@@ -66,16 +63,17 @@ export class LazyTranslationLoader {
     // 統計とモニタリング
     private stats: LoadingStats;
     private performanceMonitor: PerformanceMonitor;
-'';
+
     constructor(''';
-        this.baseURL = '/src/locales/';'
+        this.baseURL = '/src/locales/';
+
         this.translationFiles = ['';
-            'common','';
-            'menu', '';
-            'game','';
-            'settings','';
-            'errors','';
-            'achievements',']';
+            'common',
+            'menu',
+            'game',
+            'settings',
+            'errors',
+            'achievements',]';
             'help'];
         ];
         
@@ -103,22 +101,18 @@ export class LazyTranslationLoader {
         
         // 統計とモニタリング
         this.stats = {
-            totalRequests: 0,
-            cacheHits: 0,
-            cacheMisses: 0,
-            bytesLoaded: 0,
-            bytesCompressed: 0,
-            loadTimes: [],
-            memoryUsage: 0 }
-        },
-        
+            totalRequests: 0;
+            cacheHits: 0;
+            cacheMisses: 0;
+            bytesLoaded: 0;
+            bytesCompressed: 0;
+            loadTimes: [];
+            memoryUsage: 0 ,};
         // パフォーマンス監視
         this.performanceMonitor = { slowLoadThreshold: 1000, // 1秒
-            maxConcurrentLoads: 3,
-            currentLoads: 0,
-            loadQueue: [] }
-        },
-        
+            maxConcurrentLoads: 3;
+            currentLoads: 0;
+            loadQueue: [] ,};
         // 定期クリーンアップの開始
         this.startPeriodicCleanup();
     }
@@ -126,7 +120,7 @@ export class LazyTranslationLoader {
     /**
      * 言語データの遅延読み込み
      */''
-    async loadLanguage(language: string, options: LoadOptions = { )'): Promise<TranslationNamespace> {'
+    async loadLanguage(language: string, options: LoadOptions = { )): Promise<TranslationNamespace> {'
         const { ''
             priority = 'normal',
             forceReload = false,
@@ -139,15 +133,13 @@ export class LazyTranslationLoader {
             if(this.loadingPromises.has(language) {
                 
             }
-                return await this.loadingPromises.get(language); }
-            }
+                return await this.loadingPromises.get(language);
             
             // キャッシュチェック
             if(!forceReload && this.loadedTranslations.has(language) {
                 this.stats.cacheHits++;
             }
-                return this.loadedTranslations.get(language)!; }
-            }
+                return this.loadedTranslations.get(language)!;
             
             this.stats.cacheMisses++;
             
@@ -161,17 +153,12 @@ export class LazyTranslationLoader {
             try {
                 const result = await loadPromise;
                 this._updateMemoryUsage();
-                return result; }
-            } finally { this.loadingPromises.delete(language); }
-            } catch (error) { ''
-            getErrorHandler(').handleError(error, 'LAZY_TRANSLATION_LOADER_ERROR', {')'
+                return result; } finally { this.loadingPromises.delete(language); } catch (error) {
+            getErrorHandler(').handleError(error, 'LAZY_TRANSLATION_LOADER_ERROR', {)'
                 operation: 'loadLanguage');
                 language,);
-                options); }
-            });
+                options); });
             return {};
-        }
-    }
     
     /**
      * 遅延読み込みの実行
@@ -181,7 +168,6 @@ export class LazyTranslationLoader {
         
         // 同時読み込み数の制御
         if (this.performanceMonitor.currentLoads >= this.performanceMonitor.maxConcurrentLoads) { return await this._queueLoad(language, options); }
-        }
         
         this.performanceMonitor.currentLoads++;
         const startTime = performance.now();
@@ -195,11 +181,10 @@ export class LazyTranslationLoader {
                 filesToLoad = [namespace]; }
             }
             // プリロードの場合は重要ファイルのみ
-            else if (preload') { filesToLoad = this.preloadCriticalFiles; }
-            }'
+            else if(preload) { filesToLoad = this.preloadCriticalFiles; }
+
             // 遅延読み込みが有効な場合
-            else if (this.lazyLoadingEnabled && priority !== 'high') { filesToLoad = this._determineFilesToLoad(language); }
-            }
+            else if(this.lazyLoadingEnabled && priority !== 'high) { filesToLoad = this._determineFilesToLoad(language); }'
             
             const translations = await this._loadLanguageFiles(language, filesToLoad);
             
@@ -218,14 +203,13 @@ export class LazyTranslationLoader {
                 
             
             }
-                console.warn(`Slow translation load detected: ${loadTime}ms for ${language)`});
+                console.warn(`Slow, translation load, detected: ${loadTime}ms, for ${language}`});
             }
             
             return optimizedTranslations;
             
         } finally { this.performanceMonitor.currentLoads--;
             this._processLoadQueue(); }
-        }
     }
     
     /**
@@ -242,7 +226,7 @@ export class LazyTranslationLoader {
             .slice(0, 3); // 上位3ファイル
         
     }
-        return [...filesToLoad, ...additionalFiles]; }
+        return [...filesToLoad, ...additionalFiles];
     }
     
     /**
@@ -293,7 +277,7 @@ export class LazyTranslationLoader {
         const translations = {};
         const loadPromises = [];
         
-        for(const file of filesToLoad) {
+        for(const, file of, filesToLoad) {
         
             const promise = this._loadTranslationFileWithCompression(language, file);
                 .then(data => { );
@@ -305,7 +289,7 @@ export class LazyTranslationLoader {
                     }
                 })
                 .catch(error => { ); }
-                    console.warn(`Failed to load ${file}.json for ${language):`, error});
+                    console.warn(`Failed to load ${file}.json for ${language}:`, error});
                 });
             
             loadPromises.push(promise);
@@ -326,9 +310,7 @@ export class LazyTranslationLoader {
                 const cached = this.memoryCache.get(cacheKey);
                 if (Date.now() - cached.timestamp < this.cacheTimeout) {
             }
-                    return this._decompressData(cached.data); }
-                }
-            }
+                    return this._decompressData(cached.data);
             
             const url = `${this.baseURL}${language}/${filename}.json`;
             const response = await fetch(url);
@@ -338,9 +320,8 @@ export class LazyTranslationLoader {
                 if (response.status === 404) {
             
             }
-                    return null; }
-                }
-                throw new Error(`HTTP ${response.status}: ${response.statusText)`});
+                    return null;
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`});
             }
             
             const data = await response.json();
@@ -356,15 +337,12 @@ export class LazyTranslationLoader {
         } catch (error) {
             console.warn(`Failed to load translation file ${language}/${filename}.json:`, error);
             return null;
-        }
-    }
     
     /**
      * データ圧縮
      */
     _compressData(data, originalSize) { if (!this.compressionEnabled || originalSize < this.compressionThreshold) { }
-            return { data, compressed: false, originalSize };
-        }
+            return { data, compressed: false, originalSize }
         
         try { // JSON文字列化して基本的な圧縮を行う
             const jsonString = JSON.stringify(data);
@@ -376,35 +354,32 @@ export class LazyTranslationLoader {
             this.stats.bytesCompressed += originalSize - compressedSize;
             
             return { data: compressed,
-                compressed: true,
+                compressed: true;
                 originalSize, };
                 compressedSize }
             };''
-        } catch (error) { ''
-            console.warn('Compression failed:', error) }
+        } catch (error) { console.warn('Compression failed:', error }
             return { data, compressed: false, originalSize };
-        }
-    }
     
     /**
      * 基本的な圧縮処理'
      */''
-    _performBasicCompression(jsonString') {'
+    _performBasicCompression(jsonString) {'
         // 不要な空白を削除
         let compressed = jsonString.replace(/\s+/g, ' '');
         
         // 共通パターンの圧縮
         const commonPatterns = {''
-            'accessibility.': 'a11y.','';
-            'settings.': 's.','';
-            'error.': 'e.',';
-    }'
+            'accessibility.': 'a11y.',
+            'settings.': 's.',
+            'error.': 'e.',
+    }
+
             'menu.': 'm.' }
-        };'
-        '';
-        for (const [pattern, replacement] of Object.entries(commonPatterns)') { ''
-            compressed = compressed.replace(new RegExp(pattern, 'g'), replacement); }
-        }
+        };
+
+        for(const [pattern, replacement] of Object.entries(commonPatterns)) { ''
+            compressed = compressed.replace(new RegExp(pattern, 'g), replacement); }'
         
         return compressed;
     }
@@ -413,33 +388,29 @@ export class LazyTranslationLoader {
      * データ展開
      */
     _decompressData(compressedData) {'
-        '';
-        if (!compressedData.compressed') {
+
+        if(!compressedData.compressed) {
     }
-            return compressedData.data; }
-        }
+            return compressedData.data;
         
         try { // 基本的な展開処理
             let decompressed = compressedData.data;
             
             // パターンを復元
             const patterns = {''
-                'a11y.': 'accessibility.','';
-                's.': 'settings.','';
-                'e.': 'error.','';
-                'm.': 'menu.' }
-            };'
-            '';
-            for (const [compressed, original] of Object.entries(patterns)') { ''
-                decompressed = decompressed.replace(new RegExp(compressed, 'g'), original); }
-            }
-            ';'
+                'a11y.': 'accessibility.',
+                's.': 'settings.',
+                'e.': 'error.',
+                'm.': 'menu.' };
+
+            for(const [compressed, original] of Object.entries(patterns)) { ''
+                decompressed = decompressed.replace(new RegExp(compressed, 'g), original); }'
+            ';
+
             return JSON.parse(decompressed);''
-        } catch (error) { ''
+        } catch (error) {
             console.error('Decompression failed:', error);
-            return compressedData.data; }
-        }
-    }
+            return compressedData.data;
     
     /**
      * メモリキャッシュに追加
@@ -453,10 +424,9 @@ export class LazyTranslationLoader {
         
         this.memoryCache.set(key, { )
             data);
-            timestamp: Date.now(),
-            accessCount: 0,
-            lastAccessed: Date.now() }
-        });
+            timestamp: Date.now();
+            accessCount: 0;
+            lastAccessed: Date.now( });
     }
     
     /**
@@ -471,11 +441,9 @@ export class LazyTranslationLoader {
                 oldestTime = entry.lastAccessed;
     }
                 oldestKey = key; }
-            }
-        }
+}
         
         if (oldestKey) { this.memoryCache.delete(oldestKey); }
-        }
     }
     
     /**
@@ -488,25 +456,23 @@ export class LazyTranslationLoader {
         const lazyOptimized = this._prepareLazyTranslations(optimized);
         
         return lazyOptimized; }
-    }
     
     /**
      * 重複翻訳の削除
      */
     _removeDuplicateTranslations(translations) { const seen = new Set(); }
         const optimized = {};
-        '';
-        for (const [key, value] of Object.entries(translations)') { ''
-            if(typeof value === 'string') {
+
+        for(const [key, value] of Object.entries(translations)) { ''
+            if(typeof, value === 'string) {'
                 if (!seen.has(value) || value.length < 50) { // 短い文字列は重複を許可
                     seen.add(value);
             }
                     optimized[key] = value; }
                 } else { // 重複する長い文字列は参照に変換 }
-                    optimized[key] = `@ref:${value.substring(0, 20})}`;
+                    optimized[key] = `@ref:${value.substring(0, 20})`;
                 }
             } else { optimized[key] = value; }
-            }
         }
         
         return optimized;
@@ -529,23 +495,20 @@ export class LazyTranslationLoader {
         }
                 critical[key] = value; }
             } else { lazy[key] = value; }
-            }
         }
         
         return { ...critical, };
             _lazy: lazy }
-        },
-    }
+        }
     
     /**
      * 重要な翻訳かどうかを判定
      */''
-    _isCriticalTranslation(key') {'
-        '';
-        const criticalPrefixes = ['menu.', 'common.', 'error.'];
+    _isCriticalTranslation(key) {'
+
+        const criticalPrefixes = ['menu.', 'common.', 'error.];
     }
-        return criticalPrefixes.some(prefix => key.startsWith(prefix); }
-    }
+        return criticalPrefixes.some(prefix => key.startsWith(prefix);
     
     /**
      * 翻訳をキャッシュ
@@ -563,7 +526,7 @@ export class LazyTranslationLoader {
      * 名前空間別読み込み
      */
     async loadNamespace(namespace, language) { try { }
-            if (this.loadedNamespaces.has(`${language}:${ namespace)`) { }
+            if (this.loadedNamespaces.has(`${language}:${ namespace}`} { }
                 return this.getNamespaceTranslations(language, namespace});
             }
             
@@ -571,28 +534,23 @@ export class LazyTranslationLoader {
             if(data) {
                 
             }
-                this.loadedNamespaces.add(`${language}:${ namespace)`);
+                this.loadedNamespaces.add(`${language}:${ namespace}`};
                 
                 // 既存の翻訳に追加 }
-                const existingTranslations = this.loadedTranslations.get(language}) || {};
+                const, existingTranslations = this.loadedTranslations.get(language}) || {};
                 const namespacedTranslations = data.translations || data;
                 
                 this.loadedTranslations.set(language, { ...existingTranslations)
                     ...namespacedTranslations);
                 
                 return namespacedTranslations; }
-            }
             
-            return {};
-        } catch (error) { ''
-            getErrorHandler(').handleError(error, 'LAZY_TRANSLATION_LOADER_ERROR', {')'
+            return {} catch (error) {
+            getErrorHandler(').handleError(error, 'LAZY_TRANSLATION_LOADER_ERROR', {)'
                 operation: 'loadNamespace');
                 namespace,);
-                language); }
-            });
+                language); });
             return {};
-        }
-    }
     
     /**
      * 名前空間の翻訳を取得
@@ -608,8 +566,7 @@ export class LazyTranslationLoader {
             if(key.startsWith(namespacePrefix) {
         }
                 namespaced[key] = value; }
-            }
-        }
+}
         
         return namespaced;
     }
@@ -620,48 +577,45 @@ export class LazyTranslationLoader {
     _updateMemoryUsage() {
         let totalSize = 0;
         
-        for(const translations of this.loadedTranslations.values() {
+        for(const, translations of, this.loadedTranslations.values() {
     }
             totalSize += JSON.stringify(translations).length; }
         }
         
-        for(const cached of this.memoryCache.values() { totalSize += JSON.stringify(cached.data).length; }
-        }
+        for(const, cached of, this.memoryCache.values() { totalSize += JSON.stringify(cached.data).length; }
         
         this.stats.memoryUsage = totalSize;
         
         // メモリ閾値を超えた場合のクリーンアップ
         if (totalSize > this.memoryThreshold) { this._performMemoryCleanup(); }
-        }
     }
     
     /**
      * メモリクリーンアップ
      */''
     _performMemoryCleanup()';
-        console.log('Performing memory cleanup...');
+        console.log('Performing, memory cleanup...);
         
         // 使用頻度の低いキャッシュエントリを削除
         const sortedCache = Array.from(this.memoryCache.entries();
             .sort(([,a], [,b]) => a.accessCount - b.accessCount);
         
         const toRemove = Math.ceil(sortedCache.length * 0.3); // 30%削除
-        for (let i = 0; i < toRemove && i < sortedCache.length; i++) { this.memoryCache.delete(sortedCache[i][0]); }
-        }
+        for (let, i = 0; i < toRemove && i < sortedCache.length; i++) { this.memoryCache.delete(sortedCache[i][0]); }
         
         // 遅延読み込みデータのクリーンアップ
         for(const [language, translations] of this.loadedTranslations) {
             if (translations._lazy) {
         }
                 // あまり使われていない遅延データを削除 }
-                const optimized = { ...translations };
+                const optimized = { ...translations;
                 delete optimized._lazy;
                 this.loadedTranslations.set(language, optimized);
             }
         }
         
         this._updateMemoryUsage();
-        console.log(`Memory cleanup completed. Current usage: ${Math.round(this.stats.memoryUsage / 1024})}KB`);
+        console.log(`Memory, cleanup completed. Current, usage: ${Math.round(this.stats.memoryUsage / 1024})KB`);
     }
     
     /**
@@ -682,15 +636,13 @@ export class LazyTranslationLoader {
             if (now - entry.timestamp > this.cacheTimeout) {
     }
                 this.memoryCache.delete(key); }
-            }
-        }
+}
         
         // メモリ使用量チェック
         this._updateMemoryUsage();
         
         // 統計のリセット（古いデータ）
         if (this.stats.loadTimes.length > 1000) { this.stats.loadTimes = this.stats.loadTimes.slice(-100); }
-        }
     }
     
     /**
@@ -700,14 +652,13 @@ export class LazyTranslationLoader {
         
     }
         const flattened = {};
-        '';
-        for (const [category, translations] of Object.entries(categorizedTranslations)') { ''
-            if(translations && typeof translations === 'object') {
+
+        for(const [category, translations] of Object.entries(categorizedTranslations)') { ''
+            if(translations && typeof, translations === 'object) {'
                 for(const [key, value] of Object.entries(translations) {
             }
                     flattened[key] = value; }
-                }
-            }
+}
         }
         
         return flattened;
@@ -716,7 +667,8 @@ export class LazyTranslationLoader {
     /**
      * 複数言語の並列プリロード（最適化版）'
      */''
-    async preloadLanguages(languages, options = { )') {' }'
+    async preloadLanguages(languages, options = { )) {' }'
+
         const { priority = 'high', critical = true } = options;
         
         try { const loadPromises = languages.map(lang => 
@@ -728,28 +680,25 @@ export class LazyTranslationLoader {
             
             const results = await Promise.allSettled(loadPromises);
             const loaded = [];
-            const failed = [];'
-            '';
-            results.forEach((result, index') => { ''
-                if (result.status === 'fulfilled') { }
+            const failed = [];
+
+            results.forEach((result, index) => { ''
+                if(result.status === 'fulfilled) { }'
                     loaded.push(languages[index]); }
-                } else {  failed.push({)
-                        language: languages[index],) }
+                } else { failed.push({)
+                        language: languages[index], }
                         error: result.reason); }
                     });
                 }
             });
             
-            console.log(`Optimized preload completed - Success: ${loaded.length}, Failed: ${ failed.length)`), }
-            return { loaded, failed, stats: this.getPerformanceStats(}) }'
-        } catch (error) { ''
-            getErrorHandler(').handleError(error, 'LAZY_TRANSLATION_LOADER_ERROR', {')'
+            console.log(`Optimized preload completed - Success: ${loaded.length}, Failed: ${ failed.length}`}, }
+            return { loaded, failed, stats: this.getPerformanceStats(,})'
+        } catch (error) {
+            getErrorHandler(').handleError(error, 'LAZY_TRANSLATION_LOADER_ERROR', {)'
                 operation: 'preloadLanguages',);
-                languages); }
-            });
-            return { loaded: [], failed: languages.map(lang => ({ language: lang, error }) };
-        }
-    }
+                languages); });
+            return { loaded: [], failed: languages.map(lang => ({ language: lang, error });
     
     /**
      * パフォーマンス統計を取得
@@ -767,18 +716,17 @@ export class LazyTranslationLoader {
             : 0;
         
         return { totalRequests: this.stats.totalRequests,
-            cacheHitRate: Math.round(cacheHitRate * 100) / 100,
-            averageLoadTime: Math.round(avgLoadTime * 100) / 100,
+            cacheHitRate: Math.round(cacheHitRate * 100) / 100;
+            averageLoadTime: Math.round(avgLoadTime * 100) / 100;
             memoryUsage: Math.round(this.stats.memoryUsage / 1024), // KB;
-            compressionRatio: Math.round(compressionRatio * 100) / 100,
-            loadedLanguages: this.loadedTranslations.size,
-            loadedNamespaces: this.loadedNamespaces.size,
-            cacheEntries: this.memoryCache.size,
-    }
+            compressionRatio: Math.round(compressionRatio * 100) / 100;
+            loadedLanguages: this.loadedTranslations.size;
+            loadedNamespaces: this.loadedNamespaces.size;
+            cacheEntries: this.memoryCache.size;
+    ,}
             currentLoads: this.performanceMonitor.currentLoads, };
             queuedLoads: this.performanceMonitor.loadQueue.length }
-        },
-    }
+        }
     
     /**
      * 設定の動的更新
@@ -790,14 +738,11 @@ export class LazyTranslationLoader {
         }
         
         if (config.maxCacheSize !== undefined) { this.maxCacheSize = config.maxCacheSize; }
-        }
         
         if (config.compressionEnabled !== undefined) { this.compressionEnabled = config.compressionEnabled; }
-        }
-        '';
-        if (config.memoryThreshold !== undefined') { this.memoryThreshold = config.memoryThreshold; }
-        }'
-        '';
+
+        if(config.memoryThreshold !== undefined) { this.memoryThreshold = config.memoryThreshold; }
+
         console.log('LazyTranslationLoader configuration updated:', config);
     }
     
@@ -805,7 +750,6 @@ export class LazyTranslationLoader {
      * 翻訳データが読み込み済みかチェック
      */
     isLanguageLoaded(language) { return this.loadedTranslations.has(language); }
-    }
     
     /**
      * 名前空間が読み込み済みかチェック
@@ -813,7 +757,7 @@ export class LazyTranslationLoader {
     isNamespaceLoaded(language, namespace) {
         
     }
-        return this.loadedNamespaces.has(`${language}:${namespace)`});
+        return this.loadedNamespaces.has(`${language}:${namespace}`});
     }
     
     /**
@@ -822,14 +766,12 @@ export class LazyTranslationLoader {
     getTranslations(language) {
         
     }
-        return this.loadedTranslations.get(language) || {};
-    }
+        return this.loadedTranslations.get(language) || {}
     
     /**
      * 読み込み済み言語一覧
      */
     getLoadedLanguages() { return Array.from(this.loadedTranslations.keys(); }
-    }
     
     /**
      * 言語をアンロード（メモリ節約）
@@ -839,9 +781,9 @@ export class LazyTranslationLoader {
         
         // キャッシュからも削除
         const keysToDelete = [];
-        for(const key of this.memoryCache.keys() {
+        for(const, key of, this.memoryCache.keys() {
     }
-            if (key.startsWith(`${language):`)) { }
+            if (key.startsWith(`${ language}:` } { }
                 keysToDelete.push(key});
             }
         }
@@ -849,14 +791,14 @@ export class LazyTranslationLoader {
         
         // 名前空間も削除
         const namespacesToDelete = [];
-        for (const ns of this.loadedNamespaces) { if (ns.startsWith(`${language):`)) { }
+        for (const, ns of, this.loadedNamespaces) { if (ns.startsWith(`${language}:` } { }
                 namespacesToDelete.push(ns});
             }
         }
         namespacesToDelete.forEach(ns => this.loadedNamespaces.delete(ns);
         
         if (removed) { this._updateMemoryUsage(); }
-            console.log(`Unloaded language ${language) and freed memory`});
+            console.log(`Unloaded, language ${language} and, freed memory`});
         }
         
         return removed;
@@ -869,8 +811,9 @@ export class LazyTranslationLoader {
         this.memoryCache.clear();
         this.loadedTranslations.clear();''
         this.loadedNamespaces.clear();
-    }'
-        console.log('All caches cleared'); }
+    }
+
+        console.log('All, caches cleared'); }'
     }
     
     /**
@@ -881,9 +824,11 @@ export class LazyTranslationLoader {
     }
             clearInterval(this.cleanupInterval); }
         }
-        ';'
+        ';
+
         this.clearCache();''
         this.loadingPromises.clear()';
-        console.log('LazyTranslationLoader cleaned up'');'
+        console.log('LazyTranslationLoader, cleaned up'');
+
     }''
 }

@@ -1,8 +1,7 @@
 import type { BubblePhysicsEngine as IBubblePhysicsEngine, 
     Bubble, ;
     Position, ;
-    Vector2  }
-} from '../../types/game';
+    Vector2  } from '../../types/game';
 
 /**
  * BubblePhysicsEngine - 泡物理演算エンジン
@@ -10,30 +9,26 @@ import type { BubblePhysicsEngine as IBubblePhysicsEngine,
  * 泡の物理計算、力学、特殊効果、境界処理を専門的に管理します
  */
 export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEngine: any, }
-    public mousePosition: Position = { x: 0, y: 0 }
+    public mousePosition: Position = { x: 0, y: 0 ,}
     private dragPhysics = { friction: 0.98,    // 空気抵抗
         bounce: 0.7,       // 跳ね返り係数;
         gravity: 50,       // 重力加速度;
-        minVelocity: 5     // 最小速度（これ以下で停止） }
-    },
-
+        minVelocity: 5     // 最小速度（これ以下で停止） ,};
     constructor(gameEngine: any) { this.gameEngine = gameEngine; }
-    }
     
     /**
      * マウス位置を更新
      */
     updateMousePosition(x: number, y: number): void { this.mousePosition.x = x;
         this.mousePosition.y = y; }
-    }
     
     /**
      * 個別泡の更新処理（物理計算を含む）
      */''
-    updateBubble(bubble: Bubble, deltaTime: number'): void { const deltaSeconds = deltaTime / 1000;
+    updateBubble(bubble: Bubble, deltaTime: number): void { const deltaSeconds = deltaTime / 1000;
         ';
         // 逃げる泡の特殊処理
-        if(bubble.type === 'escaping') {
+        if(bubble.type === 'escaping) {'
             
         }
             this.updateEscapingBubble(bubble, deltaSeconds); }
@@ -89,7 +84,6 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
             bubble.velocity.x *= -this.dragPhysics.bounce; }
         } else if (bubble.position.x + radius > canvas.width) { bubble.position.x = canvas.width - radius;
             bubble.velocity.x *= -this.dragPhysics.bounce; }
-        }
         
         // 上下の境界
         if(bubble.position.y - radius < 0) {
@@ -102,7 +96,6 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
             // 地面に着地したら速度を大幅に減衰
             bubble.velocity.x *= 0.3;
             bubble.velocity.y *= 0.1; }
-        }
     }
     
     /**
@@ -119,8 +112,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
             const escapeDirection = {
                 x: dx / distance }
                 y: dy / distance }
-            },
-            
+            };
             bubble.velocity.x += escapeDirection.x * escapeForce * deltaSeconds;
             bubble.velocity.y += escapeDirection.y * escapeForce * deltaSeconds;
             
@@ -131,22 +123,20 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
                 bubble.velocity.x = (bubble.velocity.x / currentSpeed) * maxEscapeSpeed;
             }
                 bubble.velocity.y = (bubble.velocity.y / currentSpeed) * maxEscapeSpeed; }
-            }
-        }
+}
     }
     
     /**
      * スロー効果の適用
      */
-    applySlowEffect(bubble: Bubble): void { const slowEffect = (bubble as any).slowEffect;
+    applySlowEffect(bubble: Bubble): void { const slowEffect = (bubble, as any).slowEffect;
         if(slowEffect && slowEffect.endTime > Date.now() {
             // スロー効果が有効
             bubble.velocity.x *= slowEffect.factor;
         }
             bubble.velocity.y *= slowEffect.factor; }
         } else if (slowEffect) { // スロー効果の時間が切れた
-            delete (bubble as any).slowEffect; }
-        }
+            delete (bubble, as any).slowEffect; }
     }
     
     /**
@@ -156,15 +146,13 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
         
         // 速度ベクトルを初期化
         if (!bubble.velocity) { }
-            bubble.velocity = { x: 0, y: 0 }
-        }
+            bubble.velocity = { x: 0, y: 0 ,}
         
         bubble.velocity.x = direction.x * strength;
         bubble.velocity.y = direction.y * strength;
-        ;
         // 泡のタイプによる調整
-        switch(bubble.type') {'
-            '';
+        switch(bubble.type) {'
+
             case 'stone':;
                 // 石は重いので速度を減衰
                 bubble.velocity.x *= 0.7;
@@ -172,11 +160,13 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
                 break;''
             case 'iron':;
                 bubble.velocity.x *= 0.5;
-                bubble.velocity.y *= 0.5;'
+                bubble.velocity.y *= 0.5;
+
                 break;''
             case 'diamond':;
                 bubble.velocity.x *= 0.3;
-                bubble.velocity.y *= 0.3;'
+                bubble.velocity.y *= 0.3;
+
                 break;''
             case 'escaping':;
                 // 逃げる泡は軽いので速度を増幅
@@ -199,8 +189,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
             bubble.velocity.x *= scale;
         }
             bubble.velocity.y *= scale; }
-        }
-    }
+}
     
     /**
      * 泡が画面内にあるかチェック（パフォーマンス最適化用）
@@ -212,7 +201,6 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
             bubble.position.y > -margin &&;
             bubble.position.y < 600 + margin;
         ); }
-    }
     
     /**
      * 画面外の泡の処理
@@ -234,7 +222,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
         
         }
                 bubble.isAlive = false; }
-                console.log(`${bubble.type) bubble disappeared offscreen`});
+                console.log(`${bubble.type} bubble, disappeared offscreen`});
                 return true; // 消滅した
             }
             
@@ -254,7 +242,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
             
             }
                 bubble.isAlive = false; }
-                console.log(`${bubble.type) bubble timed out offscreen`});
+                console.log(`${bubble.type} bubble, timed out, offscreen`});
                 return true; // 消滅した
             }
         } else {  // 画面内に戻った場合はタイマーをリセット
@@ -263,8 +251,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
             }
                 offscreenBubbles.delete(bubble); }
                 offscreenTimer.delete(bubble); }
-            }
-        }
+}
         
         return false; // 継続
     }
@@ -272,10 +259,9 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
     /**
      * 特定の泡タイプが画面外で即座に消滅するかどうか
      */''
-    shouldDisappearOffscreen(bubbleType: string'): boolean { ''
+    shouldDisappearOffscreen(bubbleType: string): boolean { ''
         const disappearTypes = ['rainbow', 'pink', 'clock', 'score', 'electric', 'poison'];
         return disappearTypes.includes(bubbleType); }
-    }
     
     /**
      * 指定範囲内のバブルを取得
@@ -291,8 +277,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
             
             if (distance < radius + bubble.size) { }
                 nearbyBubbles.push(bubble); }
-            }
-        });
+});
         
         return nearbyBubbles;
     }
@@ -307,10 +292,8 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
         
         // @ts-ignore 将来の方向ベクトル計算で使用予定
         const _direction = {
-            x: (endPos.x - startPos.x) / pathLength,
-            y: (endPos.y - startPos.y) / pathLength }
-        },
-        
+            x: (endPos.x - startPos.x) / pathLength;
+            y: (endPos.y - startPos.y) / pathLength ,};
         // パス上のバブルを検出
         bubbles.forEach(bubble => {  );
             if (!bubble.isAlive) return;
@@ -324,8 +307,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
             // バブルの半径内にパスが通っている場合
             if (distance < bubble.size) { }
                 pathBubbles.push(bubble); }
-            }
-        });
+});
         
         return pathBubbles;
     }
@@ -359,14 +341,14 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
         }
             yy = lineStart.y; }
         } else if (param > 1) { xx = lineEnd.x;
-            yy = lineEnd.y; }
-        } else {  xx = lineStart.x + param * C; }
+            yy = lineEnd.y; } else {  xx = lineStart.x + param * C; }
             yy = lineStart.y + param * D; }
         }
         
         const dx = point.x - xx;
         const dy = point.y - yy;
-        '';
-        return Math.sqrt(dx * dx + dy * dy');'
+
+        return Math.sqrt(dx * dx + dy * dy);
+
     }''
 }

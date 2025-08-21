@@ -1,5 +1,5 @@
 /**
- * 共有ボタンコンポーネント (Task 7)
+ * 共有ボタンコンポーネント (Task, 7)
  * アクセシブルな共有ボタンUIを提供
  */
 
@@ -27,40 +27,35 @@ interface ShareButtonOptions { position?: string;
     keyboardNavigation?: boolean;
     highContrast?: boolean;
     reducedMotion?: boolean; }
-}
 
 interface ShareButtonConfig { position: string,
-    theme: string,
-    size: string,
-    animation: boolean,
-    hideDelay: number,
-    platforms: string[],
-    showLabels: boolean,
-    showIcons: boolean,
-    autoHide: boolean,
-    triggerEvents: string[],
+    theme: string;
+    size: string;
+    animation: boolean;
+    hideDelay: number;
+    platforms: string[];
+    showLabels: boolean;
+    showIcons: boolean;
+    autoHide: boolean;
+    triggerEvents: string[];
     styles: {
-        backgroundColor: string,
-        textColor: string,
-        borderRadius: string,
-        fontSize: string,
-        padding: string,
-        zIndex: number }
-    },
-    accessibility: { enabled: boolean,
-        announcements: boolean,
-        keyboardNavigation: boolean,
-        highContrast: boolean,
+        backgroundColor: string;
+        textColor: string;
+        borderRadius: string;
+        fontSize: string;
+        padding: string;
+        zIndex: number ,};
+    accessibility: { enabled: boolean;
+        announcements: boolean;
+        keyboardNavigation: boolean;
+        highContrast: boolean;
         reducedMotion: boolean }
-    };
-}
 
 interface ShareButtonState { isVisible: boolean,
-    isAnimating: boolean,
-    currentPlatform: string | null,
-    hideTimeout: number | null,
-    keyboardFocus: number }
-}
+    isAnimating: boolean;
+    currentPlatform: string | null;
+    hideTimeout: number | null;
+    keyboardFocus: number ,}
 
 export class ShareButton {
     private container: HTMLElement;
@@ -70,8 +65,8 @@ export class ShareButton {
     private element?: HTMLElement;
     private buttonElements: HTMLElement[] = [];
     private isInitialized: boolean = false;
-'';
-    constructor(container: HTMLElement, socialSharingManager: any, options: ShareButtonOptions = {)') {
+
+    constructor(container: HTMLElement, socialSharingManager: any, options: ShareButtonOptions = {)) {
         this.container = container;
         this.socialSharingManager = socialSharingManager;
         
@@ -81,72 +76,62 @@ export class ShareButton {
             position: options.position || 'bottom-right', // top-left, top-right, bottom-left, bottom-right, center;
             theme: options.theme || 'default', // default, minimal, gaming, elegant;
             size: options.size || 'medium', // small, medium, large;
-            animation: options.animation !== false,
-            hideDelay: options.hideDelay || 3000,
+            animation: options.animation !== false;
+            hideDelay: options.hideDelay || 3000;
             ;
             // 機能設定
             platforms: options.platforms || ['web-share', 'twitter', 'facebook'],
-            showLabels: options.showLabels !== false,
-            showIcons: options.showIcons !== false,';
-            autoHide: options.autoHide === true,'';
+            showLabels: options.showLabels !== false;
+            showIcons: options.showIcons !== false,
+            autoHide: options.autoHide === true,
             triggerEvents: options.triggerEvents || ['score', 'achievement'],
             
             // スタイル設定
             styles: {''
-                backgroundColor: options.backgroundColor || 'rgba(0, 0, 0, 0.8')','';
-                textColor: options.textColor || '#FFFFFF','';
-                borderRadius: options.borderRadius || '8px','';
-                fontSize: options.fontSize || '14px','';
-                padding: options.padding || '12px 16px',
-                zIndex: options.zIndex || 1000 }
-            },
-            
+                backgroundColor: options.backgroundColor || 'rgba(0, 0, 0, 0.8)',
+                textColor: options.textColor || '#FFFFFF',
+                borderRadius: options.borderRadius || '8px',
+                fontSize: options.fontSize || '14px',
+                padding: options.padding || '12px 16px';
+                zIndex: options.zIndex || 1000 ,};
             // アクセシビリティ設定
-            accessibility: { enabled: options.accessibility !== false,
-                announcements: options.announcements !== false,
-                keyboardNavigation: options.keyboardNavigation !== false,
-                highContrast: options.highContrast === true,
+            accessibility: { enabled: options.accessibility !== false;
+                announcements: options.announcements !== false;
+                keyboardNavigation: options.keyboardNavigation !== false;
+                highContrast: options.highContrast === true;
                 reducedMotion: options.reducedMotion === true }
-            }
-        },
-        
+        };
         // 状態管理
         this.state = { visible: false,
-            expanded: false,
-            activeButton: null,
-            shareData: null,
-            lastTriggeredBy: null }
-        },
-        
+            expanded: false;
+            activeButton: null;
+            shareData: null;
+            lastTriggeredBy: null ,};
         // DOM要素
         this.elements = { container: null,
-            mainButton: null,
-            platformButtons: [],
-            tooltip: null,
-            announcer: null }
-        },
-        
+            mainButton: null;
+            platformButtons: [];
+            tooltip: null;
+            announcer: null ,};
         // イベントハンドラー
         this.handlers = { click: this.handleClick.bind(this),
-            keydown: this.handleKeydown.bind(this),
-            focus: this.handleFocus.bind(this),
-            blur: this.handleBlur.bind(this),
-            mouseenter: this.handleMouseEnter.bind(this),
-            mouseleave: this.handleMouseLeave.bind(this),
-            resize: this.handleResize.bind(this) }
-        };
+            keydown: this.handleKeydown.bind(this);
+            focus: this.handleFocus.bind(this);
+            blur: this.handleBlur.bind(this);
+            mouseenter: this.handleMouseEnter.bind(this);
+            mouseleave: this.handleMouseLeave.bind(this);
+            resize: this.handleResize.bind(this ,};
         
         // タイマー
         this.hideTimer = null;
         
         // 統計
         this.stats = { shows: 0,
-            clicks: 0,
+            clicks: 0;
             shares: 0, }
-            platforms: {},
-        '';
+            platforms: {};
         this.initialize()';
-        this.log('ShareButton初期化完了');
+        this.log('ShareButton初期化完了);
     }
     
     /**
@@ -171,10 +156,9 @@ export class ShareButton {
             
             // 自動表示設定
             this.setupAutoTrigger();
-            '';
-        } catch (error) { ''
+
+        } catch (error) {
             this.handleError('SHARE_BUTTON_INITIALIZATION_FAILED', error); }
-        }
     }
     
     /**
@@ -196,27 +180,28 @@ export class ShareButton {
         const platformContainer = document.createElement('div'');''
         platformContainer.className = 'share-button-platforms';''
         platformContainer.setAttribute('role', 'menu'');''
-        platformContainer.setAttribute('aria-label', '共有プラットフォーム');
+        platformContainer.setAttribute('aria-label', '共有プラットフォーム);
         
         // プラットフォーム別ボタンの作成
         this.config.platforms.forEach((platform, index) => {  const button = this.createPlatformButton(platform, index);
             this.elements.platformButtons.push(button); }
             platformContainer.appendChild(button); }
         });
-        ;
         // ツールチップ
-        if(this.config.showLabels') {'
-            '';
+        if(this.config.showLabels) {'
+
             this.elements.tooltip = document.createElement('div'');''
             this.elements.tooltip.className = 'share-button-tooltip';''
-            this.elements.tooltip.setAttribute('role', 'tooltip'');'
-        }'
+            this.elements.tooltip.setAttribute('role', 'tooltip'');
+
+        }
+
             this.elements.tooltip.style.display = 'none'; }
         }
         ';
         // スクリーンリーダー用アナウンサー
-        if(this.config.accessibility.enabled') {'
-            '';
+        if(this.config.accessibility.enabled) {'
+
             this.elements.announcer = document.createElement('div'');''
             this.elements.announcer.className = 'share-button-announcer';''
             this.elements.announcer.setAttribute('aria-live', 'polite'');''
@@ -224,8 +209,10 @@ export class ShareButton {
             this.elements.announcer.style.position = 'absolute';''
             this.elements.announcer.style.left = '-10000px';''
             this.elements.announcer.style.width = '1px';''
-            this.elements.announcer.style.height = '1px';'
-        }'
+            this.elements.announcer.style.height = '1px';
+
+        }
+
             this.elements.announcer.style.overflow = 'hidden'; }
         }
         
@@ -234,10 +221,8 @@ export class ShareButton {
         this.elements.container.appendChild(platformContainer);
         
         if (this.elements.tooltip) { this.elements.container.appendChild(this.elements.tooltip); }
-        }
         
         if (this.elements.announcer) { this.elements.container.appendChild(this.elements.announcer); }
-        }
         
         // コンテナに追加
         this.container.appendChild(this.elements.container);
@@ -246,18 +231,22 @@ export class ShareButton {
     /**
      * プラットフォーム別ボタンの作成
      */''
-    createPlatformButton(platform, index') {'
-        ';'
-    }'
-        const button = document.createElement('button''); }'
+    createPlatformButton(platform, index) {'
+        ';
+
+    }
+
+        const button = document.createElement('button''); }
+
         button.className = `share-button-platform share-button-${platform}`;''
-        button.setAttribute('data-platform', platform');''
+        button.setAttribute('data-platform', platform);''
         button.setAttribute('role', 'menuitem'');''
-        button.setAttribute('tabindex', '-1');
-        ';'
+        button.setAttribute('tabindex', '-1);
+        ';
+
         const platformInfo = this.getPlatformInfo(platform);''
-        button.innerHTML = this.getButtonContent(platform, platformInfo.label');''
-        button.setAttribute('aria-label', `${platformInfo.label)で共有`});
+        button.innerHTML = this.getButtonContent(platform, platformInfo.label);''
+        button.setAttribute('aria-label', `${platformInfo.label}で共有`});
         
         return button;
     }
@@ -265,18 +254,21 @@ export class ShareButton {
     /**
      * ボタンコンテンツの生成'
      */''
-    getButtonContent(platform, label') {
+    getButtonContent(platform, label) {
         const showIcons = this.config.showIcons;
-        const showLabels = this.config.showLabels;'
-        '';
+        const showLabels = this.config.showLabels;
+
         let content = '';
-        ';'
+        ';
+
         if (showIcons) {'
-    }'
-            const icon = this.getIcon(platform');' }'
+    }
+
+            const icon = this.getIcon(platform);' }'
+
             content += `<span class="share-button-icon">${icon}</span>`;
         }"
-        "";
+
         if (showLabels") { " }"
             content += `<span class="share-button-label">${label}</span>`;
         }
@@ -287,37 +279,36 @@ export class ShareButton {
     /**
      * プラットフォーム情報の取得"
      */""
-    getPlatformInfo(platform") { const platforms = {" }"
-            'web-share': { label: '共有', color: '#007AFF' },''
-            'twitter': { label: 'Twitter', color: '#1DA1F2' },''
-            'facebook': { label: 'Facebook', color: '#1877F2' },''
-            'line': { label: 'LINE', color: '#00C300' },''
-            'whatsapp': { label: 'WhatsApp', color: '#25D366' },''
-            'telegram': { label: 'Telegram', color: '#0088CC' },''
-            'email': { label: 'メール', color: '#EA4335' },''
-            'copy': { label: 'コピー', color: '#6C757D' }
-        };'
-        '';
-        return platforms[platform] || { label: platform, color: '#6C757D' }
-    }
+    getPlatformInfo(platform) { const platforms = {" }"
+            'web-share': { label: '共有', color: '#007AFF' ,},''
+            'twitter': { label: 'Twitter', color: '#1DA1F2' ,},''
+            'facebook': { label: 'Facebook', color: '#1877F2' ,},''
+            'line': { label: 'LINE', color: '#00C300' ,},''
+            'whatsapp': { label: 'WhatsApp', color: '#25D366' ,},''
+            'telegram': { label: 'Telegram', color: '#0088CC' ,},''
+            'email': { label: 'メール', color: '#EA4335' ,},''
+            'copy': { label: 'コピー', color: '#6C757D' ,};
+
+        return platforms[platform] || { label: platform, color: '#6C757D' ,}
     
     /**
      * アイコンの取得'
      */''
-    getIcon(platform') {'
+    getIcon(platform) {'
         const icons = {''
-            'share': '📤','';
-            'web-share': '📤','';
-            'twitter': '🐦','';
-            'facebook': '📘','';
-            'line': '💬','';
-            'whatsapp': '📱','';
-            'telegram': '✈️','';
-            'email': '📧',';
-    }'
+            'share': '📤',
+            'web-share': '📤',
+            'twitter': '🐦',
+            'facebook': '📘',
+            'line': '💬',
+            'whatsapp': '📱',
+            'telegram': '✈️',
+            'email': '📧',
+    }
+
             'copy': '📋' }
-        };'
-        '';
+        };
+
         return icons[platform] || '📤';
     }
     
@@ -331,56 +322,58 @@ export class ShareButton {
         
         // 位置の設定
         const position = this.getPositionStyles();''
-        Object.assign(container.style, position');
+        Object.assign(container.style, position);
         
         // 基本スタイル（モバイル対応の改善）
         Object.assign(container.style, {''
-            position: 'fixed',
-            zIndex: styles.zIndex,
+            position: 'fixed';
+            zIndex: styles.zIndex;
             backgroundColor: styles.backgroundColor);
             color: styles.textColor)';
-            borderRadius: styles.borderRadius,'';
+            borderRadius: styles.borderRadius,
             fontSize: isMobile ? '16px' : styles.fontSize, // モバイルで最小16px（ズーム防止）')';
-            padding: isMobile ? '12px' : styles.padding'),'';
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15')','';
-            transition: this.config.animation ? 'all 0.3s ease' : 'none','';
-            userSelect: 'none',';
+            padding: isMobile ? '12px' : styles.padding),
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+            transition: this.config.animation ? 'all 0.3s ease' : 'none',
+            userSelect: 'none',
             // タッチ操作の改善
-            touchAction: 'manipulation','';
-            WebkitTapHighlightColor: 'transparent',';
+            touchAction: 'manipulation',
+            WebkitTapHighlightColor: 'transparent',
             // モバイルでの最小タッチターゲットサイズ（44px×44px）
-            minHeight: isMobile ? '44px' : 'auto','
-    }'
-            minWidth: isMobile ? '44px' : 'auto' }
-        }),
+            minHeight: isMobile ? '44px' : 'auto';
+    ,}
+
+            minWidth: isMobile ? '44px' : 'auto' 
+        });
         ';
         // ボタンのタッチ操作改善
-        if(this.elements.mainButton') {'
+        if(this.elements.mainButton) { '
             Object.assign(this.elements.mainButton.style, {''
-                minHeight: isMobile ? '44px' : '36px','';
-                minWidth: isMobile ? '44px' : '36px','';
-                padding: isMobile ? '8px 16px' : '6px 12px','';
-                touchAction: 'manipulation','';
-                cursor: 'pointer','';
-                outline: 'none','';
-                border: 'none','';
-                borderRadius: '8px',')';
-                fontSize: 'inherit',')
-        }'
+                minHeight: isMobile ? '44px' : '36px',
+                minWidth: isMobile ? '44px' : '36px',
+                padding: isMobile ? '8px 16px' : '6px 12px',
+                touchAction: 'manipulation',
+                cursor: 'pointer',
+                outline: 'none',
+                border: 'none',
+                borderRadius: '8px',)';
+                fontSize: 'inherit',' }
+
                 fontFamily: 'inherit')'); }
         }
         
         // プラットフォームボタンのスタイル
-        this.elements.platformButtons.forEach(button => {  Object.assign(button.style, {''
-                minHeight: isMobile ? '44px' : '36px','';
-                minWidth: isMobile ? '44px' : '36px','';
-                padding: isMobile ? '8px' : '6px','';
-                margin: isMobile ? '4px' : '2px','';
-                touchAction: 'manipulation','';
-                cursor: 'pointer','';
-                outline: 'none','';
-                border: 'none',')';
-                borderRadius: '6px',') }'
+        this.elements.platformButtons.forEach(button => { Object.assign(button.style, {''
+                minHeight: isMobile ? '44px' : '36px',
+                minWidth: isMobile ? '44px' : '36px',
+                padding: isMobile ? '8px' : '6px',
+                margin: isMobile ? '4px' : '2px',
+                touchAction: 'manipulation',
+                cursor: 'pointer',
+                outline: 'none',
+                border: 'none',)';
+                borderRadius: '6px',' }
+
                 transition: 'all 0.2s ease'); }
         });
         
@@ -392,7 +385,6 @@ export class ShareButton {
         
         // アクセシビリティスタイル
         if (this.config.accessibility.enabled) { this.applyAccessibilityStyles(); }
-        }
     }
     
     /**
@@ -402,10 +394,12 @@ export class ShareButton {
         // モバイルデバイスではより大きなパディングを使用
         const isMobile = window.innerWidth <= 768;
         const padding = isMobile ? 16 : 20;
-        '';
-        switch (this.config.position') {'
-    }'
-            case 'top-left': }'
+
+        switch(this.config.position) {'
+    }
+
+            case 'top-left': }
+
                 return { top: `${padding}px`, left: `${padding}px` }''
             case 'top-right':';
                 return { top: `${padding}px`, right: `${padding}px` }''
@@ -415,48 +409,51 @@ export class ShareButton {
                 return { bottom: `${padding}px`, right: `${padding}px` }''
             case 'center':';
                 return { ''
-                    top: '50%', '';
-                    left: '50%', ' };'
-                    transform: 'translate(-50%, -50%')'  }
+                    top: '50%',
+                    left: '50%', ' };
+
+                    transform: 'translate(-50%, -50%)'  }
                 };
             default:;
                 return { bottom: `${padding}px`, right: `${padding}px` }
-        }
-    }
+}
     
     /**
      * テーマスタイルの適用
      */
     applyThemeStyles() {
-        const container = this.elements.container;'
-        '';
-        switch (this.config.theme') {''
+        const container = this.elements.container;
+
+        switch(this.config.theme) {''
             case 'minimal':'';
-                Object.assign(container.style, {');''
-                    backgroundColor: 'rgba(255, 255, 255, 0.95')','';
-                    color: '#333333','';
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1')','
-    }'
-                    border: '1px solid rgba(0, 0, 0, 0.1')'' }'
+                Object.assign(container.style, {);''
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                    color: '#333333',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+
+    }
+
+                    border: '1px solid rgba(0, 0, 0, 0.1)'' }
+
                 }');
-                break;'
-                '';
+                break;
+
             case 'gaming':'';
                 Object.assign(container.style, { ');''
-                    backgroundColor: 'rgba(0, 255, 0, 0.9')','';
-                    color: '#000000','';
-                    boxShadow: '0 0 20px rgba(0, 255, 0, 0.5')','';
-                    border: '2px solid #00FF00'' }'
-                }'),
-                break;'
-                '';
+                    backgroundColor: 'rgba(0, 255, 0, 0.9)',
+                    color: '#000000',
+                    boxShadow: '0 0 20px rgba(0, 255, 0, 0.5)',
+                    border: '2px solid #00FF00'' ,}
+
+                }');
+                break;
+
             case 'elegant':'';
                 Object.assign(container.style, { ');''
-                    backgroundColor: 'rgba(50, 50, 70, 0.95')','';
-                    color: '#F0F0F0','';
-                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3')','';
-                    border: '1px solid rgba(192, 192, 192, 0.2')' }
-                });
+                    backgroundColor: 'rgba(50, 50, 70, 0.95)',
+                    color: '#F0F0F0',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+                    border: '1px solid rgba(192, 192, 192, 0.2)' });
                 break;
         }
     }
@@ -465,53 +462,53 @@ export class ShareButton {
      * レスポンシブスタイルの適用'
      */''
     applyResponsiveStyles()';
-        const mediaQuery = window.matchMedia('(max-width: 768px')'),';
-        '';
-        if(mediaQuery.matches') {
-            // モバイル用調整
+        const mediaQuery = window.matchMedia('(max-width: 768px)),
+
+        if(mediaQuery.matches) { // モバイル用調整
             const container = this.elements.container;
-            Object.assign(container.style, {')'
+            Object.assign(container.style, {)'
                 fontSize: '16px',')';
-                padding: '14px 18px')'),
+                padding: '14px 18px')');
             ';
             // 位置の調整
             if (this.config.position === 'bottom-right'') {'
-                Object.assign(container.style, {')'
-                    bottom: '80px', // ナビゲーションバーを考慮)
-        }'
+                Object.assign(container.style, {)'
+                    bottom: '80px', // ナビゲーションバーを考慮 }
+
                     right: '16px'); }
-            }
-        }
+}
     }
     
     /**
      * アクセシビリティスタイルの適用
      */
-    applyAccessibilityStyles() {'
+    applyAccessibilityStyles() { '
         // 高コントラストモード
         if (this.config.accessibility.highContrast) {
-            const container = this.elements.container;'
+            const container = this.elements.container;
+
             Object.assign(container.style, {''
-                backgroundColor: '#000000',')';
-                color: '#FFFFFF',')
-    }'
+                backgroundColor: '#000000',)';
+                color: '#FFFFFF',' }
+
                 border: '2px solid #FFFFFF'); }
         }
         ';
         // 動きの軽減
-        if(this.config.accessibility.reducedMotion') {'
-            const container = this.elements.container;'
-        }'
+        if(this.config.accessibility.reducedMotion) {'
+            const container = this.elements.container;
+
+        }
+
             container.style.transition = 'none'; }
         }
         ';
         // フォーカス表示の強化
-        const style = document.createElement('style');
+        const style = document.createElement('style);
         style.textContent = `;
             .share-button-main:focus,
             .share-button-platform:focus { outline: 3px solid #007AFF,
                 outline-offset: 2px, }
-            }
         `;
         document.head.appendChild(style);
     }
@@ -520,42 +517,46 @@ export class ShareButton {
      * イベントリスナーの設定'
      */''
     setupEventListeners()';
-        this.elements.mainButton.addEventListener('click', this.handlers.click');''
+        this.elements.mainButton.addEventListener('click', this.handlers.click);''
         this.elements.mainButton.addEventListener('keydown', this.handlers.keydown);
         ';
         // プラットフォームボタン
         this.elements.platformButtons.forEach(button => {  ');''
-            button.addEventListener('click', this.handlers.click');''
-            button.addEventListener('keydown', this.handlers.keydown');''
-            button.addEventListener('focus', this.handlers.focus');''
-            button.addEventListener('blur', this.handlers.blur);'
-            '';
-            if(this.elements.tooltip') {'
-                ';'
-            }'
-                button.addEventListener('mouseenter', this.handlers.mouseenter');' }'
-                button.addEventListener('mouseleave', this.handlers.mouseleave); }'
+            button.addEventListener('click', this.handlers.click);''
+            button.addEventListener('keydown', this.handlers.keydown);''
+            button.addEventListener('focus', this.handlers.focus);''
+            button.addEventListener('blur', this.handlers.blur);
+
+            if(this.elements.tooltip) {'
+                ';
+
+            }
+
+                button.addEventListener('mouseenter', this.handlers.mouseenter);' }
+
+                button.addEventListener('mouseleave', this.handlers.mouseleave); }
+
             }''
         }');
         ';
         // ウィンドウリサイズ
-        window.addEventListener('resize', this.handlers.resize');
+        window.addEventListener('resize', this.handlers.resize);
         ';
         // 外部クリックでの閉じる処理
         document.addEventListener('click', (event) => {  if(!this.elements.container.contains(event.target) { }
-                this.collapse(); }'
+                this.collapse(); }
+
             }''
         }');
         ';
         // ESCキーでの閉じる処理
-        document.addEventListener('keydown', (event') => {  ''
+        document.addEventListener('keydown', (event) => {  ''
             if(event.key === 'Escape' && this.state.expanded) {
                 
             }
                 this.collapse(); }
                 this.elements.mainButton.focus(); }
-            }
-        });
+});
     }
     
     /**
@@ -563,21 +564,21 @@ export class ShareButton {
      */''
     setupAccessibility()';
         this.elements.container.setAttribute('role', 'toolbar'');''
-        this.elements.container.setAttribute('aria-label', '共有ツール');
+        this.elements.container.setAttribute('aria-label', '共有ツール);
         
         // キーボードナビゲーションの設定
         if (this.config.accessibility.keyboardNavigation) { this.setupKeyboardNavigation(); }
-        }
     }
     
     /**
      * キーボードナビゲーションの設定
      */''
     setupKeyboardNavigation()';
-        this.elements.mainButton.setAttribute('tabindex', '0');
+        this.elements.mainButton.setAttribute('tabindex', '0);
         ';
         // 矢印キーでのナビゲーション
-        this.elements.platformButtons.forEach((button, index') => {  ' }'
+        this.elements.platformButtons.forEach((button, index) => {  ' }'
+
             button.setAttribute('data-index', index); }
         });
     }
@@ -612,41 +613,45 @@ export class ShareButton {
         if (this.config.autoHide && this.config.hideDelay > 0) {
     }
             this.scheduleHide(); }
-        }
-    }
+}
     
     /**
      * ボタンの表示
      */
     show() {
-        '';
-        if (this.state.visible') return;
+
+        if(this.state.visible) return;
         
         this.state.visible = true;
         this.stats.shows++;
-        ';'
+        ';
+
         const container = this.elements.container;''
-        container.style.display = 'block';'
-        '';
-        if (this.config.animation') {''
+        container.style.display = 'block';
+
+        if(this.config.animation) {''
             container.style.opacity = '0';
-            container.style.transform = this.getShowAnimation();'
-            '';
-            requestAnimationFrame((') => { '
-    }'
-                container.style.opacity = '1';' }'
+            container.style.transform = this.getShowAnimation();
+
+            requestAnimationFrame(() => { '
+    }
+
+                container.style.opacity = '1';' }
+
                 container.style.transform = 'none'; }
             });
         }
         ';
         // アクセシビリティアナウンス
-        if(this.config.accessibility.announcements && this.elements.announcer') {'
-            ';'
-        }'
+        if(this.config.accessibility.announcements && this.elements.announcer) {'
+            ';
+
+        }
+
             this.elements.announcer.textContent = '共有ボタンが表示されました'; }
-        }'
-        '';
-        this.log('ShareButton表示');
+        }
+
+        this.log('ShareButton表示);
     }
     
     /**
@@ -658,34 +663,42 @@ export class ShareButton {
         this.state.visible = false;
         this.collapse();
         
-        const container = this.elements.container;'
-        '';
-        if (this.config.animation') {''
+        const container = this.elements.container;
+
+        if(this.config.animation) {''
             container.style.opacity = '0';
-            container.style.transform = this.getHideAnimation();'
-            ';'
-    }'
-            setTimeout((') => { ' }'
-                container.style.display = 'none';' }'
-            }, 300');'
-        } else {  ' }'
+            container.style.transform = this.getHideAnimation();
+
+            ';
+
+    }
+
+            setTimeout(() => { ' }'
+
+                container.style.display = 'none';' }
+
+            }, 300');
+
+        } else { }'
+
             container.style.display = 'none'; }
-        }'
-        '';
+        }
+
         this.clearHideTimer()';
-        this.log('ShareButton非表示');
+        this.log('ShareButton非表示);
     }
     
     /**
      * 展開
      */
     expand() {'
-        '';
-        if (this.state.expanded') return;
-        ';'
+
+        if(this.state.expanded) return;
+        ';
+
         this.state.expanded = true;''
-        this.elements.mainButton.setAttribute('aria-expanded', 'true'');'
-        '';
+        this.elements.mainButton.setAttribute('aria-expanded', 'true'');
+
         const platformContainer = this.elements.container.querySelector('.share-button-platforms'');''
         platformContainer.style.display = 'block';
         
@@ -694,32 +707,35 @@ export class ShareButton {
     }
             setTimeout(() => {  }
                 this.elements.platformButtons[0].focus();' }'
+
             }, 100');
-        }'
-        '';
-        this.log('ShareButton展開');
+        }
+
+        this.log('ShareButton展開);
     }
     
     /**
      * 折りたたみ
      */
     collapse() {'
-        '';
-        if (!this.state.expanded') return;
-        ';'
+
+        if(!this.state.expanded) return;
+        ';
+
         this.state.expanded = false;''
-        this.elements.mainButton.setAttribute('aria-expanded', 'false'');'
-        '';
+        this.elements.mainButton.setAttribute('aria-expanded', 'false'');
+
         const platformContainer = this.elements.container.querySelector('.share-button-platforms'');''
         platformContainer.style.display = 'none';
         ';
         // ツールチップを非表示
-        if (this.elements.tooltip') {'
-    }'
+        if(this.elements.tooltip) {'
+    }
+
             this.elements.tooltip.style.display = 'none'; }
-        }'
-        '';
-        this.log('ShareButton折りたたみ');
+        }
+
+        this.log('ShareButton折りたたみ);
     }
     
     /**
@@ -741,40 +757,38 @@ export class ShareButton {
             clearTimeout(this.hideTimer);
     }
             this.hideTimer = null; }
-        }
-    }
+}
     
     /**
      * 表示アニメーションの取得
      */
     getShowAnimation() {'
-        '';
-        switch (this.config.position') {''
+
+        switch(this.config.position) {''
             case 'bottom-right':'';
-                return 'translateY(100px')';''
+                return 'translateY(100px)';''
             case 'bottom-left':'';
-                return 'translateY(100px')';''
+                return 'translateY(100px)';''
             case 'top-right':'';
-                return 'translateY(-100px')';''
+                return 'translateY(-100px)';''
             case 'top-left':'';
-                return 'translateY(-100px')';'
-    }'
-            default: return 'scale(0.8')'; }
-        }
+                return 'translateY(-100px)';
+
     }
+
+            default: return 'scale(0.8)';
     
     /**
      * 非表示アニメーションの取得
      */
     getHideAnimation() { return this.getShowAnimation(); }
-    }
     
     /**
      * クリックハンドラー'
      */''
-    handleClick(event') {'
-        '';
-        const target = event.target.closest('button');
+    handleClick(event) {'
+
+        const target = event.target.closest('button);
         if (!target) return;
         
         this.stats.clicks++;
@@ -784,44 +798,47 @@ export class ShareButton {
             if (this.state.expanded) {
     }
                 this.collapse(); }
-            } else {  ''
+            } else {
                 this.expand()';
-            const platform = target.getAttribute('data-platform'); }
+            const platform = target.getAttribute('data-platform); }'
             this.handlePlatformShare(platform); }
-        }
-    }
+}
     
     /**
      * キーボードハンドラー
      */
     handleKeydown(event) {
-        const target = event.target;'
-        '';
-        switch (event.key') {''
+        const target = event.target;
+
+        switch(event.key) {''
             case 'Enter':'';
             case ' ':';
                 event.preventDefault();''
-                this.handleClick({ target )');
-                break;'
-                '';
+                this.handleClick({ target ));
+                break;
+
             case 'ArrowDown':'';
             case 'ArrowRight':;
                 if (this.state.expanded) {'
-                    event.preventDefault();'
-    }'
-                    this.focusNext(target'); }
+                    event.preventDefault();
+
+    }
+
+                    this.focusNext(target); }
                 }
-                break;'
-                '';
+                break;
+
             case 'ArrowUp':'';
             case 'ArrowLeft':;
                 if(this.state.expanded) {'
-                    event.preventDefault();'
-                }'
-                    this.focusPrevious(target'); }
+                    event.preventDefault();
+
                 }
-                break;'
-                '';
+
+                    this.focusPrevious(target); }
+                }
+                break;
+
             case 'Home':;
                 if(this.state.expanded) {'
                     event.preventDefault();''
@@ -847,8 +864,7 @@ export class ShareButton {
             const nextIndex = (currentIndex + 1) % buttons.length;
     }
             buttons[nextIndex].focus(); }
-        }
-    }
+}
     
     /**
      * 前の要素にフォーカス
@@ -861,8 +877,7 @@ export class ShareButton {
             const prevIndex = currentIndex === 0 ? buttons.length - 1 : currentIndex - 1;
     }
             buttons[prevIndex].focus(); }
-        }
-    }
+}
     
     /**
      * フォーカスハンドラー
@@ -874,8 +889,7 @@ export class ShareButton {
         if (this.elements.tooltip) {
     }
             this.showTooltip(event.target); }
-        }
-    }
+}
     
     /**
      * ブラーハンドラー
@@ -892,8 +906,7 @@ export class ShareButton {
         }
                 if (!this.state.activeButton) { }
                     this.hideTooltip(); }
-                }
-            }, 100);
+}, 100);
         }
     }
     
@@ -904,8 +917,7 @@ export class ShareButton {
         if (this.elements.tooltip) {
     }
             this.showTooltip(event.target); }
-        }
-    }
+}
     
     /**
      * マウスリーブハンドラー
@@ -916,8 +928,7 @@ export class ShareButton {
     }
                 if (this.state.activeButton !== event.target) { }
                     this.hideTooltip(); }
-                }
-            }, 100);
+}, 100);
         }
     }
     
@@ -934,13 +945,13 @@ export class ShareButton {
      * ツールチップの表示
      */
     showTooltip(button) {
-        '';
-        if (!this.elements.tooltip') return;'
-        '';
-        const platform = button.getAttribute('data-platform');''
-        const platformInfo = this.getPlatformInfo(platform');
+
+        if(!this.elements.tooltip) return;
+
+        const platform = button.getAttribute('data-platform);''
+        const platformInfo = this.getPlatformInfo(platform);
     }
-         }'
+
         this.elements.tooltip.textContent = `${platformInfo.label}で共有`;''
         this.elements.tooltip.style.display = 'block';
         
@@ -956,27 +967,28 @@ export class ShareButton {
      * ツールチップの非表示
      */
     hideTooltip() {'
-        '';
-        if (this.elements.tooltip') {'
-    }'
-            this.elements.tooltip.style.display = 'none'; }
-        }
+
+        if(this.elements.tooltip) {'
     }
+
+            this.elements.tooltip.style.display = 'none'; }
+}
     
     /**
      * プラットフォーム共有の処理
      */'
     async handlePlatformShare(platform) { try {'
-            if(!this.socialSharingManager') {'
-                ';'
-            }'
-                throw new Error('SocialSharingManagerが設定されていません'); }
+            if(!this.socialSharingManager) {'
+                ';
+
+            }
+
+                throw new Error('SocialSharingManagerが設定されていません); }'
             }
             
             // 統計の更新
             this.stats.shares++;
             if (!this.stats.platforms[platform]) { this.stats.platforms[platform] = 0; }
-            }
             this.stats.platforms[platform]++;
             
             // 共有データの準備
@@ -985,55 +997,58 @@ export class ShareButton {
             // アクセシビリティアナウンス
             if (this.config.accessibility.announcements && this.elements.announcer) { const platformInfo = this.getPlatformInfo(platform); }
                 this.elements.announcer.textContent = `${platformInfo.label}で共有中...`;
-            }
             
             // プラットフォーム別の共有処理
             let result;''
-            switch(platform') {'
-                '';
+            switch(platform) {'
+
                 case 'web-share':'';
-                    result = await this.socialSharingManager.share(shareData');'
+                    result = await this.socialSharingManager.share(shareData);
+
                     break;''
                 case 'twitter':'';
-                    result = await this.socialSharingManager.shareViaTwitterUrl(shareData');'
+                    result = await this.socialSharingManager.shareViaTwitterUrl(shareData);
+
                     break;''
                 case 'facebook':'';
-                    result = await this.socialSharingManager.shareViaFacebookUrl(shareData');'
+                    result = await this.socialSharingManager.shareViaFacebookUrl(shareData);
+
                     break;''
                 case 'copy':;
                     result = await this.copyToClipboard(shareData);
                     break;
                 default:;
-            }
+            ,}
                     result = await this.socialSharingManager.share(shareData, { platform ); }
-            }
             
             // 成功時の処理
             if(result && result.success) {
-                ';'
-            }'
-                this.handleShareSuccess(platform, result'); }'
-            } else {  ' }'
-                this.handleShareError(platform, result? .error || 'Unknown error'); }
+                ';
+
+            }
+
+                this.handleShareSuccess(platform, result); }
+
+            } else { }'
+
+                this.handleShareError(platform, result? .error || 'Unknown error); }'
             }
             
             // ボタンを折りたたむ
             this.collapse();
             
         } catch (error) { this.handleShareError(platform, error); }
-        }
     }
     
     /**
      * デフォルト共有データの取得
      */''
     getDefaultShareData(''';
-            type: 'general','';
-            title: 'BubblePop','';
-            text: 'BubblePopをプレイ中！',
+            type: 'general',
+            title: 'BubblePop',
+            text: 'BubblePopをプレイ中！';
             url: window.location.href);
         })
-    }
     
     /**
      * クリップボードにコピー
@@ -1042,23 +1057,27 @@ export class ShareButton {
             const text = `${shareData.title || shareData.text} ${shareData.url || window.location.href}`;
             
             if(navigator.clipboard) {
-            ';'
-                ';'
-            }'
-                await navigator.clipboard.writeText(text'); }'
+            ';
+
+                ';
+
+            }
+
+                await navigator.clipboard.writeText(text); }
+
             } else {  // フォールバック
-                const textArea = document.createElement('textarea');
-                textArea.value = text;'
+                const textArea = document.createElement('textarea);
+                textArea.value = text;
+
                 document.body.appendChild(textArea);''
                 textArea.select()';
-                document.execCommand('copy');' }'
-                document.body.removeChild(textArea'); }
-            }'
-            '';
-            return { success: true, method: 'clipboard' }
-        } catch (error) {
-            return { success: false, error: error.message }
-        }
+                document.execCommand('copy);' }
+
+                document.body.removeChild(textArea); }
+            }
+
+            return { success: true, method: 'clipboard' ,} catch (error) {
+            return { success: false, error: error.message ,}
     }
     
     /**
@@ -1081,34 +1100,36 @@ export class ShareButton {
     /**
      * 共有エラーの処理
      */''
-    handleShareError(platform, error') {'
-        '';
+    handleShareError(platform, error) {'
+
         this.handleError('PLATFORM_SHARE_FAILED', error, { platform );
         ';
         // アクセシビリティアナウンス
-        if (this.config.accessibility.announcements && this.elements.announcer') {'
-    }'
-            this.elements.announcer.textContent = '共有に失敗しました'; }
-        }
+        if(this.config.accessibility.announcements && this.elements.announcer) {'
     }
+
+            this.elements.announcer.textContent = '共有に失敗しました'; }
+}
     
     /**
      * 成功フィードバックの表示
      */
     showSuccessFeedback(platform) {'
-        '';
+
         const button = this.elements.platformButtons.find()';
-            btn => btn.getAttribute('data-platform') === platform;
-        );'
-        '';
-        if (button && this.config.animation') {'
+            btn => btn.getAttribute('data-platform) === platform;
+        );
+
+        if(button && this.config.animation) {'
             const originalTransform = button.style.transform;''
-            button.style.transform = 'scale(1.2')';''
-            button.style.backgroundColor = '#4CAF50';'
-            '';
-            setTimeout((') => { 
-    }'
+            button.style.transform = 'scale(1.2)';''
+            button.style.backgroundColor = '#4CAF50';
+
+            setTimeout(() => { 
+    }
+
                 button.style.transform = originalTransform;' }'
+
                 button.style.backgroundColor = ''; }
             }, 200);
         }
@@ -1120,7 +1141,7 @@ export class ShareButton {
     updateConfig(newConfig) {
         
     }
-        this.config = { ...this.config, ...newConfig };
+        this.config = { ...this.config, ...newConfig;
         ';
         // スタイルの再適用
         this.applyStyles()';
@@ -1133,7 +1154,7 @@ export class ShareButton {
     getStats() {
         
     }
-        return { ...this.stats };
+        return { ...this.stats;
     }
     
     /**
@@ -1142,10 +1163,12 @@ export class ShareButton {
     destroy()';
         this.elements.mainButton? .removeEventListener('click', this.handlers.click);''
         this.elements.platformButtons.forEach(button => {  ');''
-            button.removeEventListener('click', this.handlers.click');' }'
-            button.removeEventListener('keydown', this.handlers.keydown);' }'
-        }');'
-        '';
+            button.removeEventListener('click', this.handlers.click);' }
+
+            button.removeEventListener('keydown', this.handlers.keydown);' }
+
+        }');
+
         window.removeEventListener('resize', this.handlers.resize);
         
         // タイマーのクリア
@@ -1153,12 +1176,14 @@ export class ShareButton {
         
         // DOM要素の削除
         if(this.elements.container && this.elements.container.parentNode) {
-            ';'
-        }'
-            this.elements.container.parentNode.removeChild(this.elements.container'); }
-        }'
-        '';
-        this.log('ShareButton破棄完了');
+            ';
+
+        }
+
+            this.elements.container.parentNode.removeChild(this.elements.container); }
+        }
+
+        this.log('ShareButton破棄完了);
     }
     
     /**
@@ -1166,31 +1191,36 @@ export class ShareButton {
      */
     handleError(type, error, context = { ) {
         const errorInfo = {
-            type, : undefined;
-            error: error.message || error,
+            type, : undefined
+            error: error.message || error;
             context,
     }
             timestamp: Date.now(); }
-        };'
-        '';
-        if(ErrorHandler') {'
-            ';'
-        }'
-            ErrorHandler.handleError(error, 'ShareButton', context'); }
-        }'
-        '';
+        };
+
+        if(ErrorHandler) {'
+            ';
+
+        }
+
+            ErrorHandler.handleError(error, 'ShareButton', context); }
+        }
+
         this.log('エラー発生', errorInfo, 'error'');
     }
     
     /**
      * ログ記録'
      */''
-    log(message, data = null, level = 'info') {'
+    log(message, data = null, level = 'info) {'
         const logEntry = {''
             timestamp: Date.now(''';
-        const consoleMethod = level === 'error' ? 'error' : ';'
+        const, consoleMethod = level === 'error' ? 'error' : ';
+
     })'
-                            level === 'warn' ? 'warn' : 'log';') }'
-        console[consoleMethod](`[ShareButton] ${message}`, data || ''');'
+                            level === 'warn' ? 'warn' : 'log';') }
+
+        console[consoleMethod](`[ShareButton] ${message}`, data || ''');
+
     }''
 }

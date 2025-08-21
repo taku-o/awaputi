@@ -7,34 +7,28 @@ import { getErrorHandler } from '../../utils/ErrorHandler.js';
 
 // 型定義
 export interface FormatSettings { dateTime: {
-        dateFormat: string,
-        timeFormat: string,
+        dateFormat: string;
+        timeFormat: string;
         timestampFormat: string 
-}
-    },
-    numbers: { decimalSeparator: string,
-        thousandsSeparator: string,
+};
+    numbers: { decimalSeparator: string;
+        thousandsSeparator: string;
         currencyFormat: string 
-}
-    },
+};
     currency: { symbol: string,''
-        position: 'before' | 'after',
-        code: string }
-    };
-}
+        position: 'before' | 'after';
+        code: string ,}
 
 export interface RegionSettings { timezone: string,
-    locale: string,
-    country: string,
-    region: string,
-    rtl: boolean };
-}
+    locale: string;
+    country: string;
+    region: string;
+    rtl: boolean ,}
 export interface LanguageSettings { code: string,
-    name: string,';
-    nativeName: string,'';
-    direction: 'ltr' | 'rtl',
-    pluralRules: string };
-}
+    name: string,
+    nativeName: string,
+    direction: 'ltr' | 'rtl';
+    pluralRules: string ,}
 /**
  * 地域設定管理クラス
  */
@@ -53,10 +47,8 @@ export class RegionalSettingsManager {
         
         // 設定を初期化
 
-    };
-}
-        this.initialize(); };
-}
+    }
+        this.initialize(); }
     /**
      * 設定を初期化
      */
@@ -71,65 +63,61 @@ export class RegionalSettingsManager {
             this.formatSettings = formatSettings;
             this.regionSettings = regionSettings;
             this.languageSettings = languageSettings;
-            ';'
+            ';
+
             this.initialized = true;''
-            console.log('RegionalSettingsManager initialized successfully'); }'
-        } catch (error) { ''
-            getErrorHandler(').handleError(error, 'REGIONAL_SETTINGS_ERROR', {')'
-                operation: 'initialize') }
-            });
-        };
-}
+            console.log('RegionalSettingsManager, initialized successfully'); }'
+
+        } catch (error) { getErrorHandler(').handleError(error, 'REGIONAL_SETTINGS_ERROR', {)'
+                operation: 'initialize' ,});
+        }
     /**
      * フォーマット設定を読み込み'
      */''
     async loadFormatSettings()';
-            const response = await fetch('/src/locales/config/formats.json');
+            const response = await fetch('/src/locales/config/formats.json);
             if(!response.ok) {
                 
             }
-                throw new Error(`Failed to load formats.json: ${response.status)`});
-            }'
+                throw new Error(`Failed, to load, formats.json: ${response.status}`});
+            }
+
             return await response.json();''
-        } catch (error) { ''
+        } catch (error) {
             console.warn('Failed to load format settings, using defaults:', error);
-            return this.getDefaultFormatSettings(); };
-}
-    }
+            return this.getDefaultFormatSettings();
     
     /**
      * 地域設定を読み込み'
      */''
     async loadRegionSettings()';
-            const response = await fetch('/src/locales/config/regions.json');
+            const response = await fetch('/src/locales/config/regions.json);
             if(!response.ok) {
                 
             }
-                throw new Error(`Failed to load regions.json: ${response.status)`});
-            }'
+                throw new Error(`Failed, to load, regions.json: ${response.status}`});
+            }
+
             return await response.json();''
-        } catch (error) { ''
+        } catch (error) {
             console.warn('Failed to load region settings, using defaults:', error);
-            return this.getDefaultRegionSettings(); };
-}
-    }
+            return this.getDefaultRegionSettings();
     
     /**
      * 言語設定を読み込み'
      */''
     async loadLanguageSettings()';
-            const response = await fetch('/src/locales/config/languages.json');
+            const response = await fetch('/src/locales/config/languages.json);
             if(!response.ok) {
                 
             }
-                throw new Error(`Failed to load languages.json: ${response.status)`});
-            }'
+                throw new Error(`Failed, to load, languages.json: ${response.status}`});
+            }
+
             return await response.json();''
-        } catch (error) { ''
+        } catch (error) {
             console.warn('Failed to load language settings, using defaults:', error);
-            return this.getDefaultLanguageSettings(); };
-}
-    }
+            return this.getDefaultLanguageSettings();
     
     /**
      * 数値フォーマット設定を取得
@@ -141,13 +129,10 @@ export class RegionalSettingsManager {
     }
         if (region) { }
             const regionKey = `${language}-${region}`;
-            if (this.formatSettings? .number?.[regionKey]) { return this.formatSettings.number[regionKey]; };
-}
-        }
+            if (this.formatSettings? .number?.[regionKey]) { return this.formatSettings.number[regionKey];
         
         // 言語のみの設定
-        if (this.formatSettings?.number?.[language]) { return this.formatSettings.number[language]; };
-}
+        if (this.formatSettings?.number?.[language]) { return this.formatSettings.number[language]; }
         // デフォルト設定
         return this.getDefaultNumberFormat();
     }
@@ -162,13 +147,10 @@ export class RegionalSettingsManager {
     }
         if (region) { }
             const regionKey = `${language}-${region}`;
-            if (this.formatSettings?.date?.[regionKey]) { return this.formatSettings.date[regionKey]; };
-}
-        }
+            if (this.formatSettings?.date?.[regionKey]) { return this.formatSettings.date[regionKey];
         
         // 言語のみの設定
-        if (this.formatSettings?.date?.[language]) { return this.formatSettings.date[language]; };
-}
+        if (this.formatSettings?.date?.[language]) { return this.formatSettings.date[language]; }
         // デフォルト設定
         return this.getDefaultDateFormat();
     }
@@ -183,13 +165,10 @@ export class RegionalSettingsManager {
     }
         if (region) { }
             const regionKey = `${language}-${region}`;
-            if (this.formatSettings?.currency?.[regionKey]) { return this.formatSettings.currency[regionKey]; };
-}
-        }
+            if (this.formatSettings?.currency?.[regionKey]) { return this.formatSettings.currency[regionKey];
         
         // 言語のみの設定
-        if (this.formatSettings?.currency?.[language]) { return this.formatSettings.currency[language]; };
-}
+        if (this.formatSettings?.currency?.[language]) { return this.formatSettings.currency[language]; }
         // デフォルト設定
         return this.getDefaultCurrencyFormat();
     }
@@ -204,13 +183,10 @@ export class RegionalSettingsManager {
     }
         if (region) { }
             const regionKey = `${language}-${region}`;
-            if (this.formatSettings?.time?.[regionKey]) { return this.formatSettings.time[regionKey]; };
-}
-        }
+            if (this.formatSettings?.time?.[regionKey]) { return this.formatSettings.time[regionKey];
         
         // 言語のみの設定
-        if (this.formatSettings?.time?.[language]) { return this.formatSettings.time[language]; };
-}
+        if (this.formatSettings?.time?.[language]) { return this.formatSettings.time[language]; }
         // デフォルト設定
         return this.getDefaultTimeFormat();
     }
@@ -222,8 +198,7 @@ export class RegionalSettingsManager {
         this.ensureInitialized();
         
     }
-        return this.regionSettings?.[region] || this.getDefaultRegionInfo(); };
-}
+        return this.regionSettings?.[region] || this.getDefaultRegionInfo();
     /**
      * 言語情報を取得
      */
@@ -231,8 +206,7 @@ export class RegionalSettingsManager {
         this.ensureInitialized();
         
     }
-        return this.languageSettings?.[language] || this.getDefaultLanguageInfo(); };
-}
+        return this.languageSettings?.[language] || this.getDefaultLanguageInfo();
     /**
      * 完全な地域化設定を取得
      */
@@ -242,8 +216,8 @@ export class RegionalSettingsManager {
         const regionCode = this.getRegionCode(language, region);
         
         return { : undefined
-            language: language,
-            region: regionCode,
+            language: language;
+            region: regionCode;
             locale: this.getLocale(language, regionCode),
             numberFormat: this.getNumberFormatSettings(language, regionCode),
             dateFormat: this.getDateFormatSettings(language, regionCode),
@@ -252,27 +226,25 @@ export class RegionalSettingsManager {
     }
             regionInfo: this.getRegionInfo(regionCode), };
             languageInfo: this.getLanguageInfo(language); }
-        };
-    }
+        }
     
     /**
      * 言語から地域コードを推測
      */
     getRegionCode(language, region = null) {
-        '';
-        if (region') {
+
+        if(region) {
     }
-            return region; };
-}
-        ';'
+            return region;
+        ';
+
         const languageToRegionMap = { ''
-            'ja': 'JP','';
-            'en': 'US','';
-            'zh-CN': 'CN','';
-            'zh-TW': 'TW','';
-            'ko': 'KR' }
-        };'
-        '';
+            'ja': 'JP',
+            'en': 'US',
+            'zh-CN': 'CN',
+            'zh-TW': 'TW',
+            'ko': 'KR' };
+
         return languageToRegionMap[language] || 'US';
     }
     
@@ -288,10 +260,11 @@ export class RegionalSettingsManager {
      */
     getTimezone(language, region = null) {'
         const regionCode = region || this.getRegionCode(language);''
-        const regionInfo = this.getRegionInfo(regionCode');'
-    }'
-        return regionInfo? .timezone || 'UTC'; };
-}
+        const regionInfo = this.getRegionInfo(regionCode);
+
+    }
+
+        return regionInfo? .timezone || 'UTC';
     /**
      * 週の開始日を取得
      */
@@ -299,26 +272,26 @@ export class RegionalSettingsManager {
         const regionCode = region || this.getRegionCode(language);
         const regionInfo = this.getRegionInfo(regionCode);
     }
-        return regionInfo?.firstDayOfWeek || 0; };
-}
+        return regionInfo?.firstDayOfWeek || 0;
     /**
      * 通貨コードを取得
      */
     getCurrencyCode(language, region = null) {'
         const regionCode = region || this.getRegionCode(language);''
-        const regionInfo = this.getRegionInfo(regionCode');'
-    }'
-        return regionInfo?.currency || 'USD'; };
-}
+        const regionInfo = this.getRegionInfo(regionCode);
+
+    }
+
+        return regionInfo?.currency || 'USD';
     /**
      * 初期化確認
      */
     ensureInitialized() {'
-        '';
-        if (!this.initialized') {'
-    }'
-            console.warn('RegionalSettingsManager not yet initialized, using default settings'); };
-}
+
+        if(!this.initialized) {'
+    }
+
+            console.warn('RegionalSettingsManager not yet initialized, using default settings'); }
     }
     
     /**
@@ -326,41 +299,39 @@ export class RegionalSettingsManager {
      */''
     getDefaultFormatSettings(''';
                 'en': { ''
-                    decimal: '.','';
-                    thousands: ',','';
-                    percent: '%','';
-                    negative: '-','';
+                    decimal: '.',
+                    thousands: ',',
+                    percent: '%',
+                    negative: '-',
                     infinity: '∞' 
-};
-}
-            },'
+,}
+            },
+
             date: { ''
                 'en': {''
-                    short: 'MM/DD/YYYY','';
-                    medium: 'MMM DD, YYYY','';
-                    long: 'MMMM DD, YYYY','';
-                    full: 'dddd, MMMM DD, YYYY' };
-}
-            },'
+                    short: 'MM/DD/YYYY',
+                    medium: 'MMM DD, YYYY',
+                    long: 'MMMM DD, YYYY',
+                    full: 'dddd, MMMM DD, YYYY' }
+            },
+
             currency: { ''
                 'en': {''
-                    symbol: '$','';
-                    code: 'USD','';
-                    position: 'before',
+                    symbol: '$',
+                    code: 'USD',
+                    position: 'before';
                     space: false 
-};
-}
-            },'
+,}
+            },
+
             time: { ''
                 'en': {''
-                    short: 'h:mm A','';
-                    medium: 'h:mm:ss A','';
-                    long: 'h:mm:ss A z','';
+                    short: 'h:mm A',
+                    medium: 'h:mm:ss A',
+                    long: 'h:mm:ss A z',
                     full: 'h:mm:ss A zzzz' 
-};
-}
-            }
-        },
+,}
+},
     }
     
     /**
@@ -368,17 +339,15 @@ export class RegionalSettingsManager {
      */''
     getDefaultRegionSettings(''';
             'US': { ''
-                currency: 'USD','';
-                timezone: 'America/New_York',
-                firstDayOfWeek: 0,
+                currency: 'USD',
+                timezone: 'America/New_York';
+                firstDayOfWeek: 0;
                 numberFormat: {'
-                    groupSize: 3,'';
-                    groupSeparator: ',','';
+                    groupSize: 3,
+                    groupSeparator: ',',
                     decimalSeparator: '.' 
-};
-}
-            }
-        },
+,}
+},
     }
     
     /**
@@ -386,12 +355,11 @@ export class RegionalSettingsManager {
      */''
     getDefaultLanguageSettings(''';
             'en': { ''
-                name: 'English','';
-                nativeName: 'English','';
-                direction: 'ltr','';
+                name: 'English',
+                nativeName: 'English',
+                direction: 'ltr',
                 pluralRules: 'english' 
-};
-}
+,}
         },
     }
     
@@ -399,10 +367,10 @@ export class RegionalSettingsManager {
      * デフォルト数値フォーマット'
      */''
     getDefaultNumberFormat(''';
-            decimal: '.','';
-            thousands: ',','';
-            percent: '%','';
-            negative: '-','';
+            decimal: '.',
+            thousands: ',',
+            percent: '%',
+            negative: '-',
             infinity: '∞';
         },
     }
@@ -411,20 +379,19 @@ export class RegionalSettingsManager {
      * デフォルト日付フォーマット'
      */''
     getDefaultDateFormat(''';
-            short: 'MM/DD/YYYY','';
-            medium: 'MMM DD, YYYY','';
-            long: 'MMMM DD, YYYY','';
+            short: 'MM/DD/YYYY',
+            medium: 'MMM DD, YYYY',
+            long: 'MMMM DD, YYYY',
             full: 'dddd, MMMM DD, YYYY';
-        };
-    }
+        }
     
     /**
      * デフォルト通貨フォーマット'
      */''
     getDefaultCurrencyFormat(''';
-            symbol: '$','';
-            code: 'USD','';
-            position: 'before',
+            symbol: '$',
+            code: 'USD',
+            position: 'before';
             space: false;
         },
     }
@@ -433,9 +400,9 @@ export class RegionalSettingsManager {
      * デフォルト時刻フォーマット'
      */''
     getDefaultTimeFormat(''';
-            short: 'h:mm A','';
-            medium: 'h:mm:ss A','';
-            long: 'h:mm:ss A z','';
+            short: 'h:mm A',
+            medium: 'h:mm:ss A',
+            long: 'h:mm:ss A z',
             full: 'h:mm:ss A zzzz';
         },
     }
@@ -444,14 +411,13 @@ export class RegionalSettingsManager {
      * デフォルト地域情報'
      */''
     getDefaultRegionInfo(''';
-            currency: 'USD','';
-            timezone: 'UTC',
-            firstDayOfWeek: 0,';
+            currency: 'USD',
+            timezone: 'UTC';
+            firstDayOfWeek: 0,
             numberFormat: { groupSize: 3,''
-                groupSeparator: ',','';
+                groupSeparator: ',',
                 decimalSeparator: '.' 
-};
-}
+,}
         },
     }
     
@@ -459,18 +425,17 @@ export class RegionalSettingsManager {
      * デフォルト言語情報'
      */''
     getDefaultLanguageInfo(''';
-            name: 'English','';
-            nativeName: 'English','';
-            direction: 'ltr','';
-            pluralRules: 'english');
+            name: 'English',
+            nativeName: 'English',
+            direction: 'ltr',
+            pluralRules: 'english);
         })
-    }
     
     /**
      * 設定の再読み込み'
      */''
     async reload()';
-        console.log('Reloading regional settings...');
+        console.log('Reloading, regional settings...);
         this.initialized = false;
         await this.initialize();
     }
@@ -483,18 +448,17 @@ export class RegionalSettingsManager {
         
         return { initialized: this.initialized,
             supportedLanguages: this.formatSettings ? Object.keys(this.formatSettings.number || {) : []
-}
+
             supportedRegions: this.regionSettings ? Object.keys(this.regionSettings) : [], };
             formatCategories: this.formatSettings ? Object.keys(this.formatSettings) : [] ;
 }
         },
-    };
-}
+    }
 // シングルトンインスタンス
 let regionalSettingsManagerInstance = null;
 
 /**
  * RegionalSettingsManagerのシングルトンインスタンスを取得
  */
-export function getRegionalSettingsManager() { if (!regionalSettingsManagerInstance) {''
-        regionalSettingsManagerInstance = new RegionalSettingsManager(' })
+export function getRegionalSettingsManager() { if (!regionalSettingsManagerInstance') {''
+        regionalSettingsManagerInstance = new RegionalSettingsManager(' })'

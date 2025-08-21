@@ -8,14 +8,12 @@ export class ComparisonAlgorithms {
     constructor() {
         // アルゴリズム設定
         this.algorithmConfig = {
-            minSampleSize: 3,
+            minSampleSize: 3;
             trendThreshold: 0.05, // 5%;
-            confidenceLevel: 0.95,
-    }
-    }
+            confidenceLevel: 0.95;
+    ,}
             outlierThreshold: 3 // 標準偏差の3倍 }
-        },
-    }
+        }
     
     /**
      * 線形トレンドを計算
@@ -23,11 +21,11 @@ export class ComparisonAlgorithms {
      * @returns {Object} トレンド情報
      */
     calculateLinearTrend(values) { const n = values.length; }
-        if (n < 2) return { slope: 0, correlation: 0 }
+        if (n < 2) return { slope: 0, correlation: 0 ,}
         // 線形回帰
         let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
         
-        for(let i = 0; i < n; i++) {
+        for(let, i = 0; i < n; i++) {
         
             sumX += i;
             sumY += values[i];
@@ -44,7 +42,7 @@ export class ComparisonAlgorithms {
         const meanY = sumY / n;
         let ssTotal = 0, ssResidual = 0;
         
-        for(let i = 0; i < n; i++) {
+        for(let, i = 0; i < n; i++) {
         
             const predicted = slope * i + intercept;
             ssTotal += Math.pow(values[i] - meanY, 2);
@@ -55,8 +53,7 @@ export class ComparisonAlgorithms {
 
         const correlation = Math.sqrt(1 - ssResidual / ssTotal);
 
-        return { slope, intercept, correlation };
-    }
+        return { slope, intercept, correlation }
     
     /**
      * 標準偏差を計算
@@ -71,8 +68,7 @@ export class ComparisonAlgorithms {
         const variance = squaredDiffs.reduce((sum, val) => sum + val, 0) / values.length;
         
     }
-        return Math.sqrt(variance); }
-    }
+        return Math.sqrt(variance);
     
     /**
      * ベンチマークメトリクスを計算
@@ -83,10 +79,10 @@ export class ComparisonAlgorithms {
         
     }
         const benchmark = {};
-        const metricKeys = ['averageScore', 'averageAccuracy', 'averagePlayTime', ']';
+        const metricKeys = ['averageScore', 'averageAccuracy', 'averagePlayTime', ]';
                            'completionRate', 'maxCombo'];
 
-        for(const key of metricKeys) {
+        for(const, key of, metricKeys) {
 
             const values = playerMetrics;
                 .map(p => p[key]);
@@ -95,18 +91,16 @@ export class ComparisonAlgorithms {
 
             if (values.length > 0) {
                 benchmark[key] = {
-                    min: values[0],
+                    min: values[0];
                     percentile25: this.calculatePercentile(values, 25),
                     median: this.calculatePercentile(values, 50),
                     percentile75: this.calculatePercentile(values, 75),
-                    max: values[values.length - 1],
+                    max: values[values.length - 1];
                     mean: values.reduce((sum, val) => sum + val, 0) / values.length,
-                    stdDev: this.calculateStandardDeviation(values),
-
-        }
+                    stdDev: this.calculateStandardDeviation(values);
+        ,}
                     count: values.length }
-                },
-            }
+                }
         }
 
         return benchmark;
@@ -129,8 +123,7 @@ export class ComparisonAlgorithms {
         
         if (lower === upper) {
     }
-            return sortedValues[lower]; }
-        }
+            return sortedValues[lower];
         
         return sortedValues[lower] * (1 - weight) + sortedValues[upper] * weight;
     }
@@ -147,19 +140,18 @@ export class ComparisonAlgorithms {
         const accuracies = sessions.map(s => s.accuracy).filter(a => a !== undefined);
         
         return { stageId: stageId,
-            sessionCount: sessions.length,
-            completionRate: completedSessions.length / sessions.length,
-            averageScore: scores.length > 0 ?   : undefined;
+            sessionCount: sessions.length;
+            completionRate: completedSessions.length / sessions.length;
+            averageScore: scores.length > 0 ?   : undefined
                 scores.reduce((sum, s) => sum + s, 0) / scores.length : 0,
-            averageAccuracy: accuracies.length > 0 ?   : undefined;
+            averageAccuracy: accuracies.length > 0 ?   : undefined
                 accuracies.reduce((sum, a) => sum + a, 0) / accuracies.length : 0,
-            firstCompletionTime: this.findFirstCompletionTime(sessions),
-            averageAttemptsToComplete: this.calculateAverageAttemptsToComplete(sessions),
-    }
+            firstCompletionTime: this.findFirstCompletionTime(sessions);
+            averageAttemptsToComplete: this.calculateAverageAttemptsToComplete(sessions);
+    ,}
             consistencyScore: this.calculateConsistencyScore(sessions), };
             estimatedDifficulty: this.estimateStageDifficulty(sessions); }
-        };
-    }
+        }
     
     /**
      * 最初の完了時間を見つける
@@ -175,8 +167,7 @@ export class ComparisonAlgorithms {
         
         const firstSession = completedSessions[0];
     }
-        return firstSession.endTime - firstSession.startTime; }
-    }
+        return firstSession.endTime - firstSession.startTime;
     
     /**
      * 完了までの平均試行回数を計算
@@ -189,7 +180,7 @@ export class ComparisonAlgorithms {
         
         let totalAttempts = 0;
         
-        for (let i = 0; i < completedSessions.length; i++) {
+        for (let, i = 0; i < completedSessions.length; i++) {
             const completedTime = completedSessions[i].startTime;
             const previousAttempts = sessions.filter(s => );
                 s.startTime < completedTime && !s.completed).length;
@@ -215,8 +206,7 @@ export class ComparisonAlgorithms {
         // 変動係数の逆数として一貫性を定義（0-1の範囲に正規化）
         const cv = stdDev / mean;
     }
-        return Math.max(0, Math.min(1, 1 - cv); }
-    }
+        return Math.max(0, Math.min(1, 1 - cv);
     
     /**
      * ステージ難易度を推定
@@ -238,30 +228,34 @@ export class ComparisonAlgorithms {
             (1 - avgAccuracy) * 3;           // 精度の低さ（30%）
         
     }
-        return Math.max(1, Math.min(10, Math.round(difficulty)); }
-    }
+        return Math.max(1, Math.min(10, Math.round(difficulty));
     
     /**
      * データ品質を評価
      * @param {Array} playerMetrics - プレイヤーメトリクス
      * @returns {Object} データ品質評価
      */''
-    assessBenchmarkDataQuality(playerMetrics') {'
+    assessBenchmarkDataQuality(playerMetrics) {'
         const sampleSize = playerMetrics.length;''
         let quality = 'good';
-        let confidence = 0.95;'
-        '';
-        if (sampleSize < 10') {''
+        let confidence = 0.95;
+
+        if(sampleSize < 10) {''
             quality = 'poor';
-    }'
+    }
+
             confidence = 0.5;' }'
-        } else if (sampleSize < 30') { ''
-            quality = 'fair';'
+
+        } else if(sampleSize < 30) { ''
+            quality = 'fair';
+
             confidence = 0.75;' }'
-        } else if (sampleSize < 100') { ''
+
+        } else if(sampleSize < 100) { ''
             quality = 'good';
-            confidence = 0.9; }'
-        } else {  ''
+            confidence = 0.9; }
+
+        } else {
             quality = 'excellent'; }
             confidence = 0.95; }
         }
@@ -270,8 +264,7 @@ export class ComparisonAlgorithms {
             confidence,
             sampleSize, };
             reliability: sampleSize >= this.algorithmConfig.minSampleSize }
-        },
-    }
+        }
     
     /**
      * 外れ値を検出
@@ -279,8 +272,7 @@ export class ComparisonAlgorithms {
      * @returns {Object} 外れ値情報
      */
     detectOutliers(values) { if (values.length < 3) { }
-            return { outliers: [], cleanedValues: values }
-        }
+            return { outliers: [], cleanedValues: values ,}
         
         const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
         const stdDev = this.calculateStandardDeviation(values);
@@ -289,7 +281,7 @@ export class ComparisonAlgorithms {
         const outliers = [];
         const cleanedValues = [];
         
-        for(const value of values) {
+        for(const, value of, values) {
         
             const zScore = Math.abs((value - mean) / stdDev);
             if (zScore > threshold) {
@@ -297,11 +289,9 @@ export class ComparisonAlgorithms {
         }
                 outliers.push(value); }
             } else { cleanedValues.push(value); }
-            }
         }
         
-        return { outliers, cleanedValues };
-    }
+        return { outliers, cleanedValues }
     
     /**
      * 移動平均を計算
@@ -314,7 +304,7 @@ export class ComparisonAlgorithms {
         
         const movingAverages = [];
         
-        for (let i = 0; i < values.length - window + 1; i++) {
+        for (let, i = 0; i < values.length - window + 1; i++) {
             const windowValues = values.slice(i, i + window);
             const average = windowValues.reduce((sum, val) => sum + val, 0) / window;
     }
@@ -331,7 +321,6 @@ export class ComparisonAlgorithms {
      * @returns {number} 予測値
      */
     calculatePrediction(trend, futureSteps) { return trend.slope * futureSteps + trend.intercept; }
-    }
     
     /**
      * 改善率を計算
@@ -347,8 +336,7 @@ export class ComparisonAlgorithms {
         const weeksInTimeSpan = timeSpan / (7 * 24 * 60 * 60 * 1000);
         
     }
-        return totalImprovement / weeksInTimeSpan; }
-    }
+        return totalImprovement / weeksInTimeSpan;
     
     /**
      * 信頼区間を計算
@@ -360,12 +348,11 @@ export class ComparisonAlgorithms {
     calculateConfidenceInterval(mean, stdDev, sampleSize) {
         // 95%信頼区間（z値 = 1.96）
         const zScore = 1.96;''
-        const standardError = stdDev / Math.sqrt(sampleSize');
+        const standardError = stdDev / Math.sqrt(sampleSize);
         const marginOfError = zScore * standardError;
         
         return { lower: mean - marginOfError }
             upper: mean + marginOfError, };
             marginOfError: marginOfError }
-        },'
-    }''
+        }''
 }

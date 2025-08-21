@@ -1,6 +1,5 @@
 // TypeScript conversion - basic types
 interface BasicConfig { [key: string]: any, }
-}
 /**
  * GameBalanceとの互換性レイヤー
  * 
@@ -30,15 +29,14 @@ function _showDeprecationWarning(message, caller) { if (!SHOW_DEPRECATION_WARNIN
     
     if (!lastWarningTime.has(key) || (now - lastWarningTime.get(key) > WARNING_INTERVAL)) { console.warn(`[非推奨] ${message)`);
         console.warn(`代わりに新しい設定システムを使用してください。詳細は開発者ドキュメントを参照してください。`);
-        console.warn(`呼び出し元: ${caller)`);
+        console.warn(`呼び出し元: ${caller}`};
         
         // ログに記録 }
-        const loggingSystem = getLoggingSystem(});
+        const, loggingSystem = getLoggingSystem(});
         loggingSystem.warn(`非推奨APIの使用: ${message}`, { caller );
         
         // 最終警告時間を更新
         lastWarningTime.set(key, now); }
-    }
 }
 
 /**
@@ -48,27 +46,27 @@ function _showDeprecationWarning(message, caller) { if (!SHOW_DEPRECATION_WARNIN
  */
 function _getCallerInfo() { try {'
         const err = new Error()';
-        const stack = err.stack.split('\n');
+        const stack = err.stack.split('\n);
         
         // スタックトレースから呼び出し元を特定（3つ上のスタックフレーム）
         if(stack.length >= 4) {
             const callerLine = stack[3].trim();
             const match = callerLine.match(/at\s+(.*)\s+\((.*):(\d+):(\d+)\)/);
-            '';
-            if (match') {
-        }'
+
+            if(match) {
+        }
+
                 const [, fnName, file, line] = match;' }'
-                return `${file.split('/').pop(})}:${line} (${fnName}')`;
+
+                return `${file.split('/}.pop(}):${line} (${fnName}')`;
             }
             
             return callerLine;
-        }'
-        '';
+        }
+
         return '不明';''
-    } catch (error) { ''
-        return '不明'; }
-    }
-}
+    } catch (error) {
+        return '不明';
 
 /**
  * BALANCE_CONFIGの互換性プロキシ
@@ -84,36 +82,29 @@ const BALANCE_CONFIG_PROXY = new Proxy({}, { get(target, prop) {
         _showDeprecationWarning(`BALANCE_CONFIG.${prop)へのアクセスは非推奨です`, caller);
         ';
         // カテゴリに基づいて適切な設定を返す
-        switch(prop') {'
-            '';
+        switch(prop) {'
+
             case 'scoring':'';
                 return gameConfig.getScoreConfig(''';
             case 'stages':'';
-                return gameConfig.getStageConfig(''';
+                return, gameConfig.getStageConfig(''';
             case 'items':'';
-                return gameConfig.getItemConfig(''';
+                return, gameConfig.getItemConfig(''';
             case 'bubbles':'';
-                return gameConfig.getBubbleConfig(''';
+                return, gameConfig.getBubbleConfig(''';
             case 'changelog':);
-                // 変更履歴は新システムでは別の方法で管理)
-                return configManager.getChangeHistory();
-                
-        }
+                // 変更履歴は新システムでは別の方法で管理}
+                return configManager.getChangeHistory(}
             default: }
-                console.warn(`[互換性レイヤー] 未知のプロパティ: ${prop)`}),
-                return undefined;
-        }
-    },
+                console.warn(`[互換性レイヤー] 未知のプロパティ: ${prop}`});
+                return undefined;,
     
     set(target, prop, value) {
     
         const configManager = getConfigurationManager();
         const caller = _getCallerInfo();
         
-        _showDeprecationWarning(`BALANCE_CONFIG.${prop)への直接設定は非推奨です`, caller);
-        
-    
-    }
+        _showDeprecationWarning(`BALANCE_CONFIG.${prop}への直接設定は非推奨です`, caller}
         // 設定の変更を許可しない（読み取り専用） }
         console.error(`[互換性レイヤー] BALANCE_CONFIGへの直接設定は許可されていません。代わりにConfigurationManagerを使用してください。`});
         return true; // プロキシのsetトラップはtrueを返す必要がある
@@ -137,7 +128,6 @@ class BalanceHelperCompatibility { /**
         _showDeprecationWarning('BalanceHelper.calculateScoreは非推奨です', caller);
         
         return gameConfig.calculateScore(bubbleType, ageRatio); }
-    }
     
     /**
      * コンボ倍率計算（互換性メソッド）
@@ -149,7 +139,6 @@ class BalanceHelperCompatibility { /**
         _showDeprecationWarning('BalanceHelper.calculateComboMultiplierは非推奨です', caller);
         
         return gameConfig.calculateComboMultiplier(comboCount); }
-    }
     
     /**
      * アイテムコスト計算（互換性メソッド）
@@ -162,7 +151,6 @@ class BalanceHelperCompatibility { /**
         _showDeprecationWarning('BalanceHelper.calculateItemCostは非推奨です', caller);
         
         return gameConfig.calculateItemCost(itemId, currentLevel); }
-    }
     
     /**
      * ステージ開放チェック（互換性メソッド）
@@ -172,16 +160,13 @@ class BalanceHelperCompatibility { /**
      */'
     static isStageUnlocked(stageId, playerTAP) { const gameConfig = getGameConfig();''
         const caller = _getCallerInfo()';
-        _showDeprecationWarning('BalanceHelper.isStageUnlockedは非推奨です', caller);'
-        '';
-        return gameConfig.isStageUnlocked(stageId, playerTAP'); }
-    }
-}
+        _showDeprecationWarning('BalanceHelper.isStageUnlockedは非推奨です', caller);
+
+        return gameConfig.isStageUnlocked(stageId, playerTAP);
 
 // 既存のBALANCE_CONFIGとBalanceHelperをエクスポート
 export const BALANCE_CONFIG = BALANCE_CONFIG_PROXY;
 export const BalanceHelper = BalanceHelperCompatibility;
-;
 // 新しいAPIも同時にエクスポート（移行を促進）
 export { getGameConfig } from '../config/GameConfig.js';''
 export { getConfigurationManager } from './ConfigurationManager.js';

@@ -17,10 +17,8 @@ export class TimeSeriesDataManager {
             daily: 365,      // 1年間;
             weekly: 52,      // 52週間
     }
-    }
             monthly: 24      // 2年間 }
-        },
-        
+        };
         // 現在の期間キー
         this.currentPeriodKeys = this.updateCurrentPeriodKeys();
         
@@ -70,26 +68,23 @@ export class TimeSeriesDataManager {
     updateTimeSeriesData(dataMap, periodKey, category, value, metadata) {
         if(!dataMap.has(periodKey) {
             dataMap.set(periodKey, {);
-                timestamp: Date.now(),
-                categories: new Map(),
-    }
+                timestamp: Date.now();
+                categories: new Map();
+    ,}
                 totalDataPoints: 0, }
-                metadata: {}),
+                metadata: {});
         }
         
         const periodData = dataMap.get(periodKey);
         
-        if(!periodData.categories.has(category) {
-        
-            periodData.categories.set(category, {
-                values: [],
-                total: 0,
-                average: 0,
+        if(!periodData.categories.has(category) { periodData.categories.set(category, {
+                values: [];
+                total: 0;
+                average: 0;
                 min: Infinity
     );
                 max: -Infinity);
-                count: 0,)
-        }
+                count: 0, }
                 trend: 'stable'); }
         }
         
@@ -97,11 +92,9 @@ export class TimeSeriesDataManager {
         
         // 値の追加
         categoryData.values.push({ )
-            value: value),
-            timestamp: Date.now(),
-            metadata: metadata }
-        }),
-        
+            value: value);
+            timestamp: Date.now();
+            metadata: metadata });
         // 統計の更新
         categoryData.total += value;
         categoryData.count++;
@@ -114,59 +107,60 @@ export class TimeSeriesDataManager {
         
         // 期間データの更新
         periodData.totalDataPoints++;
-        periodData.metadata = { ...periodData.metadata, ...metadata };
+        periodData.metadata = { ...periodData.metadata, ...metadata;
         
         // 値の数制限
         if (categoryData.values.length > 1000) { categoryData.values = categoryData.values.slice(-500); // 最新500個を保持 }
-        }
     }
     
     /**
      * トレンドの計算
      */
     calculateTrend(values) {
-        '';
-        if (values.length < 3') return 'stable';
+
+        if(values.length < 3) return 'stable';
         
         const recent = values.slice(-10); // 最新10個のデータポイント
         const older = values.slice(-20, -10); // その前の10個
-        '';
-        if (recent.length === 0 || older.length === 0') return 'stable';
+
+        if(recent.length === 0 || older.length === 0) return 'stable';
         
         const recentAvg = recent.reduce((sum, item) => sum + item.value, 0) / recent.length;
         const olderAvg = older.reduce((sum, item) => sum + item.value, 0) / older.length;
         
-        const changePercent = ((recentAvg - olderAvg) / olderAvg) * 100;'
-        '';
-        if (changePercent > 10') {'
-    }'
-            return 'improving';' }'
-        } else if (changePercent < -10') { ''
-            return 'declining'; }'
-        } else {  ' }'
-            return 'stable'; }
-        }
+        const changePercent = ((recentAvg - olderAvg) / olderAvg) * 100;
+
+        if(changePercent > 10) {'
     }
+
+            return 'improving';' }
+
+        } else if(changePercent < -10) { ''
+            return 'declining'; else {  ' }
+
+            return 'stable';
     
     /**
      * 期間別データの取得
      */
     getTimeSeriesData(period, category = null, startDate = null, endDate = null) {
-        let dataMap;'
-        '';
-        switch (period') {''
+        let dataMap;
+
+        switch(period) {''
             case 'daily':;
-                dataMap = this.dailyData;'
+                dataMap = this.dailyData;
+
                 break;''
             case 'weekly':;
-                dataMap = this.weeklyData;'
+                dataMap = this.weeklyData;
+
                 break;''
             case 'monthly':;
                 dataMap = this.monthlyData;
                 break;
     }
             default: }
-                throw new Error(`Unsupported period: ${period)`}),
+                throw new Error(`Unsupported, period: ${period}`});
         }
         
         const result = [];
@@ -183,21 +177,18 @@ export class TimeSeriesDataManager {
             }
             
             const entry = { period: periodKey,
-                timestamp: periodData.timestamp,
+                timestamp: periodData.timestamp;
                 totalDataPoints: periodData.totalDataPoints, }
-                categories: {},
-            
+                categories: {};
             // カテゴリフィルター
             if(category) {
                 if(periodData.categories.has(category) {
                     entry.categories[category] = this.formatCategoryData();
             }
                         periodData.categories.get(category); }
-                }
-            } else {  for(const [cat, catData] of periodData.categories.entries() { }
+} else {  for(const [cat, catData] of periodData.categories.entries() { }
                     entry.categories[cat] = this.formatCategoryData(catData); }
-                }
-            }
+}
             
             result.push(entry);
         }
@@ -213,40 +204,45 @@ export class TimeSeriesDataManager {
      */
     formatCategoryData(categoryData) {
         return { total: categoryData.total,
-            average: Math.round(categoryData.average * 100) / 100,
-            min: categoryData.min === Infinity ? 0 : categoryData.min,
-            max: categoryData.max === -Infinity ? 0 : categoryData.max,
-            count: categoryData.count,
-    }
-            trend: categoryData.trend,' };'
-            recentValues: categoryData.values.slice(-10') // 最新10個 }
-        },
-    }
+            average: Math.round(categoryData.average * 100) / 100;
+            min: categoryData.min === Infinity ? 0 : categoryData.min;
+            max: categoryData.max === -Infinity ? 0 : categoryData.max;
+            count: categoryData.count;
+    ,}
+            trend: categoryData.trend,' };
+
+            recentValues: categoryData.values.slice(-10) // 最新10個 }
+        }
     
     /**
      * 集計データの取得
      */''
-    getAggregatedData(category, period, aggregationType = 'sum') {
+    getAggregatedData(category, period, aggregationType = 'sum) {'
         const timeSeriesData = this.getTimeSeriesData(period, category);
         
     }
-        const result = timeSeriesData.map(entry => { ) }
-            const categoryData = entry.categories[category]); }
-            if (!categoryData) return { period: entry.period, value: 0 }'
+        const result = timeSeriesData.map(entry => {  }
+            const, categoryData = entry.categories[category]); }
+            if (!categoryData) return { period: entry.period, value: 0 ,}
+
             let value;''
-            switch(aggregationType') {'
-                '';
+            switch(aggregationType) {'
+
                 case 'sum':;
-                    value = categoryData.total;'
+                    value = categoryData.total;
+
                     break;''
                 case 'average':;
-                    value = categoryData.average;'
+                    value = categoryData.average;
+
                     break;''
                 case 'min':;
-                    value = categoryData.min;'
+                    value = categoryData.min;
+
                     break;''
                 case 'max':;
-                    value = categoryData.max;'
+                    value = categoryData.max;
+
                     break;''
                 case 'count':;
                     value = categoryData.count;
@@ -258,8 +254,7 @@ export class TimeSeriesDataManager {
             return { period: entry.period,
                 value: value, };
                 trend: categoryData.trend }
-            },
-        });
+            });
         
         return result;
     }
@@ -267,13 +262,14 @@ export class TimeSeriesDataManager {
     /**
      * 比較分析'
      */''
-    comparePerformance(category, period1, period2') {'
-        '';
+    comparePerformance(category, period1, period2) {'
+
         const data1 = this.getTimeSeriesData('daily', category);
-            this.getDateFromPeriod(period1.start), ';'
+            this.getDateFromPeriod(period1.start),
+
             this.getDateFromPeriod(period1.end)'';
-        ');'
-        '';
+        ');
+
         const data2 = this.getTimeSeriesData('daily', category);
             this.getDateFromPeriod(period2.start), ;
             this.getDateFromPeriod(period2.end);
@@ -283,26 +279,24 @@ export class TimeSeriesDataManager {
         
     }
         return { }
-            period1: { ...period1, stats: stats1 },
-            period2: { ...period2, stats: stats2 },
-            comparison: { totalChange: stats2.total - stats1.total,
-                totalChangePercent: stats1.total > 0 ?   : undefined;
-                    ((stats2.total - stats1.total) / stats1.total) * 100 : 0,
-                averageChange: stats2.average - stats1.average,';
+            period1: { ...period1, stats: stats1 ,},
+            period2: { ...period2, stats: stats2 ,},
+            comparison: { totalChange: stats2.total - stats1.total;
+                totalChangePercent: stats1.total > 0 ?   : undefined
+                    ((stats2.total - stats1.total) / stats1.total) * 100 : 0;
+                averageChange: stats2.average - stats1.average,
                 averageChangePercent: stats1.average > 0 ?   : undefined'';
-                    ((stats2.average - stats1.average) / stats1.average') * 100 : 0,'';
+                    ((stats2.average - stats1.average) / stats1.average) * 100 : 0,
                 trend: stats2.average > stats1.average ? 'improving' : '';
-                       stats2.average < stats1.average ? 'declining' : 'stable' }
-            }
-        },
+                       stats2.average < stats1.average ? 'declining' : 'stable' 
+        ,},
     }
     
     /**
      * 期間統計の計算
      */
     calculatePeriodStats(data, category) { if (data.length === 0) { }
-            return { total: 0, average: 0, min: 0, max: 0, count: 0 }
-        }
+            return { total: 0, average: 0, min: 0, max: 0, count: 0 ,}
         
         let total = 0;
         let count = 0;
@@ -317,35 +311,38 @@ export class TimeSeriesDataManager {
             }
                 min = Math.min(min, categoryData.min); }
                 max = Math.max(max, categoryData.max); }
-            }
-        });
+});
         
         return { total: total,
-            average: count > 0 ? total / count : 0,
-            min: min === Infinity ? 0 : min,
-            max: max = == -Infinity ? 0 : max };
+            average: count > 0 ? total / count : 0;
+            min: min === Infinity ? 0 : min;
+            max: max = == -Infinity ? 0 : max ,};
             count: count }
-        },
-    }
+        }
     
     /**
      * 期間キーの生成・解析
      */'
     getDayKey(date) { ' }'
-        return `${date.getFullYear(})}-${String(date.getMonth() + 1').padStart(2, '0'})}-${String(date.getDate()').padStart(2, '0'})}`;
+
+        return `${date.getFullYear(})-${String(date.getMonth(} + 1'}.padStart(2, '0'})-${ String(date.getDate( }.padStart(2, '0'})`;
     }
     
     getWeekKey(date) {
     
         const year = date.getFullYear();
     
-    }'
-        const week = this.getWeekNumber(date);' }'
-        return `${year}-W${String(week').padStart(2, '0'})}`;
     }
-    ';'
+
+        const week = this.getWeekNumber(date);' }'
+
+        return `${year}-W${String(week}.padStart(2, '0'})`;
+    }
+    ';
+
     getMonthKey(date) { ' }'
-        return `${date.getFullYear(})}-${String(date.getMonth() + 1').padStart(2, '0'})}`;
+
+        return `${date.getFullYear(})-${String(date.getMonth(} + 1'}.padStart(2, '0'})`;
     }
     
     getWeekNumber(date) {
@@ -354,26 +351,23 @@ export class TimeSeriesDataManager {
         const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
     
     }
-        return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7); }
-    }
+        return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
     
     parsePeriodKey(periodKey, period) {
-    ';'
-        '';
-        switch (period') {''
+    ';
+
+        switch(period) {''
             case 'daily':'';
-                return new Date(periodKey');''
+                return new Date(periodKey);''
             case 'weekly':'';
-                const [year, week] = periodKey.split('-W');''
-                return this.getDateFromWeek(parseInt(year), parseInt(week)');''
+                const [year, week] = periodKey.split('-W);''
+                return this.getDateFromWeek(parseInt(year), parseInt(week));''
             case 'monthly':'';
-                const [monthYear, month] = periodKey.split('-');
+                const [monthYear, month] = periodKey.split('-);
                 return new Date(parseInt(monthYear), parseInt(month) - 1, 1);
     
     }
-            default: return new Date(); }
-        }
-    }
+            default: return new Date();
     
     getDateFromWeek(year, week) {
     
@@ -381,11 +375,9 @@ export class TimeSeriesDataManager {
         const daysToAdd = (week - 1) * 7 - firstDayOfYear.getDay();
     
     }
-        return new Date(year, 0, 1 + daysToAdd); }
-    }
+        return new Date(year, 0, 1 + daysToAdd);
     
     getDateFromPeriod(periodString) { return new Date(periodString); }
-    }
     
     /**
      * 現在の期間キーの更新
@@ -393,8 +385,8 @@ export class TimeSeriesDataManager {
     updateCurrentPeriodKeys() {
         const now = new Date();
         this.currentPeriodKeys = {
-            day: this.getDayKey(now),
-            week: this.getWeekKey(now),
+            day: this.getDayKey(now);
+            week: this.getWeekKey(now);
     }
             month: this.getMonthKey(now); }
         };
@@ -447,11 +439,11 @@ export class TimeSeriesDataManager {
      */
     setupAutoSave() { setInterval(() => {  }
             this.save();' }'
-        }, this.saveInterval');
+
+        }, this.saveInterval);
         ';
         // ページ離脱時の保存
-        window.addEventListener('beforeunload', () => { this.save(); }
-        });
+        window.addEventListener('beforeunload', () => { this.save(); });
     }
     
     /**
@@ -463,8 +455,7 @@ export class TimeSeriesDataManager {
             this.save();
     }
             this.lastSaveTime = now; }
-        }
-    }
+}
     
     /**
      * データの保存
@@ -472,28 +463,26 @@ export class TimeSeriesDataManager {
     save() {
         try {
             const data = {
-                daily: Array.from(this.dailyData.entries(),
-                weekly: Array.from(this.weeklyData.entries(),
-                monthly: Array.from(this.monthlyData.entries(),
-                currentPeriodKeys: this.currentPeriodKeys,
+                daily: Array.from(this.dailyData.entries();
+                weekly: Array.from(this.weeklyData.entries();
+                monthly: Array.from(this.monthlyData.entries();
+                currentPeriodKeys: this.currentPeriodKeys;
     }
                 lastSaveTime: Date.now(); }
             };
             ';
             // Mapを配列に変換してから保存
-            const serializedData = this.serializeData(data');''
-            localStorage.setItem('bubblePop_timeSeries', JSON.stringify(serializedData);'
-            '';
-        } catch (error) { ''
-            console.error('Failed to save time series data:', error) }
-        }
+            const serializedData = this.serializeData(data);''
+            localStorage.setItem('bubblePop_timeSeries', JSON.stringify(serializedData);
+
+        } catch (error) { console.error('Failed to save time series data:', error }
     }
     
     /**
      * データの読み込み'
      */''
     load()';
-            const savedData = localStorage.getItem('bubblePop_timeSeries');
+            const savedData = localStorage.getItem('bubblePop_timeSeries);
             if(savedData) {
                 const data = JSON.parse(savedData);
                 const deserializedData = this.deserializeData(data);
@@ -501,26 +490,27 @@ export class TimeSeriesDataManager {
                 this.dailyData = new Map(deserializedData.daily || []);
                 this.weeklyData = new Map(deserializedData.weekly || []);
                 this.monthlyData = new Map(deserializedData.monthly || []);
-            }'
+            }
+
                 this.currentPeriodKeys = deserializedData.currentPeriodKeys || this.updateCurrentPeriodKeys();' }'
-            } catch (error) { ''
+
+            } catch (error) {
             console.error('Failed to load time series data:', error);
             this.dailyData = new Map();
             this.weeklyData = new Map();
             this.monthlyData = new Map(); }
-        }
     }
     
     /**
      * データのシリアライゼーション'
      */''
-    serializeData(data') {
+    serializeData(data) {
         
     }
-        const serialized = { ...data };
+        const serialized = { ...data;
         ';
         // Map内のMapをオブジェクトに変換
-        ['daily', 'weekly', 'monthly'].forEach(period => {  );
+        ['daily', 'weekly', 'monthly].forEach(period => {  );
             serialized[period] = data[period].map(([key, value]) => [key,
                 {
                     ...value, }
@@ -535,13 +525,13 @@ export class TimeSeriesDataManager {
     /**
      * データのデシリアライゼーション'
      */''
-    deserializeData(data') {
+    deserializeData(data) {
         
     }
-        const deserialized = { ...data };
+        const deserialized = { ...data;
         ';
         // オブジェクトをMapに変換
-        ['daily', 'weekly', 'monthly'].forEach(period => {  );
+        ['daily', 'weekly', 'monthly].forEach(period => {  );
             if(data[period]) {
                 deserialized[period] = data[period].map(([key, value]) => [key,
                     {
@@ -573,14 +563,14 @@ export class TimeSeriesDataManager {
      */
     getStatisticsSummary() {
         return { dataPoints: {
-                daily: this.dailyData.size,
+                daily: this.dailyData.size;
     }
                 weekly: this.weeklyData.size, };
                 monthly: this.monthlyData.size }
-            },
-            currentPeriods: this.currentPeriodKeys,
-            categories: this.getAllCategories(),
-            dateRange: this.getDateRange(),
+            };
+            currentPeriods: this.currentPeriodKeys;
+            categories: this.getAllCategories();
+            dateRange: this.getDateRange();
             lastUpdate: this.lastSaveTime;
         },
     }
@@ -594,10 +584,9 @@ export class TimeSeriesDataManager {
         [this.dailyData, this.weeklyData, this.monthlyData].forEach(dataMap => { );
             for(const [key, value] of dataMap.entries() {
     }
-                for(const category of value.categories.keys() { }
+                for(const, category of, value.categories.keys() { }
                     categories.add(category); }
-                }
-            }
+}
         });
         
         return Array.from(categories);
@@ -614,14 +603,12 @@ export class TimeSeriesDataManager {
         
     }
         if (allKeys.length === 0) { }
-            return { start: null, end: null }
-        }
+            return { start: null, end: null ,}
         
         allKeys.sort();
         return { start: allKeys[0], };
             end: allKeys[allKeys.length - 1] }
-        },
-    }
+        }
 }
 
 /**
@@ -629,7 +616,6 @@ export class TimeSeriesDataManager {
  */
 class DataCompressionManager { constructor() {
         this.compressionThreshold = 1000; // データポイント数 }
-    }
     
     compress(data) {
     
@@ -638,24 +624,22 @@ class DataCompressionManager { constructor() {
     
     }
             return JSON.stringify(data);' }'
-        } catch (error) { ''
+
+        } catch (error) {
             console.error('Data compression failed:', error);
-            return data; }
-        }
-    }
+            return data;
     
     decompress(compressedData) {
     
         try {
     
-    }'
-            return JSON.parse(compressedData);' }'
-        } catch (error) { ''
-            console.error('Data decompression failed:', error);
-            return compressedData; }
-        }
     }
-}
+
+            return JSON.parse(compressedData);' }'
+
+        } catch (error) {
+            console.error('Data decompression failed:', error);
+            return compressedData;
 
 /**
  * データアーカイブ管理クラス
@@ -669,9 +653,8 @@ class DataArchiveManager { constructor() {
     archiveData(key, data) {
     
         this.archiveStorage.set(key, {)
-            data: data),
-    
-    }
+            data: data);
+    ,}
             archivedAt: Date.now(); }
         });
         
@@ -680,14 +663,15 @@ class DataArchiveManager { constructor() {
             const oldestKey = Array.from(this.archiveStorage.keys()[0];
         }
             this.archiveStorage.delete(oldestKey); }
-        }
-    }
+}
     
     getArchivedData(key) { return this.archiveStorage.get(key); }
-    }
     
     clearArchive() {
-    ';'
-        ';'
-    }'
-        this.archiveStorage.clear(') }
+    ';
+
+        ';
+
+    }
+
+        this.archiveStorage.clear(') }'

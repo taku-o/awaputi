@@ -20,63 +20,57 @@ export interface PlayOptions { volume?: number;
     playbackRate?: number;
     detune?: number;
     delay?: number;
-    [key: string]: any, };
-}
+    [key: string]: any, }
 /**
  * Quality settings interface
  */
 export interface QualitySettings { sampleRate: number,
-    bufferSize: number,
-    effects: boolean };
-}
+    bufferSize: number;
+    effects: boolean ,}
 /**
  * Audio manager state interface
  */
 export interface AudioManagerState { isInitialized: boolean,
-    isEnabled: boolean,
+    isEnabled: boolean;
     volumes: {
-        master: number,
-        sfx: number,
-        bgm: number,
+        master: number;
+        sfx: number;
+        bgm: number;
         muted: boolean 
-}
-    },
-    context: any,
-    playback: any,
-    configuration: any,
-    subsystems: any,
+,};
+    context: any;
+    playback: any;
+    configuration: any;
+    subsystems: any;
     soundGeneration: any;
 }
 /**
  * Audio status interface
  */
 export interface AudioStatus { isEnabled: boolean,
-    masterVolume: number,
-    soundEffectVolume: number,
-    backgroundMusicVolume: number,
-    bgmVolume: number,
-    sfxVolume: number,
-    activeSounds: number,
-    isLoading: boolean,
-    initialized: boolean,';
-    muted: boolean,'';
-    contextState: AudioContextState | 'closed',
-    supportedFormats: string[],
-    qualityMode: string };
-}
+    masterVolume: number;
+    soundEffectVolume: number;
+    backgroundMusicVolume: number;
+    bgmVolume: number;
+    sfxVolume: number;
+    activeSounds: number;
+    isLoading: boolean;
+    initialized: boolean,
+    muted: boolean,
+    contextState: AudioContextState | 'closed';
+    supportedFormats: string[];
+    qualityMode: string ,}
 /**
  * Config manager interface
  */
 interface ConfigManager { get(category: string, key: string): any,
     set(category: string, key: string, value: any): void,
     watch(category: string, key: string, callback: (value: any) => void): string | null;
-    unwatch(watchId: string): void, };
-}
+    unwatch(watchId: string): void, }
 /**
  * Audio config interface
  */
-interface AudioConfig { [key: string]: any, };
-}
+interface AudioConfig { [key: string]: any, }
 /**
  * 音響管理クラス（リファクタリング版）
  */
@@ -154,14 +148,12 @@ export class AudioManager {
         this.activeSources = new Set(''';
         this.qualityMode = 'high';  // 'low', 'medium', 'high', 'ultra'
 
-    };
-}
+    }
         this.qualitySettings = { }
-            low: { sampleRate: 22050, bufferSize: 2048, effects: false },
-            medium: { sampleRate: 44100, bufferSize: 1024, effects: true })
-            high: { sampleRate: 44100, bufferSize: 512, effects: true })
-            ultra: { sampleRate: 48000, bufferSize: 256, effects: true }
-        };
+            low: { sampleRate: 22050, bufferSize: 2048, effects: false ,},
+            medium: { sampleRate: 44100, bufferSize: 1024, effects: true ,})
+            high: { sampleRate: 44100, bufferSize: 512, effects: true ,})
+            ultra: { sampleRate: 48000, bufferSize: 256, effects: true ,};
         
         // 外部システムとの統合（遅延読み込み）
         this.bgmSystem = null;
@@ -179,14 +171,13 @@ export class AudioManager {
      * @returns 初期化成功フラグ
      */
     async initialize(): Promise<boolean> { try {'
-            if(this.isInitialized') {'
-                '';
-                console.warn('AudioManager already initialized'');
+            if(this.isInitialized) {'
+
+                console.warn('AudioManager, already initialized'');
             }
-                return true; }
-            }'
-'';
-            console.log('Initializing AudioManager (refactored version')...');
+                return true;
+
+            console.log('Initializing, AudioManager (refactored, version')...');
             
             // AudioConfiguration設定
             this.contextManager.setAudioConfig(this.audioConfig);
@@ -194,11 +185,12 @@ export class AudioManager {
             
             // AudioContextの初期化
             const contextInitialized = await this.contextManager.initializeAudioContext();''
-            if(!contextInitialized') {'
-                ';'
-            }'
-                throw new Error('Failed to initialize AudioContext'); };
-}
+            if(!contextInitialized) {'
+                ';
+
+            }
+
+                throw new Error('Failed, to initialize, AudioContext); }
             // ノード参照を取得（互換性のため）
             this.audioContext = this.contextManager.getAudioContext();
             this.masterGainNode = this.contextManager.getMasterGainNode();
@@ -217,11 +209,10 @@ export class AudioManager {
             
             // 設定管理システム設定
             const gainNodes = { masterGainNode: this.masterGainNode!,
-                sfxGainNode: this.sfxGainNode!,
-                bgmGainNode: this.bgmGainNode!,
-                compressor: this.contextManager.getCompressor(),
-                reverbConvolver: this.contextManager.getReverbConvolver() }
-            };
+                sfxGainNode: this.sfxGainNode!;
+                bgmGainNode: this.bgmGainNode!;
+                compressor: this.contextManager.getCompressor();
+                reverbConvolver: this.contextManager.getReverbConvolver( ,};
             this.configurationManager.setDependencies(;
                 this.configManager);
                 this.audioConfig,);
@@ -240,8 +231,7 @@ export class AudioManager {
                     this.sfxGainNode!);
                     this.masterGainNode!,);
             }
-                    this.soundBuffers); };
-}
+                    this.soundBuffers); }
             // 設定監視の開始
             this.configurationManager.setupConfigWatchers();
             
@@ -254,24 +244,20 @@ export class AudioManager {
             this.audioController = this.subsystemCoordinator.audioController;
             this.audioVisualizer = this.subsystemCoordinator.audioVisualizer;
             this.accessibilitySupport = this.subsystemCoordinator.accessibilitySupport;
-            ;
             // 設定値の同期
             this.configurationManager.syncWithConfig()';
-            console.log('AudioManager initialized successfully (refactored')');
+            console.log('AudioManager, initialized successfully (refactored)');
             
             return true;
-            ';'
-        } catch (error) { ''
-            getErrorHandler(').handleError(error, 'AUDIO_ERROR', { ''
-                component: 'AudioManager',')';
+            ';
+
+        } catch (error) { getErrorHandler(').handleError(error, 'AUDIO_ERROR', { ''
+                component: 'AudioManager',)';
                 operation: 'initialize',);
-                userAgent: navigator.userAgent),
-                audioContextSupport: !!(window.AudioContext || (window as any).webkitAudioContext) }
-            });
+                userAgent: navigator.userAgent);
+                audioContextSupport: !!(window.AudioContext || (window, as any).webkitAudioContext ,});
             this.isEnabled = false;
             return false;
-        };
-}
     // ========== 音響再生API（委譲パターン） ==========
 
     /**
@@ -282,8 +268,7 @@ export class AudioManager {
      */
     playSound(soundName: string, options: PlayOptions = { ): AudioBufferSourceNode | null {
         if (!this.isEnabled || this._isMuted) return null;
-        return this.playbackController.playSound(soundName, options); };
-}
+        return this.playbackController.playSound(soundName, options); }
     /**
      * 泡破壊音を再生
      * @param bubbleType - 泡タイプ
@@ -295,8 +280,7 @@ export class AudioManager {
         if(this.soundEffectSystem) {
             
         }
-            return this.soundEffectSystem.playBubbleSound(bubbleType, comboLevel, options); };
-}
+            return this.soundEffectSystem.playBubbleSound(bubbleType, comboLevel, options);
         // フォールバック
         return this.playbackController.playBubbleSound(bubbleType, comboLevel, options);
     }
@@ -311,8 +295,7 @@ export class AudioManager {
         if(this.soundEffectSystem) {
             
         }
-            return this.soundEffectSystem.playUISound(actionType, options); };
-}
+            return this.soundEffectSystem.playUISound(actionType, options);
         // フォールバック
         return this.playbackController.playUISound(actionType, options);
     }
@@ -327,8 +310,7 @@ export class AudioManager {
         if(this.soundEffectSystem) {
             
         }
-            return this.soundEffectSystem.playComboSound(comboLevel, options); };
-}
+            return this.soundEffectSystem.playComboSound(comboLevel, options);
         // フォールバック
         return this.playbackController.playComboSound(comboLevel, options);
     }
@@ -343,8 +325,7 @@ export class AudioManager {
         if(this.soundEffectSystem) {
             
         }
-            return this.soundEffectSystem.playAchievementSound(rarity, options); };
-}
+            return this.soundEffectSystem.playAchievementSound(rarity, options);
         // フォールバック
         return this.playbackController.playAchievementSound(rarity, options);
     }
@@ -359,8 +340,7 @@ export class AudioManager {
         if(this.soundEffectSystem) {
             
         }
-            return this.soundEffectSystem.playGameStateSound(stateType, options); };
-}
+            return this.soundEffectSystem.playGameStateSound(stateType, options);
         // フォールバック
         return this.playbackController.playGameStateSound(stateType, options);
     }
@@ -370,7 +350,7 @@ export class AudioManager {
      * Issue #106: テスト互換性のため追加
      */''
     playBonusSound()';
-        return this.playGameStateSound('bonus');
+        return this.playGameStateSound('bonus);
     }
 
     /**
@@ -378,7 +358,7 @@ export class AudioManager {
      * Issue #106: テスト互換性のため追加'
      */''
     playTimeStopSound()';
-        return this.playGameStateSound('timeStop');
+        return this.playGameStateSound('timeStop);
     }
 
     /**
@@ -386,7 +366,7 @@ export class AudioManager {
      * Issue #106: テスト互換性のため追加'
      */''
     playElectricSound()';
-        return this.playGameStateSound('electric');
+        return this.playGameStateSound('electric);
     }
 
     /**
@@ -394,7 +374,7 @@ export class AudioManager {
      * Issue #106: テスト互換性のため追加'
      */''
     playPopSound()';
-        return this.playBubbleSound('pop');
+        return this.playBubbleSound('pop);
     }
 
     /**
@@ -402,13 +382,14 @@ export class AudioManager {
      * Issue #106: テスト互換性のため追加'
      */''
     playGameOverSound()';
-        return this.playGameStateSound('gameOver');
+        return this.playGameStateSound('gameOver);
     }
 
     /**
      * 全音響停止
      */
-    stopAllSounds(): void { this.playbackController.stopAllSounds();'
+    stopAllSounds(): void { this.playbackController.stopAllSounds();
+
         // アクティブソースも更新（互換性のため）
         this.activeSources.clear()';
      * @param type - 音量タイプ ('master', 'sfx', 'bgm')
@@ -418,13 +399,14 @@ export class AudioManager {
         this.configurationManager.setVolume(type, volume);
         ';
         // ローカルキャッシュ更新（互換性のため）
-        switch(type') {'
-            '';
+        switch(type) {'
+
             case 'master': this.masterVolume = volume; break;''
-            case 'sfx': this.sfxVolume = volume; break;'
-        }'
-            case 'bgm': this.bgmVolume = volume; break; };
-}
+            case 'sfx': this.sfxVolume = volume; break;
+
+        }
+
+            case 'bgm': this.bgmVolume = volume; break; }
     }
 
     /**'
@@ -432,8 +414,8 @@ export class AudioManager {
      * @param type - 音量タイプ ('master', 'sfx', 'bgm')''
      * @returns 音量 (0-1')'
      */''
-    getVolume(type: string = 'master'): number { ''
-        switch (type.toLowerCase()') {''
+    getVolume(type: string = 'master): number { ''
+        switch(type.toLowerCase()) {''
             case 'master':';
                 return this.masterVolume;''
             case 'sfx':'';
@@ -442,9 +424,7 @@ export class AudioManager {
             case 'bgm':'';
             case 'backgroundmusic':;
                 return this.bgmVolume;
-            default: return this.masterVolume };
-}
-    }
+            default: return this.masterVolume ,};
 
     /**
      * ミュート切り替え
@@ -458,8 +438,7 @@ export class AudioManager {
             
         
         }
-            this.stopAllSounds(); };
-}
+            this.stopAllSounds(); }
         return newMutedState;
     }
 
@@ -475,8 +454,7 @@ export class AudioManager {
             
         
         }
-            this.stopAllSounds(); };
-}
+            this.stopAllSounds(); }
     }
 
     /**
@@ -484,20 +462,18 @@ export class AudioManager {
      * @param effectType - エフェクトタイプ
      * @param enabled - 有効フラグ
      */
-    setAudioEffect(effectType: string, enabled: boolean): void { this.configurationManager.setAudioEffect(effectType, enabled); };
-}
+    setAudioEffect(effectType: string, enabled: boolean): void { this.configurationManager.setAudioEffect(effectType, enabled); }
     /**
      * 品質設定更新
      * @param qualityConfig - 品質設定
      */
-    updateQualitySettings(qualityConfig: any): void { this.configurationManager.updateQualitySettings(qualityConfig); };
-}
+    updateQualitySettings(qualityConfig: any): void { this.configurationManager.updateQualitySettings(qualityConfig); }
     /**
      * シーンを設定
      * @param scene - シーン名
      */
     setScene(scene: string): void { this.currentScene = scene; }
-        console.log(`AudioManager: Scene set to ${scene)`});
+        console.log(`AudioManager: Scene, set to ${scene}`});
     }
 
     /**
@@ -505,7 +481,7 @@ export class AudioManager {
      * @param duration - フェード時間（ミリ秒）
      */
     async fadeOutBGM(duration: number = 1000): Promise<void> { return new Promise((resolve) => { }
-            console.log(`AudioManager: Fading out BGM over ${duration}ms`);
+            console.log(`AudioManager: Fading, out BGM, over ${duration}ms`);
             setTimeout(resolve, duration);
         });
     }
@@ -514,8 +490,7 @@ export class AudioManager {
      * ミュート状態を取得
      * @returns ミュート状態
      */
-    isMuted(): boolean { return this._isMuted || false; };
-}
+    isMuted(): boolean { return this._isMuted || false; }
     // ========== シーン管理API（委譲パターン） ==========
 
     /**
@@ -525,59 +500,49 @@ export class AudioManager {
      * @returns 処理成功フラグ
      */
     async onSceneChange(sceneName: string, options: any = {}): Promise<boolean> {
-        return await this.subsystemCoordinator.onSceneChange(sceneName, options); };
-}
+        return await this.subsystemCoordinator.onSceneChange(sceneName, options); }
     // ========== AudioContextコントロール ==========
 
     /**
      * AudioContextの再開
      */
-    async resumeContext(): Promise<void> { await this.contextManager.resumeAudioContext(); };
-}
+    async resumeContext(): Promise<void> { await this.contextManager.resumeAudioContext(); }
     // ========== サブシステム委譲メソッド ==========
 
     /**
      * BGMシステムメソッド委譲
      */''
-    playBGM(trackName: string, options: any = { )'): any {''
+    playBGM(trackName: string, options: any = { )): any {''
         return this.subsystemCoordinator.delegateToBGMSystem('playBGM', [trackName, options]); }
-    }'
-'';
+
     stopBGM()';
         return this.subsystemCoordinator.delegateToBGMSystem('stopBGM', []);
-    }'
-'';
-    setBGMVolume(volume: number'): any { ''
-        return this.subsystemCoordinator.delegateToBGMSystem('setVolume', [volume]); };
-}
+    }
+
+    setBGMVolume(volume: number): any { ''
+        return this.subsystemCoordinator.delegateToBGMSystem('setVolume', [volume]); }
     /**
      * AudioControllerメソッド委譲'
      */''
-    setVolumeLevel(category: string, volume: number, fadeTime: number = 0'): any { ''
+    setVolumeLevel(category: string, volume: number, fadeTime: number = 0): any { ''
         return this.subsystemCoordinator.delegateToController('setVolume', [category, volume, fadeTime]); }
-    }'
-'';
-    getVolumeLevel(category: string'): any { ''
+
+    getVolumeLevel(category: string): any { ''
         return this.subsystemCoordinator.delegateToController('getVolume', [category]); }
-    }'
-'';
-    fadeInVolume(category: string, duration: number = 1.0, targetVolume: number | null = null'): any { ''
+
+    fadeInVolume(category: string, duration: number = 1.0, targetVolume: number | null = null): any { ''
         return this.subsystemCoordinator.delegateToController('fadeIn', [category, duration, targetVolume]); }
-    }'
-'';
-    fadeOutVolume(category: string, duration: number = 1.0, targetVolume: number = 0'): any { ''
-        return this.subsystemCoordinator.delegateToController('fadeOut', [category, duration, targetVolume]); };
-}
+
+    fadeOutVolume(category: string, duration: number = 1.0, targetVolume: number = 0): any { ''
+        return this.subsystemCoordinator.delegateToController('fadeOut', [category, duration, targetVolume]); }
     /**
      * AudioVisualizerメソッド委譲'
      */''
-    enableVisualization(enabled: boolean'): any { ''
+    enableVisualization(enabled: boolean): any { ''
         return this.subsystemCoordinator.delegateToVisualizer('setEnabled', [enabled]); }
-    }'
-'';
-    setVisualizationStyle(style: string'): any { ''
-        return this.subsystemCoordinator.delegateToVisualizer('setStyle', [style]); };
-}
+
+    setVisualizationStyle(style: string): any { ''
+        return this.subsystemCoordinator.delegateToVisualizer('setStyle', [style]); }
     // ========== 状態・統計取得 ==========
 
     /**
@@ -585,66 +550,60 @@ export class AudioManager {
      * @returns 状態情報
      */
     getAudioManagerState(): AudioManagerState { return { isInitialized: this.isInitialized,
-            isEnabled: this.isEnabled,
+            isEnabled: this.isEnabled;
             volumes: {
-                master: this.masterVolume,
-                sfx: this.sfxVolume,
+                master: this.masterVolume;
+                sfx: this.sfxVolume;
                 bgm: this.bgmVolume, };
                 muted: this._isMuted ;
 }
             },
-            context: this.contextManager.getContextStatus(),
-            playback: this.playbackController.getPlaybackStats(),
-            configuration: this.configurationManager.getAllSettings(),
-            subsystems: this.subsystemCoordinator.getSubsystemStatus(),
-            soundGeneration: this.soundGenerator.getGenerationStatus(),
-        };
-    }
+            context: this.contextManager.getContextStatus();
+            playback: this.playbackController.getPlaybackStats();
+            configuration: this.configurationManager.getAllSettings();
+            subsystems: this.subsystemCoordinator.getSubsystemStatus();
+            soundGeneration: this.soundGenerator.getGenerationStatus();
+        }
 
     /**
      * ステータス取得（テストで期待されるメソッド）
      * @returns ステータス情報
      */''
     getStatus(''';
-            supportedFormats: ['wav', 'mp3', 'ogg'],'';
-            qualityMode: this.qualityMode || 'medium');
+            supportedFormats: ['wav', 'mp3', 'ogg'],
+            qualityMode: this.qualityMode || 'medium);
         })
-    }
 
     /**
      * マスター音量取得
      * @returns マスター音量
      */
-    getMasterVolume(): number { return this.masterVolume; };
-}
+    getMasterVolume(): number { return this.masterVolume; }
     /**
      * 音響効果音量取得
      * @returns 音響効果音量
      */
-    getSoundEffectVolume(): number { return this.sfxVolume; };
-}
+    getSoundEffectVolume(): number { return this.sfxVolume; }
     /**
      * 背景音楽音量取得
      * @returns 背景音楽音量
      */
-    getBackgroundMusicVolume(): number { return this.bgmVolume; };
-}
+    getBackgroundMusicVolume(): number { return this.bgmVolume; }
     /**
      * 利用可能な音響一覧取得
      * @returns 音響名配列
      */'
     getAvailableSounds(): string[] { ''
         return this.soundGenerator.getAvailableSounds()';
-    testSound(soundName: string = 'click'): boolean {
-        return this.playbackController.testSound(soundName) };
-}
+    testSound(soundName: string = 'click): boolean {'
+        return this.playbackController.testSound(soundName }
     // ========== リソース管理 ==========
 
     /**
      * リソースの解放
      */''
     dispose()';
-        console.log('Disposing AudioManager (refactored')...');
+        console.log('Disposing, AudioManager (refactored')...');
         
         // 全音響停止
         this.stopAllSounds();
@@ -673,7 +632,7 @@ export class AudioManager {
         this.bgmGainNode = null;
         this.soundBuffers.clear();''
         this.activeSources.clear()';
-        console.log('AudioManager disposed successfully');
+        console.log('AudioManager, disposed successfully);
     }
 
     // ========== 互換性メソッド ==========
@@ -681,14 +640,10 @@ export class AudioManager {
     /**
      * 従来のAPIとの互換性維持のためのプロパティ
      */
-    get currentTime(): number { return this.audioContext ? this.audioContext.currentTime: 0, };
-}
-    get sampleRate(): number { return this.audioContext ? this.audioContext.sampleRate: 44100, }
-    }
-'';
+    get currentTime(): number { return this.audioContext ? this.audioContext.currentTime: 0, }
+    get sampleRate('): number { return this.audioContext ? this.audioContext.sampleRate: 44100, 
     get state('): AudioContextState | 'closed' { ''
-        return this.audioContext ? this.audioContext.state: 'closed', };
-}
+        return this.audioContext ? this.audioContext.state: 'closed', }
     // ========== 品質モード管理（パフォーマンステスト対応） ==========
     
     /**
@@ -705,25 +660,21 @@ export class AudioManager {
                     
                 }
                     // 実際の設定適用は実装に依存 }
-                    console.log(`[AudioManager] 品質モードを${mode)に変更`});''
-                } catch (error) { ''
-                console.warn('[AudioManager] 品質モードの変更に失敗:', error); };
-}
-        };
-}
+                    console.log(`[AudioManager] 品質モードを${mode}に変更`});''
+                } catch (error) {
+                console.warn('[AudioManager] 品質モードの変更に失敗:', error); }
+        }
     /**
      * 現在の品質モードを取得
      * @returns 現在の品質モード
      */
-    getQualityMode(): string { return this.qualityMode; };
-}
+    getQualityMode(): string { return this.qualityMode; }
     /**
      * 品質設定を取得
      * @param mode - 品質モード（省略時は現在のモード）
      * @returns 品質設定オブジェクト
      */
-    getQualitySettings(mode: string = this.qualityMode): QualitySettings { return this.qualitySettings[mode] || this.qualitySettings.high; };
-}
+    getQualitySettings(mode: string = this.qualityMode): QualitySettings { return this.qualitySettings[mode] || this.qualitySettings.high; }
     /**
      * オーディオシステムを無効化
      * エラー復旧やセーフモード時に使用
@@ -734,44 +685,40 @@ export class AudioManager {
             
             // BGMを停止
             this.stopBGM();
-            ;
             // ミュート状態にする
-            this.setMuted(true');
+            this.setMuted(true);
             ';
             // AudioContextを中断
-            if(this.audioContext && this.audioContext.state !== 'closed') {
+            if(this.audioContext && this.audioContext.state !== 'closed) {'
                 
             }
-                this.audioContext.suspend(); };
-}
+                this.audioContext.suspend(); }
             ';
             // ログ出力頻度を制御（前回と異なる状態の場合のみ）
-            if(this.lastLoggedDisableState !== true') {'
-                '';
+            if(this.lastLoggedDisableState !== true) {'
+
                 console.log('[AudioManager] オーディオシステムを無効化しました');
-            }'
+            }
+
                 this.lastLoggedDisableState = true;' }'
-            } catch (error) { ''
-            console.warn('[AudioManager] 無効化中にエラー:', error); };
-}
+
+            } catch (error) {
+            console.warn('[AudioManager] 無効化中にエラー:', error); }
     }
     
     /**
      * オーディオシステムを有効化'
      */''
     enable()';
-            if (this.audioContext && this.audioContext.state === 'suspended') { this.audioContext.resume(); };
-}
+            if(this.audioContext && this.audioContext.state === 'suspended) { this.audioContext.resume(); }
             ';
             // ミュート解除
-            this.setMuted(false');'
-            '';
+            this.setMuted(false);
+
             console.log('[AudioManager] オーディオシステムを有効化しました');''
-        } catch (error) { ''
-            console.warn('[AudioManager] 有効化中にエラー:', error); };
-}
-    };
-}
+        } catch (error) {
+            console.warn('[AudioManager] 有効化中にエラー:', error); }
+    }
 // シングルトンインスタンス管理
 let audioManagerInstance: AudioManager | null = null,
 
@@ -782,8 +729,7 @@ let audioManagerInstance: AudioManager | null = null,
  * @returns シングルトンインスタンス
  */
 export function getAudioManager(configManager: ConfigManager, audioConfig: AudioConfig): AudioManager { if (!audioManagerInstance) {
-        audioManagerInstance = new AudioManager(configManager, audioConfig); };
-}
+        audioManagerInstance = new AudioManager(configManager, audioConfig); }
     return audioManagerInstance;
 }
 
@@ -794,10 +740,9 @@ export function getAudioManager(configManager: ConfigManager, audioConfig: Audio
  * @returns 新しいシングルトンインスタンス
  */
 export function reinitializeAudioManager(configManager: ConfigManager, audioConfig: AudioConfig): AudioManager { if (audioManagerInstance) {
-        audioManagerInstance.dispose(); }
-    }''
-    audioManagerInstance = new AudioManager(configManager, audioConfig');
+        audioManagerInstance.dispose(); }''
+    audioManagerInstance = new AudioManager(configManager, audioConfig);
     return audioManagerInstance;
-}'
-'';
+}
+
 export default AudioManager;

@@ -17,7 +17,6 @@ export class StatisticsEventHandler {
         this.lowHpStartTime = null;
         this.lastComboTime = null;
     }
-    }
         this.comboStartTime = null; }
     }
 
@@ -33,15 +32,14 @@ export class StatisticsEventHandler {
         // ステージ統計を初期化
         if (!this.statistics.stageStats[stageId]) {
             this.statistics.stageStats[stageId] = {
-                gamesPlayed: 0,
-                gamesCompleted: 0,
-                totalScore: 0,
-                highScore: 0,
-                totalPlayTime: 0,
+                gamesPlayed: 0;
+                gamesCompleted: 0;
+                totalScore: 0;
+                highScore: 0;
+                totalPlayTime: 0;
     }
                 bubblesPopped: 0 }
-            },
-        }
+            }
         
         this.statistics.stageStats[stageId].gamesPlayed++;
         
@@ -53,7 +51,6 @@ export class StatisticsEventHandler {
         
         // 最初のプレイ日記録
         if (!this.statistics.timeStats.firstPlayDate) { this.statistics.timeStats.firstPlayDate = Date.now(); }
-        }
         this.statistics.timeStats.lastPlayDate = Date.now();
     }
 
@@ -116,9 +113,7 @@ export class StatisticsEventHandler {
         
         }
                 this.statistics.hpDetailStats.perfectHealthGames++; }
-            }
-        } else { this.statistics.stagesFailed++; }
-        }
+} else { this.statistics.stagesFailed++; }
         
         // セッション統計更新
         this.sessionStats.scoreThisSession += finalScore;
@@ -147,15 +142,12 @@ export class StatisticsEventHandler {
         
         // 泡タイプ別統計更新
         if (this.statistics.bubbleTypeStats[type] !== undefined) { this.statistics.bubbleTypeStats[type]++; }
-        }
         
         // 反応時間統計更新
         if (reactionTime !== undefined) { this.updateReactionTimeStats(reactionTime); }
-        }
         
         // 特殊泡効果統計
         if (isSpecial) { this.statistics.specialBubblesPopped = (this.statistics.specialBubblesPopped || 0) + 1; }
-        }
     }
 
     /**
@@ -185,12 +177,10 @@ export class StatisticsEventHandler {
             this.comboStartTime = null;
         } else {  if (!this.comboStartTime && comboCount === 1) { }
                 this.comboStartTime = now; }
-            }
-        }
+}
         
         // スコア倍率効果の記録
         if (multiplier && multiplier > 1) { this.statistics.scoreMultipliersUsed++; }
-        }
     }
 
     /**
@@ -206,11 +196,9 @@ export class StatisticsEventHandler {
         
         // 低HP時間の記録開始
         if (currentHp <= 10 && !this.lowHpStartTime) { this.lowHpStartTime = Date.now(); }
-        }
         
         // クリティカルHP状況の記録
         if (currentHp <= 5) { this.statistics.hpDetailStats.criticalHpEvents++; }
-        }
         
         // ダメージソース別統計（将来の機能）
         if(source) {
@@ -242,7 +230,6 @@ export class StatisticsEventHandler {
         
         // 死の淵からの回復記録
         if (previousHp === 1 && currentHp > 1) { this.statistics.hpDetailStats.nearDeathRecoveries++; }
-        }
     }
 
     /**
@@ -256,8 +243,7 @@ export class StatisticsEventHandler {
             this.statistics.lowHpTime += Date.now() - this.lowHpStartTime;
     }
             this.lowHpStartTime = null; }
-        }
-    }
+}
 
     /**
      * 特殊効果発動時の統計更新
@@ -267,39 +253,46 @@ export class StatisticsEventHandler {
         
     }
         const { type, duration, power } = effectData;
-        '';
-        switch(type') {'
-            '';
+
+        switch(type) {'
+
             case 'bonusTime':;
-                this.statistics.bonusTimeActivated++;'
+                this.statistics.bonusTimeActivated++;
+
                 break;''
             case 'timeStop':;
-                this.statistics.timeStopActivated++;'
+                this.statistics.timeStopActivated++;
+
                 break;''
             case 'chainReaction':;
-                this.statistics.chainReactionsTriggered++;'
+                this.statistics.chainReactionsTriggered++;
+
                 break;''
             case 'screenShake':;
-                this.statistics.screenShakesTriggered++;'
+                this.statistics.screenShakesTriggered++;
+
                 break;''
             case 'shield':;
-                this.statistics.shieldActivations++;'
+                this.statistics.shieldActivations++;
+
                 break;''
             case 'magnet':;
-                this.statistics.magnetEffectsTriggered++;'
+                this.statistics.magnetEffectsTriggered++;
+
                 break;''
             case 'freeze':;
-                this.statistics.freezeEffectsUsed++;'
+                this.statistics.freezeEffectsUsed++;
+
                 break;''
             case 'explosive':;
-                this.statistics.explosiveChains++;'
+                this.statistics.explosiveChains++;
+
                 break;''
             case 'phantom':;
                 this.statistics.phantomBubbleInteractions++;
         }
                 break; }
-        }
-    }
+}
 
     /**
      * ドラッグ操作時の統計更新
@@ -326,8 +319,7 @@ export class StatisticsEventHandler {
             behavior.dragAccuracy = ;
         }
                 (behavior.dragAccuracy * (behavior.dragOperations - 1) + accuracy) / behavior.dragOperations; }
-        }
-    }
+}
 
     /**
      * 実績解除時の統計更新
@@ -341,7 +333,6 @@ export class StatisticsEventHandler {
         this.statistics.progressStats.achievementsUnlocked++;
         
         if (ap) { this.statistics.progressStats.totalAP += ap; }
-        }
     }
 
     /**
@@ -392,22 +383,28 @@ export class StatisticsEventHandler {
      */
     updateScoreDistribution(score) {
         const dist = this.statistics.scoreDistribution;
-        '';
-        if (score <= 1000') {'
-    }'
-            dist['0-1000']++;' }'
-        } else if (score <= 5000') { ''
-            dist['1001-5000']++;' }'
-        } else if (score <= 10000') { ''
-            dist['5001-10000']++;' }'
-        } else if (score <= 25000') { ''
-            dist['10001-25000']++;' }'
-        } else if (score <= 50000') { ''
-            dist['25001-50000']++; }'
-        } else {  ' }'
-            dist['50001+']++; }
-        }
+
+        if(score <= 1000) {'
     }
+
+            dist['0-1000]++;' }
+
+        } else if(score <= 5000) { ''
+            dist['1001-5000]++;' }
+
+        } else if(score <= 10000) { ''
+            dist['5001-10000]++;' }
+
+        } else if(score <= 25000) { ''
+            dist['10001-25000]++;' }
+
+        } else if(score <= 50000) { ''
+            dist['25001-50000]++; }'
+
+        } else { }'
+
+            dist['50001+]++; }'
+}
 
     /**
      * セッション長統計の更新
@@ -455,8 +452,7 @@ export class StatisticsEventHandler {
             if (effStats.efficiencyTrend.length > 20) {
     }
                 effStats.efficiencyTrend.shift(); }
-            }
-        }
+}
     }
 
     /**
@@ -483,12 +479,12 @@ export class StatisticsEventHandler {
         
         // 分布統計更新
         if (reactionTime < 200) { reactionStats.distribution.under_200ms++;' }'
-        } else if (reactionTime < 500') { ''
-            reactionStats.distribution['200_500ms']++;' }'
-        } else if (reactionTime < 1000') { ''
-            reactionStats.distribution['500_1000ms']++; }
-        } else { reactionStats.distribution.over_1000ms++; }
-        }
+
+        } else if(reactionTime < 500) { ''
+            reactionStats.distribution['200_500ms]++;' }
+
+        } else if(reactionTime < 1000) { ''
+            reactionStats.distribution['500_1000ms]++; } else { reactionStats.distribution.over_1000ms++; }'
     }
 
     /**
@@ -499,17 +495,23 @@ export class StatisticsEventHandler {
         const comboStats = this.statistics.comboDetailStats;
         ';
         // コンボ範囲別統計
-        if (maxCombo <= 5') {'
-    }'
-            comboStats.comboRanges['1-5']++;' }'
-        } else if (maxCombo <= 10') { ''
-            comboStats.comboRanges['6-10']++;' }'
-        } else if (maxCombo <= 20') { ''
-            comboStats.comboRanges['11-20']++;' }'
-        } else if (maxCombo <= 50') { ''
-            comboStats.comboRanges['21-50']++; }'
-        } else {  ' }'
-            comboStats.comboRanges['51+']++; }
+        if(maxCombo <= 5) {'
+    }
+
+            comboStats.comboRanges['1-5]++;' }
+
+        } else if(maxCombo <= 10) { ''
+            comboStats.comboRanges['6-10]++;' }
+
+        } else if(maxCombo <= 20) { ''
+            comboStats.comboRanges['11-20]++;' }
+
+        } else if(maxCombo <= 50) { ''
+            comboStats.comboRanges['21-50]++; }'
+
+        } else { }'
+
+            comboStats.comboRanges['51+]++; }'
         }
         
         // 最長コンボストリーク更新
@@ -522,7 +524,7 @@ export class StatisticsEventHandler {
         
         // コンボ成功率計算
         const totalComboAttempts = totalCombos + this.statistics.comboBreaks;
-        comboStats.comboSuccessRate = totalComboAttempts > 0 ?   : undefined;
+        comboStats.comboSuccessRate = totalComboAttempts > 0 ?   : undefined
             (totalCombos / totalComboAttempts) * 100 : 0;
     }
 
@@ -555,8 +557,7 @@ export class StatisticsEventHandler {
             hpStats.healingEfficiency = ;
         }
                 this.statistics.totalHpHealed / this.statistics.totalDamageTaken; }
-        }
-    }
+}
 
     /**
      * ステージ詳細統計の更新
@@ -574,12 +575,10 @@ export class StatisticsEventHandler {
                 playTime < stageDetailStats.fastestClearTime[stageId]) {
     }
                 stageDetailStats.fastestClearTime[stageId] = playTime; }
-            }
-        }
+}
         
         // 平均クリア時間更新
-        if (!stageDetailStats.averageClearTime[stageId]) { stageDetailStats.averageClearTime[stageId] = playTime; }
-        } else {  const currentAvg = stageDetailStats.averageClearTime[stageId];
+        if (!stageDetailStats.averageClearTime[stageId]) { stageDetailStats.averageClearTime[stageId] = playTime; } else {  const currentAvg = stageDetailStats.averageClearTime[stageId];
             const stageCompletions = this.statistics.stageStats[stageId].gamesCompleted;
             stageDetailStats.averageClearTime[stageId] =  }
                 (currentAvg * (stageCompletions - 1) + playTime) / stageCompletions; }
@@ -587,9 +586,7 @@ export class StatisticsEventHandler {
         
         // リトライ回数更新
         if (!stageDetailStats.stageRetryCount[stageId]) { stageDetailStats.stageRetryCount[stageId] = 0; }
-        }
         if (!completed) { stageDetailStats.stageRetryCount[stageId]++; }
-        }
         
         // 完了率計算
         const stageStats = this.statistics.stageStats[stageId];
@@ -623,9 +620,7 @@ export class StatisticsEventHandler {
             if(lastPlay === yesterday.toDateString() { }
                 timeStats.regularPlayStreak++; }
             } else { timeStats.regularPlayStreak = 1; // ストリークリセット }
-            }
-        }
-    }
+}
 
     /**
      * 進歩詳細統計の更新
@@ -658,7 +653,6 @@ let statisticsEventHandlerInstance = null;
  */
 export function getStatisticsEventHandler(statistics, sessionStats) { if (!statisticsEventHandlerInstance) {
         statisticsEventHandlerInstance = new StatisticsEventHandler(statistics, sessionStats); }
-    }
     return statisticsEventHandlerInstance;
 }
 
@@ -668,9 +662,8 @@ export function getStatisticsEventHandler(statistics, sessionStats) { if (!stati
  * @param {Object} sessionStats - セッション統計
  * @returns {StatisticsEventHandler} 新しいシングルトンインスタンス
  */
-export function reinitializeStatisticsEventHandler(statistics, sessionStats) { ''
-    statisticsEventHandlerInstance = new StatisticsEventHandler(statistics, sessionStats');
+export function reinitializeStatisticsEventHandler(statistics, sessionStats) {;
+    statisticsEventHandlerInstance = new StatisticsEventHandler(statistics, sessionStats);
     return statisticsEventHandlerInstance; }
-}'
-'';
+
 export default StatisticsEventHandler;

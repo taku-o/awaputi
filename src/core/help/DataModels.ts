@@ -6,64 +6,55 @@
 
 // 基本型定義
 export interface HelpContentSection { id: string,
-    title: string,
-    content: string,
+    title: string;
+    content: string;
     tags?: string[];
     difficulty?: 'beginner' | 'intermediate' | 'advanced';
-    searchKeywords?: string[]; }
-}
+    searchKeywords?: string[]; ,}
 
 export interface TutorialStep { id: string,
-    title: string,
-    instructions: string,
+    title: string;
+    instructions: string;
     action?: string;
     target?: string;
     duration?: number;
-    validation?: string; }
-}
+    validation?: string; ,}
 
 export interface SearchHistoryEntry { query: string,
-    language: string,
-    timestamp: number }
-}
-';'
+    language: string;
+    timestamp: number ,}
+';
+
 export interface UserPreferences { showTooltips: boolean,''
-    tutorialSpeed: 'slow' | 'normal' | 'fast',
-    helpLanguage: string }
-}
+    tutorialSpeed: 'slow' | 'normal' | 'fast';
+    helpLanguage: string ,}
 
-export interface UserStatistics { totalHelpViews: number,
-    totalSearches: number,
-    totalTutorialsCompleted: number,
+export interface UserStatistics { totalHelpViews: number;
+    totalSearches: number;
+    totalTutorialsCompleted: number;
     timeSpentInHelp: number }
-}
 
-export interface SearchResult { section: HelpContentSection,
+export interface SearchResult { section: HelpContentSection;
     score: number }
-}
 
-export interface ProgressStatistics { completedTutorials: number,
-    viewedHelpSections: number,
-    totalSearches: number,
-    totalHelpViews: number,
-    timeSpentInHelp: number,
-    achievements: number,
+export interface ProgressStatistics { completedTutorials: number;
+    viewedHelpSections: number;
+    totalSearches: number;
+    totalHelpViews: number;
+    timeSpentInHelp: number;
+    achievements: number;
     lastActivity: number }
-}
 
-export interface CompletionRates { tutorialCompletionRate: number,
+export interface CompletionRates { tutorialCompletionRate: number;
     helpViewCompletionRate: number }
-}
 
 export interface SearchPatterns { commonQueries: Record<string, number>,
     languageDistribution: Record<string, number>,
     timeDistribution: {
-        morning: number,
-        afternoon: number,
-        evening: number,
-        night: number }
-    };
-}
+        morning: number;
+        afternoon: number;
+        evening: number;
+        night: number ,}
 
 /**
  * ヘルプコンテンツモデル
@@ -75,19 +66,20 @@ export class HelpContentModel {
     public content: string,
     public tags: string[],
     public language: string,
-    public version: string,';
-    public lastUpdated: number,'';
+    public version: string,
+    public lastUpdated: number,
     public difficulty: 'beginner' | 'intermediate' | 'advanced',
     public relatedTopics: string[],
     public searchKeywords: string[],
     public sections: HelpContentSection[],
-    public metadata: Record<string, any>;'
-'';
-    constructor(data: Partial<HelpContentModel> = {)') {''
+    public metadata: Record<string, any>;
+
+    constructor(data: Partial<HelpContentModel> = {)) {''
         this.id = data.id || '';''
         this.category = data.category || '';''
         this.title = data.title || '';''
-        this.content = data.content || '';'
+        this.content = data.content || '';
+
         this.tags = data.tags || [];''
         this.language = data.language || 'ja';''
         this.version = data.version || '1.0.0';''
@@ -95,9 +87,8 @@ export class HelpContentModel {
         this.difficulty = data.difficulty || 'beginner';
         this.relatedTopics = data.relatedTopics || [];
         this.searchKeywords = data.searchKeywords || [];
-        this.sections = data.sections || []; }
-        this.metadata = data.metadata || {};
-    }
+        this.sections = data.sections || []; ,}
+        this.metadata = data.metadata || {}
 
     /**
      * データの検証
@@ -108,38 +99,30 @@ export class HelpContentModel {
             if(!this.version || !this.language) {
                 
             }
-                return false; }
-            }
+                return false;
 
             // セクションデータの確認
             if (!Array.isArray(this.sections) || this.sections.length === 0) { return false; }
-            }
 
             // 各セクションの検証
-            for(const section of this.sections) {
+            for(const, section of, this.sections) {
                 if (!section.id || !section.title || !section.content) {
             }
-                    return false; }
-                }
-            }
+                    return false;
 
             // 言語コードの形式確認
             if(!/^[a-z]{2}(-[A-Z]{ 2)? $/.test(this.language) {
                 return false; }
-            }
 
             return true;
-        } catch (error) { return false; }
-        }
-    }
+        } catch (error) { return false;
 
     /**
      * セクションの取得
      * @param sectionId - セクションID
      * @returns セクションデータ
      */ : undefined
-    getSection(sectionId: string): HelpContentSection | null { return this.sections.find(section => section.id === sectionId) || null; }
-    }
+    getSection(sectionId: string): HelpContentSection | null { return this.sections.find(section => section.id === sectionId) || null;
 
     /**
      * タグによるフィルタリング
@@ -150,7 +133,7 @@ export class HelpContentModel {
         
         return this.sections.filter(section => );
             section.tags && section.tags.some(tag => tags.includes(tag)'';
-        '); }
+        '); ,}'
     }
 
     /**
@@ -158,8 +141,7 @@ export class HelpContentModel {
      * @param difficulty - 難易度'
      * @returns マッチするセクション'
      */''
-    filterByDifficulty(difficulty: 'beginner' | 'intermediate' | 'advanced'): HelpContentSection[] { return this.sections.filter(section => section.difficulty === difficulty); }
-    }
+    filterByDifficulty(difficulty: 'beginner' | 'intermediate' | 'advanced): HelpContentSection[] { return this.sections.filter(section => section.difficulty === difficulty);
 
     /**
      * 検索
@@ -171,7 +153,7 @@ export class HelpContentModel {
         const queryLower = query.toLowerCase();
         const results: SearchResult[] = [],
         
-        for(const section of this.sections) {
+        for(const, section of, this.sections) {
         
             let score = 0;
             
@@ -184,18 +166,14 @@ export class HelpContentModel {
             
             // コンテンツでの一致
             if (section.content.toLowerCase().includes(queryLower) { score += 5; }
-            }
             
             // タグでの一致
             if (section.tags && section.tags.some(tag => tag.toLowerCase().includes(queryLower)) { score += 7; }
-            }
             
             // キーワードでの一致
             if (section.searchKeywords && section.searchKeywords.some(keyword => keyword.toLowerCase().includes(queryLower)) { score += 8; }
-            }
             
             if (score > 0) { results.push({ section, score ); }
-            }
         }
         
         return results.sort((a, b) => b.score - a.score);
@@ -206,25 +184,25 @@ export class HelpContentModel {
      * @returns JSON形式のデータ
      */''
     toJSON(''';
-    public difficulty: 'beginner' | 'intermediate' | 'advanced');
+    public, difficulty: 'beginner' | 'intermediate' | 'advanced);
     public tags: string[]);
-    public metadata: Record<string, any>;'
-'';
-    constructor(data: Partial<TutorialModel> = { )') {''
+    public metadata: Record<string, any>;
+
+    constructor(data: Partial<TutorialModel> = { )) {''
         this.id = data.id || '';''
         this.title = data.title || '';''
         this.description = data.description || '';''
         this.category = data.category || '';
         this.steps = data.steps || [];
-        this.prerequisites = data.prerequisites || [];'
+        this.prerequisites = data.prerequisites || [];
+
         this.estimatedDuration = data.estimatedDuration || 0;''
         this.language = data.language || 'ja';''
         this.version = data.version || '1.0.0';''
         this.lastUpdated = data.lastUpdated || Date.now(''';
         this.difficulty = data.difficulty || 'beginner';
         this.tags = data.tags || []; }
-        this.metadata = data.metadata || {};
-    }
+        this.metadata = data.metadata || {}
 
     /**
      * データの検証
@@ -235,37 +213,29 @@ export class HelpContentModel {
             if(!this.id || !this.title || !this.language) {
                 
             }
-                return false; }
-            }
+                return false;
 
             // ステップデータの確認
             if (!Array.isArray(this.steps) || this.steps.length === 0) { return false; }
-            }
 
             // 各ステップの検証
-            for(const step of this.steps) {
+            for(const, step of, this.steps) {
                 if (!step.id || !step.title || !step.instructions) {
             }
-                    return false; }
-                }
-            }
+                    return false;
 
             // 推定時間の確認
             if (this.estimatedDuration < 0) { return false; }
-            }
 
             return true;
-        } catch (error) { return false; }
-        }
-    }
+        } catch (error) { return false;
 
     /**
      * ステップの取得
      * @param stepId - ステップID
      * @returns ステップデータ
      */
-    getStep(stepId: string): TutorialStep | null { return this.steps.find(step => step.id === stepId) || null; }
-    }
+    getStep(stepId: string): TutorialStep | null { return this.steps.find(step => step.id === stepId) || null;
 
     /**
      * インデックスによるステップ取得
@@ -274,7 +244,6 @@ export class HelpContentModel {
      */
     getStepByIndex(index: number): TutorialStep | null { if (index < 0 || index >= this.steps.length) {
             return null; }
-        }
         return this.steps[index];
     }
 
@@ -287,8 +256,7 @@ export class HelpContentModel {
         if(currentIndex === -1 || currentIndex >= this.steps.length - 1) {
             
         }
-            return null; }
-        }
+            return null;
         return this.steps[currentIndex + 1];
     }
 
@@ -301,8 +269,7 @@ export class HelpContentModel {
         if(currentIndex <= 0) {
             
         }
-            return null; }
-        }
+            return null;
         return this.steps[currentIndex - 1];
     }
 
@@ -314,8 +281,7 @@ export class HelpContentModel {
     getProgress(currentStepId: string): number { const currentIndex = this.steps.findIndex(step => step.id === currentStepId);
         if (currentIndex === -1) return 0;
         
-        return Math.round(((currentIndex + 1) / this.steps.length) * 100); }
-    }
+        return Math.round(((currentIndex + 1) / this.steps.length) * 100);
 
     /**
      * 完了チェック
@@ -323,8 +289,7 @@ export class HelpContentModel {
      * @returns 完了フラグ
      */
     isCompleted(currentStepId: string): boolean { const currentIndex = this.steps.findIndex(step => step.id === currentStepId);
-        return currentIndex === this.steps.length - 1; }
-    }
+        return currentIndex === this.steps.length - 1;
 
     /**
      * 前提条件チェック
@@ -333,7 +298,6 @@ export class HelpContentModel {
      */
     checkPrerequisites(completedTutorials: Set<string>): boolean { if (!this.prerequisites || this.prerequisites.length === 0) {
             return true; }
-        }
         
         return this.prerequisites.every(prereq => completedTutorials.has(prereq);
     }
@@ -343,23 +307,24 @@ export class HelpContentModel {
      * @returns JSON形式のデータ
      */''
     toJSON(''';
-    public difficulty: 'beginner' | 'intermediate' | 'advanced');
+    public, difficulty: 'beginner' | 'intermediate' | 'advanced);
     public searchKeywords: string[]);
-    public metadata: Record<string, any>;'
-'';
-    constructor(data: Partial<FAQModel> = { )') {''
+    public metadata: Record<string, any>;
+
+    constructor(data: Partial<FAQModel> = { )) {''
         this.id = data.id || '';''
         this.question = data.question || '';''
         this.answer = data.answer || '';''
-        this.category = data.category || '';'
+        this.category = data.category || '';
+
         this.tags = data.tags || [];''
-        this.language = data.language || 'ja';'
+        this.language = data.language || 'ja';
+
         this.popularity = data.popularity || 0;''
         this.lastUpdated = data.lastUpdated || Date.now(''';
         this.difficulty = data.difficulty || 'beginner';
         this.searchKeywords = data.searchKeywords || []; }
-        this.metadata = data.metadata || {};
-    }
+        this.metadata = data.metadata || {}
 
     /**
      * データの検証
@@ -370,21 +335,16 @@ export class HelpContentModel {
             if(!this.id || !this.question || !this.answer || !this.language) {
                 
             }
-                return false; }
-            }
+                return false;
 
             // 統計データの確認
             if (this.helpfulVotes < 0 || this.totalVotes < 0 || this.helpfulVotes > this.totalVotes) { return false; }
-            }
 
             // 人気度の確認
             if (this.popularity < 0) { return false; }
-            }
 
             return true;
-        } catch (error) { return false; }
-        }
-    }
+        } catch (error) { return false;
 
     /**
      * 有用性評価の取得
@@ -392,7 +352,6 @@ export class HelpContentModel {
      */
     getHelpfulnessRating(): number { if (this.totalVotes === 0) return 0;
         return this.helpfulVotes / this.totalVotes; }
-    }
 
     /**
      * 有用性評価の追加
@@ -420,19 +379,15 @@ export class HelpContentModel {
         // 質問での一致
         if (this.question.toLowerCase().includes(queryLower) {
             score += 10; }
-        }
         
         // 回答での一致
         if (this.answer.toLowerCase().includes(queryLower) { score += 5; }
-        }
         
         // タグでの一致
         if (this.tags.some(tag => tag.toLowerCase().includes(queryLower)) { score += 7; }
-        }
         
         // キーワードでの一致
         if (this.searchKeywords.some(keyword => keyword.toLowerCase().includes(queryLower)) { score += 8; }
-        }
         
         // 人気度ボーナス
         score += Math.min(this.popularity * 0.1, 5);
@@ -451,13 +406,12 @@ export class HelpContentModel {
     getRelatedFAQs(allFAQs: FAQModel[]): FAQModel[] { const related: FAQModel[] = [],
         
         // 明示的に関連付けられた質問
-        for(const relatedId of this.relatedQuestions) {
+        for(const, relatedId of, this.relatedQuestions) {
             const relatedFAQ = allFAQs.find(faq => faq.id === relatedId);
             if (relatedFAQ) {
         }
                 related.push(relatedFAQ); }
-            }
-        }
+}
         
         // タグベースの関連性
         if(related.length < 5) {
@@ -479,21 +433,20 @@ export class HelpContentModel {
      * @returns JSON形式のデータ
      */
     toJSON(): Record<string, any> { return { id: this.id,
-            question: this.question,
-            answer: this.answer,
-            category: this.category,
-            tags: this.tags,
-            language: this.language,
-            popularity: this.popularity,
-            lastUpdated: this.lastUpdated,
-            relatedQuestions: this.relatedQuestions,
-            helpfulVotes: this.helpfulVotes,
-            totalVotes: this.totalVotes,
-            difficulty: this.difficulty,
+            question: this.question;
+            answer: this.answer;
+            category: this.category;
+            tags: this.tags;
+            language: this.language;
+            popularity: this.popularity;
+            lastUpdated: this.lastUpdated;
+            relatedQuestions: this.relatedQuestions;
+            helpfulVotes: this.helpfulVotes;
+            totalVotes: this.totalVotes;
+            difficulty: this.difficulty;
             searchKeywords: this.searchKeywords, };
             metadata: this.metadata }
-        },
-    }
+        }
 }
 
 /**
@@ -514,30 +467,27 @@ export class UserProgressModel {
         viewedHelpSections?: string[] | Set<string>;
         achievements?: string[] | Set<string>;
         preferences?: Partial<UserPreferences>;
-        statistics?: Partial<UserStatistics>;' })'
+        statistics?: Partial<UserStatistics>;' ,})'
     } = { )') {''
         this.userId = data.userId || '';
-        this.completedTutorials = data.completedTutorials instanceof Set ?   : undefined;
-            data.completedTutorials: new Set(data.completedTutorials || []),';
+        this.completedTutorials = data.completedTutorials instanceof Set ?   : undefined
+            data.completedTutorials: new Set(data.completedTutorials || []),
         this.viewedHelpSections = data.viewedHelpSections instanceof Set ?   : undefined'';
-            data.viewedHelpSections: new Set(data.viewedHelpSections || []'),
+            data.viewedHelpSections: new Set(data.viewedHelpSections || []),
         this.searchHistory = data.searchHistory || [];
         this.preferences = {'
-            showTooltips: true,'';
-            tutorialSpeed: 'normal','';
-            helpLanguage: 'ja',
-            ...data.preferences }
-        };
+            showTooltips: true,
+            tutorialSpeed: 'normal',
+            helpLanguage: 'ja';
+            ...data.preferences;
         this.lastActivity = data.lastActivity || Date.now();
         this.statistics = { totalHelpViews: 0,
-            totalSearches: 0,
-            totalTutorialsCompleted: 0,
-            timeSpentInHelp: 0,
-            ...data.statistics }
-        };
-        this.achievements = data.achievements instanceof Set ?   : undefined;
-            data.achievements: new Set(data.achievements || []) }
-
+            totalSearches: 0;
+            totalTutorialsCompleted: 0;
+            timeSpentInHelp: 0;
+            ...data.statistics;
+        this.achievements = data.achievements instanceof Set ?   : undefined
+            data.achievements: new Set(data.achievements || [] 
     /**
      * データの検証
      * @returns 検証結果
@@ -546,22 +496,17 @@ export class UserProgressModel {
             // 必須フィールドの確認
             if(!this.userId) {
                 
-            }
-                return false; }
-            }
+            ,}
+                return false;
 ';
             // 設定の確認
-            if (!this.preferences || typeof this.preferences !== 'object'') { return false; }
-            }
+            if (!this.preferences || typeof, this.preferences !== 'object'') { return false; }
 ';
             // 統計データの確認
-            if (!this.statistics || typeof this.statistics !== 'object') { return false; }
-            }
+            if(!this.statistics || typeof, this.statistics !== 'object) { return false; }'
 
             return true;
-        } catch (error) { return false; }
-        }
-    }
+        } catch (error) { return false;
 
     /**
      * チュートリアル完了の記録
@@ -571,7 +516,6 @@ export class UserProgressModel {
             this.completedTutorials.add(tutorialId);
             this.statistics.totalTutorialsCompleted++;
             this.updateLastActivity(); }
-        }
     }
 
     /**
@@ -580,18 +524,16 @@ export class UserProgressModel {
      */
     viewHelpSection(sectionId: string): void { if(!this.viewedHelpSections.has(sectionId) {
             this.viewedHelpSections.add(sectionId); }
-        }'
+
         this.statistics.totalHelpViews++;''
         this.updateLastActivity()';
-    addSearchHistory(query: string, language: string = 'ja'): void { this.searchHistory.push({)
+    addSearchHistory(query: string, language: string = 'ja): void { this.searchHistory.push({)'
             query,);
             language);
-            timestamp: Date.now() }
-        });
+            timestamp: Date.now( ,});
         
         // 最大100件の履歴を保持
         if (this.searchHistory.length > 100) { this.searchHistory.shift(); }
-        }
         
         this.statistics.totalSearches++;
         this.updateLastActivity();
@@ -603,14 +545,13 @@ export class UserProgressModel {
      */
     unlockAchievement(achievementId: string): void { this.achievements.add(achievementId);
         this.updateLastActivity(); }
-    }
 
     /**
      * 設定の更新
      * @param newPreferences - 新しい設定
      */
     updatePreferences(newPreferences: Partial<UserPreferences>): void {
-        this.preferences = { ...this.preferences, ...newPreferences };
+        this.preferences = { ...this.preferences, ...newPreferences;
         this.updateLastActivity();
     }
 
@@ -620,21 +561,19 @@ export class UserProgressModel {
      */
     addHelpTime(duration: number): void { this.statistics.timeSpentInHelp += duration;
         this.updateLastActivity(); }
-    }
 
     /**
      * 進捗統計の取得
      * @returns 進捗統計
      */
     getProgressStatistics(): ProgressStatistics { return { completedTutorials: this.completedTutorials.size,
-            viewedHelpSections: this.viewedHelpSections.size,
-            totalSearches: this.statistics.totalSearches,
-            totalHelpViews: this.statistics.totalHelpViews,
-            timeSpentInHelp: this.statistics.timeSpentInHelp,
+            viewedHelpSections: this.viewedHelpSections.size;
+            totalSearches: this.statistics.totalSearches;
+            totalHelpViews: this.statistics.totalHelpViews;
+            timeSpentInHelp: this.statistics.timeSpentInHelp;
             achievements: this.achievements.size, };
             lastActivity: this.lastActivity }
-        },
-    }
+        }
 
     /**
      * 完了率の計算
@@ -643,21 +582,19 @@ export class UserProgressModel {
      * @returns 完了率情報
      */
     getCompletionRates(totalTutorials: number = 0, totalHelpSections: number = 0): CompletionRates { return { tutorialCompletionRate: totalTutorials > 0 ? (this.completedTutorials.size / totalTutorials) * 100 : 0 };
-            helpViewCompletionRate: totalHelpSections > 0 ? (this.viewedHelpSections.size / totalHelpSections) * 100 : 0 }
-        },
-    }
+            helpViewCompletionRate: totalHelpSections > 0 ? (this.viewedHelpSections.size / totalHelpSections) * 100 : 0 
+        }
 
     /**
      * 検索パターンの分析
      * @returns 検索パターン分析結果
      */
     analyzeSearchPatterns(): SearchPatterns { const patterns: SearchPatterns = { }
-            commonQueries: {},
-            languageDistribution: {},
-            timeDistribution: { morning: 0, afternoon: 0, evening: 0, night: 0 }
-        };
+            commonQueries: {};
+            languageDistribution: {};
+            timeDistribution: { morning: 0, afternoon: 0, evening: 0, night: 0 ,};
 
-        for(const search of this.searchHistory) {
+        for(const, search of, this.searchHistory) {
 
             // よく使われるクエリ
             patterns.commonQueries[search.query] = (patterns.commonQueries[search.query] || 0) + 1;
@@ -682,34 +619,31 @@ export class UserProgressModel {
      * 最終活動時刻の更新
      */
     updateLastActivity(): void { this.lastActivity = Date.now(); }
-    }
 
     /**
      * JSON形式での出力（機密データを除く）
      * @returns JSON形式のデータ
      */
     toJSON(): Record<string, any> { return { userId: this.userId,
-            completedTutorials: Array.from(this.completedTutorials),
-            viewedHelpSections: Array.from(this.viewedHelpSections),
+            completedTutorials: Array.from(this.completedTutorials);
+            viewedHelpSections: Array.from(this.viewedHelpSections);
             searchHistory: this.searchHistory.slice(-20), // 最新20件のみ;
-            preferences: this.preferences,
-            lastActivity: this.lastActivity,
+            preferences: this.preferences;
+            lastActivity: this.lastActivity;
             statistics: this.statistics, };
             achievements: Array.from(this.achievements); }
-        };
-    }
+        }
 
     /**
      * ローカルストレージ用の軽量データ
      * @returns 軽量データ
      */
     toLightweightData(): Record<string, any> { return { userId: this.userId,
-            completedTutorials: Array.from(this.completedTutorials),
-            preferences: this.preferences,
+            completedTutorials: Array.from(this.completedTutorials);
+            preferences: this.preferences;
             lastActivity: this.lastActivity, };
             achievements: Array.from(this.achievements); }
-        };
-    }
+        }
 }
 
 /**
@@ -723,20 +657,20 @@ export class DataModelFactory {
      * @returns モデルインスタンス
      */
     static create(type: string, data: any): HelpContentModel | TutorialModel | FAQModel | UserProgressModel {''
-        switch(type') {'
-            '';
+        switch(type) {'
+
             case 'help':'';
             case 'helpContent':'';
-                return new HelpContentModel(data');''
+                return new HelpContentModel(data);''
             case 'tutorial':'';
-                return new TutorialModel(data');''
+                return new TutorialModel(data);''
             case 'faq':'';
-                return new FAQModel(data');''
+                return new FAQModel(data);''
             case 'userProgress':;
                 return new UserProgressModel(data);
-        }
+        ,}
             default: }
-                throw new Error(`Unknown data model type: ${type)`}),
+                throw new Error(`Unknown, data model, type: ${type}`});
         }
     }
 
@@ -747,9 +681,8 @@ export class DataModelFactory {
      * @returns モデルインスタンス配列
      */'
     static createBatch(type: string, dataArray: any[]): (HelpContentModel | TutorialModel | FAQModel | UserProgressModel)[] { ''
-        if (!Array.isArray(dataArray)') {''
-            throw new Error('Data must be an array for batch creation'); }
-        }
+        if(!Array.isArray(dataArray)) {''
+            throw new Error('Data, must be, an array, for batch, creation); }'
 
         return dataArray.map(data => this.create(type, data).filter(model => model.validate();
     }
@@ -759,6 +692,7 @@ export class DataModelFactory {
      * @returns サポートタイプ一覧'
      */''
     static getSupportedTypes(''';
-        return ['help', 'helpContent', 'tutorial', 'faq', 'userProgress'];'
+        return ['help', 'helpContent', 'tutorial', 'faq', 'userProgress'];
+
     }''
 })

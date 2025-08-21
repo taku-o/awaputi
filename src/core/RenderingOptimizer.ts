@@ -7,32 +7,26 @@ export class RenderingOptimizer {
         // レンダリング設定
         this.config = {
             offscreenCanvas: {
-                enabled: true,
+                enabled: true;
                 cacheSize: 10, // 最大10個のオフスクリーンキャンバスをキャッシュ
     }
-    }
                 reusable: true }
-            },
-            differentialUpdate: { enabled: true,
-                trackDirtyRegions: true,
+            };
+            differentialUpdate: { enabled: true;
+                trackDirtyRegions: true;
                 mergeThreshold: 0.3, // 30%以上重複していればマージ;
-                maxRegions: 20 // 最大20の差分領域を追跡 }
-            },
-            viewportCulling: { enabled: true,
+                maxRegions: 20 // 最大20の差分領域を追跡 ,};
+            viewportCulling: { enabled: true;
                 margin: 50, // ビューポート外でも50pxマージンは描画;
-                enableOcclusion: true // オクルージョンカリング }
-            },
+                enableOcclusion: true // オクルージョンカリング ,};
             performance: { targetFrameTime: 16, // 60fps = 16.67ms
                 warningThreshold: 20, // 20ms超過で警告;
                 emergencyThreshold: 33, // 33ms超過で緊急最適化;
-                frameSkipping: true // 重い処理時のフレームスキップ }
-            },
-            layering: { enabled: true,
-                maxLayers: 5,
+                frameSkipping: true // 重い処理時のフレームスキップ ,};
+            layering: { enabled: true;
+                maxLayers: 5;
                 autoOptimize: true // レイヤーの自動最適化 }
-            }
-        },
-        
+        };
         // オフスクリーンキャンバスプール
         this.offscreenCanvasPool = new Map();
         this.canvasCache = new Map();
@@ -43,30 +37,25 @@ export class RenderingOptimizer {
         
         // ビューポート管理
         this.viewport = { x: 0, y: 0, width: 1920, height: 1080,
-            scaleFactor: 1, rotation: 0 }
-        };
+            scaleFactor: 1, rotation: 0 ,};
         
         // パフォーマンス監視
         this.performanceMetrics = { frameCount: 0,
-            averageFrameTime: 0,
-            maxFrameTime: 0,
-            skippedFrames: 0,
-            dirtyRegionCount: 0,
-            culledObjects: 0,
-            lastFrameTime: 0 }
-        },
-        
+            averageFrameTime: 0;
+            maxFrameTime: 0;
+            skippedFrames: 0;
+            dirtyRegionCount: 0;
+            culledObjects: 0;
+            lastFrameTime: 0 ,};
         // レイヤー管理
         this.layers = new Map();
         this.layerOrder = [];
         
         // レンダリング状態
         this.renderingState = { isRendering: false,
-            lastRenderTime: 0,
-            frameRequestId: null,
-            emergencyMode: false }
-        },
-        
+            lastRenderTime: 0;
+            frameRequestId: null;
+            emergencyMode: false ,};
         // オクルージョンカリング
         this.occlusionMap = new Map();
         
@@ -90,13 +79,13 @@ export class RenderingOptimizer {
         if (!this.config.offscreenCanvas.enabled) return;
         
         // OffscreenCanvasの対応確認
-        this.offscreenCanvasSupported = typeof OffscreenCanvas !== 'undefined';'
-        '';
-        if (!this.offscreenCanvasSupported') {'
-    }'
-            console.warn('OffscreenCanvas not supported, falling back to regular canvas'); }
-        }
+        this.offscreenCanvasSupported = typeof OffscreenCanvas !== 'undefined';
+
+        if(!this.offscreenCanvasSupported) {'
     }
+
+            console.warn('OffscreenCanvas not supported, falling back to regular canvas'); }'
+}
     
     /**
      * パフォーマンス監視の設定
@@ -112,8 +101,8 @@ export class RenderingOptimizer {
      * レイヤーシステムの設定
      */
     setupLayers() {
-        '';
-        if (!this.config.layering.enabled') return;
+
+        if(!this.config.layering.enabled) return;
         ';
         // デフォルトレイヤーの作成
         const defaultLayers = ['background', 'charts', 'ui', 'overlay', 'debug'];
@@ -131,16 +120,15 @@ export class RenderingOptimizer {
         const layer = {
             name,
             zIndex,
-            canvas: null,
-            context: null,
-            isDirty: false,
-            visible: true,
-            opacity: 1.0,
-            renderables: [],
-    }
+            canvas: null;
+            context: null;
+            isDirty: false;
+            visible: true;
+            opacity: 1.0;
+            renderables: [];
+    ,}
             lastUpdate: 0 }
-        },
-        
+        };
         this.layers.set(name, layer);
         this.updateLayerOrder();
         
@@ -173,19 +161,15 @@ export class RenderingOptimizer {
             if(this.shouldEnterEmergencyMode() {
                 
             }
-                return await this.renderEmergencyMode(context, renderables, options); }
-            }
+                return await this.renderEmergencyMode(context, renderables, options);
             
             // レンダリング方式の決定
-            if(this.config.differentialUpdate.enabled && this.hasDirtyRegions() { return await this.renderDifferential(context, renderables, options); }
-            } else if (this.config.layering.enabled) { return await this.renderLayered(context, renderables, options); }
-            } else { return await this.renderDirect(context, renderables, options);' }'
-            } catch (error) { ''
+            if(this.config.differentialUpdate.enabled && this.hasDirtyRegions() { return await this.renderDifferential(context, renderables, options); } else if (this.config.layering.enabled) { return await this.renderLayered(context, renderables, options); } else { return await this.renderDirect(context, renderables, options);' }'
+
+            } catch (error) {
             console.error('Optimized rendering failed:', error);
-            throw error; }
-        } finally { this.renderingState.isRendering = false;
+            throw error; } finally { this.renderingState.isRendering = false;
             this.updatePerformanceMetrics(frameStartTime); }
-        }
     }
     
     /**
@@ -195,15 +179,14 @@ export class RenderingOptimizer {
         const canvas = context.canvas;
         
         this.viewport = {
-            x: options.viewportX || 0,
-            y: options.viewportY || 0,
-            width: canvas.width,
-            height: canvas.height,
-            scaleFactor: options.scaleFactor || 1,
+            x: options.viewportX || 0;
+            y: options.viewportY || 0;
+            width: canvas.width;
+            height: canvas.height;
+            scaleFactor: options.scaleFactor || 1;
     }
             rotation: options.rotation || 0 }
-        },
-    }
+        }
     
     /**
      * 緊急モード判定
@@ -213,8 +196,7 @@ export class RenderingOptimizer {
         const averageRecentTime = recentFrameTimes.reduce((sum, time) => sum + time, 0) / recentFrameTimes.length;
         
     }
-        return averageRecentTime > this.config.performance.emergencyThreshold; }
-    }
+        return averageRecentTime > this.config.performance.emergencyThreshold;
     
     /**
      * 緊急モードレンダリング
@@ -223,25 +205,23 @@ export class RenderingOptimizer {
         
         // 最小限の描画のみ実行
         const essentialRenderables = this.filterEssentialRenderables(renderables);''
-        const culledRenderables = this.applyViewportCulling(essentialRenderables');
+        const culledRenderables = this.applyViewportCulling(essentialRenderables);
         
         // 品質を下げて描画
         const emergencyOptions = {
-            ...options,'';
-            quality: 'low',
-            skipAnimations: true,
-            skipEffects: true }
-        },
-        
+            ...options,
+            quality: 'low';
+            skipAnimations: true;
+            skipEffects: true ,};
         return await this.renderDirect(context, culledRenderables, emergencyOptions);
     }
     
     /**
      * 必須レンダラブルのフィルタリング'
      */''
-    filterEssentialRenderables(renderables') { return renderables.filter(renderable => { ') }'
-            return renderable.essential || renderable.priority === 'high'); }
-    }
+    filterEssentialRenderables(renderables) { return renderables.filter(renderable => { ') }'
+
+            return renderable.essential || renderable.priority === 'high');
     
     /**
      * 差分更新レンダリング
@@ -252,7 +232,7 @@ export class RenderingOptimizer {
         const mergedRegions = this.mergeDirtyRegions(dirtyRegions);
         
         // 各差分領域を描画
-        for(const region of mergedRegions) {
+        for(const, region of, mergedRegions) {
             
         }
             await this.renderRegion(context, renderables, region, options); }
@@ -263,8 +243,7 @@ export class RenderingOptimizer {
             type: 'differential');
             regionsUpdated: mergedRegions.length,);
             totalArea: mergedRegions.reduce((sum, region) => sum + (region.width * region.height), 0);
-        };
-    }
+        }
     
     /**
      * 差分領域のマージ
@@ -275,15 +254,14 @@ export class RenderingOptimizer {
         const merged = [];
         const processed = new Set();
         
-        for (let i = 0; i < regions.length; i++) {
+        for (let, i = 0; i < regions.length; i++) {
             if(processed.has(i) continue;
     }
-             }
-            let currentRegion = { ...regions[i] };
+            let currentRegion = { ...regions[i];
             processed.add(i);
             
             // 他の領域との重複チェック
-            for(let j = i + 1; j < regions.length; j++) {
+            for(let, j = i + 1; j < regions.length; j++) {
                 if(processed.has(j) continue;
                 
                 const overlap = this.calculateOverlap(currentRegion, regions[j]);
@@ -295,8 +273,7 @@ export class RenderingOptimizer {
                     currentRegion = this.mergeRegions(currentRegion, regions[j]);
             }
                     processed.add(j); }
-                }
-            }
+}
             
             merged.push(currentRegion);
         }
@@ -316,8 +293,7 @@ export class RenderingOptimizer {
         if (x2 <= x1 || y2 <= y1) return 0;
         
     }
-        return (x2 - x1) * (y2 - y1); }
-    }
+        return (x2 - x1) * (y2 - y1);
     
     /**
      * マージ後の面積計算
@@ -329,8 +305,7 @@ export class RenderingOptimizer {
         const y2 = Math.max(region1.y + region1.height, region2.y + region2.height);
         
     }
-        return (x2 - x1) * (y2 - y1); }
-    }
+        return (x2 - x1) * (y2 - y1);
     
     /**
      * 領域のマージ
@@ -341,9 +316,7 @@ export class RenderingOptimizer {
         const width = Math.max(region1.x + region1.width, region2.x + region2.width) - x;
         const height = Math.max(region1.y + region1.height, region2.y + region2.height) - y;
     }
-         }
-        return { x, y, width, height };
-    }
+        return { x, y, width, height }
     
     /**
      * 領域レンダリング
@@ -362,14 +335,11 @@ export class RenderingOptimizer {
             const culledRenderables = this.applyViewportCulling(regionRenderables);
             
             // レンダラブルを描画
-            for(const renderable of culledRenderables) {
+            for(const, renderable of, culledRenderables) {
                 
             }
                 await this.renderSingle(context, renderable, options); }
-            }
-            
-        } finally { context.restore(); }
-        }
+} finally { context.restore(); }
     }
     
     /**
@@ -378,10 +348,7 @@ export class RenderingOptimizer {
     filterRenderablesInRegion(renderables, region) {
         return renderables.filter(renderable => { );
             if (!renderable.bounds) return true;
-    }
-             }
-            return this.intersectsRegion(renderable.bounds, region); }
-        });
+            return this.intersectsRegion(renderable.bounds, region););
     }
     
     /**
@@ -402,34 +369,36 @@ export class RenderingOptimizer {
         this.distributeRenderablesToLayers(renderables);
         
         // 各レイヤーを順序通りに描画
-        for(const layerName of this.layerOrder) {
+        for(const, layerName of, this.layerOrder) {
             const layer = this.layers.get(layerName);
             
             if (!layer || !layer.visible || layer.renderables.length === 0) continue;
-            ';'
-        }'
-            await this.renderLayer(context, layer, options'); }
+            ';
+
         }
-        ';'
+
+            await this.renderLayer(context, layer, options); }
+        }
+        ';
+
         return { ''
-            type: 'layered',
+            type: 'layered';
             layersRendered: this.layerOrder.length, };
             totalRenderables: renderables.length }
-        },
-    }
+        }
     
     /**
      * レンダラブルのレイヤー分散
      */
     distributeRenderablesToLayers(renderables) {
         // 各レイヤーをクリア
-        for(const layer of this.layers.values() {
+        for(const, layer of, this.layers.values() {
     }
             layer.renderables = []; }
         }
         
         // レンダラブルを適切なレイヤーに配置
-        for(const renderable of renderables) {
+        for(const, renderable of, renderables) {
             const layerName = this.determineLayer(renderable);
             const layer = this.layers.get(layerName);
             
@@ -437,8 +406,7 @@ export class RenderingOptimizer {
                 layer.renderables.push(renderable);
         }
                 layer.isDirty = true; }
-            }
-        }
+}
     }
     
     /**
@@ -446,9 +414,8 @@ export class RenderingOptimizer {
      */
     determineLayer(renderable) {
         if (renderable.layer) return renderable.layer;
-        ;
         // タイプに基づく自動判定
-        switch (renderable.type') {''
+        switch(renderable.type) {''
             case 'background': return 'background';''
             case 'chart':'';
             case 'graph': return 'charts';''
@@ -458,11 +425,11 @@ export class RenderingOptimizer {
             case 'popup':'';
             case 'modal':'';
             case 'tooltip': return 'overlay';''
-            case 'debug': return 'debug';'
-    }'
-            default: return 'charts'; }
-        }
+            case 'debug': return 'debug';
+
     }
+
+            default: return 'charts';
     
     /**
      * レイヤーレンダリング
@@ -473,14 +440,15 @@ export class RenderingOptimizer {
             context.drawImage(layer.canvas, 0, 0);
             context.globalAlpha = 1.0;
             return; }
-        }
         
         // レイヤーキャンバスの作成または取得
         if(!layer.canvas) {
-            '';
-            layer.canvas = this.createLayerCanvas(this.viewport.width, this.viewport.height');'
-        }'
-            layer.context = layer.canvas.getContext('2d'); }
+
+            layer.canvas = this.createLayerCanvas(this.viewport.width, this.viewport.height);
+
+        }
+
+            layer.context = layer.canvas.getContext('2d); }'
         }
         
         // レイヤーをクリア
@@ -490,8 +458,7 @@ export class RenderingOptimizer {
         const culledRenderables = this.applyViewportCulling(layer.renderables);
         
         // レイヤーにレンダラブルを描画
-        for (const renderable of culledRenderables) { await this.renderSingle(layer.context, renderable, options); }
-        }
+        for (const, renderable of, culledRenderables) { await this.renderSingle(layer.context, renderable, options); }
         
         // メインキャンバスに合成
         context.globalAlpha = layer.opacity;
@@ -507,15 +474,13 @@ export class RenderingOptimizer {
      */
     createLayerCanvas(width, height) {
         if (this.offscreenCanvasSupported && this.config.offscreenCanvas.enabled) {'
-    }'
-            return new OffscreenCanvas(width, height'); }'
-        } else {  ''
-            const canvas = document.createElement('canvas');
+    }
+
+            return new OffscreenCanvas(width, height); else {  ''
+            const canvas = document.createElement('canvas);
             canvas.width = width;
             canvas.height = height; }
-            return canvas; }
-        }
-    }
+            return canvas;
     
     /**
      * ダイレクトレンダリング
@@ -524,18 +489,20 @@ export class RenderingOptimizer {
         const culledRenderables = this.applyViewportCulling(renderables);
         
         // 各レンダラブルを直接描画
-        for(const renderable of culledRenderables) {
-            ';'
-        }'
-            await this.renderSingle(context, renderable, options'); }
+        for(const, renderable of, culledRenderables) {
+            ';
+
         }
-        ';'
+
+            await this.renderSingle(context, renderable, options); }
+        }
+        ';
+
         return { ''
-            type: 'direct',
+            type: 'direct';
             renderablesProcessed: culledRenderables.length, };
             culledCount: renderables.length - culledRenderables.length }
-        },
-    }
+        }
     
     /**
      * ビューポートカリングの適用
@@ -545,9 +512,9 @@ export class RenderingOptimizer {
         
         const margin = this.config.viewportCulling.margin;
         const extendedViewport = {
-            x: this.viewport.x - margin,
-            y: this.viewport.y - margin,
-            width: this.viewport.width + (margin * 2),
+            x: this.viewport.x - margin;
+            y: this.viewport.y - margin;
+            width: this.viewport.width + (margin * 2);
     }
             height: this.viewport.height + (margin * 2); }
         };
@@ -555,8 +522,7 @@ export class RenderingOptimizer {
         const visible = renderables.filter(renderable => {  );
             if (!renderable.bounds) return true; // 境界不明の場合は描画
              }
-            return this.isInViewport(renderable.bounds, extendedViewport); }
-        });
+            return this.isInViewport(renderable.bounds, extendedViewport););
         
         this.performanceMetrics.culledObjects = renderables.length - visible.length;
         
@@ -585,18 +551,15 @@ export class RenderingOptimizer {
                 if(this.isOccluded(renderable) {
             }
                     return; }
-                }
-            }
+}
             
             // レンダリング実行
             await renderable.render(context, options);
             
             // レンダリング状態の記録
             this.updateRenderState(renderable);
-            '';
-        } catch (error) { ''
-            console.error('Single renderable rendering failed:', error) }
-        }
+
+        } catch (error) { console.error('Single renderable rendering failed:', error }
     }
     
     /**
@@ -611,9 +574,7 @@ export class RenderingOptimizer {
             
             if(this.isCompletelyOccluded(renderable.bounds, occluder.bounds) {
     }
-                return true; }
-            }
-        }
+                return true;
         
         return false;
     }
@@ -635,19 +596,18 @@ export class RenderingOptimizer {
     updateRenderState(renderable) {
         if (renderable.id) {
             this.lastRenderState.set(renderable.id, {)
-                bounds: renderable.bounds),
-                lastRender: Date.now(),
-    }
+                bounds: renderable.bounds);
+                lastRender: Date.now();
+    ,}
                 version: renderable.version || 1 }
-            }),
+            });
         }
     }
     
     /**
      * 差分領域の追加
      */
-    addDirtyRegion(region) {
-        if (!this.config.differentialUpdate.enabled) return;
+    addDirtyRegion(region) { if (!this.config.differentialUpdate.enabled) return;
         
         this.dirtyRegions.add(region);
         
@@ -657,17 +617,14 @@ export class RenderingOptimizer {
             this.dirtyRegions.clear();
             this.addDirtyRegion({)
                 x: 0, y: 0);
-                width: this.viewport.width,)
-    }
+                width: this.viewport.width, }
                 height: this.viewport.height); }
-        }
-    }
+}
     
     /**
      * 差分領域の存在確認
      */
     hasDirtyRegions() { return this.dirtyRegions.size > 0; }
-    }
     
     /**
      * オフスクリーンキャンバスの取得
@@ -675,12 +632,10 @@ export class RenderingOptimizer {
     getOffscreenCanvas(width, height, id = null) {
         if (!this.config.offscreenCanvas.enabled) return null;
     }
-         }
         const key = id || `${width}x${height}`;
         
         // キャッシュから取得
         if(this.canvasCache.has(key) { return this.canvasCache.get(key); }
-        }
         
         // 新規作成
         const canvas = this.createLayerCanvas(width, height);
@@ -720,11 +675,9 @@ export class RenderingOptimizer {
         
         // パフォーマンス警告
         if (frameTime > this.config.performance.warningThreshold) { this.triggerPerformanceWarning(frameTime); }
-        }
         
         // 緊急モードの解除
         if (this.renderingState.emergencyMode && frameTime < this.config.performance.targetFrameTime) { this.renderingState.emergencyMode = false; }
-        }
     }
     
     /**
@@ -732,18 +685,18 @@ export class RenderingOptimizer {
      */
     triggerPerformanceWarning(frameTime) {
         if (this.performanceAlert) return; // 重複警告防止
-        ';'
+        ';
+
         this.performanceAlert = {''
             timestamp: Date.now(''
-    }'
-            type: frameTime > this.config.performance.emergencyThreshold ? 'emergency' : 'warning' })
-        })
+    }
+
+            type: frameTime > this.config.performance.emergencyThreshold ? 'emergency' : 'warning' }))
         );
-        console.warn(`Rendering performance ${this.performanceAlert.type): ${frameTime.toFixed(2})}ms`);
+        console.warn(`Rendering, performance ${this.performanceAlert.type}: ${frameTime.toFixed(2})ms`);
         
         // 警告の自動クリア
-        setTimeout(() => { this.performanceAlert = null; }
-        }, 5000);
+        setTimeout(() => { this.performanceAlert = null; }, 5000);
     }
     
     /**
@@ -751,15 +704,14 @@ export class RenderingOptimizer {
      */
     getPerformanceStatistics() {
         return { ...this.performanceMetrics,
-            frameTimeHistory: [...this.frameTimeHistory],
-            emergencyMode: this.renderingState.emergencyMode,
-            dirtyRegionCount: this.dirtyRegions.size,
-            layerCount: this.layers.size,
-    }
+            frameTimeHistory: [...this.frameTimeHistory];
+            emergencyMode: this.renderingState.emergencyMode;
+            dirtyRegionCount: this.dirtyRegions.size;
+            layerCount: this.layers.size;
+    ,}
             canvasCacheSize: this.canvasCache.size, };
             offscreenCanvasSupported: this.offscreenCanvasSupported }
-        },
-    }
+        }
     
     /**
      * 設定の更新
@@ -771,8 +723,7 @@ export class RenderingOptimizer {
         if (newConfig.layering) {
     }
             this.setupLayers(); }
-        }
-    }
+}
     
     /**
      * キャッシュのクリア
@@ -785,14 +736,13 @@ export class RenderingOptimizer {
         this.occlusionMap.clear();
         
         // レイヤーキャンバスのクリア
-        for(const layer of this.layers.values() {
+        for(const, layer of, this.layers.values() {
             layer.canvas = null;
             layer.context = null;
             layer.renderables = [];
     }
             layer.isDirty = true; }
-        }
-    }
+}
     
     /**
      * リソースの破棄
@@ -804,5 +754,5 @@ export class RenderingOptimizer {
     }
             cancelAnimationFrame(this.renderingState.frameRequestId); }
         }
-        '';
+
         this.layers.clear(');

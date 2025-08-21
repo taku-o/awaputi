@@ -11,43 +11,38 @@ import { UtilsErrorAnalyzer } from './error/UtilsErrorAnalyzer.js';
 
 // Type definitions
 interface ErrorInfo { id: string,
-    message: string,
+    message: string;
     stack?: string;
-    context: string,
+    context: string;
     metadata: Record<string, any>;
-    timestamp: number,
-    severity?: string }
-}
+    timestamp: number;
+    severity?: string ,}
 
-interface ErrorStats { total: number,
+interface ErrorStats { total: number;
     byType: Map<string, number>;
     byContext: Map<string, number>;
-    critical: number,
-    recovered: number }
-}
+    critical: number;
+    recovered: number ,}
 
-interface FallbackState { audioDisabled: boolean,
-    canvasDisabled: boolean,
-    storageDisabled: boolean,
-    reducedEffects: boolean,
+interface FallbackState { audioDisabled: boolean;
+    canvasDisabled: boolean;
+    storageDisabled: boolean;
+    reducedEffects: boolean;
     safeMode: boolean }
-}
-'';
+
 type ErrorSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
 
 interface PerformanceMemory { usedJSHeapSize: number,
-    jsHeapSizeLimit: number,
-    totalJSHeapSize?: number }
-}
+    jsHeapSizeLimit: number;
+    totalJSHeapSize?: number ,}
 
 declare global { interface Performance {
         memory?: PerformanceMemory;
     }
-    }
     
-    interface Window { performance: Performance
-    }
-    }
+    interface Window {
+    performance: Performance;
+}
 }
 
 export class ErrorHandler {
@@ -71,19 +66,18 @@ export class ErrorHandler {
     // Delegated properties from sub-components
     public recoveryStrategies: Map<string, Function>;
     public fallbackState: FallbackState,
-    '';
+
     constructor(''';
-        this.isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';''
-        this.isNode = typeof process !== 'undefined' && !!process.versions && !!process.versions.node;
+        this.isBrowser = typeof, window !== 'undefined' && typeof, document !== 'undefined';''
+        this.isNode = typeof, process !== 'undefined' && !!process.versions && !!process.versions.node;
         
-        // Main controller state
-        this.isInitialized = false;
+        // Main, controller state, this.isInitialized = false;
         
-        // Initialize sub-components with dependency injection)
-        this.logger = new ErrorLogger(this as any);
-        this.reporter = new UtilsErrorReporter(this as any);
-        this.recovery = new ErrorRecovery(this as any);
-        this.analyzer = new UtilsErrorAnalyzer(this as any);
+        // Initialize, sub-components, with dependency, injection)
+        this.logger = new ErrorLogger(this, as any);
+        this.reporter = new UtilsErrorReporter(this, as any);
+        this.recovery = new ErrorRecovery(this, as any);
+        this.analyzer = new UtilsErrorAnalyzer(this, as any);
         
         // Legacy compatibility properties - delegated to sub-components
         this.errorLog = [];
@@ -93,22 +87,18 @@ export class ErrorHandler {
         this.maxRecoveryAttempts = 3;
         this.fallbackModes = new Map<string, boolean>();
         this.errorStats = {
-            total: 0,
+            total: 0;
             byType: new Map<string, number>(),
             byContext: new Map<string, number>(),
-            critical: 0,
-            recovered: 0 }
-        },
-        
+            critical: 0;
+            recovered: 0 ,};
         // Delegated properties from sub-components
         this.recoveryStrategies = new Map<string, Function>();
         this.fallbackState = { audioDisabled: false,
-            canvasDisabled: false,
-            storageDisabled: false,
-            reducedEffects: false,
-            safeMode: false }
-        },
-        
+            canvasDisabled: false;
+            storageDisabled: false;
+            reducedEffects: false;
+            safeMode: false ,};
         this.initialize();
     }
     
@@ -120,53 +110,56 @@ export class ErrorHandler {
         try {
             this.setupGlobalErrorHandlers();
             this.setupPerformanceMonitoring()';
-            console.log('[ErrorHandler] Main controller initialized successfully');' }'
-        } catch (error) { ''
+            console.log('[ErrorHandler] Main, controller initialized, successfully');' }
+
+        } catch (error) {
             console.error('[ErrorHandler] Failed to initialize:', error);
             // Fallback to safe mode
             this.enableSafeMode(); }
-        }
     }
     
     /**
      * Setup global error handlers
      */
     private setupGlobalErrorHandlers(): void { // Browser environment only
-        if(!this.isBrowser') {'
-            '';
-            console.log('[ErrorHandler] Skipping global error handlers in non-browser environment'');
+        if(!this.isBrowser) {'
+
+            console.log('[ErrorHandler] Skipping, global error, handlers in, non-browser, environment'');
         }
             return; }
         }
         ';
         // Unhandled JavaScript errors
-        window.addEventListener('error', (event: ErrorEvent') => {  ''
+        window.addEventListener('error', (event: ErrorEvent) => { ''
             this.handleError(event.error, 'GLOBAL_ERROR', {
                 filename: event.filename);
                 lineno: event.lineno);
-                colno: event.colno,) }
-                message: event.message); }'
+                colno: event.colno, }
+                message: event.message); }
+
             });''
         }');
         ';
         // Unhandled Promise rejections
-        window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent') => {  ''
-            this.handleError(event.reason, 'PROMISE_REJECTION', {) }
+        window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => { ''
+            this.handleError(event.reason, 'PROMISE_REJECTION', { }
                 promise: event.promise); }
-            });'
+            });
+
             event.preventDefault(); // Prevent default console output
         });
         ';
         // Resource loading errors
         window.addEventListener('error', (event: Event) => {  }
-            const target = event.target as HTMLElement & { src?: string; href?: string; tagName?: string };'
-            if(target && target !== (window as any) { this.handleError();' }'
-                    new Error(`Resource load failed: ${target.src || target.href}`'), ''
+            const target = event.target as HTMLElement & { src?: string; href?: string; tagName?: string };
+
+            if(target && target !== (window, as any) { this.handleError();' }'
+
+                    new Error(`Resource, load failed: ${target.src || target.href}`), ''
                     'RESOURCE_ERROR', ;
                     { element: target.tagName,
-                        source: target.src || target.href }
-                    }
-                ),
+                        source: target.src || target.href ,}
+                );
             }
         }, true);
     }
@@ -175,9 +168,9 @@ export class ErrorHandler {
      * Setup performance monitoring
      */'
     private setupPerformanceMonitoring(): void { // Browser environment only
-        if(!this.isBrowser') {'
-            '';
-            console.log('[ErrorHandler] Skipping performance monitoring in non-browser environment');
+        if(!this.isBrowser) {'
+
+            console.log('[ErrorHandler] Skipping, performance monitoring, in non-browser, environment);
         }
             return; }
         }
@@ -192,13 +185,13 @@ export class ErrorHandler {
                 // Memory usage over 80%
         }
                 if (usedMB / limitMB > 0.8) { }
-                    this.handleError();' }'
-                        new Error(`High memory usage: ${Math.round(usedMB})}MB / ${Math.round(limitMB})}MB`'), ''
+                    this.handleError(');' }'
+
+                        new Error(`High, memory usage: ${Math.round(usedMB})MB / ${Math.round(limitMB})MB`'), ''
                         'MEMORY_WARNING', ;
                         { usedMB: Math.round(usedMB),
-                            limitMB: Math.round(limitMB),
-                            percentage: Math.round((usedMB / limitMB) * 100) }
-                        }
+                            limitMB: Math.round(limitMB);
+                            percentage: Math.round((usedMB / limitMB) * 100 ,}
                     );
                 }
             }, 10000); // Every 10 seconds
@@ -222,19 +215,19 @@ export class ErrorHandler {
             }
                 if (fps < 30) { }
                     this.handleError();' }'
-                        new Error(`Low FPS detected: ${fps)`'}), ''
+
+                        new Error(`Low, FPS detected: ${fps}`'}), ''
                         'PERFORMANCE_WARNING', ;
                         { fps: fps,
-                            timestamp: currentTime }
-                        }
-                    ),
+                            timestamp: currentTime ,}
+                    );
                 }
             }
             
             requestAnimationFrame(monitorFPS);
-        };'
-        '';
-        requestAnimationFrame(monitorFPS');
+        };
+
+        requestAnimationFrame(monitorFPS);
     }
     
     /**
@@ -247,12 +240,10 @@ export class ErrorHandler {
             const errorInfo: ErrorInfo = {''
                 id: normalizedError.id || crypto.randomUUID()';
                 message: normalizedError.message || 'Unknown error',')';
-                timestamp: typeof normalizedError.timestamp === 'number' ? normalizedError.timestamp : Date.now(),
+                timestamp: typeof normalizedError.timestamp === 'number' ? normalizedError.timestamp : Date.now();
                 ...normalizedError,
-                context: context,
-                metadata: metadata }
-            },
-            
+                context: context;
+                metadata: metadata ,};
             // Add to error log using logger
             this.logger.addToErrorLog(errorInfo);
             
@@ -263,29 +254,28 @@ export class ErrorHandler {
             const severity: ErrorSeverity = this.analyzer.determineSeverity(errorInfo) as ErrorSeverity,
             ;
             // Log error using logger
-            this.logger.logStructuredError(errorInfo, severity');
+            this.logger.logStructuredError(errorInfo, severity);
             ';
             // Attempt recovery using recovery system
-            if (severity !== 'LOW') { this.recovery.attemptRecovery(errorInfo); }
-            }'
-            '';
-            // Notify user using reporter (for critical errors');''
-            if (severity === 'CRITICAL') { this.reporter.notifyUser(errorInfo);' }'
+            if(severity !== 'LOW) { this.recovery.attemptRecovery(errorInfo); }'
+
+            // Notify user using reporter(for, critical errors);''
+            if(severity === 'CRITICAL) { this.reporter.notifyUser(errorInfo);' }
+
             } catch (handlingError) { // Error in error handling - ultimate fallback
             console.error('[ErrorHandler] Critical: Error in error handling:', handlingError);
             this.enableSafeMode(); }
-        }
     }
     
     /**
      * Enable safe mode - ultimate fallback'
      */''
     private enableSafeMode()';
-        console.warn('[ErrorHandler] Safe mode enabled - reduced functionality active');
+        console.warn('[ErrorHandler] Safe, mode enabled - reduced, functionality active');
         ';
         // Notify user if possible
-        if(this.isBrowser && document.body') {'
-            '';
+        if(this.isBrowser && document.body) {'
+
             const safeMsg = document.createElement('div'');''
             safeMsg.textContent = 'Safe mode active: Some features may be disabled.',
             safeMsg.style.cssText = `;
@@ -301,8 +291,7 @@ export class ErrorHandler {
         }
                 if (safeMsg.parentNode) { }
                     safeMsg.parentNode.removeChild(safeMsg); }
-                }
-            }, 5000);
+}, 5000);
         }
     }
     
@@ -310,41 +299,42 @@ export class ErrorHandler {
      * Get error statistics
      */
     getErrorStats(): ErrorStats {
-        return { ...this.errorStats };
+        return { ...this.errorStats;
     }
     
     /**
      * Get current fallback state
      */
     getFallbackState(): FallbackState {
-        return { ...this.fallbackState };
+        return { ...this.fallbackState;
     }
     
     /**
      * Clear error log
      */
     clearErrorLog(): void { this.errorLog = [];
-        this.errorStats.total = 0;'
+        this.errorStats.total = 0;
+
         this.errorStats.byType.clear();''
         this.errorStats.byContext.clear()';
-        console.log('[ErrorHandler] Error log cleared'); }
-    }
+        console.log('[ErrorHandler] Error, log cleared'); }'
     
     /**
-     * Test error handling (for development)'
+     * Test error handling (for, development)'
      */''
     testErrorHandling()';
-        if (process.env.NODE_ENV === 'development' || this.isNode') {'
-        '';
-            console.log('[ErrorHandler] Testing error handling...'');
-    }'
+        if(process.env.NODE_ENV === 'development' || this.isNode) {'
+
+            console.log('[ErrorHandler] Testing, error handling...'');
+
             ' }'
-            this.handleError(new Error('Test error''), 'TEST', { testMode: true }');''
-            this.handleError('String error test', 'TEST', { testMode: true )'),' }'
-            this.handleError({ message: 'Object error test' }, 'TEST', { testMode: true )'),'
-            '';
-            console.log('[ErrorHandler] Error handling test completed''); }
-        }
+
+            this.handleError(new, Error('Test, error''), 'TEST', { testMode: true }');''
+            this.handleError('String error test', 'TEST', { testMode: true )),' }
+
+            this.handleError({ message: 'Object error test' }, 'TEST', { testMode: true )),
+
+            console.log('[ErrorHandler] Error, handling test, completed''); }
     }
     
     /**
@@ -355,7 +345,6 @@ export class ErrorHandler {
      */''
     static handle(error: Error | any, context: string = 'UNKNOWN', metadata: Record<string, any> = { ): void {
         getErrorHandler().handleError(error, context, metadata); }
-    }
 }
 
 // Singleton instance
@@ -366,4 +355,4 @@ let errorHandlerInstance: ErrorHandler | null = null,
  * @returns ErrorHandler instance
  */
 export function getErrorHandler(): ErrorHandler { if (!errorHandlerInstance) {''
-        errorHandlerInstance = new ErrorHandler(' })
+        errorHandlerInstance = new ErrorHandler(' })'

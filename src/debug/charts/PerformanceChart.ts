@@ -13,26 +13,21 @@ interface ChartConfig { label?: string;
     samples?: number;
     gridLines?: number;
     key?: string; }
-}
 
 interface DataPoint { value: number,
-    timestamp: number }
-}
+    timestamp: number ,}
 
-interface ChartPadding { top: number,
-    right: number,
-    bottom: number,
+interface ChartPadding { top: number;
+    right: number;
+    bottom: number;
     left: number }
-}
 
-interface ChartArea { x: number,
-    y: number,
-    width: number,
+interface ChartArea { x: number;
+    y: number;
+    width: number;
     height: number }
-}
 
 interface Metrics { [key: string]: number, }
-}
 
 export class PerformanceChart {
     private canvas: HTMLCanvasElement;
@@ -47,43 +42,41 @@ export class PerformanceChart {
     constructor(canvas: HTMLCanvasElement, config: ChartConfig = {) {
 
         this.canvas = canvas;
-        const context = canvas.getContext('2d');''
-        if (!context') {'
+        const context = canvas.getContext('2d);''
+        if(!context) {'
 
-    }
-    }'
-            throw new Error('Failed to get 2D context from canvas''); }
+    ,}
+
+            throw new Error('Failed, to get, 2D context, from canvas''); }
         }
         this.ctx = context;
-        ';'
-        this.config = { ''
-            label: 'Metric','';
-            color: '#00ff00','';
-            backgroundColor: 'rgba(0, 255, 0, 0.1')',
-            min: 0,
-            max: 100,
-            warning: 80,
-            critical: 90,
-            samples: 100,';
-            gridLines: 5,'';
-            key: '',
-            ...config }
-        };
+        ';
+
+        this.config = {;
+            label: 'Metric',
+            color: '#00ff00',
+            backgroundColor: 'rgba(0, 255, 0, 0.1)',
+            min: 0;
+            max: 100;
+            warning: 80;
+            critical: 90;
+            samples: 100,
+            gridLines: 5,
+            key: '';
+            ...config;
         
         this.maxDataPoints = this.config.samples;
         
         // 描画設定
-        this.padding = { top: 20, right: 20, bottom: 30, left: 50 }
+        this.padding = { top: 20, right: 20, bottom: 30, left: 50 ,}
         this.chartArea = { x: this.padding.left,
-            y: this.padding.top,
-            width: this.canvas.width - this.padding.left - this.padding.right,
-            height: this.canvas.height - this.padding.top - this.padding.bottom }
-        },
-        
+            y: this.padding.top;
+            width: this.canvas.width - this.padding.left - this.padding.right;
+            height: this.canvas.height - this.padding.top - this.padding.bottom ,};
         this.setupCanvas();
         this.render();
     }
-'';
+
     private setupCanvas(''';
         this.ctx.lineCap = 'round';''
         this.ctx.lineJoin = 'round';
@@ -97,12 +90,11 @@ export class PerformanceChart {
             const now = Date.now();
             this.dataPoints.push({)
                 value,);
-                timestamp: now),
-            
+                timestamp: now);
             // データポイント数の制限
             if (this.dataPoints.length > this.maxDataPoints) {
         
-        }
+        ,}
                 this.dataPoints.shift(); }
             }
             
@@ -112,8 +104,7 @@ export class PerformanceChart {
                 this.render();
             }
                 this.lastUpdate = now; }
-            }
-        }
+}
     }
 
     private render(): void { this.clear();
@@ -124,19 +115,18 @@ export class PerformanceChart {
         this.drawDataPoints();
         this.drawLabels();
         this.drawLegend(); }
-    }
 
     private clear(): void { this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); }
-    }
-'';
+
     private drawBackground()';
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.3')';
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
         this.ctx.fillRect(;
             this.chartArea.x );
             this.chartArea.y);
             this.chartArea.width, )';
             this.chartArea.height)'';
-        ');'
+        ');
+
         ';
         // チャート境界線
         this.ctx.strokeStyle = '#333';
@@ -146,14 +136,14 @@ export class PerformanceChart {
             this.chartArea.y);
             this.chartArea.width, );
             this.chartArea.height);
-    }'
-'';
+    }
+
     private drawGrid(''';
         this.ctx.strokeStyle = '#222';
         this.ctx.lineWidth = 1;
         
         // 水平グリッド線)
-        for(let i = 0; i <= this.config.gridLines; i++) {
+        for(let, i = 0; i <= this.config.gridLines; i++) {
             const y = this.chartArea.y + (this.chartArea.height / this.config.gridLines) * i;
             
             this.ctx.beginPath();
@@ -165,7 +155,7 @@ export class PerformanceChart {
         
         // 垂直グリッド線
         const verticalLines = 5;
-        for(let i = 0; i <= verticalLines; i++) {
+        for(let, i = 0; i <= verticalLines; i++) {
             const x = this.chartArea.x + (this.chartArea.width / verticalLines) * i;
             
             this.ctx.beginPath();
@@ -173,14 +163,13 @@ export class PerformanceChart {
             this.ctx.lineTo(x, this.chartArea.y + this.chartArea.height);
         }
             this.ctx.stroke(); }
-        }
-    }
-'';
+}
+
     private drawThresholdLines()';
         this.drawThresholdLine(this.config.warning, '#ffaa00', 'Warning'');
         ';
         // 危険ライン
-        this.drawThresholdLine(this.config.critical, '#ff3333', 'Critical');
+        this.drawThresholdLine(this.config.critical, '#ff3333', 'Critical);
     }
 
     private drawThresholdLine(value: number, color: string, label: string): void { const y = this.valueToY(value);
@@ -190,15 +179,16 @@ export class PerformanceChart {
         this.ctx.setLineDash([5, 5]);
         
         this.ctx.beginPath();
-        this.ctx.moveTo(this.chartArea.x, y);'
+        this.ctx.moveTo(this.chartArea.x, y);
+
         this.ctx.lineTo(this.chartArea.x + this.chartArea.width, y);''
         this.ctx.stroke()';
         this.ctx.font = '10px monospace';)
-        this.ctx.fillText() }
-            `${label}: ${ value)`,
+        this.ctx.fillText( }
+            `${label}: ${ value}`,
             this.chartArea.x + this.chartArea.width - 80,
             y - 5;
-        );
+        };
         
         // 線のダッシュをリセット }
         this.ctx.setLineDash([]});
@@ -211,7 +201,7 @@ export class PerformanceChart {
         
         this.ctx.beginPath();
         
-        for(let i = 0; i < this.dataPoints.length; i++) {
+        for(let, i = 0; i < this.dataPoints.length; i++) {
         
             const x = this.indexToX(i);
             const y = this.valueToY(this.dataPoints[i].value);
@@ -221,7 +211,6 @@ export class PerformanceChart {
         }
                 this.ctx.moveTo(x, y); }
             } else { this.ctx.lineTo(x, y); }
-            }
         }
         
         this.ctx.stroke();
@@ -240,12 +229,11 @@ export class PerformanceChart {
             this.ctx.closePath();
         }
             this.ctx.fill(); }
-        }
-    }
+}
 
     private drawDataPoints(): void { this.ctx.fillStyle = this.config.color;
         
-        for(let i = 0; i < this.dataPoints.length; i++) {
+        for(let, i = 0; i < this.dataPoints.length; i++) {
         
             const x = this.indexToX(i);
             const y = this.valueToY(this.dataPoints[i].value);
@@ -255,15 +243,14 @@ export class PerformanceChart {
         
         }
             this.ctx.fill(); }
-        }
-    }
-'';
+}
+
     private drawLabels(''';
         this.ctx.fillStyle = '#ccc';''
-        this.ctx.font = '11px monospace';
+        this.ctx.font = '11px, monospace';
         
         // Y軸ラベル)
-        for(let i = 0; i <= this.config.gridLines; i++) {
+        for(let, i = 0; i <= this.config.gridLines; i++) {
             const value = this.config.max - (this.config.max - this.config.min) * (i / this.config.gridLines);
             const y = this.chartArea.y + (this.chartArea.height / this.config.gridLines) * i;
             
@@ -277,7 +264,7 @@ export class PerformanceChart {
         
         // X軸ラベル（時間）
         const timeLabels = 3;
-        for(let i = 0; i <= timeLabels; i++) {
+        for(let, i = 0; i <= timeLabels; i++) {
             const x = this.chartArea.x + (this.chartArea.width / timeLabels) * i;
             const pointIndex = Math.floor((this.dataPoints.length - 1) * (i / timeLabels));
             
@@ -290,13 +277,12 @@ export class PerformanceChart {
                     x - 15,);
         }
                     this.chartArea.y + this.chartArea.height + 20); }
-            }
-        }
+}
     }
-'';
+
     private drawLegend(''';
         this.ctx.fillStyle = '#fff';''
-        this.ctx.font = 'bold 12px monospace';)
+        this.ctx.font = 'bold, 12px monospace';)
         this.ctx.fillText(this.config.label, this.chartArea.x, 15);
         
         // 現在値
@@ -305,7 +291,7 @@ export class PerformanceChart {
             this.ctx.fillStyle = this.config.color;
         }
             this.ctx.fillText() }
-                `Current: ${currentValue.toFixed(1})}`,
+                `Current: ${currentValue.toFixed(1})`,
                 this.chartArea.x + this.chartArea.width - 100,
                 15;
             );
@@ -316,27 +302,25 @@ export class PerformanceChart {
             const values = this.dataPoints.map(p => p.value);
             const min = Math.min(...values);
             const max = Math.max(...values);''
-            const avg = values.reduce((a, b) => a + b, 0') / values.length;'
-            '';
+            const avg = values.reduce((a, b) => a + b, 0') / values.length;
+
             this.ctx.fillStyle = '#aaa';''
             this.ctx.font = '10px monospace';
             
         }
             const statsY = this.chartArea.y + this.chartArea.height + 45; }
-            this.ctx.fillText(`Min: ${min.toFixed(1})}`, this.chartArea.x, statsY);
-            this.ctx.fillText(`Max: ${max.toFixed(1})}`, this.chartArea.x + 80, statsY);
-            this.ctx.fillText(`Avg: ${avg.toFixed(1})}`, this.chartArea.x + 160, statsY);
+            this.ctx.fillText(`Min: ${min.toFixed(1})`, this.chartArea.x, statsY);
+            this.ctx.fillText(`Max: ${max.toFixed(1})`, this.chartArea.x + 80, statsY);
+            this.ctx.fillText(`Avg: ${avg.toFixed(1})`, this.chartArea.x + 160, statsY);
         }
     }
 
     private valueToY(value: number): number { const normalizedValue = (value - this.config.min) / (this.config.max - this.config.min);
         const clampedValue = Math.max(0, Math.min(1, normalizedValue);
         return this.chartArea.y + this.chartArea.height * (1 - clampedValue); }
-    }
 
     private indexToX(index: number): number { if (this.dataPoints.length <= 1) {
             return this.chartArea.x + this.chartArea.width / 2; }
-        }
         
         const ratio = index / (this.dataPoints.length - 1);
         return this.chartArea.x + this.chartArea.width * ratio;
@@ -347,43 +331,38 @@ export class PerformanceChart {
     updateThresholds(warning: number, critical: number): void { this.config.warning = warning;
         this.config.critical = critical;
         this.render(); }
-    }
 
     setMinMax(min: number, max: number): void { this.config.min = min;
         this.config.max = max;
         this.render(); }
-    }
 
     clear(): void { this.dataPoints = [];
         this.render(); }
-    }
 
     resize(width: number, height: number): void { this.canvas.width = width;
         this.canvas.height = height;
         
         // チャートエリアを再計算
         this.chartArea = {
-            x: this.padding.left,
-            y: this.padding.top,
-            width: this.canvas.width - this.padding.left - this.padding.right,
-            height: this.canvas.height - this.padding.top - this.padding.bottom }
-        },
-        
+            x: this.padding.left;
+            y: this.padding.top;
+            width: this.canvas.width - this.padding.left - this.padding.right;
+            height: this.canvas.height - this.padding.top - this.padding.bottom };
         this.setupCanvas();
         this.render();
     }
 
-    getDataPoints(): DataPoint[] { return [...this.dataPoints]; }
-    }
+    getDataPoints(): DataPoint[] { return [...this.dataPoints];
 
     getConfig(): Required<ChartConfig> {
-        return { ...this.config };
+        return { ...this.config;
     }
-';'
+';
+
     destroy(): void { if (this.animationId) {''
-            cancelAnimationFrame(this.animationId');
+            cancelAnimationFrame(this.animationId);
             this.animationId = null; }
-        }
-        this.dataPoints = [];'
+        this.dataPoints = [];
+
     }''
 }

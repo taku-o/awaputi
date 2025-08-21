@@ -9,9 +9,8 @@ import type { EventBus } from '../../core/EventBus';
 
 // Tab interface
 interface Tab { id: TabId,
-    label: string,
-    icon: string }
-}
+    label: string;
+    icon: string ,}
 ;
 // Tab ID type
 type TabId = 'profile' | 'statistics' | 'achievements' | 'data' | 'help';
@@ -21,37 +20,32 @@ type DialogType = 'username' | 'export' | 'import' | null;
 
 // UI state interface
 interface UIState { currentTab: TabId,
-    isDialogOpen: boolean,
-    activeDialog: DialogType,
-    lastUpdateTime: number,
-    needsUpdate: boolean }
-}
+    isDialogOpen: boolean;
+    activeDialog: DialogType;
+    lastUpdateTime: number;
+    needsUpdate: boolean ,}
 
 // Layout configuration interface
-interface LayoutConfig { tabHeight: number,
-    contentPadding: number,
-    buttonHeight: number,
-    buttonSpacing: number,
+interface LayoutConfig { tabHeight: number;
+    contentPadding: number;
+    buttonHeight: number;
+    buttonSpacing: number;
     dialogOverlayAlpha: number }
-}
 
 // Click event data interface
-interface ContentClickEventData { tab: TabId,
-    x: number,
-    y: number,
+interface ContentClickEventData { tab: TabId;
+    x: number;
+    y: number;
     canvas: HTMLCanvasElement
     }
-}
 
 // Dialog click event data interface
-interface DialogClickEventData { x: number,
+interface DialogClickEventData { x: number;
     y: number }
-}
 
 // Scene state interface
 interface SceneState { // Add scene state properties as needed
     [key: string]: any, }
-}
 
 export class UserInterfaceController {
     private gameEngine: GameEngine;
@@ -61,39 +55,37 @@ export class UserInterfaceController {
     private uiState: UIState;
     // タブ設定
     private readonly tabs: ReadonlyArray<Tab> = [' }'
-        { id: 'profile', label: 'プロフィール', icon: '👤' },''
-        { id: 'statistics', label: '統計', icon: '📊' },''
-        { id: 'achievements', label: '実績', icon: '🏆' },''
-        { id: 'data', label: 'データ', icon: '💾' },']'
-        { id: 'help', label: 'ヘルプ', icon: '❓' }]
+
+        { id: 'profile', label: 'プロフィール', icon: '👤' ,},''
+        { id: 'statistics', label: '統計', icon: '📊' ,},''
+        { id: 'achievements', label: '実績', icon: '🏆' ,},''
+        { id: 'data', label: 'データ', icon: '💾' ,},]'
+        { id: 'help', label: 'ヘルプ', icon: '❓' ,}]
     ];
     
     // レイアウト設定
     private layout: LayoutConfig;
-    '';
-    constructor(gameEngine: GameEngine, eventBus: EventBus, sceneState: SceneState') {
+
+    constructor(gameEngine: GameEngine, eventBus: EventBus, sceneState: SceneState) {
         this.gameEngine = gameEngine;
         this.eventBus = eventBus;
         this.sceneState = sceneState;
         
         // UI状態管理
         this.uiState = {''
-            currentTab: 'profile',
-            isDialogOpen: false,
-            activeDialog: null,
-            lastUpdateTime: Date.now(),
-    }
+            currentTab: 'profile';
+            isDialogOpen: false;
+            activeDialog: null;
+            lastUpdateTime: Date.now();
     }
             needsUpdate: true }
-        },
-        
+        };
         // レイアウト設定
         this.layout = { tabHeight: 60,
-            contentPadding: 20,
-            buttonHeight: 40,
-            buttonSpacing: 10,
-            dialogOverlayAlpha: 0.7 }
-        },
+            contentPadding: 20;
+            buttonHeight: 40;
+            buttonSpacing: 10;
+            dialogOverlayAlpha: 0.7 ,};
         ;
         // イベントリスナーの設定
         this.setupEventListeners()';
@@ -104,30 +96,33 @@ export class UserInterfaceController {
      * イベントリスナーの設定'
      */''
     private setupEventListeners()';
-        this.eventBus.on('tabChanged', (tabId: TabId) => { this.switchTab(tabId);' }'
+        this.eventBus.on('tabChanged', (tabId: TabId) => { this.switchTab(tabId);' }
+
         }');
         ';
         // ダイアログイベント
-        this.eventBus.on('dialogOpened', (dialogType: DialogType) => { this.handleDialogOpen(dialogType);' }'
-        }');'
-        '';
-        this.eventBus.on('dialogClosed', () => { this.handleDialogClose();' }'
+        this.eventBus.on('dialogOpened', (dialogType: DialogType) => { this.handleDialogOpen(dialogType);' }
+
+        }');
+
+        this.eventBus.on('dialogClosed', () => { this.handleDialogClose();' }
+
         }');
         ';
         // UI更新イベント
-        this.eventBus.on('uiUpdateRequired', () => { this.markNeedsUpdate(); }
-        });
+        this.eventBus.on('uiUpdateRequired', () => { this.markNeedsUpdate(); });
     }
     
     /**
      * タブ切り替え処理
      */'
     public switchTab(tabId: TabId): void { ''
-        if (this.tabs.find(tab => tab.id === tabId)') {
-            this.uiState.currentTab = tabId;'
+        if(this.tabs.find(tab => tab.id === tabId)) {
+            this.uiState.currentTab = tabId;
+
             this.uiState.needsUpdate = true;''
             this.eventBus.emit('tabSwitched', tabId); }
-            console.log(`[UserInterfaceController] タブを切り替え: ${tabId)`});
+            console.log(`[UserInterfaceController] タブを切り替え: ${tabId}`});
         }
     }
     
@@ -139,14 +134,14 @@ export class UserInterfaceController {
         this.uiState.isDialogOpen = true;
         this.uiState.activeDialog = dialogType;
         this.uiState.needsUpdate = true; }
-        console.log(`[UserInterfaceController] ダイアログを開く: ${dialogType)`});
+        console.log(`[UserInterfaceController] ダイアログを開く: ${dialogType}`});
     }
     
     /**
      * ダイアログクローズ処理'
      */''
     private handleDialogClose()';
-        console.log('[UserInterfaceController] ダイアログを閉じました');
+        console.log('[UserInterfaceController] ダイアログを閉じました);
     }
     
     /**
@@ -158,13 +153,11 @@ export class UserInterfaceController {
         if(this.uiState.isDialogOpen) {
             
         }
-            return this.handleDialogClick(x, y); }
-        }
+            return this.handleDialogClick(x, y);
         
         // タブクリック判定
         const tabClick = this.checkTabClick(x, y, canvas);
         if (tabClick) { return tabClick; }
-        }
         
         // コンテンツエリアのクリック判定
         return this.handleContentClick(x, y, canvas);
@@ -184,8 +177,7 @@ export class UserInterfaceController {
             this.switchTab(clickedTab.id);
         
         }
-            return true; }
-        }
+            return true;
         
         return false;
     }
@@ -195,27 +187,24 @@ export class UserInterfaceController {
      */
     private handleContentClick(x: number, y: number, canvas: HTMLCanvasElement): boolean { const contentY = y - this.layout.tabHeight;
         const currentTab = this.uiState.currentTab;
-        ;
         // タブ別のクリック処理
         switch(currentTab') {'
-            '';
+
             case 'profile':'';
-                return this.handleProfileClick(x, contentY, canvas');''
+                return this.handleProfileClick(x, contentY, canvas);''
             case 'data':'';
-                return this.handleDataClick(x, contentY, canvas');
+                return this.handleDataClick(x, contentY, canvas);
             default:;
                 // 他のタブのクリック処理はそれぞれのコンポーネントに委譲
                 const eventData: ContentClickEventData = { 
                     tab: currentTab, ;
                     x, ;
-                    y: contentY, 
-        }
+                    y: contentY;
+        ,}
                     canvas  }
                 };''
                 this.eventBus.emit('contentClick', eventData);
                 return false;
-        }
-    }
     
     /**
      * プロフィールタブのクリック処理
@@ -230,11 +219,10 @@ export class UserInterfaceController {
             x <= centerX + buttonWidth / 2 &&;
             y >= buttonY && ')';
             y <= buttonY + buttonHeight') {'
-            '';
-            this.eventBus.emit('openDialog', 'username');
+
+            this.eventBus.emit('openDialog', 'username);
         }
-            return true; }
-        }
+            return true;
         
         return false;
     }
@@ -253,11 +241,10 @@ export class UserInterfaceController {
             x <= centerX + buttonWidth / 2 &&;
             y >= exportButtonY && ')';
             y <= exportButtonY + buttonHeight') {'
-            '';
-            this.eventBus.emit('openDialog', 'export');
+
+            this.eventBus.emit('openDialog', 'export);
         }
-            return true; }
-        }
+            return true;
         
         // インポートボタン
         const importButtonY = exportButtonY + buttonHeight + spacing;
@@ -265,11 +252,10 @@ export class UserInterfaceController {
             x <= centerX + buttonWidth / 2 &&;
             y >= importButtonY && ')';
             y <= importButtonY + buttonHeight') {'
-            '';
-            this.eventBus.emit('openDialog', 'import');
+
+            this.eventBus.emit('openDialog', 'import);
         }
-            return true; }
-        }
+            return true;
         
         return false;
     }
@@ -277,7 +263,7 @@ export class UserInterfaceController {
     /**
      * ダイアログクリック処理'
      */''
-    private handleDialogClick(x: number, y: number'): boolean { // ダイアログマネージャーに処理を委譲 }
+    private handleDialogClick(x: number, y: number): boolean { // ダイアログマネージャーに処理を委譲 }
         const eventData: DialogClickEventData = { x, y };''
         this.eventBus.emit('dialogClick', eventData);
         return true;
@@ -287,30 +273,27 @@ export class UserInterfaceController {
      * キーボードイベント処理
      */'
     public handleKeyDown(key: string): boolean { // ダイアログが開いている場合はダイアログのキー処理を優先
-        if(this.uiState.isDialogOpen') {'
-            '';
-            this.eventBus.emit('dialogKeyDown', key');
+        if(this.uiState.isDialogOpen) {'
+
+            this.eventBus.emit('dialogKeyDown', key);
         }
-            return true; }
-        }
+            return true;
         ';
         // タブ切り替えのショートカット
-        if(key >= '1' && key <= '5') {
-            const tabIndex = parseInt(key) - 1;'
+        if(key >= '1' && key <= '5) {
+            const tabIndex = parseInt(key) - 1;
+
             if (tabIndex < this.tabs.length) {''
-                this.switchTab(this.tabs[tabIndex].id');
+                this.switchTab(this.tabs[tabIndex].id);
         }
-                return true; }
-            }
-        }
+                return true;
         ';
         // ESCキーでメインメニューに戻る
         if(key === 'Escape'') {'
-            '';
-            this.eventBus.emit('requestSceneChange', 'MainMenu');
+
+            this.eventBus.emit('requestSceneChange', 'MainMenu);
         }
-            return true; }
-        }
+            return true;
         
         return false;
     }
@@ -319,45 +302,40 @@ export class UserInterfaceController {
      * UI更新が必要かチェック
      */
     public needsUpdate(): boolean { return this.uiState.needsUpdate; }
-    }
     
     /**
      * 更新フラグをセット
      */
     public markNeedsUpdate(): void { this.uiState.needsUpdate = true;
         this.uiState.lastUpdateTime = Date.now(); }
-    }
     
     /**
      * 更新完了をマーク
      */
     public markUpdated(): void { this.uiState.needsUpdate = false; }
-    }
     
     /**
      * 現在のタブを取得
      */
     public getCurrentTab(): TabId { return this.uiState.currentTab; }
-    }
     
     /**
      * タブ情報を取得
      */
-    public getTabs(): Tab[] { return [...this.tabs]; }
-    }
+    public getTabs(): Tab[] { return [...this.tabs];
     
     /**
      * レイアウト設定を取得
      */
     public getLayout(): LayoutConfig {
-        return { ...this.layout };
+        return { ...this.layout;
     }
     
     /**
      * UI状態を取得
      */
     public getUIState(): UIState {
-        return { ...this.uiState };
+        return { ...this.uiState;
     }
     
     /**
@@ -385,8 +363,9 @@ export class UserInterfaceController {
         this.eventBus.off('tabChanged'');''
         this.eventBus.off('dialogOpened'');''
         this.eventBus.off('dialogClosed'');''
-        this.eventBus.off('uiUpdateRequired'');'
-        '';
-        console.log('[UserInterfaceController] クリーンアップ完了'');'
+        this.eventBus.off('uiUpdateRequired'');
+
+        console.log('[UserInterfaceController] クリーンアップ完了'');
+
     }''
 }

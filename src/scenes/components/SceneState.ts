@@ -1,45 +1,39 @@
 // インターフェース定義
 interface AccessibilitySettings { highContrast: boolean,
-    largeText: boolean,
-    reducedMotion: boolean }
-}
+    largeText: boolean;
+    reducedMotion: boolean ,}
 
-interface StatisticsDisplaySettings { showDashboard: boolean,
-    showCharts: boolean,
-    showDetailedStats: boolean,
-    enableAnimations: boolean,
+interface StatisticsDisplaySettings { showDashboard: boolean;
+    showCharts: boolean;
+    showDetailedStats: boolean;
+    enableAnimations: boolean;
     compactMode: boolean }
-}
 
-interface LayoutSettings { tabHeight: number,
-    headerHeight: number,
-    contentPadding: number,
+interface LayoutSettings { tabHeight: number;
+    headerHeight: number;
+    contentPadding: number;
     scrollbarWidth: number }
-}
 
-interface UserPreferences { currentTab: string,
-    statisticsViewMode: string,
-    currentPeriodFilter: string,
-    statisticsDisplaySettings: StatisticsDisplaySettings,
+interface UserPreferences { currentTab: string;
+    statisticsViewMode: string;
+    currentPeriodFilter: string;
+    statisticsDisplaySettings: StatisticsDisplaySettings;
     currentAchievementCategory: string }
-}
 
-interface StateChange { key: string,
-    value: any,
+interface StateChange { key: string;
+    value: any;
     oldValue: any }
-}
 
-interface SerializedState { currentTab: string,
-    showingDialog: string | null,
-    currentAchievementCategory: string,
-    statisticsViewMode: string,
-    currentPeriodFilter: string,
-    statisticsDisplaySettings: StatisticsDisplaySettings,
-    accessibilitySettings: AccessibilitySettings,
-    scrollPosition: number,
-    selectedItem: number,
+interface SerializedState { currentTab: string;
+    showingDialog: string | null;
+    currentAchievementCategory: string;
+    statisticsViewMode: string;
+    currentPeriodFilter: string;
+    statisticsDisplaySettings: StatisticsDisplaySettings;
+    accessibilitySettings: AccessibilitySettings;
+    scrollPosition: number;
+    selectedItem: number;
     focusedElement: number }
-}
 
 type DialogType = 'username' | 'export' | 'import' | null;''
 type ViewMode = 'dashboard' | 'charts' | 'details';''
@@ -91,17 +85,16 @@ export class SceneState {
     public layout: LayoutSettings,
     // 変更通知のためのイベントリスナー
     private changeListeners: Map<string, ChangeListener[]>;
-'';
-    constructor(gameEngine: any') {
+
+    constructor(gameEngine: any) {
         this.gameEngine = gameEngine;
         ';
         // タブ状態管理
         this.currentTab = 'statistics';''
         this.tabs = ['statistics', 'achievements', 'leaderboard', 'challenges', 'management', 'help'];''
-        this.tabLabels = ['統計', '実績', 'ランキング', 'チャレンジ', '管理', 'ヘルプ'];
+        this.tabLabels = ['統計', '実績', 'ランキング', 'チャレンジ', '管理', 'ヘルプ];
         
         // ダイアログ状態管理
-    }
     }
         this.showingDialog = null; }
         this.dialogData = {};
@@ -110,22 +103,19 @@ export class SceneState {
         this.scrollPosition = 0;
         this.selectedItem = -1;
         this.focusedElement = 0;
-        ;
         // 実績フィルター状態
         this.achievementCategories = ['all', 'score', 'play', 'technique', 'collection', 'special'];''
-        this.achievementCategoryLabels = ['全て', 'スコア系', 'プレイ系', 'テクニック系', 'コレクション系', '特殊'];''
+        this.achievementCategoryLabels = ['全て', 'スコア系', 'プレイ系', 'テクニック系', 'コレクション系', '特殊];''
         this.currentAchievementCategory = 'all';
         ';
         // 統計表示設定
         this.statisticsViewMode = 'dashboard';''
         this.currentPeriodFilter = 'last7days';
         this.statisticsDisplaySettings = { showDashboard: true,
-            showCharts: true,
-            showDetailedStats: true,
-            enableAnimations: true,
-            compactMode: false }
-        },
-        
+            showCharts: true;
+            showDetailedStats: true;
+            enableAnimations: true;
+            compactMode: false ,};
         // データキャッシュ
         this.statisticsData = null;
         this.achievementsData = null;
@@ -133,21 +123,17 @@ export class SceneState {
         
         // アクセシビリティ設定
         this.accessibilitySettings = { highContrast: false,
-            largeText: false,
-            reducedMotion: false }
-        },
-        
+            largeText: false;
+            reducedMotion: false ,};
         // エラー状態管理
         this.errorMessage = null;
         this.errorTimeout = null;
         
         // レイアウト設定
         this.layout = { tabHeight: 60,
-            headerHeight: 120,
-            contentPadding: 20,
-            scrollbarWidth: 16 }
-        },
-        
+            headerHeight: 120;
+            contentPadding: 20;
+            scrollbarWidth: 16 ,};
         // 変更通知のためのイベントリスナー
         this.changeListeners = new Map();
         
@@ -160,25 +146,23 @@ export class SceneState {
      */
     initialize(): void { this.loadAccessibilitySettings();
         this.loadUserPreferences(); }
-    }
     
     /**
      * アクセシビリティ設定を読み込み
      */''
     loadAccessibilitySettings()';
-            const saved = localStorage.getItem('awaputi_accessibility_settings');
-            if (saved) { const settings = JSON.parse(saved); }'
-                this.accessibilitySettings = { ...this.accessibilitySettings, ...settings };''
-            } catch (error) { ''
-            console.warn('Failed to load accessibility settings:', error) }
-        }
+            const saved = localStorage.getItem('awaputi_accessibility_settings);
+            if (saved) { const settings = JSON.parse(saved); }
+
+                this.accessibilitySettings = { ...this.accessibilitySettings, ...settings;''
+            } catch (error) { console.warn('Failed to load accessibility settings:', error }
     }
     
     /**
      * ユーザー設定を読み込み'
      */''
     loadUserPreferences()';
-            const saved = localStorage.getItem('awaputi_userinfo_preferences');
+            const saved = localStorage.getItem('awaputi_userinfo_preferences);
             if(saved) {
                 const preferences = JSON.parse(saved);
                 
@@ -189,26 +173,20 @@ export class SceneState {
                 }
                 
                 if (preferences.statisticsViewMode) { this.statisticsViewMode = preferences.statisticsViewMode; }
-                }
                 
                 if (preferences.currentPeriodFilter) { this.currentPeriodFilter = preferences.currentPeriodFilter; }
-                }
                 
                 if(preferences.statisticsDisplaySettings) {
                 
                     this.statisticsDisplaySettings = { 
                         ...this.statisticsDisplaySettings, ;
                 }
-                        ...preferences.statisticsDisplaySettings  }
-                    };
-                }
+                        ...preferences.statisticsDisplaySettings
+                    }
                 
                 if(preferences.currentAchievementCategory && );
-                    this.achievementCategories.includes(preferences.currentAchievementCategory) { this.currentAchievementCategory = preferences.currentAchievementCategory; }
-                }''
-            } catch (error) { ''
-            console.warn('Failed to load user preferences:', error) }
-        }
+                    this.achievementCategories.includes(preferences.currentAchievementCategory) { this.currentAchievementCategory = preferences.currentAchievementCategory; }''
+            } catch (error) { console.warn('Failed to load user preferences:', error }
     }
     
     /**
@@ -216,9 +194,7 @@ export class SceneState {
      */''
     saveUserPreferences()';
             localStorage.setItem('awaputi_userinfo_preferences', JSON.stringify(preferences);''
-        } catch (error) { ''
-            console.warn('Failed to save user preferences:', error) }
-        }
+        } catch (error) { console.warn('Failed to save user preferences:', error }
     }
     
     /**
@@ -226,13 +202,12 @@ export class SceneState {
      * @param key - 取得するキー
      * @returns 状態値'
      */''
-    get(key: string'): any { ''
-        if(key.includes('.') {
+    get(key: string): any { ''
+        if(key.includes('.) {'
             
         }
-            return this.getNestedValue(key); }
-        }
-        return (this as any)[key];
+            return this.getNestedValue(key);
+        return (this, as any)[key];
     }
     
     /**
@@ -242,21 +217,18 @@ export class SceneState {
      * @param notify - 変更通知を行うかどうか
      */'
     set(key: string, value: any, notify: boolean = true): void { ''
-        const oldValue = this.get(key');'
-        '';
-        if(key.includes('.') {
+        const oldValue = this.get(key);
+
+        if(key.includes('.) {'
             
         }
             this.setNestedValue(key, value); }
-        } else { (this as any)[key] = value; }
-        }
+        } else { (this, as any)[key] = value; }
         
         if (notify && oldValue !== value) { this.notifyChange(key, value, oldValue); }
-        }
         
         // 特定の設定変更時に自動保存
         if(this.shouldAutoSave(key) { this.saveUserPreferences(); }
-        }
     }
     
     /**
@@ -275,15 +247,12 @@ export class SceneState {
         
         }
                 changes.push({ key, value, oldValue ); }
-            }
         }
         
         if (notify && changes.length > 0) { this.notifyBatchChange(changes); }
-        }
         
         // バッチ更新後に自動保存チェック
         if(changes.some(change => this.shouldAutoSave(change.key)) { this.saveUserPreferences(); }
-        }
     }
     
     /**
@@ -294,7 +263,6 @@ export class SceneState {
      */
     onChange(key: string, listener: ChangeListener): UnsubscribeFunction { if(!this.changeListeners.has(key) {
             this.changeListeners.set(key, []); }
-        }
         
         this.changeListeners.get(key)!.push(listener);
         
@@ -305,10 +273,8 @@ export class SceneState {
             }
                 if (index !== -1) { }
                     listeners.splice(index, 1); }
-                }
-            }
-        };
-    }
+}
+        }
     
     /**
      * エラー状態を設定
@@ -324,11 +290,13 @@ export class SceneState {
         }
             clearTimeout(this.errorTimeout); }
         }
-        '';
-        this.errorTimeout = setTimeout((') => {  this.errorMessage = null;' }'
-            this.notifyChange('errorMessage', null, message);' }'
-        }, duration');'
-        '';
+
+        this.errorTimeout = setTimeout(() => {  this.errorMessage = null;' }'
+
+            this.notifyChange('errorMessage', null, message);' }
+
+        }, duration');
+
         this.notifyChange('errorMessage', message, null);
     }
     
@@ -338,25 +306,25 @@ export class SceneState {
     clearError(): void { if (this.errorTimeout) {
             clearTimeout(this.errorTimeout);
             this.errorTimeout = null; }
-        }
         
         const oldMessage = this.errorMessage;
-        this.errorMessage = null;'
-        '';
-        if(oldMessage') {'
-            ';'
-        }'
-            this.notifyChange('errorMessage', null, oldMessage); }
+        this.errorMessage = null;
+
+        if(oldMessage) {'
+            ';
+
         }
-    }
+
+            this.notifyChange('errorMessage', null, oldMessage); }
+}
     
     /**
      * ネストした値を取得
      * @param path - ドット記法のパス
      * @returns 値'
      */''
-    private getNestedValue(path: string'): any { ''
-        return path.split('.').reduce((obj: any, key) => obj && obj[key], this) }
+    private getNestedValue(path: string): any { ''
+        return path.split('.).reduce((obj: any, key) => obj && obj[key], this) }'
     }
     
     /**
@@ -364,13 +332,14 @@ export class SceneState {
      * @param path - ドット記法のパス
      * @param value - 設定する値'
      */''
-    private setNestedValue(path: string, value: any'): void { ''
-        const keys = path.split('.');'
+    private setNestedValue(path: string, value: any): void { ''
+        const keys = path.split('.);
+
         const lastKey = keys.pop()!;''
-        const target = keys.reduce((obj: any, key') => { ' }'
-            if (!obj[key] || typeof obj[key] !== 'object') { }
-                obj[key] = {};
-            }
+        const target = keys.reduce((obj: any, key) => { ' }'
+
+            if(!obj[key] || typeof, obj[key] !== 'object) { }'
+                obj[key] = {}
             return obj[key];
         }, this);
         
@@ -385,24 +354,22 @@ export class SceneState {
      */
     private notifyChange(key: string, value: any, oldValue: any): void { const listeners = this.changeListeners.get(key);
         if(listeners) {
-            for (const listener of listeners) {
+            for (const, listener of, listeners) {
                 try {
-        }'
-                    listener(value, oldValue, key);' }'
-                } catch (error) { ''
-                    console.error('Error in state change listener:', error) }
-                }
-            }
         }
+
+                    listener(value, oldValue, key);' }'
+
+                } catch (error) { console.error('Error in state change listener:', error }
+}
     }
     
     /**
      * バッチ変更通知を送信
      * @param changes - 変更の配列
      */
-    private notifyBatchChange(changes: StateChange[]): void { for (const change of changes) {
+    private notifyBatchChange(changes: StateChange[]): void { for (const, change of, changes) {
             this.notifyChange(change.key, change.value, change.oldValue); }
-        }
     }
     
     /**
@@ -410,32 +377,31 @@ export class SceneState {
      * @param key - チェックするキー
      * @returns 自動保存が必要な場合true'
      */''
-    private shouldAutoSave(key: string'): boolean { const autoSaveKeys = [''
-            'currentTab','';
-            'statisticsViewMode','';
-            'currentPeriodFilter','';
-            'statisticsDisplaySettings',']';
+    private shouldAutoSave(key: string): boolean { const autoSaveKeys = ['', 'currentTab',
+            'statisticsViewMode',
+            'currentPeriodFilter',
+            'statisticsDisplaySettings',]';
             'currentAchievementCategory'];
-        ];'
-        '';
-        return autoSaveKeys.some(autoKey => key === autoKey || key.startsWith(autoKey + '.'); }
-    }
+        ];
+
+        return autoSaveKeys.some(autoKey => key === autoKey || key.startsWith(autoKey + '.);
     
     /**
      * データキャッシュをクリア
      * @param type - クリアするデータタイプ（省略時は全て）'
      */''
-    clearCache(type?: CacheType'): void { ''
+    clearCache(type?: CacheType): void { ''
         if(!type || type === 'statistics'') {
             
         }
-            this.statisticsData = null; }'
+            this.statisticsData = null; }
+
         }''
-        if (!type || type === 'achievements'') { this.achievementsData = null; }'
+        if (!type || type === 'achievements'') { this.achievementsData = null; }
+
         }''
         if (!type || type === 'user'') { this.userData = null; }
-        }'
-        '';
+
         this.notifyChange('cache_cleared', type, null);
     }
     
@@ -444,12 +410,14 @@ export class SceneState {
      * @param preservePreferences - ユーザー設定を保持するかどうか
      */'
     reset(preservePreferences: boolean = true): void { ''
-        if(!preservePreferences') {'
-            '';
+        if(!preservePreferences) {'
+
             this.currentTab = 'statistics';''
             this.statisticsViewMode = 'dashboard';''
-            this.currentPeriodFilter = 'last7days';'
-        }'
+            this.currentPeriodFilter = 'last7days';
+
+        }
+
             this.currentAchievementCategory = 'all'; }
         }
         
@@ -458,7 +426,8 @@ export class SceneState {
         this.scrollPosition = 0;
         this.selectedItem = -1;
         this.focusedElement = 0;
-        ';'
+        ';
+
         this.clearCache();''
         this.clearError()';
         this.notifyChange('state_reset', preservePreferences, null);
@@ -469,21 +438,21 @@ export class SceneState {
      * @returns シリアライズされた状態
      */
     serialize(): SerializedState { return { currentTab: this.currentTab,
-            showingDialog: this.showingDialog,
-            currentAchievementCategory: this.currentAchievementCategory,
-            statisticsViewMode: this.statisticsViewMode,
-            currentPeriodFilter: this.currentPeriodFilter,
-            statisticsDisplaySettings: this.statisticsDisplaySettings,
-            accessibilitySettings: this.accessibilitySettings,
-            scrollPosition: this.scrollPosition,
+            showingDialog: this.showingDialog;
+            currentAchievementCategory: this.currentAchievementCategory;
+            statisticsViewMode: this.statisticsViewMode;
+            currentPeriodFilter: this.currentPeriodFilter;
+            statisticsDisplaySettings: this.statisticsDisplaySettings;
+            accessibilitySettings: this.accessibilitySettings;
+            scrollPosition: this.scrollPosition;
             selectedItem: this.selectedItem, };
             focusedElement: this.focusedElement }
-        },
-    }
+        }
     
     /**
      * 状態のクリーンアップ
      */
-    cleanup(): void { this.clearError();'
+    cleanup(): void { this.clearError();
+
         this.changeListeners.clear();''
-        this.clearCache(') }')
+        this.clearCache(' })'

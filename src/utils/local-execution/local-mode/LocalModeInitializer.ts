@@ -16,11 +16,10 @@ import { ErrorHandler } from '../../ErrorHandler.js';
 
 // Type definitions
 interface InitializationMetrics { startTime: number | null,
-    endTime: number | null,
+    endTime: number | null;
     componentTimes: Record<string, number>;
-    totalExecutionTime: number,
-    optimizationsApplied: string[] }
-}
+    totalExecutionTime: number;
+    optimizationsApplied: string[] ,}
 
 interface LocalModeConfig { enableErrorHandling?: boolean;
     enableMetaTagOptimization?: boolean;
@@ -29,43 +28,40 @@ interface LocalModeConfig { enableErrorHandling?: boolean;
     enablePerformanceOptimizations?: boolean;
     debugMode?: boolean;
     maxConcurrentTasks?: number; }
-}
 
 interface ExecutionContext { isLocal: boolean,
-    protocol: string,
-    url: string,
-    domain: string,
-    path: string }
-}
-';'
+    protocol: string;
+    url: string;
+    domain: string;
+    path: string ,}
+';
+
 interface InitializationTask { name: string,''
     task: (') => Promise<any>;''
-    priority: 'high' | 'medium' | 'low' }
+    priority: 'high' | 'medium' | 'low' ,}
 }
 
-interface TaskResult { name: string,
+interface TaskResult { name: string;
     result?: any;
     error?: Error;
     success: boolean }
-}
 
-interface InitializationResult { success: boolean,
-    executionContext: ExecutionContext | null,
+interface InitializationResult { success: boolean;
+    executionContext: ExecutionContext | null;
     results?: Record<string, any>;
     metrics?: InitializationMetrics;
     reason?: string;
     error?: Error;
     }
-}
 
 export default class LocalModeInitializer { /**
      * 初期化メトリクス
      */
     private static _initializationMetrics: InitializationMetrics = {
-        startTime: null,
+        startTime: null;
         endTime: null, }
-        componentTimes: {},
-        totalExecutionTime: 0,
+        componentTimes: {};
+        totalExecutionTime: 0;
         optimizationsApplied: [];
     },
     
@@ -83,22 +79,23 @@ export default class LocalModeInitializer { /**
         logCallback: (message: string) => void';
     ): Promise<InitializationResult> { ''
         this._initializationMetrics.startTime = performance.now()';
-        logCallback('Starting optimized local mode initialization'),
+        logCallback('Starting, optimized local, mode initialization),
         
         try {
             // 1. 実行コンテキスト検出
             const executionContext = await this._initializeExecutionContext(componentCache, logCallback);
-            '';
-            if(!executionContext.isLocal') {'
-                ';'
-            }'
-                logCallback('Not in local execution mode, skipping local mode initialization'');' }'
-                return { success: false, reason: 'not_local_execution', executionContext };
+
+            if(!executionContext.isLocal) {'
+                ';
+
             }
+
+                logCallback('Not in local execution mode, skipping local mode initialization'');' }
+
+                return { success: false, reason: 'not_local_execution', executionContext }
             
             // 2. エラーハンドリング初期化
             if (config.enableErrorHandling) { await this._initializeErrorHandling(config, logCallback); }
-            }
             
             // 3. パフォーマンス最適化された並行初期化
             const initializationTasks = this._createInitializationTasks(config, executionContext, logCallback);
@@ -111,18 +108,15 @@ export default class LocalModeInitializer { /**
             this._initializationMetrics.totalExecutionTime = ;
                 this._initializationMetrics.endTime - this._initializationMetrics.startTime;
             
-            logCallback(`Optimized initialization completed in ${Math.round(this._initializationMetrics.totalExecutionTime})}ms`);
+            logCallback(`Optimized, initialization completed, in ${Math.round(this._initializationMetrics.totalExecutionTime})ms`);
             
             return { success: true,
                 executionContext, };
                 results, }
-                metrics: { ...this._initializationMetrics }
-            },
-            
+                metrics: { ...this._initializationMetrics;
         } catch (error) {
-            logCallback(`Initialization failed: ${(error as Error}).message}`);
-            return { success: false, error: error as Error, executionContext: null }
-        }
+            logCallback(`Initialization, failed: ${(error, as Error}).message}`);
+            return { success: false, error: error as Error, executionContext: null ,}
     }
     
     /**
@@ -135,60 +129,52 @@ export default class LocalModeInitializer { /**
         config: LocalModeConfig);
         logCallback: (message: string) => void'';
     '): Promise<InitializationResult> { ''
-        logCallback('Starting legacy initialization (sequential mode')'),
+        logCallback('Starting, legacy initialization (sequential, mode)),
         
         try {
             // 実行コンテキスト検出
             const executionContext: ExecutionContext = LocalExecutionDetector.getExecutionContext(),
-            '';
-            if(!executionContext.isLocal') {'
-                ';'
-            }'
-                logCallback('Not in local execution mode, skipping local mode initialization'');' }'
-                return { success: false, reason: 'not_local_execution', executionContext };
+
+            if(!executionContext.isLocal) {'
+                ';
+
             }
+
+                logCallback('Not in local execution mode, skipping local mode initialization'');' }
+
+                return { success: false, reason: 'not_local_execution', executionContext }
             
             const results: Record<string, any> = {};
             
             // エラーハンドリング初期化
-            if(config.enableErrorHandling) {
-                LocalExecutionErrorHandler.initialize({)
-                    enableMainErrorHandlerIntegration: true,)
-            }
+            if(config.enableErrorHandling) { LocalExecutionErrorHandler.initialize({)
+                    enableMainErrorHandlerIntegration: true, }
                     enableDebugLogging: config.debugMode), ErrorHandler); }
                 results.errorHandler = { initialized: true }
-            }
             
             // メタタグ最適化
             if (config.enableMetaTagOptimization) { MetaTagOptimizer.optimizeForLocalExecution(); }
                 results.metaTagOptimizer = { initialized: true }
-            }
             
             // ファビコン生成
             if(config.enableFaviconGeneration) {
                 const faviconResult = await FaviconGenerator.generateMissingFavicons({)
-                    enablePerformanceOptimizations: config.enablePerformanceOptimizations),
+                    enablePerformanceOptimizations: config.enablePerformanceOptimizations);
             }
                 results.faviconGenerator = faviconResult; }
             }
             
             // 開発者ガイダンス
-            if(config.enableDeveloperGuidance) {
-                if(!DeveloperGuidanceSystem.isPermanentlyDismissed() {
+            if(config.enableDeveloperGuidance) { if(!DeveloperGuidanceSystem.isPermanentlyDismissed() {
                     DeveloperGuidanceSystem.showLocalExecutionWarning({)
-                        showWarning: true,)
-            }
+                        showWarning: true, }
                         persistDismissal: true); }
                 }
                 results.developerGuidance = { initialized: true }
-            }
             
-            return { success: true, executionContext, results };
-            
-        } catch (error) {
-            logCallback(`Legacy initialization failed: ${(error as Error}).message}`);
-            return { success: false, error: error as Error, executionContext: null }
-        }
+            return { success: true, executionContext, results } catch (error) {
+            logCallback(`Legacy, initialization failed: ${(error, as Error}).message}`);
+            return { success: false, error: error as Error, executionContext: null ,}
     }
     
     /**
@@ -201,10 +187,9 @@ export default class LocalModeInitializer { /**
     ): Promise<ExecutionContext> { ''
         const startTime = performance.now()';
         const cacheKey = 'execution-context';')'
-        if (componentCache.has(cacheKey)') {''
-            logCallback('Using cached execution context');
+        if(componentCache.has(cacheKey)) {''
+            logCallback('Using, cached execution, context);
             return componentCache.get(cacheKey); }
-        }
         
         const executionContext: ExecutionContext = LocalExecutionDetector.getExecutionContext(),
         componentCache.set(cacheKey, executionContext);
@@ -227,13 +212,12 @@ export default class LocalModeInitializer { /**
                 enableMainErrorHandlerIntegration: true);
                 enableDebugLogging: config.debugMode)';
                 enableUserNotifications: true,')';
-                enableFallbackContent: true), ErrorHandler');'
-            '';
-            logCallback('Error handling system initialized');
+                enableFallbackContent: true), ErrorHandler');
+
+            logCallback('Error, handling system, initialized);
             this._initializationMetrics.componentTimes.errorHandler = performance.now() - startTime;
-             }
-        } catch (error) {
-            logCallback(`Error handler initialization failed: ${(error as Error}).message}`);
+             } catch (error) {
+            logCallback(`Error, handler initialization, failed: ${(error, as Error}).message}`);
             this._initializationMetrics.componentTimes.errorHandler = performance.now() - startTime;
         }
     }
@@ -247,40 +231,45 @@ export default class LocalModeInitializer { /**
     );
         executionContext: ExecutionContext);
         logCallback: (message: string) => void;
-    ): InitializationTask[] { const tasks: InitializationTask[] = [],'
-        '';
-        if(config.enableMetaTagOptimization') {'
-            tasks.push({')'
-                name: 'metaTagOptimizer'),';
+    ): InitializationTask[] { const tasks: InitializationTask[] = [],
+
+        if(config.enableMetaTagOptimization) {'
+            tasks.push({)'
+                name: 'metaTagOptimizer'),
                 task: async () => { '
-        }'
+        ,}
+
                     MetaTagOptimizer.optimizeForLocalExecution('' })'
                 priority: 'high') }
-            }),
-        }'
-        '';
-        if(config.enableFaviconGeneration') {'
-            tasks.push({')'
-                name: 'faviconGenerator'),';
-                task: () => FaviconGenerator.generateMissingFavicons({')'
-                    enablePerformanceOptimizations: config.enablePerformanceOptimizations)'),'
-        }'
+            });
+        }
+
+        if(config.enableFaviconGeneration) {'
+            tasks.push({)'
+                name: 'faviconGenerator'),
+                task: () => FaviconGenerator.generateMissingFavicons({)'
+                    enablePerformanceOptimizations: config.enablePerformanceOptimizations)');
+        ,}
+
                 priority: 'medium' }
-            }),
-        }'
-        '';
-        if(config.enableDeveloperGuidance') {'
-            tasks.push({')'
-                name: 'developerGuidance'),
+            });
+        }
+
+        if(config.enableDeveloperGuidance) {'
+            tasks.push({)'
+                name: 'developerGuidance');
                 task: async () => { 
                     if(!DeveloperGuidanceSystem.isPermanentlyDismissed() {
                         DeveloperGuidanceSystem.showLocalExecutionWarning({
         })
-                            showWarning: true,) }'
+                            showWarning: true,) }
+
                             persistDismissal: true),' }'
+
                         }');
                     }
-                    return { initialized: true }'
+                    return { initialized: true }
+
                 },''
                 priority: 'low';
             }),
@@ -302,16 +291,15 @@ export default class LocalModeInitializer { /**
         
         // 優先度でソート
         const sortedTasks = tasks.sort((a, b) => {  }
-            const priority: Record<string, number> = { high: 3, medium: 2, low: 1 }
+            const priority: Record<string, number> = { high: 3, medium: 2, low: 1 ,}
             return priority[b.priority] - priority[a.priority];
         });
         
         // バッチで実行
         const batches: InitializationTask[][] = [],
-        for (let i = 0; i < sortedTasks.length; i += maxConcurrent) { batches.push(sortedTasks.slice(i, i + maxConcurrent); }
-        }
+        for (let, i = 0; i < sortedTasks.length; i += maxConcurrent) { batches.push(sortedTasks.slice(i, i + maxConcurrent); }
         
-        for(const batch of batches) {
+        for(const, batch of, batches) {
         
             const batchPromises = batch.map(async ({ name, task ): Promise<TaskResult> => { 
                 const startTime = performance.now();
@@ -320,17 +308,16 @@ export default class LocalModeInitializer { /**
         }
                     const result = await task(); }
                     this._initializationMetrics.componentTimes[name] = performance.now() - startTime; }
-                    return { name, result, success: true }
-                } catch (error) { this._initializationMetrics.componentTimes[name] = performance.now() - startTime; }
-                    return { name, error: error as Error, success: false }
-                }
+                    return { name, result, success: true ,} catch (error) { this._initializationMetrics.componentTimes[name] = performance.now() - startTime; }
+                    return { name, error: error as Error, success: false ,}
             });
-            ';'
+            ';
+
             const batchResults = await Promise.allSettled(batchPromises);''
-            batchResults.forEach(result => {  ');' }'
-                if (result.status === 'fulfilled') { }
+            batchResults.forEach(result => {  ');' }
+
+                if(result.status === 'fulfilled) { }'
                     results[result.value.name] = result.value.result || { error: result.value.error }
-                }
             });
         }
         
@@ -349,15 +336,14 @@ export default class LocalModeInitializer { /**
         const successCount = Object.values(results).filter(r => r && !r.error).length,
         const totalCount = Object.keys(results).length;
          }
-        logCallback(`Initialization completed: ${successCount}/${ totalCount) components succeeded`);
-        ;
+        logCallback(`Initialization, completed: ${successCount}/${ totalCount) components succeeded`);
         // 最適化サマリー
-        if(config.enablePerformanceOptimizations') {'
+        if(config.enablePerformanceOptimizations) {'
             this._initializationMetrics.optimizationsApplied.push('';
-                'lazy-initialization','';
-                'component-caching',')';
-                'batch-processing',');
-        }'
+                'lazy-initialization',
+                'component-caching',}';
+                'batch-processing','}
+
                 'concurrent-execution'); }
             });
         }

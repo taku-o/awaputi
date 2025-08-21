@@ -5,38 +5,32 @@
 
 // Type definitions
 interface DocumentationItem { id: string,
-    title: string,
-    category: string,
-    content: string,
-    keywords: string[],
-    lastUpdated: number }
-}
+    title: string;
+    category: string;
+    content: string;
+    keywords: string[];
+    lastUpdated: number ,}
 
-interface SearchResult { docId: string,
-    title: string,
-    score: number,
-    matches: string[],
+interface SearchResult { docId: string;
+    title: string;
+    score: number;
+    matches: string[];
     excerpt: string }
-}
 
 interface SearchOptions { limit?: number; }
-}
 
 interface ContextualHelpResult { context: string,
-    suggestedDocs: string[],
+    suggestedDocs: string[];
     currentDoc?: string;
-    tips: string[] }
-}
+    tips: string[] ,}
 
-interface ContextInfo { docId: string,
-    doc: DocumentationItem,
+interface ContextInfo { docId: string;
+    doc: DocumentationItem;
     timestamp: number }
-}
 
-interface TokenInfo { docId: string,
-    title: string,
+interface TokenInfo { docId: string;
+    title: string;
     frequency: number }
-}
 
 export class DocumentationSystem {
     private docs: Map<string, DocumentationItem>;
@@ -54,18 +48,16 @@ export class DocumentationSystem {
         
 
     }
-    }
         this.initialize(); }
     }
 
     initialize(): void { this.loadDocumentation();
         this.createHelpPanel();
         this.setupEventHandlers(); }
-    }
 
     loadDocumentation(): void { // コアドキュメント
         this.registerDocumentation('overview', {''
-            title: 'Debug Tools Overview',')';
+            title: 'Debug Tools Overview',)';
             category: 'general');
             content: `;
                 <h3>デバッグツール概要</h3>;
@@ -86,10 +78,10 @@ export class DocumentationSystem {
                     <li><kbd>Ctrl+Shift+E</kbd> - エフェクトデバッガーを開く</li>;
                 </ul>';
             `,')';
-            keywords: ['overview', 'help', 'getting started', 'introduction'])');'
-'';
+            keywords: ['overview', 'help', 'getting started', 'introduction])');
+
         this.registerDocumentation('performance-monitor', {''
-            title: 'Performance Monitor',')';
+            title: 'Performance Monitor',)';
             category: 'tools');
             content: `;
                 <h3>パフォーマンスモニター</h3>;
@@ -116,10 +108,10 @@ export class DocumentationSystem {
                     <li>重い計算処理を分散</li>;
                 </ul>';
             `,')';
-            keywords: ['performance', 'fps', 'monitoring', 'optimization'])');'
-'';
+            keywords: ['performance', 'fps', 'monitoring', 'optimization])');
+
         this.registerDocumentation('developer-console', {''
-            title: 'Developer Console',')';
+            title: 'Developer Console',)';
             category: 'tools');
             content: `;
                 <h3>開発者コンソール</h3>;
@@ -146,11 +138,11 @@ export class DocumentationSystem {
                     <li>Tabキーで自動補完</li>';
                     <li>上下キーで履歴参照</li>'';
                     <li>help(''';
-            keywords: ['console', 'commands', 'cli', 'terminal']' })'
-        }');'
-'';
+            keywords: ['console', 'commands', 'cli', 'terminal]' })'
+        }');
+
         this.registerDocumentation('error-reporter', { ''
-            title: 'Error Reporter',')';
+            title: 'Error Reporter',)';
             category: 'tools');
             content: `;
                 <h3>エラーレポーター</h3>;
@@ -177,10 +169,10 @@ export class DocumentationSystem {
                     <li>修正後、エラーが解決されたか確認</li>;
                 </ol>';
             `,')';
-            keywords: ['error', 'debugging', 'troubleshooting', 'logs'])');'
-'';
+            keywords: ['error', 'debugging', 'troubleshooting', 'logs])');
+
         this.registerDocumentation('test-support', {''
-            title: 'Test Support Tools',')';
+            title: 'Test Support Tools',)';
             category: 'tools');
             content: `;
                 <h3>テスト支援ツール</h3>;
@@ -214,10 +206,10 @@ export class DocumentationSystem {
                     <li>改善提案の自動生成</li>;
                 </ul>';
             `,')';
-            keywords: ['testing', 'test', 'mock', 'benchmark'])');'
-'';
+            keywords: ['testing', 'test', 'mock', 'benchmark])');
+
         this.registerDocumentation('visual-debugger', {''
-            title: 'Visual Debugger',')';
+            title: 'Visual Debugger',)';
             category: 'tools');
             content: `;
                 <h3>ビジュアルデバッガー</h3>;
@@ -244,10 +236,10 @@ export class DocumentationSystem {
                     <li>状態変化の追跡</li>;
                 </ul>';
             `,')';
-            keywords: ['visual', 'debug', 'editor', 'inspector'])');'
-'';
+            keywords: ['visual', 'debug', 'editor', 'inspector])');
+
         this.registerDocumentation('shortcuts', {''
-            title: 'Keyboard Shortcuts',')';
+            title: 'Keyboard Shortcuts',)';
             category: 'reference');
             content: `;
                 <h3>キーボードショートカット一覧</h3>;
@@ -281,10 +273,10 @@ export class DocumentationSystem {
                     <li><kbd>Ctrl+C</kbd> - コマンド中断</li>;
                 </ul>';
             `,')';
-            keywords: ['shortcuts', 'keyboard', 'hotkeys', 'keys'])');'
-'';
+            keywords: ['shortcuts', 'keyboard', 'hotkeys', 'keys])');
+
         this.registerDocumentation('troubleshooting', {''
-            title: 'Troubleshooting Guide',')';
+            title: 'Troubleshooting Guide',)';
             category: 'guides');
             content: `;
                 <h3>トラブルシューティングガイド</h3>;
@@ -326,10 +318,10 @@ export class DocumentationSystem {
                     <li>デバッグツールのバージョン</li>;
                 </ul>';
             `,')';
-            keywords: ['troubleshooting', 'problems', 'issues', 'help', 'support'])');'
-'';
+            keywords: ['troubleshooting', 'problems', 'issues', 'help', 'support])');
+
         this.registerDocumentation('best-practices', {''
-            title: 'Best Practices',')';
+            title: 'Best Practices',)';
             category: 'guides');
             content: `;
                 <h3>ベストプラクティス</h3>;
@@ -370,11 +362,11 @@ export class DocumentationSystem {
                     <li>入力検証を徹底</li>;
                 </ul>';
             `,')';
-            keywords: ['best practices', 'guidelines', 'tips', 'recommendations'])');
+            keywords: ['best practices', 'guidelines', 'tips', 'recommendations])');
 ';
         // API リファレンス
         this.registerDocumentation('api-reference', {''
-            title: 'API Reference',')';
+            title: 'API Reference',)';
             category: 'reference');
             content: `;
                 <h3>デバッグツール API リファレンス</h3>;
@@ -387,12 +379,11 @@ class EnhancedDebugInterface {)
     closePanel(): void;
     // ショートカット
     registerShortcut(key: string, handler: Function): void'';
-    unregisterShortcut(key: string'): void;
+    unregisterShortcut(key: string): void;
     ';
     // レイアウト
-    setLayout(layout: 'docked' | 'floating' | 'fullscreen'): void;
-    toggleVisibility(): void }
-}
+    setLayout(layout: 'docked' | 'floating' | 'fullscreen): void;
+    toggleVisibility(): void ,}
                 </code></pre>;
                 <h4>PerformanceMonitor</h4>;
                 <pre><code>;
@@ -405,8 +396,7 @@ class PerformanceMonitor { // メトリクス収集
     compareWithBaseline(): Comparison;
     // 設定
     setThreshold(metric: string, value: number): void;
-    enableWarnings(enabled: boolean): void }
-}
+    enableWarnings(enabled: boolean): void ,}
                 </code></pre>;
                 <h4>DeveloperConsole</h4>;
                 <pre><code>;
@@ -417,8 +407,7 @@ class DeveloperConsole { // コマンド管理
     getHistory(): string[];
     clearHistory(): void;
     // 自動補完
-    getCompletions(partial: string): string[] }
-}
+    getCompletions(partial: string): string[] ,}
                 </code></pre>;
                 <h4>TestSupportTools</h4>;
                 <pre><code>;
@@ -431,51 +420,50 @@ class TestSupportTools { // テスト実行
     // 分析
     analyzeResults(results: TestResults): Analysis'';
     generateReport(''';
-            keywords: ['api', 'reference', 'documentation', 'methods', 'classes']' })'
+            keywords: ['api', 'reference', 'documentation', 'methods', 'classes]' })'
         }');
-    }'
-'';
+    }
+
     registerDocumentation(id: string, doc: Omit<DocumentationItem, 'id' | 'lastUpdated'>): void { const fullDoc: DocumentationItem = {
-            id: id,
+            id: id;
             ...doc,
-            lastUpdated: Date.now() }
-        };
+            lastUpdated: Date.now( ,};
         
         this.docs.set(id, fullDoc);
         
         // 検索エンジンにインデックス
         this.searchEngine.indexDocument(id, fullDoc);
     }
-'';
+
     createHelpPanel()';
         this.helpPanel = document.createElement('div'');''
         this.helpPanel.id = 'debug-help-panel';''
         this.helpPanel.className = 'debug-help-panel';
         this.helpPanel.style.cssText = `;
-            position: fixed,
-            top: 50%,
-            left: 50%,
+            position: fixed;
+            top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%);
-            width: 800px,
+            width: 800px;
             max-width: 90vw,
-            height: 600px,';
-            max-height: 90vh,'';
-            background: rgba(0, 0, 0, 0.95');
-            color: white,
-            padding: 20px,';
-            border-radius: 12px,'';
+            height: 600px,
+            max-height: 90vh,
+            background: rgba(0, 0, 0, 0.95);
+            color: white;
+            padding: 20px,
+            border-radius: 12px,
             font-family: 'Segoe UI', system-ui, sans-serif;
             font-size: 14px,
             z-index: 20000,
-            display: none,
+            display: none;
             box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.1);
         `;
 
         this.helpPanel.innerHTML = this.createHelpPanelHTML();
         document.body.appendChild(this.helpPanel);
-    }'
-'';
+    }
+
     createHelpPanelHTML('): string { return `''
             <div class="help-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px;">""
                 <h2 style="margin: 0; color: #00ff88; font-size: 24px;">""
@@ -484,13 +472,13 @@ class TestSupportTools { // テスト実行
                 </h2>"";
                 <button id="close-help" style="background: none; border: none; color: #ccc; font-size: 24px; cursor: pointer; padding: 0; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">×</button>
             </div>";
-"";
+
             <div class="help-search" style="margin-bottom: 20px;">""
                 <input type="text" id="help-search-input" placeholder="Search documentation..." style="width: 100%; padding: 10px 15px; background: #222; border: 1px solid #444; border-radius: 6px; color: white; font-size: 14px;">""
                 <div id="search-results" style="position: absolute; background: #333; border: 1px solid #444; border-radius: 6px; margin-top: 5px; display: none; max-height: 200px; overflow-y: auto; width: 100%; z-index: 1000;"></div>
             </div>";
-"";
-            <div class="help-content" style="display: flex; gap: 20px; height: calc(100% - 120px");">""
+
+            <div class="help-content" style="display: flex; gap: 20px; height: calc(100% - 120px);">""
                 <div class="help-sidebar" style="width: 200px; overflow-y: auto; border-right: 1px solid #333; padding-right: 20px;">""
                     <h3 style="margin: 0 0 15px 0; color: #ccc; font-size: 14px; text-transform: uppercase;">Categories</h3>""
                     <ul id="help-categories" style="list-style: none; padding: 0; margin: 0;">""
@@ -510,7 +498,7 @@ class TestSupportTools { // テスト実行
                             <span>Reference</span>;
                         </li>;
                     </ul>";
-"";
+
                     <h3 style="margin: 25px 0 15px 0; color: #ccc; font-size: 14px; text-transform: uppercase;">Quick Links</h3>""
                     <ul id="help-quick-links" style="list-style: none; padding: 0; margin: 0;">""
                         <li class="doc-link" data-doc="overview" style="padding: 6px 12px; margin: 2px 0; cursor: pointer; border-radius: 4px; font-size: 13px; color: #00ff88;">
@@ -524,7 +512,7 @@ class TestSupportTools { // テスト実行
                         </li>;
                     </ul>;
                 </div>";
-"";
+
                 <div class="help-main" style="flex: 1; overflow-y: auto; padding-right: 10px;">""
                     <div id="help-article" style="line-height: 1.6;">
                         <!-- Documentation content will be displayed here -->;
@@ -533,204 +521,195 @@ class TestSupportTools { // テスト実行
             </div>;
             <style>;
                 .help-main h3 {
-                    color: #00ff88,
-                    margin: 20px 0 10px 0,
+                    color: #00ff88;
+                    margin: 20px 0 10px 0;
                     font-size: 18px, }
-                }
                 
                 .help-main h4 { color: #ffa500,
-                    margin: 15px 0 8px 0,
+                    margin: 15px 0 8px 0;
                     font-size: 16px, }
-                }
                 
                 .help-main h5 { color: #87ceeb,
-                    margin: 10px 0 5px 0,
+                    margin: 10px 0 5px 0;
                     font-size: 14px, }
-                }
                 
                 .help-main p { margin: 8px 0,
-                    color: #ddd }
-                }
+                    color: #ddd ,}
                 
                 .help-main ul, .help-main ol { margin: 8px 0,
                     padding-left: 25px,
-                    color: #ddd }
-                }
+                    color: #ddd ,}
                 
                 .help-main li { margin: 4px 0 }
-                }
                 
-                .help-main code { background: #333,
-                    padding: 2px 6px,";
-                    border-radius: 3px,"";
-                    font-family: 'Consolas', 'Monaco', monospace;
-                    font-size: 13px, }
-                }
-                
-                .help-main pre { background: #222,
-                    padding: 12px,
-                    border-radius: 6px,
-                    overflow-x: auto,
-                    margin: 10px 0,
-                    border: 1px solid #444 }
-                }
-                
-                .help-main kbd { background: #444,
+                .help-main code { background: #333;
                     padding: 2px 6px,
                     border-radius: 3px,
-                    border: 1px solid #666,
+                    font-family: 'Consolas', 'Monaco', monospace;
+                    font-size: 13px, }
+                
+                .help-main pre { background: #222,
+                    padding: 12px;
+                    border-radius: 6px,
+                    overflow-x: auto,
+                    margin: 10px 0;
+                    border: 1px solid #444 ,}
+                
+                .help-main kbd { background: #444;
+                    padding: 2px 6px;
+                    border-radius: 3px,
+                    border: 1px solid #666;
                     font-family: monospace,
                     font-size: 12px,
                     box-shadow: 0 2px 0 #222, }
-                }
                 
                 .category-item:hover, .doc-link:hover { background: #555 !important }
-                }
                 
                 .category-item.active { background: #444 !important,
-                    color: #00ff88 }
-                }
+                    color: #00ff88 ,}
                 
                 ::-webkit-scrollbar { width: 8px }
-                }
                 
                 ::-webkit-scrollbar-track { background: #222 }
-                }
                 
-                ::-webkit-scrollbar-thumb { background: #555,
+                ::-webkit-scrollbar-thumb { background: #555;
                     border-radius: 4px, }
-                }
                 
                 ::-webkit-scrollbar-thumb:hover { background: #666 }
-                }
             </style>;
         `;
-    }'
-'';
+    }
+
     setupEventHandlers()';
-        document.getElementById('close-help'')? .addEventListener('click', () => { this.hide();' }'
+        document.getElementById('close-help'')? .addEventListener('click', () => { this.hide();' }
+
         }');
 ';
         // カテゴリ選択
         document.getElementById('help-categories'')?.addEventListener('click', (e) => {  ''
-            const item = (e.target as HTMLElement').closest('.category-item') as HTMLElement;
+            const item = (e.target, as HTMLElement').closest('.category-item) as HTMLElement;
             if (item) { }
-                this.selectCategory(item.dataset.category!); }'
+                this.selectCategory(item.dataset.category!); }
+
             }''
         }');
 ';
         // ドキュメントリンク
         document.addEventListener('click', (e) => {  ''
-            const docLink = (e.target as HTMLElement').closest('.doc-link') as HTMLElement;
+            const docLink = (e.target, as HTMLElement').closest('.doc-link) as HTMLElement;
             if(docLink) {
                 const docId = docLink.dataset.doc;
             }
                 if (docId) { }
                     this.showDocument(docId); }
-                }'
-            }''
+}''
         }');
 ';
         // 検索
         const searchInput = document.getElementById('help-search-input'') as HTMLInputElement;''
-        searchInput?.addEventListener('input', (e) => { this.handleSearch((e.target as HTMLInputElement).value);' }'
-        }');'
-'';
-        searchInput?.addEventListener('keydown', (e') => {  ''
-            if (e.key === 'Escape') { }
-                this.hideSearchResults(); }'
+        searchInput?.addEventListener('input', (e) => { this.handleSearch((e.target, as HTMLInputElement).value);' }
+
+        }');
+
+        searchInput?.addEventListener('keydown', (e) => {  ''
+            if(e.key === 'Escape) { }'
+                this.hideSearchResults(); }
+
             }''
         }');
 ';
         // キーボードショートカット
-        document.addEventListener('keydown', (e') => {  ''
-            if(e.key === 'F1' || (e.ctrlKey && e.key === 'h') {
+        document.addEventListener('keydown', (e) => {  ''
+            if(e.key === 'F1' || (e.ctrlKey && e.key === 'h) {
                 
             }
                 e.preventDefault(); }
                 this.toggle(); }
-            }
-        });
+});
     }
  : undefined';
     show(): void { this.isVisible = true;''
-        if(this.helpPanel') {'
-            '';
-            this.helpPanel.style.display = 'block';'
-        }'
-            this.showDocument('overview'); // デフォルトでOverviewを表示 }
+        if(this.helpPanel) {'
+
+            this.helpPanel.style.display = 'block';
+
         }
-    }
-';'
+
+            this.showDocument('overview); // デフォルトでOverviewを表示 }'
+}
+';
+
     hide(): void { this.isVisible = false;''
-        if(this.helpPanel') {'
-            '';
+        if(this.helpPanel) {'
+
             this.helpPanel.style.display = 'none';
         }
             this.hideSearchResults(); }
-        }
-    }
+}
 
     toggle(): void { if (this.isVisible) {
-            this.hide(); }
-        } else { this.show(); }
-        }
-    }'
-'';
-    selectCategory(category: string'): void { // カテゴリボタンの状態更新
-        document.querySelectorAll('.category-item').forEach(item => { ');''
-            item.classList.remove('active');' }'
-            (item as HTMLElement').style.background = '';' }'
-        }');'
-        '';
+            this.hide(); } else { this.show(); }
+    }
+
+    selectCategory(category: string): void { // カテゴリボタンの状態更新
+        document.querySelectorAll('.category-item).forEach(item => { ');''
+            item.classList.remove('active);' }
+
+            (item, as HTMLElement').style.background = '';' }
+
+        }');
+
         const selectedItem = document.querySelector(`[data-category="${category}"]`) as HTMLElement;""
-        if(selectedItem") {"
-            "";
-            selectedItem.classList.add('active'');'
-        }'
+        if(selectedItem) {"
+
+            selectedItem.classList.add('active'');
+
+        }
+
             selectedItem.style.background = '#444'; }
         }
 
         // ドキュメント一覧を表示
         this.showCategoryDocuments(category);
     }
-'';
-    showCategoryDocuments(category: string'): void { ''
+
+    showCategoryDocuments(category: string): void { ''
         const docs = category === 'all' ?   : undefined';
             Array.from(this.docs.values() :'';
-            Array.from(this.docs.values().filter(doc => doc.category === category');
-';'
+            Array.from(this.docs.values().filter(doc => doc.category === category);
+';
+
         const content = `' }'
+
             <h3>Documents in ${category === 'all' ? 'All Categories' : category}</h3>''
             <div class="doc-list">";
-                ${ docs.map(doc => `")"
-                    <div class="doc-item" style="background: #333; padding: 15px; margin: 10px 0; border-radius: 8px; cursor: pointer;" ");" }"
-                         onclick="window.debugDocs.showDocument('${doc.id')''})">""
+                ${ docs.map(doc => `}"
+                    <div, class="doc-item" style="background: #333; padding: 15px; margin: 10px, 0; border-radius: 8px; cursor: pointer;" "};" }"
+                         onclick="window.debugDocs.showDocument('${doc.id}''})">""
                         <h4 style="margin: 0 0 5px 0; color: #00ff88;">${doc.title}</h4>""
                         <p style="margin: 0; color: #ccc; font-size: 13px;">""
-                            Category: ${doc.category} | Keywords: ${doc.keywords.join(', '})}'
+                            Category: ${doc.category} | Keywords: ${doc.keywords.join(', '})'
                         </p>';
                     </div>'';
                 `').join(''')}
             </div>;
-        `;'
-'';
-        const helpArticle = document.getElementById('help-article');
+        `;
+
+        const helpArticle = document.getElementById('help-article);
         if (helpArticle) { helpArticle.innerHTML = content; }
-        }
     }
-';'
+';
+
     showDocument(docId: string): void { const doc = this.docs.get(docId);''
-        if(!doc') {'
-            '';
-            this.showError('Document not found'');
+        if(!doc) {'
+
+            this.showError('Document, not found'');
         }
             return; }
-        }'
-'';
-        const helpArticle = document.getElementById('help-article');
-        if (helpArticle) { helpArticle.innerHTML = doc.content; }
         }
+
+        const helpArticle = document.getElementById('help-article);
+        if (helpArticle) { helpArticle.innerHTML = doc.content; }
 
         // コンテキストヘルプを更新
         this.contextualHelp.updateContext(docId, doc);
@@ -739,45 +718,49 @@ class TestSupportTools { // テスト実行
     handleSearch(query: string): void { if (!query || query.length < 2) {
             this.hideSearchResults();
             return; }
-        }
 
         const results = this.searchEngine.search(query);
         this.showSearchResults(results);
     }
-'';
-    showSearchResults(results: SearchResult[]'): void { ''
-        const resultsDiv = document.getElementById('search-results');
-        if (!resultsDiv) return;'
-        '';
-        if(results.length === 0') {'
-            ';'
-        }'
-            resultsDiv.innerHTML = '<div style="padding: 10px; color: #ccc;">No results found</div>'; }'
-        } else {  resultsDiv.innerHTML = results.map(result => `') }'
+
+    showSearchResults(results: SearchResult[]): void { ''
+        const resultsDiv = document.getElementById('search-results);
+        if (!resultsDiv) return;
+
+        if(results.length === 0) {'
+            ';
+
+        }
+
+            resultsDiv.innerHTML = '<div style="padding: 10px; color: #ccc;">No results found</div>'; }
+
+        } else {  resultsDiv.innerHTML = results.map(result => `) }
+
                 <div class="search-result-item" style="padding: 10px; cursor: pointer; border-bottom: 1px solid #444;"");" }"
-                     onclick="window.debugDocs.showDocument('${result.docId')'); window.debugDocs.hideSearchResults('});">""
+                     onclick="window.debugDocs.showDocument('${ result.docId' }; window.debugDocs.hideSearchResults('});">""
                     <div style="font-weight: bold; color: #00ff88;">${result.title}</div>""
                     <div style="font-size: 12px; color: #ccc;">${result.excerpt}</div>""
-                    <div style="font-size: 11px; color: #888; margin-top: 2px;">Score: ${result.score.toFixed(2})}</div>"
+                    <div style="font-size: 11px; color: #888; margin-top: 2px;">Score: ${result.score.toFixed(2})</div>"
                 </div>"";
             `").join(''');
-        }'
-'';
-        resultsDiv.style.display = 'block';
-    }'
-'';
-    hideSearchResults()';
-        const resultsDiv = document.getElementById('search-results');''
-        if(resultsDiv') {'
-            ';'
-        }'
-            resultsDiv.style.display = 'none'; }
         }
-    }'
-'';
-    showError(message: string'): void { ''
-        const helpArticle = document.getElementById('help-article');''
-        if(helpArticle') {'
+
+        resultsDiv.style.display = 'block';
+    }
+
+    hideSearchResults()';
+        const resultsDiv = document.getElementById('search-results);''
+        if(resultsDiv) {'
+            ';
+
+        }
+
+            resultsDiv.style.display = 'none'; }
+}
+
+    showError(message: string): void { ''
+        const helpArticle = document.getElementById('help-article);''
+        if(helpArticle) {'
             helpArticle.innerHTML = `'';
                 <div style="text-align: center; padding: 50px; color: #ff6b6b;">
         }
@@ -790,24 +773,19 @@ class TestSupportTools { // テスト実行
 
     // コンテキストヘルプAPI
     getContextualHelp(context: string): ContextualHelpResult { return this.contextualHelp.getHelp(context); }
-    }
 
     getSuggestedDocs(context: string): string[] { return this.contextualHelp.getSuggestedDocs(context); }
-    }
 
     // ドキュメント管理API
     getDocument(docId: string): DocumentationItem | undefined { return this.docs.get(docId); }
-    }
 
     getAllDocuments(): DocumentationItem[] { return Array.from(this.docs.values(); }
-    }
 
-    getDocumentsByCategory(category: string): DocumentationItem[] { return Array.from(this.docs.values().filter(doc => doc.category === category); }
-    }
+    getDocumentsByCategory(category: string): DocumentationItem[] { return Array.from(this.docs.values().filter(doc => doc.category === category);
 
     updateDocument(docId: string, updates: Partial<DocumentationItem>): void { const doc = this.docs.get(docId);
-        if (doc) { }
-            Object.assign(doc, updates, { lastUpdated: Date.now() });
+        if (doc) { ,}
+            Object.assign(doc, updates, { lastUpdated: Date.now( });
             this.searchEngine.reindexDocument(docId, doc);
         }
     }
@@ -815,12 +793,10 @@ class TestSupportTools { // テスト実行
     // 検索API
     search(query: string, options: SearchOptions = { ): SearchResult[] {
         return this.searchEngine.search(query, options); }
-    }
 
     // クリーンアップ
     destroy(): void { if (this.helpPanel && this.helpPanel.parentNode) {
             this.helpPanel.parentNode.removeChild(this.helpPanel); }
-        }
         this.docs.clear();
         this.searchEngine.destroy();
         this.contextualHelp.destroy();
@@ -835,17 +811,16 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
     private stopWords: Set<string>;
     constructor() {
 ";
-        "";
+
         this.index = new Map<string, Map<string, TokenInfo>>(");"
         this.stopWords = new Set(["";
-            'the', 'is', 'at', 'which', 'on', 'and', 'a', 'an', 'as', 'are',']';
+            'the', 'is', 'at', 'which', 'on', 'and', 'a', 'an', 'as', 'are',]';
             'の', 'は', 'が', 'を', 'に', 'で', 'と', 'も', 'や', 'から'];
-    }
     })
         ]); }
-    }'
-'';
-    indexDocument(docId: string, doc: DocumentationItem'): void { ''
+    }
+
+    indexDocument(docId: string, doc: DocumentationItem): void { ''
         const tokens = this.tokenize(doc.title + ' ' + doc.content + ' ' + doc.keywords.join(' ');
         
         tokens.forEach(token => { );
@@ -856,12 +831,11 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
             const tokenIndex = this.index.get(token)!;
             const existing = tokenIndex.get(docId);
             tokenIndex.set(docId, { docId: docId)
-                title: doc.title),
-                frequency: (existing? .frequency || 0) + 1 }
-            }),
+                title: doc.title);
+                frequency: (existing? .frequency || 0) + 1 });
         });
     }
- : undefined;
+ : undefined
     reindexDocument(docId: string, doc: DocumentationItem): void { // 既存のインデックスを削除
         this.index.forEach(tokenIndex => { ); }
             tokenIndex.delete(docId); }
@@ -870,7 +844,8 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
         // 再インデックス
         this.indexDocument(docId, doc);
     }
-';'
+';
+
     tokenize(text: string): string[] { return text''
             .toLowerCase()';
             .replace(/[^\w\s\u3040-\u309f\u30a0-\u30ff\u4e00-\u9faf]/g, ' ');
@@ -883,16 +858,19 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
         const results = new Map<string, SearchResult>();
 
         queryTokens.forEach(token => { );
-            const tokenIndex = this.index.get(token);'
+            const tokenIndex = this.index.get(token);
+
             if(tokenIndex) {'
                 tokenIndex.forEach((docInfo, docId) => {''
-                    if (!results.has(docId)') {
+                    if(!results.has(docId)) {
                         results.set(docId, {
-                            docId: docId,
+                            docId: docId;
                             title: docInfo.title);
                             score: 0)
-            }'
+            ,}
+
                             matches: [],') }'
+
                             excerpt: ''); }
                         });
                     }
@@ -906,12 +884,13 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
             // 部分一致検索
             this.index.forEach((tokenIndex, indexToken) => {  if(indexToken.includes(token) {
                     tokenIndex.forEach((docInfo, docId) => {''
-                        if (!results.has(docId)') {
+                        if(!results.has(docId)) {
                             results.set(docId, {
-                                docId: docId,
+                                docId: docId;
                                 title: docInfo.title);
                                 score: 0)';
                                 matches: [],') }'
+
                                 excerpt: ''); }
                             });
                         }
@@ -936,13 +915,11 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
 
         return sortedResults;
     }
-'';
-    generateExcerpt(docId: string, queryTokens: string[]'): string { // 簡単な抜粋生成（実際の実装ではより洗練された方法を使用）
+
+    generateExcerpt(docId: string, queryTokens: string[]): string { // 簡単な抜粋生成（実際の実装ではより洗練された方法を使用）
         return 'Relevant documentation about ' + queryTokens.join(', '); }
-    }
 
     destroy(): void { this.index.clear(); }
-    }
 }
 
 /**
@@ -958,96 +935,90 @@ class ContextualHelpProvider { private currentContext: ContextInfo | null
         this.contextMappings = new Map<string, string[]>();
 
     }
+        this.setupContextMappings(); }
+
     }
-        this.setupContextMappings(); }'
-    }'
-'';
+
     setupContextMappings(''';
         this.contextMappings.set('performance-issues', ['';
-            'performance-monitor',')';
+            'performance-monitor',)';
             'best-practices',')]';
             'troubleshooting')']';
-        ]');'
-'';
+        ]');
+
         this.contextMappings.set('error-occurred', ['';
-            'error-reporter',')';
+            'error-reporter',)';
             'troubleshooting',')]';
             'api-reference')']';
-        ]');'
-'';
+        ]');
+
         this.contextMappings.set('test-failure', ['';
-            'test-support',')';
+            'test-support',)';
             'troubleshooting',')]';
             'best-practices')']';
-        ]');'
-'';
+        ]');
+
         this.contextMappings.set('console-usage', ['';
-            'developer-console',')';
+            'developer-console',)';
             'shortcuts',')]';
             'api-reference')']';
-        ]');'
-'';
+        ]');
+
         this.contextMappings.set('visual-debugging', ['';
-            'visual-debugger',')';
+            'visual-debugger',)';
             'shortcuts',')]';
             'best-practices')];
         ]);
     }
 
     updateContext(docId: string, doc: DocumentationItem): void { this.currentContext = {
-            docId: docId,
-            doc: doc,
-            timestamp: Date.now() }
-        };
-    }
+            docId: docId;
+            doc: doc;
+            timestamp: Date.now( }
 
     getHelp(context: string): ContextualHelpResult { const relatedDocs = this.contextMappings.get(context) || [];
         return { context: context,
-            suggestedDocs: relatedDocs,
+            suggestedDocs: relatedDocs;
             currentDoc: this.currentContext? .docId, : undefined };
             tips: this.getContextualTips(context); }
-        };
-    }
+        }
 
     getSuggestedDocs(context: string): string[] { return this.contextMappings.get(context) || []; }
-    }'
-'';
-    getContextualTips(context: string'): string[] { const tips: Record<string, string[]> = {''
+
+    getContextualTips(context: string): string[] { const tips: Record<string, string[]> = {''
             'performance-issues': ['';
-                'Check FPS and frame time in Performance Monitor','';
-                'Run benchmarks to identify bottlenecks',']';
+                'Check FPS and frame time in Performance Monitor',
+                'Run benchmarks to identify bottlenecks',]';
                 'Enable performance warnings for proactive monitoring']';
-            ],'';
+            ],
             'error-occurred': ['';
-                'Check Error Reporter for detailed stack traces','';
-                'Look for similar errors in history',']';
+                'Check Error Reporter for detailed stack traces',
+                'Look for similar errors in history',]';
                 'Use suggested fixes from error analysis']';
-            ],'';
+            ],
             'test-failure': ['';
-                'Analyze failure patterns in Test Support Tools','';
-                'Generate mock data for isolated testing',']';
+                'Analyze failure patterns in Test Support Tools',
+                'Generate mock data for isolated testing',]';
                 'Check test coverage for gaps']';
-            ],'';
+            ],
             'console-usage': ['';
-                'Use Tab for command auto-completion','';
-                'Type help(') for available commands',']';
+                'Use Tab for command auto-completion',
+                'Type help(') for available commands',]';
                 'Use up/down arrows for command history']';
-            ],'';
+            ],
             'visual-debugging': ['';
-                'Enable hitbox display for collision debugging','';
-                'Use frame-by-frame stepping for detailed analysis',']';
+                'Enable hitbox display for collision debugging',
+                'Use frame-by-frame stepping for detailed analysis',]';
                 'Save and restore game states for testing'];
-            ] }
-        };
+            ] };
 
         return tips[context] || [];
     }
 
     destroy(): void { this.currentContext = null;
         this.contextMappings.clear(); }
-    }
 }
 
 // グローバルアクセス用（デバッグ目的）
-(window as any).DocumentationSystem = DocumentationSystem;''
-(window as any').debugDocs = null; // インスタンスは後で設定
+(window, as any).DocumentationSystem = DocumentationSystem;''
+(window, as any').debugDocs = null; // インスタンスは後で設定'

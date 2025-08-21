@@ -23,7 +23,6 @@ export class AnalyticsComparisonEngine {
         // キャッシュ設定
         this.cache = new Map();
     }
-    }
         this.cacheExpiry = 5 * 60 * 1000; // 5分 }
     }
 
@@ -35,12 +34,12 @@ export class AnalyticsComparisonEngine {
     async compareWithPastData(options: any = { ) {
         try {
             return await this.dataComparator.compareWithPastData(options, this.storageManager);' }'
-        } catch (error) { ''
+
+        } catch (error) {
             console.error('AnalyticsComparisonEngine.compareWithPastData error:', error);
             return { success: false, };
                 error: error.message }
-            },
-        }
+            }
     }
 
     /**
@@ -51,12 +50,12 @@ export class AnalyticsComparisonEngine {
     async benchmarkComparison(options: any = { ) {
         try {
             return await this.dataComparator.benchmarkComparison(options, this.storageManager);' }'
-        } catch (error) { ''
+
+        } catch (error) {
             console.error('AnalyticsComparisonEngine.benchmarkComparison error:', error);
             return { success: false, };
                 error: error.message }
-            },
-        }
+            }
     }
 
     /**
@@ -67,12 +66,12 @@ export class AnalyticsComparisonEngine {
     async stageComparison(options: any = { ) {
         try {
             return await this.dataComparator.stageComparison(options, this.storageManager);' }'
-        } catch (error) { ''
+
+        } catch (error) {
             console.error('AnalyticsComparisonEngine.stageComparison error:', error);
             return { success: false, };
                 error: error.message }
-            },
-        }
+            }
     }
 
     /**
@@ -83,14 +82,15 @@ export class AnalyticsComparisonEngine {
      */
     generateImprovementSuggestions(comparisonResult, options: any = {}) {
         try {
-    }'
+    }
+
             return this.algorithms.generateImprovementSuggestions(comparisonResult, options);' }'
-        } catch (error) { ''
-            console.error('AnalyticsComparisonEngine.generateImprovementSuggestions error:', error');
+
+        } catch (error) {
+            console.error('AnalyticsComparisonEngine.generateImprovementSuggestions error:', error);
             return { success: false, };
                 error: error.message }
-            },
-        }
+            }
     }
 
     /**
@@ -99,14 +99,14 @@ export class AnalyticsComparisonEngine {
      * @param {Array} metrics - 分析指標
      * @returns {Promise<Object>} トレンド分析結果'
      */''
-    async trendAnalysis(period = 'month', metrics = ['score', 'accuracy']) { try {
+    async trendAnalysis(period = 'month', metrics = ['score', 'accuracy]) { try {
             return await this.algorithms.trendAnalysis(period, metrics, this.storageManager);' }'
-        } catch (error) { ''
+
+        } catch (error) {
             console.error('AnalyticsComparisonEngine.trendAnalysis error:', error);
             return { success: false, };
                 error: error.message }
-            },
-        }
+            }
     }
 
     /**
@@ -117,14 +117,15 @@ export class AnalyticsComparisonEngine {
      */
     renderResults(comparisonResult, options: any = {}) {
         try {
-    }'
+    }
+
             return this.renderer.renderResults(comparisonResult, options);' }'
-        } catch (error) { ''
+
+        } catch (error) {
             console.error('AnalyticsComparisonEngine.renderResults error:', error);
             return { success: false, };
                 error: error.message }
-            },
-        }
+            }
     }
 
     /**
@@ -135,14 +136,15 @@ export class AnalyticsComparisonEngine {
      */
     generateSummaryReport(comparisonResult, options: any = {}) {
         try {
-    }'
+    }
+
             return this.renderer.generateSummaryReport(comparisonResult, options);' }'
-        } catch (error) { ''
+
+        } catch (error) {
             console.error('AnalyticsComparisonEngine.generateSummaryReport error:', error);
             return { success: false, };
                 error: error.message }
-            },
-        }
+            }
     }
 
     /**
@@ -153,14 +155,15 @@ export class AnalyticsComparisonEngine {
      */
     generateDetailedReport(comparisonResult, options: any = {}) {
         try {
-    }'
+    }
+
             return this.renderer.generateDetailedReport(comparisonResult, options);' }'
-        } catch (error) { ''
+
+        } catch (error) {
             console.error('AnalyticsComparisonEngine.generateDetailedReport error:', error);
             return { success: false, };
                 error: error.message }
-            },
-        }
+            }
     }
 
     /**
@@ -172,8 +175,7 @@ export class AnalyticsComparisonEngine {
         const cached = this.cache.get(key);
         if (cached && (Date.now() - cached.timestamp) < this.cacheExpiry) {
     }
-            return cached.data; }
-        }
+            return cached.data;
         return null;
     }
 
@@ -184,8 +186,8 @@ export class AnalyticsComparisonEngine {
      */
     setCachedData(key, data) {
         this.cache.set(key, {)
-            data: data),
-    }
+            data: data);
+    ,}
             timestamp: Date.now(); }
         });
     }
@@ -205,9 +207,7 @@ export class AnalyticsComparisonEngine {
      * 分割されたコンポーネントへの直接アクセス用メソッド
      */
     getDataComparator() { return this.dataComparator; }
-    }
 
     getAlgorithms() { return this.algorithms; }
-    }'
-'';
+
     getRenderer(');

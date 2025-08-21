@@ -6,8 +6,7 @@
 import type { Config } from 'jest';
 ';
 const config: Config = { // テスト環境
-    testEnvironment: 'jsdom',
-    
+    testEnvironment: 'jsdom';
     // テストファイルのパターン
     testMatch: [']';
         '**/src/tests/integration/**/*.test.ts'];
@@ -15,115 +14,100 @@ const config: Config = { // テスト環境
     
     // モジュール解決
     moduleNameMapping: {''
-        '^@/(.*')$': '<rootDir>/src/$1','';
-        '^@tests/(.*')$': '<rootDir>/src/tests/$1' }
-    },
-    ';
+        '^@/(.*')$': '<rootDir>/src/$1',
+        '^@tests/(.*')$': '<rootDir>/src/tests/$1' },
     // ES6モジュールサポート
-    extensionsToTreatAsEsm: ['.ts'],
-    
+    extensionsToTreatAsEsm: ['.ts];
     // トランスフォーム設定
     transform: { ''
         '^.+\\.ts$': ['ts-jest', {
-            useESM: true,';
+            useESM: true,
             tsconfig: {''
-                target: 'esnext','';
-                module: 'esnext','';
-                moduleResolution: 'node' }]
+                target: 'esnext',
+                module: 'esnext',
+                moduleResolution: 'node' ,}]
             }]
         }]
-    },
-    
+    };
     // セットアップファイル
     setupFilesAfterEnv: [']';
         '<rootDir>/src/tests/integration/setup.ts'];
     ],
     
     // カバレッジ設定
-    collectCoverage: true,
+    collectCoverage: true;
     collectCoverageFrom: ['';
-        'src/core/SocialSharingManager.ts','';
-        'src/core/ShareContentGenerator.ts','';
-        'src/core/ShareButton.ts','';
-        'src/core/ShareDialog.ts','';
-        'src/core/LeaderboardManager.ts','';
-        'src/core/ChallengeSystem.ts','';
-        'src/ui/components/LeaderboardUI.ts','';
-        'src/scenes/components/ChallengesTab.ts',']';
+        'src/core/SocialSharingManager.ts',
+        'src/core/ShareContentGenerator.ts',
+        'src/core/ShareButton.ts',
+        'src/core/ShareDialog.ts',
+        'src/core/LeaderboardManager.ts',
+        'src/core/ChallengeSystem.ts',
+        'src/ui/components/LeaderboardUI.ts',
+        'src/scenes/components/ChallengesTab.ts',]';
         '!src/tests/**'];
     ],
-    ';'
+
     coverageReporters: ['';
-        'text','';
-        'html','';
-        'lcov',']';
+        'text',
+        'html',
+        'lcov',]';
         'json-summary'];
-    ],';
-    '';
-    coverageDirectory: '<rootDir>/coverage/integration',
-    
+    ],
+
+    coverageDirectory: '<rootDir>/coverage/integration';
     // カバレッジ閾値
     coverageThreshold: { global: {
-            branches: 80,
-            functions: 85,
-            lines: 85,
+            branches: 80;
+            functions: 85;
+            lines: 85;
             statements: 85 }
-        }
-    },
-    
+};
     // テストタイムアウト
-    testTimeout: 30000,
+    testTimeout: 30000;
     ;
     // 並列実行設定
-    maxWorkers: '50%',
-    
+    maxWorkers: '50%';
     // モック設定
-    clearMocks: true,
-    restoreMocks: true,
-    
+    clearMocks: true;
+    restoreMocks: true;
     // グローバル設定
     globals: { ''
-        'process.env.NODE_ENV': 'test','';
-        'process.env.JEST_ENVIRONMENT': 'integration' }
-    },
+        'process.env.NODE_ENV': 'test',
+        'process.env.JEST_ENVIRONMENT': 'integration' },
     
     // 詳細な出力
-    verbose: true,
-    
+    verbose: true;
     // エラー時の詳細表示
-    errorOnDeprecated: true,
-    
+    errorOnDeprecated: true;
     // 非同期処理の検出
-    detectOpenHandles: true,
-    detectLeaks: true,
-    
+    detectOpenHandles: true;
+    detectLeaks: true;
     // テスト結果のレポート
     reporters: ['';
-        'default','';
+        'default',
         ['jest-html-reporters', { ''
-            publicPath: './coverage/integration/html-report','';
-            filename: 'integration-test-report.html',';
-            openReport: false,'';
-            pageTitle: 'ソーシャル機能統合テスト結果','';
-            logoImgPath: './assets/logo.png',
-            hideIcon: false,
-            expand: true,
+            publicPath: './coverage/integration/html-report',
+            filename: 'integration-test-report.html',
+            openReport: false,
+            pageTitle: 'ソーシャル機能統合テスト結果',
+            logoImgPath: './assets/logo.png';
+            hideIcon: false;
+            expand: true;
             customInfos: [';
                 {''
-                    title: 'プロジェクト','';
-                    value: 'BubblePop ソーシャル機能' }
-                },'
+                    title: 'プロジェクト',
+                    value: 'BubblePop ソーシャル機能' ,};
                 { ''
-                    title: 'テストタイプ','';
-                    value: '統合テスト' }
-                },'
+                    title: 'テストタイプ',
+                    value: '統合テスト' ,};
                 { ''
-                    title: 'Issue','';
-                    value: '#37 Task 21' }]
+                    title: 'Issue',
+                    value: '#37 Task 21' ,}]
                 }]
             ];
         }]
     ];
-},'
-'';
+},
+
 export default config;

@@ -15,11 +15,14 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
         
         // サブコンポーネントの初期化
         this.eventStageDataManager = new EventStageDataManager(this);''
-        this.stageSelectDataManager = new StageSelectDataManager(this');'
+        this.stageSelectDataManager = new StageSelectDataManager(this);
+
         ';
-    }'
-    }'
-        console.log('[StageSelectScene] Main Controller initialized'); }
+    ,}
+
+    }
+
+        console.log('[StageSelectScene] Main, Controller initialized'); }'
     }
     
     /**
@@ -28,24 +31,21 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
     enter(): void { // サブコンポーネントの初期化
         this.stageSelectDataManager.initialize();
         this.eventStageDataManager.initialize(); }
-    }
 
     /**
      * シーン終了時の処理
      */
     exit(): void { this.eventStageDataManager.cleanup(); }
-    }
     
     /**
      * 更新処理
      */
     update(_deltaTime: number): void { // 特に更新処理は不要 }
-    }
     
     /**
      * 描画処理
      */''
-    render(context: CanvasRenderingContext2D'): void { const canvas = this.gameEngine.canvas;
+    render(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas;
         ';
         // 背景
         context.fillStyle = '#001122';
@@ -54,8 +54,8 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
         // タイトル
         context.save(''';
         context.fillStyle = '#FFFFFF';''
-        context.font = 'bold 32px Arial';''
-        context.textAlign = 'center';')'
+        context.font = 'bold, 32px Arial';''
+        context.textAlign = 'center';)'
         context.textBaseline = 'top';')'
         context.fillText('ステージ選択', canvas.width / 2, 20);
         context.restore();
@@ -75,13 +75,12 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
         
         // 操作説明（ステージ選択データマネージャーに委譲）
         this.stageSelectDataManager.renderControls(context); }
-    }
     
     /**
      * 入力処理
      */''
-    handleInput(event: Event'): void { ''
-        if(event.type === 'keydown') {
+    handleInput(event: Event): void { ''
+        if(event.type === 'keydown) {'
             const keyEvent = event as KeyboardEvent;
             // ステージ関連のキー入力を処理
             if(this.stageSelectDataManager.handleStageKeyInput(keyEvent) {
@@ -90,18 +89,19 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
             }
             ;
             // その他のキー入力
-            switch(keyEvent.code') {'
-                '';
+            switch(keyEvent.code) {'
+
                 case 'KeyH':'';
-                    this.gameEngine.sceneManager.switchScene('help'');'
+                    this.gameEngine.sceneManager.switchScene('help'');
+
                     break;''
                 case 'Escape':'';
                     this.sceneManager.switchScene('menu'');
             }
-                    break; }'
+                    break; }
+
             }''
-        } else if (event.type === 'click') { this.handleClick(event as MouseEvent); }
-        }
+        } else if(event.type === 'click) { this.handleClick(event, as MouseEvent); }'
     }
     
     /**
@@ -135,40 +135,34 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
             this.stageSelectDataManager.handleStageClick(x, y);
         }
             return; }
-        }
-    }
+}
 
     /**
      * ステージデータの更新（外部からの呼び出し用）
      */
     updateStageList(): void { this.stageSelectDataManager.updateStageList(); }
-    }
 
     /**
      * イベントデータの更新（外部からの呼び出し用）
      */
     updateEventList(): void { this.eventStageDataManager.updateEventList(); }
-    }
 
     /**
      * ステージ状態の取得
      */
     getStageData(): any { return this.stageSelectDataManager.getStageData(); }
-    }
 
     /**
      * イベント状態の取得
      */
     getEventData(): any { return this.eventStageDataManager.getEventData(); }
-    }
 
     /**
      * デバッグ情報の取得
      */
     getDebugInfo(): any { return { stage: this.stageSelectDataManager.getDebugInfo(), };
             event: this.eventStageDataManager.getEventData(); }
-        };
-    }
+        }
 
     /**
      * 状態のリセット
@@ -177,6 +171,7 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
         this.eventStageDataManager.setEventState({)
             selectedEventIndex: -1);
             showingEvents: false,')';
-            eventScrollOffset: 0)') }'
+            eventScrollOffset: 0)' ,}'
+
     }''
 }

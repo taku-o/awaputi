@@ -13,41 +13,35 @@ import { ConfigurationMonitor } from './performance-config/ConfigurationMonitor.
 interface ConfigMetadata { reason?: string;
     timestamp?: number;
     [key: string]: any, }
-}
 
 interface ConfigStatus { initialized: boolean,
-    activeIntegrations: any,
-    lastSyncTime: number | null,
-    pendingChanges: any[],
-    errorCount: number,
-    validator: any,
-    applier: any,
-    monitor: any }
-}
+    activeIntegrations: any;
+    lastSyncTime: number | null;
+    pendingChanges: any[];
+    errorCount: number;
+    validator: any;
+    applier: any;
+    monitor: any ,}
 
-interface Components { validator: ConfigurationValidator,
-    applier: ConfigurationApplier,
-    monitor: ConfigurationMonitor,
+interface Components { validator: ConfigurationValidator;
+    applier: ConfigurationApplier;
+    monitor: ConfigurationMonitor;
     errorHandler: ConfigErrorHandler
     }
-}
 
 interface ConfigurationOptions { validator?: any;
     applier?: any;
     monitor?: any; }
-}
 
 interface ErrorRecord { key: string,
-    error: string,
-    timestamp: number,
-    type: string,
+    error: string;
+    timestamp: number;
+    type: string;
     recovery?: RecoveryResult;
-    recoveryFailed?: string; }
-}
+    recoveryFailed?: string; ,}
 
 interface RecoveryResult { strategy: string,
-    applied: boolean }
-}
+    applied: boolean ,}
 
 type RecoveryStrategy = (key: string, error: Error) => Promise<RecoveryResult>;
 
@@ -79,11 +73,11 @@ export class PerformanceConfigurationIntegration {
         this.errorHandler = new ConfigErrorHandler();
         
         this.initialized = false;
-        '';
+
         this.initializeIntegration();
     }
-    }'
-        console.log('[PerformanceConfigurationIntegration] Main controller initialized successfully'); }
+
+        console.log('[PerformanceConfigurationIntegration] Main, controller initialized, successfully'); }'
     }
 
     async initializeIntegration(): Promise<void> { try {
@@ -92,16 +86,16 @@ export class PerformanceConfigurationIntegration {
             await this.applier.initialize();
             await this.monitor.initialize();
             await this.errorHandler.initialize();
-            ;
             // Set error handler for monitor
-            this.monitor.setErrorHandler(this.errorHandler');
-            ';'
+            this.monitor.setErrorHandler(this.errorHandler);
+            ';
+
             this.initialized = true;''
-            console.log('[PerformanceConfigurationIntegration] Main controller initialized successfully');' }'
-        } catch (error) { ''
+            console.log('[PerformanceConfigurationIntegration] Main, controller initialized, successfully');' }
+
+        } catch (error) {
             console.error('[PerformanceConfigurationIntegration] Failed to initialize:', error);
             throw error; }
-        }
     }
 
     // ===== DELEGATED METHODS - Maintain backward compatibility =====
@@ -117,7 +111,7 @@ export class PerformanceConfigurationIntegration {
             // Application - delegated to applier
             const result = await this.applier.set(key, value, metadata);
              }
-            console.log(`[PerformanceConfigurationIntegration] Configuration applied: ${key) = ${JSON.stringify(value})}`);
+            console.log(`[PerformanceConfigurationIntegration] Configuration, applied: ${key} = ${JSON.stringify(value})`);
             return result;
             
         } catch (error) {
@@ -132,50 +126,41 @@ export class PerformanceConfigurationIntegration {
     /**
      * Update multiple performance configurations
      */''
-    async updatePerformanceConfig(configUpdates: Record<string, any>'): Promise<any[]> { return await this.applier.applyConfigChanges(configUpdates, {')'
-            reason: 'manual_update'),
-            timestamp: Date.now(), };
-        });
+    async updatePerformanceConfig(configUpdates: Record<string, any>): Promise<any[]> { return await this.applier.applyConfigChanges(configUpdates, {)'
+            reason: 'manual_update');
+            timestamp: Date.now(), });
     }
 
     /**
      * Get all performance configuration - delegated to applier
      */
     async getPerformanceConfig(): Promise<any> { return await this.applier.getAllPerformanceConfig(); }
-    }
 
     /**
      * Reset configuration to defaults - delegated to applier
      */
     async resetToDefaults(category: string | null = null): Promise<any> { if (category) {
-            return await this.applier.resetCategoryToDefaults(category); }
-        } else { return await this.applier.resetAllToDefaults(); }
-        }
-    }
+            return await this.applier.resetCategoryToDefaults(category); } else { return await this.applier.resetAllToDefaults();
 
     /**
      * Create configuration profile - delegated to applier
      */
     async createConfigProfile(name: string, config: any): Promise<any> { return await this.applier.createProfile(name, config); }
-    }
 
     /**
      * Load configuration profile - delegated to applier
      */
     async loadConfigProfile(name: string): Promise<any> { return await this.applier.loadProfile(name); }
-    }
 
     /**
      * Get configuration history - delegated to applier
      */
     async getConfigHistory(key: string, limit: number = 10): Promise<any[]> { return await this.applier.getHistory(key, limit); }
-    }
 
     /**
      * Rollback configuration - delegated to applier
      */
     async rollbackConfig(key: string, version: number): Promise<any> { return await this.applier.rollback(key, version); }
-    }
 
     /**
      * Get configuration status
@@ -184,54 +169,51 @@ export class PerformanceConfigurationIntegration {
             activeIntegrations: this.monitor.getActiveIntegrations();
             lastSyncTime: this.syncManager.getLastSyncTime();
             pendingChanges: this.syncManager.getPendingChanges();
-            errorCount: this.errorHandler.getErrorCount(),
-            validator: this.validator.getValidatorStatus(),
+            errorCount: this.errorHandler.getErrorCount();
+            validator: this.validator.getValidatorStatus();
             applier: this.applier.getApplierStatus(), };
             monitor: this.monitor.getMonitorStatus(); }
-        };
-    }
+        }
 
     /**
      * Get active integrations - delegated to monitor
      */
     getActiveIntegrations(): any { return this.monitor.getActiveIntegrations(); }
-    }
 
     /**
      * Validate configuration changes - delegated to validator
      */
     async validateConfigChanges(changes: Record<string, any>): Promise<any> { return await this.validator.validateConfigChanges(changes); }
-    }
 
     /**
      * Configure components
      */
     configure(config: ConfigurationOptions): void { if (config.validator) {
             this.validator.configure(config.validator); }
-        }
         
         if (config.applier) { this.applier.configure(config.applier); }
-        }
         
         if(config.monitor) {
-        ';'
-            ';'
-        }'
-            this.monitor.configure(config.monitor'); }
-        }'
-        '';
-        console.log('[PerformanceConfigurationIntegration] Configuration updated');
+        ';
+
+            ';
+
+        }
+
+            this.monitor.configure(config.monitor); }
+        }
+
+        console.log('[PerformanceConfigurationIntegration] Configuration, updated);
     }
 
     /**
      * Get component references for advanced usage
      */
     getComponents(): Components { return { validator: this.validator,
-            applier: this.applier,
+            applier: this.applier;
             monitor: this.monitor, };
             errorHandler: this.errorHandler }
-        },
-    }
+        }
 
     /**
      * Cleanup integration system
@@ -245,21 +227,18 @@ export class PerformanceConfigurationIntegration {
             }
             
             if (this.applier.destroy) { this.applier.destroy(); }
-            }
             
             if (this.monitor.destroy) { this.monitor.destroy(); }
-            }
             
-            if(this.errorHandler.destroy) {
-            ';'
-                '';
+            if(this.errorHandler.destroy') {
+            ';
+
                 this.errorHandler.destroy();
-            }'
-            console.log('[PerformanceConfigurationIntegration] Main controller destroyed');' }'
-        } catch (error) { ''
-            console.error('[PerformanceConfigurationIntegration] Error during cleanup:', error) }
-        }
-    }
+            }
+
+            console.log('[PerformanceConfigurationIntegration] Main, controller destroyed');' }
+
+        } catch (error) { console.error('[PerformanceConfigurationIntegration] Error during cleanup:', error }
 }
 
 // Singleton instance
@@ -270,7 +249,6 @@ let performanceConfigurationIntegrationInstance: PerformanceConfigurationIntegra
  */
 export function getPerformanceConfigurationIntegration(): PerformanceConfigurationIntegration { if (!performanceConfigurationIntegrationInstance) {
         performanceConfigurationIntegrationInstance = new PerformanceConfigurationIntegration(); }
-    }
     return performanceConfigurationIntegrationInstance;
 }
 
@@ -283,37 +261,34 @@ class ConfigErrorHandler { private errors: ErrorRecord[]
         this.errors = [];
 
     }
-    }
         this.recoveryStrategies = new Map<string, RecoveryStrategy>(); }
     }
 
     async initialize(): Promise<void> { this.setupRecoveryStrategies(); }
-    }
-'';
+
     setupRecoveryStrategies()';
-        this.recoveryStrategies.set('validation_error', async (key: string, error: Error): Promise<RecoveryResult> => { ' }'
-            console.warn(`[ConfigErrorHandler] Validation error for ${key}, reverting to default`');''
-            return { strategy: 'revert_to_default', applied: true }''
-        }');'
-'';
-        this.recoveryStrategies.set('sync_error', async (key: string, error: Error): Promise<RecoveryResult> => { ' }'
-            console.warn(`[ConfigErrorHandler] Sync error for ${key}, queuing retry`');''
-            return { strategy: 'retry_later', applied: true }
-        });
+        this.recoveryStrategies.set('validation_error', async (key: string, error: Error): Promise<RecoveryResult> => { ' }
+
+            console.warn(`[ConfigErrorHandler] Validation error for ${key}, reverting to default`);''
+            return { strategy: 'revert_to_default', applied: true ,}''
+        }');
+
+        this.recoveryStrategies.set('sync_error', async (key: string, error: Error): Promise<RecoveryResult> => { ' }
+
+            console.warn(`[ConfigErrorHandler] Sync error for ${key}, queuing retry`);''
+            return { strategy: 'retry_later', applied: true ,});
     }
 
     async handleConfigError(key: string, error: Error): Promise<ErrorRecord> { const errorRecord: ErrorRecord = {
             key,
-            error: error.message,
+            error: error.message;
             timestamp: Date.now();
-            type: this.classifyError(error) }
-        };
+            type: this.classifyError(error ,};
 
         this.errors.push(errorRecord);
         
         // 最新100件のエラーのみ保持
         if (this.errors.length > 100) { this.errors.shift(); }
-        }
 
         // 回復戦略の適用
         const strategy = this.recoveryStrategies.get(errorRecord.type);
@@ -322,27 +297,25 @@ class ConfigErrorHandler { private errors: ErrorRecord[]
                 const result = await strategy(key, error);
         }
                 errorRecord.recovery = result;' }'
-            } catch (recoveryError) { ''
+
+            } catch (recoveryError) {
                 console.error('[ConfigErrorHandler] Recovery strategy failed:', recoveryError);
-                errorRecord.recoveryFailed = (recoveryError as Error).message; }
-            }
+                errorRecord.recoveryFailed = (recoveryError, as Error).message; }
         }
 
         return errorRecord;
-    }'
-'';
-    classifyError(error: Error'): string { ''
-        if (error.message.includes('Validation failed')') return 'validation_error';''
-        if (error.message.includes('sync')') return 'sync_error';''
-        if (error.message.includes('network')') return 'network_error';''
-        return 'unknown_error'; }
     }
+
+    classifyError(error: Error): string { ''
+        if(error.message.includes('Validation, failed)) return 'validation_error';''
+        if(error.message.includes('sync)) return 'sync_error';''
+        if(error.message.includes('network)) return 'network_error';''
+        return 'unknown_error'; }
 
     getErrorCount(): number { return this.errors.length; }
-    }
 
     getRecentErrors(limit: number = 10): ErrorRecord[] { return this.errors.slice(-limit); }
-    }
-';'
+';
+
     destroy(): void { this.errors = [];''
-        this.recoveryStrategies.clear(') }
+        this.recoveryStrategies.clear(' }'

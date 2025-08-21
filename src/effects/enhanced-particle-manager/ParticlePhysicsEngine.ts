@@ -5,58 +5,51 @@ type ErrorHandler = ReturnType<typeof getErrorHandler>;
 
 // Export interfaces for particle physics
 export interface PhysicsSettings { gravity: number,
-    friction: number,
-    bounce: number,
-    airResistance: number,
-    collisionDetection: boolean,
-    magneticFields: MagneticField[],
+    friction: number;
+    bounce: number;
+    airResistance: number;
+    collisionDetection: boolean;
+    magneticFields: MagneticField[];
     windForce: Vector2D
-    }
-}
+    ,}
 
-export interface AnimationSettings { interpolation: boolean,
-    easingEnabled: boolean,
-    smoothRotation: boolean,
+export interface AnimationSettings { interpolation: boolean;
+    easingEnabled: boolean;
+    smoothRotation: boolean;
     smoothScaling: boolean }
-}
 
-export interface MagneticField { x: number,
-    y: number,
-    strength: number,
-    radius: number,
+export interface MagneticField { x: number;
+    y: number;
+    strength: number;
+    radius: number;
     radiusSquared: number }
-}
 
-export interface Vector2D { x: number,
+export interface Vector2D { x: number;
     y: number }
-}
 
-export interface Boundaries { left: number,
-    right: number,
-    top: number,
+export interface Boundaries { left: number;
+    right: number;
+    top: number;
     bottom: number }
-}
 
-export interface TrailPoint { x: number,
-    y: number,
+export interface TrailPoint { x: number;
+    y: number;
     alpha?: number }
-}
 
-export interface PulsationConfig { speed: number,
+export interface PulsationConfig { speed: number;
     amplitude: number }
-}
 
-export interface Particle { x: number,
-    y: number,
-    vx: number,
-    vy: number,
+export interface Particle { x: number;
+    y: number;
+    vx: number;
+    vy: number;
     size?: number;
     color?: string;
-    life: number,
-    maxLife: number,
-    alpha: number,
-    active: boolean,
-    type: string,
+    life: number;
+    maxLife: number;
+    alpha: number;
+    active: boolean;
+    type: string;
     rotation?: number;
     rotationSpeed?: number;
     baseScale?: number;
@@ -67,17 +60,15 @@ export interface Particle { x: number,
     trail?: TrailPoint[];
     trailLength?: number;
     mass?: number; }
-}
-';'
-export interface BackgroundParticle extends Particle { ''
-    type: 'background',
+';
+
+export interface BackgroundParticle extends Particle {;
+    type: 'background';
     gravityAffected: false }
-}'
-'';
+
 export type BackgroundTheme = 'default' | 'stars' | 'snow' | 'sakura' | 'ocean';
 
 export interface TimingProfiles { [key: string]: any }
-}
 
 /**
  * Particle Physics Engine
@@ -98,14 +89,16 @@ export class ParticlePhysicsEngine {
     private timingProfiles?: TimingProfiles;
 
     constructor() {
-';'
-        '';
+';
+
         this.errorHandler = getErrorHandler(''';
-        this.backgroundTheme = 'default';'
+        this.backgroundTheme = 'default';
+
         ';
-    }'
+    }
+
     })'
-        console.log('[ParticlePhysicsEngine] パーティクル物理演算エンジンを初期化しました'); }
+        console.log('[ParticlePhysicsEngine] パーティクル物理演算エンジンを初期化しました'); }'
     }
     
     /**
@@ -144,16 +137,15 @@ export class ParticlePhysicsEngine {
             
             // 回転更新
             if (particle.rotation !== undefined) { particle.rotation += (particle.rotationSpeed || 0) * deltaTime; }
-            }
             
             // スケール更新（パルセーション効果）
             if(particle.pulsation) {
                 const time = Date.now() * 0.001;
             }
                 particle.currentScale = (particle.baseScale || 1) * (1 + Math.sin(time * particle.pulsation.speed) * particle.pulsation.amplitude);' }'
-            } catch (error) { this.errorHandler.handleError(error as Error, {')'
-                context: 'ParticlePhysicsEngine.updateParticlePhysics') }
-            });
+
+            } catch (error) { this.errorHandler.handleError(error as Error, {)'
+                context: 'ParticlePhysicsEngine.updateParticlePhysics' ,});
         }
     }
     
@@ -162,7 +154,7 @@ export class ParticlePhysicsEngine {
      */
     applyMagneticFields(particle: Particle, deltaTime: number): void { try {
             this.physicsSettings.magneticFields.forEach(field => { 
-                const dx = field.x - particle.x;)
+                const, dx = field.x - particle.x;)
                 const dy = field.y - particle.y;)
                 const distanceSquared = dx * dx + dy * dy;
                 );
@@ -171,11 +163,9 @@ export class ParticlePhysicsEngine {
                 }
                     particle.vx += dx * force * deltaTime; }
                     particle.vy += dy * force * deltaTime; }
-                }'
-            });''
-        } catch (error) { this.errorHandler.handleError(error as Error, {')'
-                context: 'ParticlePhysicsEngine.applyMagneticFields') }
-            });
+});''
+        } catch (error) { this.errorHandler.handleError(error as Error, {)'
+                context: 'ParticlePhysicsEngine.applyMagneticFields' ,});
         }
     }
     
@@ -198,9 +188,8 @@ export class ParticlePhysicsEngine {
                 }
                     particle.trail.shift(); }
                 }''
-            } catch (error) { this.errorHandler.handleError(error as Error, {')'
-                context: 'ParticlePhysicsEngine.updateParticleTrail') }
-            });
+            } catch (error) { this.errorHandler.handleError(error as Error, {)'
+                context: 'ParticlePhysicsEngine.updateParticleTrail' ,});
         }
     }
     
@@ -220,12 +209,10 @@ export class ParticlePhysicsEngine {
                 particles.forEach(otherParticle => {  );
                     if (particle !== otherParticle && particle.active && otherParticle.active) { }
                         this.handleParticleCollision(particle, otherParticle); }
-                    }
-                });
+});
             });''
-        } catch (error) { this.errorHandler.handleError(error as Error, {')'
-                context: 'ParticlePhysicsEngine.handleCollisions') }
-            });
+        } catch (error) { this.errorHandler.handleError(error as Error, {)'
+                context: 'ParticlePhysicsEngine.handleCollisions' ,});
         }
     }
     
@@ -243,7 +230,6 @@ export class ParticlePhysicsEngine {
                 particle.vx *= -this.physicsSettings.bounce; }
             } else if (particle.x + radius > right) { particle.x = right - radius;
                 particle.vx *= -this.physicsSettings.bounce; }
-            }
             
             // 上下の境界
             if(particle.y - radius < top) {
@@ -255,9 +241,9 @@ export class ParticlePhysicsEngine {
                 
                 // 地面での摩擦
                 particle.vx *= this.physicsSettings.friction;' }'
-            } catch (error) { this.errorHandler.handleError(error as Error, {')'
-                context: 'ParticlePhysicsEngine.handleBoundaryCollision') }
-            });
+
+            } catch (error) { this.errorHandler.handleError(error as Error, {)'
+                context: 'ParticlePhysicsEngine.handleBoundaryCollision' ,});
         }
     }
     
@@ -307,9 +293,9 @@ export class ParticlePhysicsEngine {
             
             }
                 particle2.y += separationY;' }'
-            } catch (error) { this.errorHandler.handleError(error as Error, {')'
-                context: 'ParticlePhysicsEngine.handleParticleCollision') }
-            });
+
+            } catch (error) { this.errorHandler.handleError(error as Error, {)'
+                context: 'ParticlePhysicsEngine.handleParticleCollision' ,});
         }
     }
     
@@ -339,10 +325,9 @@ export class ParticlePhysicsEngine {
                        particle.x > -50 && particle.x < canvasWidth + 50 && }
                        particle.y > -50 && particle.y < canvasHeight + 50; }
             });
-            '';
-        } catch (error) { this.errorHandler.handleError(error as Error, {')'
-                context: 'ParticlePhysicsEngine.updateBackgroundParticles') }
-            });
+
+        } catch (error) { this.errorHandler.handleError(error as Error, {)'
+                context: 'ParticlePhysicsEngine.updateBackgroundParticles' ,});
         }
     }
     
@@ -351,23 +336,21 @@ export class ParticlePhysicsEngine {
      */
     createBackgroundParticle(canvasWidth: number, canvasHeight: number): void { try {
             const particle: BackgroundParticle = {
-                x: Math.random() * canvasWidth,
-                y: Math.random() * canvasHeight,
-                vx: (Math.random() - 0.5) * 0.2,
-                vy: (Math.random() - 0.5) * 0.2,
-                size: Math.random() * 2 + 0.5,
-                color: this.getBackgroundParticleColor(),
-                alpha: Math.random() * 0.3 + 0.1,';
-                life: Math.random() * 5000 + 2000,'';
+                x: Math.random() * canvasWidth;
+                y: Math.random() * canvasHeight;
+                vx: (Math.random() - 0.5) * 0.2;
+                vy: (Math.random() - 0.5) * 0.2;
+                size: Math.random() * 2 + 0.5;
+                color: this.getBackgroundParticleColor();
+                alpha: Math.random() * 0.3 + 0.1,
+                life: Math.random() * 5000 + 2000,
                 maxLife: Math.random(''';
-                type: 'background',
-                gravityAffected: false })
-            })
+                type: 'background';
+                gravityAffected: false ,}))
             )';
             this.backgroundParticles.push(particle);''
-        } catch (error) { this.errorHandler.handleError(error as Error, {')'
-                context: 'ParticlePhysicsEngine.createBackgroundParticle') }
-            });
+        } catch (error) { this.errorHandler.handleError(error as Error, {)'
+                context: 'ParticlePhysicsEngine.createBackgroundParticle' ,});
         }
     }
     
@@ -375,11 +358,11 @@ export class ParticlePhysicsEngine {
      * 背景パーティクルの色を取得'
      */''
     getBackgroundParticleColor(''';
-            default: ['#ffffff', '#cccccc', '#aaaaaa'],'';
-            stars: ['#ffffff', '#ffffcc', '#ccccff'],'';
-            snow: ['#ffffff', '#f0f8ff', '#e6e6fa'],'';
-            sakura: ['#ffb7c5', '#ffc0cb', '#fff0f5'],'';
-            ocean: ['#87ceeb', '#add8e6', '#b0e0e6'];
+            default: ['#ffffff', '#cccccc', '#aaaaaa],
+            stars: ['#ffffff', '#ffffcc', '#ccccff],
+            snow: ['#ffffff', '#f0f8ff', '#e6e6fa],
+            sakura: ['#ffb7c5', '#ffc0cb', '#fff0f5],
+            ocean: ['#87ceeb', '#add8e6', '#b0e0e6];
         };
         
         const colors = themes[this.backgroundTheme] || themes.default;)
@@ -392,12 +375,12 @@ export class ParticlePhysicsEngine {
     addMagneticField(x: number, y: number, strength: number, radius: number): void { try {
             this.physicsSettings.magneticFields.push({)
                 x, y, strength, radius,);
-                radiusSquared: radius * radius),
-             }'
-            console.log(`[ParticlePhysicsEngine] 磁場を追加: (${x}, ${y)}), 強度: ${strength}`);''
-        } catch (error) { this.errorHandler.handleError(error as Error, {')'
-                context: 'ParticlePhysicsEngine.addMagneticField') }
-            });
+                radiusSquared: radius * radius);
+             ,}
+
+            console.log(`[ParticlePhysicsEngine] 磁場を追加: (${x}, ${y}}), 強度: ${strength}`);''
+        } catch (error) { this.errorHandler.handleError(error as Error, {)'
+                context: 'ParticlePhysicsEngine.addMagneticField' ,});
         }
     }
     
@@ -405,10 +388,12 @@ export class ParticlePhysicsEngine {
      * 風力を設定
      */
     setWindForce(x: number, y: number): void { try { }
-            this.physicsSettings.windForce = { x, y };'
-            console.log(`[ParticlePhysicsEngine] 風力を設定: (${x}, ${y)`});''
-        } catch (error) { this.errorHandler.handleError(error as Error, {')'
-                context: 'ParticlePhysicsEngine.setWindForce'),' }'
+            this.physicsSettings.windForce = { x, y };
+
+            console.log(`[ParticlePhysicsEngine] 風力を設定: (${x}, ${y}`});''
+        } catch (error) { this.errorHandler.handleError(error as Error, {)'
+                context: 'ParticlePhysicsEngine.setWindForce),' }
+
             }');
         }
     }
@@ -416,45 +401,46 @@ export class ParticlePhysicsEngine {
     /**
      * 背景パーティクルを有効化'
      */''
-    enableBackground(enabled: boolean, density: number = 0.1, theme: BackgroundTheme = 'default'): void { this.backgroundEnabled = enabled;
+    enableBackground(enabled: boolean, density: number = 0.1, theme: BackgroundTheme = 'default): void { this.backgroundEnabled = enabled;
         this.backgroundDensity = density;
-        this.backgroundTheme = theme;'
-        '';
-        if(!enabled') {
+        this.backgroundTheme = theme;
+
+        if(!enabled) {
             
         }
             this.backgroundParticles = []; }
-        }'
-        '';
-        console.log(`[ParticlePhysicsEngine] 背景パーティクル: ${enabled ? '有効' : '無効')`});
+        }
+
+        console.log(`[ParticlePhysicsEngine] 背景パーティクル: ${enabled ? '有効' : '無効}`});
     }
     
     /**
      * 背景パーティクルを取得
      */
     getBackgroundParticles(): BackgroundParticle[] { return this.backgroundParticles; }
-    }
     
     /**
      * スムーズトランジションを有効化'
      */''
-    enableSmoothTransitions(enabled: boolean'): void { this.animationSettings.interpolation = enabled;'
+    enableSmoothTransitions(enabled: boolean): void { this.animationSettings.interpolation = enabled;
+
         this.animationSettings.easingEnabled = enabled;' }'
-        console.log(`[ParticlePhysicsEngine] スムーズトランジション: ${enabled ? '有効' : '無効')`});
+
+        console.log(`[ParticlePhysicsEngine] スムーズトランジション: ${enabled ? '有効' : '無効}`});
     }
     
     /**
      * タイミングプロファイルを設定'
      */''
-    setTimingProfiles(profiles: TimingProfiles'): void { this.timingProfiles = profiles;''
+    setTimingProfiles(profiles: TimingProfiles): void { this.timingProfiles = profiles;''
         console.log('[ParticlePhysicsEngine] タイミングプロファイルを設定しました:', profiles); }
-    }
     
     /**
      * 物理設定を更新'
      */''
-    updatePhysicsSettings(newSettings: Partial<PhysicsSettings>'): void {'
-        this.physicsSettings = { ...this.physicsSettings, ...newSettings };''
-        console.log('[ParticlePhysicsEngine] 物理設定を更新しました'');'
+    updatePhysicsSettings(newSettings: Partial<PhysicsSettings>): void {'
+        this.physicsSettings = { ...this.physicsSettings, ...newSettings;''
+        console.log('[ParticlePhysicsEngine] 物理設定を更新しました'');
+
     }''
 }

@@ -1,10 +1,9 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 export interface ShortcutData { keys: string[],
-    callback: Function,
+    callback: Function;
     context?: string;
-    description?: string; }
-}
+    description?: string; ,}
 
 /**
  * キーボードショートカット管理クラス
@@ -29,8 +28,7 @@ export class CoreKeyboardShortcutManager {
         
         // イベントリスナーを設定
 
-    }
-    }
+    ,}
         this.setupEventListeners(); }
     }
     
@@ -38,17 +36,17 @@ export class CoreKeyboardShortcutManager {
      * デフォルトショートカットを初期化
      */''
     initializeDefaultShortcuts()';
-        this.addShortcut('pause', ['Space'], () => this.handlePause()');''
-        this.addShortcut('menu', ['Escape'], () => this.handleMenu()');
+        this.addShortcut('pause', ['Space'], () => this.handlePause());''
+        this.addShortcut('menu', ['Escape'], () => this.handleMenu());
         ';
         // UI操作
-        this.addShortcut('fullscreen', ['F11'], () => this.handleFullscreen()');''
-        this.addShortcut('contextualHelp', ['F1'], () => this.handleContextualHelp()');''
-        this.addShortcut('documentationHelp', ['ControlLeft+KeyH'], () => this.handleDocumentationHelp()');
+        this.addShortcut('fullscreen', ['F11'], () => this.handleFullscreen());''
+        this.addShortcut('contextualHelp', ['F1'], () => this.handleContextualHelp());''
+        this.addShortcut('documentationHelp', ['ControlLeft+KeyH], () => this.handleDocumentationHelp());
         ';
         // デバッグ操作（開発時のみ）
-        this.addShortcut('debug', ['F12'], () => this.handleDebug()');''
-        this.addShortcut('debugToggle', ['ControlLeft+ShiftLeft+KeyD'], () => this.handleDebugToggle();
+        this.addShortcut('debug', ['F12'], () => this.handleDebug());''
+        this.addShortcut('debugToggle', ['ControlLeft+ShiftLeft+KeyD], () => this.handleDebugToggle();
         
         // ゲーム内操作（UIボタンから実行）
         // GキーとRキーのショートカットは削除されました（Issue #172）
@@ -66,11 +64,11 @@ export class CoreKeyboardShortcutManager {
      * イベントリスナーを設定
      */''
     setupEventListeners()';
-        document.addEventListener('keydown', (event) => this.handleKeyDown(event)');''
-        document.addEventListener('keyup', (event) => this.handleKeyUp(event)');
+        document.addEventListener('keydown', (event) => this.handleKeyDown(event));''
+        document.addEventListener('keyup', (event) => this.handleKeyUp(event));
         ';
         // フォーカス管理
-        window.addEventListener('blur', () => this.handleWindowBlur()');''
+        window.addEventListener('blur', () => this.handleWindowBlur());''
         window.addEventListener('focus', () => this.handleWindowFocus();
     }
     
@@ -82,46 +80,49 @@ export class CoreKeyboardShortcutManager {
             // 入力値を検証
             const nameValidation = getErrorHandler(').validateInput(name, 'string', {)
                 maxLength: 50,);
-                pattern: /^[a-zA-Z_][a-zA-Z0-9_]*$/),';
-            ';'
-    }'
-            if (!nameValidation.isValid') {' }'
-                throw new Error(`Invalid shortcut name: ${nameValidation.errors.join(', '})}`);'
-            }'
-            '';
+                pattern: /^[a-zA-Z_][a-zA-Z0-9_]*$/),
+            ';
+
+    }
+
+            if(!nameValidation.isValid) {' }'
+
+                throw new Error(`Invalid shortcut name: ${nameValidation.errors.join(', '})`);
+
+            }
+
             if (!Array.isArray(keys) || keys.length === 0') { ''
-                throw new Error('Keys must be a non-empty array''); }
-            }'
-            '';
-            if(typeof callback !== 'function'') {'
-                ';'
-            }'
-                throw new Error('Callback must be a function'); }
+                throw new Error('Keys, must be, a non-empty, array''); }
+
+            if(typeof, callback !== 'function'') {'
+                ';
+
+            }
+
+                throw new Error('Callback, must be, a function); }'
             }
             ';
             // ショートカットを正規化
-            const normalizedKeys = keys.map(keyCombo => this.normalizeKeyCombo(keyCombo)');
+            const normalizedKeys = keys.map(keyCombo => this.normalizeKeyCombo(keyCombo));
             
-            this.shortcuts.set(name, { keys: normalizedKeys,'
-                callback: callback,'';
-                description: options.description || '','';
-                context: options.context || 'global');
+            this.shortcuts.set(name, { keys: normalizedKeys,
+
+                callback: callback,
+                description: options.description || '',
+                context: options.context || 'global);
                 enabled: options.enabled !== false);
                 preventDefault: options.preventDefault !== false,);
-                stopPropagation: options.stopPropagation !== false) }
-            });'
-            '';
-            console.log(`Added keyboard shortcut: ${name') (${keys.join(', '})})`);'
-            return true;'
-        } catch (error) { ''
-            getErrorHandler(').handleError(error, 'KEYBOARD_ERROR', {')'
+                stopPropagation: options.stopPropagation !== false ,});
+
+            console.log(`Added keyboard shortcut: ${name} (${keys.join(', '}))`);
+
+            return true;
+
+        } catch (error) { getErrorHandler(').handleError(error, 'KEYBOARD_ERROR', {)'
                 operation: 'addShortcut');
                 name: name,);
-                keys: keys) }
-            });
+                keys: keys ,});
             return false;
-        }
-    }
     
     /**
      * ショートカットを削除
@@ -130,7 +131,7 @@ export class CoreKeyboardShortcutManager {
         if(this.shortcuts.has(name) {
     }
             this.shortcuts.delete(name); }
-            console.log(`Removed keyboard shortcut: ${name)`});
+            console.log(`Removed, keyboard shortcut: ${name}`});
             return true;
         }
         return false;
@@ -143,19 +144,19 @@ export class CoreKeyboardShortcutManager {
         if(this.shortcuts.has(name) {
             this.shortcuts.get(name).enabled = enabled;
     }
-            return true; }
-        }
+            return true;
         return false;
     }
     
     /**
      * キーコンビネーションを正規化'
      */''
-    normalizeKeyCombo(keyCombo') {'
-        ';'
-    }'
-        return keyCombo.split('+').map(key => key.trim().sort(').join('+'); }
+    normalizeKeyCombo(keyCombo) {'
+        ';
+
     }
+
+        return keyCombo.split('+).map(key => key.trim().sort(').join('+);
     
     /**
      * キー押下処理
@@ -185,7 +186,6 @@ export class CoreKeyboardShortcutManager {
                         event.preventDefault(); }
                     }
                     if (shortcut.stopPropagation) { event.stopPropagation(); }
-                    }
                     
                     // コールバック実行
                     shortcut.callback(event, name);
@@ -194,50 +194,45 @@ export class CoreKeyboardShortcutManager {
                     this.notifyShortcutTriggered(name, currentCombo);
                     
                     break; // 最初にマッチしたショートカットのみ実行
-                } catch (error) { ''
-                    getErrorHandler(').handleError(error, 'KEYBOARD_ERROR', {')'
+                } catch (error) { getErrorHandler(').handleError(error, 'KEYBOARD_ERROR', {)'
                         operation: 'executeShortcut');
                         shortcut: name,);
-                        keyCombo: currentCombo) }
-                    });
+                        keyCombo: currentCombo ,});
                 }
-            }
-        }
+}
     }
     
     /**
      * キー離上処理
      */
     handleKeyUp(event) { this.activeKeys.delete(event.code); }
-    }
     
     /**
      * ウィンドウフォーカス喪失処理
      */
     handleWindowBlur() { this.activeKeys.clear(); }
-    }
     
     /**
      * ウィンドウフォーカス取得処理
      */
     handleWindowFocus() { this.activeKeys.clear(); }
-    }
     
     /**
      * 現在のキーコンビネーションを取得
      */
     getCurrentKeyCombo() {'
-        ';'
-    }'
-        return Array.from(this.activeKeys).sort(').join('+'); }
+        ';
+
     }
+
+        return Array.from(this.activeKeys).sort(').join('+);
     
     /**
      * コンテキストが有効かチェック
      */
     isContextValid(context) {'
-        '';
-        switch (context') {''
+
+        switch(context) {''
             case 'global':';
                 return true;''
             case 'game':'';
@@ -246,27 +241,24 @@ export class CoreKeyboardShortcutManager {
                 return this.gameEngine.sceneManager.getCurrentScene(')? .constructor.name === 'MainMenuScene'; : undefined''
             case 'settings':;
                 return this.gameEngine.sceneManager.getCurrentScene()? .showingSettings === true; : undefined
-    }
-            default: return true; }
-        }
-    }
+    
+            default: return true;
     
     /**
      * ショートカットトリガーを通知'
      */''
-    notifyShortcutTriggered(name, keyCombo') {'
-        '';
-        if (this.listeners.has('shortcutTriggered')') {''
-            this.listeners.get('shortcutTriggered').forEach(callback => { )
+    notifyShortcutTriggered(name, keyCombo) {'
+
+        if(this.listeners.has('shortcutTriggered)) {''
+            this.listeners.get('shortcutTriggered).forEach(callback => { )'
     }
                 try {); }
-                    callback(name, keyCombo); }'
-                } catch (error) { ''
-                    getErrorHandler(').handleError(error, 'KEYBOARD_ERROR', {')'
+                    callback(name, keyCombo); }
+
+                } catch (error) { getErrorHandler(').handleError(error, 'KEYBOARD_ERROR', {)'
                         operation: 'notifyShortcutTriggered');
                         shortcut: name,);
-                        keyCombo: keyCombo) }
-                    });
+                        keyCombo: keyCombo ,});
                 }
             });
         }
@@ -290,8 +282,7 @@ export class CoreKeyboardShortcutManager {
         if(this.listeners.has(event) {
     }
             this.listeners.get(event).delete(callback); }
-        }
-    }
+}
     
     // ショートカットハンドラー
     
@@ -299,29 +290,27 @@ export class CoreKeyboardShortcutManager {
      * 一時停止処理
      */
     handlePause() {
-        '';
+
         const currentScene = this.gameEngine.sceneManager.getCurrentScene()';
-        if (currentScene && typeof currentScene.togglePause === 'function') {
+        if(currentScene && typeof, currentScene.togglePause === 'function) {'
     }
             currentScene.togglePause(); }
-        }
-    }
+}
     
     /**
      * メニュー処理
      */
     handleMenu() {'
         const currentScene = this.gameEngine.sceneManager.getCurrentScene();''
-        if (currentScene') {''
+        if(currentScene) {''
             if (currentScene.constructor.name === 'GameScene'') {'
                 // ゲーム中はメインメニューに戻る
-    }'
-                this.gameEngine.sceneManager.switchScene('menu'); }
+    }
+
+                this.gameEngine.sceneManager.switchScene('menu); }'
             } else if (currentScene.showingSettings) { // 設定画面を閉じる
                 currentScene.closeSettings? .(); }
-            }
-        }
-    }
+}
     
     /**
      * フルスクリーン切り替え処理（F11キー）
@@ -331,10 +320,10 @@ export class CoreKeyboardShortcutManager {
             if (this.gameEngine && this.gameEngine.responsiveCanvasManager) {
                 this.gameEngine.responsiveCanvasManager.toggleFullscreen();
     }
-                console.warn('[KeyboardShortcutManager] ResponsiveCanvasManager not available');' }'
+                console.warn('[KeyboardShortcutManager] ResponsiveCanvasManager, not available');' }
+
             } catch (error) { : undefined''
-            console.error('[KeyboardShortcutManager] Error toggling fullscreen:', error) }
-        }
+            console.error('[KeyboardShortcutManager] Error toggling fullscreen:', error 
     }
     
     // handleMute() メソッドは削除されました（Issue #170）
@@ -348,24 +337,23 @@ export class CoreKeyboardShortcutManager {
     handleContextualHelp() {
         try {'
             const currentScene = this.gameEngine.sceneManager.getCurrentScene(''';
-                accessMethod: 'keyboard_f1','';
+                accessMethod: 'keyboard_f1',
                 sourceScene: currentScene? .constructor.name || 'unknown', : undefined
-    }
-                contextual: true // コンテキスト依存ヘルプモード })
-            })
+    
+                contextual: true // コンテキスト依存ヘルプモード ,}))
             // 統一されたHelpSceneに遷移（コンテキスト依存モード）')'
-            const success = this.gameEngine.sceneManager.switchScene('help', contextData);'
-            '';
-            if(!success') {'
-                ';'
-            }'
-                console.warn('Contextual help navigation failed''); }
-            }'
-            '';
-            console.log('[KeyboardShortcutManager] Contextual help opened via F1 key');''
-        } catch (error) { ''
-            console.error('[KeyboardShortcutManager] Failed to open contextual help:', error) }
-        }
+            const success = this.gameEngine.sceneManager.switchScene('help', contextData);
+
+            if(!success) {'
+                ';
+
+            }
+
+                console.warn('Contextual, help navigation, failed''); }
+            }
+
+            console.log('[KeyboardShortcutManager] Contextual, help opened, via F1, key');''
+        } catch (error) { console.error('[KeyboardShortcutManager] Failed to open contextual help:', error }
     }
     
     
@@ -375,24 +363,23 @@ export class CoreKeyboardShortcutManager {
     handleDocumentationHelp() {'
         try {'
             const currentScene = this.gameEngine.sceneManager.getCurrentScene(''';
-                accessMethod: 'keyboard_ctrl_h','';
+                accessMethod: 'keyboard_ctrl_h',
                 sourceScene: currentScene? .constructor.name || 'unknown', : undefined
-    }
-                documentation: true // ドキュメントヘルプモード })
-            })
+    
+                documentation: true // ドキュメントヘルプモード ,}))
             // 統一されたHelpSceneに遷移（ドキュメントモード）')'
-            const success = this.gameEngine.sceneManager.switchScene('help', contextData);'
-            '';
-            if(!success') {'
-                ';'
-            }'
-                console.warn('Documentation help navigation failed''); }
-            }'
-            '';
-            console.log('[KeyboardShortcutManager] Documentation help opened via Ctrl+H keys');''
-        } catch (error) { ''
-            console.error('[KeyboardShortcutManager] Failed to open documentation help:', error) }
-        }
+            const success = this.gameEngine.sceneManager.switchScene('help', contextData);
+
+            if(!success) {'
+                ';
+
+            }
+
+                console.warn('Documentation, help navigation, failed''); }
+            }
+
+            console.log('[KeyboardShortcutManager] Documentation, help opened, via Ctrl+H, keys');''
+        } catch (error) { console.error('[KeyboardShortcutManager] Failed to open documentation help:', error }
     }
 
     
@@ -400,14 +387,14 @@ export class CoreKeyboardShortcutManager {
      * デバッグ処理
      */
     handleDebug() {'
-        '';
-        if (this.gameEngine.isDebugMode()') {''
+
+        if(this.gameEngine.isDebugMode()) {''
             console.log('Debug info:', {);
-                scene: this.gameEngine.sceneManager.getCurrentScene()? .constructor.name, : undefined;
-                performance: this.gameEngine.performanceStats,
-    }
+                scene: this.gameEngine.sceneManager.getCurrentScene()? .constructor.name, : undefined
+                performance: this.gameEngine.performanceStats;
+    ,}
                 settings: this.gameEngine.settingsManager? .settings }
-            }),
+            });
         }
     }
     
@@ -420,8 +407,7 @@ export class CoreKeyboardShortcutManager {
         console.log('Debug mode:', !isDebug ? 'enabled' : 'disabled'');
         ';
         // 必要に応じてリロード
-        if(confirm('デバッグモードを変更しました。ページを再読み込みしますか？') { location.reload(); }
-        }
+        if(confirm('デバッグモードを変更しました。ページを再読み込みしますか？) { location.reload(); }'
     }
     
     // handleHighContrast(), handleLargeText(), handleReducedMotion() メソッドは削除されました（Issue #170）
@@ -442,13 +428,12 @@ export class CoreKeyboardShortcutManager {
         const shortcuts = {};
         for(const [name, shortcut] of this.shortcuts) {
             shortcuts[name] = {
-                keys: shortcut.keys,
-                description: shortcut.description,
-                context: shortcut.context,
+                keys: shortcut.keys;
+                description: shortcut.description;
+                context: shortcut.context;
         }
                 enabled: shortcut.enabled }
-            },
-        }
+            }
         return shortcuts;
     }
     
@@ -456,31 +441,40 @@ export class CoreKeyboardShortcutManager {
      * ヘルプテキストを生成
      */
     generateHelpText() {
-        '';
+
         const shortcuts = this.getShortcuts(''';
-            'ゲーム操作': [],'';
-            'UI操作': [],'';
-            'アクセシビリティ': [],';
-    }'
+            'ゲーム操作': [],
+            'UI操作': [],
+            'アクセシビリティ': [],
+    }
+
             'その他': [] }
         };)
         );
         for(const [name, shortcut] of Object.entries(shortcuts) {'
-            '';
-            if (!shortcut.enabled') continue;'
-            '';
+
+            if(!shortcut.enabled) continue;
+
             const keyText = shortcut.keys.join(' または '');
-            const description = shortcut.description || name;'
-            ';'
-        }'
-            if (['pause'].includes(name)') {' }'
-                helpSections['ゲーム操作'].push(`${keyText}: ${description)`'});''
-            } else if (['menu', 'contextualHelp', 'documentationHelp'].includes(name)') { ' }'
-                helpSections['UI操作'].push(`${keyText}: ${description)`'});''
-            } else if (name.startsWith('debug')') { ' }'
-                helpSections['その他'].push(`${keyText}: ${description)`'});'
-            } else { ' }'
-                helpSections['その他'].push(`${keyText}: ${description)`});
+            const description = shortcut.description || name;
+
+            ';
+
+        }
+
+            if(['pause].includes(name)) {' }
+
+                helpSections['ゲーム操作].push(`${keyText}: ${description}`'});''
+            } else if(['menu', 'contextualHelp', 'documentationHelp].includes(name)) { ' }
+
+                helpSections['UI操作].push(`${keyText}: ${description}`'});''
+            } else if(name.startsWith('debug)) { ' }
+
+                helpSections['その他].push(`${keyText}: ${description}`'});
+
+            } else { }'
+
+                helpSections['その他].push(`${keyText}: ${description}`});
             }
         }
         
@@ -492,19 +486,19 @@ export class CoreKeyboardShortcutManager {
      */
     getStats() {
         return { totalShortcuts: this.shortcuts.size,
-            enabledShortcuts: Array.from(this.shortcuts.values().filter(s => s.enabled).length,
-            activeKeys: this.activeKeys.size,
-    }
+            enabledShortcuts: Array.from(this.shortcuts.values().filter(s => s.enabled).length;
+            activeKeys: this.activeKeys.size;
+    ,}
             isEnabled: this.isEnabled, };
             contexts: [...new Set(Array.from(this.shortcuts.values().map(s => s.context)] }
-        },
-    }
+        }
     
     /**
      * キーボードショートカットを有効/無効化'
      */''
-    setEnabled(enabled') { this.isEnabled = enabled;' }'
-        console.log(`Keyboard shortcuts ${enabled ? 'enabled' : 'disabled')`});
+    setEnabled(enabled) { this.isEnabled = enabled;' }'
+
+        console.log(`Keyboard, shortcuts ${enabled ? 'enabled' : 'disabled}`});
     }
     
     /**
@@ -512,9 +506,10 @@ export class CoreKeyboardShortcutManager {
      */'
     cleanup(): void { this.activeKeys.clear();''
         this.listeners.clear()';
-        document.removeEventListener('keydown', this.handleKeyDown');''
-        document.removeEventListener('keyup', this.handleKeyUp');''
-        window.removeEventListener('blur', this.handleWindowBlur');''
-        window.removeEventListener('focus', this.handleWindowFocus'); }'
+        document.removeEventListener('keydown', this.handleKeyDown);''
+        document.removeEventListener('keyup', this.handleKeyUp);''
+        window.removeEventListener('blur', this.handleWindowBlur);''
+        window.removeEventListener('focus', this.handleWindowFocus); }
+
     }''
 }

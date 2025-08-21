@@ -6,135 +6,114 @@
 // 型定義
 interface PerformanceTestSuite { baselines: Map<string, any>;
     getPreviousTestResults(): PreviousTestResults | null; }
-}
 
 interface PreviousTestResults { results: Map<string, TestCategoryResults> }
-}
 
 interface TestCategoryResults { passed: boolean,
     tests: Record<string, TestResult> }
-}
 
 interface TestResult { passed: boolean,
-    result: number,
-    expected: number,
-    detail?: any }
-}
+    result: number;
+    expected: number;
+    detail?: any ,}
 
-interface MetricEntry { duration: number,
-    timestamp: number,
+interface MetricEntry { duration: number;
+    timestamp: number;
     detail: any }
-}
 
-interface CollectedMetrics { timestamp: number,
-    memory: MemoryUsage,
-    frameRate: number,
+interface CollectedMetrics { timestamp: number;
+    memory: MemoryUsage;
+    frameRate: number;
     testResults: Map<string, TestCategoryResults>;
     systemInfo: SystemInfo
-    }
-}
+    ,}
 
-interface MemoryUsage { usedJSHeapSize: number,
-    totalJSHeapSize: number,
-    jsHeapSizeLimit: number,
+interface MemoryUsage { usedJSHeapSize: number;
+    totalJSHeapSize: number;
+    jsHeapSizeLimit: number;
     timestamp: number }
-}
 
-interface SystemInfo { userAgent: string,
-    platform: string,
-    hardwareConcurrency: number | string,
-    language: string,
-    onLine: boolean,
-    cookieEnabled: boolean,
+interface SystemInfo { userAgent: string;
+    platform: string;
+    hardwareConcurrency: number | string;
+    language: string;
+    onLine: boolean;
+    cookieEnabled: boolean;
     timestamp: number }
-}
 
-interface AnalysisResult { overallPassed: boolean,
-    regressions: RegressionEntry[],
-    improvements: ImprovementEntry[],
+interface AnalysisResult { overallPassed: boolean;
+    regressions: RegressionEntry[];
+    improvements: ImprovementEntry[];
     comparison: Map<string, ComparisonResult>;
     statistics: TestStatistics
-    }
-}
+    ,}
 
-interface RegressionEntry { category: string,
-    test: string,
-    result: number,
-    expected: number,
+interface RegressionEntry { category: string;
+    test: string;
+    result: number;
+    expected: number;
     severity: SeverityLevel
     }
-}
 
-interface ImprovementEntry { category: string,
-    test: string,
+interface ImprovementEntry { category: string;
+    test: string;
     improvement: number }
-}
 
-interface ComparisonResult { current: TestCategoryResults,
-    baseline: any,
+interface ComparisonResult { current: TestCategoryResults;
+    baseline: any;
     deviation: Record<string, number> }
-}
 
 interface TestStatistics { totalTests: number,
-    passedTests: number,
-    failedTests: number,
+    passedTests: number;
+    failedTests: number;
     categories: Map<string, CategoryStatistics>;
-    performance: any,
-    passRate: number }
-}
+    performance: any;
+    passRate: number ,}
 
-interface CategoryStatistics { total: number,
-    passed: number,
-    failed: number,
-    averageResult: number,
-    metrics: number[],
+interface CategoryStatistics { total: number;
+    passed: number;
+    failed: number;
+    averageResult: number;
+    metrics: number[];
     variance?: number;
     standardDeviation?: number; }
-}
 
 interface TrendAnalysis { direction: TrendDirection,
-    magnitude: number,
-    confidence: number }
-}
+    magnitude: number;
+    confidence: number ,}
 
 interface AdvancedAnalysis { trends: Map<string, TrendAnalysis>;
     correlations: Map<string, number>;
-    outliers: OutlierEntry[],
+    outliers: OutlierEntry[];
     performance_profile: PerformanceProfile
-    }
-}
+    ,}
 
-interface OutlierEntry { category: string,
-    test: string,
-    value: number,
-    zScore: number,
+interface OutlierEntry { category: string;
+    test: string;
+    value: number;
+    zScore: number;
     severity: OutlierSeverity
     }
-}
 
-interface PerformanceProfile { overall_score: number,
+interface PerformanceProfile { overall_score: number;
     category_scores: Map<string, number>;
-    strengths: string[],
-    weaknesses: string[],
-    recommendations: string[] }
-}
+    strengths: string[];
+    weaknesses: string[];
+    recommendations: string[] ,}
 
-interface ExportData { timestamp: number,
+interface ExportData { timestamp: number;
     metrics: Record<string, MetricEntry[]>;
     summary: Summary
-    }
-}
+    ,}
 
-interface Summary { total_metrics: number,
-    total_entries: number,
+interface Summary { total_metrics: number;
+    total_entries: number;
     categories: CategorySummary[]
     }
-}
 
-interface CategorySummary { name: string,
-    count: number,
+interface CategorySummary { name: string;
+    count: number;
     average: number }
-}
 
 type SeverityLevel = 'critical' | 'high' | 'medium' | 'low';''
 type TrendDirection = 'improving' | 'degrading' | 'stable';''
@@ -150,8 +129,7 @@ export class PerformanceMetricsCollector {
         this.performanceTestSuite = performanceTestSuite;
         this.lastFrameTime = null;
 
-    }
-    }
+    ,}
         this.collectedMetrics = new Map(); }
     }
 
@@ -159,33 +137,33 @@ export class PerformanceMetricsCollector {
      * パフォーマンスエントリの処理
      */'
     processPerformanceEntries(entries: PerformanceEntry[]): void { ''
-        for(const entry of entries') {'
-            ';'
-        }'
-            if (entry.entryType === 'measure') { }
-                console.log(`Performance measure: ${entry.name} - ${ entry.duration)ms`);
+        for(const, entry of, entries) {'
+            ';
+
+        }
+
+            if(entry.entryType === 'measure) { }'
+                console.log(`Performance, measure: ${entry.name} - ${ entry.duration)ms`};
                 
                 // メトリクスを収集データに追加
-                if(!this.collectedMetrics.has(entry.name) { }
+                if(!this.collectedMetrics.has(entry.name} { }
                     this.collectedMetrics.set(entry.name, []});
                 }
                 this.collectedMetrics.get(entry.name).push({ duration: entry.duration)
-                    timestamp: entry.startTime,) }
-                    detail: entry.detail || {}),
+                    timestamp: entry.startTime, }
+                    detail: entry.detail || {});
             }
-        }
-    }
+}
 
     /**
      * メトリクスデータを収集
      */
     collectMetrics(testResults: Map<string, TestCategoryResults>): CollectedMetrics { const metrics = {
-            timestamp: performance.now(,
+            timestamp: performance.now(;
             memory: this.getMemoryUsage();
             frameRate: this.getCurrentFrameRate();
             testResults: testResults,);
-            systemInfo: this.getSystemInfo() }
-        };
+            systemInfo: this.getSystemInfo( ,};
 
         return metrics;
     }
@@ -194,12 +172,11 @@ export class PerformanceMetricsCollector {
      * ベースラインとの比較分析
      */
     analyzeResults(testResults: Map<string, TestCategoryResults>): AnalysisResult { const analysis = {
-            overallPassed: this.isOverallTestsPassed(testResults,
+            overallPassed: this.isOverallTestsPassed(testResults;
             regressions: this.detectRegressions(testResults);
             improvements: this.detectImprovements(testResults);
             comparison: this.compareWithBaseline(testResults);
-            statistics: this.calculateTestStatistics(testResults) }
-        };
+            statistics: this.calculateTestStatistics(testResults };
 
         return analysis;
     }
@@ -215,9 +192,8 @@ export class PerformanceMetricsCollector {
             if (baseline) {
                 comparison.set(category, {)
                     current: results,);
-                    baseline: baseline),
-        
-        }
+                    baseline: baseline);
+        ,}
                     deviation: this.calculateDeviation(results, baseline); }
                 });
             }
@@ -233,9 +209,7 @@ export class PerformanceMetricsCollector {
             if(!results.passed) {
                 
             }
-                return false; }
-            }
-        }
+                return false;
         return true;
     }
 
@@ -252,14 +226,12 @@ export class PerformanceMetricsCollector {
                         category);
                         test: testName);
                         result: testResult.result,);
-                        expected: testResult.expected),
-        
-        }
+                        expected: testResult.expected);
+        ,}
                         severity: this.calculateRegressionSeverity(testResult); }
                     });
                 }
-            }
-        }
+}
         
         return regressions;
     }
@@ -280,14 +252,12 @@ export class PerformanceMetricsCollector {
                         if(previousTest && this.isImprovement(testResult, previousTest) {
                             improvements.push({)
                                 category,);
-                                test: testName),
-        
-        }
+                                test: testName);
+        ,}
                                 improvement: this.calculateImprovement(testResult, previousTest); }
                             });
                         }
-                    }
-                }
+}
             }
         }
         
@@ -298,24 +268,21 @@ export class PerformanceMetricsCollector {
      * テスト統計の計算
      */
     calculateTestStatistics(testResults: Map<string, TestCategoryResults>): TestStatistics { const stats = {
-            totalTests: 0,
-            passedTests: 0,
-            failedTests: 0,
+            totalTests: 0;
+            passedTests: 0;
+            failedTests: 0;
             categories: new Map<string, CategoryStatistics>(), }
-            performance: {},
-
+            performance: {};
         for(const [category, results] of testResults) {
 
             const categoryStats = {
-                total: Object.keys(results.tests).length,
-                passed: 0,
-                failed: 0,
-                averageResult: 0,
-
+                total: Object.keys(results.tests).length;
+                passed: 0;
+                failed: 0;
+                averageResult: 0;
         }
                 metrics: [] }
-            },
-
+            };
             for(const [testName, testResult] of Object.entries(results.tests) {
 
                 stats.totalTests++;
@@ -359,8 +326,7 @@ export class PerformanceMetricsCollector {
         
         const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
         const variance = values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / values.length;
-        return variance; }
-    }
+        return variance;
 
     /**
      * パーセンタイル計算
@@ -369,8 +335,7 @@ export class PerformanceMetricsCollector {
         
         const sorted = values.slice().sort((a, b) => a - b);
         const index = Math.ceil(sorted.length * percentile / 100) - 1;
-        return sorted[Math.max(0, index)]; }
-    }
+        return sorted[Math.max(0, index)];
 
     /**
      * ベースラインからの偏差計算
@@ -381,8 +346,7 @@ export class PerformanceMetricsCollector {
             if (baseline[testName]) {
         }
                 deviations[testName] = (testResult.result - baseline[testName]) / baseline[testName]; }
-            }
-        }
+}
         return deviations;
     }
 
@@ -390,23 +354,20 @@ export class PerformanceMetricsCollector {
      * リグレッション重要度計算
      */
     calculateRegressionSeverity(testResult: TestResult): SeverityLevel { const deviation = Math.abs(testResult.result - testResult.expected) / testResult.expected;''
-        if (deviation > 0.5') return 'critical';''
-        if (deviation > 0.3') return 'high';''
-        if (deviation > 0.1') return 'medium';''
+        if(deviation > 0.5) return 'critical';''
+        if(deviation > 0.3) return 'high';''
+        if(deviation > 0.1) return 'medium';''
         return 'low'; }
-    }
 
     /**
      * 改善判定
      */
     isImprovement(current: TestResult, previous: TestResult): boolean { return current.result < previous.result; // 小さい値が良い場合 }
-    }
 
     /**
      * 改善率計算
      */
     calculateImprovement(current: TestResult, previous: TestResult): number { return ((previous.result - current.result) / previous.result) * 100; }
-    }
 
     // データ収集メソッド
 
@@ -415,17 +376,15 @@ export class PerformanceMetricsCollector {
      */
     getMemoryUsage(): MemoryUsage { if (performance.memory) {
             return { usedJSHeapSize: performance.memory.usedJSHeapSize,
-                totalJSHeapSize: performance.memory.totalJSHeapSize,
+                totalJSHeapSize: performance.memory.totalJSHeapSize;
                 jsHeapSizeLimit: performance.memory.jsHeapSizeLimit, };
                 timestamp: performance.now(); }
-            };
-        }
+            }
         return { usedJSHeapSize: 0, 
             totalJSHeapSize: 0, ;
             jsHeapSizeLimit: 0, };
             timestamp: performance.now(); }
-        };
-    }
+        }
 
     /**
      * 現在のフレームレート取得
@@ -435,8 +394,7 @@ export class PerformanceMetricsCollector {
             const fps = 1000 / (now - this.lastFrameTime);
             this.lastFrameTime = now;
         }
-            return fps; }
-        }
+            return fps;
         this.lastFrameTime = now;
         return 60; // デフォルト値
     }
@@ -445,25 +403,22 @@ export class PerformanceMetricsCollector {
      * システム情報取得
      */''
     getSystemInfo(''';
-            hardwareConcurrency: navigator.hardwareConcurrency || 'unknown',
-            language: navigator.language,
+            hardwareConcurrency: navigator.hardwareConcurrency || 'unknown';
+            language: navigator.language;
             onLine: navigator.onLine);
             cookieEnabled: navigator.cookieEnabled);
-            timestamp: performance.now(),
-        };
-    }
+            timestamp: performance.now();
+        }
 
     /**
      * 収集されたメトリクスの取得
      */
     getCollectedMetrics(): Map<string, MetricEntry[]> { return this.collectedMetrics; }
-    }
 
     /**
      * メトリクスのクリア
      */
     clearMetrics(): void { this.collectedMetrics.clear(); }
-    }
 
     /**
      * 高度な統計分析
@@ -472,8 +427,7 @@ export class PerformanceMetricsCollector {
             trends: this.analyzeTrends(testResults);
             correlations: this.analyzeCorrelations(testResults);
             outliers: this.detectOutliers(testResults);
-            performance_profile: this.createPerformanceProfile(testResults) }
-        };
+            performance_profile: this.createPerformanceProfile(testResults };
 
         return analysis;
     }
@@ -488,23 +442,22 @@ export class PerformanceMetricsCollector {
         
             for (const [category, results] of testResults) {'
                 const previousCategoryResults = previousResults.results.get(category);''
-                if (previousCategoryResults') {'
+                if(previousCategoryResults) {'
                     const trend = {''
-                        direction: 'stable',
-                        magnitude: 0,
-        
-        }
+                        direction: 'stable';
+                        magnitude: 0;
+        ,}
                         confidence: 0 }
-                    },
-
+                    };
                     // 簡単なトレンド分析
                     const currentAvg = this.calculateCategoryAverage(results);
                     const previousAvg = this.calculateCategoryAverage(previousCategoryResults);
                     
                     if(currentAvg !== previousAvg) {
-                    ';'
+                    ';
+
                         const change = (currentAvg - previousAvg) / previousAvg;''
-                        trend.magnitude = Math.abs(change');''
+                        trend.magnitude = Math.abs(change);''
                         trend.direction = change > 0 ? 'degrading' : 'improving';
                     
                     }
@@ -513,8 +466,7 @@ export class PerformanceMetricsCollector {
 
                     trends.set(category, trend);
                 }
-            }
-        }
+}
 
         return trends;
     }
@@ -525,9 +477,9 @@ export class PerformanceMetricsCollector {
     analyzeCorrelations(testResults: Map<string, TestCategoryResults>): Map<string, number> { const correlations = new Map<string, number>();
         const categories = Array.from(testResults.keys();
 
-        for(let i = 0; i < categories.length; i++) {
+        for(let, i = 0; i < categories.length; i++) {
 
-            for (let j = i + 1; j < categories.length; j++) {
+            for (let, j = i + 1; j < categories.length; j++) {
                 const cat1 = categories[i];
                 const cat2 = categories[j];
                 
@@ -536,8 +488,7 @@ export class PerformanceMetricsCollector {
                     testResults.get(cat2);
 
         }
-                 }
-                correlations.set(`${cat1}_${cat2)`, correlation});
+                correlations.set(`${cat1}_${cat2}`, correlation});
             }
         }
 
@@ -558,16 +509,16 @@ export class PerformanceMetricsCollector {
 
             for(const [testName, testResult] of Object.entries(results.tests) {
                 const zScore = Math.abs((testResult.result - mean) / stdDev);''
-                if (zScore > 2') { // 2σを超える場合を外れ値とする
+                if(zScore > 2) { // 2σを超える場合を外れ値とする
                     outliers.push({
                         category,
                         test: testName);
                         value: testResult.result);
                         zScore,');
-        }'
+        }
+
                         severity: zScore > 3 ? 'extreme' : 'moderate'); }
-                }
-            }
+}
         }
 
         return outliers;
@@ -577,13 +528,11 @@ export class PerformanceMetricsCollector {
      * パフォーマンスプロファイル作成
      */
     createPerformanceProfile(testResults: Map<string, TestCategoryResults>): PerformanceProfile { const profile = {
-            overall_score: 0,
+            overall_score: 0;
             category_scores: new Map<string, number>(),
-            strengths: [],
-            weaknesses: [],
-            recommendations: [] }
-        },
-
+            strengths: [];
+            weaknesses: [];
+            recommendations: [] ,};
         let totalScore = 0;
         let categoryCount = 0;
 
@@ -602,7 +551,6 @@ export class PerformanceMetricsCollector {
         }
                 profile.strengths.push(category); }
             } else if (score < 70) { profile.weaknesses.push(category); }
-            }
         }
 
         profile.overall_score = categoryCount > 0 ? totalScore / categoryCount: 0,
@@ -616,7 +564,7 @@ export class PerformanceMetricsCollector {
      * カテゴリ平均計算
      */
     calculateCategoryAverage(results: TestCategoryResults): number { const values = Object.values(results.tests).map(test => test.result);
-        return values.length > 0 ? values.reduce((sum, val) => sum + val, 0) / values.length: 0, }
+        return values.length > 0 ? values.reduce((sum, val) => sum + val, 0) / values.length: 0, 
     }
 
     /**
@@ -631,8 +579,7 @@ export class PerformanceMetricsCollector {
             
         
         }
-            return 0; }
-        }
+            return 0;
 
         const mean1 = values1.reduce((sum, val) => sum + val, 0) / values1.length;
         const mean2 = values2.reduce((sum, val) => sum + val, 0) / values2.length;
@@ -641,7 +588,7 @@ export class PerformanceMetricsCollector {
         let denominator1 = 0;
         let denominator2 = 0;
 
-        for(let i = 0; i < values1.length; i++) {
+        for(let, i = 0; i < values1.length; i++) {
 
             const diff1 = values1[i] - mean1;
             const diff2 = values2[i] - mean2;
@@ -652,71 +599,70 @@ export class PerformanceMetricsCollector {
         }
             denominator2 += diff2 * diff2; }
         }
-'';
-        const denominator = Math.sqrt(denominator1 * denominator2');
+
+        const denominator = Math.sqrt(denominator1 * denominator2);
         return denominator === 0 ? 0 : numerator / denominator;
     }
 
     /**
      * データエクスポート'
      */''
-    exportMetrics(format: ExportFormat = 'json'): string | ExportData { const data = {
+    exportMetrics(format: ExportFormat = 'json): string | ExportData { const data = {'
             timestamp: Date.now();
             metrics: Object.fromEntries(this.collectedMetrics);
-            summary: this.getSummary() }
-        };'
-'';
-        switch(format') {'
-            '';
+            summary: this.getSummary( };
+
+        switch(format) {'
+
             case 'json':'';
-                return JSON.stringify(data, null, 2');''
+                return JSON.stringify(data, null, 2);''
             case 'csv':;
                 return this.convertToCSV(data);
         }
-            default: return data; }
-        }
-    }
+            default: return data;
 
     /**
      * CSV変換'
      */''
-    convertToCSV(data: ExportData'): string { ''
-        const rows: string[] = ['timestamp,metric,value,detail'];
+    convertToCSV(data: ExportData): string { ''
+        const rows: string[] = ['timestamp,metric,value,detail];
         
         for(const [metricName, entries] of Object.entries(data.metrics) {
         
             
         
-        }'
-            for (const entry of entries) {' }'
-                rows.push(`${entry.timestamp},${metricName},${entry.duration),${JSON.stringify(entry.detail})}`');
+        }
+
+            for (const, entry of, entries) {' }'
+
+                rows.push(`${entry.timestamp},${metricName},${entry.duration},${JSON.stringify(entry.detail})`');
             }
-        }'
-'';
-        return rows.join('\n');
+        }
+
+        return rows.join('\n);
     }
 
     /**
      * サマリー取得
      */
     getSummary(): Summary { const summary = {
-            total_metrics: this.collectedMetrics.size,
-            total_entries: 0,
-            categories: [] as CategorySummary[] }
-        },
-
+            total_metrics: this.collectedMetrics.size;
+            total_entries: 0;
+            categories: [] as CategorySummary[] };
         for(const [metricName, entries] of this.collectedMetrics) {
 
             summary.total_entries += entries.length;
             summary.categories.push({)
                 name: metricName,);
-                count: entries.length),
+                count: entries.length);
+        ,}
 
-        }'
                 average: entries.reduce((sum, entry) => sum + entry.duration, 0) / entries.length' }'
+
             }');
         }
 
-        return summary;'
+        return summary;
+
     }''
 }

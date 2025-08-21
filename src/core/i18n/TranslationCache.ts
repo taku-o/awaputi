@@ -6,57 +6,49 @@ import { getErrorHandler } from '../../utils/ErrorHandler.js';
 
 // 型定義
 export interface CacheEntry { value: string,
-    timestamp: number,
-    ttl: number | null,
-    accessCount: number,
-    language: string,
-    originalKey: string }
-}
+    timestamp: number;
+    ttl: number | null;
+    accessCount: number;
+    language: string;
+    originalKey: string ,}
 
-export interface CacheStats { size: number,
-    maxSize: number,
-    hitCount: number,
-    missCount: number,
-    evictionCount: number,
-    hitRate: number,
-    totalRequests: number,
+export interface CacheStats { size: number;
+    maxSize: number;
+    hitCount: number;
+    missCount: number;
+    evictionCount: number;
+    hitRate: number;
+    totalRequests: number;
     memoryUsage: MemoryUsage
     }
-}
 
-export interface MemoryUsage { bytes: number,
-    kb: number,
+export interface MemoryUsage { bytes: number;
+    kb: number;
     mb: number }
-}
 
-export interface LanguageStats { count: number,
+export interface LanguageStats { count: number;
     totalAccess: number }
-}
 
-export interface KeyPatternStats { count: number,
+export interface KeyPatternStats { count: number;
     totalAccess: number }
-}
 
-export interface CacheEntryInfo { key: string,
-    originalKey: string,
-    language: string,
-    age: number,
+export interface CacheEntryInfo { key: string;
+    originalKey: string;
+    language: string;
+    age: number;
     accessCount: number }
-}
 
-export interface DetailedCacheInfo { stats: CacheStats,
+export interface DetailedCacheInfo { stats: CacheStats;
     languages: Record<string, LanguageStats>,
     keyPatterns: Record<string, KeyPatternStats>,
-    accessOrder: string[],
-    oldestEntries: CacheEntryInfo[],
+    accessOrder: string[];
+    oldestEntries: CacheEntryInfo[];
     mostAccessedEntries: CacheEntryInfo[]
-    }
-}
+    ,}
 
 export interface CacheOptions { maxSize?: number;
     defaultTTL?: number | null;
     cleanupInterval?: number; }
-}
 
 export class TranslationCache {
     // キャッシュ設定
@@ -82,7 +74,7 @@ export class TranslationCache {
         // キャッシュクリーンアップのタイマー
         this.cleanupInterval = null;''
         this.startPeriodicCleanup()';
-    get(key: string, language: string = 'ja'): string | null {
+    get(key: string, language: string = 'ja): string | null {'
         try {
             const cacheKey = this.generateCacheKey(key, language);
             
@@ -98,25 +90,22 @@ export class TranslationCache {
                     this.missCount++;
 
     }
-    }
-                    return null; }
-                }
+                    return null;
                 
                 return cached.value;
             }
             
             this.missCount++;
             return null;
-        } catch (error) { ''
-            getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {')'
+        } catch (error) {
+            getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {)'
                 operation: 'get');
                 key: key,)';
                 language: language),' }'
+
             }');
             this.missCount++;
             return null;
-        }
-    }
     
     /**
      * キャッシュに翻訳を保存'
@@ -132,26 +121,20 @@ export class TranslationCache {
             }
             
             const cacheEntry: CacheEntry = { value: value,
-                timestamp: Date.now(),
-                ttl: ttl,
-                accessCount: 1,
-                language: language,
-                originalKey: key }
-            },
-            
+                timestamp: Date.now();
+                ttl: ttl;
+                accessCount: 1;
+                language: language;
+                originalKey: key ,};
             this.cache.set(cacheKey, cacheEntry);
             this.updateAccessOrder(cacheKey);
             
             return true;
-        } catch (error) { ''
-            getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {')'
+        } catch (error) { getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {)'
                 operation: 'set');
                 key: key,);
-                language: language) }
-            });
+                language: language ,});
             return false;
-        }
-    }
     
     /**
      * キャッシュキーを生成
@@ -165,7 +148,6 @@ export class TranslationCache {
      */
     private isExpired(cacheEntry: CacheEntry): boolean { if (!cacheEntry.ttl) {
             return false; // TTLが設定されていない場合は期限切れしない }
-        }
         
         return Date.now() - cacheEntry.timestamp > cacheEntry.ttl;
     }
@@ -185,8 +167,7 @@ export class TranslationCache {
             
         }
             entry.accessCount++; }
-        }
-    }
+}
     
     /**
      * アクセス順序リストから要素を削除
@@ -196,27 +177,25 @@ export class TranslationCache {
             
         }
             this.accessOrder.splice(index, 1); }
-        }
-    }
+}
     
     /**
      * LRU（最も使用頻度の低い）エントリを削除
      */
     private evictLeastRecentlyUsed(): void { if (this.accessOrder.length === 0) {
             return; }
-        }
         
         const lruKey = this.accessOrder.shift()!;
         this.cache.delete(lruKey);
         this.evictionCount++;
-        '';
-        console.log(`Cache eviction: ${lruKey)`'});
+
+        console.log(`Cache, eviction: ${lruKey}`'});
     }
     
     /**
      * 特定のキーをキャッシュから削除'
      */''
-    delete(key: string, language: string = 'ja'): boolean { try {
+    delete(key: string, language: string = 'ja): boolean { try {'
             const cacheKey = this.generateCacheKey(key, language);
             const deleted = this.cache.delete(cacheKey);
             
@@ -228,16 +207,13 @@ export class TranslationCache {
                 this.removeFromAccessOrder(cacheKey); }
             }
             
-            return deleted;'
-        } catch (error) { ''
-            getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {')'
+            return deleted;
+
+        } catch (error) { getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {)'
                 operation: 'delete');
                 key: key,);
-                language: language) }
-            });
+                language: language ,});
             return false;
-        }
-    }
     
     /**
      * 特定言語のキャッシュをクリア
@@ -251,10 +227,9 @@ export class TranslationCache {
             
             }
                     keysToDelete.push(cacheKey); }
-                }
-            }
+}
             
-            for(const key of keysToDelete) {
+            for(const, key of, keysToDelete) {
             
                 this.cache.delete(key);
             
@@ -262,16 +237,13 @@ export class TranslationCache {
                 this.removeFromAccessOrder(key); }
             }
             
-            console.log(`Cleared ${keysToDelete.length} cache entries for language: ${language)`});
-            return keysToDelete.length;'
-        } catch (error) { ''
-            getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {')'
+            console.log(`Cleared ${keysToDelete.length} cache, entries for, language: ${language}`});
+            return keysToDelete.length;
+
+        } catch (error) { getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {)'
                 operation: 'clearLanguage',);
-                language: language) }
-            });
+                language: language ,});
             return 0;
-        }
-    }
     
     /**
      * キャッシュ全体をクリア
@@ -282,42 +254,36 @@ export class TranslationCache {
             this.accessOrder = [];
             this.resetStats();
              }
-            console.log(`Cache cleared: ${size) entries removed`});
-            return size;'
-        } catch (error) { ''
-            getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {')'
-                operation: 'clear') }
-            });
+            console.log(`Cache, cleared: ${size} entries, removed`});
+            return size;
+
+        } catch (error) { getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {)'
+                operation: 'clear' ,});
             return 0;
-        }
-    }
     
     /**
      * キャッシュサイズを変更
      */'
     resize(newSize: number): boolean { try {'
-            if(newSize < 1') {'
-                ';'
-            }'
-                throw new Error('Cache size must be at least 1'); }
+            if(newSize < 1) {'
+                ';
+
+            }
+
+                throw new Error('Cache, size must, be at, least 1); }'
             }
             
             this.maxSize = newSize;
             
             // 現在のサイズが新しいサイズを超えている場合、LRUで削除
             while (this.cache.size > this.maxSize) { this.evictLeastRecentlyUsed(); }
-            }
             
-            console.log(`Cache resized to: ${newSize)`});
+            console.log(`Cache, resized to: ${newSize}`});
             return true;
-        } catch (error) { ''
-            getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {')'
+        } catch (error) { getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {)'
                 operation: 'resize',);
-                newSize: newSize) }
-            });
+                newSize: newSize ,});
             return false;
-        }
-    }
     
     /**
      * キャッシュ統計を取得
@@ -326,27 +292,26 @@ export class TranslationCache {
         const hitRate = totalRequests > 0 ? (this.hitCount / totalRequests) * 100 : 0;
         
         return { size: this.cache.size,
-            maxSize: this.maxSize,
-            hitCount: this.hitCount,
-            missCount: this.missCount,
-            evictionCount: this.evictionCount,
-            hitRate: Math.round(hitRate * 100) / 100,
+            maxSize: this.maxSize;
+            hitCount: this.hitCount;
+            missCount: this.missCount;
+            evictionCount: this.evictionCount;
+            hitRate: Math.round(hitRate * 100) / 100;
             totalRequests: totalRequests, };
             memoryUsage: this.estimateMemoryUsage(); }
-        };
-    }
+        }
     
     /**
      * メモリ使用量を推定
      */
-    private estimateMemoryUsage(): MemoryUsage { let totalSize = 0;'
-        '';
-        for (const [key, entry] of this.cache.entries()') {
+    private estimateMemoryUsage(): MemoryUsage { let totalSize = 0;
+
+        for(const [key, entry] of this.cache.entries()) {
             // キーのサイズ
             totalSize += key.length * 2; // UTF-16文字として計算
             ;
             // 値のサイズ
-            if(typeof entry.value === 'string') {
+            if(typeof, entry.value === 'string) {'
                 
             }
                 totalSize += entry.value.length * 2; }
@@ -359,8 +324,7 @@ export class TranslationCache {
         return { bytes: totalSize,
             kb: Math.round(totalSize / 1024 * 100) / 100, };
             mb: Math.round(totalSize / (1024 * 1024) * 100) / 100 }
-        },
-    }
+        }
     
     /**
      * 統計をリセット
@@ -368,7 +332,6 @@ export class TranslationCache {
     private resetStats(): void { this.hitCount = 0;
         this.missCount = 0;
         this.evictionCount = 0; }
-    }
     
     /**
      * 期限切れエントリを定期的にクリーンアップ
@@ -387,7 +350,6 @@ export class TranslationCache {
     stopPeriodicCleanup(): void { if (this.cleanupInterval) {
             clearInterval(this.cleanupInterval);
             this.cleanupInterval = null; }
-        }
     }
     
     /**
@@ -402,10 +364,9 @@ export class TranslationCache {
             
             }
                     expiredKeys.push(cacheKey); }
-                }
-            }
+}
             
-            for(const key of expiredKeys) {
+            for(const, key of, expiredKeys) {
             
                 this.cache.delete(key);
             
@@ -418,17 +379,13 @@ export class TranslationCache {
                 
             
             }
-                console.log(`Cleaned up ${expiredKeys.length) expired cache entries`});
+                console.log(`Cleaned, up ${expiredKeys.length} expired, cache entries`});
             }
             
             return expiredKeys.length;
-        } catch (error) { ''
-            getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {')'
-                operation: 'cleanupExpiredEntries') }
-            });
+        } catch (error) { getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {)'
+                operation: 'cleanupExpiredEntries' ,});
             return 0;
-        }
-    }
     
     /**
      * キャッシュの詳細情報を取得（デバッグ用）
@@ -442,29 +399,26 @@ export class TranslationCache {
             if(!languages.has(entry.language) {
         
         }
-                languages.set(entry.language, { count: 0, totalAccess: 0 ) }
-            }''
-            const langStats = languages.get(entry.language')!;
+                languages.set(entry.language, { count: 0, totalAccess: 0 ,}''
+            const langStats = languages.get(entry.language)!;
             langStats.count++;
             langStats.totalAccess += entry.accessCount;
             ';
             // キーパターン統計
-            const keyPrefix = entry.originalKey.split('.')[0];
-            if(!keyPatterns.has(keyPrefix) { keyPatterns.set(keyPrefix, { count: 0, totalAccess: 0 ) }
-            }
+            const keyPrefix = entry.originalKey.split('.)[0];
+            if(!keyPatterns.has(keyPrefix) { keyPatterns.set(keyPrefix, { count: 0, totalAccess: 0 ,}
             const patternStats = keyPatterns.get(keyPrefix)!;
             patternStats.count++;
             patternStats.totalAccess += entry.accessCount;
         }
         
         return { stats: this.getStats(),
-            languages: Object.fromEntries(languages),
-            keyPatterns: Object.fromEntries(keyPatterns),
+            languages: Object.fromEntries(languages);
+            keyPatterns: Object.fromEntries(keyPatterns);
             accessOrder: this.accessOrder.slice(-10), // 最新10件のアクセス;
             oldestEntries: this.getOldestEntries(5), };
             mostAccessedEntries: this.getMostAccessedEntries(5); }
-        };
-    }
+        }
     
     /**
      * 最も古いエントリを取得
@@ -475,11 +429,11 @@ export class TranslationCache {
         
         return entries.map(([key, entry]) => ({
             key,
-            originalKey: entry.originalKey,
+            originalKey: entry.originalKey;
             language: entry.language);
-            age: Date.now() - entry.timestamp,
-            accessCount: entry.accessCount }
-        }),
+            age: Date.now() - entry.timestamp;
+            accessCount: entry.accessCount ,}
+        });
     }
     
     /**
@@ -491,37 +445,34 @@ export class TranslationCache {
         
         return entries.map(([key, entry]) => ({
             key,
-            originalKey: entry.originalKey,
-            language: entry.language,
+            originalKey: entry.originalKey;
+            language: entry.language;
             accessCount: entry.accessCount);
-            age: Date.now() - entry.timestamp' }'
-        }'),
+            age: Date.now() - entry.timestamp' ,}'
+
+        }');
     }
     
     /**
      * キャッシュにキーが存在するかチェック'
      */''
-    has(key: string, language: string = 'ja'): boolean { const cacheKey = this.generateCacheKey(key, language);
+    has(key: string, language: string = 'ja): boolean { const cacheKey = this.generateCacheKey(key, language);
         return this.cache.has(cacheKey); }
-    }
     
     /**
      * 現在のキャッシュサイズを取得
      */
     size(): number { return this.cache.size; }
-    }
     
     /**
      * 最大キャッシュサイズを取得
      */
     getMaxSize(): number { return this.maxSize; }
-    }
     
     /**
      * すべてのキャッシュキーを取得
      */
     keys(): string[] { return Array.from(this.cache.keys(); }
-    }
     
     /**
      * 特定言語のキーを取得
@@ -531,8 +482,7 @@ export class TranslationCache {
             if (entry.language === language) {
         }
                 keys.push(entry.originalKey); }
-            }
-        }
+}
         return keys;
     }
     
@@ -540,4 +490,4 @@ export class TranslationCache {
      * クリーンアップ
      */'
     cleanup(): void { this.stopPeriodicCleanup();''
-        this.clear(') }')
+        this.clear(' })'

@@ -7,65 +7,57 @@
 
 // Type definitions
 interface Calculator { [methodName: string]: any, }
-    _memoized?: { [method: string]: Map<string, any> };
-}
+    _memoized?: { [method: string]: Map<string, any> }
 
 interface CacheStats { hits: number,
-    misses: number,
-    totalRequests: number,
-    heavyCalculations: number,
-    optimizedCalculations: number,
-    averageCalculationTime: number,
-    totalCalculationTime: number }
-}
+    misses: number;
+    totalRequests: number;
+    heavyCalculations: number;
+    optimizedCalculations: number;
+    averageCalculationTime: number;
+    totalCalculationTime: number ,}
 
-interface PerformanceStats { count: number,
-    totalTime: number,
-    avgTime: number,
-    minTime: number,
+interface PerformanceStats { count: number;
+    totalTime: number;
+    avgTime: number;
+    minTime: number;
     maxTime: number }
-}
 
-interface CacheConfig { maxSize: number,
-    ttl: number,
-    heavyCalculationTtl: number,
-    cleanupInterval: number,
-    intelligentCaching: boolean,
-    preloadThreshold: number,
+interface CacheConfig { maxSize: number;
+    ttl: number;
+    heavyCalculationTtl: number;
+    cleanupInterval: number;
+    intelligentCaching: boolean;
+    preloadThreshold: number;
     heavyCalculationThreshold: number }
-}
 
-interface OptimizationConfig { batchProcessing: boolean,
-    memoization: boolean,
-    parallelProcessing: boolean,
+interface OptimizationConfig { batchProcessing: boolean;
+    memoization: boolean;
+    parallelProcessing: boolean;
     adaptiveCaching: boolean }
-}
 
-interface BatchRequest { params: any[],
-    resolve: (value: any) => void,
-    reject: (reason?: any) => void,
+interface BatchRequest { params: any[];
+    resolve: (value: any) => void;
+    reject: (reason?: any) => void;
     options: CalculationOptions
     }
 }
 
-interface BatchQueue { requests: BatchRequest[],
+interface BatchQueue { requests: BatchRequest[];
     timeout: NodeJS.Timeout | null }
-}
 
 interface CalculationOptions { batchable?: boolean;
     priority?: 'high' | 'medium' | 'low';
     noCache?: boolean;
     heavyCalculation?: boolean; }
-}
 
 interface CacheEntry { value: any,
-    expiry: number,
-    timestamp: number,
+    expiry: number;
+    timestamp: number;
     calculationTime?: number;
     accessCount?: number;
     lastAccess?: number;
-    priority?: number; }
-}
+    priority?: number; ,}
 
 export class CalculationEngine {
     private calculators: Map<string, Calculator>;
@@ -87,17 +79,15 @@ export class CalculationEngine {
         
         // キャッシュ統計（詳細版）
         this.cacheStats = {
-            hits: 0,
-            misses: 0,
-            totalRequests: 0,
-            heavyCalculations: 0,
-            optimizedCalculations: 0,
-            averageCalculationTime: 0,
-    }
-    }
+            hits: 0;
+            misses: 0;
+            totalRequests: 0;
+            heavyCalculations: 0;
+            optimizedCalculations: 0;
+            averageCalculationTime: 0;
+    ,}
             totalCalculationTime: 0 }
-        },
-        
+        };
         // 計算パフォーマンス統計
         this.performanceStats = new Map<string, PerformanceStats>();
         
@@ -111,25 +101,20 @@ export class CalculationEngine {
             cleanupInterval: 60000,  // クリーンアップ間隔: 1分;
             intelligentCaching: true, // インテリジェントキャッシュ有効;
             preloadThreshold: 5,     // プリロード閾値（アクセス回数）;
-            heavyCalculationThreshold: 10 // 重い計算の閾値（ミリ秒） }
-        },
-        
+            heavyCalculationThreshold: 10 // 重い計算の閾値（ミリ秒） ,};
         // 計算最適化設定
         this.optimizationConfig = { batchProcessing: true,    // バッチ処理有効
             memoization: true,        // メモ化有効;
             parallelProcessing: false, // 並列処理（将来の拡張用）;
-            adaptiveCaching: true     // 適応的キャッシュ有効 }
-        },
-        
+            adaptiveCaching: true     // 適応的キャッシュ有効 ,};
         // バッチ処理キュー
         this.batchQueue = new Map<string, BatchQueue>();
         
         // 定期的なキャッシュクリーンアップを開始
         this.startCacheCleanup();
-        ;
         // パフォーマンス最適化タイマー
         this.startPerformanceOptimization()';
-        console.log('CalculationEngine initialized with optimizations'');
+        console.log('CalculationEngine, initialized with, optimizations'');
     }
     
     /**'
@@ -138,14 +123,16 @@ export class CalculationEngine {
      * @param calculator - 計算処理クラスのインスタンス
      */'
     registerCalculator(type: string, calculator: Calculator): void { ''
-        if(!type || !calculator') {'
-            ';'
-        }'
-            throw new Error('計算タイプと計算処理クラスは必須です'); }
+        if(!type || !calculator) {'
+            ';
+
+        }
+
+            throw new Error('計算タイプと計算処理クラスは必須です); }'
         }
         
         this.calculators.set(type, calculator);
-        console.log(`Calculator registered: ${type)`});
+        console.log(`Calculator, registered: ${type}`});
     }
     
     /**
@@ -169,8 +156,7 @@ export class CalculationEngine {
         if(this.optimizationConfig.batchProcessing && options.batchable) {
             
         }
-            return this._processBatch(type, method, params, options); }
-        }
+            return this._processBatch(type, method, params, options);
         
         // インテリジェントキャッシュから結果を取得
         if(!options.noCache) {
@@ -178,18 +164,18 @@ export class CalculationEngine {
             if (cachedResult !== null) {
                 this.cacheStats.hits++;
         }
-                return cachedResult; }
-            }
-        }
+                return cachedResult;
         
         // 計算処理クラスを取得
         const calculator = this.calculators.get(type);''
-        if (!calculator') { ' }'
-            throw new Error(`計算タイプ '${type')' が登録されていません`'});
+        if(!calculator) { ' }'
+
+            throw new Error(`計算タイプ '${type}' が登録されていません`'});
         }
         ';
         // メソッドの存在確認
-        if (typeof calculator[method] !== 'function'') { ' }'
+        if (typeof, calculator[method] !== 'function'') { ' }
+
             throw new Error(`計算メソッド '${method}' が存在しません (type: ${type})`);
         }
         
@@ -242,8 +228,7 @@ export class CalculationEngine {
             if(calculator._memoized[method].has(memoKey) {
                 this.cacheStats.optimizedCalculations++;
             }
-                return calculator._memoized[method].get(memoKey); }
-            }
+                return calculator._memoized[method].get(memoKey);
             
             const result = calculator[method](...params);
             calculator._memoized[method].set(memoKey, result);
@@ -251,10 +236,7 @@ export class CalculationEngine {
         }
         
         // 通常の計算実行
-        if(Array.isArray(params) { return calculator[method](...params); }
-        } else { return calculator[method](params); }
-        }
-    }
+        if(Array.isArray(params) { return calculator[method](...params); else { return calculator[method](params);
     
     /**
      * バッチ処理を実行
@@ -275,8 +257,7 @@ export class CalculationEngine {
                 this.batchQueue.set(batchKey, {
             })
                     requests: [],) }
-                    timeout: null); }
-                });
+                    timeout: null););
             }
             
             const batch = this.batchQueue.get(batchKey);
@@ -308,21 +289,20 @@ export class CalculationEngine {
         
         try {
             // バッチメソッドが存在する場合はそれを使用
-    }'
-            if (typeof calculator[`${method')Batch`] === 'function') { }
-                const allParams = batch.requests.map(req => req.params});
+    }
+
+            if(typeof, calculator[`${method}Batch`] === 'function'} { }
+                const, allParams = batch.requests.map(req => req.params});
                 const results = calculator[`${method}Batch`](allParams);
                 
                 // 結果を各リクエストに返す
-                batch.requests.forEach((req, index) => { req.resolve(results[index]); }
-                });
+                batch.requests.forEach((req, index) => { req.resolve(results[index]); });
             } else {  // 個別に実行
                 batch.requests.forEach(req => { )
                     try {); }
-                        const result = calculator[method](...req.params); }
+                        const result = calculator[method](...req.params);
                         req.resolve(result); }
                     } catch (error) { req.reject(error); }
-                    }
                 });
             } catch (error) { // エラーの場合は全リクエストにエラーを返す
             batch.requests.forEach(req => req.reject(error); }
@@ -353,13 +333,11 @@ export class CalculationEngine {
         
         if (!cached) {
     }
-            return null; }
-        }
+            return null;
         
         // TTLチェック
         if (Date.now() > cached.expiry) { this.cache.delete(key);
             return null; }
-        }
         
         return cached.value;
     }
@@ -378,9 +356,8 @@ export class CalculationEngine {
         
         const expiry = Date.now() + this.cacheConfig.ttl;
         this.cache.set(key, { value: result)
-            expiry: expiry),
-            timestamp: Date.now() }
-        });
+            expiry: expiry);
+            timestamp: Date.now( });
     }
     
     /**
@@ -395,11 +372,9 @@ export class CalculationEngine {
                 oldestTime = cached.timestamp;
     }
                 oldestKey = key; }
-            }
-        }
+}
         
         if (oldestKey) { this.cache.delete(oldestKey); }
-        }
     }
     
     /**
@@ -413,8 +388,7 @@ export class CalculationEngine {
             if (now > cached.expiry) {
     }
                 keysToDelete.push(key); }
-            }
-        }
+}
         
         keysToDelete.forEach(key => this.cache.delete(key);
         
@@ -423,7 +397,7 @@ export class CalculationEngine {
             
         
         }
-            console.log(`Cleaned up ${keysToDelete.length) expired cache entries`});
+            console.log(`Cleaned, up ${keysToDelete.length} expired, cache entries`});
         }
     }
     
@@ -443,18 +417,18 @@ export class CalculationEngine {
         if (type) {
             // 特定のタイプのキャッシュのみクリア
             const keysToDelete = [];
-            for(const key of this.cache.keys() {
+            for(const, key of, this.cache.keys() {
     }
-                if (key.startsWith(`${type):`)) { }
+                if (key.startsWith(`${ type}:` } { }
                     keysToDelete.push(key});
                 }
             }
             keysToDelete.forEach(key => this.cache.delete(key);
-            console.log(`Cleared ${keysToDelete.length} cache entries for type: ${type)`});
+            console.log(`Cleared ${keysToDelete.length} cache, entries for, type: ${type}`});
         } else {  // 全キャッシュをクリア
             const size = this.cache.size; }
             this.cache.clear(); }
-            console.log(`Cleared all ${size) cache entries`});
+            console.log(`Cleared, all ${size} cache, entries`});
         }
         
         // 統計をリセット
@@ -473,21 +447,19 @@ export class CalculationEngine {
             : 0;
             
         return { size: this.cache.size,
-            maxSize: this.cacheConfig.maxSize,
-            hits: this.cacheStats.hits,
-    }
+            maxSize: this.cacheConfig.maxSize;
+            hits: this.cacheStats.hits;
+    ,}
             misses: this.cacheStats.misses, };
             totalRequests: this.cacheStats.totalRequests, }
             hitRate: `${hitRate}%`
-        },
-    }
+        }
     
     /**
      * 登録されている計算処理クラスの一覧を取得
      * @returns {Array} 計算タイプの配列
      */
     getRegisteredCalculators() { return Array.from(this.calculators.keys(); }
-    }
     
     /**
      * 計算処理クラスが登録されているかチェック
@@ -495,7 +467,6 @@ export class CalculationEngine {
      * @returns {boolean} 登録されている場合 true
      */
     hasCalculator(type) { return this.calculators.has(type); }
-    }
     
     /**
      * デバッグ情報を取得
@@ -506,8 +477,7 @@ export class CalculationEngine {
     }
             cacheStats: this.getCacheStats(), };
             cacheConfig: this.cacheConfig }
-        },
-    }
+        }
     
     /**
      * インテリジェントキャッシュから結果を取得
@@ -520,16 +490,14 @@ export class CalculationEngine {
         
         if (!cached) {
     }
-            return null; }
-        }
+            return null;
         
         // 適応的TTLチェック
         const now = Date.now();
         if(now > cached.expiry) {
             this.cache.delete(key);
         }
-            return null; }
-        }
+            return null;
         
         // アクセス統計を更新
         cached.accessCount = (cached.accessCount || 0) + 1;
@@ -557,13 +525,12 @@ export class CalculationEngine {
         
         const now = Date.now();
         this.cache.set(key, { value: result,
-            expiry: now + adaptiveTtl,
+            expiry: now + adaptiveTtl;
             timestamp: now);
             calculationTime);
             accessCount: 1,);
-            lastAccess: now),
-            priority: this._calculateCachePriority(key, calculationTime) }
-        });
+            lastAccess: now);
+            priority: this._calculateCachePriority(key, calculationTime });
     }
     
     /**
@@ -586,7 +553,6 @@ export class CalculationEngine {
         // 頻繁にアクセスされる計算は長時間キャッシュ
         const frequency = this.frequentCalculations.get(key) || 0;
         if (frequency > this.cacheConfig.preloadThreshold) { baseTtl *= 2; // 2倍の時間キャッシュ }
-        }
         
         return baseTtl;
     }
@@ -609,8 +575,7 @@ export class CalculationEngine {
         priority += frequency * 5;
         
     }
-        return priority; }
-    }
+        return priority;
     
     /**
      * 最も価値の低いキャッシュを削除
@@ -634,11 +599,9 @@ export class CalculationEngine {
                 lowestScore = score;
     }
                 leastValuableKey = key; }
-            }
-        }
+}
         
         if (leastValuableKey) { this.cache.delete(leastValuableKey); }
-        }
     }
     
     /**
@@ -659,8 +622,7 @@ export class CalculationEngine {
             const toDelete = entries.slice(0, 200); // 下位200エントリを削除
     }
             toDelete.forEach(([key]) => this.frequentCalculations.delete(key); }
-        }
-    }
+}
     
     /**
      * パフォーマンス統計を更新
@@ -674,15 +636,11 @@ export class CalculationEngine {
     }
         const key = `${type}.${method}`;
         
-        if(!this.performanceStats.has(key) {
-        
-            this.performanceStats.set(key, {
-                count: 0,
+        if(!this.performanceStats.has(key) { this.performanceStats.set(key, {
+                count: 0;
                 totalTime: 0);
                 avgTime: 0);
-                minTime: Infinity,
-    )
-        }
+                minTime: Infinity; ,}
                 maxTime: 0); }
         }
         
@@ -719,14 +677,14 @@ export class CalculationEngine {
             
             // 重い計算の最適化
             this._optimizeHeavyCalculations();
-            ;
             // キャッシュ効率の最適化
-            this._optimizeCacheEfficiency();'
-    }'
-            console.log('Performance optimization completed');' }'
-        } catch (error) { ''
-            console.error('Performance optimization error:', error) }
-        }
+            this._optimizeCacheEfficiency();
+
+    }
+
+            console.log('Performance, optimization completed');' }
+
+        } catch (error) { console.error('Performance optimization error:', error }
     }
     
     /**
@@ -739,14 +697,13 @@ export class CalculationEngine {
             .sort((a, b) => b[1] - a[1]) // 降順ソート;
             .slice(0, 50); // 上位50エントリ
         
-        for (const [cacheKey] of frequentEntries) {
+        for (const [cacheKey] of, frequentEntries) {
             if(!this.cache.has(cacheKey) {
                 // キャッシュにない場合は、可能であれば事前計算
                 // 実装は具体的な計算内容に依存するため、ここでは統計のみ更新
     }
                 this.cacheStats.optimizedCalculations++; }
-            }
-        }
+}
     }
     
     /**
@@ -761,14 +718,13 @@ export class CalculationEngine {
         
         // 重い計算のキャッシュ期間を延長
         for(const [methodKey] of heavyCalculations.slice(0, 10) {''
-            for (const [cacheKey, cached] of this.cache.entries()') {''
-                if(cacheKey.includes(methodKey.replace('.', ':')) {
+            for(const [cacheKey, cached] of this.cache.entries()) {''
+                if(cacheKey.includes(methodKey.replace('.', ':)) {
                     // TTLを延長
                     const extensionTime = this.cacheConfig.heavyCalculationTtl - this.cacheConfig.ttl;
     }
                     cached.expiry += extensionTime; }
-                }
-            }
+}
         }
     }
     
@@ -784,12 +740,12 @@ export class CalculationEngine {
         if (hitRate < 70 && this.cacheConfig.maxSize < 5000) {
     }
             this.cacheConfig.maxSize = Math.min(this.cacheConfig.maxSize * 1.2, 5000); }
-            console.log(`Cache size increased to ${this.cacheConfig.maxSize)`});
+            console.log(`Cache, size increased, to ${this.cacheConfig.maxSize}`});
         }
         
         // ヒット率が高い場合はTTLを延長
         if (hitRate > 90) { this.cacheConfig.ttl = Math.min(this.cacheConfig.ttl * 1.1, 600000); // 最大10分 }
-            console.log(`Cache TTL increased to ${this.cacheConfig.ttl)ms`});
+            console.log(`Cache, TTL increased, to ${this.cacheConfig.ttl}ms`});
         }
     }
     
@@ -799,10 +755,13 @@ export class CalculationEngine {
      * @param {Array} methods - メモ化するメソッド名の配列
      */
     enableMemoization(type, methods = []) {
-        const calculator = this.calculators.get(type);'
-    }'
-        if (!calculator') {' }'
-            throw new Error(`計算タイプ '${type')' が登録されていません`});
+        const calculator = this.calculators.get(type);
+
+    }
+
+        if(!calculator) {' }'
+
+            throw new Error(`計算タイプ '${type}' が登録されていません`});
         }
         
         if(!calculator._memoized) {
@@ -810,20 +769,20 @@ export class CalculationEngine {
             
         
         }
-            calculator._memoized = {};
-        }
+            calculator._memoized = {}
         
         // 指定されたメソッドまたは全メソッドにメモ化を適用
         const targetMethods = methods.length > 0 ? methods : '';
-            Object.getOwnPropertyNames(Object.getPrototypeOf(calculator)')'';
-                .filter(name => typeof calculator[name] === 'function' && name !== 'constructor');'
-        '';
-        for(const method of targetMethods') {'
-            '';
-            if (typeof calculator[method] === 'function') {'
-        }'
+            Object.getOwnPropertyNames(Object.getPrototypeOf(calculator))'';
+                .filter(name => typeof, calculator[name] === 'function' && name !== 'constructor);
+
+        for(const, method of, targetMethods) {'
+
+            if(typeof, calculator[method] === 'function) {'
+        }
+
                 calculator._memoized[method] = new Map('' })'
-        console.log(`Memoization enabled for ${type}: ${targetMethods.join(', '})}`);
+        console.log(`Memoization enabled for ${type}: ${targetMethods.join(', '})`);
     }
     
     /**
@@ -837,11 +796,11 @@ export class CalculationEngine {
         const performanceSummary = Array.from(this.performanceStats.entries();
             .map(([key, stats]) => ({
                 method: key)
-    }
+    ,}
                 count: stats.count, }
-                avgTime: `${stats.avgTime.toFixed(2})}ms`,
-                minTime: `${stats.minTime.toFixed(2})}ms`,
-                maxTime: `${stats.maxTime.toFixed(2})}ms`
+                avgTime: `${stats.avgTime.toFixed(2})ms`;
+                minTime: `${stats.minTime.toFixed(2})ms`;
+                maxTime: `${stats.maxTime.toFixed(2})ms`
             })
             .sort((a, b) => parseFloat(b.avgTime) - parseFloat(a.avgTime);
             .slice(0, 10);
@@ -850,14 +809,14 @@ export class CalculationEngine {
         const frequentCalculations = Array.from(this.frequentCalculations.entries();
             .sort((a, b) => b[1] - a[1]);
             .slice(0, 10);
-            .map(([key, count]) => ({ calculation: key, accessCount: count });
+            .map(([key, count]) => ({ calculation: key, accessCount: count ,});
         
         return { ...basicStats, };
             ...this.cacheStats, }
-            averageCalculationTime: `${this.cacheStats.averageCalculationTime.toFixed(2})}ms`,
-            cacheConfig: this.cacheConfig,
-            optimizationConfig: this.optimizationConfig,
-            topPerformingMethods: performanceSummary,
+            averageCalculationTime: `${this.cacheStats.averageCalculationTime.toFixed(2})ms`;
+            cacheConfig: this.cacheConfig;
+            optimizationConfig: this.optimizationConfig;
+            topPerformingMethods: performanceSummary;
             frequentCalculations,
             batchQueueSize: this.batchQueue.size;
         },
@@ -868,19 +827,19 @@ export class CalculationEngine {
      */
     destroy() {
         // バッチキューをクリア
-        for(const batch of this.batchQueue.values() {
+        for(const, batch of, this.batchQueue.values() {
             if (batch.timeout) {
     }
                 clearTimeout(batch.timeout); }
-            }
-        }
+}
         this.batchQueue.clear();
         
         this.clearCache();
-        this.calculators.clear();'
+        this.calculators.clear();
+
         this.performanceStats.clear();''
         this.frequentCalculations.clear()';
-        console.log('CalculationEngine destroyed');
+        console.log('CalculationEngine, destroyed);
     }
 }
 
@@ -891,26 +850,39 @@ let calculationEngineInstance = null;
  * CalculationEngineのシングルトンインスタンスを取得
  * @returns {CalculationEngine} CalculationEngineインスタンス
  */
-export function getCalculationEngine() { if (!calculationEngineInstance) {''
+export function getCalculationEngine() { if (!calculationEngineInstance') {''
         calculationEngineInstance = new CalculationEngine('' })'
-        import('./ScoreCalculator.js').then(({ getScoreCalculator }') => {  ' }'
-            calculationEngineInstance.registerCalculator('score', getScoreCalculator();' }'
-        }).catch(error => {  ');' }'
-            console.warn('ScoreCalculator registration failed:', error);' }'
-        }');'
-        '';
-        import('./BalanceCalculator.js').then(({ getBalanceCalculator }') => {  ' }'
-            calculationEngineInstance.registerCalculator('balance', getBalanceCalculator();' }'
-        }).catch(error => {  ');' }'
-            console.warn('BalanceCalculator registration failed:', error);' }'
-        }');'
-        '';
-        import('./EffectsCalculator.js').then(({ getEffectsCalculator }') => {  ' }'
-            calculationEngineInstance.registerCalculator('effects', getEffectsCalculator();' }'
-        }).catch(error => {  ');' }'
-            console.warn('EffectsCalculator registration failed:', error);' }'
+        import('./ScoreCalculator.js).then(({ getScoreCalculator }) => {  ' }
+
+            calculationEngineInstance.registerCalculator('score', getScoreCalculator();' }
+
+        }).catch(error => {  ');' }
+
+            console.warn('ScoreCalculator registration failed:', error);' }
+
+        }');
+
+        import('./BalanceCalculator.js).then(({ getBalanceCalculator }) => {  ' }
+
+            calculationEngineInstance.registerCalculator('balance', getBalanceCalculator();' }
+
+        }).catch(error => {  ');' }
+
+            console.warn('BalanceCalculator registration failed:', error);' }
+
+        }');
+
+        import('./EffectsCalculator.js).then(({ getEffectsCalculator }) => {  ' }
+
+            calculationEngineInstance.registerCalculator('effects', getEffectsCalculator();' }
+
+        }).catch(error => {  ');' }
+
+            console.warn('EffectsCalculator registration failed:', error);' }
+
         }');
     }
-    ';'
+    ';
+
     return calculationEngineInstance;''
 }

@@ -5,11 +5,10 @@
 
 // 型定義
 interface StateInfo { timestamp: number,
-    scaleFactor: number }
-}
+    scaleFactor: number ,}
 
 interface ScaledCoordinateManager {
-    getScaledPosition(baseX: number, baseY: number): { x: number; y: number }
+    getScaledPosition(baseX: number, baseY: number): { x: number; y: number ,}
     getScaledSize(baseWidth: number, baseHeight: number): { width: number; height: number }
     getScaleFactor(): number;
     getDebugInfo(): any;
@@ -26,8 +25,7 @@ export class ScaledRenderingContext {
         
         // 元のコンテキストの状態を保存するスタック
 
-    }
-    }
+    ,}
         this.stateStack = []; }
     }
     
@@ -39,10 +37,8 @@ export class ScaledRenderingContext {
      */
     fillText(text: string, baseX: number, baseY: number): void { try {
             const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
-            this.context.fillText(text, scaledPosition.x, scaledPosition.y); }
-        } catch (error) { console.warn('ScaledRenderingContext: fillText failed, using fallback', error);
+            this.context.fillText(text, scaledPosition.x, scaledPosition.y); } catch (error) { console.warn('ScaledRenderingContext: fillText failed, using fallback', error);
             this.context.fillText(text, baseX, baseY); }
-        }
     }
     
     /**
@@ -54,12 +50,13 @@ export class ScaledRenderingContext {
      */
     fillRect(baseX: number, baseY: number, baseWidth: number, baseHeight: number): void { try {
             const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
-            const scaledSize = this.scaledCoordinateManager.getScaledSize(baseWidth, baseHeight);'
+            const scaledSize = this.scaledCoordinateManager.getScaledSize(baseWidth, baseHeight);
+
             this.context.fillRect(scaledPosition.x, scaledPosition.y, scaledSize.width, scaledSize.height);' }'
-        } catch (error) { ''
+
+        } catch (error) {
             console.warn('ScaledRenderingContext: fillRect failed, using fallback', error);
             this.context.fillRect(baseX, baseY, baseWidth, baseHeight); }
-        }
     }
     
     /**
@@ -71,12 +68,13 @@ export class ScaledRenderingContext {
      */
     strokeRect(baseX: number, baseY: number, baseWidth: number, baseHeight: number): void { try {
             const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
-            const scaledSize = this.scaledCoordinateManager.getScaledSize(baseWidth, baseHeight);'
+            const scaledSize = this.scaledCoordinateManager.getScaledSize(baseWidth, baseHeight);
+
             this.context.strokeRect(scaledPosition.x, scaledPosition.y, scaledSize.width, scaledSize.height);' }'
-        } catch (error) { ''
+
+        } catch (error) {
             console.warn('ScaledRenderingContext: strokeRect failed, using fallback', error);
             this.context.strokeRect(baseX, baseY, baseWidth, baseHeight); }
-        }
     }
     
     /**
@@ -95,18 +93,21 @@ export class ScaledRenderingContext {
                 const scaledSize = this.scaledCoordinateManager.getScaledSize(baseWidth, baseHeight);
             
             }
-                this.context.drawImage(image, scaledPosition.x, scaledPosition.y, scaledSize.width, scaledSize.height); }'
+                this.context.drawImage(image, scaledPosition.x, scaledPosition.y, scaledSize.width, scaledSize.height); }
+
             } else { this.context.drawImage(image, scaledPosition.x, scaledPosition.y);' }'
-            } catch (error) { ''
+
+            } catch (error) {
             console.warn('ScaledRenderingContext: drawImage failed, using fallback', error);
             if(baseWidth !== null && baseHeight !== null) {
                 
             }
-                this.context.drawImage(image, baseX, baseY, baseWidth, baseHeight); }'
-            } else {  ' }'
-                this.context.drawImage(image, baseX, baseY'); }
-            }
-        }
+                this.context.drawImage(image, baseX, baseY, baseWidth, baseHeight); }
+
+            } else { }'
+
+                this.context.drawImage(image, baseX, baseY); }
+}
     }
     
     /**
@@ -114,7 +115,7 @@ export class ScaledRenderingContext {
      * @param baseFontSize - ベースフォントサイズ
      * @param fontFamily - フォントファミリー'
      */''
-    setScaledFont(baseFontSize: number, fontFamily: string = 'Arial'): void { try {
+    setScaledFont(baseFontSize: number, fontFamily: string = 'Arial): void { try {'
             const scaleFactor = this.scaledCoordinateManager.getScaleFactor();
             const scaledFontSize = baseFontSize * scaleFactor;
             
@@ -124,8 +125,7 @@ export class ScaledRenderingContext {
             const clampedFontSize = Math.max(minFontSize, Math.min(maxFontSize, scaledFontSize);
              }
             this.context.font = `${clampedFontSize}px ${fontFamily}`;''
-        } catch (error) { ''
-            console.warn('ScaledRenderingContext: setScaledFont failed, using fallback', error) }
+        } catch (error) { console.warn('ScaledRenderingContext: setScaledFont failed, using fallback', error }
             this.context.font = `${baseFontSize}px ${fontFamily}`;
         }
     }
@@ -142,12 +142,13 @@ export class ScaledRenderingContext {
             const minWidth = 0.5;
             const maxWidth = 20;
             const clampedWidth = Math.max(minWidth, Math.min(maxWidth, scaledWidth);
-            ';'
+            ';
+
             this.context.lineWidth = clampedWidth;' }'
-        } catch (error) { ''
+
+        } catch (error) {
             console.warn('ScaledRenderingContext: setScaledLineWidth failed, using fallback', error);
             this.context.lineWidth = baseWidth; }
-        }
     }
     
     /**
@@ -158,12 +159,9 @@ export class ScaledRenderingContext {
             
             // 追加の状態情報を保存
             this.stateStack.push({);
-                timestamp: Date.now(),
-                scaleFactor: this.scaledCoordinateManager.getScaleFactor() }
-            });''
-        } catch (error) { ''
-            console.warn('ScaledRenderingContext: save failed', error) }
-        }
+                timestamp: Date.now();
+                scaleFactor: this.scaledCoordinateManager.getScaleFactor( });''
+        } catch (error) { console.warn('ScaledRenderingContext: save failed', error }
     }
     
     /**
@@ -177,9 +175,8 @@ export class ScaledRenderingContext {
                 
             }
                 this.stateStack.pop();' }'
-            } catch (error) { ''
-            console.warn('ScaledRenderingContext: restore failed', error) }
-        }
+
+            } catch (error) { console.warn('ScaledRenderingContext: restore failed', error }
     }
     
     /**
@@ -187,7 +184,6 @@ export class ScaledRenderingContext {
      * @returns 元のコンテキスト
      */
     getOriginalContext(): CanvasRenderingContext2D { return this.context; }
-    }
     
     /**
      * コンテキストのプロパティを直接設定
@@ -195,8 +191,10 @@ export class ScaledRenderingContext {
      * @param value - 設定値
      */
     setProperty(property: string, value: any): void { try {
-            (this.context as any)[property] = value;' }'
-        } catch (error) { ' }'
+            (this.context, as any)[property] = value;' }'
+
+        } catch (error) { }
+
             console.warn(`ScaledRenderingContext: Setting property '${property}' failed`, error);
         }
     }
@@ -207,12 +205,12 @@ export class ScaledRenderingContext {
      * @returns プロパティ値
      */
     getProperty(property: string): any { try {
-            return (this.context as any)[property];' }'
-        } catch (error) { ' }'
+            return (this.context, as any)[property];' }'
+
+        } catch (error) { }
+
             console.warn(`ScaledRenderingContext: Getting property '${property}' failed`, error);
             return undefined;
-        }
-    }
     
     /**
      * パスベースの描画メソッド（座標変換付き）
@@ -224,12 +222,13 @@ export class ScaledRenderingContext {
      * @param baseY - ベースY座標
      */
     moveTo(baseX: number, baseY: number): void { try {
-            const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);'
+            const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
+
             this.context.moveTo(scaledPosition.x, scaledPosition.y);' }'
-        } catch (error) { ''
+
+        } catch (error) {
             console.warn('ScaledRenderingContext: moveTo failed, using fallback', error);
             this.context.moveTo(baseX, baseY); }
-        }
     }
     
     /**
@@ -238,12 +237,13 @@ export class ScaledRenderingContext {
      * @param baseY - ベースY座標
      */
     lineTo(baseX: number, baseY: number): void { try {
-            const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);'
+            const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
+
             this.context.lineTo(scaledPosition.x, scaledPosition.y);' }'
-        } catch (error) { ''
+
+        } catch (error) {
             console.warn('ScaledRenderingContext: lineTo failed, using fallback', error);
             this.context.lineTo(baseX, baseY); }
-        }
     }
     
     /**
@@ -257,12 +257,13 @@ export class ScaledRenderingContext {
      */
     arc(baseX: number, baseY: number, baseRadius: number, startAngle: number, endAngle: number, counterclockwise: boolean = false): void { try {
             const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
-            const scaledSize = this.scaledCoordinateManager.getScaledSize(baseRadius, baseRadius);'
+            const scaledSize = this.scaledCoordinateManager.getScaledSize(baseRadius, baseRadius);
+
             this.context.arc(scaledPosition.x, scaledPosition.y, scaledSize.width, startAngle, endAngle, counterclockwise);' }'
-        } catch (error) { ''
+
+        } catch (error) {
             console.warn('ScaledRenderingContext: arc failed, using fallback', error);
             this.context.arc(baseX, baseY, baseRadius, startAngle, endAngle, counterclockwise); }
-        }
     }
     
     // パスメソッドの代理
@@ -276,4 +277,4 @@ export class ScaledRenderingContext {
      * @returns スケール情報
      */
     getScaleInfo(): any { ''
-        return this.scaledCoordinateManager.getDebugInfo(') }
+        return this.scaledCoordinateManager.getDebugInfo(' }'

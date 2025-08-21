@@ -18,8 +18,7 @@ export class Scene implements IScene { public gameEngine: any,
         this.sceneManager = null;
         this.isActive = false;
 
-    }
-    }
+    ,}
         this.isLoaded = false; }
     }
     
@@ -28,7 +27,6 @@ export class Scene implements IScene { public gameEngine: any,
      * SceneManagerによって呼び出され、シーンとマネージャーの関連を確立します
      */
     setSceneManager(sceneManager: any): void { this.sceneManager = sceneManager; }
-    }
     
     /**
      * シーン開始時の処理
@@ -37,7 +35,6 @@ export class Scene implements IScene { public gameEngine: any,
      */
     enter(): void { this.isActive = true;
         // オーバーライド用 }
-    }
     
     /**
      * シーン終了時の処理
@@ -46,7 +43,6 @@ export class Scene implements IScene { public gameEngine: any,
      */
     exit(): void { this.isActive = false;
         // オーバーライド用 }
-    }
     
     /**
      * 更新処理
@@ -56,7 +52,6 @@ export class Scene implements IScene { public gameEngine: any,
      * @param deltaTime - 前フレームからの経過時間（ミリ秒）
      */
     update(_deltaTime: number): void { // オーバーライド用 }
-    }
     
     /**
      * 描画処理
@@ -66,7 +61,6 @@ export class Scene implements IScene { public gameEngine: any,
      * @param context - Canvas 2Dレンダリングコンテキスト
      */
     render(_context: CanvasRenderingContext2D): void { // オーバーライド用 }
-    }
     
     /**
      * 入力処理
@@ -78,7 +72,6 @@ export class Scene implements IScene { public gameEngine: any,
      */
     handleInput(_event: Event): boolean | void { // オーバーライド用
         return false; }
-    }
     
     /**
      * 初期化処理（オプション）
@@ -87,7 +80,6 @@ export class Scene implements IScene { public gameEngine: any,
      */
     async init?(): Promise<void> { this.isLoaded = true;
         // オーバーライド用 }
-    }
     
     /**
      * 破棄処理（オプション）
@@ -96,6 +88,5 @@ export class Scene implements IScene { public gameEngine: any,
      */''
     destroy?('): void { this.isActive = false;
         this.isLoaded = false;
-        // オーバーライド用 }
-    }''
+        // オーバーライド用 }''
 }

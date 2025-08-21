@@ -1,293 +1,171 @@
-#!/usr/bin/env node
-
 const fs = require('fs');
-const path = require('path');
+const { glob } = require('glob');
 
-console.log('🔧 Fixing remaining TypeScript syntax errors...');
-
-// パターン別修正関数
-const fixPatterns = [
-    // Import statement errors
-    {
-        description: 'Fix import statement quote errors',
-        pattern: /import\s*\{\s*([^}]+)\s*\}\s*from\s*['"]([^'"]+)\.ts['"]\s*['"]/g,
-        replacement: "import { $1 } from '$2.ts';"
-    },
-    {
-        description: 'Fix import statement missing semicolon',
-        pattern: /import\s*\{\s*([^}]+)\s*\}\s*from\s*['"]([^'"]+)\.ts['"]\s*$/gm,
-        replacement: "import { $1 } from '$2.ts';"
-    },
-    {
-        description: 'Fix import statement with semicolon issue',
-        pattern: /import\s*\{\s*([^}]+)\s*\}\s*from\s*['"]([^'"]+)\.ts;/g,
-        replacement: "import { $1 } from '$2.ts';"
-    },
+// 残存する構文エラーの修正スクリプト
+async function fixRemainingSyntaxErrors() {
+    console.log('残存する構文エラーの修正を開始...');
     
-    // Constructor and method parameter errors
-    {
-        description: 'Fix constructor parameter syntax',
-        pattern: /constructor\s*\([^)]*\)\s*\{\s*$/gm,
-        replacement: function(match) {
-            // Handle constructor parameter list properly
-            return match.replace(/,\s*\)/g, ')');
-        }
-    },
-    {
-        description: 'Fix trailing comma in function parameters',
-        pattern: /\([^)]*,\s*\)\s*\{/g,
-        replacement: function(match) {
-            return match.replace(',)', ')');
-        }
-    },
+    const tsFiles = glob.sync('/Users/taku-o/Documents/workspaces/awaputi/src/**/*.ts');
+    console.log(`${tsFiles.length}個のTypeScriptファイルを発見`);
     
-    // Object literal syntax errors
-    {
-        description: 'Fix object literal brace syntax',
-        pattern: /\{\s*;/g,
-        replacement: '{'
-    },
-    {
-        description: 'Fix object literal closing brace',
-        pattern: /;\s*\}/g,
-        replacement: '}'
-    },
-    {
-        description: 'Fix misplaced comma in object literal',
-        pattern: /,\s*\}\s*,\s*\}/g,
-        replacement: '}}'
-    },
-    {
-        description: 'Fix comma after closing parenthesis',
-        pattern: /,\s*\)\s*;/g,
-        replacement: ');'
-    },
+    let modifiedFiles = 0;
+    let totalModifications = 0;
     
-    // String template literal errors
-    {
-        description: 'Fix template literal with single quotes',
-        pattern: /result\[`([^`]*)\`\]/g,
-        replacement: "result[`$1`]"
-    },
-    {
-        description: 'Fix escaped template literals in strings',
-        pattern: /\\`([^`]*)\\`/g,
-        replacement: "`$1`"
-    },
-    
-    // Method call syntax errors
-    {
-        description: 'Fix method call with extra comma',
-        pattern: /\.\w+\([^)]*,\s*\)\s*;/g,
-        replacement: function(match) {
-            return match.replace(',)', ')');
-        }
-    },
-    
-    // Property declaration errors
-    {
-        description: 'Fix property declarations with wrong syntax',
-        pattern: /private\s+(\w+):\s*([^;,}]+)\s*,$/gm,
-        replacement: 'private $1: $2;'
-    },
-    {
-        description: 'Fix property declarations with semicolon after comma',
-        pattern: /private\s+(\w+):\s*([^;,}]+)\s*,\s*$/gm,
-        replacement: 'private $1: $2;'
-    },
-    
-    // Try-catch block syntax errors
-    {
-        description: 'Fix try-catch block formatting',
-        pattern: /\}\s*catch\s*\([^)]*\)\s*\{\s*$/gm,
-        replacement: function(match) {
-            return match.replace(/\}\s*catch/, '} catch');
-        }
-    },
-    
-    // Return statement errors
-    {
-        description: 'Fix return statement syntax',
-        pattern: /return\s*\{\s*success:\s*false\s*\}\s*;\s*error:\s*([^}]+)\s*\}\s*,\s*\}/g,
-        replacement: 'return { success: false, error: $1 };'
-    },
-    {
-        description: 'Fix return statement with wrong brace placement',
-        pattern: /return\s*\{\s*([^}]*)\s*\}\s*;\s*([^}]*)\s*\}\s*;/g,
-        replacement: 'return { $1, $2 };'
-    },
-    
-    // If statement and condition errors
-    {
-        description: 'Fix if statement syntax',
-        pattern: /if\s*\([^)]*\)\s*\{\s*\}\s*$/gm,
-        replacement: function(match) {
-            return match.replace(/\{\s*\}/, '{\n        return;\n    }');
-        }
-    },
-    
-    // Misc syntax fixes
-    {
-        description: 'Fix extra semicolon after closing brace',
-        pattern: /\}\s*;\s*;/g,
-        replacement: '};'
-    },
-    {
-        description: 'Fix double closing parentheses',
-        pattern: /\)\s*\)\s*;/g,
-        replacement: ');'
-    },
-    {
-        description: 'Fix quotes inside string literals',
-        pattern: /['"]([^'"]*)['"]\s*['"]/g,
-        replacement: "'$1'"
-    }
-];
-
-// ファイル処理関数
-function processFile(filePath) {
-    try {
-        let content = fs.readFileSync(filePath, 'utf8');
-        let modified = false;
-        let fixCount = 0;
-
-        // 各パターンを適用
-        fixPatterns.forEach((fix) => {
-            const beforeLength = content.length;
-            
-            if (typeof fix.replacement === 'function') {
-                content = content.replace(fix.pattern, fix.replacement);
-            } else {
-                content = content.replace(fix.pattern, fix.replacement);
-            }
-            
-            if (content.length !== beforeLength) {
-                modified = true;
-                fixCount++;
-            }
-        });
-
-        // 特定の追加修正
-        // 不正な構文パターンの修正
-        const additionalFixes = [
-            // Constructor parameter issues
-            [/constructor\s*\([^)]*,\s*\)\s*\{/g, (match) => match.replace(',)', ')')],
-            // Object literal issues
-            [/\{\s*([^}]*)\s*\}\s*,\s*\}/g, '{ $1 }'],
-            // Method parameter issues
-            [/async\s+(\w+)\s*\([^)]*,\s*\)\s*\{/g, (match) => match.replace(',)', ')')],
-            // Property initialization issues
-            [/:\s*([^;,}]+)\s*,\s*$/gm, ': $1;'],
-            // String literal issues
-            [/['"]\s*['"]/g, "'"],
-            // Template literal fixes
-            [/\$\{([^}]*)\}\}/g, '${$1}']
-        ];
-
-        additionalFixes.forEach(([pattern, replacement]) => {
-            const beforeLength = content.length;
-            
-            if (typeof replacement === 'function') {
-                content = content.replace(pattern, replacement);
-            } else {
-                content = content.replace(pattern, replacement);
-            }
-            
-            if (content.length !== beforeLength) {
-                modified = true;
-                fixCount++;
-            }
-        });
-
-        if (modified) {
-            fs.writeFileSync(filePath, content, 'utf8');
-            return fixCount;
-        }
-        
-        return 0;
-    } catch (error) {
-        console.error(`❌ Error processing ${filePath}:`, error.message);
-        return 0;
-    }
-}
-
-// TypeScriptファイルを再帰的に検索
-function findTsFiles(dir) {
-    const files = [];
-    
-    function scanDir(currentDir) {
+    for (const filePath of tsFiles) {
         try {
-            const items = fs.readdirSync(currentDir);
+            const content = fs.readFileSync(filePath, 'utf8');
+            let fixed = content;
+            let modifications = 0;
             
-            for (const item of items) {
-                const fullPath = path.join(currentDir, item);
-                const stat = fs.statSync(fullPath);
-                
-                if (stat.isDirectory()) {
-                    // node_modules等を除外
-                    if (!item.startsWith('.') && item !== 'node_modules') {
-                        scanDir(fullPath);
-                    }
-                } else if (item.endsWith('.ts') && !item.endsWith('.d.ts')) {
-                    files.push(fullPath);
+            // Pattern 1: インターフェースのプロパティ区切り文字修正
+            // property: type, -> property: type;
+            fixed = fixed.replace(/^(\s*)(\w+\??:\s*[^;,]+),\s*$/gm, (match, indent, declaration) => {
+                modifications++;
+                return indent + declaration + ';';
+            });
+            
+            // Pattern 2: インターフェース定義のクロージング修正
+            // interface Name { property: type }
+            // -> interface Name {
+            //      property: type;
+            //    }
+            fixed = fixed.replace(/interface\s+(\w+)\s*\{\s*(\w+):\s*(\w+)\s*\}/g, (match, name, prop, type) => {
+                modifications++;
+                return `interface ${name} {\n    ${prop}: ${type};\n}`;
+            });
+            
+            // Pattern 3: 余分な } の削除
+            // } }
+            // }
+            // -> }
+            fixed = fixed.replace(/\}\s*\}\s*\n\s*\}/gm, () => {
+                modifications++;
+                return '}\n}';
+            });
+            
+            // Pattern 4: Try-catchブロックの修正
+            // } catch (error) { ''
+            // -> } catch (error) {
+            fixed = fixed.replace(/\}\s*catch\s*\([^)]+\)\s*\{\s*['"]+/g, (match) => {
+                modifications++;
+                return match.replace(/\{\s*['"]+/, '{');
+            });
+            
+            // Pattern 5: console.log文の修正
+            // console.log('message);
+            // -> console.log('message');
+            fixed = fixed.replace(/console\.(log|warn|error|info)\((['"])[^'"]*\);/g, (match, method, quote) => {
+                if (!match.includes(quote + ')')) {
+                    modifications++;
+                    return match.replace(/\);/, quote + ');');
+                }
+                return match;
+            });
+            
+            // Pattern 6: オブジェクトプロパティの修正
+            // { prop: value ) }
+            // -> { prop: value }
+            fixed = fixed.replace(/\{\s*([^}]+)\s*\)\s*\}/g, (match, content) => {
+                if (!content.includes('=>')) {
+                    modifications++;
+                    return `{ ${content.trim()} }`;
+                }
+                return match;
+            });
+            
+            // Pattern 7: 配列定義の修正
+            // ['item1', 'item2] -> ['item1', 'item2']
+            fixed = fixed.replace(/\[([^\]]*['"]\w+)\]\s*[,;]/g, (match, content) => {
+                const quotes = content.match(/['"]/g);
+                if (quotes && quotes.length % 2 !== 0) {
+                    modifications++;
+                    const lastQuote = content.includes("'") ? "'" : '"';
+                    return `[${content}${lastQuote}]` + match[match.length - 1];
+                }
+                return match;
+            });
+            
+            // Pattern 8: 関数呼び出しの修正
+            // function(param') -> function(param)
+            fixed = fixed.replace(/(\w+)\(([^)]*[^'"\s])['"]\)/g, (match, func, params) => {
+                modifications++;
+                return `${func}(${params})`;
+            });
+            
+            // Pattern 9: 三項演算子の修正
+            // condition ? value1 : value2 }
+            // -> condition ? value1 : value2
+            fixed = fixed.replace(/(\?[^:]+:[^;}]+)\s*\}\s*$/gm, (match, ternary) => {
+                modifications++;
+                return ternary;
+            });
+            
+            // Pattern 10: returnステートメントの修正
+            // return value; }
+            // } -> return value;
+            fixed = fixed.replace(/(return\s+[^;]+);\s*\}\s*\n\s*\}/gm, (match, returnStatement) => {
+                modifications++;
+                return returnStatement + ';';
+            });
+            
+            // Pattern 11: オブジェクトスプレッドの修正
+            // { ...obj } }
+            // -> { ...obj }
+            fixed = fixed.replace(/\{\s*(\.\.\.[\w.]+)\s*\}\s*\}/g, (match, spread) => {
+                modifications++;
+                return `{ ${spread} }`;
+            });
+            
+            // Pattern 12: 空文字列リテラルの削除
+            // ''; または ""
+            fixed = fixed.replace(/^(\s*)['"]{2,};?\s*$/gm, () => {
+                modifications++;
+                return '';
+            });
+            
+            // Pattern 13: カンマの後の修正
+            // ,';
+            // -> ,
+            fixed = fixed.replace(/,\s*['"]+;/g, () => {
+                modifications++;
+                return ',';
+            });
+            
+            // Pattern 14: プロパティアクセスの修正
+            // .property') -> .property)
+            fixed = fixed.replace(/\.(\w+)['"]\)/g, (match, prop) => {
+                modifications++;
+                return `.${prop})`;
+            });
+            
+            // Pattern 15: テンプレートリテラルの修正
+            // `string${var)` -> `string${var}`
+            fixed = fixed.replace(/\$\{([^}]+)\)/g, (match, content) => {
+                modifications++;
+                return `\${${content}}`;
+            });
+            
+            if (modifications > 0) {
+                fs.writeFileSync(filePath, fixed);
+                modifiedFiles++;
+                totalModifications += modifications;
+                if (modifications > 50) {
+                    console.log(`${filePath.split('/').pop()} で ${modifications} 個のエラーを修正`);
                 }
             }
+            
         } catch (error) {
-            console.error(`Error scanning directory ${currentDir}:`, error.message);
+            console.error(`ファイル処理エラー ${filePath}:`, error.message);
         }
     }
     
-    scanDir(dir);
-    return files;
+    console.log(`\n残存構文エラー修正完了:`);
+    console.log(`- 処理ファイル数: ${tsFiles.length}`);
+    console.log(`- 修正ファイル数: ${modifiedFiles}`);
+    console.log(`- 総修正数: ${totalModifications}`);
+    
+    return { filesProcessed: tsFiles.length, modifiedFiles, totalModifications };
 }
 
-// メイン実行
-const srcDir = './src';
-const testDir = './test';
-
-console.log('🔍 Scanning for TypeScript files...');
-
-const allFiles = [
-    ...findTsFiles(srcDir),
-    ...findTsFiles(testDir)
-];
-
-console.log(`📁 Found ${allFiles.length} TypeScript files`);
-
-let totalProcessed = 0;
-let totalModified = 0;
-let totalFixes = 0;
-
-console.log('🔧 Processing files...');
-
-for (const file of allFiles) {
-    const relativePath = path.relative('.', file);
-    const fixCount = processFile(file);
-    
-    totalProcessed++;
-    
-    if (fixCount > 0) {
-        totalModified++;
-        totalFixes += fixCount;
-        console.log(`✅ ${relativePath}: ${fixCount} fixes applied`);
-    }
-    
-    // Progress indicator
-    if (totalProcessed % 100 === 0) {
-        console.log(`⏳ Progress: ${totalProcessed}/${allFiles.length} files processed`);
-    }
-}
-
-console.log('\n📊 Summary:');
-console.log(`📝 Files processed: ${totalProcessed}`);
-console.log(`🔧 Files modified: ${totalModified}`);
-console.log(`✅ Total fixes applied: ${totalFixes}`);
-console.log(`📈 Modification rate: ${(totalModified/totalProcessed*100).toFixed(1)}%`);
-
-if (totalModified > 0) {
-    console.log('\n✅ Remaining syntax error fixes completed!');
-    console.log('🔍 Run TypeScript compiler to check remaining errors:');
-    console.log('   npx tsc --noEmit');
-} else {
-    console.log('\n📝 No additional syntax fixes were needed.');
-}
+// 実行
+fixRemainingSyntaxErrors().catch(console.error);

@@ -3,40 +3,35 @@ import type { MenuItem } from '../../types/game';
 
 // インターフェース定義
 interface MenuItemWithLabel extends MenuItem { label: string }
-}
 
 interface Coordinates { x: number,
-    y: number }
-}
+    y: number ,}
 
-interface ClickableSlider { x: number,
-    y: number,
-    width: number,
-    height: number,
+interface ClickableSlider { x: number;
+    y: number;
+    width: number;
+    height: number;
     settingKey: string }
-}
 
-interface ClickableButton { x: number,
-    y: number,
-    width: number,
-    height: number,
+interface ClickableButton { x: number;
+    y: number;
+    width: number;
+    height: number;
     settingKey?: string;
     isEnabled?: boolean;
     langCode?: string;
     qualityCode?: string; }
-}
 
 interface ClickableElements { volumeSliders?: ClickableSlider[];
     toggleButtons?: ClickableButton[];
     languageButtons?: ClickableButton[];
     qualityButtons?: ClickableButton[];
     }
-}
 
 interface SettingsCallbacks { onChangeUsername: () => void,
-    onShowDataClear: () => void,
-    onShowControlsHelp: () => void,
-    onCloseSettings: () => void }
+    onShowDataClear: () => void;
+    onShowControlsHelp: () => void;
+    onCloseSettings: () => void ,}
 }
 
 /**
@@ -44,15 +39,14 @@ interface SettingsCallbacks { onChangeUsername: () => void,
  * メニュー全体の入力処理と統制を担当
  */
 export class MenuInputHandler {
-    public gameEngine: any,
+    public gameEngine: any;
     public errorHandler: any,
 
     constructor(gameEngine: any) {
 
         this.gameEngine = gameEngine
 
-    }
-    }
+    ,}
         this.errorHandler = getErrorHandler(); }
     }
     
@@ -60,7 +54,7 @@ export class MenuInputHandler {
      * メインメニューのクリック処理
      */
     handleMainMenuClick(;
-        event: MouseEvent,
+        event: MouseEvent;
         selectedMenuIndex: number );
         menuItems: MenuItemWithLabel[]);
         onSelectCallback: (index: number) => void;
@@ -92,25 +86,20 @@ export class MenuInputHandler {
             const scaledStartY = startY * scaleY;
             
             // メニュー項目のクリック判定
-            for(let index = 0; index < menuItems.length; index++) {
+            for(let, index = 0; index < menuItems.length; index++) {
                 const itemY = scaledStartY + index * (scaledItemHeight + 20 * scaleY);
                 
                 if (x >= scaledItemX && x <= scaledItemX + scaledItemWidth && ;
                     y >= itemY && y <= itemY + scaledItemHeight) {
                     onSelectCallback(index);
             }
-                    return true; }
-                }
-            }
-            ';'
+                    return true;
+            ';
+
             return false;''
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'INPUT_ERROR', {')'
-                context: 'MenuInputHandler.handleMainMenuClick') }
-            });
+        } catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {)'
+                context: 'MenuInputHandler.handleMainMenuClick' ,});
             return false;
-        }
-    }
     
     /**
      * ユーザー名入力のクリック処理
@@ -150,8 +139,7 @@ export class MenuInputHandler {
                 y >= scaledButtonY && y <= scaledButtonY + scaledButtonHeight) {
                 onConfirmCallback();
             }
-                return true; }
-            }
+                return true;
             
             // キャンセルボタン（Canvas座標系）
             const cancelButtonX = (baseWidth / 2 + 10) * scaleX;
@@ -159,17 +147,13 @@ export class MenuInputHandler {
                 y >= scaledButtonY && y <= scaledButtonY + scaledButtonHeight) {
                 onCancelCallback();
             }
-                return true; }
-            }
-            ';'
+                return true;
+            ';
+
             return false;''
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'INPUT_ERROR', {')'
-                context: 'MenuInputHandler.handleUsernameInputClick') }
-            });
+        } catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {)'
+                context: 'MenuInputHandler.handleUsernameInputClick' ,});
             return false;
-        }
-    }
     
     /**
      * 設定画面のクリック処理
@@ -186,62 +170,50 @@ export class MenuInputHandler {
             
             // 音量スライダーのクリック処理
             if(clickableElements.volumeSliders) {
-                for (const slider of clickableElements.volumeSliders) {
+                for (const, slider of, clickableElements.volumeSliders) {
                     if (x >= slider.x && x <= slider.x + slider.width && ;
                         y >= slider.y && y <= slider.y + slider.height) {
                         const newValue = Math.max(0, Math.min(1, (x - slider.x) / slider.width));
                         this.gameEngine.settingsManager.set(slider.settingKey, newValue);
             }
-                        return true; }
-                    }
-                }
+                        return true;
             }
             
             // トグルボタンのクリック処理
             if(clickableElements.toggleButtons) {
-                for (const button of clickableElements.toggleButtons) {
+                for (const, button of, clickableElements.toggleButtons) {
                     if (x >= button.x && x <= button.x + button.width && ;
                         y >= button.y && y <= button.y + button.height) {
                         this.gameEngine.settingsManager.set(button.settingKey!, !button.isEnabled);
             }
-                        return true; }
-                    }
-                }
+                        return true;
             }
             
             // 言語ボタンのクリック処理
             if(clickableElements.languageButtons) {
-                for (const button of clickableElements.languageButtons) {
-                    if (x >= button.x && x <= button.x + button.width && '';
-                        y >= button.y && y <= button.y + button.height') {''
+                for (const, button of, clickableElements.languageButtons) {
+                    if(x >= button.x && x <= button.x + button.width && '';
+                        y >= button.y && y <= button.y + button.height) {''
                         this.gameEngine.settingsManager.set('language', button.langCode!);
             }
-                        return true; }
-                    }
-                }
+                        return true;
             }
             
             // 品質ボタンのクリック処理
             if(clickableElements.qualityButtons) {
-                for (const button of clickableElements.qualityButtons) {
-                    if (x >= button.x && x <= button.x + button.width && '';
-                        y >= button.y && y <= button.y + button.height') {''
+                for (const, button of, clickableElements.qualityButtons) {
+                    if(x >= button.x && x <= button.x + button.width && '';
+                        y >= button.y && y <= button.y + button.height) {''
                         this.gameEngine.settingsManager.set('quality', button.qualityCode!);
             }
-                        return true; }
-                    }
-                }
+                        return true;
             }
             
             // アクションボタンのクリック処理
             return this.handleSettingsActionButtons(x, y, settingsCallbacks);''
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'INPUT_ERROR', {')'
-                context: 'MenuInputHandler.handleSettingsClick') }
-            });
+        } catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {)'
+                context: 'MenuInputHandler.handleSettingsClick' ,});
             return false;
-        }
-    }
     
     /**
      * 設定アクションボタンのクリック処理
@@ -256,39 +228,32 @@ export class MenuInputHandler {
             if(x >= 50 && x <= 50 + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
                 callbacks.onChangeUsername();
             }
-                return true; }
-            }
+                return true;
             
             // データクリアボタン
             if(x >= 180 && x <= 180 + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
                 callbacks.onShowDataClear();
             }
-                return true; }
-            }
+                return true;
             
             // 操作説明ボタン
             if(x >= 310 && x <= 310 + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
                 callbacks.onShowControlsHelp();
             }
-                return true; }
-            }
+                return true;
             
             // 戻るボタン
             const backButtonX = canvas.width - buttonWidth - 50;
             if(x >= backButtonX && x <= backButtonX + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight) {
                 callbacks.onCloseSettings();
             }
-                return true; }
-            }
-            ';'
+                return true;
+            ';
+
             return false;''
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'INPUT_ERROR', {')'
-                context: 'MenuInputHandler.handleSettingsActionButtons') }
-            });
+        } catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {)'
+                context: 'MenuInputHandler.handleSettingsActionButtons' ,});
             return false;
-        }
-    }
     
     /**
      * データクリア確認画面のクリック処理
@@ -313,8 +278,7 @@ export class MenuInputHandler {
                 y >= buttonY && y <= buttonY + buttonHeight) {
                 onDeleteCallback();
             }
-                return true; }
-            }
+                return true;
             
             // キャンセルボタン
             const cancelButtonX = canvas.width / 2 + 15;
@@ -322,17 +286,13 @@ export class MenuInputHandler {
                 y >= buttonY && y <= buttonY + buttonHeight) {
                 onCancelCallback();
             }
-                return true; }
-            }
-            ';'
+                return true;
+            ';
+
             return false;''
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'INPUT_ERROR', {')'
-                context: 'MenuInputHandler.handleDataClearConfirmationClick') }
-            });
+        } catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {)'
+                context: 'MenuInputHandler.handleDataClearConfirmationClick' ,});
             return false;
-        }
-    }
     
     /**
      * 戻るボタンのクリック処理（汎用）
@@ -357,17 +317,13 @@ export class MenuInputHandler {
                 y >= targetY && y <= targetY + buttonHeight) {
                 onBackCallback();
             }
-                return true; }
-            }
-            ';'
+                return true;
+            ';
+
             return false;''
-        } catch (error) { ''
-            this.errorHandler.handleError(error, 'INPUT_ERROR', {')'
-                context: 'MenuInputHandler.handleBackButtonClick') }
-            });
+        } catch (error) { this.errorHandler.handleError(error, 'INPUT_ERROR', {)'
+                context: 'MenuInputHandler.handleBackButtonClick' ,});
             return false;
-        }
-    }
     
     /**
      * クリック座標を取得
@@ -379,17 +335,17 @@ export class MenuInputHandler {
             if(this.gameEngine.responsiveCanvasManager) {
                 
             }
-                return this.gameEngine.responsiveCanvasManager.screenToCanvas(event.clientX, event.clientY); }
-            } else {  // フォールバック: 従来の方法
+                return this.gameEngine.responsiveCanvasManager.screenToCanvas(event.clientX, event.clientY); else {  // フォールバック: 従来の方法
                 const rect = canvas.getBoundingClientRect(); }
                 return { x: event.clientX - rect.left, };
                     y: event.clientY - rect.top }
                 };''
-            } catch (error) { ''
-            this.errorHandler.handleError(error, 'INPUT_ERROR', {')'
-                context: 'MenuInputHandler.getClickCoordinates'),' }'
+            } catch (error) {
+            this.errorHandler.handleError(error, 'INPUT_ERROR', {)'
+                context: 'MenuInputHandler.getClickCoordinates),' }
+
             }');
-            return { x: 0, y: 0 }
-        }'
+            return { x: 0, y: 0 ,}
+
     }''
 }

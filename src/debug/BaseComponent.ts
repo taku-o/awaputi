@@ -11,14 +11,13 @@ export class BaseComponent {
     protected initialized: boolean,
     protected errorHandler: ErrorHandler | null,
 
-    constructor(mainController: any, name: string = 'BaseComponent') {
+    constructor(mainController: any, name: string = 'BaseComponent) {'
 
         this.mainController = mainController;
         this.name = name;
         this.initialized = false;
 
-    }
-    }
+    ,}
         this.errorHandler = null; }
     }
 
@@ -27,12 +26,13 @@ export class BaseComponent {
      * @returns {Promise<void>}
      */
     async initialize(): Promise<void> { try {
-            await this._doInitialize();'
+            await this._doInitialize();
+
             this.initialized = true;' }'
-        } catch (error) { ''
+
+        } catch (error) {
             this._handleError('Initialization failed', error as Error);
             throw error; }
-        }
     }
 
     /**
@@ -40,13 +40,11 @@ export class BaseComponent {
      * @protected
      */
     protected async _doInitialize(): Promise<void> { // Override in subclasses }
-    }
 
     /**
      * コンポーネントのクリーンアップ
      */
     cleanup(): void { this.initialized = false; }
-    }
 
     /**
      * エラーハンドリング
@@ -59,7 +57,6 @@ export class BaseComponent {
         console.error(message, error);
         
         if (this.errorHandler) { this.errorHandler(error, this.name, context); }
-        }
     }
 
     /**
@@ -67,7 +64,6 @@ export class BaseComponent {
      * @param {Function} handler - エラーハンドラー関数
      */
     setErrorHandler(handler: ErrorHandler): void { this.errorHandler = handler; }
-    }
 
     /**
      * 初期化状態の確認

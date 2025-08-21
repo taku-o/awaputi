@@ -8,38 +8,35 @@
 import { getErrorHandler } from '../utils/ErrorHandler';''
 import { getLoggingSystem } from './LoggingSystem';''
 import { getValidationSystem } from './ValidationSystem';
-';'
-export enum ConfigErrorType { ''
-    CONFIGURATION_ACCESS = 'CONFIGURATION_ACCESS','';
-    CONFIGURATION_VALIDATION = 'CONFIGURATION_VALIDATION','';
-    CONFIGURATION_STORAGE = 'CONFIGURATION_STORAGE','';
-    CALCULATION_ERROR = 'CALCULATION_ERROR','';
-    CALCULATION_OVERFLOW = 'CALCULATION_OVERFLOW','';
-    CACHE_ERROR = 'CACHE_ERROR','';
+';
+
+export enum ConfigErrorType {;
+    CONFIGURATION_ACCESS = 'CONFIGURATION_ACCESS',
+    CONFIGURATION_VALIDATION = 'CONFIGURATION_VALIDATION',
+    CONFIGURATION_STORAGE = 'CONFIGURATION_STORAGE',
+    CALCULATION_ERROR = 'CALCULATION_ERROR',
+    CALCULATION_OVERFLOW = 'CALCULATION_OVERFLOW',
+    CACHE_ERROR = 'CACHE_ERROR',
     DEPENDENCY_ERROR = 'DEPENDENCY_ERROR' }
-}
 
 interface RecoveryStrategy { maxAttempts: number,
-    strategy: (error: Error, context: any) => RecoveryResult }
+    strategy: (error: Error, context: any) => RecoveryResult ,}
 }
 
 interface RecoveryResult { success: boolean,
     value?: any;
-    message: string }
-}
+    message: string ,}
 
-interface ErrorStats { total: number,
+interface ErrorStats { total: number;
     byType: Map<string, number>;
-    recovered: number,
-    failed: number,
-    lastReset: number }
-}
+    recovered: number;
+    failed: number;
+    lastReset: number ,}
 
-interface FallbackState { useDefaultValues: boolean,
-    disableValidation: boolean,
-    disableCache: boolean,
+interface FallbackState { useDefaultValues: boolean;
+    disableValidation: boolean;
+    disableCache: boolean;
     safeMode: boolean }
-}
 
 export class ConfigurationErrorHandler {
     private errorTypes = ConfigErrorType;
@@ -53,34 +50,31 @@ export class ConfigurationErrorHandler {
 
         this.recoveryStrategies = new Map();
         this.errorStats = {
-            total: 0,
-            byType: new Map(),
-            recovered: 0,
-            failed: 0,
-
-    }
-    }
+            total: 0;
+            byType: new Map();
+            recovered: 0;
+            failed: 0;
+    ,}
             lastReset: Date.now(); }
         };
         this.recoveryAttempts = new Map();
         this.fallbackState = { useDefaultValues: false,
-            disableValidation: false,
-            disableCache: false,
-            safeMode: false }
-        },
+            disableValidation: false;
+            disableCache: false;
+            safeMode: false ,};
         this.logger = getLoggingSystem();
         this._initialize();
     }
-';'
+';
+
     private _initialize(): void { this._setupRecoveryStrategies();''
         this._setupErrorMonitoring()';
-        this.logger.info('ConfigurationErrorHandler initialized', null, 'ConfigurationErrorHandler'); }
-    }
+        this.logger.info('ConfigurationErrorHandler initialized', null, 'ConfigurationErrorHandler); }
 
     private _setupRecoveryStrategies(): void { // 設定アクセスエラーの復旧
         this.recoveryStrategies.set(ConfigErrorType.CONFIGURATION_ACCESS, {)
-            maxAttempts: 3),
-            strategy: (error: Error, context: any) => { }
+            maxAttempts: 3);
+            strategy: (error: Error, context: any) => { ,}
                 const { category, key, defaultValue } = context;
                 
                 if(defaultValue !== undefined && defaultValue !== null) {
@@ -88,15 +82,17 @@ export class ConfigurationErrorHandler {
                     
                 
                 }
-                    this.logger.warn(`設定アクセスエラー、デフォルト値を使用: ${category}.${key}`, { error: error.message,')'
-                        defaultValue');' }'
+                    this.logger.warn(`設定アクセスエラー、デフォルト値を使用: ${category}.${key}`, { error: error.message,)'
+                        defaultValue');' }
+
                     }, 'ConfigurationErrorHandler'');
                     
-                    return { success: true,'
-                        value: defaultValue,' };'
+                    return { success: true,
+
+                        value: defaultValue,' };
+
                         message: 'デフォルト値を使用' }
-                    },
-                }
+                    }
                 
                 const fallbackValue = this._generateFallbackValue(category, key);
                 
@@ -104,25 +100,22 @@ export class ConfigurationErrorHandler {
                     fallbackValue)'';
                 '), 'ConfigurationErrorHandler'');
                 
-                return { success: true,'
-                    value: fallbackValue,' };'
+                return { success: true,
+
+                    value: fallbackValue,' };
+
                     message: 'フォールバック値を生成' }
-                },
-            }
+                }
         });
     }
 
     private _setupErrorMonitoring(): void { // エラー監視の設定 }
-    }
-'';
-    private _generateFallbackValue(category: string, key: string'): any { // 基本的なフォールバック値の生成
-        if (key.includes('time'') || key.includes('interval')') {
-            return 1000; // 1秒 }
-        }''
-        if (key.includes('count'') || key.includes('max')') { return 10; }'
-        }''
-        if (key.includes('enabled') { return false; }
-        }
+
+    private _generateFallbackValue(category: string, key: string): any { // 基本的なフォールバック値の生成
+        if (key.includes('time'') || key.includes('interval)) {
+            return 1000; // 1秒 }''
+        if (key.includes('count'') || key.includes('max)) { return 10;''
+        if(key.includes('enabled) { return false; }'
         return null;
     }
 
@@ -140,36 +133,36 @@ export class ConfigurationErrorHandler {
         }
                     this.errorStats.recovered++; }
                 } else { this.errorStats.failed++; }
-                }'
+
                 return result;''
-            } catch (recoveryError) { this.errorStats.failed++;'
-                return { success: false,' };'
+            } catch (recoveryError) { this.errorStats.failed++;
+
+                return { success: false,' };
+
                     message: '復旧に失敗' }
-                },
-            }
+                }
         }
 
-        this.errorStats.failed++;'
-        return { success: false,' };'
+        this.errorStats.failed++;
+
+        return { success: false,' };
+
             message: '復旧戦略なし' }
-        },
-    }
+        }
 
     getErrorStats(): ErrorStats {
-        return { ...this.errorStats };
+        return { ...this.errorStats;
     }
 
     resetStats(): void { this.errorStats = {
-            total: 0,
-            byType: new Map(),
-            recovered: 0,
-            failed: 0,
-            lastReset: Date.now() }
-        };
-    }
+            total: 0;
+            byType: new Map();
+            recovered: 0;
+            failed: 0;
+            lastReset: Date.now( }
 }
 
 let instance: ConfigurationErrorHandler | null = null,
-';'
+
 export function getConfigurationErrorHandler(): ConfigurationErrorHandler { if (!instance) {''
-        instance = new ConfigurationErrorHandler(' })
+        instance = new ConfigurationErrorHandler(' })'

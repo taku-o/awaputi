@@ -5,24 +5,21 @@
 
 // 型定義
 interface Viewport { x: number,
-    y: number,
-    width: number,
-    height: number };
-}
+    y: number;
+    width: number;
+    height: number ,}
 interface Region { x: number,
-    y: number,
-    width: number,
-    height: number };
-}
+    y: number;
+    width: number;
+    height: number ,}
 interface RenderStats { totalObjects: number,
-    renderedObjects: number,
-    culledObjects: number,
-    dirtyRegions: number,
-    renderTime: number };
-}
+    renderedObjects: number;
+    culledObjects: number;
+    dirtyRegions: number;
+    renderTime: number ,}
 interface RenderObject { id?: string;
-    x: number,
-    y: number,
+    x: number;
+    y: number;
     width?: number;
     height?: number;
     size?: number;
@@ -31,25 +28,21 @@ interface RenderObject { id?: string;
     scale?: number;
     opacity?: number;
     type?: string;
-    render?: (ctx: CanvasRenderingContext2D) => void };
-}
+    render?: (ctx: CanvasRenderingContext2D) => void ,}
 interface Layer { canvas: HTMLCanvasElement,
-    context: CanvasRenderingContext2D,
-    zIndex: number,
-    isDirty: boolean,
+    context: CanvasRenderingContext2D;
+    zIndex: number;
+    isDirty: boolean;
     objects: RenderObject[]
-    };
-}
+    ,}
 interface PerformanceStats { fps: number,
-    deltaTime: number,
-    frameCount: number,
-    avgFrameTime: number,
+    deltaTime: number;
+    frameCount: number;
+    avgFrameTime: number;
     memoryUsage: {
-        usedJSHeapSize: number,
-        totalJSHeapSize: number,
-        jsHeapSizeLimit: number }
-    };
-}
+        usedJSHeapSize: number;
+        totalJSHeapSize: number;
+        jsHeapSizeLimit: number ,}
 
 export class RenderOptimizer {
     private canvas: HTMLCanvasElement;
@@ -74,13 +67,12 @@ export class RenderOptimizer {
     constructor(canvas: HTMLCanvasElement) {
 
         this.canvas = canvas;
-        const context = canvas.getContext('2d');''
-        if (!context') {'
+        const context = canvas.getContext('2d);''
+        if(!context) {'
 
     }
-    }'
-            throw new Error('Failed to get 2D context from canvas'); };
-}
+
+            throw new Error('Failed, to get, 2D context, from canvas); }
         this.context = context;
         this.width = canvas.width;
         this.height = canvas.height;
@@ -89,18 +81,19 @@ export class RenderOptimizer {
         this.dirtyRegions = [];
         this.lastFrameObjects = new Map();
         this.currentFrameObjects = new Map();
-        ;
         // レイヤーシステム
         this.layers = new Map()';
         this.offscreenCanvas = document.createElement('canvas'');
-        this.offscreenCanvas.width = this.width;'
+        this.offscreenCanvas.width = this.width;
+
         this.offscreenCanvas.height = this.height;''
-        const offscreenContext = this.offscreenCanvas.getContext('2d');''
-        if(!offscreenContext') {'
-            ';'
-        }'
-            throw new Error('Failed to get 2D context from offscreen canvas'); };
-}
+        const offscreenContext = this.offscreenCanvas.getContext('2d);''
+        if(!offscreenContext) {'
+            ';
+
+        }
+
+            throw new Error('Failed, to get, 2D context, from offscreen, canvas); }
         this.offscreenContext = offscreenContext;
     }
     
@@ -110,48 +103,44 @@ export class RenderOptimizer {
      * @param {number} zIndex - 描画順序
      */'
     addLayer(layerName: string, zIndex: number = 0): void { ''
-        if (!this.layers.has(layerName)') {''
+        if(!this.layers.has(layerName)) {''
             const canvas = document.createElement('canvas'');
             canvas.width = this.width;
-            canvas.height = this.height;'
-            '';
-            const context = canvas.getContext('2d');
+            canvas.height = this.height;
+
+            const context = canvas.getContext('2d);
             if (!context) { }
-                throw new Error(`Failed to get 2D context for layer ${layerName)`});
+                throw new Error(`Failed, to get, 2D context, for layer ${layerName}`});
             }
             
             this.layers.set(layerName, { canvas: canvas,
                 context: context);
                 zIndex: zIndex);
                 isDirty: false,);
-                objects: []),
-            
+                objects: []);
             // zIndexでソート
             this.layerOrder = Array.from(this.layers.keys().sort((a, b) => { 
                 const layerA = this.layers.get(a)!;
                 const layerB = this.layers.get(b)!; }
                 return layerA.zIndex - layerB.zIndex;' }'
+
             }');
-        };
-}
+        }
     /**
      * オブジェクトをレンダリングキューに追加
      * @param {RenderObject} obj - レンダリングオブジェクト
      * @param {string} layerName - レイヤー名'
      */''
-    addObject(obj: RenderObject, layerName: string = 'default'): void { if(!this.layers.has(layerName) {
-            this.addLayer(layerName); };
-}
+    addObject(obj: RenderObject, layerName: string = 'default): void { if(!this.layers.has(layerName) {'
+            this.addLayer(layerName); }
         const layer = this.layers.get(layerName)!;
         layer.objects.push(obj);
         
         // 差分チェック用にオブジェクトを記録
         const objId = obj.id || `${obj.x}_${obj.y}_${obj.type}`;
         this.currentFrameObjects.set(objId, { ...obj)
-            layer: layerName),
-        
-        this.stats.totalObjects++ };
-}
+            layer: layerName);
+        this.stats.totalObjects++ }
     /**
      * フラスタムカリング判定
      * @param {RenderObject} obj - オブジェクト
@@ -166,8 +155,7 @@ export class RenderOptimizer {
             obj.x > this.viewport.x + this.viewport.width + margin ||;
             obj.y + objHeight < this.viewport.y - margin ||;
             obj.y > this.viewport.y + this.viewport.height + margin;
-        ); };
-}
+        ); }
     /**
      * オブジェクトの境界を計算
      * @param {RenderObject} obj - オブジェクト
@@ -175,7 +163,7 @@ export class RenderOptimizer {
      */
     getObjectBounds(obj: RenderObject): Region { const size = obj.size || 50;
         return { x: obj.x - size / 2,
-            y: obj.y - size / 2,
+            y: obj.y - size / 2;
             width: size, };
             height: size ;
 }
@@ -192,7 +180,7 @@ export class RenderOptimizer {
     addDirtyRegion(x: number, y: number, width: number, height: number): void { // 重複する領域をマージ }
         const newRegion: Region = { x, y, width, height };
         
-        for(let i = this.dirtyRegions.length - 1; i >= 0; i--) {
+        for(let, i = this.dirtyRegions.length - 1; i >= 0; i--) {
         
             const region = this.dirtyRegions[i];
             
@@ -203,8 +191,7 @@ export class RenderOptimizer {
                 this.dirtyRegions.push(merged);
         
         }
-                return; };
-}
+                return; }
         }
         
         this.dirtyRegions.push(newRegion);
@@ -221,8 +208,7 @@ export class RenderOptimizer {
             b.x + b.width < a.x ||;
             a.y + a.height < b.y ||;
             b.y + b.height < a.y;
-        ); };
-}
+        ); }
     /**
      * 二つの領域をマージ
      * @param {Region} a - 領域A
@@ -235,7 +221,7 @@ export class RenderOptimizer {
         const bottom = Math.max(a.y + a.height, b.y + b.height);
         
         return { x: left,
-            y: top,
+            y: top;
             width: right - left, };
             height: bottom - top ;
 }
@@ -259,7 +245,6 @@ export class RenderOptimizer {
                 ctx.clearRect(region.x, region.y, region.width, region.height); }
             });
         } else { ctx.clearRect(0, 0, this.width, this.height); }
-}
         // オブジェクトをレンダリング
         layer.objects.forEach(obj => {  );
             if(this.isInViewport(obj) {
@@ -268,7 +253,6 @@ export class RenderOptimizer {
                 this.renderObject(ctx, obj); }
                 this.stats.renderedObjects++; }
             } else { this.stats.culledObjects++; }
-}
         });
         
         layer.objects = []; // 次フレーム用にクリア
@@ -285,20 +269,14 @@ export class RenderOptimizer {
         if(obj.x !== undefined && obj.y !== undefined) {
             
         }
-            ctx.translate(obj.x, obj.y); };
-}
-        if (obj.rotation) { ctx.rotate(obj.rotation); };
-}
+            ctx.translate(obj.x, obj.y); }
+        if (obj.rotation) { ctx.rotate(obj.rotation); }
         if (obj.scale && obj.scale !== 1) { ctx.scale(obj.scale, obj.scale); }
-        }
-        '';
-        if (obj.opacity !== undefined && obj.opacity !== 1') { ctx.globalAlpha = obj.opacity; };
-}
+
+        if(obj.opacity !== undefined && obj.opacity !== 1) { ctx.globalAlpha = obj.opacity; }
         ';
         // オブジェクト固有のレンダリング
-        if (obj.render && typeof obj.render === 'function') { obj.render(ctx); }
-        } else { this.renderDefault(ctx, obj); }
-}
+        if(obj.render && typeof, obj.render === 'function) { obj.render(ctx); } else { this.renderDefault(ctx, obj); }'
         ctx.restore();
     }
     
@@ -307,14 +285,13 @@ export class RenderOptimizer {
      * @param {CanvasRenderingContext2D} ctx - コンテキスト
      * @param {RenderObject} obj - オブジェクト'
      */''
-    private renderDefault(ctx: CanvasRenderingContext2D, obj: RenderObject'): void { const size = obj.size || 50;''
+    private renderDefault(ctx: CanvasRenderingContext2D, obj: RenderObject): void { const size = obj.size || 50;''
         const color = obj.color || '#FF6B6B';
         
         ctx.fillStyle = color;
         ctx.beginPath();
         ctx.arc(0, 0, size / 2, 0, Math.PI * 2);
-        ctx.fill(); };
-}
+        ctx.fill(); }
     /**
      * フレームをレンダリング
      */
@@ -322,14 +299,12 @@ export class RenderOptimizer {
         
         // 統計情報をリセット
         this.stats = {
-            totalObjects: 0,
-            renderedObjects: 0,
-            culledObjects: 0,
-            dirtyRegions: this.dirtyRegions.length,
+            totalObjects: 0;
+            renderedObjects: 0;
+            culledObjects: 0;
+            dirtyRegions: this.dirtyRegions.length;
             renderTime: 0 
-}
-        },
-        
+};
         // 変更検出
         this.detectChanges();
         
@@ -338,7 +313,6 @@ export class RenderOptimizer {
                 this.context.clearRect(region.x, region.y, region.width, region.height); }
             });
         } else { this.context.clearRect(0, 0, this.width, this.height); }
-}
         // レイヤーを順番にレンダリング
         this.layerOrder.forEach(layerName => {  );
             this.renderLayer(layerName);
@@ -354,7 +328,6 @@ export class RenderOptimizer {
                         region.x, region.y, region.width, region.height); }
                 });
             } else { this.context.drawImage(layer.canvas, 0, 0); }
-}
         });
         
         // フレーム終了処理
@@ -382,29 +355,25 @@ export class RenderOptimizer {
             
             }
                     const lastBounds = this.getObjectBounds(lastObj); }
-                    this.addDirtyRegion(lastBounds.x, lastBounds.y, lastBounds.width, lastBounds.height); };
-}
-            }
-        });
+                    this.addDirtyRegion(lastBounds.x, lastBounds.y, lastBounds.width, lastBounds.height); }
+});
         
         // 削除されたオブジェクトの領域をダーティに
         this.lastFrameObjects.forEach((obj, id) => {  if(!this.currentFrameObjects.has(id) {
                 const bounds = this.getObjectBounds(obj); }
-                this.addDirtyRegion(bounds.x, bounds.y, bounds.width, bounds.height); };
-}
+                this.addDirtyRegion(bounds.x, bounds.y, bounds.width, bounds.height); }
         });
     }
     
     /**
      * オブジェクトが変更されたかチェック
-     * @param {RenderObject & { layer: string }} lastObj - 前フレームのオブジェクト
-     * @param {RenderObject & { layer: string }} currentObj - 現フレームのオブジェクト
+     * @param {RenderObject & { layer: string } lastObj - 前フレームのオブジェクト
+     * @param {RenderObject & { layer: string } currentObj - 現フレームのオブジェクト
      * @returns {boolean} 変更されたか
      */
     private objectChanged(lastObj: RenderObject & { layer: string }, currentObj: RenderObject & { layer: string ): boolean {''
-        const keys: (keyof RenderObject')[] = ['x', 'y', 'size', 'color', 'rotation', 'scale', 'opacity'];
-        return keys.some(key => lastObj[key] !== currentObj[key]); };
-}
+        const keys: (keyof, RenderObject')[] = ['x', 'y', 'size', 'color', 'rotation', 'scale', 'opacity'];
+        return keys.some(key => lastObj[key] !== currentObj[key]);
     /**
      * ビューポートを設定
      * @param {number} x - X座標
@@ -413,15 +382,14 @@ export class RenderOptimizer {
      * @param {number} height - 高さ
      */
     setViewport(x: number, y: number, width: number, height: number): void {
-        this.viewport = { x, y, width, height };
-    }
+        this.viewport = { x, y, width, height }
     
     /**
      * 統計情報を取得
      * @returns {RenderStats} 統計情報
      */
     getStats(): RenderStats {
-        return { ...this.stats };
+        return { ...this.stats;
     }
     
     /**
@@ -432,10 +400,10 @@ export class RenderOptimizer {
             // 多すぎる場合は全画面再描画
             this.dirtyRegions = [{
                 x: 0, y: 0,
-                width: this.width,
-        }]
+                width: this.width;
+        ,}]
                 height: this.height }]
-            }],
+            }];
         }
         
         // 小さすぎる領域をマージ
@@ -450,8 +418,7 @@ export class RenderOptimizer {
             layer.objects = []);
         this.currentFrameObjects.clear();
         this.lastFrameObjects.clear(); }
-        this.dirtyRegions = []; };
-}
+        this.dirtyRegions = []; }
 }
 
 /**
@@ -465,10 +432,9 @@ export class PerformanceMonitor {
     private frameTimeHistory: number[];
     private maxHistorySize: number;
     private memoryUsage: {
-        usedJSHeapSize: number,
-        totalJSHeapSize: number,
-        jsHeapSizeLimit: number }
-    };
+        usedJSHeapSize: number;
+        totalJSHeapSize: number;
+        jsHeapSizeLimit: number };
 
     constructor() {
 
@@ -480,9 +446,8 @@ export class PerformanceMonitor {
         this.maxHistorySize = 60;
         
         this.memoryUsage = {
-            usedJSHeapSize: 0,
+            usedJSHeapSize: 0;
             totalJSHeapSize: 0
-};
 }
             jsHeapSizeLimit: 0 ;
 }
@@ -500,32 +465,28 @@ export class PerformanceMonitor {
         if(this.frameTimeHistory.length > this.maxHistorySize) {
             
         }
-            this.frameTimeHistory.shift(); };
-}
+            this.frameTimeHistory.shift(); }
         this.frameCount++;
         
         // FPS計算（1秒ごと）
         if(this.frameCount % 60 === 0) {
             const avgFrameTime = this.frameTimeHistory.reduce((a, b) => a + b, 0) / this.frameTimeHistory.length;
         }
-            this.fps = 1000 / avgFrameTime; };
-}
+            this.fps = 1000 / avgFrameTime; }
         // メモリ使用量取得（利用可能な場合）
-        if ((performance as any).memory) { this.memoryUsage = {
-                usedJSHeapSize: (performance as any).memory.usedJSHeapSize,
-                totalJSHeapSize: (performance as any).memory.totalJSHeapSize,
-                jsHeapSizeLimit: (performance as any).memory.jsHeapSizeLimit 
-}
-            },
-        };
+        if ((performance, as any).memory) { this.memoryUsage = {
+                usedJSHeapSize: (performance, as any).memory.usedJSHeapSize;
+                totalJSHeapSize: (performance, as any).memory.totalJSHeapSize;
+                jsHeapSizeLimit: (performance, as any).memory.jsHeapSizeLimit 
+};
 }
     /**
      * パフォーマンス統計を取得
      * @returns {PerformanceStats} 統計情報
      */
     getStats(): PerformanceStats { return { fps: Math.round(this.fps),
-            deltaTime: Math.round(this.deltaTime),
-            frameCount: this.frameCount,
+            deltaTime: Math.round(this.deltaTime);
+            frameCount: this.frameCount;
             avgFrameTime: Math.round(this.frameTimeHistory.reduce((a, b) => a + b, 0) / this.frameTimeHistory.length), };
             memoryUsage: this.memoryUsage ;
 }
@@ -537,24 +498,31 @@ export class PerformanceMonitor {
      * @returns {string[]} 警告メッセージ
      */
     getWarnings(): string[] { const warnings: string[] = [],
-        '';
-        if(this.fps < 30') {'
-            ';'
-        }'
-            warnings.push('Low FPS detected: ' + Math.round(this.fps); }'
-        }'
-        '';
-        if(this.deltaTime > 50') {'
-            ';'
-        }'
-            warnings.push('High frame time: ' + Math.round(this.deltaTime') + 'ms'); }
-        }'
-        '';
-        if(this.memoryUsage.usedJSHeapSize > this.memoryUsage.jsHeapSizeLimit * 0.8') {'
-            ';'
-        }'
-            warnings.push('High memory usage: ' + Math.round(this.memoryUsage.usedJSHeapSize / 1024 / 1024') + 'MB''); };
-}
-        return warnings;'
+
+        if(this.fps < 30) {'
+            ';
+
+        }
+
+            warnings.push('Low, FPS detected: ' + Math.round(this.fps); }
+
+        }
+
+        if(this.deltaTime > 50) {'
+            ';
+
+        }
+
+            warnings.push('High, frame time: ' + Math.round(this.deltaTime) + 'ms'); }
+        }
+
+        if(this.memoryUsage.usedJSHeapSize > this.memoryUsage.jsHeapSizeLimit * 0.8) {'
+            ';
+
+        }
+
+            warnings.push('High, memory usage: ' + Math.round(this.memoryUsage.usedJSHeapSize / 1024 / 1024) + 'MB''); }
+        return warnings;
+
     }''
 }

@@ -5,95 +5,83 @@
 
 // 型定義
 export interface LeaderboardManager { data: LeaderboardData,
-    config: LeaderboardConfig,
-    storageKey: string,
+    config: LeaderboardConfig;
+    storageKey: string;
     version?: string;
-    dataProcessor: DataProcessor,
-    initializeDefaultLeaderboards: () => void,
-    getLeaderboard: (key: string, limit: number) => any }
+    dataProcessor: DataProcessor;
+    initializeDefaultLeaderboards: () => void;
+    getLeaderboard: (key: string, limit: number) => any ,}
 }
 
 export interface LeaderboardData { leaderboards: Record<string, Leaderboard>,
     periodLeaderboards?: PeriodLeaderboards;
     playerHistory?: Record<string, PlayerHistory>;
-    lastUpdated: number,
-    version: string,
+    lastUpdated: number;
+    version: string;
     metadata?: DataMetadata
-    }
-}
+    ,}
 
-export interface Leaderboard { entries: ScoreEntry[],
-    lastUpdated: number,
+export interface Leaderboard { entries: ScoreEntry[];
+    lastUpdated: number;
     metadata?: LeaderboardMetadata
     }
-}
 
-export interface ScoreEntry { score: number,
-    playerName: string,
-    timestamp: number,
+export interface ScoreEntry { score: number;
+    playerName: string;
+    timestamp: number;
     stageId?: string;
     checksum?: string;
     metadata?: ScoreMetadata;
     }
-}
 
 export interface PeriodLeaderboards { daily?: Record<string, PeriodBoard>;
     weekly?: Record<string, PeriodBoard>;
     monthly?: Record<string, PeriodBoard>;
     yearly?: Record<string, PeriodBoard>; }
-}
 
 export interface PeriodBoard { entries: ScoreEntry[],
     endDate?: number;
     startDate?: number;
     metadata?: PeriodBoardMetadata;
     }
-}
 
 export interface PlayerHistory { scores: PlayerScore[],
-    bestScore: number,
-    totalGames: number,
-    averageScore: number,
+    bestScore: number;
+    totalGames: number;
+    averageScore: number;
     metadata?: PlayerMetadata
-    }
-}
+    ,}
 
-export interface PlayerScore { score: number,
-    timestamp: number,
+export interface PlayerScore { score: number;
+    timestamp: number;
     stageId?: string;
     metadata?: ScoreMetadata;
     }
-}
 
 export interface ScoreMetadata { difficulty?: string;
     gameMode?: string;
     duration?: number;
     combo?: number;
     accuracy?: number; }
-}
 
 export interface PlayerMetadata { firstPlayDate: number,
-    lastPlayDate: number,
-    favoriteStage?: string }
-}
+    lastPlayDate: number;
+    favoriteStage?: string ,}
 
-export interface LeaderboardMetadata { createdAt: number,
-    updatedAt: number,
-    totalEntries: number,
+export interface LeaderboardMetadata { createdAt: number;
+    updatedAt: number;
+    totalEntries: number;
     uniquePlayers: number }
-}
 
-export interface PeriodBoardMetadata { period: PeriodType,
-    periodKey: string,
-    totalPlayers: number,
+export interface PeriodBoardMetadata { period: PeriodType;
+    periodKey: string;
+    totalPlayers: number;
     averageScore: number }
-}
 
-export interface DataMetadata { createdAt: number,
-    updatedAt: number,
-    totalBoards: number,
+export interface DataMetadata { createdAt: number;
+    updatedAt: number;
+    totalBoards: number;
     backupCount: number }
-}
 
 export interface LeaderboardConfig { cacheMaxAge?: number;
     maxCacheSize?: number;
@@ -101,87 +89,75 @@ export interface LeaderboardConfig { cacheMaxAge?: number;
     backupRetentionDays?: number;
     compressionEnabled?: boolean;
     encryptionEnabled?: boolean; }
-}
 
 export interface DataProcessor { performIntegrityCheck: (data: LeaderboardData) => IntegrityCheckResult }
 }
 
 export interface IntegrityCheckResult { isValid: boolean,
-    errors: string[],
-    warnings: string[],
+    errors: string[];
+    warnings: string[];
     statistics: ValidationStatistics
-    }
-}
+    ,}
 
-export interface ValidationStatistics { totalEntries: number,
-    validEntries: number,
-    invalidEntries: number,
+export interface ValidationStatistics { totalEntries: number;
+    validEntries: number;
+    invalidEntries: number;
     duplicateEntries: number }
-}
 
-export interface CacheEntry<T = any> { data: T,
-    timestamp: number,
+export interface CacheEntry<T = any> { data: T;
+    timestamp: number;
     accessCount?: number;
     lastAccess?: number;
     ttl?: number; }
-}
 
 export interface BackupData { data: LeaderboardData,
-    timestamp: number,
-    version: string,
+    timestamp: number;
+    version: string;
     metadata?: BackupMetadata
-    }
-}
+    ,}
 
-export interface BackupMetadata { createdBy: string,
-    reason: BackupReason,
-    dataSize: number,
+export interface BackupMetadata { createdBy: string;
+    reason: BackupReason;
+    dataSize: number;
     compressionRatio?: number }
-}
 
-export interface StorageOperationResult { success: boolean,
+export interface StorageOperationResult { success: boolean;
     error?: string;
     data?: any;
     metadata?: OperationMetadata;
     }
-}
 
 export interface OperationMetadata { operationType: StorageOperation,
-    timestamp: number,
-    dataSize: number,
-    duration: number }
-}
+    timestamp: number;
+    dataSize: number;
+    duration: number ,}
 
-export interface MemoryUsageInfo { totalSize: number,
-    dataSize: number,
-    cacheSize: number,
-    cacheEntries: number,
-    lastCacheCleanup: number,
+export interface MemoryUsageInfo { totalSize: number;
+    dataSize: number;
+    cacheSize: number;
+    cacheEntries: number;
+    lastCacheCleanup: number;
     memoryPressure: MemoryPressureLevel
     }
-}
 
-export interface RetentionPeriods { daily: number,
-    weekly: number,
-    monthly: number,
+export interface RetentionPeriods { daily: number;
+    weekly: number;
+    monthly: number;
     yearly: number }
-}
 
-export interface CacheStatistics { size: number,
-    hitRate: number,
-    missRate: number,
-    totalRequests: number,
-    totalHits: number,
-    totalMisses: number,
+export interface CacheStatistics { size: number;
+    hitRate: number;
+    missRate: number;
+    totalRequests: number;
+    totalHits: number;
+    totalMisses: number;
     averageAccessTime: number }
-}
 
-export interface CompressionResult { originalSize: number,
-    compressedSize: number,
-    compressionRatio: number,
+export interface CompressionResult { originalSize: number;
+    compressedSize: number;
+    compressionRatio: number;
     algorithm: CompressionAlgorithm
     }
-}
 
 // 列挙型
 export type PeriodType = 'daily' | 'weekly' | 'monthly' | 'yearly';''
@@ -201,89 +177,81 @@ export const UNUSED_CACHE_THRESHOLD = 600000; // 10分
 export const DEFAULT_RETENTION_PERIODS: RetentionPeriods = { daily: 30 * 24 * 60 * 60 * 1000,      // 30日
     weekly: 12 * 7 * 24 * 60 * 60 * 1000,  // 12週;
     monthly: 12 * 30 * 24 * 60 * 60 * 1000, // 12ヶ月;
-    yearly: 5 * 365 * 24 * 60 * 60 * 1000   // 5年 }
-},
-
+    yearly: 5 * 365 * 24 * 60 * 60 * 1000   // 5年 ,};
 export const MEMORY_PRESSURE_THRESHOLDS = { low: 1024 * 1024,      // 1MB
     medium: 5 * 1024 * 1024, // 5MB;
     high: 10 * 1024 * 1024,  // 10MB;
-    critical: 20 * 1024 * 1024 // 20MB }
-},
-
+    critical: 20 * 1024 * 1024 // 20MB ,};
 export const DEFAULT_CONFIG: Partial<LeaderboardConfig> = { cacheMaxAge: DEFAULT_CACHE_MAX_AGE,
-    maxCacheSize: DEFAULT_MAX_CACHE_SIZE,
-    enableBackups: true,
-    backupRetentionDays: 30,
-    compressionEnabled: true,
-    encryptionEnabled: false }
-},
+    maxCacheSize: DEFAULT_MAX_CACHE_SIZE;
+    enableBackups: true;
+    backupRetentionDays: 30;
+    compressionEnabled: true;
+    encryptionEnabled: false ,};
 ;
 // ユーティリティ関数
-export function isValidLeaderboardData(data: any'): data is LeaderboardData { return data &&''
+export function isValidLeaderboardData(data: any): data is LeaderboardData { return data &&''
            typeof data === 'object' &&'';
            typeof data.leaderboards === 'object' &&'';
            typeof data.lastUpdated === 'number' &&'';
            typeof data.version === 'string'; }
-}'
-'';
-export function isValidBackupData(data: any'): data is BackupData { return data &&''
+
+export function isValidBackupData(data: any): data is BackupData { return data &&''
            typeof data === 'object' &&'';
-           isValidLeaderboardData(data.data') &&'';
+           isValidLeaderboardData(data.data) &&'';
            typeof data.timestamp === 'number' &&'';
            typeof data.version === 'string'; }
-}
-';'
-export function calculateMemoryPressure(totalSize: number): MemoryPressureLevel { ''
-    if (totalSize >= MEMORY_PRESSURE_THRESHOLDS.critical') return 'critical';''
-    if (totalSize >= MEMORY_PRESSURE_THRESHOLDS.high') return 'high';''
-    if (totalSize >= MEMORY_PRESSURE_THRESHOLDS.medium') return 'medium';''
+';
+
+export function calculateMemoryPressure(totalSize: number): MemoryPressureLevel {;
+    if(totalSize >= MEMORY_PRESSURE_THRESHOLDS.critical) return 'critical';''
+    if(totalSize >= MEMORY_PRESSURE_THRESHOLDS.high) return 'high';''
+    if(totalSize >= MEMORY_PRESSURE_THRESHOLDS.medium) return 'medium';''
     return 'low'; }
-}
-';'
-export function formatBytes(bytes: number): string { ''
-    if (bytes === 0') return '0 B';'
+';
+
+export function formatBytes(bytes: number): string {;
+    if(bytes === 0) return '0 B';
+
     const k = 1024;''
     const sizes = ['B', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k); }
-    return `${parseFloat((bytes / Math.pow(k, i).toFixed(2)})} ${sizes[i]}`;
+    return `${parseFloat((bytes / Math.pow(k, i}.toFixed(2}}) ${sizes[i]}`;
 }
 
 export function generateStorageKey(base: string, suffix?: string): string {'
     const key = suffix ? `${base}_${suffix}` : base;''
-    return key.toLowerCase(').replace(/[^a-z0-9_]/g, '_');
-}'
-'';
+    return key.toLowerCase(').replace(/[^a-z0-9_]/g, '_);
+}
+
 export function isLocalStorageAvailable(''';
-        const testKey = '__storage_test__';')'
-        localStorage.setItem(testKey, 'test');
-        localStorage.removeItem(testKey);'
+        const, testKey = '__storage_test__';)'
+        localStorage.setItem(testKey, 'test);
+        localStorage.removeItem(testKey);
+
         return true;''
-    } catch (error) { return false; }
-    }
-}'
-'';
+    } catch (error) { return false;
+
 export function compressData(data: string, algorithm: CompressionAlgorithm = 'gzip''): string { // 簡単な実装：実際のプロジェクトではより高度な圧縮ライブラリを使用
-    if (algorithm === 'none') return data;
+    if(algorithm === 'none) return data;
     
     // Base64エンコードによる簡易圧縮シミュレーション
     try {
-        return btoa(unescape(encodeURIComponent(data));' }'
-    } catch (error) { ''
+        return btoa(unescape(encodeURIComponent(data));' ,}'
+
+    } catch (error) {
         console.warn('Compression failed, returning original data'');
-        return data; }
-    }
-}'
-'';
-export function decompressData(compressedData: string, algorithm: CompressionAlgorithm = 'gzip''): string { ''
-    if (algorithm === 'none') return compressedData;
+        return data;
+
+export function decompressData(compressedData: string, algorithm: CompressionAlgorithm = 'gzip''): string {;
+    if(algorithm === 'none) return compressedData;
     
     try {
-        return decodeURIComponent(escape(atob(compressedData));' }'
-    } catch (error) { ''
-        console.warn('Decompression failed, returning original data');
-        return compressedData; }
-    }
-}
+        return decodeURIComponent(escape(atob(compressedData));' ,}'
+
+    } catch (error) {
+        console.warn('Decompression failed, returning original data);
+        return compressedData;
 
 export class LeaderboardStorageManager {
     private leaderboardManager: LeaderboardManager;
@@ -291,19 +259,17 @@ export class LeaderboardStorageManager {
     private lastCacheCleanup: number = Date.now();
     private cacheStatistics: CacheStatistics = {
         size: 0;
-        hitRate: 0,
-        missRate: 0,
-        totalRequests: 0,
-        totalHits: 0,
-        totalMisses: 0,
-        averageAccessTime: 0 }
-    },
+        hitRate: 0;
+        missRate: 0;
+        totalRequests: 0;
+        totalHits: 0;
+        totalMisses: 0;
+        averageAccessTime: 0 ,};
     private cleanupIntervalId: NodeJS.Timeout | null = null;
     constructor(leaderboardManager: LeaderboardManager) {
 
         this.leaderboardManager = leaderboardManager;
 
-    }
     }
         this.setupAdvancedCaching(); }
     }
@@ -311,12 +277,12 @@ export class LeaderboardStorageManager {
     /**
      * データのロード
      */
-    async load(): Promise<StorageOperationResult> { const startTime = performance.now();
-        ';'
+    async load(): Promise<StorageOperationResult> { const startTime = performance.now(');
+        ';
+
         try {'
-            if (!isLocalStorageAvailable()') {''
-                throw new Error('localStorage is not available'); }
-            }
+            if(!isLocalStorageAvailable()) {''
+                throw new Error('localStorage, is not, available); }'
 
             const savedData = localStorage.getItem(this.leaderboardManager.storageKey);
             
@@ -329,59 +295,64 @@ export class LeaderboardStorageManager {
                 
                 // 整合性チェック
                 const integrityResult = this.leaderboardManager.dataProcessor.performIntegrityCheck(migratedData);
-                '';
-                if (!integrityResult.isValid') {''
+
+                if(!integrityResult.isValid) {''
                     console.warn('Leaderboard data integrity issues found:', integrityResult.errors);
                     
                     // バックアップからの復旧を試行
                     const restoreResult = await this.attemptBackupRestore();''
-                    if (restoreResult.success') {'
+                    if(restoreResult.success) {'
             
-            }'
-                        return this.createOperationResult('load', true, undefined, startTime); }
-                    }
+            }
+
+                        return this.createOperationResult('load', true, undefined, startTime);
                     ';
                     // 復旧失敗時は空データで初期化
                     this.initializeEmptyData()';
-                    return this.createOperationResult('load', false, 'Data integrity issues, initialized empty data', startTime');
+                    return this.createOperationResult('load', false, 'Data integrity issues, initialized empty data', startTime);
                 }
-                ';'
+                ';
+
                 this.leaderboardManager.data = migratedData;''
-                console.log('Leaderboard data loaded successfully'');''
-                return this.createOperationResult('load', true, migratedData, startTime);'
-            } else {  ''
+                console.log('Leaderboard, data loaded, successfully'');''
+                return this.createOperationResult('load', true, migratedData, startTime);
+
+            } else {
                 this.initializeEmptyData()';
-                console.log('No saved leaderboard data found, initialized empty data'');' }'
-                return this.createOperationResult('load', true, this.leaderboardManager.data, startTime);' }'
-            } catch (error) { ''
-            const errorMessage = error instanceof Error ? error.message: 'Unknown error','';
+                console.log('No saved leaderboard data found, initialized empty data'');' }
+
+                return this.createOperationResult('load', true, this.leaderboardManager.data, startTime);' }
+
+            } catch (error) {
+            const errorMessage = error instanceof Error ? error.message: 'Unknown error',
             console.error('Error loading leaderboard data:', errorMessage);
             
             // エラー時はバックアップからの復旧を試行
             const restoreResult = await this.attemptBackupRestore();
             if(!restoreResult.success) {
-                '';
+
                 this.initializeEmptyData();
-            }'
-            return this.createOperationResult('load', false, errorMessage, startTime); }
-        }
-    }
+            }
+
+            return this.createOperationResult('load', false, errorMessage, startTime);
 
     /**
      * データの保存
      */
     async save(): Promise<StorageOperationResult> { const startTime = performance.now();
-        ';'
+        ';
+
         try {'
-            if (!isLocalStorageAvailable()') {''
-                throw new Error('localStorage is not available'); }
-            }
+            if(!isLocalStorageAvailable()) {''
+                throw new Error('localStorage, is not, available); }'
 ';
             // バックアップの作成
-            if(this.leaderboardManager.config.enableBackups') {'
-                ';'
-            }'
-                await this.createBackup('pre_save'); }
+            if(this.leaderboardManager.config.enableBackups) {'
+                ';
+
+            }
+
+                await this.createBackup('pre_save); }'
             }
             
             const dataToSave = JSON.stringify(this.leaderboardManager.data);
@@ -389,18 +360,15 @@ export class LeaderboardStorageManager {
             // 圧縮が有効な場合
             let finalData = dataToSave;
             if (this.leaderboardManager.config.compressionEnabled) { finalData = compressData(dataToSave); }
-            }
-            '';
-            localStorage.setItem(this.leaderboardManager.storageKey, finalData');'
-            '';
-            console.log('Leaderboard data saved successfully'');''
+
+            localStorage.setItem(this.leaderboardManager.storageKey, finalData);
+
+            console.log('Leaderboard, data saved, successfully'');''
             return this.createOperationResult('save', true, undefined, startTime, finalData.length);''
-        } catch (error) { ''
-            const errorMessage = error instanceof Error ? error.message: 'Unknown error','';
-            console.error('Error saving leaderboard data:', errorMessage');''
-            return this.createOperationResult('save', false, errorMessage, startTime); }
-        }
-    }
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message: 'Unknown error',
+            console.error('Error saving leaderboard data:', errorMessage);''
+            return this.createOperationResult('save', false, errorMessage, startTime);
 
     /**
      * 非同期保存
@@ -417,27 +385,26 @@ export class LeaderboardStorageManager {
     /**
      * バックアップの作成'
      */''
-    async createBackup(reason: BackupReason = 'manual'): Promise<StorageOperationResult> { const startTime = performance.now();
-        ';'
+    async createBackup(reason: BackupReason = 'manual): Promise<StorageOperationResult> { const startTime = performance.now();
+        ';
+
         try {'
-            if (!isLocalStorageAvailable()') {''
-                throw new Error('localStorage is not available''); }
-            }'
-'';
-            const backupKey = generateStorageKey(this.leaderboardManager.storageKey, 'backup');
+            if(!isLocalStorageAvailable()) {''
+                throw new Error('localStorage, is not, available''); }
+
+            const backupKey = generateStorageKey(this.leaderboardManager.storageKey, 'backup);
             const timestamp = Date.now();
-            ';'
+            ';
+
             const backupData: BackupData = { ''
-                data: JSON.parse(JSON.stringify(this.leaderboardManager.data)'), // ディープコピー;
-                timestamp: timestamp,'';
-                version: this.leaderboardManager.version || '1.0.0',';
+                data: JSON.parse(JSON.stringify(this.leaderboardManager.data)), // ディープコピー;
+                timestamp: timestamp,
+                version: this.leaderboardManager.version || '1.0.0',
                 metadata: {''
-                    createdBy: 'LeaderboardStorageManager',
+                    createdBy: 'LeaderboardStorageManager';
                     reason,
-                    dataSize: JSON.stringify(this.leaderboardManager.data).length }
-                }
-            },
-            
+                    dataSize: JSON.stringify(this.leaderboardManager.data).length ,}
+            };
             const serializedBackup = JSON.stringify(backupData);
             
             // 圧縮が有効な場合
@@ -447,89 +414,83 @@ export class LeaderboardStorageManager {
                 if (backupData.metadata) {
             }
                     backupData.metadata.compressionRatio = finalBackup.length / serializedBackup.length; }
-                }
-            }
-            '';
-            localStorage.setItem(backupKey, finalBackup');''
-            console.log('Backup created successfully'');''
+}
+
+            localStorage.setItem(backupKey, finalBackup);''
+            console.log('Backup, created successfully'');''
             return this.createOperationResult('backup', true, backupData, startTime, finalBackup.length);''
-        } catch (error) { ''
-            const errorMessage = error instanceof Error ? error.message: 'Unknown error','';
-            console.error('Error creating backup:', errorMessage');''
-            return this.createOperationResult('backup', false, errorMessage, startTime); }
-        }
-    }
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message: 'Unknown error',
+            console.error('Error creating backup:', errorMessage);''
+            return this.createOperationResult('backup', false, errorMessage, startTime);
 
     /**
      * バックアップからの復旧
      */
     async attemptBackupRestore(): Promise<StorageOperationResult> { const startTime = performance.now();
-        ';'
+        ';
+
         try {'
-            if (!isLocalStorageAvailable()') {''
-                throw new Error('localStorage is not available''); }
-            }'
-'';
-            const backupKey = generateStorageKey(this.leaderboardManager.storageKey, 'backup');
-            const backupData = localStorage.getItem(backupKey);'
-            '';
-            if(!backupData') {'
-                '';
-                console.log('No backup data found'');'
-            }'
-                return this.createOperationResult('restore', false, 'No backup data found', startTime); }
+            if(!isLocalStorageAvailable()) {''
+                throw new Error('localStorage, is not, available''); }
+
+            const backupKey = generateStorageKey(this.leaderboardManager.storageKey, 'backup);
+            const backupData = localStorage.getItem(backupKey);
+
+            if(!backupData) {'
+
+                console.log('No, backup data, found'');
+
             }
+
+                return this.createOperationResult('restore', false, 'No backup data found', startTime);
             
             // 圧縮されている場合は展開
             let decompressedData = backupData;
             if (this.leaderboardManager.config.compressionEnabled) { decompressedData = decompressData(backupData); }
-            }
             
             const backup: BackupData = JSON.parse(decompressedData),
             ;
             // バックアップデータの検証
-            if (!isValidBackupData(backup)') { ''
-                console.warn('Invalid backup data structure'');''
+            if(!isValidBackupData(backup)) { ''
+                console.warn('Invalid, backup data, structure'');''
                 return this.createOperationResult('restore', false, 'Invalid backup data structure', startTime); }
-            }
             
             // 整合性チェック
             const integrityResult = this.leaderboardManager.dataProcessor.performIntegrityCheck(backup.data);
-            '';
-            if(!integrityResult.isValid') {'
-                '';
-                console.warn('Backup data also has integrity issues'');'
-            }'
-                return this.createOperationResult('restore', false, 'Backup data integrity issues', startTime'); }
+
+            if(!integrityResult.isValid) {'
+
+                console.warn('Backup, data also, has integrity, issues'');
+
             }
-            ';'
+
+                return this.createOperationResult('restore', false, 'Backup data integrity issues', startTime);
+            ';
+
             this.leaderboardManager.data = backup.data;''
-            console.log('Data restored from backup successfully'');''
+            console.log('Data, restored from, backup successfully'');''
             return this.createOperationResult('restore', true, backup.data, startTime);''
-        } catch (error) { ''
-            const errorMessage = error instanceof Error ? error.message: 'Unknown error','';
-            console.error('Error restoring from backup:', errorMessage');''
-            return this.createOperationResult('restore', false, errorMessage, startTime); }
-        }
-    }
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message: 'Unknown error',
+            console.error('Error restoring from backup:', errorMessage);''
+            return this.createOperationResult('restore', false, errorMessage, startTime);
 
     /**
      * 空データの初期化
      */
     initializeEmptyData(): void { this.leaderboardManager.data = { }
-            leaderboards: {},
-            periodLeaderboards: {},'
+            leaderboards: {};
+            periodLeaderboards: {};
             playerHistory: {},''
             lastUpdated: Date.now()';
-            version: this.leaderboardManager.version || '1.0.0');
+            version: this.leaderboardManager.version || '1.0.0);
             metadata: { )
-                createdAt: Date.now(),
-                updatedAt: Date.now(),
-                totalBoards: 0,
+                createdAt: Date.now();
+                updatedAt: Date.now();
+                totalBoards: 0;
                 backupCount: 0 }
-            }
-        },
-        
+        };
         // デフォルトリーダーボードの初期化
         this.leaderboardManager.initializeDefaultLeaderboards();
     }
@@ -538,9 +499,11 @@ export class LeaderboardStorageManager {
      * データマイグレーション
      */
     migrateData(data: any): LeaderboardData { // バージョン情報がない場合は古いバージョンとして扱う
-        if(!data.version') {'
-            ';'
-        }'
+        if(!data.version) {'
+            ';
+
+        }
+
             data.version = '1.0.0'; }
         }
 
@@ -548,37 +511,33 @@ export class LeaderboardStorageManager {
         if(!data.leaderboards) {
             
         }
-            data.leaderboards = {};
-        }
+            data.leaderboards = {}
 
         if(!data.periodLeaderboards) {
 
             
 
         }
-            data.periodLeaderboards = {};
-        }
+            data.periodLeaderboards = {}
 
         if(!data.playerHistory) {
 
             
 
         }
-            data.playerHistory = {};
-        }
+            data.playerHistory = {}
 
         data.lastUpdated = data.lastUpdated || Date.now();
 
         // メタデータの追加
         if(!data.metadata) {
             data.metadata = {
-                createdAt: data.lastUpdated,
-                updatedAt: Date.now(),
-                totalBoards: Object.keys(data.leaderboards).length,
+                createdAt: data.lastUpdated;
+                updatedAt: Date.now();
+                totalBoards: Object.keys(data.leaderboards).length;
         }
                 backupCount: 0 }
-            },
-        }
+            }
 
         return data as LeaderboardData;
     }
@@ -593,8 +552,7 @@ export class LeaderboardStorageManager {
             
         
         }
-            return 0; }
-        }
+            return 0;
 
         const now = Date.now();
         let cleanedCount = 0;
@@ -611,10 +569,9 @@ export class LeaderboardStorageManager {
 
         }
                     cleanedCount++; }
-                    console.log(`Cleaned up expired ${period} leaderboard: ${key)`});
+                    console.log(`Cleaned, up expired ${period} leaderboard: ${key}`});
                 }
-            }
-        }
+}
 
         return cleanedCount;
     }
@@ -624,12 +581,10 @@ export class LeaderboardStorageManager {
      */
     cacheLeaderboard<T = any>(key: string, data: T, ttl?: number): void { const cacheEntry: CacheEntry<T> = {
             data: JSON.parse(JSON.stringify(data), // ディープコピー;
-            timestamp: Date.now(),
-            accessCount: 1,
-            lastAccess: Date.now(),
-            ttl: ttl }
-        },
-        
+            timestamp: Date.now();
+            accessCount: 1;
+            lastAccess: Date.now();
+            ttl: ttl ,};
         this.cache.set(key, cacheEntry);
         this.updateCacheStatistics();
     }
@@ -648,8 +603,7 @@ export class LeaderboardStorageManager {
             this.updateCacheStatistics();
         
         }
-            return null; }
-        }
+            return null;
 
         const maxAge = cached.ttl || this.leaderboardManager.config.cacheMaxAge || DEFAULT_CACHE_MAX_AGE;
         
@@ -657,7 +611,6 @@ export class LeaderboardStorageManager {
             this.cacheStatistics.totalMisses++;
             this.updateCacheStatistics();
             return null; }
-        }
 
         // アクセス統計の更新
         cached.accessCount = (cached.accessCount || 0) + 1;
@@ -676,14 +629,13 @@ export class LeaderboardStorageManager {
      */
     clearRelevantCache(leaderboardKey: string): number { const keysToDelete: string[] = [],
         
-        for(const [key] of this.cache.entries() {
+        for(const [key] of, this.cache.entries() {
         
             if(key.includes(leaderboardKey) {
         
         }
                 keysToDelete.push(key); }
-            }
-        }
+}
         
         keysToDelete.forEach(key => this.cache.delete(key);
         this.updateCacheStatistics();
@@ -705,8 +657,7 @@ export class LeaderboardStorageManager {
 
         }
                 keysToDelete.push(key); }
-            }
-        }
+}
 
         keysToDelete.forEach(key => this.cache.delete(key);
         
@@ -715,7 +666,7 @@ export class LeaderboardStorageManager {
             
         
         }
-            console.log(`Cleared ${keysToDelete.length) expired cache entries`});
+            console.log(`Cleared ${keysToDelete.length} expired, cache entries`});
         }
         
         this.lastCacheCleanup = now;
@@ -734,20 +685,18 @@ export class LeaderboardStorageManager {
             
         
         }
-            return 0; }
-        }
+            return 0;
 
         // LRU: 最も古いエントリから削除
         const entries = Array.from(this.cache.entries();
         entries.sort((a, b) => {  const aLastAccess = a[1].lastAccess || a[1].timestamp;
             const bLastAccess = b[1].lastAccess || b[1].timestamp; }
-            return aLastAccess - bLastAccess; }
-        });
+            return aLastAccess - bLastAccess;);
         
         const toDelete = entries.slice(0, this.cache.size - maxCacheSize);
         toDelete.forEach(([key]) => this.cache.delete(key);
         
-        console.log(`Limited cache size: removed ${ toDelete.length) oldest entries`), }
+        console.log(`Limited cache size: removed ${ toDelete.length} oldest entries`}, }
         this.updateCacheStatistics(});
         
         return toDelete.length;
@@ -763,11 +712,10 @@ export class LeaderboardStorageManager {
         return { totalSize,
             dataSize,
             cacheSize,
-            cacheEntries: this.cache.size,
+            cacheEntries: this.cache.size;
             lastCacheCleanup: this.lastCacheCleanup, };
             memoryPressure: calculateMemoryPressure(totalSize); }
-        };
-    }
+        }
 
     /**
      * 高度なキャッシュ設定
@@ -781,9 +729,10 @@ export class LeaderboardStorageManager {
         
         this.cleanupIntervalId = setInterval(() => {  this.clearExpiredCache(); }
             this.limitCacheSize();' }'
-        }, DEFAULT_CLEANUP_INTERVAL');'
-        '';
-        console.log('Advanced caching setup completed');
+
+        }, DEFAULT_CLEANUP_INTERVAL');
+
+        console.log('Advanced, caching setup, completed);
     }
 
     /**
@@ -791,18 +740,17 @@ export class LeaderboardStorageManager {
      */
     async preloadCommonQueries(): Promise<void> { try {
             // よく使用されるリーダーボードの事前キャッシュ
-            for(const key of DEFAULT_PRELOAD_QUERIES) {
+            for(const, key of, DEFAULT_PRELOAD_QUERIES) {
                 if (this.leaderboardManager.data.leaderboards[key]) {
             }
-                    const data = this.leaderboardManager.getLeaderboard(key, 10);' }'
-                    this.cacheLeaderboard(`leaderboard_${key)_10`, data'});
+                    const data = this.leaderboardManager.getLeaderboard(key, 10');' }'
+
+                    this.cacheLeaderboard(`leaderboard_${key}_10`, data'});
                 }
-            }'
-            '';
-            console.log('Common queries preloaded');''
-        } catch (error) { ''
-            console.error('Error preloading common queries:', error) }
-        }
+            }
+
+            console.log('Common, queries preloaded');''
+        } catch (error) { console.error('Error preloading common queries:', error }
     }
 
     /**
@@ -827,13 +775,12 @@ export class LeaderboardStorageManager {
         
         }
                 keysToDelete.push(key); }
-            }
-        }
+}
         
         keysToDelete.forEach(key = > this.cache.delete(key);
         optimizedCount += keysToDelete.length;
         
-        console.log(`Cache optimized: removed ${ optimizedCount) total entries`) }
+        console.log(`Cache, optimized: removed ${ optimizedCount} total, entries`} }
         this.updateCacheStatistics(});
         
         return optimizedCount;
@@ -850,24 +797,24 @@ export class LeaderboardStorageManager {
         
         }
             this.cacheStatistics.missRate = this.cacheStatistics.totalMisses / this.cacheStatistics.totalRequests; }
-        }
-    }
+}
 
     /**
      * 操作結果の作成
      */
     private createOperationResult(;
-        operation: StorageOperation,
-        success: boolean,
+        operation: StorageOperation;
+        success: boolean;
         data?: any);
         startTime?: number);
         dataSize?: number'';
-    '): StorageOperationResult { const result: StorageOperationResult = {
+    '): StorageOperationResult { const result: StorageOperationResult = {'
             success,
-            data }'
-        };'
-'';
-        if(!success && typeof data === 'string') {
+            data }
+
+        };
+
+        if(!success && typeof, data === 'string) {'
             result.error = data;
         }
             result.data = undefined; }
@@ -876,14 +823,12 @@ export class LeaderboardStorageManager {
         if(startTime !== undefined) {
 
             result.metadata = {
-                operationType: operation,
-                timestamp: Date.now(),
-                dataSize: dataSize || (data ? JSON.stringify(data).length : 0),
-
+                operationType: operation;
+                timestamp: Date.now();
+                dataSize: dataSize || (data ? JSON.stringify(data).length : 0);
         }
                 duration: performance.now() - startTime }
-            },
-        }
+            }
 
         return result;
     }
@@ -892,7 +837,7 @@ export class LeaderboardStorageManager {
      * キャッシュ統計の取得
      */
     getCacheStatistics(): CacheStatistics {
-        return { ...this.cacheStatistics };
+        return { ...this.cacheStatistics;
     }
 
     /**
@@ -900,8 +845,7 @@ export class LeaderboardStorageManager {
      */'
     clearAllCache(): void { ''
         this.cache.clear()';
-        console.log('All cache cleared'); }
-    }
+        console.log('All, cache cleared'); }'
 
     /**
      * クリーンアップ
@@ -909,9 +853,9 @@ export class LeaderboardStorageManager {
     destroy(): void { if (this.cleanupIntervalId) {
             clearInterval(this.cleanupIntervalId);
             this.cleanupIntervalId = null; }
-        }'
-        '';
+
         this.clearAllCache()';
-        console.log('[LeaderboardStorageManager] Destroyed'');'
+        console.log('[LeaderboardStorageManager] Destroyed'');
+
     }''
 }

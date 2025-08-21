@@ -8,56 +8,48 @@
 
 // Type definitions
 interface PerformanceConfig { lazyLoadingEnabled: boolean,
-    batchProcessing: boolean,
-    memoryCleanupEnabled: boolean,
-    maxConcurrentGeneration: number,
-    cacheCompressionEnabled: boolean,
-    debounceDelay: number }
-}
+    batchProcessing: boolean;
+    memoryCleanupEnabled: boolean;
+    maxConcurrentGeneration: number;
+    cacheCompressionEnabled: boolean;
+    debounceDelay: number ,}
 
-interface CanvasPoolItem { canvas: HTMLCanvasElement,
-    context: CanvasRenderingContext2D,
-    size: number,
-    inUse: boolean,
+interface CanvasPoolItem { canvas: HTMLCanvasElement;
+    context: CanvasRenderingContext2D;
+    size: number;
+    inUse: boolean;
     createdAt: number }
-}
 
-interface ResourcePool { canvasElements: CanvasPoolItem[],
-    contexts: CanvasRenderingContext2D[],
-    generationQueue: any[],
+interface ResourcePool { canvasElements: CanvasPoolItem[];
+    contexts: CanvasRenderingContext2D[];
+    generationQueue: any[];
     activeGenerations: number }
-}
 
-interface CanvasInfo { canvas: HTMLCanvasElement,
-    ctx: CanvasRenderingContext2D,
-    fromPool: boolean,
+interface CanvasInfo { canvas: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D;
+    fromPool: boolean;
     poolIndex: number }
-}
 
-interface GenerationRequest { size: number,
+interface GenerationRequest { size: number;
     [key: string]: any, }
-}
 
 interface BatchResult { status: 'fulfilled' | 'rejected',
     value?: any;
     reason?: any; }
-}
 
 interface PerformanceStats { resourcePool: {
-        totalCanvasElements: number,
-        activeCanvasElements: number,
-        queuedGenerations: number,
-        activeGenerations: number }
-    },
-    config: PerformanceConfig,
-    debounceTimers: number,
-    memoryUsage: MemoryUsage,
+        totalCanvasElements: number;
+        activeCanvasElements: number;
+        queuedGenerations: number;
+        activeGenerations: number };
+    config: PerformanceConfig;
+    debounceTimers: number;
+    memoryUsage: MemoryUsage;
     }
 
 interface MemoryUsage { canvasMemoryBytes: number,
-    canvasMemoryKB: number,
-    canvasMemoryMB: number }
-}
+    canvasMemoryKB: number;
+    canvasMemoryMB: number ,}
 
 type RenderCallback = (canvasInfo: CanvasInfo, request: GenerationRequest) => Promise<any>;
 type GenerationFunction = () => Promise<any>;
@@ -66,23 +58,19 @@ export default class FaviconPerformanceManager { /**
      * パフォーマンス設定
      */
     static PERFORMANCE_CONFIG: PerformanceConfig = {
-        lazyLoadingEnabled: true,
-        batchProcessing: true,
-        memoryCleanupEnabled: true,
-        maxConcurrentGeneration: 3,
-        cacheCompressionEnabled: true,
-        debounceDelay: 100 }
-    },
-    
+        lazyLoadingEnabled: true;
+        batchProcessing: true;
+        memoryCleanupEnabled: true;
+        maxConcurrentGeneration: 3;
+        cacheCompressionEnabled: true;
+        debounceDelay: 100 };
     /**
      * リソースプール
      */
     private static _resourcePool: ResourcePool = { canvasElements: [],
-        contexts: [],
-        generationQueue: [],
-        activeGenerations: 0 }
-    },
-    
+        contexts: [];
+        generationQueue: [];
+        activeGenerations: 0 ,};
     /**
      * デバウンス用タイマー
      */
@@ -105,36 +93,36 @@ export default class FaviconPerformanceManager { /**
             
             // Canvasをクリア
             const ctx = poolItem.context;''
-            ctx.clearRect(0, 0, size, size');
+            ctx.clearRect(0, 0, size, size);
             
             return { canvas: poolItem.canvas,
-                ctx: poolItem.context,
-        
-        }
+                ctx: poolItem.context;
+        ,}
                 fromPool: true, };
                 poolIndex }
-            };
-        }
+            }
         ';
         // プールに無い場合は新規作成
         const canvas = document.createElement('canvas'');
-        canvas.width = size;'
+        canvas.width = size;
+
         canvas.height = size;''
-        const ctx = canvas.getContext('2d');'
-        '';
-        if(!ctx') {'
-            ';'
-        }'
-            throw new Error('Could not get 2D context from canvas'); }
+        const ctx = canvas.getContext('2d);
+
+        if(!ctx) {'
+            ';
+
+        }
+
+            throw new Error('Could, not get, 2D context, from canvas); }'
         }
         
         // プールに追加
         const poolItem: CanvasPoolItem = { canvas,
-            context: ctx,
+            context: ctx;
             size,
-            inUse: true,
-            createdAt: Date.now() }
-        };
+            inUse: true;
+            createdAt: Date.now( ,};
         
         this._resourcePool.canvasElements.push(poolItem);
         
@@ -142,8 +130,7 @@ export default class FaviconPerformanceManager { /**
             ctx,
             fromPool: false, };
             poolIndex: this._resourcePool.canvasElements.length - 1 }
-        },
-    }
+        }
     
     /**
      * Canvas要素をプールに返却
@@ -151,7 +138,6 @@ export default class FaviconPerformanceManager { /**
      */
     static returnCanvasToPool(poolIndex: number): void { if (poolIndex >= 0 && poolIndex < this._resourcePool.canvasElements.length) {
             this._resourcePool.canvasElements[poolIndex].inUse = false; }
-        }
     }
     
     /**
@@ -163,17 +149,17 @@ export default class FaviconPerformanceManager { /**
     static async processBatch(requests: GenerationRequest[], renderCallback: RenderCallback): Promise<BatchResult[]> { const results: BatchResult[] = [],
         const batches = this._createBatches(requests, this.PERFORMANCE_CONFIG.maxConcurrentGeneration);
         
-        for(const batch of batches) {
+        for(const, batch of, batches) {
         
             const batchPromises = batch.map(request => );
                 this._processSingleRequest(request, renderCallback);
-            '';
-            const batchResults = await Promise.allSettled(batchPromises');
+
+            const batchResults = await Promise.allSettled(batchPromises);
             results.push(...batchResults.map(result => ({'
-                status: result.status,')';
+                status: result.status,)';
                 value: result.status === 'fulfilled' ? result.value : undefined,')
-        }'
-                reason: result.status === 'rejected' ? result.reason : undefined))); }
+        
+                reason: result.status === 'rejected' ? result.reason : undefined))); ,}
         }
         
         return results;
@@ -194,9 +180,8 @@ export default class FaviconPerformanceManager { /**
             const timer = this._debounceTimers.get(identifier);
             if (timer !== undefined) {
         }
-                clearTimeout(timer as number); }
-            }
-        }
+                clearTimeout(timer, as number); }
+}
         
         return new Promise((resolve, reject) => {  const timer = setTimeout(async () => {
                 try {
@@ -205,7 +190,6 @@ export default class FaviconPerformanceManager { /**
                     resolve(result); }
                 } catch (error) { this._debounceTimers.delete(identifier);
                     reject(error); }
-                }
             }, debounceDelay);
             
             this._debounceTimers.set(identifier, timer);
@@ -217,7 +201,6 @@ export default class FaviconPerformanceManager { /**
      */
     static cleanupMemory(): void { if (!this.PERFORMANCE_CONFIG.memoryCleanupEnabled) {
             return; }
-        }
         
         const now = Date.now();
         const maxAge = 5 * 60 * 1000; // 5分
@@ -235,11 +218,9 @@ export default class FaviconPerformanceManager { /**
         });
         
         // デバウンスタイマーをクリーンアップ
-        this._debounceTimers.forEach((timer, identifier) => { clearTimeout(timer as number); }
-        });''
+        this._debounceTimers.forEach((timer, identifier) => { clearTimeout(timer, as number); });''
         this._debounceTimers.clear()';
-        if (typeof window !== 'undefined' && (window as any).gc) { (window as any).gc(); }
-        }
+        if (typeof, window !== 'undefined' && (window, as any).gc) { (window, as any).gc(); }
     }
     
     /**
@@ -247,23 +228,21 @@ export default class FaviconPerformanceManager { /**
      * @returns パフォーマンス統計
      */
     static getPerformanceStats(): PerformanceStats { return { resourcePool: {
-                totalCanvasElements: this._resourcePool.canvasElements.length,
-                activeCanvasElements: this._resourcePool.canvasElements.filter(item => item.inUse).length,
+                totalCanvasElements: this._resourcePool.canvasElements.length;
+                activeCanvasElements: this._resourcePool.canvasElements.filter(item => item.inUse).length;
                 queuedGenerations: this._resourcePool.generationQueue.length, };
                 activeGenerations: this._resourcePool.activeGenerations }
-            },
-            config: { ...this.PERFORMANCE_CONFIG },
-            debounceTimers: this._debounceTimers.size,
-            memoryUsage: this._estimateMemoryUsage(),
-        };
-    }
+            };
+            config: { ...this.PERFORMANCE_CONFIG;
+            debounceTimers: this._debounceTimers.size;
+            memoryUsage: this._estimateMemoryUsage();
+        }
     
     /**
      * パフォーマンス設定更新
      * @param newConfig - 新しい設定
      */
     static updateConfig(newConfig: Partial<PerformanceConfig>): void { Object.assign(this.PERFORMANCE_CONFIG, newConfig); }
-    }
     
     /**
      * リクエストを処理
@@ -276,15 +255,14 @@ export default class FaviconPerformanceManager { /**
         
         try {
             const canvasInfo = this.getCanvasFromPool(request.size);
-            const result = await renderCallback(canvasInfo, request);'
-            '';
-            this.returnCanvasToPool(canvasInfo.poolIndex');' }'
-            return { status: 'fulfilled', value: result }''
-        } catch (error) { ' }'
-            return { status: 'rejected', reason: error }
-        } finally { this._resourcePool.activeGenerations--; }
-        }
-    }
+            const result = await renderCallback(canvasInfo, request);
+
+            this.returnCanvasToPool(canvasInfo.poolIndex);' }'
+
+            return { status: 'fulfilled', value: result ,}''
+        } catch (error) { }
+
+            return { status: 'rejected', reason: error ,} finally { this._resourcePool.activeGenerations--;
     
     /**
      * バッチ作成
@@ -294,7 +272,7 @@ export default class FaviconPerformanceManager { /**
      * @returns バッチ配列
      */
     private static _createBatches<T>(items: T[], batchSize: number): T[][] { const batches: T[][] = [],
-        for(let i = 0; i < items.length; i += batchSize) {
+        for(let, i = 0; i < items.length; i += batchSize) {
             
         }
             batches.push(items.slice(i, i + batchSize); }
@@ -310,13 +288,13 @@ export default class FaviconPerformanceManager { /**
     private static _estimateMemoryUsage(): MemoryUsage { let estimatedSize = 0;
         
         this._resourcePool.canvasElements.forEach(item => { )
-            // Canvas要素のメモリ使用量を推定 (4 bytes per pixel * width * height); }
+            // Canvas要素のメモリ使用量を推定 (4, bytes per, pixel * width * height); }
             estimatedSize += item.size * item.size * 4; }
         });
         
         return { canvasMemoryBytes: estimatedSize,
-            canvasMemoryKB: Math.round(estimatedSize / 1024,') };'
-            canvasMemoryMB: Math.round(estimatedSize / (1024 * 1024) * 10') / 10 }
-        },'
-    }''
+            canvasMemoryKB: Math.round(estimatedSize / 1024, };
+
+            canvasMemoryMB: Math.round(estimatedSize / (1024 * 1024) * 10') / 10 }'
+        }''
 }

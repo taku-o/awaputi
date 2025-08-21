@@ -11,63 +11,58 @@
 
 // Type definitions
 interface BoundingBox { x: number,
-    y: number,
-    width: number,
-    height: number }
-}
+    y: number;
+    width: number;
+    height: number ,}
 
-interface Layer { name: string,
-    order: number,
-    enabled: boolean,
-    visible: boolean,
-    opacity: number,
-    blendMode: string,
-    canvas: HTMLCanvasElement | null,
-    context: CanvasRenderingContext2D | null,
-    static: boolean,
-    cacheable: boolean,
-    dirty: boolean,
-    objects: Set<string>,
-    boundingBox: BoundingBox,
-    renderTime: number,
+interface Layer { name: string;
+    order: number;
+    enabled: boolean;
+    visible: boolean;
+    opacity: number;
+    blendMode: string;
+    canvas: HTMLCanvasElement | null;
+    context: CanvasRenderingContext2D | null;
+    static: boolean;
+    cacheable: boolean;
+    dirty: boolean;
+    objects: Set<string>;
+    boundingBox: BoundingBox;
+    renderTime: number;
     complexity: number }
-}
 
 interface LayerProperties { static?: boolean;
     cacheable?: boolean; }
-}
 
 interface LayerStats { totalLayers: number,
-    cachedLayers: number,
-    compositedLayers: number,
-    cacheHitRate: number,
-    compositionTime: number }
-}
+    cachedLayers: number;
+    compositedLayers: number;
+    cacheHitRate: number;
+    compositionTime: number ,}
 
-interface LayerManagerConfig { enabled: boolean,
+interface LayerManagerConfig { enabled: boolean;
     layers: Map<string, Layer>;
-    layerOrder: string[],
-    staticLayers: Set<string>,
-    dynamicLayers: Set<string>,
+    layerOrder: string[];
+    staticLayers: Set<string>;
+    dynamicLayers: Set<string>;
     layerCache: Map<string, any>;
-    cacheEnabled: boolean,
-    maxCacheSize: number,
-    currentCacheSize: number,
-    compositionMode: 'simple' | 'smart' | 'advanced',
-    blendOptimization: boolean,
-    layerFusion: boolean,
+    cacheEnabled: boolean;
+    maxCacheSize: number;
+    currentCacheSize: number;
+    compositionMode: 'simple' | 'smart' | 'advanced';
+    blendOptimization: boolean;
+    layerFusion: boolean;
     layerProperties: Map<string, LayerProperties>;
     stats: LayerStats
-    }
-}
+    ,}
 
 interface RenderObject { type?: string;
     layer?: string;
     material?: string;
-    x: number,
-    y: number,
-    width: number,
-    height: number,
+    x: number;
+    y: number;
+    width: number;
+    height: number;
     rotation?: number;
     scale?: number;
     alpha?: number;
@@ -76,22 +71,20 @@ interface RenderObject { type?: string;
     font?: string;
     color?: string;
     align?: string;
-    shape?: string; }
-}
+    shape?: string; ,}
 
 interface DirtyRegion { x: number,
-    y: number,
-    width: number,
-    height: number }
-}
+    y: number;
+    width: number;
+    height: number ,}
 
 interface ConfigurationOptions { enabled?: boolean;
-    cacheEnabled?: boolean;'
+    cacheEnabled?: boolean;
+
     maxCacheSize?: number;''
     compositionMode?: 'simple' | 'smart' | 'advanced';
     blendOptimization?: boolean;
     layerFusion?: boolean; }
-}
 
 export class BasicLayerManager {
     private canvas: HTMLCanvasElement;
@@ -102,33 +95,28 @@ export class BasicLayerManager {
         
         // Layer management system
         this.config = {
-            enabled: true,
-            layers: new Map(),
-            layerOrder: [],
-            staticLayers: new Set(),
-            dynamicLayers: new Set(),
+            enabled: true;
+            layers: new Map();
+            layerOrder: [];
+            staticLayers: new Set();
+            dynamicLayers: new Set();
             ;
             // Layer caching
             layerCache: new Map(''';
-            compositionMode: 'smart', // 'simple', 'smart', 'advanced');
+            compositionMode: 'smart', // 'simple', 'smart', 'advanced);
             blendOptimization: true);
             layerFusion: true, // Merge compatible layers;
             // Layer properties
-            layerProperties: new Map(),
-            
+            layerProperties: new Map();
             // Statistics
             stats: {
-                totalLayers: 0,
-                cachedLayers: 0,
-                compositedLayers: 0,
-                cacheHitRate: 0,
-
-    }
-    }
+                totalLayers: 0;
+                cachedLayers: 0;
+                compositedLayers: 0;
+                cacheHitRate: 0;
+    ,}
                 compositionTime: 0 }
-            }
-        },
-
+};
         this.initializeDefaultLayers();
     }
 
@@ -136,11 +124,10 @@ export class BasicLayerManager {
      * Initialize default layers
      */''
     private initializeDefaultLayers()';
-        this.createLayer('background', 0, { static: true, cacheable: true )'),''
-        this.createLayer('game', 1, { static: false, cacheable: false )'),''
-        this.createLayer('ui', 2, { static: true, cacheable: true )'),''
-        this.createLayer('overlay', 3, { static: false, cacheable: false ) }
-    }
+        this.createLayer('background', 0, { static: true, cacheable: true )),''
+        this.createLayer('game', 1, { static: false, cacheable: false )),''
+        this.createLayer('ui', 2, { static: true, cacheable: true )),''
+        this.createLayer('overlay', 3, { static: false, cacheable: false ,}
 
     /**
      * Create a rendering layer
@@ -149,54 +136,51 @@ export class BasicLayerManager {
      * @param properties - Layer properties
      * @returns Created layer'
      */''
-    createLayer(name: string, order: number, properties: LayerProperties = { )'): Layer {
+    createLayer(name: string, order: number, properties: LayerProperties = { )): Layer {
         const layer: Layer = {
             name,
             order,
-            enabled: true,
-            visible: true,';
-            opacity: 1.0,'';
-            blendMode: 'source-over',
-            
+            enabled: true;
+            visible: true,
+            opacity: 1.0,
+            blendMode: 'source-over';
             // Layer canvas for caching
-            canvas: null,
-            context: null,
-            
+            canvas: null;
+            context: null;
             // Properties
-            static: properties.static || false,
-            cacheable: properties.cacheable || false,
-            dirty: true,
-            
+            static: properties.static || false;
+            cacheable: properties.cacheable || false;
+            dirty: true;
             // Content tracking
             objects: new Set(), }
-            boundingBox: { x: 0, y: 0, width: 0, height: 0 },
+            boundingBox: { x: 0, y: 0, width: 0, height: 0 ,},
             
             // Performance tracking
-            renderTime: 0,
+            renderTime: 0;
             complexity: 0;
         },
         ;
         // Create layer canvas if cacheable
-        if(layer.cacheable') {'
-            '';
+        if(layer.cacheable) {'
+
             layer.canvas = document.createElement('canvas'');
-            layer.canvas.width = this.canvas.width;'
-            layer.canvas.height = this.canvas.height;'
-        }'
-            layer.context = layer.canvas.getContext('2d'); }
+            layer.canvas.width = this.canvas.width;
+
+            layer.canvas.height = this.canvas.height;
+
+        }
+
+            layer.context = layer.canvas.getContext('2d); }'
         }
         
         this.config.layers.set(name, layer);
         this.config.layerOrder.push(name);
         this.config.layerOrder.sort((a, b) => {  const layerA = this.config.layers.get(a);
             const layerB = this.config.layers.get(b); }
-            return (layerA? .order || 0) - (layerB?.order || 0); }
-        };
+            return (layerA? .order || 0) - (layerB?.order || 0);
         
         // Track layer type
-        if (layer.static) { this.config.staticLayers.add(name); }
-        } else { this.config.dynamicLayers.add(name); }
-        }
+        if (layer.static) { this.config.staticLayers.add(name); } else { this.config.dynamicLayers.add(name); }
         
         this.config.stats.totalLayers = this.config.layers.size;
         
@@ -228,7 +212,6 @@ export class BasicLayerManager {
         this.config.layers.delete(name);
         const index = this.config.layerOrder.indexOf(name);
         if (index !== -1) { this.config.layerOrder.splice(index, 1); }
-        }
 
         this.config.stats.totalLayers = this.config.layers.size;
     }
@@ -239,7 +222,6 @@ export class BasicLayerManager {
      * @returns Layer object or null
      */
     getLayer(name: string): Layer | null { return this.config.layers.get(name) || null; }
-    }
 
     /**
      * Set layer visibility
@@ -251,8 +233,7 @@ export class BasicLayerManager {
             
         }
             layer.visible = visible; }
-        }
-    }
+}
 
     /**
      * Set layer opacity
@@ -264,8 +245,7 @@ export class BasicLayerManager {
             
         }
             layer.opacity = Math.max(0, Math.min(1, opacity); }
-        }
-    }
+}
 
     /**
      * Mark layer as dirty
@@ -276,8 +256,7 @@ export class BasicLayerManager {
             
         }
             layer.dirty = true; }
-        }
-    }
+}
 
     /**
      * Optimize layer composition for objects
@@ -285,10 +264,9 @@ export class BasicLayerManager {
      * @returns Layer batches organized by layer
      */
     optimizeLayerComposition(objects: RenderObject[]): Map<string, RenderObject[]> { const layerBatches = new Map<string, RenderObject[]>();
-        ;
         // Group objects by layer
-        for(const obj of objects') {'
-            '';
+        for(const, obj of, objects) {'
+
             const layerName = obj.layer || 'game';
             if(!layerBatches.has(layerName) {
         }
@@ -303,8 +281,7 @@ export class BasicLayerManager {
             if (layer) {
         }
                 this.optimizeLayerBatch(layer, objects); }
-            }
-        }
+}
         
         return layerBatches;
     }
@@ -316,14 +293,15 @@ export class BasicLayerManager {
      */
     private optimizeLayerBatch(layer: Layer, objects: RenderObject[]): void { // Update layer cache if needed
         if(layer.cacheable && (layer.dirty || !layer.canvas) {
-            ';'
-        }'
-            this.updateLayerCache(layer, objects'); }
+            ';
+
+        }
+
+            this.updateLayerCache(layer, objects); }
         }
         ';
         // Batch objects for efficient rendering
-        if (this.config.compositionMode !== 'simple') { this.batchDrawCalls(objects); }
-        }
+        if(this.config.compositionMode !== 'simple) { this.batchDrawCalls(objects); }'
     }
 
     /**
@@ -337,7 +315,7 @@ export class BasicLayerManager {
         layer.context.clearRect(0, 0, layer.canvas.width, layer.canvas.height);
         
         // Render objects to layer canvas
-        for(const obj of objects) {
+        for(const, obj of, objects) {
             
         }
             this.renderObjectToLayerContext(obj, layer.context); }
@@ -365,19 +343,19 @@ export class BasicLayerManager {
         }
         
         if (obj.scale !== undefined && obj.scale !== 1) { ctx.scale(obj.scale, obj.scale); }
-        }
         
         if (obj.alpha !== undefined && obj.alpha !== 1) { ctx.globalAlpha = obj.alpha; }
-        }
         ;
         // Render based on object type
-        switch(obj.type') {'
-            '';
+        switch(obj.type) {'
+
             case 'sprite':'';
-                this.renderSprite(obj, ctx');'
+                this.renderSprite(obj, ctx);
+
                 break;''
             case 'text':'';
-                this.renderText(obj, ctx');'
+                this.renderText(obj, ctx);
+
                 break;''
             case 'shape':;
                 this.renderShape(obj, ctx);
@@ -398,7 +376,6 @@ export class BasicLayerManager {
      */
     private renderSprite(obj: RenderObject, ctx: CanvasRenderingContext2D): void { if (obj.image) {
             ctx.drawImage(obj.image, obj.x, obj.y, obj.width, obj.height); }
-        }
     }
 
     /**
@@ -406,7 +383,7 @@ export class BasicLayerManager {
      * @param obj - Text object
      * @param ctx - Rendering context'
      */''
-    private renderText(obj: RenderObject, ctx: CanvasRenderingContext2D'): void { ''
+    private renderText(obj: RenderObject, ctx: CanvasRenderingContext2D): void { ''
         ctx.font = obj.font || '16px Arial';''
         ctx.fillStyle = obj.color || '#000000';''
         ctx.textAlign = (obj.align || 'left') as CanvasTextAlign;
@@ -414,21 +391,21 @@ export class BasicLayerManager {
             
         }
             ctx.fillText(obj.text, obj.x, obj.y); }
-        }
-    }
+}
 
     /**
      * Render shape object
      * @param obj - Shape object
      * @param ctx - Rendering context'
      */''
-    private renderShape(obj: RenderObject, ctx: CanvasRenderingContext2D'): void { ''
-        ctx.fillStyle = obj.color || '#000000';'
-        '';
-        switch(obj.shape') {'
-            '';
+    private renderShape(obj: RenderObject, ctx: CanvasRenderingContext2D): void { ''
+        ctx.fillStyle = obj.color || '#000000';
+
+        switch(obj.shape) {'
+
             case 'rect':'';
-                ctx.fillRect(obj.x, obj.y, obj.width, obj.height');'
+                ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
+
                 break;''
             case 'circle':;
                 ctx.beginPath();
@@ -436,18 +413,16 @@ export class BasicLayerManager {
                 ctx.fill();
         }
                 break; }
-        }
-    }
+}
 
     /**
      * Render default object
      * @param obj - Object to render
      * @param ctx - Rendering context'
      */''
-    private renderDefault(obj: RenderObject, ctx: CanvasRenderingContext2D'): void { ''
+    private renderDefault(obj: RenderObject, ctx: CanvasRenderingContext2D): void { ''
         ctx.fillStyle = obj.color || '#ff0000';
         ctx.fillRect(obj.x, obj.y, obj.width, obj.height); }
-    }
 
     /**
      * Batch draw calls for efficiency
@@ -456,7 +431,7 @@ export class BasicLayerManager {
      */
     private batchDrawCalls(objects: RenderObject[]): Map<string, RenderObject[]> { const batches = new Map<string, RenderObject[]>();
         
-        for(const obj of objects) {
+        for(const, obj of, objects) {
         
             const batchKey = this.getBatchKey(obj);
             if(!batches.has(batchKey) {
@@ -475,7 +450,8 @@ export class BasicLayerManager {
      * @param obj - Object to get key for
      * @returns Batch key'
      */''
-    private getBatchKey(obj: RenderObject'): string { ' }'
+    private getBatchKey(obj: RenderObject): string { ' }'
+
         return `${obj.type || 'default'}_${obj.material || 'default'}`;
     }
 
@@ -491,31 +467,28 @@ export class BasicLayerManager {
         mainCtx.save();
         ';
         // Apply layer properties
-        if(layer.opacity !== 1') {
+        if(layer.opacity !== 1) {
             
         }
             mainCtx.globalAlpha = layer.opacity; }
-        }'
-        '';
-        if (layer.blendMode !== 'source-over') { mainCtx.globalCompositeOperation = layer.blendMode as GlobalCompositeOperation; }
         }
+
+        if(layer.blendMode !== 'source-over) { mainCtx.globalCompositeOperation = layer.blendMode as GlobalCompositeOperation; }'
         
         // Render layer content
         if(layer.cacheable && layer.canvas && !layer.dirty) {
             // Use cached layer
             if (dirtyRegions.length > 0) {
                 // Only update dirty regions
-                for (const region of dirtyRegions) {
+                for (const, region of, dirtyRegions) {
                     mainCtx.drawImage(;
                         layer.canvas);
                         region.x, region.y, region.width, region.height,);
         }
                         region.x, region.y, region.width, region.height); }
-                }
-            } else {  // Render full layer }
+} else {  // Render full layer }
                 mainCtx.drawImage(layer.canvas, 0, 0); }
-            }
-        }
+}
         
         mainCtx.restore();
     }
@@ -527,7 +500,7 @@ export class BasicLayerManager {
     getStats(): LayerStats { this.config.stats.cacheHitRate = this.config.stats.cachedLayers > 0 ?
             (this.config.stats.cachedLayers / this.config.stats.totalLayers) * 100 : 0;
              }
-        return { ...this.config.stats };
+        return { ...this.config.stats;
     }
 
     /**
@@ -540,26 +513,24 @@ export class BasicLayerManager {
         if (config.compositionMode !== undefined) this.config.compositionMode = config.compositionMode;
         if (config.blendOptimization !== undefined) this.config.blendOptimization = config.blendOptimization;
         if (config.layerFusion !== undefined) this.config.layerFusion = config.layerFusion; }
-    }
 
     /**
      * Handle canvas resize
      */
     handleCanvasResize(): void { // Resize all layer canvases
-        for(const layer of this.config.layers.values() {
+        for(const, layer of, this.config.layers.values() {
             if (layer.canvas) {
                 layer.canvas.width = this.canvas.width;
                 layer.canvas.height = this.canvas.height;
         }
                 layer.dirty = true; // Mark for re-render }
-            }
-        }
+}
     }
 
     /**
      * Clear all layers
      */
-    clearAllLayers(): void { for(const layer of this.config.layers.values() {
+    clearAllLayers(): void { for(const, layer of, this.config.layers.values() {
             if(layer.canvas && layer.context) {
                 
             }
@@ -573,4 +544,4 @@ export class BasicLayerManager {
      * Reset layer manager
      */
     reset(): void { this.clearAllLayers();''
-        this.config.layerCache.clear(') }
+        this.config.layerCache.clear(' }'

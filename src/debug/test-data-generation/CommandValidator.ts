@@ -7,11 +7,9 @@ export class CommandValidator {
     constructor(parent?: any) {
         // TypeScript implementation
     }
-    }
-        console.log('[CommandValidator] Initialized'); }
+        console.log('[CommandValidator] Initialized'); }'
     }
 
     public initialize(): void { // Implementation }
-    }
-'';
+
     public destroy(');

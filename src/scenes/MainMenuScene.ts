@@ -35,17 +35,20 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
     public menuInputHandler: any,
 
     constructor(gameEngine: any) {
-';'
+';
+
         super(gameEngine);''
         this.errorHandler = getErrorHandler()';
             { id: 'start', key: 'menu.start', action: () => this.startGame()'
             { id: 'shop', key: 'menu.shop', action: () => this.openShop()'
             { id: 'settings', key: 'menu.settings', action: () => this.openSettings()
 
+    ,}
     }
-    }'
-            { id: 'userInfo', key: 'menu.userInfo', action: () => this.openUserInfo() }'
-            { id: 'help', key: 'menu.help', action: () => this.openHelp() }
+
+            { id: 'userInfo', key: 'menu.userInfo', action: () => this.openUserInfo() ,}
+
+            { id: 'help', key: 'menu.help', action: () => this.openHelp() ,}
         ];
         
         // 表示状態管理
@@ -68,12 +71,12 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
             this.mainMenuRenderer = new MainMenuRenderer(this.gameEngine);
             this.usernameInputManager = new UsernameInputManager(this.gameEngine);
             this.dialogManager = new MainMenuDialogManager(this.gameEngine);''
-            this.menuInputHandler = new MenuInputHandler(this.gameEngine');'
-            '';
-            console.log('[MainMenuScene] サブコンポーネントを初期化しました');' }'
-        } catch (error) { this.errorHandler.handleError(error, {')'
-                context: 'MainMenuScene._initializeSubComponents') }
-            });
+            this.menuInputHandler = new MenuInputHandler(this.gameEngine);
+
+            console.log('[MainMenuScene] サブコンポーネントを初期化しました');' }
+
+        } catch (error) { this.errorHandler.handleError(error, {)'
+                context: 'MainMenuScene._initializeSubComponents' ,});
         }
     }
     
@@ -84,11 +87,11 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
             const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
             
             this.menuItems.forEach(item => { ); }
-                item.label = t(item.key); }'
+                item.label = t(item.key); }
+
             });''
-        } catch (error) { this.errorHandler.handleError(error, {')'
-                context: 'MainMenuScene.updateMenuLabels') }
-            });
+        } catch (error) { this.errorHandler.handleError(error, {)'
+                context: 'MainMenuScene.updateMenuLabels' ,});
         }
     }
     
@@ -108,36 +111,38 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
             
             // リサイズハンドラーを登録
             if(this.gameEngine.responsiveCanvas) {
-                '';
-                this.resizeCallback = (') => { '
-            }'
-                    if (this.mainMenuRenderer && typeof this.mainMenuRenderer.handleResize === 'function') { }
+
+                this.resizeCallback = (') => {;
+            }
+
+                    if(this.mainMenuRenderer && typeof, this.mainMenuRenderer.handleResize === 'function) { }'
                         this.mainMenuRenderer.handleResize(); }
-                    }'
-                };''
-                this.gameEngine.responsiveCanvas.onResizeCallbacks.push(this.resizeCallback');
+};''
+                this.gameEngine.responsiveCanvas.onResizeCallbacks.push(this.resizeCallback);
             }
             ';
             // Playwright テスト用の裏道チェック
             const testUsername = localStorage.getItem('testUsername'');''
-            const skipUsernameInput = localStorage.getItem('skipUsernameInput'');'
-            '';
-            if(testUsername && skipUsernameInput === 'true') {
+            const skipUsernameInput = localStorage.getItem('skipUsernameInput'');
+
+            if(testUsername && skipUsernameInput === 'true) {'
                 // テスト用ユーザー名を設定
                 this.gameEngine.playerData.username = testUsername;''
                 this.gameEngine.playerData.save()';
-                console.log('[Test Mode] Username auto-set:', testUsername');
+                console.log('[Test Mode] Username auto-set:', testUsername);
                 ';
                 // localStorageをクリア（一回限りの処理）
-                localStorage.removeItem('testUsername'');'
-            }'
-                localStorage.removeItem('skipUsernameInput'); }
+                localStorage.removeItem('testUsername'');
+
+            }
+
+                localStorage.removeItem('skipUsernameInput); }'
             }
             // 初回起動時にユーザー名が未設定の場合、ユーザー名入力を表示
             else if (!this.gameEngine.playerData.username) { this.showUsernameInput();' }'
-            } catch (error) { this.errorHandler.handleError(error, {')'
-                context: 'MainMenuScene.enter') }
-            });
+
+            } catch (error) { this.errorHandler.handleError(error, {)'
+                context: 'MainMenuScene.enter' ,});
         }
     }
     
@@ -154,9 +159,8 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
                     this.gameEngine.responsiveCanvas.onResizeCallbacks.splice(index, 1); }
                 }
                 this.resizeCallback = undefined;''
-            } catch (error) { this.errorHandler.handleError(error, {')'
-                context: 'MainMenuScene.exit') }
-            });
+            } catch (error) { this.errorHandler.handleError(error, {)'
+                context: 'MainMenuScene.exit' ,});
         }
     }
     
@@ -164,12 +168,11 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      * 更新処理
      */
     update(__deltaTime: number): void { // 特に更新処理は不要 }
-    }
     
     /**
      * 描画処理
      */''
-    render(context: CanvasRenderingContext2D'): void { try {
+    render(context: CanvasRenderingContext2D): void { try {
             const canvas = this.gameEngine.canvas;
             ';
             // 背景
@@ -182,13 +185,12 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
             
             }
                 this.usernameInputManager.renderUsernameInput(context); }
-            } else if (this.showingDataClearConfirmation) { this.dialogManager.renderDataClearConfirmation(context); }
-            } else if (this.showingControlsHelp) { this.dialogManager.renderControlsHelp(context); }
-            } else if (this.showingUserInfo) { this.dialogManager.renderUserInfo(context); }'
+            } else if (this.showingDataClearConfirmation) { this.dialogManager.renderDataClearConfirmation(context); } else if (this.showingControlsHelp) { this.dialogManager.renderControlsHelp(context); } else if (this.showingUserInfo) { this.dialogManager.renderUserInfo(context); }
+
             } else { this.mainMenuRenderer.renderMainMenu(context, this.selectedMenuIndex, this.menuItems);' }'
-            } catch (error) { this.errorHandler.handleError(error, {')'
-                context: 'MainMenuScene.render') }
-            });
+
+            } catch (error) { this.errorHandler.handleError(error, {)'
+                context: 'MainMenuScene.render' ,});
         }
     }
     
@@ -200,58 +202,59 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
                 
             }
                 this.handleUsernameInput(event); }
-            } else if (this.showingDataClearConfirmation) { this.handleDataClearConfirmationInput(event); }
-            } else if (this.showingControlsHelp) { this.handleControlsHelpInput(event); }
-            } else if (this.showingUserInfo) { this.handleUserInfoInput(event); }'
+            } else if (this.showingDataClearConfirmation) { this.handleDataClearConfirmationInput(event); } else if (this.showingControlsHelp) { this.handleControlsHelpInput(event); } else if (this.showingUserInfo) { this.handleUserInfoInput(event); }
+
             } else { this.handleMainMenuInput(event);' }'
-            } catch (error) { this.errorHandler.handleError(error, {')'
-                context: 'MainMenuScene.handleInput') }
-            });
+
+            } catch (error) { this.errorHandler.handleError(error, {)'
+                context: 'MainMenuScene.handleInput' ,});
         }
     }
     
     /**
      * メインメニューの入力処理'
      */''
-    handleMainMenuInput(event: Event'): void { const keyboardEvent = event as KeyboardEvent;
-        const mouseEvent = event as MouseEvent;'
-        '';
-        if(event.type === 'keydown') {'
-            '';
-            switch (keyboardEvent.code') {''
+    handleMainMenuInput(event: Event): void { const keyboardEvent = event as KeyboardEvent;
+        const mouseEvent = event as MouseEvent;
+
+        if(event.type === 'keydown) {'
+
+            switch(keyboardEvent.code) {''
                 case 'ArrowUp':'';
-                    this.moveSelection(-1');'
+                    this.moveSelection(-1);
+
                     break;''
                 case 'ArrowDown':'';
-                    this.moveSelection(1');'
+                    this.moveSelection(1);
+
                     break;''
                 case 'Enter':'';
                     this.selectMenuItem()';
                 case 'Escape':')';
                     console.log('ゲーム終了'');
         }
-                    break; }'
+                    break; }
+
             }''
-        } else if (event.type === 'click') { this.menuInputHandler.handleMainMenuClick(
+        } else if(event.type === 'click) { this.menuInputHandler.handleMainMenuClick('
                 mouseEvent);
                 this.selectedMenuIndex, );
                 this.menuItems);
                 (index: number) => { 
-                    this.selectedMenuIndex = index }
+                    this.selectedMenuIndex = index ,}
                     this.selectMenuItem(); }
-                };
-        }
+                }
     }
     
     /**
      * ユーザー名入力の入力処理'
      */''
-    handleUsernameInput(event: Event'): void { const keyboardEvent = event as KeyboardEvent;
-        const mouseEvent = event as MouseEvent;'
-        '';
-        if(event.type === 'keydown') {'
-            '';
-            switch (keyboardEvent.code') {''
+    handleUsernameInput(event: Event): void { const keyboardEvent = event as KeyboardEvent;
+        const mouseEvent = event as MouseEvent;
+
+        if(event.type === 'keydown) {'
+
+            switch(keyboardEvent.code) {''
                 case 'Enter':'';
                     this.confirmUsername(''';
                 case 'Escape':'';
@@ -261,71 +264,75 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
                     break;
                 default:';
                     if (keyboardEvent.key.length === 1) {'
-        }'
-                        this.usernameInputManager.handleTextInput(keyboardEvent.key'), }
+        ,}
+
+                        this.usernameInputManager.handleTextInput(keyboardEvent.key), }
                     }
-                    break;'
+                    break;
+
             }''
-        } else if (event.type === 'click') { this.menuInputHandler.handleUsernameInputClick()
+        } else if(event.type === 'click) { this.menuInputHandler.handleUsernameInputClick()'
                 mouseEvent);
                 () => this.confirmUsername(),
                 () => this.cancelUsernameInput(); }
-        }
-    }
+}
     
     /**
      * データクリア確認画面の入力処理'
      */''
-    handleDataClearConfirmationInput(event: Event'): void { const keyboardEvent = event as KeyboardEvent;
-        const mouseEvent = event as MouseEvent;'
-        '';
+    handleDataClearConfirmationInput(event: Event): void { const keyboardEvent = event as KeyboardEvent;
+        const mouseEvent = event as MouseEvent;
+
         if(event.type === 'keydown'') {'
-            '';
-            if (keyboardEvent.code === 'Escape') {'
-        }'
-                this.cancelDataClear() }'
-        } else if (event.type === 'click') { this.menuInputHandler.handleDataClearConfirmationClick()
+
+            if(keyboardEvent.code === 'Escape) {'
+        }
+
+                this.cancelDataClear() }
+
+        } else if(event.type === 'click) { this.menuInputHandler.handleDataClearConfirmationClick()'
                 mouseEvent);
                 () => this.executeDataClear(),
                 () => this.cancelDataClear(); }
-        }
-    }
+}
     
     /**
      * 操作説明画面の入力処理'
      */''
-    handleControlsHelpInput(event: Event'): void { const keyboardEvent = event as KeyboardEvent;
-        const mouseEvent = event as MouseEvent;'
-        '';
+    handleControlsHelpInput(event: Event): void { const keyboardEvent = event as KeyboardEvent;
+        const mouseEvent = event as MouseEvent;
+
         if(event.type === 'keydown'') {'
-            '';
-            if (keyboardEvent.code === 'Escape') {'
-        }'
-                this.closeControlsHelp() }'
-        } else if (event.type === 'click') { this.menuInputHandler.handleBackButtonClick()
+
+            if(keyboardEvent.code === 'Escape) {'
+        }
+
+                this.closeControlsHelp() }
+
+        } else if(event.type === 'click) { this.menuInputHandler.handleBackButtonClick()'
                 mouseEvent);
                 () => this.closeControlsHelp(),
                 this.gameEngine.canvas.height - 80;
             ); }
-        }
-    }
+}
     
     /**
      * ユーザー情報画面の入力処理'
      */''
-    handleUserInfoInput(event: Event'): void { const keyboardEvent = event as KeyboardEvent;
-        const mouseEvent = event as MouseEvent;'
-        '';
+    handleUserInfoInput(event: Event): void { const keyboardEvent = event as KeyboardEvent;
+        const mouseEvent = event as MouseEvent;
+
         if(event.type === 'keydown'') {'
-            '';
-            if (keyboardEvent.code === 'Escape') {'
-        }'
-                this.closeUserInfo() }'
-        } else if (event.type === 'click') { this.menuInputHandler.handleBackButtonClick()
+
+            if(keyboardEvent.code === 'Escape) {'
+        }
+
+                this.closeUserInfo() }
+
+        } else if(event.type === 'click) { this.menuInputHandler.handleBackButtonClick()'
                 mouseEvent);
                 () => this.closeUserInfo(); }
-        }
-    }
+}
     
     // ========================================
     // メニュー操作メソッド
@@ -343,7 +350,6 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
         }
             this.selectedMenuIndex = this.menuItems.length - 1; }
         } else if (this.selectedMenuIndex >= this.menuItems.length) { this.selectedMenuIndex = 0; }
-        }
     }
     
     /**
@@ -351,7 +357,6 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      */
     selectMenuItem(): void { if (this.selectedMenuIndex >= 0 && this.selectedMenuIndex < this.menuItems.length) {
             this.menuItems[this.selectedMenuIndex].action(); }
-        }
     }
     
     /**
@@ -359,32 +364,32 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      */
     startGame(): void { if (!this.gameEngine.playerData.username) {''
             this.showUsernameInput()';
-        this.gameEngine.sceneManager.switchScene('stageSelect'); }
-    }
+        this.gameEngine.sceneManager.switchScene('stageSelect); }'
     
     /**
      * 設定画面を開く
      * NavigationContextManagerを使用してコンテキストを管理'
      */''
     openSettings(''';
-                accessMethod: 'menu_click','';
-                sourceScene: 'MainMenuScene');
+                accessMethod: 'menu_click',
+                sourceScene: 'MainMenuScene);
             })'
-            '';
-            const success = this.gameEngine.sceneManager.switchScene('settings', contextData);'
-            '';
-            if(!success') {'
-                ';'
-            }'
-                console.error('[MainMenuScene] Failed to switch to settings scene''); }
-            }'
-            '';
-            console.log('[MainMenuScene] Settings opened from menu');''
-        } catch (error) { ''
-            console.error('[MainMenuScene] Error opening settings:', error');'
-            this.errorHandler.handleError(error, {')'
-                context: 'MainMenuScene.openSettings') }
-            });
+
+            const success = this.gameEngine.sceneManager.switchScene('settings', contextData);
+
+            if(!success) {'
+                ';
+
+            }
+
+                console.error('[MainMenuScene] Failed, to switch, to settings, scene''); }
+            }
+
+            console.log('[MainMenuScene] Settings, opened from, menu');''
+        } catch (error) { console.error('[MainMenuScene] Error opening settings:', error);
+
+            this.errorHandler.handleError(error, {)'
+                context: 'MainMenuScene.openSettings' ,});
         }
     }
     
@@ -392,21 +397,21 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      * ユーザー情報画面を開く
      */
     openUserInfo(): void { this.showingUserInfo = true; }
-    }
     
     /**
      * ショップ画面を開く'
      */''
     openShop()';
-            const success = this.gameEngine.sceneManager.switchScene('shop');''
-            if(!success') {'
-                '';
-                console.error('[MainMenuScene] Failed to switch to shop scene');
-            }'
+            const success = this.gameEngine.sceneManager.switchScene('shop);''
+            if(!success) {'
+
+                console.error('[MainMenuScene] Failed, to switch, to shop, scene');
+            }
+
                 // フォールバック: エラーメッセージ表示' }'
-            } catch (error) { this.errorHandler.handleError(error, {')'
-                context: 'MainMenuScene.openShop') }
-            });
+
+            } catch (error) { this.errorHandler.handleError(error, {)'
+                context: 'MainMenuScene.openShop' ,});
         }
     }
     
@@ -415,25 +420,26 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      * NavigationContextManagerを使用してコンテキストを管理'
      */''
     openHelp(''';
-                accessMethod: 'menu_click','';
-                sourceScene: 'MainMenuScene',
+                accessMethod: 'menu_click',
+                sourceScene: 'MainMenuScene';
                 standard: true // 標準ヘルプモード);
             })
-            '';
-            const success = this.gameEngine.sceneManager.switchScene('help', contextData);'
-            '';
-            if(!success') {'
-                ';'
-            }'
-                console.error('[MainMenuScene] Failed to switch to help scene''); }
-            }'
-            '';
-            console.log('[MainMenuScene] Help opened from menu');''
-        } catch (error) { ''
-            console.error('[MainMenuScene] Error opening help:', error');'
-            this.errorHandler.handleError(error, {')'
-                context: 'MainMenuScene.openHelp') }
-            });
+
+            const success = this.gameEngine.sceneManager.switchScene('help', contextData);
+
+            if(!success) {'
+                ';
+
+            }
+
+                console.error('[MainMenuScene] Failed, to switch, to help, scene''); }
+            }
+
+            console.log('[MainMenuScene] Help, opened from, menu');''
+        } catch (error) { console.error('[MainMenuScene] Error opening help:', error);
+
+            this.errorHandler.handleError(error, {)'
+                context: 'MainMenuScene.openHelp' ,});
         }
     }
     
@@ -446,14 +452,12 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      */
     showUsernameInput(): void { this.showingUsernameInput = true;
         this.usernameInputManager.setUsernameInput(this.gameEngine.playerData.username); }
-    }
     
     /**
      * ユーザー名を確定
      */
     confirmUsername(): void { if(this.usernameInputManager.confirmUsername() {
             this.showingUsernameInput = false; }
-        }
     }
     
     /**
@@ -461,7 +465,6 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      */
     cancelUsernameInput(): void { if (!this.gameEngine.playerData.username && !this.usernameInputManager.isEditingUsername) {
             return; }
-        }
         
         this.showingUsernameInput = false;
         this.usernameInputManager.clearInput();
@@ -471,19 +474,16 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      * ユーザー名変更
      */
     changeUsername(): void { this.showUsernameInput(); }
-    }
     
     /**
      * ユーザー情報画面を閉じる
      */
     closeUserInfo(): void { this.showingUserInfo = false; }
-    }
     
     /**
      * データクリア確認画面を表示
      */
     showDataClearConfirmation(): void { this.showingDataClearConfirmation = true; }
-    }
     
     /**
      * データクリアを実行
@@ -491,20 +491,17 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
     executeDataClear(): void { if(this.dialogManager.executeDataClear() {
             this.showingDataClearConfirmation = false;
             this.showUsernameInput(); }
-        }
     }
     
     /**
      * データクリアをキャンセル
      */
     cancelDataClear(): void { this.showingDataClearConfirmation = false; }
-    }
     
     /**
      * 操作説明画面を表示
      */
     showControlsHelp(): void { this.showingControlsHelp = true; }
-    }
     
     /**
      * 操作説明画面を閉じる

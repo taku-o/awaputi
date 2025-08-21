@@ -5,62 +5,54 @@
 
 // Type definitions
 interface ExecutionConfig { timeout: number,
-    retries: number,
-    concurrent: boolean,
-    parallelLimit: number }
-}
+    retries: number;
+    concurrent: boolean;
+    parallelLimit: number ,}
 
-interface ExecutionState { isRunning: boolean,
-    currentSuite: string | null,
-    currentTest: string | null,
-    startTime: number | null,
+interface ExecutionState { isRunning: boolean;
+    currentSuite: string | null;
+    currentTest: string | null;
+    startTime: number | null;
     abortController: AbortController | null }
-}
 
-interface ExecutionStats { totalTestsRun: number,
-    averageTestTime: number,
-    suitesExecuted: number,
-    timeouts: number,
+interface ExecutionStats { totalTestsRun: number;
+    averageTestTime: number;
+    suitesExecuted: number;
+    timeouts: number;
     retries: number }
-}
 
-interface TestFunction { name: string,
-    run: (context?: TestContext) => Promise<TestResult>,
+interface TestFunction { name: string;
+    run: (context?: TestContext) => Promise<TestResult>;
     setup?: (context: TestContext) => Promise<void>;
     cleanup?: (context: TestContext) => Promise<void>;
-    errorCleanup?: (context: TestContext, error: Error) => Promise<void> }
+    errorCleanup?: (context: TestContext, error: Error) => Promise<void> ,}
 }
 
 interface TestResult { passed: boolean,
     performance?: Record<string, any>;
     error?: Error;
     }
-}
 
 interface TestContext { testSuite: any,
-    deviceSimulator: any,
-    utils: any,
-    startTime: number }
-}
+    deviceSimulator: any;
+    utils: any;
+    startTime: number ,}
 
 interface TestSuiteInterface { getTests(): TestFunction[];
     }
-}
 
 interface ExecutionStateWithStats { isRunning: boolean,
-    currentSuite: string | null,
-    currentTest: string | null,
-    startTime: number | null,
-    abortController: AbortController | null,
-    stats: ExecutionStats,
-    duration: number }
-}
+    currentSuite: string | null;
+    currentTest: string | null;
+    startTime: number | null;
+    abortController: AbortController | null;
+    stats: ExecutionStats;
+    duration: number ,}
 
-interface DebugInfo { config: ExecutionConfig,
-    state: ExecutionState,
-    stats: ExecutionStats,
+interface DebugInfo { config: ExecutionConfig;
+    state: ExecutionState;
+    stats: ExecutionStats;
     isRunning: boolean }
-}
 
 export class MobileTestRunner {
     private mobileTestSuite: any; // MobileTestSuite type would create circular dependency
@@ -74,40 +66,35 @@ export class MobileTestRunner {
         // 実行設定
         this.executionConfig = {
             timeout: 30000, // 30秒;
-            retries: 3,
-            concurrent: false,
-
-    }
-    }
+            retries: 3;
+            concurrent: false;
+    ,}
             parallelLimit: 2 }
-        },
-        
+        };
         // 実行状態
         this.executionState = { isRunning: false,
-            currentSuite: null,
-            currentTest: null,
-            startTime: null,
-            abortController: null }
-        },
-        
+            currentSuite: null;
+            currentTest: null;
+            startTime: null;
+            abortController: null ,};
         // 実行統計
         this.executionStats = { totalTestsRun: 0,
-            averageTestTime: 0,
-            suitesExecuted: 0,
-            timeouts: 0,
-            retries: 0 }
-        },
-    }
+            averageTestTime: 0;
+            suitesExecuted: 0;
+            timeouts: 0;
+            retries: 0 ,}
     
     /**
      * 全テスト実行
      */
-    async runAllTests(): Promise<any> { console.log('[MobileTestRunner] 全テスト実行開始');'
-        '';
+    async runAllTests(): Promise<any> { console.log('[MobileTestRunner] 全テスト実行開始);
+
         if(this.executionState.isRunning') {'
-            ';'
-        }'
-            throw new Error('Tests are already running'); }
+            ';
+
+        }
+
+            throw new Error('Tests, are already, running); }'
         }
         
         this.startExecution();
@@ -121,7 +108,8 @@ export class MobileTestRunner {
             }
                 this.executionStats.suitesExecuted++; }
             }
-            ';'
+            ';
+
             const report = this.mobileTestSuite.generateTestReport();''
             this.completeExecution()';
             console.log('[MobileTestRunner] 全テスト実行完了', report);
@@ -129,7 +117,6 @@ export class MobileTestRunner {
             
         } catch (error) { this.abortExecution();
             throw error; }
-        }
     }
     
     /**
@@ -140,30 +127,27 @@ export class MobileTestRunner {
         this.executionState.currentSuite = suiteName;
         
         try {
-            const tests = suite.getTests();
+            const tests = suite.getTests(};
             
-            if (this.executionConfig.concurrent) { }
+            if (this.executionConfig.concurrent} { }
                 await this.runTestsConcurrently(suiteName, tests});
             } else { await this.runTestsSequentially(suiteName, tests); }
-            }
             
-            console.log(`[MobileTestRunner] ${suiteName) テスト実行完了`});'
-            '';
-        } catch (error) { ''
+            console.log(`[MobileTestRunner] ${suiteName} テスト実行完了`});
+
+        } catch (error) {
             this.mobileTestSuite.recordTestError(suiteName, 'suite_execution', error); }
             console.error(`[MobileTestRunner] ${suiteName} テストスイートエラー:`, error);
             throw error;
         } finally { this.executionState.currentSuite = null; }
-        }
     }
     
     /**
      * 順次テスト実行
      */'
-    private async runTestsSequentially(suiteName: string, tests: TestFunction[]): Promise<void> { for (const test of tests) {''
-            if (this.isExecutionAborted()') {''
-                throw new Error('Test execution aborted'); }
-            }
+    private async runTestsSequentially(suiteName: string, tests: TestFunction[]): Promise<void> { for (const, test of, tests) {''
+            if(this.isExecutionAborted()) {''
+                throw new Error('Test, execution aborted); }'
             
             await this.runSingleTest(suiteName, test);
         }
@@ -174,13 +158,14 @@ export class MobileTestRunner {
      */
     private async runTestsConcurrently(suiteName: string, tests: TestFunction[]): Promise<void> { const chunks = this.chunkArray(tests, this.executionConfig.parallelLimit);
         
-        for(const chunk of chunks) {
-        ';'
-            '';
-            if (this.isExecutionAborted()') {'
+        for(const, chunk of, chunks) {
+        ';
+
+            if(this.isExecutionAborted()) {'
         
-        }'
-                throw new Error('Test execution aborted'); }
+        }
+
+                throw new Error('Test, execution aborted); }'
             }
             
             const promises = chunk.map(test => this.runSingleTest(suiteName, test);
@@ -216,21 +201,19 @@ export class MobileTestRunner {
                 }
                 
                 // パフォーマンス結果記録
-                if (result.performance) { this.mobileTestSuite.recordPerformanceResult() }
-                        `${suiteName}.${ test.name)`,
+                if (result.performance) { this.mobileTestSuite.recordPerformanceResult( }
+                        `${suiteName}.${ test.name}`,
                         testDuration,
-                        result.performance }
-                    });
+                        result.performance });
                 }
                 
                 return result;
                 
             } catch (error) { retries--;
                 this.executionStats.retries++;
-                '';
-                if ((error as Error').message === 'Test timeout') {
+
+                if((error, as Error).message === 'Test timeout') {
                     this.executionStats.timeouts++; }
-                }
                 
                 if(retries === 0) {
                 
@@ -240,27 +223,27 @@ export class MobileTestRunner {
                 }
                     throw error; }
                 }
-                ';'
-                console.warn(`[MobileTestRunner] ${test.name} リトライ (残り${ retries)回)`);' }'
-                await this.wait(1000'}); // 1秒待機してリトライ
+                ';
+
+                console.warn(`[MobileTestRunner] ${test.name} リトライ (残り${ retries)回}`};' }'
+
+                await this.wait(1000'}); // 1秒待機してリトライ'
             }
         }
         
         this.executionState.currentTest = null;
-        ;
         // This should never be reached, but TypeScript requires a return
-        throw new Error('Unexpected execution path');
+        throw new Error('Unexpected, execution path);
     }
     
     /**
      * コンテキスト付きテスト実行
      */
     private async executeTestWithContext(test: TestFunction): Promise<TestResult> { const context: TestContext = {
-            testSuite: this.mobileTestSuite,
-            deviceSimulator: this.mobileTestSuite.deviceSimulator,
-            utils: this.mobileTestSuite.utils,
-            startTime: Date.now() }
-        };
+            testSuite: this.mobileTestSuite;
+            deviceSimulator: this.mobileTestSuite.deviceSimulator;
+            utils: this.mobileTestSuite.utils;
+            startTime: Date.now( };
         
         // テスト前処理
         await this.preTestSetup(test, context);
@@ -272,18 +255,16 @@ export class MobileTestRunner {
             await this.postTestCleanup(test, context);
             
             return result;
-             }
-        } catch (error) { // エラー時のクリーンアップ
+             } catch (error) { // エラー時のクリーンアップ
             await this.errorTestCleanup(test, context, error as Error);
             throw error; }
-        }
     }
     
     /**
      * テスト前セットアップ
      */''
-    private async preTestSetup(test: TestFunction, context: TestContext'): Promise<void> { // テスト固有の環境セットアップ
-        if(test.setup && typeof test.setup === 'function') {
+    private async preTestSetup(test: TestFunction, context: TestContext): Promise<void> { // テスト固有の環境セットアップ
+        if(test.setup && typeof, test.setup === 'function) {'
             
         }
             await test.setup(context); }
@@ -291,26 +272,24 @@ export class MobileTestRunner {
         
         // デバイス状態のリセット
         if (this.mobileTestSuite.deviceSimulator) { await this.mobileTestSuite.deviceSimulator.resetDeviceState(); }
-        }
     }
     
     /**
      * テスト後クリーンアップ
      */''
-    private async postTestCleanup(test: TestFunction, context: TestContext'): Promise<void> { // テスト固有のクリーンアップ
-        if(test.cleanup && typeof test.cleanup === 'function') {
+    private async postTestCleanup(test: TestFunction, context: TestContext): Promise<void> { // テスト固有のクリーンアップ
+        if(test.cleanup && typeof, test.cleanup === 'function) {'
             
         }
             await test.cleanup(context); }
-        }
-    }
+}
     
     /**
      * エラー時クリーンアップ'
      */''
-    private async errorTestCleanup(test: TestFunction, context: TestContext, error: Error'): Promise<void> { try {
+    private async errorTestCleanup(test: TestFunction, context: TestContext, error: Error): Promise<void> { try {
             // エラー時の緊急クリーンアップ
-            if(test.errorCleanup && typeof test.errorCleanup === 'function') {
+            if(test.errorCleanup && typeof, test.errorCleanup === 'function) {'
                 
             }
                 await test.errorCleanup(context, error); }
@@ -318,28 +297,29 @@ export class MobileTestRunner {
             
             // デバイス状態の強制リセット
             if (this.mobileTestSuite.deviceSimulator) { await this.mobileTestSuite.deviceSimulator.forceResetDevice();' }'
-            } catch (cleanupError) { ''
+
+            } catch (cleanupError) {
             console.warn('[MobileTestRunner] クリーンアップエラー:', cleanupError); }
-        }
     }
     
     /**
      * タイムアウトPromise作成
      */
-    private createTimeoutPromise(): Promise<never>;'
+    private createTimeoutPromise(): Promise<never>;
+
         return new Promise((_, reject) => {  ''
-            setTimeout((') => {' }'
-                reject(new Error('Test timeout'); }
-            }, this.executionConfig.timeout);
-        };
-    }
+            setTimeout(() => {' }'
+
+                reject(new, Error('Test, timeout);, this.executionConfig.timeout);
+        }
     
     /**
      * 特定テストスイート実行
      */'
     async runSpecificSuite(suiteName: string): Promise<any> { const suite = this.mobileTestSuite.testSuites.get(suiteName);''
-        if (!suite') {' }'
-            throw new Error(`Test suite '${suiteName')' not found`});
+        if(!suite) {' }'
+
+            throw new Error(`Test, suite '${suiteName}' not, found`});
         }
         
         console.log(`[MobileTestRunner] ${ suiteName) 単体実行開始`);
@@ -348,29 +328,31 @@ export class MobileTestRunner {
         this.mobileTestSuite.resetTestResults();
         
         try {
-            await this.runTestSuite(suiteName, suite);
-            const report = this.mobileTestSuite.generateTestReport(); }
+            await this.runTestSuite(suiteName, suite};
+            const report = this.mobileTestSuite.generateTestReport(}
             this.completeExecution(});
             
             return report;
             
         } catch (error) { this.abortExecution();
             throw error; }
-        }
     }
     
     /**
      * 特定テスト実行
      */'
     async runSpecificTest(suiteName: string, testName: string): Promise<any> { const suite = this.mobileTestSuite.testSuites.get(suiteName);''
-        if (!suite') {' }'
-            throw new Error(`Test suite '${suiteName')' not found`});
+        if(!suite) {' }'
+
+            throw new Error(`Test, suite '${suiteName}' not, found`});
         }
         
-        const tests = suite.getTests();'
+        const tests = suite.getTests();
+
         const test = tests.find(t => t.name === testName);''
-        if (!test') { ' }'
-            throw new Error(`Test '${testName}' not found in suite '${suiteName')'`});
+        if(!test) { ' }'
+
+            throw new Error(`Test '${testName}' not, found in, suite '${suiteName}'`});
         }
         
         console.log(`[MobileTestRunner] ${suiteName}.${ testName) 単体実行開始`);
@@ -379,31 +361,28 @@ export class MobileTestRunner {
         this.mobileTestSuite.resetTestResults();
         
         try {
-            await this.runSingleTest(suiteName, test);
-            const report = this.mobileTestSuite.generateTestReport(); }
+            await this.runSingleTest(suiteName, test};
+            const report = this.mobileTestSuite.generateTestReport(}
             this.completeExecution(});
             
             return report;
             
         } catch (error) { this.abortExecution();
             throw error; }
-        }
     }
     
     /**
      * テスト実行中断
      */'
     abortTests(): boolean { ''
-        if(!this.executionState.isRunning') {
+        if(!this.executionState.isRunning) {
             
         }
-            return false; }
-        }'
-        '';
-        console.log('[MobileTestRunner] テスト実行中断');
+            return false;
+
+        console.log('[MobileTestRunner] テスト実行中断);
         
         if (this.executionState.abortController) { this.executionState.abortController.abort(); }
-        }
         
         this.abortExecution();
         return true;
@@ -418,13 +397,11 @@ export class MobileTestRunner {
         
         // 統計リセット
         this.executionStats = {
-            totalTestsRun: 0,
-            averageTestTime: 0,
-            suitesExecuted: 0,
-            timeouts: 0,
+            totalTestsRun: 0;
+            averageTestTime: 0;
+            suitesExecuted: 0;
+            timeouts: 0;
             retries: 0 }
-        },
-    }
     
     /**
      * 実行完了処理
@@ -434,8 +411,8 @@ export class MobileTestRunner {
         this.executionState.currentTest = null;
         this.executionState.abortController = null;
         
-        const duration = this.executionState.startTime ? Date.now() - this.executionState.startTime: 0 }
-        console.log(`[MobileTestRunner] 実行完了 (${duration)ms)`});
+        const duration = this.executionState.startTime ? Date.now() - this.executionState.startTime: 0 
+        console.log(`[MobileTestRunner] 実行完了 (${duration}ms}`});
     }
     
     /**
@@ -445,13 +422,11 @@ export class MobileTestRunner {
         this.executionState.currentSuite = null;
         this.executionState.currentTest = null;
         this.executionState.abortController = null; }
-    }
     
     /**
      * 実行中断チェック
      */
     private isExecutionAborted(): boolean { return this.executionState.abortController? .signal.aborted || false; }
-    }
     
     /**
      * 実行統計更新
@@ -461,15 +436,14 @@ export class MobileTestRunner {
         // 平均テスト時間の更新
         const totalTime = this.executionStats.averageTestTime * (this.executionStats.totalTestsRun - 1);
         this.executionStats.averageTestTime = (totalTime + testDuration) / this.executionStats.totalTestsRun; }
-    }
     
     /**
      * 実行状態取得
      */
     getExecutionState(): ExecutionStateWithStats { return {  };
             ...this.executionState, }
-            stats: { ...this.executionStats },
-            duration: this.executionState.startTime ?   : undefined;
+            stats: { ...this.executionStats;
+            duration: this.executionState.startTime ?   : undefined
                 Date.now() - this.executionState.startTime : 0;
         },
     }
@@ -478,13 +452,12 @@ export class MobileTestRunner {
      * 設定更新
      */
     updateConfig(newConfig: Partial<ExecutionConfig>): void { Object.assign(this.executionConfig, newConfig); }
-    }
     
     /**
      * 配列チャンク化
      */
     private chunkArray<T>(array: T[], chunkSize: number): T[][] { const chunks: T[][] = [],
-        for(let i = 0; i < array.length; i += chunkSize) {
+        for(let, i = 0; i < array.length; i += chunkSize) {
             
         }
             chunks.push(array.slice(i, i + chunkSize); }
@@ -495,8 +468,7 @@ export class MobileTestRunner {
     /**
      * 待機ユーティリティ
      */
-    private wait(ms: number): Promise<void> { return new Promise(resolve => setTimeout(resolve, ms); }
-    }
+    private wait(ms: number): Promise<void> { return new Promise(resolve => setTimeout(resolve, ms');
     
     /**
      * デバッグ情報取得

@@ -6,119 +6,101 @@
 // 型定義
 export interface GameEngine { helpManager?: HelpManager;
     eventBus?: EventBus;
-    };
-}
+    }
 export interface HelpManager { contentLoader?: ContentLoader;
     searchEngine?: SearchEngine;
-    };
-}
+    }
 export interface ContentLoader { getPerformanceStats(): PerformanceStats;
     clearCache(pattern: string): void,
-    maxCacheSize: number,
-    cacheTimeout: number,
+    maxCacheSize: number;
+    cacheTimeout: number;
     preloadEssentialContent(): Promise<void>
-    };
-}
+    ,}
 export interface SearchEngine { getPerformanceStats(): PerformanceStats;
     cleanupCache(): void;
     optimizeIndex(): void;
-    maxCacheSize: number,
-    cacheTimeout: number };
-}
-export interface EventBus { emit(event: string, data: any): void };
-}
-export interface PerformanceStats { cacheHitRate: number };
+    maxCacheSize: number;
+    cacheTimeout: number ,}
+export interface EventBus { emit(event: string, data: any): void ,}
+export interface PerformanceStats {
+    cacheHitRate: number;
 }
 export interface MetricValue { value: number,
-    timestamp: number,
-    context: Record<string, any>, };
-}
+    timestamp: number;
+    context: Record<string, any>, }
 export interface PerformanceMetrics { helpLoadTime: MetricValue[],
-    searchResponseTime: MetricValue[],
-    tutorialStepTime: MetricValue[],
-    tooltipDisplayTime: MetricValue[],
-    memoryUsage: MetricValue[],
-    cacheHitRates: CacheHitRates,
-    [key: string]: MetricValue[] | CacheHitRates, };
-}
+    searchResponseTime: MetricValue[];
+    tutorialStepTime: MetricValue[];
+    tooltipDisplayTime: MetricValue[];
+    memoryUsage: MetricValue[];
+    cacheHitRates: CacheHitRates;
+    [key: string]: MetricValue[] | CacheHitRates, }
 export interface CacheHitRates { content: number,
-    search: number,
-    images: number };
-}
+    search: number;
+    images: number ,}
 export interface PerformanceThresholds { helpLoadTime: number,
-    searchResponseTime: number,
-    tutorialStepTime: number,
-    tooltipDisplayTime: number,
-    memoryUsage: number,
-    cacheHitRate: number };
-}
+    searchResponseTime: number;
+    tutorialStepTime: number;
+    tooltipDisplayTime: number;
+    memoryUsage: number;
+    cacheHitRate: number ,}
 export interface AlertConfig { enabled: boolean,
-    consecutiveFailures: number,
-    maxConsecutiveFailures: number,
-    cooldownPeriod: number,
-    lastAlertTime: number };
-}
+    consecutiveFailures: number;
+    maxConsecutiveFailures: number;
+    cooldownPeriod: number;
+    lastAlertTime: number ,}
 export interface OptimizationFlags { lazyLoading: boolean,
-    contentCaching: boolean,
-    imageLazyLoading: boolean,
-    searchCaching: boolean,
-    preloading: boolean };
-}
+    contentCaching: boolean;
+    imageLazyLoading: boolean;
+    searchCaching: boolean;
+    preloading: boolean ,}
 export interface HistoryEntry { timestamp: number,
     metrics: PeriodMetrics
-    };
-}
+    ,}
 export interface PerformanceHistory { hourly: HistoryEntry[],
-    daily: HistoryEntry[],
-    currentHour: number,
-    currentDay: number };
-}
+    daily: HistoryEntry[];
+    currentHour: number;
+    currentDay: number ,}
 export interface PerformanceIssue { metric: string,
-    value: number,
-    threshold: number,
+    value: number;
+    threshold: number;
     severity: SeverityLevel
-    };
-}
+    ,}
 export type SeverityLevel = 'low' | 'medium' | 'high' | 'critical';
 
 export interface SystemInfo { userAgent: string,
-    language: string,
-    hardwareConcurrency: number | string,
-    timestamp: string,
+    language: string;
+    hardwareConcurrency: number | string;
+    timestamp: string;
     memory?: MemoryInfo
-    };
-}
+    ,}
 export interface MemoryInfo { used: number,
-    total: number,
-    limit: number };
-}
-export interface Recommendation { action: string,'
-    description: string,'';
-    impact: 'low' | 'medium' | 'high' };
-}
+    total: number;
+    limit: number ,}
+export interface Recommendation { action: string,
+
+    description: string,
+    impact: 'low' | 'medium' | 'high' ,}
 export interface AlertData { timestamp: string,
-    issues: PerformanceIssue[],
-    systemInfo: SystemInfo,
+    issues: PerformanceIssue[];
+    systemInfo: SystemInfo;
     recommendations: Recommendation[]
-    };
-}
+    ,}
 export interface PeriodMetrics { [key: string]: {
-        average: number,
-        min: number,
-        max: number,
-        count: number }
-    } | CacheHitRates;
+        average: number;
+        min: number;
+        max: number;
+        count: number } | CacheHitRates;
     cacheHitRates: CacheHitRates;
 }
 export interface PerformanceReport { timestamp: string,
-    metrics: PeriodMetrics,
-    thresholds: PerformanceThresholds,
-    optimizations: OptimizationFlags,
+    metrics: PeriodMetrics;
+    thresholds: PerformanceThresholds;
+    optimizations: OptimizationFlags;
     history: {
-        hourly: HistoryEntry[],
+        hourly: HistoryEntry[];
         daily: HistoryEntry[] 
-}
-    },
+,};
     systemInfo: SystemInfo;
 }
 export class HelpPerformanceMonitor {
@@ -137,18 +119,16 @@ export class HelpPerformanceMonitor {
         
         // パフォーマンスメトリクス
         this.metrics = {
-            helpLoadTime: [],
-            searchResponseTime: [],
-            tutorialStepTime: [],
-            tooltipDisplayTime: [],
-            memoryUsage: [],
+            helpLoadTime: [];
+            searchResponseTime: [];
+            tutorialStepTime: [];
+            tooltipDisplayTime: [];
+            memoryUsage: [];
             cacheHitRates: {
-                content: 0,
+                content: 0;
                 search: 0
-};
 }
                 images: 0 ;
-};
 }
         },
         
@@ -159,18 +139,14 @@ export class HelpPerformanceMonitor {
             tooltipDisplayTime: 50, // 50ms;
             memoryUsage: 50 * 1024 * 1024, // 50MB;
             cacheHitRate: 70 // 70% 
-}
-        },
-        
+,};
         // アラート設定
         this.alerts = { enabled: true,
-            consecutiveFailures: 0,
-            maxConsecutiveFailures: 3,
+            consecutiveFailures: 0;
+            maxConsecutiveFailures: 3;
             cooldownPeriod: 60000, // 1分;
             lastAlertTime: 0 
-}
-        },
-        
+,};
         // 監視状態
         this.isMonitoring = false;
         this.monitoringInterval = null;
@@ -178,18 +154,16 @@ export class HelpPerformanceMonitor {
         
         // 最適化フラグ
         this.optimizations = { lazyLoading: true,
-            contentCaching: true,
-            imageLazyLoading: true,
-            searchCaching: true,
+            contentCaching: true;
+            imageLazyLoading: true;
+            searchCaching: true;
             preloading: true 
-}
-        },
-        
+,};
         // パフォーマンス履歴
         this.history = {
-            hourly: new Array(24).fill(null).map(() => ({ timestamp: 0, metrics: {} as PeriodMetrics }),
-            daily: new Array(7).fill(null).map(() => ({ timestamp: 0, metrics: {} as PeriodMetrics }),
-            currentHour: 0,
+            hourly: new Array(24).fill(null).map(() => ({ timestamp: 0, metrics: {,} as PeriodMetrics }),
+            daily: new Array(7).fill(null).map(() => ({ timestamp: 0, metrics: {,} as PeriodMetrics }),
+            currentHour: 0;
             currentDay: 0;
         },
         
@@ -201,11 +175,12 @@ export class HelpPerformanceMonitor {
      */
     initialize(): void { this.setupPerformanceObserver();''
         this.startMonitoring()';
-        if(typeof window !== 'undefined'') {'
-            ';'
-        }'
-            window.addEventListener('beforeunload', () => this.cleanup(); };
-}
+        if(typeof, window !== 'undefined'') {'
+            ';
+
+        }
+
+            window.addEventListener('beforeunload', () => this.cleanup(); }
     }
     
     /**
@@ -220,9 +195,10 @@ export class HelpPerformanceMonitor {
             this.collectMetrics();
             this.analyzePerformance(); }
             this.updateHistory();' }'
-        }, 5000');'
-        '';
-        console.log('Help system performance monitoring started');
+
+        }, 5000');
+
+        console.log('Help, system performance, monitoring started);
     }
     
     /**
@@ -237,37 +213,36 @@ export class HelpPerformanceMonitor {
             clearInterval(this.monitoringInterval);
         
         }
-            this.monitoringInterval = null; };
-}
-        if(this.performanceObserver) {
-        ';'
-            '';
+            this.monitoringInterval = null; }
+        if(this.performanceObserver') {
+        ';
+
             this.performanceObserver.disconnect();
-        }'
-        console.log('Help system performance monitoring stopped'); };
-}
+        }
+
+        console.log('Help, system performance, monitoring stopped'); }
     /**
      * Performance Observer セットアップ'
      */''
     setupPerformanceObserver()';
-        if (typeof PerformanceObserver === 'undefined'') {'
-        '';
-            console.warn('PerformanceObserver not supported');
+        if (typeof, PerformanceObserver === 'undefined'') {'
+
+            console.warn('PerformanceObserver, not supported);
     }
-            return; };
-}
+            return; }
         this.performanceObserver = new PerformanceObserver((list) => {  const entries = list.getEntries();
-            for (const entry of entries) { }
-                this.processPerformanceEntry(entry); }'
+            for (const, entry of, entries) { }
+                this.processPerformanceEntry(entry'); }
+
             }''
         }');
-        ';'
+        ';
+
         try { this.performanceObserver.observe({ ')'
-                entryTypes: ['measure', 'navigation', 'resource'] ) }'
+                entryTypes: ['measure', 'navigation', 'resource] }
+
             });''
-        } catch (error) { ''
-            console.warn('Failed to setup PerformanceObserver:', error) };
-}
+        } catch (error) { console.warn('Failed to setup PerformanceObserver:', error }
     }
     
     /**
@@ -275,27 +250,23 @@ export class HelpPerformanceMonitor {
      */
     collectMetrics(): void { try {
             // メモリ使用量
-            if ((performance as any).memory) {''
-                const memoryUsage = (performance as any').memory.usedJSHeapSize;''
-                this.recordMetric('memoryUsage', memoryUsage); };
-}
+            if ((performance, as any).memory) {''
+                const memoryUsage = (performance, as any').memory.usedJSHeapSize;''
+                this.recordMetric('memoryUsage', memoryUsage); }
             // キャッシュヒット率（ヘルプマネージャーから取得）
             if(this.gameEngine.helpManager) {
                 const contentLoader = this.gameEngine.helpManager.contentLoader;
                 if (contentLoader) {
                     const stats = contentLoader.getPerformanceStats();
             }
-                    this.metrics.cacheHitRates.content = stats.cacheHitRate; };
-}
+                    this.metrics.cacheHitRates.content = stats.cacheHitRate; }
                 const searchEngine = this.gameEngine.helpManager.searchEngine;
                 if(searchEngine) {
                     const stats = searchEngine.getPerformanceStats();
                 }
                     this.metrics.cacheHitRates.search = stats.cacheHitRate; }
                 }''
-            } catch (error) { ''
-            console.warn('Failed to collect metrics:', error) };
-}
+            } catch (error) { console.warn('Failed to collect metrics:', error }
     }
     
     /**
@@ -313,30 +284,25 @@ export class HelpPerformanceMonitor {
                     issues.push({)
                         metric: metric);
                         value: avg,);
-                        threshold: threshold)
-}
+                        threshold: threshold ,}
                         severity: this.calculateSeverity(avg, threshold); }
                     });
-                };
-}
+                }
         }
         
         // キャッシュヒット率チェック
         for(const [type, rate] of Object.entries(this.metrics.cacheHitRates) {
-            '';
-            if (rate < this.thresholds.cacheHitRate') {
+
+            if(rate < this.thresholds.cacheHitRate) {
         }
                 issues.push({ }
                     metric: `${type}CacheHitRate`)
                     value: rate)';
                     threshold: this.thresholds.cacheHitRate,')';
                     severity: 'medium');
-            };
-}
+            }
         // 問題があればアラートを送信
-        if (issues.length > 0) { this.handlePerformanceIssues(issues); }
-        } else { this.alerts.consecutiveFailures = 0; }
-}
+        if (issues.length > 0) { this.handlePerformanceIssues(issues); } else { this.alerts.consecutiveFailures = 0; }
     }
     
     /**
@@ -348,8 +314,7 @@ export class HelpPerformanceMonitor {
         if(this.shouldSendAlert() {
             this.sendPerformanceAlert(issues);
         }
-            this.alerts.lastAlertTime = Date.now(); };
-}
+            this.alerts.lastAlertTime = Date.now(); }
         // 自動最適化の実行
         this.applyAutoOptimizations(issues);
     }
@@ -361,34 +326,33 @@ export class HelpPerformanceMonitor {
         if (this.alerts.consecutiveFailures < this.alerts.maxConsecutiveFailures) return false;
         
         const timeSinceLastAlert = Date.now() - this.alerts.lastAlertTime;
-        return timeSinceLastAlert > this.alerts.cooldownPeriod; };
-}
+        return timeSinceLastAlert > this.alerts.cooldownPeriod; }
     /**
      * パフォーマンスアラート送信
      */
     sendPerformanceAlert(issues: PerformanceIssue[]): void { const alertData: AlertData = {
-            timestamp: new Date().toISOString(),
-            issues: issues,
-            systemInfo: this.getSystemInfo(),'';
-            recommendations: this.generateRecommendations(issues') }
-        };'
-        '';
+            timestamp: new Date().toISOString();
+            issues: issues;
+            systemInfo: this.getSystemInfo(),
+            recommendations: this.generateRecommendations(issues ,};
+
         console.warn('Help System Performance Alert:', alertData);
         ';
         // イベント送信（他のシステムに通知）
-        if(this.gameEngine.eventBus') {'
-            ';'
-        }'
-            this.gameEngine.eventBus.emit('help-performance-alert', alertData); };
-}
+        if(this.gameEngine.eventBus) {'
+            ';
+
+        }
+
+            this.gameEngine.eventBus.emit('help-performance-alert', alertData); }
     }
     
     /**
      * 自動最適化適用
      */'
-    applyAutoOptimizations(issues: PerformanceIssue[]): void { for (const issue of issues) {''
-            switch(issue.metric') {'
-                '';
+    applyAutoOptimizations(issues: PerformanceIssue[]): void { for (const, issue of, issues) {''
+            switch(issue.metric) {'
+
                 case 'helpLoadTime':'';
                     this.optimizeContentLoading(''';
                 case 'searchResponseTime':'';
@@ -400,19 +364,18 @@ export class HelpPerformanceMonitor {
                 case 'searchCacheHitRate':);
                     this.optimizeSearchCaching();
             }
-                    break; };
-}
-        };
-}
+                    break; }
+        }
     /**
      * コンテンツ読み込み最適化
      */'
     private optimizeContentLoading(): void { ''
-        if(!this.optimizations.lazyLoading') {'
-            this.optimizations.lazyLoading = true;'
-        }'
-            console.log('Enabled lazy loading for help content'); };
-}
+        if(!this.optimizations.lazyLoading) {'
+            this.optimizations.lazyLoading = true;
+
+        }
+
+            console.log('Enabled, lazy loading, for help, content); }
         if(!this.optimizations.preloading) {
         
             this.optimizations.preloading = true;
@@ -420,51 +383,47 @@ export class HelpPerformanceMonitor {
             if (this.gameEngine.helpManager && this.gameEngine.helpManager.contentLoader) {
         
         }
-                this.gameEngine.helpManager.contentLoader.preloadEssentialContent(); };
-}
-        };
-}
+                this.gameEngine.helpManager.contentLoader.preloadEssentialContent(); }
+        }
     /**
      * 検索パフォーマンス最適化
      */
     private optimizeSearchPerformance(): void { if (this.gameEngine.helpManager && this.gameEngine.helpManager.searchEngine) {
             const searchEngine = this.gameEngine.helpManager.searchEngine;
-            ;
             // 検索キャッシュサイズを拡大
             if(searchEngine.maxCacheSize < 200') {'
-                searchEngine.maxCacheSize = 200;'
-            }'
-                console.log('Increased search cache size'); };
-}
+                searchEngine.maxCacheSize = 200;
+
+            }
+
+                console.log('Increased, search cache, size); }
             // インデックス最適化（バックグラウンドで実行）
-            setTimeout(() => { searchEngine.optimizeIndex(); }
-            }, 1000);
-        };
-}
+            setTimeout(() => { searchEngine.optimizeIndex(); }, 1000);
+        }
     /**
      * メモリ使用量最適化
      */
     private optimizeMemoryUsage(): void { // キャッシュクリーンアップ
         if(this.gameEngine.helpManager) {
             const helpManager = this.gameEngine.helpManager;
-            '';
-            if (helpManager.contentLoader') {''
-                helpManager.contentLoader.clearCache('.*_old'');'
-        }'
-                console.log('Cleared old content cache'); };
-}
-            if(helpManager.searchEngine) {
-            ';'
-                '';
+
+            if(helpManager.contentLoader') {''
+                helpManager.contentLoader.clearCache('.*_old'');
+
+        }
+
+                console.log('Cleared, old content, cache); }
+            if(helpManager.searchEngine') {
+            ';
+
                 helpManager.searchEngine.cleanupCache();
-            }'
-                console.log('Cleaned up search cache''); };
-}
+            }
+
+                console.log('Cleaned, up search, cache''); }
         }
         ';
         // ガベージコレクション（可能であれば）
-        if (typeof window !== 'undefined' && (window as any).gc) { (window as any).gc(); };
-}
+        if (typeof, window !== 'undefined' && (window, as any).gc) { (window, as any).gc(); }
     }
     
     /**
@@ -474,34 +433,33 @@ export class HelpPerformanceMonitor {
             const contentLoader = this.gameEngine.helpManager.contentLoader;
             ';
             // キャッシュサイズを拡大
-            if(contentLoader.maxCacheSize < 100') {'
-                contentLoader.maxCacheSize = 100;'
-            }'
-                console.log('Increased content cache size'); };
-}
+            if(contentLoader.maxCacheSize < 100) {'
+                contentLoader.maxCacheSize = 100;
+
+            }
+
+                console.log('Increased, content cache, size'); }
             ';
             // キャッシュタイムアウトを延長
-            if(contentLoader.cacheTimeout < 60 * 60 * 1000') {'
+            if(contentLoader.cacheTimeout < 60 * 60 * 1000) {'
                 contentLoader.cacheTimeout = 60 * 60 * 1000; // 1時間
-            }'
-                console.log('Extended content cache timeout'); };
-}
-        };
-}
+            }
+
+                console.log('Extended, content cache, timeout); }
+        }
     /**
      * 検索キャッシュ最適化
      */
-    private optimizeSearchCaching(): void { if (this.gameEngine.helpManager && this.gameEngine.helpManager.searchEngine) {
+    private optimizeSearchCaching(): void { if (this.gameEngine.helpManager && this.gameEngine.helpManager.searchEngine') {
             const searchEngine = this.gameEngine.helpManager.searchEngine;
             ';
             // 検索キャッシュタイムアウトを延長
-            if(searchEngine.cacheTimeout < 10 * 60 * 1000') {'
+            if(searchEngine.cacheTimeout < 10 * 60 * 1000) {'
                 searchEngine.cacheTimeout = 10 * 60 * 1000; // 10分
-            }'
-                console.log('Extended search cache timeout'); };
-}
-        };
-}
+            }
+
+                console.log('Extended, search cache, timeout); }
+        }
     /**
      * メトリクス記録
      */
@@ -509,44 +467,37 @@ export class HelpPerformanceMonitor {
         if(!this.metrics[metricName]) {
             
         }
-            this.metrics[metricName] = []; };
-}
+            this.metrics[metricName] = []; }
         const metric: MetricValue = { value: value,
-            timestamp: Date.now(),
+            timestamp: Date.now();
             context: context 
-}
-        },
-        
-        (this.metrics[metricName] as MetricValue[]).push(metric);
+,};
+        (this.metrics[metricName] as, MetricValue[]).push(metric);
         
         // 履歴サイズ制限（最新100件のみ保持）
         const metricArray = this.metrics[metricName] as MetricValue[];
-        if (metricArray.length > 100) { this.metrics[metricName] = metricArray.slice(-100); };
-}
+        if (metricArray.length > 100) { this.metrics[metricName] = metricArray.slice(-100'); }
     }
     
     /**
      * Performance Entry 処理
      */''
-    private processPerformanceEntry(entry: PerformanceEntry'): void { ''
-        if(entry.name.includes('help') {'
-            '';
-            switch (entry.entryType') {''
+    private processPerformanceEntry(entry: PerformanceEntry): void { ''
+        if(entry.name.includes('help) {'
+
+            switch(entry.entryType) {''
                 case 'measure':'';
-                    this.recordMetric(entry.name, entry.duration');
-                    break;'
-                    '';
+                    this.recordMetric(entry.name, entry.duration);
+                    break;
+
                 case 'resource':';
                     const resourceEntry = entry as PerformanceResourceTiming;''
-                    if (entry.name.includes('help'') || entry.name.includes('tutorial')') {''
+                    if (entry.name.includes('help'') || entry.name.includes('tutorial)) {''
                         this.recordMetric('resourceLoadTime', entry.duration, {)
-                            resource: entry.name,)
-        }
-                            size: resourceEntry.transferSize); };
-}
+                            resource: entry.name, }
+                            size: resourceEntry.transferSize); }
                     break;
-            };
-}
+            }
     }
     
     /**
@@ -554,39 +505,37 @@ export class HelpPerformanceMonitor {
      */
     private generateRecommendations(issues: PerformanceIssue[]): Recommendation[] { const recommendations: Recommendation[] = [],
         
-        for(const issue of issues) {
-        ';'
-            '';
-            switch (issue.metric') {''
+        for(const, issue of, issues) {
+        ';
+
+            switch(issue.metric) {''
                 case 'helpLoadTime':';
                     recommendations.push({''
-                        action: 'Enable content preloading',')';
+                        action: 'Enable content preloading',)';
                         description: 'Preload frequently accessed help content',')';
-                        impact: 'high')'),
-                    break;'
-                    '';
+                        impact: 'high')');
+                    break;
+
                 case 'searchResponseTime':';
                     recommendations.push({''
-                        action: 'Optimize search index',')';
+                        action: 'Optimize search index',)';
                         description: 'Reduce search index size or improve caching',')';
-                        impact: 'medium')'),
-                    break;'
-                    '';
+                        impact: 'medium')');
+                    break;
+
                 case 'memoryUsage':';
                     recommendations.push({''
-                        action: 'Clear unused cache',')';
+                        action: 'Clear unused cache',)';
                         description: 'Remove old cached content and optimize memory usage',')';
-                        impact: 'high')'),
-                    break;'
-                    '';
+                        impact: 'high')');
+                    break;
+
                 case 'contentCacheHitRate':';
                     recommendations.push({''
-                        action: 'Increase cache size',')';
+                        action: 'Increase cache size',)';
                         description: 'Expand content cache to improve hit rate',')';
-                        impact: 'medium')
-}
-                    break; };
-}
+                        impact: 'medium' ,}
+                    break; }
         }
         
         return recommendations;
@@ -596,19 +545,17 @@ export class HelpPerformanceMonitor {
      * システム情報取得'
      */''
     private getSystemInfo(''';
-            userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown','';
-            language: typeof navigator !== 'undefined' ? navigator.language : 'unknown',')';
+            userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown',
+            language: typeof navigator !== 'undefined' ? navigator.language : 'unknown',)';
             hardwareConcurrency: typeof navigator !== 'undefined' ? navigator.hardwareConcurrency || 'unknown' : 'unknown');
-            timestamp: new Date().toISOString(),
+            timestamp: new Date().toISOString();
         };
         
-        if ((performance as any).memory) { info.memory = {
-                used: (performance as any).memory.usedJSHeapSize,
-                total: (performance as any).memory.totalJSHeapSize,
-                limit: (performance as any).memory.jsHeapSizeLimit 
+        if ((performance, as any).memory) { info.memory = {
+                used: (performance, as any).memory.usedJSHeapSize;
+                total: (performance, as any).memory.totalJSHeapSize;
+                limit: (performance, as any).memory.jsHeapSizeLimit 
 }
-            },
-        }
         
         return info;
     }
@@ -623,45 +570,38 @@ export class HelpPerformanceMonitor {
         // 時間別履歴更新
         if(currentHour !== this.history.currentHour) {
             this.history.hourly[currentHour] = {
-                timestamp: now.getTime()
-}
+                timestamp: now.getTime( }
                 metrics: this.calculatePeriodMetrics(); }
             };
             this.history.currentHour = currentHour;
         }
         
         // 日別履歴更新
-        if(currentDay !== this.history.currentDay) {
-            this.history.daily[currentDay] = {
-                timestamp: now.getTime()
-}
+        if(currentDay !== this.history.currentDay) { this.history.daily[currentDay] = {
+                timestamp: now.getTime( }
                 metrics: this.calculatePeriodMetrics(); }
             };
             this.history.currentDay = currentDay;
-        };
-}
+        }
     /**
      * 期間メトリクス計算
      */
     private calculatePeriodMetrics(): PeriodMetrics { const periodMetrics: PeriodMetrics = { }
             cacheHitRates: { ...this.metrics.cacheHitRates ;
-}
-        },
+},
         
         for(const [metric, values] of Object.entries(this.metrics) {
         
             if (Array.isArray(values) && values.length > 0) {
                 const numericValues = values.map(v => v.value);
                 periodMetrics[metric] = {
-                    average: this.calculateAverage(values),
-                    min: Math.min(...numericValues),
+                    average: this.calculateAverage(values);
+                    min: Math.min(...numericValues);
                     max: Math.max(...numericValues)
-}
                     count: values.length ;
 }
                 },
-            };
-}
+            }
         return periodMetrics;
     }
     
@@ -669,9 +609,10 @@ export class HelpPerformanceMonitor {
      * 平均値計算
      */
     private calculateAverage(values: MetricValue[] | number[]): number { if (!Array.isArray(values) || values.length === 0) return 0;
-        '';
-        const sum = values.reduce((acc, item') => { ' }'
-            return acc + (typeof item = == 'object' ? item.value: item) }
+
+        const sum = values.reduce((acc, item) => { ' }'
+
+            return acc + (typeof, item = == 'object' ? item.value: item) 
         }, 0);
         
         return sum / values.length;
@@ -680,27 +621,25 @@ export class HelpPerformanceMonitor {
     /**
      * 深刻度計算
      */
-    private calculateSeverity(value: number, threshold: number): SeverityLevel { const ratio = value / threshold;'
-        '';
-        if (ratio > 3') return 'critical';''
-        if (ratio > 2') return 'high';''
-        if (ratio > 1.5') return 'medium';''
-        return 'low'; };
-}
+    private calculateSeverity(value: number, threshold: number): SeverityLevel { const ratio = value / threshold;
+
+        if(ratio > 3) return 'critical';''
+        if(ratio > 2) return 'high';''
+        if(ratio > 1.5) return 'medium';''
+        return 'low'; }
     /**
      * パフォーマンスレポート生成
      */
     generatePerformanceReport(): PerformanceReport { return { timestamp: new Date().toISOString(),
-            metrics: this.calculatePeriodMetrics(),
-            thresholds: this.thresholds,
-            optimizations: this.optimizations,
+            metrics: this.calculatePeriodMetrics();
+            thresholds: this.thresholds;
+            optimizations: this.optimizations;
             history: {
-                hourly: this.history.hourly.filter(h = > h.timestamp > 0) };
+                hourly: this.history.hourly.filter(h = > h.timestamp > 0 ,};
                 daily: this.history.daily.filter(d => d.timestamp > 0); }
             },
-            systemInfo: this.getSystemInfo(),
-        };
-    }
+            systemInfo: this.getSystemInfo();
+        }
     
     /**
      * クリーンアップ
@@ -710,16 +649,14 @@ export class HelpPerformanceMonitor {
         // メトリクスをローカルストレージに保存
         try {'
             const report = this.generatePerformanceReport()';
-            localStorage.setItem('help_performance_history', JSON.stringify(report);' }'
-        } catch (error) { ''
-            console.warn('Failed to save performance history:', error) };
-}
+            localStorage.setItem('help_performance_history', JSON.stringify(report);' }
+
+        } catch (error) { console.warn('Failed to save performance history:', error }
         // リソースクリーンアップ
         for(const metric in this.metrics) {
             if(Array.isArray(this.metrics[metric]) {'
-        }'
-                (this.metrics[metric] as MetricValue[]').length = 0; };
-}
-        }'
-    }''
+        }
+
+                (this.metrics[metric] as, MetricValue[]').length = 0; }
+}''
 }

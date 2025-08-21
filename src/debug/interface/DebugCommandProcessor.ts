@@ -7,21 +7,18 @@ interface ShortcutOptions { description?: string;
     enabled?: boolean;
     preventDefault?: boolean;
     [key: string]: any, }
-}
 
 interface ShortcutConfig extends Required<ShortcutOptions> { shortcut: string,
-    callback: (event: KeyboardEvent) => void }
+    callback: (event: KeyboardEvent) => void ,}
 }
 
-interface ShortcutStatistics { totalShortcuts: number,
-    usageCount: number,
+interface ShortcutStatistics { totalShortcuts: number;
+    usageCount: number;
     conflicts: number }
-}
 
-interface ShortcutConflict { shortcut: string,
+interface ShortcutConflict { shortcut: string;
     configs: ShortcutConfig[]
     }
-}
 
 interface MainController { container?: HTMLElement;
     hide(): void;
@@ -30,15 +27,12 @@ interface MainController { container?: HTMLElement;
     minimize(): void;
     showSettings(): void;
     getComponent(name: string): any, }
-}
 
 interface PanelManager { switchPanel(panelId: string): void,
     getActivePanel(): string | null;
     getPanelHistory(): string[]; }
-}
 
 interface DataExporter { exportCurrentPanelData(): void; }
-}
 
 /**
  * DebugCommandProcessor - デバッグコマンド処理・ショートカット管理コンポーネント
@@ -49,20 +43,20 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
     private shortcutStatistics: ShortcutStatistics;
     private shortcutsEnabled: boolean;
     private suspendShortcuts: boolean;
-'';
-    constructor(mainController: MainController') {'
-        '';
-        super(mainController, 'DebugCommandProcessor');'
+
+    constructor(mainController: MainController) {'
+
+        super(mainController, 'DebugCommandProcessor);
+
         this.shortcuts = new Map<string, ShortcutConfig>();''
         this.shortcutContexts = new Map<string, Map<string, ShortcutConfig>>(');''
         this.currentContext = 'global';
         this.shortcutStatistics = {
-            totalShortcuts: 0,
-            usageCount: 0,
-    }
-    }
+            totalShortcuts: 0;
+            usageCount: 0;
+    ,}
             conflicts: 0 }
-        },
+        };
         this.shortcutsEnabled = true;
         this.suspendShortcuts = false;
     }
@@ -70,7 +64,6 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
     async _doInitialize(): Promise<void> { this.setupDefaultShortcuts();
         this.bindKeyboardEvents();
         this.initializeShortcutContexts(); }
-    }
 
     /**
      * ショートカットを登録
@@ -79,23 +72,22 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * @param options - オプション
      */'
     registerShortcut(shortcut: string, callback: (event: KeyboardEvent) => void, options: ShortcutOptions = {}): void { ''
-        const normalizedShortcut = this.normalizeShortcut(shortcut');
+        const normalizedShortcut = this.normalizeShortcut(shortcut);
         const config: ShortcutConfig = {
-            shortcut: normalizedShortcut,';
-            callback: callback,'';
-            description: options.description || '','';
-            context: options.context || 'global','';
-            group: options.group || 'general',
-            enabled: options.enabled !== false,
-            preventDefault: options.preventDefault !== false,
-            ...options }
-        };
+            shortcut: normalizedShortcut,
+            callback: callback,
+            description: options.description || '',
+            context: options.context || 'global',
+            group: options.group || 'general';
+            enabled: options.enabled !== false;
+            preventDefault: options.preventDefault !== false;
+            ...options;
 
         // 競合チェック
         if(this.shortcuts.has(normalizedShortcut) {
             
-        }
-            console.warn(`Shortcut conflict detected: ${normalizedShortcut)`});
+        ,}
+            console.warn(`Shortcut, conflict detected: ${normalizedShortcut}`});
             this.shortcutStatistics.conflicts++;
         }
 
@@ -118,20 +110,19 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
             .replace(/command/g, 'meta'')'';
             .replace(/ctrl/g, 'ctrl'')'';
             .replace(/alt/g, 'alt'')'';
-            .replace(/shift/g, 'shift'); }
-    }
+            .replace(/shift/g, 'shift); }'
 
     /**
      * ショートカット文字列を構築
      * @param event - キーボードイベント
      * @returns ショートカット文字列
      */
-    buildShortcutString(event: KeyboardEvent): string { const parts: string[] = [],'
-        '';
-        if (event.ctrlKey') parts.push('ctrl');''
-        if (event.altKey') parts.push('alt');''
-        if (event.shiftKey') parts.push('shift');''
-        if (event.metaKey') parts.push('meta');
+    buildShortcutString(event: KeyboardEvent): string { const parts: string[] = [],
+
+        if(event.ctrlKey) parts.push('ctrl);''
+        if(event.altKey) parts.push('alt);''
+        if(event.shiftKey) parts.push('shift);''
+        if(event.metaKey) parts.push('meta);
         ';
         // 特殊キーの処理
         let key = event.key.toLowerCase()';
@@ -141,12 +132,11 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
         if (key === 'arrowleft'') key = 'left';''
         if (key === 'arrowright'') key = 'right';''
         if (key === 'arrowup'') key = 'up';''
-        if (key === 'arrowdown'') key = 'down';'
-        '';
-        parts.push(key');'
-        '';
-        return parts.join('+'); }
-    }
+        if (key === 'arrowdown'') key = 'down';
+
+        parts.push(key);
+
+        return parts.join('+); }'
 
     /**
      * キーボードイベントハンドラー
@@ -154,7 +144,6 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      */
     handleKeyboardEvent(event: KeyboardEvent): void { if (!this.shortcutsEnabled || this.suspendShortcuts) {
             return; }
-        }
 
         const shortcutString = this.buildShortcutString(event);
         const shortcutConfig = this.shortcuts.get(shortcutString);
@@ -170,13 +159,14 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
 
             try { shortcutConfig.callback(event);
                 this.shortcutStatistics.usageCount++;
-                this.logShortcutUsage(shortcutString, shortcutConfig); }'
-            } catch (error) { ' }'
-                console.error(`Error executing shortcut ${shortcutString}:`, error');''
+                this.logShortcutUsage(shortcutString, shortcutConfig); }
+
+            } catch (error) { }
+
+                console.error(`Error executing shortcut ${shortcutString}:`, error);''
                 this._handleError('shortcut execution', error);
             }
-        }
-    }
+}
 
     /**
      * ショートカット使用をログ
@@ -184,7 +174,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * @param config - ショートカット設定
      */
     logShortcutUsage(shortcut: string, config: ShortcutConfig): void {
-        console.debug(`Shortcut used: ${shortcut} (${config.description)`});
+        console.debug(`Shortcut, used: ${shortcut} (${config.description}`});
     }
 
     /**
@@ -192,22 +182,22 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * @param context - コンテキスト名
      * @returns 有効フラグ'
      */''
-    isContextActive(context: string'): boolean { ''
+    isContextActive(context: string): boolean { ''
         return context === 'global' || context === this.currentContext; }
-    }
 
     /**
      * キーボードイベントをバインド'
      */''
     bindKeyboardEvents()';
-        document.addEventListener('keydown', (event) => { this.handleKeyboardEvent(event); }
-        }, true);
+        document.addEventListener('keydown', (event) => { this.handleKeyboardEvent(event); }, true);
 
         // デバッグインターフェース固有のイベント
         const controller = this.mainController as MainController;''
-        if(controller.container') {'
-            ';'
-        }'
+        if(controller.container) {'
+            ';
+
+        }
+
             controller.container.addEventListener('keydown', (event) => {  }
                 this.handleDebugInterfaceKeyboard(event); }
             });
@@ -218,15 +208,14 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * デバッグインターフェース固有のキーボード処理
      * @param event - キーボードイベント'
      */''
-    handleDebugInterfaceKeyboard(event: KeyboardEvent'): void { // ESCキーでインターフェースを非表示
-        if(event.key === 'Escape') {'
-            (this.mainController as MainController).hide();''
+    handleDebugInterfaceKeyboard(event: KeyboardEvent): void { // ESCキーでインターフェースを非表示
+        if(event.key === 'Escape) {'
+            (this.mainController, as MainController).hide();''
             event.preventDefault()';
-        if (event.key === 'Tab') {
+        if(event.key === 'Tab) {'
         }
             this.handleTabNavigation(event); }
-        }
-    }
+}
 
     /**
      * Tab移動を処理
@@ -234,7 +223,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      */'
     handleTabNavigation(event: KeyboardEvent): void { const controller = this.mainController as MainController;''
         const focusableElements = controller.container? .querySelectorAll()';
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]")';
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
         );
 
         if (!focusableElements || focusableElements.length === 0) return;
@@ -250,96 +239,90 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
 
         }
                 event.preventDefault(); }
-            }
-        } else {  // Tab (順方向);
+} else {  // Tab (順方向);
             if(document.activeElement === lastElement) {
                 
             }
                 firstElement.focus(); }
                 event.preventDefault(); }
-            }
-        }
+}
     }
 
     /**
      * デフォルトショートカットを設定
      */''
     setupDefaultShortcuts()';
-        this.registerShortcut('ctrl+1', (') => this.switchToPanel('console''), { ''
-            description: 'Switch to Console panel','';
-            group: 'navigation'' }'
-        }'),'
-'';
-        this.registerShortcut('ctrl+2', (') => this.switchToPanel('performance''), { ''
-            description: 'Switch to Performance panel','';
-            group: 'navigation'' }'
-        }'),'
-'';
-        this.registerShortcut('ctrl+3', (') => this.switchToPanel('memory''), { ''
-            description: 'Switch to Memory panel','';
-            group: 'navigation'' }'
-        }'),'
-'';
-        this.registerShortcut('ctrl+4', (') => this.switchToPanel('network''), { ''
-            description: 'Switch to Network panel','';
-            group: 'navigation'' }'
-        }'),'
-'';
-        this.registerShortcut('ctrl+5', (') => this.switchToPanel('settings''), { ''
-            description: 'Switch to Settings panel','';
-            group: 'navigation'' }'
-        }'),
+        this.registerShortcut('ctrl+1', () => this.switchToPanel('console''), { ''
+            description: 'Switch to Console panel',
+            group: 'navigation'' ,}
 
+        }');
+        this.registerShortcut('ctrl+2', () => this.switchToPanel('performance''), { ''
+            description: 'Switch to Performance panel',
+            group: 'navigation'' ,}
+
+        }');
+        this.registerShortcut('ctrl+3', () => this.switchToPanel('memory''), { ''
+            description: 'Switch to Memory panel',
+            group: 'navigation'' ,}
+
+        }');
+        this.registerShortcut('ctrl+4', () => this.switchToPanel('network''), { ''
+            description: 'Switch to Network panel',
+            group: 'navigation'' ,}
+
+        }');
+        this.registerShortcut('ctrl+5', () => this.switchToPanel('settings''), { ''
+            description: 'Switch to Settings panel',
+            group: 'navigation'' ,}
+
+        }');
         // インターフェース制御
         const controller = this.mainController as MainController;
-        '';
+
         this.registerShortcut('f12', () => controller.toggle(''';
-            description: 'Toggle debug interface',')';
-            group: 'interface'')';
-        }'),'
-'';
-        this.registerShortcut('ctrl+shift+d', () => controller.toggle()';
-            description: 'Toggle debug interface (alternative')','';
-            group: 'interface''';
-        }'),'
-'';
-        this.registerShortcut('ctrl+shift+r', () => controller.refresh(''';
-            description: 'Refresh debug data',')';
+            description: 'Toggle debug interface',)';
             group: 'interface'')';
         }'),
-';
+
+        this.registerShortcut('ctrl+shift+d', () => controller.toggle()';
+            description: 'Toggle debug interface(alternative)',
+            group: 'interface''';
+        }'),
+
+        this.registerShortcut('ctrl+shift+r', () => controller.refresh(''';
+            description: 'Refresh debug data',)';
+            group: 'interface'')';
+        }'),
         // ウィンドウ操作
         this.registerShortcut('ctrl+shift+m', () => controller.minimize(''';
-            description: 'Minimize debug interface',')';
-            group: 'window'')';
-        }'),'
-'';
-        this.registerShortcut('ctrl+shift+s', () => controller.showSettings(''';
-            description: 'Show settings modal',')';
+            description: 'Minimize debug interface',)';
             group: 'window'')';
         }'),
-';
+
+        this.registerShortcut('ctrl+shift+s', () => controller.showSettings(''';
+            description: 'Show settings modal',)';
+            group: 'window'')';
+        }'),
         // データ操作
         this.registerShortcut('ctrl+shift+e', () => this.exportCurrentData(''';
-            description: 'Export current panel data',')';
-            group: 'data'')';
-        }'),'
-'';
-        this.registerShortcut('ctrl+shift+c', () => this.clearCurrentData(''';
-            description: 'Clear current panel data',')';
+            description: 'Export current panel data',)';
             group: 'data'')';
         }'),
-';
+
+        this.registerShortcut('ctrl+shift+c', () => this.clearCurrentData(''';
+            description: 'Clear current panel data',)';
+            group: 'data'')';
+        }'),
         // 履歴ナビゲーション
-        this.registerShortcut('alt+left', () => this.navigateHistory(-1'), { ''
-            description: 'Previous panel in history','';
-            group: 'navigation'' }'
-        }'),'
-'';
-        this.registerShortcut('alt+right', () => this.navigateHistory(1'), { ''
-            description: 'Next panel in history','';
-            group: 'navigation' }
-        }),
+        this.registerShortcut('alt+left', () => this.navigateHistory(-1), { ''
+            description: 'Previous panel in history',
+            group: 'navigation'' ,}
+
+        }');
+        this.registerShortcut('alt+right', () => this.navigateHistory(1), { ''
+            description: 'Next panel in history',
+            group: 'navigation' ,});
     }
 
     /**
@@ -347,46 +330,43 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * @param panelId - パネルID
      */'
     switchToPanel(panelId: string): void { ''
-        const panelManager = (this.mainController as MainController').getComponent('panelManager') as PanelManager;
+        const panelManager = (this.mainController, as MainController').getComponent('panelManager) as PanelManager;
         if(panelManager) {
             
         }
             panelManager.switchPanel(panelId); }
-        }
-    }
+}
 
     /**
      * 現在のデータをエクスポート
      */'
-    exportCurrentData(): void { ''
-        const dataExporter = (this.mainController as MainController').getComponent('dataExporter') as DataExporter;
+    exportCurrentData(): void {;
+        const dataExporter = (this.mainController, as MainController').getComponent('dataExporter) as DataExporter;
         if(dataExporter) {
             
         }
             dataExporter.exportCurrentPanelData(); }
-        }
-    }
+}
 
     /**
      * 現在のデータをクリア
      */'
     clearCurrentData(): void { ''
-        const panelManager = (this.mainController as MainController').getComponent('panelManager') as PanelManager;''
+        const panelManager = (this.mainController, as MainController').getComponent('panelManager) as PanelManager;''
         const activePanel = panelManager? .getActivePanel()';
-        if(activePanel && confirm('Clear current panel data?') {
+        if(activePanel && confirm('Clear, current panel, data?) {'
             // パネル固有のクリア処理
         }
             this.clearPanelData(activePanel); }
-        }
-    }
+}
 
     /**
      * パネルデータをクリア
      * @param panelId - パネルID
      */ : undefined
     clearPanelData(panelId: string): void { ''
-        switch(panelId') {'
-            '';
+        switch(panelId) {'
+
             case 'console':'';
                 this.clearConsoleData(''';
             case 'performance':'';
@@ -398,7 +378,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
                 break;
         }
             default: }
-                console.log(`No clear action defined for panel: ${panelId)`}),
+                console.log(`No, clear action, defined for, panel: ${panelId}`});
         }
     }
 
@@ -406,56 +386,60 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * コンソールデータをクリア
      */'
     clearConsoleData(): void { ''
-        const consoleOutput = (this.mainController as MainController').container? .querySelector('.console-output');''
-        if(consoleOutput') {'
-            ';'
-        }'
-            consoleOutput.innerHTML = ''; }
+        const consoleOutput = (this.mainController, as MainController').container? .querySelector('.console-output);''
+        if(consoleOutput) {'
+            ';
+
         }
-    }
+
+            consoleOutput.innerHTML = ''; }
+}
 
     /**
      * パフォーマンスデータをクリア
      */ : undefined'
     clearPerformanceData(): void { ''
-        const performanceCharts = (this.mainController as MainController').container? .querySelector('.performance-charts');''
-        if(performanceCharts') {'
-            ';'
-        }'
-            performanceCharts.innerHTML = '<p>Performance data cleared</p>'; }
+        const performanceCharts = (this.mainController, as MainController').container? .querySelector('.performance-charts);''
+        if(performanceCharts) {'
+            ';
+
         }
-    }
+
+            performanceCharts.innerHTML = '<p>Performance data cleared</p>'; }
+}
 
     /**
      * メモリデータをクリア
      */ : undefined'
     clearMemoryData(): void { ''
-        const memoryUsage = (this.mainController as MainController').container? .querySelector('.memory-usage');''
-        if(memoryUsage') {'
-            ';'
-        }'
-            memoryUsage.innerHTML = '<p>Memory data cleared</p>'; }
+        const memoryUsage = (this.mainController, as MainController').container? .querySelector('.memory-usage);''
+        if(memoryUsage) {'
+            ';
+
         }
-    }
+
+            memoryUsage.innerHTML = '<p>Memory data cleared</p>'; }
+}
 
     /**
      * ネットワークデータをクリア
      */ : undefined'
     clearNetworkData(): void { ''
-        const networkRequests = (this.mainController as MainController').container? .querySelector('.network-requests');''
-        if(networkRequests') {'
-            ';'
-        }'
-            networkRequests.innerHTML = '<p>Network data cleared</p>'; }
+        const networkRequests = (this.mainController, as MainController').container? .querySelector('.network-requests);''
+        if(networkRequests) {'
+            ';
+
         }
-    }
+
+            networkRequests.innerHTML = '<p>Network data cleared</p>'; }
+}
 
     /**
      * 履歴ナビゲーション : undefined
      * @param direction - 方向（-1: 戻る, 1: 進む）
      */'
     navigateHistory(direction: number): void { ''
-        const panelManager = (this.mainController as MainController').getComponent('panelManager') as PanelManager;
+        const panelManager = (this.mainController, as MainController').getComponent('panelManager) as PanelManager;
         if (!panelManager) return;
 
         const history = panelManager.getPanelHistory();
@@ -474,16 +458,15 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
 
         }
             panelManager.switchPanel(history[targetIndex]); }
-        }
-    }
+}
 
     /**
      * ショートカットコンテキストを初期化
      */''
     initializeShortcutContexts()';
-        this.shortcutContexts.set('global', new Map<string, ShortcutConfig>()');''
-        this.shortcutContexts.set('debug', new Map<string, ShortcutConfig>()');''
-        this.shortcutContexts.set('panel', new Map<string, ShortcutConfig>()');''
+        this.shortcutContexts.set('global', new Map<string, ShortcutConfig>());''
+        this.shortcutContexts.set('debug', new Map<string, ShortcutConfig>());''
+        this.shortcutContexts.set('panel', new Map<string, ShortcutConfig>());''
         this.shortcutContexts.set('modal', new Map<string, ShortcutConfig>();
     }
 
@@ -495,7 +478,6 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      */
     addToContext(context: string, shortcut: string, config: ShortcutConfig): void { if(!this.shortcutContexts.has(context) {
             this.shortcutContexts.set(context, new Map<string, ShortcutConfig>(); }
-        }
         
         this.shortcutContexts.get(context)!.set(shortcut, config);
     }
@@ -507,7 +489,6 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * @returns ショートカットMap
      */
     getShortcuts(): Map<string, ShortcutConfig> { return new Map(this.shortcuts); }
-    }
 
     /**
      * ショートカット競合を取得
@@ -532,7 +513,6 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
 
         }
                 conflicts.push({ shortcut, configs ); }
-            }
         }
 
         return conflicts;
@@ -543,29 +523,25 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * @param enabled - 有効フラグ
      */
     setShortcutsEnabled(enabled: boolean): void { this.shortcutsEnabled = enabled; }
-    }
 
     /**
      * ショートカットの一時停止を設定
      * @param suspend - 停止フラグ
      */
     setSuspendShortcuts(suspend: boolean): void { this.suspendShortcuts = suspend; }
-    }
 
     /**
      * ショートカットコンテキストを切り替え
      * @param context - コンテキスト名
      */
     switchShortcutContext(context: string): void { this.currentContext = context; }
-    }
 
     /**
      * グループ別ショートカットを取得
      * @param group - グループ名
      * @returns ショートカット配列
      */
-    getShortcutsByGroup(group: string): ShortcutConfig[] { return Array.from(this.shortcuts.values().filter(config => config.group === group); }
-    }
+    getShortcutsByGroup(group: string): ShortcutConfig[] { return Array.from(this.shortcuts.values().filter(config => config.group === group);
 
     /**
      * コンテキスト別ショートカットを取得
@@ -573,14 +549,13 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * @returns ショートカットMap
      */
     getShortcutsByContext(context: string): Map<string, ShortcutConfig> { return this.shortcutContexts.get(context) || new Map<string, ShortcutConfig>(); }
-    }
 
     /**
      * ショートカット統計を取得
      * @returns 統計情報
      */
     getShortcutStatistics(): ShortcutStatistics {
-        return { ...this.shortcutStatistics };
+        return { ...this.shortcutStatistics;
     }
 
     /**
@@ -592,18 +567,17 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
             this.shortcutStatistics.totalShortcuts--;
             
             // コンテキストからも削除
-            for(const contextMap of this.shortcutContexts.values() {
+            for(const, contextMap of, this.shortcutContexts.values() {
         }
                 contextMap.delete(normalizedShortcut); }
-            }
-        }
+}
     }
 
     /**
      * 全ショートカットをクリア
      */
     clearAllShortcuts(): void { this.shortcuts.clear();
-        for(const contextMap of this.shortcutContexts.values() {
+        for(const, contextMap of, this.shortcutContexts.values() {
             
         }
             contextMap.clear(); }
@@ -619,6 +593,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
         this.clearAllShortcuts(''';
         this.currentContext = 'global';
         this.shortcutsEnabled = true;
-        this.suspendShortcuts = false;'
+        this.suspendShortcuts = false;
+
         ')';
-        super.cleanup(') }
+        super.cleanup(' }'
