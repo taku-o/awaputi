@@ -407,37 +407,44 @@ export class DataAggregationProcessor {
             totalScore += interaction.scoreGained || 0;
         }
         
-        return { totalInteractions: interactions.length,
+        return {
+            totalInteractions: interactions.length,
             totalScore,
-            averageReactionTime: reactionTimes.reduce((sum, rt) => sum + rt, 0) / reactionTimes.length || 0 };
-            bubbleTypeStats: bubbleTypes,
+            averageReactionTime: reactionTimes.reduce((sum, rt) => sum + rt, 0) / reactionTimes.length || 0,
+            bubbleTypeStats: bubbleTypes
+        };
+    }
     
     /**
      * パフォーマンス統計の計算
      * @param {Array} performanceData - パフォーマンスデータ
      * @returns {Object} パフォーマンス統計
      */
-    calculatePerformanceStats(performanceData) { if (performanceData.length === 0) { }
-            return { noData: true,
+    calculatePerformanceStats(performanceData) {
+        if (performanceData.length === 0) {
+            return { noData: true };
+        }
         
         const fpsValues = performanceData.map(p => p.fps).filter(fps => fps > 0);
         const memoryValues = performanceData.map(p => p.memoryUsage?.used).filter(mem => mem > 0);
         
-        return { : undefined
+        return {
             totalRecords: performanceData.length,
-    averageFPS: fpsValues.reduce((sum, fps) => sum + fps, 0) / fpsValues.length || 0,
+            averageFPS: fpsValues.reduce((sum, fps) => sum + fps, 0) / fpsValues.length || 0,
             minFPS: fpsValues.length > 0 ? Math.min(...fpsValues) : 0,
-            maxFPS: fpsValues.length > 0 ? Math.max(...fpsValues) : 0 ,
-            averageMemoryUsage: memoryValues.reduce((sum, mem) => sum + mem, 0) / memoryValues.length || 0 }
-        }
+            maxFPS: fpsValues.length > 0 ? Math.max(...fpsValues) : 0,
+            averageMemoryUsage: memoryValues.reduce((sum, mem) => sum + mem, 0) / memoryValues.length || 0
+        };
+    }
     
     // 詳細な処理メソッド（元のコードから移植）
-    async performAdvancedAggregation(dataType, rules) { // 高度集計実装（元の performAdvancedAggregation メソッド）
+    async performAdvancedAggregation(dataType, rules) {
+        // 高度集計実装（元の performAdvancedAggregation メソッド）
         const query = this.buildAggregationQuery(rules.filters, rules.period);
         const rawData = await this.storageManager.getData(dataType, query);
-        if (!Array.isArray(rawData) || rawData.length === 0) { }
-            return { groups: {}, metadata: { totalRecords: 0 
-    } };
+        if (!Array.isArray(rawData) || rawData.length === 0) {
+            return { groups: {}, metadata: { totalRecords: 0 } };
+        }
         
         // 簡略化実装
         const groupedData = this.groupData(rawData, rules.multiGroupBy);
