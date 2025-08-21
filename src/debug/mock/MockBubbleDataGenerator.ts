@@ -3,23 +3,27 @@
  * バブルデータのモック生成クラス
  */
 
-interface BubbleData { id: string,
-    x: number,
-    y: number,
-    radius: number,
-    color: string,
-    type: string,
-    velocity: { x: number, y: number,
+interface BubbleData {
+    id: string;
+    x: number;
+    y: number;
+    radius: number;
+    color: string;
+    type: string;
+    velocity: { x: number; y: number };
     timestamp: number;
 }
 
-interface GenerationOptions { count?: number,
+interface GenerationOptions {
+    count?: number;
     minRadius?: number;
     maxRadius?: number;
     colors?: string[];
     types?: string[];
-    bounds?: { width: number, height: number;
-    export class MockBubbleDataGenerator {
+    bounds?: { width: number; height: number };
+}
+
+export class MockBubbleDataGenerator {
     private defaultColors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff],'
     private defaultTypes = ['normal', 'special', 'bonus', 'power'],
 

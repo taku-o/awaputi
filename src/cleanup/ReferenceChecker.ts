@@ -2,18 +2,22 @@ import fs from 'fs';
 import path from 'path';
 import { glob  } from 'glob';
 
-interface Reference { file: string,
-    line: number,
-    context: string,
-    type: 'import' | 'string'
-            }
+interface Reference {
+    file: string;
+    line: number;
+    context: string;
+    type: 'import' | 'string';
+}
 
-export interface ReferenceResult { filePath: string,
-    references: Reference[],
-    hasReferences: boolean,
-    importCount: number,
+export interface ReferenceResult {
+    filePath: string;
+    references: Reference[];
+    hasReferences: boolean;
+    importCount: number;
     stringCount: number;
-    export class ReferenceChecker {
+}
+
+export class ReferenceChecker {
     private searchExtensions: string[]';'
 
     constructor(',

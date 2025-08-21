@@ -4,25 +4,32 @@
  */
 
 // Jest拡張マッチャー
-declare namespace jest { interface Matchers<R> {
-        toBeWithinRange(floor: number, ceiling: number): R,
-        toMatchSnapshot(propertyMatchers?: any, hint?: string): R,
+declare namespace jest {
+    interface Matchers<R> {
+        toBeWithinRange(floor: number, ceiling: number): R;
+        toMatchSnapshot(propertyMatchers?: any, hint?: string): R;
         toMatchInlineSnapshot(propertyMatchers?: any, snapshot?: string): R;
+    }
     
-    interface Expect { <T = any>(actual: T): Matchers<T>;
-    any(classType: any): any;
-    anything(): any;
-    arrayContaining(array: any[]): any;
-    assertions(numberOfAssertions: number): void;
-    hasAssertions(): void;
-    not: InverseAsymmetricMatchers;
-    objectContaining(object: any): any;
-    stringContaining(string: string): any;
-    stringMatching(regexp: string | RegExp): any;
-    interface InverseAsymmetricMatchers { arrayContaining(array: any[]): any;
-    objectContaining(object: any): any;
-    stringContaining(string: string): any;
-    stringMatching(regexp: string | RegExp): any;
+    interface Expect {
+        <T = any>(actual: T): Matchers<T>;
+        any(classType: any): any;
+        anything(): any;
+        arrayContaining(array: any[]): any;
+        assertions(numberOfAssertions: number): void;
+        hasAssertions(): void;
+        not: InverseAsymmetricMatchers;
+        objectContaining(object: any): any;
+        stringContaining(string: string): any;
+        stringMatching(regexp: string | RegExp): any;
+    }
+
+    interface InverseAsymmetricMatchers {
+        arrayContaining(array: any[]): any;
+        objectContaining(object: any): any;
+        stringContaining(string: string): any;
+        stringMatching(regexp: string | RegExp): any;
+    }
 }
 
 // モック関数の型
