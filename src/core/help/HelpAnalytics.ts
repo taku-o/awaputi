@@ -7,209 +7,253 @@ import { LoggingSystem  } from '../LoggingSystem.js';
 import { ErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
-export interface GameEngine { helpManager?: HelpManager,
+export interface GameEngine { helpManager?: HelpManager;
     helpFeedbackSystem?: HelpFeedbackSystem;
-    accessibilityManager?: AccessibilityManager;
-    export interface HelpManager { searchEngine?: SearchEngine,
-    contentLoader?: ContentLoader;
-    export interface HelpFeedbackSystem { // フィードバックシステムのインターフェース };
-export interface AccessibilityManager { // アクセシビリティマネージャーのインターフェース };
-export interface SearchEngine { // 検索エンジンのインターフェース };
-export interface ContentLoader { // コンテンツローダーのインターフェース };
-export interface AnalyticsConfig { sessionTimeout: number,
-    maxEvents: number,
-    enableRealTimeTracking: boolean,
-    enableOfflineStorage: boolean,
-    dataRetentionDays: number;
-    export interface HelpUsageAnalytics { totalSessions: number,
-    totalPageViews: number,
-    uniqueUsers: Set<string>,
-    averageSessionDuration: number,
-    topHelpCategories: Map<string, number>;
-    topHelpTopics: Map<string, number>;
-    searchQueries: Map<string, number>;
+    accessibilityManager?: AccessibilityManager
+};
+export interface HelpManager { searchEngine?: SearchEngine;
+    contentLoader?: ContentLoader
+};
+export interface HelpFeedbackSystem {
+    // フィードバックシステムのインターフェース
+}
+};
+export interface AccessibilityManager {
+    // アクセシビリティマネージャーのインターフェース
+}
+};
+export interface SearchEngine {
+    // 検索エンジンのインターフェース
+}
+};
+export interface ContentLoader {
+    // コンテンツローダーのインターフェース
+}
+};
+export interface AnalyticsConfig { sessionTimeout: number;
+    maxEvents: number;
+    enableRealTimeTracking: boolean;
+    enableOfflineStorage: boolean;
+    dataRetentionDays: number
+};
+export interface HelpUsageAnalytics { totalSessions: number;
+    totalPageViews: number;
+    uniqueUsers: Set<string>;
+    averageSessionDuration: number;
+    topHelpCategories: Map<string, number>
+    topHelpTopics: Map<string, number>
+    searchQueries: Map<string, number>
     exitPoints: Map<string, number> };
 export interface ContentAnalytics { topicViews: Map<string, TopicViewStats>,
     categoryViews: Map<string, CategoryViewStats> };
-export interface TopicViewStats { viewCount: number,
-    totalViewTime: number,
-    exitCount: number;
-    export interface CategoryViewStats { viewCount: number,
-    totalViewTime: number,
-    exitCount: number;
-    export interface TutorialUsageAnalytics { totalStarts: number,
-    totalCompletions: number,
-    completionRate: number,
-    averageCompletionTime: number,
-    dropOffPoints: Map<string, number>;
-    skipRates: Map<string, number>;
+export interface TopicViewStats { viewCount: number;
+    totalViewTime: number;
+    exitCount: number
+};
+export interface CategoryViewStats { viewCount: number;
+    totalViewTime: number;
+    exitCount: number
+};
+export interface TutorialUsageAnalytics { totalStarts: number;
+    totalCompletions: number;
+    completionRate: number;
+    averageCompletionTime: number;
+    dropOffPoints: Map<string, number>
+    skipRates: Map<string, number>
     retryRates: Map<string, number> };
 export interface UserBehaviorAnalytics { navigationPatterns: Map<string, number>,
     timeSpentBySection: Map<string, TimeStats>;
-    commonUserJourneys: Map<string, number>;
-    bounceRate: number,
-    returnUserRate: number;
-    export interface TimeStats { total: number,
-    count: number,
-    average: number;
-    export interface EffectivenessAnalytics { helpfulnessRatings: Map<string, RatingData>,
-    problemResolutionRate: number,
-    userSatisfactionScore: number,
-    contentGaps: Map<string, number>;
-    improvementSuggestions: ImprovementSuggestion[];
-    export interface RatingData { totalRatings: number,
-    averageRating: number,
+    commonUserJourneys: Map<string, number>
+    bounceRate: number;
+    returnUserRate: number
+};
+export interface TimeStats { total: number;
+    count: number;
+    average: number
+};
+export interface EffectivenessAnalytics { helpfulnessRatings: Map<string, RatingData>,
+    problemResolutionRate: number;
+    userSatisfactionScore: number;
+    contentGaps: Map<string, number>
+    improvementSuggestions: ImprovementSuggestion[]
+};
+export interface RatingData { totalRatings: number;
+    averageRating: number;
     ratingCount: Record<number, number>, // 1-5の評価ごとの件数 };
 export interface ImprovementSuggestion { type: string;
     contentId?: string;
     query?: string;
-    suggestion: string,
+    suggestion: string;
     priority: 'high' | 'medium' | 'low'
             };
-export interface Analytics { helpUsage: HelpUsageAnalytics,
-    content: ContentAnalytics,
-    tutorialUsage: TutorialUsageAnalytics,
-    userBehavior: UserBehaviorAnalytics,
-    effectiveness: EffectivenessAnalytics;
-    export interface HelpSession { id: string,
+export interface Analytics { helpUsage: HelpUsageAnalytics;
+    content: ContentAnalytics;
+    tutorialUsage: TutorialUsageAnalytics;
+    userBehavior: UserBehaviorAnalytics;
+    effectiveness: EffectivenessAnalytics
+};
+export interface HelpSession { id: string;
     startTime: number;
     endTime?: number;
     duration?: number;
     entryPoint: string;
     exitPoint?: string;
     exitContext?: any;
-    context: any,
-    events: AnalyticsEvent[],
-    pageViews: PageView[],
-    searchQueries: SearchQuery[],
-    currentPage: string | null,
+    context: any;
+    events: AnalyticsEvent[];
+    pageViews: PageView[];
+    searchQueries: SearchQuery[];
+    currentPage: string | null;
     lastActivityTime: number;
-    active?: boolean;
-    export interface AnalyticsEvent { type: string,
-    data: any,
-    timestamp: number,
+    active?: boolean
+};
+export interface AnalyticsEvent { type: string;
+    data: any;
+    timestamp: number;
     sessionId: string | null  };
-export interface PageView { page: string,
-    timestamp: number,
-    data: any,
-    timeSpent: number;
-    export interface SearchQuery { query: string,
-    timestamp: number,
-    resultCount: number,
-    results: SearchResult[];
-    export interface SearchResult { id: string,
-    title: string,
-    category: string;
-    export interface CacheConfig { maxContentCacheSize: number,
-    maxSearchCacheSize: number,
-    cacheExpiryTime: number,
-    enableCompression: boolean;
-    export interface CacheEntry { data: any,
-    timestamp: number,
-    accessCount: number,
-    compressed: boolean;
-    export interface PerformanceMetrics { operations: Map<string, OperationMetrics>,
-    cacheHitRate: number,
-    averageResponseTime: number,
-    errorRate: number,
-    memoryUsage: number;
-    export interface OperationMetrics { totalCalls: number,
-    totalDuration: number,
-    averageDuration: number,
-    errorCount: number,
-    lastCall: number;
-    export interface ValidationResult { isValid: boolean,
-    sanitizedData: any,
+export interface PageView { page: string;
+    timestamp: number;
+    data: any;
+    timeSpent: number
+};
+export interface SearchQuery { query: string;
+    timestamp: number;
+    resultCount: number;
+    results: SearchResult[]
+};
+export interface SearchResult { id: string;
+    title: string;
+    category: string
+};
+export interface CacheConfig { maxContentCacheSize: number;
+    maxSearchCacheSize: number;
+    cacheExpiryTime: number;
+    enableCompression: boolean
+};
+export interface CacheEntry { data: any;
+    timestamp: number;
+    accessCount: number;
+    compressed: boolean
+};
+export interface PerformanceMetrics { operations: Map<string, OperationMetrics>,
+    cacheHitRate: number;
+    averageResponseTime: number;
+    errorRate: number;
+    memoryUsage: number
+};
+export interface OperationMetrics { totalCalls: number;
+    totalDuration: number;
+    averageDuration: number;
+    errorCount: number;
+    lastCall: number
+};
+export interface ValidationResult { isValid: boolean;
+    sanitizedData: any;
+    errors: string[]
+};
+export interface ValidationComponents { analytics: boolean;
+    feedback: boolean;
+    search: boolean;
+    content: boolean;
+    accessibility: boolean
+};
+export interface SystemValidationResult { isValid: boolean;
     errors: string[];
-    export interface ValidationComponents { analytics: boolean,
-    feedback: boolean,
-    search: boolean,
-    content: boolean,
-    accessibility: boolean;
-    export interface SystemValidationResult { isValid: boolean,
-    errors: string[],
-    warnings: string[],
-    components: ValidationComponents;
-    export interface FallbackInterface { isActive: boolean,
-    container: HTMLElement | null,
+    warnings: string[];
+    components: ValidationComponents
+};
+export interface FallbackInterface { isActive: boolean;
+    container: HTMLElement | null;
     content: Map<string, FallbackContent>;
     keydownHandler?: (event: KeyboardEvent') => void  }'
-export interface FallbackContent { title: string,
-    content: string[];
-    export interface UsageReport { generatedAt: number,
-    period: ReportPeriod,
-    usage: UsageReportData,
-    effectiveness: EffectivenessReportData,
-    performance: PerformanceReportData,
-    recommendations: ImprovementSuggestion[];
-    export interface ReportPeriod { start: number,
-    end: number;
-    export interface UsageReportData { totalSessions: number,
-    totalPageViews: number,
-    averageSessionDuration: number,
-    searchQueries: number,
-    topCategories: TopItem[],
-    topSearches: TopItem[];
-    export interface EffectivenessReportData { averageRating: number,
-    totalFeedbacks: number,
-    satisfactionScore: number,
-    problemAreas: ProblemArea[];
-    export interface PerformanceReportData { cacheHitRate: number,
-    errorRate: number,
-    operationsCount: number;
-    export interface TopItem { category?: string,
+};
+export interface FallbackContent { title: string;
+    content: string[]
+};
+export interface UsageReport { generatedAt: number;
+    period: ReportPeriod;
+    usage: UsageReportData;
+    effectiveness: EffectivenessReportData;
+    performance: PerformanceReportData;
+    recommendations: ImprovementSuggestion[]
+};
+export interface ReportPeriod { start: number;
+    end: number
+};
+export interface UsageReportData { totalSessions: number;
+    totalPageViews: number;
+    averageSessionDuration: number;
+    searchQueries: number;
+    topCategories: TopItem[];
+    topSearches: TopItem[]
+};
+export interface EffectivenessReportData { averageRating: number;
+    totalFeedbacks: number;
+    satisfactionScore: number;
+    problemAreas: ProblemArea[]
+};
+export interface PerformanceReportData { cacheHitRate: number;
+    errorRate: number;
+    operationsCount: number
+};
+export interface TopItem { category?: string;
     topic?: string;
     query?: string;
     count: number;
 ';'
-
+};
 export interface ProblemArea {,
     type: 'low_rating' | 'content_gap';
     contentId?: string;
     query?: string;
     rating?: number;
     searchCount?: number,', severity: 'high' | 'medium' | 'low' }'
+};
 export interface ContentPerformance { [contentId: string]: {
-        averageRatin,g: number,
-        totalRatings: number,
+        averageRatin,g: number;
+        totalRatings: number;
     helpfulness: 'high' | 'medium' | 'low'
         }
-
+};
 export interface UserBehaviorReport { timeSpentBySection: Record<string, TimeStats>,
     navigationPatterns: Record<string, number>;
     commonJourneys: Record<string, number> };
-export interface ReportData { [key: string]: any;
-    export interface AnalyticsReport { generatedAt: number,
-    reportType: string,
-    period: string,
+export interface ReportData { [key: string]: any
+};
+export interface AnalyticsReport { generatedAt: number;
+    reportType: string;
+    period: string;
     data: ReportData;
-    error?: string;
-    export interface SummaryReportData { overview: { totalHelpSession,s: number,
-        totalPageViews: number,
-        uniqueUsers: number,
-        averageSessionDuration: number,
-    tutorialCompletionRate: number,
-    topContent: { categories: TopItem[],
-        topics: TopItem[]  ,
-    searchQueries: TopItem[],
-    userSatisfaction: { averageRating: number,
-    totalFeedbacks: number;
+    error?: string
+};
+export interface SummaryReportData { overview: { totalHelpSession,s: number;
+        totalPageViews: number;
+        uniqueUsers: number;
+        averageSessionDuration: number;
+    tutorialCompletionRate: number;
+    topContent: { categories: TopItem[];
+        topics: TopItem[]  ;
+    searchQueries: TopItem[];
+    userSatisfaction: { averageRating: number;
+    totalFeedbacks: number
     },
-        satisfactionScore: number,
         satisfactionScore: number;
+        satisfactionScore: number
         };
-export interface EffectivenessReportDetailed { contentPerformance: ContentPerformance,
-    userBehavior: UserBehaviorReport,
-    problemAreas: ProblemArea[],
-    improvements: ImprovementSuggestion[];
-    export interface SanitizationOptions { maxLength?: number,
+export interface EffectivenessReportDetailed { contentPerformance: ContentPerformance;
+    userBehavior: UserBehaviorReport;
+    problemAreas: ProblemArea[];
+    improvements: ImprovementSuggestion[]
+};
+export interface SanitizationOptions { maxLength?: number;
     allowSpecialChars?: boolean;
-    preserveWhitespace?: boolean;
-    export interface StoredAnalyticsData { analytics: Analytics,
+    preserveWhitespace?: boolean
+};
+export interface StoredAnalyticsData { analytics: Analytics;
     sessions: Array<[string, HelpSession]>;
     events: Array<[string, AnalyticsEvent]>;
-    lastSaved: number,
     lastSaved: number;
+    lastSaved: number
         };
 export type DataType = 'categoryId' | 'topicId' | 'searchQuery' | 'feedback' | 'context';
 
@@ -221,7 +265,7 @@ export class HelpAnalytics {
     private loggingSystem: LoggingSystem;
     // 追跡対象イベント
     private, events: Map<string, AnalyticsEvent>,
-    private sessions: Map<string, HelpSession>;
+    private sessions: Map<string; HelpSession>;
     private currentSession: HelpSession | null;
     // 設定
     private config: AnalyticsConfig;
@@ -251,17 +295,17 @@ export class HelpAnalytics {
         // 設定
         this.config = {
             sessionTimeout: 30 * 60 * 1000, // 30分;
-            maxEvents: 1000,
-            enableRealTimeTracking: true,
-    enableOfflineStorage: true,
-            dataRetentionDays: 30 ;
+            maxEvents: 1000;
+            enableRealTimeTracking: true;
+    enableOfflineStorage: true;
+            dataRetentionDays: 30 
     },
         
         // 追跡データ
         this.analytics = { helpUsage: {
-                totalSessions: 0,
-                totalPageViews: 0,
-                uniqueUsers: new Set<string>(),
+                totalSessions: 0;
+                totalPageViews: 0;
+                uniqueUsers: new Set<string>();
                 averageSessionDuration: 0 } };
                 topHelpCategories: new Map<string, number>();
                 topHelpTopics: new Map<string, number>();
@@ -269,9 +313,9 @@ export class HelpAnalytics {
                 exitPoints: new Map<string, number>( };
             content: { topicViews: new Map<string, TopicViewStats>(),
                 categoryViews: new Map<string, CategoryViewStats>(  },
-            tutorialUsage: { totalStarts: 0,
-                totalCompletions: 0  ,
-                completionRate: 0,
+            tutorialUsage: { totalStarts: 0;
+                totalCompletions: 0  ;
+                completionRate: 0;
     averageCompletionTime: 0 }
                 dropOffPoints: new Map<string, number>();
                 skipRates: new Map<string, number>();
@@ -279,12 +323,12 @@ export class HelpAnalytics {
             userBehavior: { navigationPatterns: new Map<string, number>(),
                 timeSpentBySection: new Map<string, TimeStats>()  },
                 commonUserJourneys: new Map<string, number>(),
-                bounceRate: 0,
+                bounceRate: 0;
     returnUserRate: 0 
  };
             effectiveness: { helpfulnessRatings: new Map<string, RatingData>(),
-                problemResolutionRate: 0  ,
-                userSatisfactionScore: 0,
+                problemResolutionRate: 0  ;
+                userSatisfactionScore: 0;
     contentGaps: new Map<string, number>(),
                 improvementSuggestions: [] 
  }
@@ -374,19 +418,19 @@ export class HelpAnalytics {
      * @param entryPoint - 入口ポイント
      * @param context - コンテキスト情報
      */
-    startHelpSession(entryPoint: string, context: any = { ): void {
+    startHelpSession(entryPoint: string; context: any = { ): void {
         try {
             const sessionId = this.generateSessionId();
             const timestamp = Date.now();
-            this.currentSession = { id: sessionId,
-                startTime: timestamp,
-                entryPoint: entryPoint,
-                context: context,
-                events: [],
-                pageViews: [],
-                searchQueries: [],
-                currentPage: null,
-    lastActivityTime: timestamp;
+            this.currentSession = { id: sessionId;
+                startTime: timestamp;
+                entryPoint: entryPoint;
+                context: context;
+                events: [];
+                pageViews: [];
+                searchQueries: [];
+                currentPage: null;
+    lastActivityTime: timestamp
  };
             this.sessions.set(sessionId, this.currentSession);
             this.analytics.helpUsage.totalSessions++;
@@ -406,7 +450,7 @@ export class HelpAnalytics {
      * @param exitPoint - 終了ポイント
      * @param exitContext - 終了コンテキスト
      */
-    endHelpSession(exitPoint: string, exitContext: any = { ): void {
+    endHelpSession(exitPoint: string; exitContext: any = { ): void {
         try {
             if (!this.currentSession) return,
             
@@ -423,7 +467,7 @@ export class HelpAnalytics {
             ','
             // 終了イベントの追跡
             this.trackEvent('help_session_end', { sessionId: this.currentSession.id)
-                duration: duration,
+                duration: duration;
     exitPoint: exitPoint' }'
                 pageViews: this.currentSession.pageViews.length,')';
                 searchCount: this.currentSession.searchQueries.length','
@@ -440,12 +484,12 @@ export class HelpAnalytics {
      * @param page - ページ名
      * @param pageData - ページデータ
      */
-    trackPageView(page: string, pageData: any = { ): void {
+    trackPageView(page: string; pageData: any = { ): void {
         try {
             const timestamp = Date.now();
-            const pageView: PageView = { page: page,
-                timestamp: timestamp,
-                data: pageData,
+            const pageView: PageView = { page: page;
+                timestamp: timestamp;
+                data: pageData;
     timeSpent: 0  }
  };
             if (this.currentSession) {
@@ -481,12 +525,12 @@ export class HelpAnalytics {
      * @param results - 検索結果
      * @param resultCount - 結果数
      */
-    trackSearchQuery(query: string, results: SearchResult[] = [], resultCount: number = 0): void { try {
+    trackSearchQuery(query: string; results: SearchResult[] = []; resultCount: number = 0): void { try {
             const timestamp = Date.now();
-            const searchData: SearchQuery = { query: query,
-                timestamp: timestamp,
-    resultCount: resultCount,
-                results: results.map(r => ({ id: r.id, title: r.title, category: r.category ));
+            const searchData: SearchQuery = { query: query;
+                timestamp: timestamp;
+    resultCount: resultCount;
+                results: results.map(r => ({ id: r.id; title: r.title; category: r.category ))
             };
             
             if (this.currentSession) {
@@ -512,7 +556,7 @@ export class HelpAnalytics {
      * @param tutorialId - チュートリアルID
      * @param context - コンテキスト'
      */''
-    trackTutorialStart(tutorialId: string, context: any = { )): void {
+    trackTutorialStart(tutorialId: string; context: any = { )): void {
         try {
             this.analytics.tutorialUsage.totalStarts++;
 
@@ -531,7 +575,7 @@ export class HelpAnalytics {
      * @param completionTime - 完了時間
      * @param stepsCompleted - 完了ステップ数
      */
-    trackTutorialCompletion(tutorialId: string, completionTime: number, stepsCompleted: number): void { try {
+    trackTutorialCompletion(tutorialId: string; completionTime: number; stepsCompleted: number): void { try {
             this.analytics.tutorialUsage.totalCompletions++;
             this.updateTutorialStatistics(tutorialId, completionTime, stepsCompleted, true);
             this.trackEvent('tutorial_completion', {
@@ -551,7 +595,7 @@ export class HelpAnalytics {
      * @param stepIndex - 離脱ステップ
      * @param reason - 離脱理由'
      */''
-    trackTutorialDropOff(tutorialId: string, stepIndex: number, reason: string = '): void { try { }'
+    trackTutorialDropOff(tutorialId: string; stepIndex: number; reason: string = '): void { try { }'
             const dropOffKey = `${tutorialId}_step_${stepIndex}`;
 
             const currentCount = this.analytics.tutorialUsage.dropOffPoints.get(dropOffKey) || 0;
@@ -573,19 +617,19 @@ export class HelpAnalytics {
      * @param feedback - フィードバックテキスト
      * @param context - コンテキスト'
      */''
-    trackUserFeedback(contentId: string, rating: number, feedback: string = ', context: any = { ): void {'
+    trackUserFeedback(contentId: string; rating: number; feedback: string = '; context: any = { ): void {'
         try {
-            const feedbackData = { contentId: contentId,
-                rating: rating,
-                feedback: feedback,
-    context: context,
+            const feedbackData = { contentId: contentId;
+                rating: rating;
+                feedback: feedback;
+    context: context;
                 timestamp: Date.now(  };
             
             // 評価統計の更新)
             if (!this.analytics.effectiveness.helpfulnessRatings.has(contentId) { this.analytics.effectiveness.helpfulnessRatings.set(contentId, {
                 totalRatings: 0  }
-                    averageRating: 0),
-                    ratingCount: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0  }
+                    averageRating: 0);
+                    ratingCount: { 1: 0; 2: 0; 3: 0; 4: 0; 5: 0  }
             }
             
             const ratingData = this.analytics.effectiveness.helpfulnessRatings.get(contentId)!;
@@ -608,7 +652,7 @@ export class HelpAnalytics {
      * @param categoryId - 選択されたカテゴリのID
      * @param context - 選択時のコンテキスト情報'
      */''
-    recordCategorySelection(categoryId: string, context: any = { )): void {''
+    recordCategorySelection(categoryId: string; context: any = { )): void {''
         this.executeWithValidation('recordCategorySelection', () => { '
             // データの検証とサニタイゼーション
             const categoryValidation = this.validateAndSanitizeData(categoryId, 'categoryId');
@@ -621,9 +665,9 @@ export class HelpAnalytics {
             const sanitizedCategoryId = categoryValidation.sanitizedData;
             const sanitizedContext = contextValidation.sanitizedData;
 
-            const selectionData = { categoryId: sanitizedCategoryId,
+            const selectionData = { categoryId: sanitizedCategoryId;
 
-                context: sanitizedContext,
+                context: sanitizedContext;
                 timestamp: Date.now('','
             sessionId: this.currentSession?.id || 'unknown'
             };
@@ -644,7 +688,7 @@ export class HelpAnalytics {
      * @param content - トピックのコンテンツ情報
      * @param exitContext - 終了時のコンテキスト情報'
      */''
-    recordTopicExit(topicId: string, content: any, exitContext: any = { )): void {''
+    recordTopicExit(topicId: string; content: any; exitContext: any = { )): void {''
         this.executeWithValidation('recordTopicExit', () => { '
             // データの検証とサニタイゼーション
             const topicValidation = this.validateAndSanitizeData(topicId, 'topicId');
@@ -661,17 +705,17 @@ export class HelpAnalytics {
             const sanitizedContent = typeof content === 'object' && content !== null ? undefined: undefined,
                 this.sanitizeObject(content) : {};
 
-            const exitData = { topicId: sanitizedTopicId,
-                content: sanitizedContent,
-                exitContext: sanitizedContext,
+            const exitData = { topicId: sanitizedTopicId;
+                content: sanitizedContent;
+                exitContext: sanitizedContext;
                 timestamp: Date.now('','
             sessionId: this.currentSession?.id || 'unknown'
             })
             // トピック統計の更新)
             if (!this.analytics.content.topicViews.has(sanitizedTopicId) { this.analytics.content.topicViews.set(sanitizedTopicId, { : undefined)
-                    viewCount: 0,
+                    viewCount: 0;
     totalViewTime: 0 }
-                    exitCount: 0);
+                    exitCount: 0)
     }
 
             const topicStats = this.analytics.content.topicViews.get(sanitizedTopicId)!;
@@ -690,7 +734,7 @@ export class HelpAnalytics {
      * @param content - トピックのコンテンツ情報
      * @param viewContext - 表示時のコンテキスト情報'
      */''
-    recordTopicView(topicId: string, content: any, viewContext: any = { )): void {''
+    recordTopicView(topicId: string; content: any; viewContext: any = { )): void {''
         this.executeWithValidation('recordTopicView', () => { '
             // データの検証とサニタイゼーション
             const topicValidation = this.validateAndSanitizeData(topicId, 'topicId');
@@ -707,17 +751,17 @@ export class HelpAnalytics {
             const sanitizedContent = typeof content === 'object' && content !== null ? undefined: undefined,
                 this.sanitizeObject(content) : {};
 
-            const viewData = { topicId: sanitizedTopicId,
-                content: sanitizedContent,
-                viewContext: sanitizedContext,
+            const viewData = { topicId: sanitizedTopicId;
+                content: sanitizedContent;
+                viewContext: sanitizedContext;
                 timestamp: Date.now('','
             sessionId: this.currentSession?.id || 'unknown'
             })
             // トピック統計の更新)
             if (!this.analytics.content.topicViews.has(sanitizedTopicId) { this.analytics.content.topicViews.set(sanitizedTopicId, { : undefined)
-                    viewCount: 0,
+                    viewCount: 0;
     totalViewTime: 0 }
-                    exitCount: 0);
+                    exitCount: 0)
     }
 
             const topicStats = this.analytics.content.topicViews.get(sanitizedTopicId)!;
@@ -736,7 +780,7 @@ export class HelpAnalytics {
      * @param content - トピックのコンテンツ情報
      * @param feedback - フィードバック内容'
      */''
-    recordFeedback(topicId: string, content: any, feedback: any): void { ''
+    recordFeedback(topicId: string; content: any; feedback: any): void { ''
         this.executeWithValidation('recordFeedback', () => { '
             // データの検証とサニタイゼーション
             const topicValidation = this.validateAndSanitizeData(topicId, 'topicId');
@@ -759,9 +803,9 @@ export class HelpAnalytics {
             const sanitizedContent = typeof content === 'object' && content !== null ? undefined: undefined,
                 this.sanitizeObject(content) : {};
 
-            const feedbackData = { topicId: sanitizedTopicId,
-                content: sanitizedContent,
-                feedback: sanitizedFeedback,
+            const feedbackData = { topicId: sanitizedTopicId;
+                content: sanitizedContent;
+                feedback: sanitizedFeedback;
                 timestamp: Date.now('','
             sessionId: this.currentSession?.id || 'unknown'
             };
@@ -783,7 +827,7 @@ export class HelpAnalytics {
      * @param query - 検索クエリ
      * @param resultCount - 検索結果数'
      */''
-    recordSearchQuery(query: string, resultCount: number = 0): void { ''
+    recordSearchQuery(query: string; resultCount: number = 0): void { ''
         this.executeWithValidation('recordSearchQuery', () => { '
             // データの検証とサニタイゼーション
             const queryValidation = this.validateAndSanitizeData(query, 'searchQuery),'
@@ -811,16 +855,16 @@ export class HelpAnalytics {
      * @param type - データタイプ
      * @returns 検証とサニタイゼーション結果
      */
-    private validateAndSanitizeData(data: any, type: DataType): ValidationResult { try {
-            const result: ValidationResult = { isValid: true,
-                sanitizedData: null,
+    private validateAndSanitizeData(data: any; type: DataType): ValidationResult { try {
+            const result: ValidationResult = { isValid: true;
+                sanitizedData: null;
     errors: []  
     ,""
 
             switch(type) {""
 
                 case 'categoryId':','
-                    result.sanitizedData = this.sanitizeString(data, { maxLength: 100, allowSpecialChars: false ),''
+                    result.sanitizedData = this.sanitizeString(data, { maxLength: 100; allowSpecialChars: false ),''
                     if (!result.sanitizedData || result.sanitizedData.length === 0) {
                         result.isValid = false }
 
@@ -828,7 +872,7 @@ export class HelpAnalytics {
                     break;
 
                 case 'topicId':';'
-                    result.sanitizedData = this.sanitizeString(data, { maxLength: 100, allowSpecialChars: false ),''
+                    result.sanitizedData = this.sanitizeString(data, { maxLength: 100; allowSpecialChars: false ),''
                     if (!result.sanitizedData || result.sanitizedData.length === 0) {
                         result.isValid = false }
 
@@ -836,15 +880,15 @@ export class HelpAnalytics {
                     break;
 
                 case 'searchQuery':';'
-                    result.sanitizedData = this.sanitizeString(data, { maxLength: 200, preserveWhitespace: true );
+                    result.sanitizedData = this.sanitizeString(data, { maxLength: 200; preserveWhitespace: true );
                     // 検索クエリは空でも有効
                     break,
 
                 case 'feedback':','
                     if(typeof, data === 'object' && data !== null' {'
                         result.sanitizedData = {''
-                            rating: this.validateRating(data.rating,
-                            comment: this.sanitizeString(data.comment || ', { maxLength: 1000, preserveWhitespace: true,'
+                            rating: this.validateRating(data.rating;
+                            comment: this.sanitizeString(data.comment || ', { maxLength: 1000; preserveWhitespace: true,'
                             timestamp: Date.now() };
                         if (result.sanitizedData.rating === null) {
                             result.isValid = false }
@@ -872,8 +916,8 @@ export class HelpAnalytics {
 
             return result;} catch (error) {
             this.loggingSystem.error('HelpAnalytics', 'Failed to validate and sanitize data', error);
-            return { isValid: false,
-                sanitizedData: null,
+            return { isValid: false;
+                sanitizedData: null;
                 errors: [(error, as Error).message]      }
 }
     /**
@@ -882,7 +926,7 @@ export class HelpAnalytics {
      * @param options - サニタイゼーションオプション
      * @returns サニタイズされた文字列'
      */''
-    private sanitizeString(input: any, options: SanitizationOptions = { )): string {'
+    private sanitizeString(input: any; options: SanitizationOptions = { )): string {'
         try {'
             if(typeof, input !== 'string' { }
                 input = String(input); }
@@ -919,7 +963,7 @@ export class HelpAnalytics {
      * @param maxDepth - 最大深度
      * @returns サニタイズされたオブジェクト'
      */''
-    private sanitizeObject(obj: any, maxDepth: number = 3): any { try {'
+    private sanitizeObject(obj: any; maxDepth: number = 3): any { try {'
             if (maxDepth <= 0 || typeof, obj !== 'object' || obj === null'  }'
                 return}
 ';'
@@ -930,7 +974,7 @@ export class HelpAnalytics {
             for(const [key, value] of Object.entries(obj) {
 
                 // キーの検証
-                const sanitizedKey = this.sanitizeString(key, { maxLength: 50, allowSpecialChars: false ),''
+                const sanitizedKey = this.sanitizeString(key, { maxLength: 50; allowSpecialChars: false ),''
                 if(!sanitizedKey || !allowedKeys.includes(sanitizedKey)) {
     
 };
@@ -939,7 +983,7 @@ export class HelpAnalytics {
                 // 値の処理
                 if(typeof, value === 'string' {', ' }
 
-                    sanitized[sanitizedKey] = this.sanitizeString(value, { maxLength: 500, preserveWhitespace: true )),' }'
+                    sanitized[sanitizedKey] = this.sanitizeString(value, { maxLength: 500; preserveWhitespace: true )),' }'
 
                 } else if(typeof, value === 'number' && isFinite(value)) { sanitized[sanitizedKey] = value,' }'
 
@@ -1008,7 +1052,7 @@ export class HelpAnalytics {
      * @param path - ドット記法のパス
      * @returns 値'
      */''
-    private getNestedValue(obj: any, path: string): any { ''
+    private getNestedValue(obj: any; path: string): any { ''
         return path.split('.).reduce((current, key) => {  }'
             return current && current[key] !== undefined ? current[key] : undefined;, obj);
     }
@@ -1018,7 +1062,7 @@ export class HelpAnalytics {
      * @param operation - 操作名
      * @param dataOperation - データ操作関数
      */
-    private executeWithValidation(operation: string, dataOperation: () => any): any { try {
+    private executeWithValidation(operation: string; dataOperation: () => any): any { try {
             // データ構造の事前検証
             if (!this.validateAnalyticsStructure(this.analytics) {
     
@@ -1045,7 +1089,7 @@ export class HelpAnalytics {
     private initializeContentCaching(): void { try {
             this.contentCache = new Map<string, CacheEntry>(),
             this.searchCache = new Map<string, CacheEntry>(),
-            this.cacheConfig = { maxContentCacheSize: 50,
+            this.cacheConfig = { maxContentCacheSize: 50;
     maxSearchCacheSize: 100 }
                 cacheExpiryTime: 15 * 60 * 1000, // 15分;
                 enableCompression: true;;
@@ -1063,14 +1107,14 @@ export class HelpAnalytics {
      * @param contentId - コンテンツID
      * @param content - コンテンツデータ
      */
-    private cacheContent(contentId: string, content: any): void { try {
+    private cacheContent(contentId: string; content: any): void { try {
             if (!this.contentCache) {
     
 }
                 this.initializeContentCaching(); }
-            const cacheEntry: CacheEntry = { data: this.cacheConfig!.enableCompression ? this.compressData(content) : content,
-                timestamp: Date.now(),
-                accessCount: 0,
+            const cacheEntry: CacheEntry = { data: this.cacheConfig!.enableCompression ? this.compressData(content) : content;
+                timestamp: Date.now();
+                accessCount: 0;
     compressed: this.cacheConfig!.enableCompression 
  };
             // キャッシュサイズ制限
@@ -1114,15 +1158,15 @@ export class HelpAnalytics {
      * @param query - 検索クエリ
      * @param results - 検索結果
      */
-    private cacheSearchResults(query: string, results: any[]): void { try {
+    private cacheSearchResults(query: string; results: any[]): void { try {
             if (!this.searchCache) {
     
 }
                 this.initializeContentCaching(); }
             const cacheKey = this.generateSearchCacheKey(query);
-            const cacheEntry: CacheEntry = { data: this.cacheConfig!.enableCompression ? this.compressData(results) : results,
-                timestamp: Date.now(),
-                accessCount: 0,
+            const cacheEntry: CacheEntry = { data: this.cacheConfig!.enableCompression ? this.compressData(results) : results;
+                timestamp: Date.now();
+                accessCount: 0;
     compressed: this.cacheConfig!.enableCompression 
  };
             // キャッシュサイズ制限
@@ -1170,9 +1214,9 @@ export class HelpAnalytics {
     private initializePerformanceMonitoring(): void { try {
             this.performanceMetrics = {
                 operations: new Map<string, OperationMetrics>(),
-                cacheHitRate: 0,
-                averageResponseTime: 0,
-                errorRate: 0,
+                cacheHitRate: 0;
+                averageResponseTime: 0;
+                errorRate: 0;
     memoryUsage: 0 
  };
             // 定期的なメトリクス収集
@@ -1190,7 +1234,7 @@ export class HelpAnalytics {
      * @param operation - 実行する操作
      * @returns 操作結果
      */
-    private measurePerformance<T>(operationName: string, operation: () => T): T { const startTime = performance.now();
+    private measurePerformance<T>(operationName: string; operation: () => T): T { const startTime = performance.now();
         let error: Error | null = null,
         let result: T,
         try {
@@ -1208,13 +1252,13 @@ export class HelpAnalytics {
      * @param duration - 実行時間
      * @param error - エラー情報
      */
-    private recordOperationMetrics(operationName: string, duration: number, error: Error | null = null): void { try {
+    private recordOperationMetrics(operationName: string; duration: number; error: Error | null = null): void { try {
             if (!this.performanceMetrics!.operations.has(operationName) {
                 this.performanceMetrics!.operations.set(operationName, { totalCalls: 0)
-                    totalDuration: 0,
-    averageDuration: 0),
+                    totalDuration: 0;
+    averageDuration: 0);
                     errorCount: 0 }
-                    lastCall: 0); }
+                    lastCall: 0) }
             const metrics = this.performanceMetrics!.operations.get(operationName)!;
             metrics.totalCalls++;
             metrics.totalDuration += duration;
@@ -1272,7 +1316,7 @@ export class HelpAnalytics {
                 (totalErrors / totalOperations') * 100 : 0;'
 
             this.loggingSystem.debug('HelpAnalytics', 'Performance metrics collected', { ','
-                cacheHitRate: this.performanceMetrics!.cacheHitRate.toFixed(2) + '%,
+                cacheHitRate: this.performanceMetrics!.cacheHitRate.toFixed(2) + '%;
                 errorRate: this.performanceMetrics!.errorRate.toFixed(2) + '%'
             }
 
@@ -1399,8 +1443,8 @@ export class HelpAnalytics {
      * フォールバック用テキストベースヘルプインターフェース
      */
     private initializeFallbackInterface(): void { try {
-            this.fallbackInterface = { isActive: false,
-                container: null,
+            this.fallbackInterface = { isActive: false;
+                container: null;
                 content: new Map<string, FallbackContent>(' };'
 ';'
             // 基本的なヘルプコンテンツ
@@ -1438,22 +1482,22 @@ export class HelpAnalytics {
             this.fallbackInterface!.container = document.createElement('div');
             this.fallbackInterface!.container.id = 'help-fallback-interface,
             this.fallbackInterface!.container.style.cssText = ,
-                position: fixed,
-                top: 50%,
-                left: 50%,
+                position: fixed;
+                top: 50%;
+                left: 50%;
     transform: translate(-50%, -50%);
                 width: 80%,
                 max-width: 600px,
-                max-height: 80%,
+                max-height: 80%;
                 background: rgba(0, 0, 0, 0.9);
-                color: white,
+                color: white;
     padding: 20px,
                 border-radius: 10px,
                 font-family: Arial, sans-serif,
                 font-size: 14px,
                 line-height: 1.4,
                 overflow-y: auto,
-                z-index: 10000,
+                z-index: 10000;
                 border: 2px solid #4CAF50,
             ,
 ','
@@ -1462,7 +1506,7 @@ export class HelpAnalytics {
             const contentDiv = document.createElement('div');
             const title = document.createElement('h2');
             title.textContent = helpContent.title,
-            title.style.cssText = 'margin-top: 0, color: #4CAF50, text-align: center,,
+            title.style.cssText = 'margin-top: 0; color: #4CAF50, text-align: center,,
             contentDiv.appendChild(title);
             helpContent.content.forEach(line => { '),'
                 const p = document.createElement('p');
@@ -1477,14 +1521,14 @@ export class HelpAnalytics {
             const closeButton = document.createElement('button');
             closeButton.textContent = '閉じる (ESC')';'
             closeButton.style.cssText = `;
-                display: block,
-                margin: 20px auto 0,
-                padding: 10px 20px,
-                background: #4CAF50,
-                color: white,
+                display: block;
+                margin: 20px auto 0;
+                padding: 10px 20px;
+                background: #4CAF50;
+                color: white;
     border: none,
                 border-radius: 5px,
-                font-size: 14px,
+                font-size: 14px;
                 cursor: pointer,
             `;
             
@@ -1537,14 +1581,14 @@ export class HelpAnalytics {
      * ヘルプシステムの初期化検証
      */
     private validateHelpSystemInitialization(): SystemValidationResult { try {
-            const validationResult: SystemValidationResult = { isValid: true,
-                errors: [],
-                warnings: [],
+            const validationResult: SystemValidationResult = { isValid: true;
+                errors: [];
+                warnings: [];
     components: {
-                    analytics: false ,
-                    feedback: false,
-                    search: false,
-                    content: false,
+                    analytics: false ;
+                    feedback: false;
+                    search: false;
+                    content: false;
     accessibility: false ,
             // アナリティクスコンポーネントの検証
             if(this.analytics && this.validateAnalyticsStructure(this.analytics)) { validationResult.components.analytics = true }
@@ -1588,8 +1632,8 @@ export class HelpAnalytics {
                 validationResult.warnings.push('Fallback, interface prepared, due to, validation failures'); }
             }
 
-            this.loggingSystem.info('HelpAnalytics', 'Help system validation completed', { isValid: validationResult.isValid),
-                errors: validationResult.errors.length),
+            this.loggingSystem.info('HelpAnalytics', 'Help system validation completed', { isValid: validationResult.isValid);
+                errors: validationResult.errors.length);
                 warnings: validationResult.warnings.length';'
 ';'
 
@@ -1597,13 +1641,13 @@ export class HelpAnalytics {
             }
         } catch (error) {
             this.loggingSystem.error('HelpAnalytics', 'Failed to validate help system initialization', error);
-            return { isValid: false,
+            return { isValid: false;
                 errors: [(error, as Error).message],
-                warnings: [],
-    components: { analytics: false,
-                    feedback: false ,
-    search: false,
-                    content: false,
+                warnings: [];
+    components: { analytics: false;
+                    feedback: false ;
+    search: false;
+                    content: false;
                     accessibility: false  } }
     /**
      * ヘルプ使用統計レポートの生成
@@ -1613,21 +1657,21 @@ export class HelpAnalytics {
     period: { }
                     start: Date.now() - (7 * 24 * 60 * 60 * 1000), // 7日前;
                     end: Date.now(  }
-                usage: { totalSessions: this.analytics.helpUsage.totalSessions,
-                    totalPageViews: this.analytics.helpUsage.totalPageViews) ,
-                    averageSessionDuration: this.calculateAverageSessionDuration(),
-                    searchQueries: this.analytics.helpUsage.searchQueries.size,
-    topCategories: this.getTopCategories(5),
+                usage: { totalSessions: this.analytics.helpUsage.totalSessions;
+                    totalPageViews: this.analytics.helpUsage.totalPageViews) ;
+                    averageSessionDuration: this.calculateAverageSessionDuration();
+                    searchQueries: this.analytics.helpUsage.searchQueries.size;
+    topCategories: this.getTopCategories(5);
                     topSearches: this.getTopSearchQueries(10 };)
-                effectiveness: { averageRating: this.calculateAverageRating(),
-                    totalFeedbacks: this.getTotalFeedbackCount( ,
-    satisfactionScore: this.calculateSatisfactionScore(),
+                effectiveness: { averageRating: this.calculateAverageRating();
+                    totalFeedbacks: this.getTotalFeedbackCount( ;
+    satisfactionScore: this.calculateSatisfactionScore();
                     problemAreas: this.identifyProblemAreas( }
-                performance: { cacheHitRate: this.performanceMetrics ? this.performanceMetrics.cacheHitRate : 0,
-                    errorRate: this.performanceMetrics ? this.performanceMetrics.errorRate : 0 ,
+                performance: { cacheHitRate: this.performanceMetrics ? this.performanceMetrics.cacheHitRate : 0;
+                    errorRate: this.performanceMetrics ? this.performanceMetrics.errorRate : 0 ;
     operationsCount: this.performanceMetrics ? this.performanceMetrics.operations.size : 0  
     };)
-                recommendations: this.generateImprovementSuggestions();
+                recommendations: this.generateImprovementSuggestions()
             };
             // レポートの保存
             this.saveUsageReport(report);
@@ -1698,10 +1742,10 @@ export class HelpAnalytics {
      * @param eventType - イベントタイプ
      * @param eventData - イベントデータ
      */
-    private trackEvent(eventType: string, eventData: any = { ): void {
+    private trackEvent(eventType: string; eventData: any = { ): void {
         try {
-            const event: AnalyticsEvent = { type: eventType,
-                data: eventData,
+            const event: AnalyticsEvent = { type: eventType;
+                data: eventData;
                 timestamp: Date.now(
     sessionId: this.currentSession ? this.currentSession.id : null };
             // イベントキューに追加
@@ -1727,10 +1771,10 @@ export class HelpAnalytics {
      * @param options - オプション
      * @returns 分析レポート'
      */''
-    generateReport(reportType: string = 'summary', options: any = { ': AnalyticsReport {'
+    generateReport(reportType: string = 'summary'; options: any = { ': AnalyticsReport {'
         try {
             const report: AnalyticsReport = {''
-                generatedAt: Date.now(',
+                generatedAt: Date.now(';
     period: options.period || 'all'
             };
                 data: {}', ')';'
@@ -1777,16 +1821,16 @@ export class HelpAnalytics {
             (this.analytics.tutorialUsage.totalCompletions / this.analytics.tutorialUsage.totalStarts) * 100 : 0,
         
         return { overview: {
-                totalHelpSessions: this.analytics.helpUsage.totalSessions,
-                totalPageViews: this.analytics.helpUsage.totalPageViews,
+                totalHelpSessions: this.analytics.helpUsage.totalSessions;
+                totalPageViews: this.analytics.helpUsage.totalPageViews;
     uniqueUsers: this.analytics.helpUsage.uniqueUsers.size } },
-                averageSessionDuration: this.calculateAverageSessionDuration() ,
-                tutorialCompletionRate: Math.round(completionRate * 100) / 100  ,
-            topContent: { categories: this.getTopCategories(5,
-    topics: this.getTopTopics(10),
+                averageSessionDuration: this.calculateAverageSessionDuration() ;
+                tutorialCompletionRate: Math.round(completionRate * 100) / 100  ;
+            topContent: { categories: this.getTopCategories(5;
+    topics: this.getTopTopics(10);
                 searchQueries: this.getTopSearchQueries(10 };)
             userSatisfaction: { averageRating: this.calculateAverageRating(
-    totalFeedbacks: this.getTotalFeedbackCount(),
+    totalFeedbacks: this.getTotalFeedbackCount();
                 satisfactionScore: this.calculateSatisfactionScore( 
     }
 
@@ -1825,7 +1869,7 @@ export class HelpAnalytics {
     private generateEffectivenessReport(options: any = { ): EffectivenessReportDetailed {
         return { contentPerformance: this.analyzeContentPerformance(
             userBehavior: this.analyzeUserBehavior(
-    problemAreas: this.identifyProblemAreas() ,
+    problemAreas: this.identifyProblemAreas() ;
             improvements: this.generateImprovementSuggestions();
     
     /**
@@ -1834,8 +1878,8 @@ export class HelpAnalytics {
     private saveAnalyticsData(): void { try {
             if (!this.config.enableOfflineStorage) return,
             
-            const dataToSave: StoredAnalyticsData = { analytics: this.analytics,
-    sessions: Array.from(this.sessions.entries())),
+            const dataToSave: StoredAnalyticsData = { analytics: this.analytics;
+    sessions: Array.from(this.sessions.entries()));
                 events: Array.from(this.events.entries())).slice(-100), // 最新100件のみ;
                 lastSaved: Date.now()';'
             localStorage.setItem('help_analytics_data', JSON.stringify(dataToSave));
@@ -1980,18 +2024,18 @@ export class HelpAnalytics {
     private updateCategoryStatistics(page: string): void { // ページからカテゴリを推定して統計を更新
         const categories = this.analytics.helpUsage.topHelpCategories,
         categories.set(page, (categories.get(page) || 0) + 1);
-    private updateTimeSpentStatistics(page: string, timeSpent: number): void { const timeStats = this.analytics.userBehavior.timeSpentBySection,
+    private updateTimeSpentStatistics(page: string; timeSpent: number): void { const timeStats = this.analytics.userBehavior.timeSpentBySection,
         if (!timeStats.has(page) {
     
 }
-            timeStats.set(page, { total: 0, count: 0, average: 0  }
+            timeStats.set(page, { total: 0; count: 0; average: 0  }
         const stats = timeStats.get(page)!;
         stats.total += timeSpent;
         stats.count++;
         stats.average = stats.total / stats.count;
     }
     
-    private updateTutorialStatistics(tutorialId: string, completionTime: number, stepsCompleted: number, completed: boolean): void { if (completed) {
+    private updateTutorialStatistics(tutorialId: string; completionTime: number; stepsCompleted: number; completed: boolean): void { if (completed) {
             // 完了時間の平均を更新
             const currentAvg = this.analytics.tutorialUsage.averageCompletionTime,
             const totalCompletions = this.analytics.tutorialUsage.totalCompletions,
@@ -2026,8 +2070,8 @@ export class HelpAnalytics {
     private analyzeContentPerformance(): ContentPerformance { // コンテンツのパフォーマンス分析 }
         const performance: ContentPerformance = {}''
         for(const [contentId, ratingData] of this.analytics.effectiveness.helpfulnessRatings.entries()) { performance[contentId] = {
-                averageRating: ratingData.averageRating,
-                totalRatings: ratingData.totalRatings,
+                averageRating: ratingData.averageRating;
+                totalRatings: ratingData.totalRatings;
                 helpfulness: ratingData.averageRating >= 4 ? 'high' : ratingData.averageRating >= 3 ? 'medium' : 'low'
             }
         
@@ -2035,9 +2079,9 @@ export class HelpAnalytics {
     }
     
     private analyzeUserBehavior(): UserBehaviorReport { // ユーザー行動の分析
-        return { timeSpentBySection: Object.fromEntries(this.analytics.userBehavior.timeSpentBySection,
-            navigationPatterns: Object.fromEntries(this.analytics.userBehavior.navigationPatterns) ,
-            commonJourneys: Object.fromEntries(this.analytics.userBehavior.commonUserJourneys); 
+        return { timeSpentBySection: Object.fromEntries(this.analytics.userBehavior.timeSpentBySection;
+            navigationPatterns: Object.fromEntries(this.analytics.userBehavior.navigationPatterns) ;
+            commonJourneys: Object.fromEntries(this.analytics.userBehavior.commonUserJourneys) 
     }
     
     private identifyProblemAreas(): ProblemArea[] { // 問題のある領域の特定
@@ -2052,7 +2096,7 @@ export class HelpAnalytics {
                     contentId: contentId','
     rating: ratingData.averageRating,' }'
 
-                    severity: 'high'); 
+                    severity: 'high') 
     }
         
         // 検索結果が見つからないクエリ
@@ -2062,7 +2106,7 @@ export class HelpAnalytics {
                     query: query','
     searchCount: count,' }'
 
-                    severity: 'medium'); 
+                    severity: 'medium') 
     }
         
         return problems;
